@@ -1,8 +1,856 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.rye-other
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
+content_maturity: authored_methodology
+translation_status: aligned
 ---
+# 声明农场门或初级处理门的非播种用黑麦谷物
+## 1. 适用范围与适用性
+本 PCR 用于构建 CPC 3.0 `01162`“Rye, other”对应的非播种用黑麦谷物前景数据包。产品可用于食品、饲料或工业用途，但具体终端用途必须声明。范围覆盖年度黑麦种植、收获，以及在声明门点位于收获后时所包含的初级干燥、清理、分级和短期储存，终点为声明的农场门或初级处理门。
+本 PCR 不覆盖播种用黑麦种子、育种或认证种子、面粉、麦芽、淀粉、乙醇及其他黑麦加工产品、零售产品，也不覆盖下游食品、饲料或工业转化。“other”只是 CPC 覆盖标签，不是独立产品事实；数据包必须声明终端用途类别和实物状态。
+默认声明门点为：(a) 收获时农场门，或 (b) 完成声明的初级处理后的门点。所选门点、水分基准、清理状态、等级或质量描述、地理范围、作物年度以及散装或包装状态均为必需限定信息。
+## 2. 产品类别识别
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.rye-other` |
+| classification_refs | CPC 3.0 `01162`，`Rye, other`; mapping relation: exact |
+| covered_products | 用于已声明食品、饲料或工业用途的非播种用黑麦谷物，位于收获农场门或声明的初级处理门 |
+| excluded_products | 播种用黑麦种子；育种、基础、登记或认证种子；面粉；麦芽；淀粉；乙醇；其他黑麦加工产品；零售即售产品 |
+| representative_product | 在声明水分基准、农场门或初级处理门的整粒非播种用黑麦谷物 |
+| production_route | 年度黑麦种植、收获，以及可选的收获后初级干燥、清理、分级和短期储存 |
+| market_state | 已声明用途、质量描述、水分基准和门点的散装或包装非播种用黑麦谷物 |
+## 3. 参考流
+| 字段 | 值 |
+| --- | --- |
+| What | 声明农场门或初级处理门的非播种用黑麦谷物 |
+| How much | 1 kg |
+| How well | 已声明终端用途（食品、饲料或工业）、重要时的黑麦类别或品种、水分基准、等级或质量描述、清理状态、地理范围、作物年度和门点 |
+| How long or cycle | 一个声明的作物周期和收获年度；门点包含储存时另行声明储存时长 |
+| reference_flow_link | reference_product_at_declared_handoff |
 
-# 待补充
+| 字段 | 值 |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | 所选声明门点的非播种用黑麦谷物 |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | 非播种用途；食品/饲料/工业声明；重要时的黑麦类别或品种；水分基准；质量或等级描述；清理/干燥状态；地理范围；作物年度；声明门点；散装或包装状态 |
+构建前景数据包时，`Required qualifiers` 中的项目必须写入数据集元数据、过程说明、参考流注释、产品描述或等效数据包字段。类别参考描述的是非播种用黑麦谷物，不是播种用种子；它不代表每个终端状态均已有核实的 Tiangong 身份。
+每份前景数据包须声明实际路线、终端产品状态和交接门，保留原始称量、质量平衡及批次追溯记录。以该门的唯一交接参考输出归一化，前序工序采用实测转移数量。
+
+收获后农场门交付选择 `grain_at_handoff`；实际初级处理后结束的路线选择 `conditioned_rye_grain`；继续储存或进入后续交接的路线选择 `declared_gate_rye_grain`。记录实际干燥、清理、分级及是否调质，不默认让这些状态共用 UUID。分别核实每个具体状态，无法确认时保留未解析身份。
+
+唯一参考输出为 `reference_product_at_declared_handoff`，由下列实际路线在声明交接门的产品承接。原路线输出编号用于追溯实际来源和物理状态，不再分别固定为参考数量。
+
+## 4. 计量与单位规则
+| 规则编号 | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | 参考产品 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 参考流必须表示为所选声明门点的非播种用黑麦谷物净质量，并声明水分基准。 |
+| `moisture_basis` | 收获及处理后谷物 | 质量和水分含量 | kg 和 percent | 记录原始质量和水分基准；若使用干物质归一化，保留实测水分和转换规则。 |
+| `nitrogen_input_basis` | 肥料和氮排放 | 质量 | kg 产品和 kg N | 分开记录肥料产品质量和养分含量；氮排放计算使用 kg N 投入。 |
+| `water_basis` | 灌溉和取水 | 体积或质量 | m3 或 kg | 区分按水源的取水、输送灌溉水、消耗量和水足迹结果，不得合并成单一流。 |
+| `energy_inventory` | 田间燃料、电力和谷物干燥 | 质量、体积或能量 | kg、L、MJ 或 kWh | 归一化前记录燃料或能量类型、活动、期间、单位和转换基准。 |
+| `output_reconciliation` | 收获、处理、筛下物、残余物和损失 | 质量 | kg | 在按参考流归一化前，用同一水分基准核对收获谷物、合格谷物、筛下物、残余物和实测损失。 |
+## 5. 系统边界
+| 规则编号 | 适用对象 | 规则 | 来源 |
+| --- | --- | --- | --- |
+| `boundary_crop_production` | 田间生产 | 包含声明的播种用种子投入、土地占用、整地、播种、施肥、适用时的灌溉、植保、田间作业和收获前后的直接田间排放。 | `ipcc-2019-managed-soils-n2o`; `fao-crop-evapotranspiration-56` |
+| `boundary_harvest` | 收获和田间交接 | 当这些活动属于前景数据包时，包含收获、脱粒或联合收割、田间收集，以及到声明农场门或初级处理交接点的运输。 | `fao-grain-postharvest-systems-1998`; `fao-wheat-postharvest-operations-1999` |
+| `boundary_primary_conditioning` | 收获后路线 | 只有当声明门点位于这些作业之后时，才包含初级干燥、清理、分级、粉尘或筛下物处理及短期储存。 | `fao-wheat-postharvest-operations-1999`; `fao-grain-postharvest-systems-1998` |
+| `boundary_downstream_exclusion` | 下游加工 | 排除制粉、制麦、淀粉或乙醇转化、食品或饲料配方、零售和消费者使用；这些应由下游数据集表示。 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `boundary_input_completeness` | 所有前景路线 | 对肥料、灌溉、植保、田间能源、电力、土地、收获能源、干燥能源、清理损失、残余物和直接排放给出数值、合理的零值或有记录的排除理由。 | `ipcc-2019-managed-soils-n2o`; `fao-wheat-postharvest-operations-1999` |
+### 边界概化
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | seed_for_sowing_input_and_declared_crop_cycle |
+| starting_condition_role | crop_establishment_condition |
+| product_classification_scope | 对应 CPC 3.0 `01162`“Rye, other”的非播种用黑麦谷物；播种用黑麦种子是上游投入，不是参考产品 |
+| recursive_input_rule | 作为作物建立投入使用的同类黑麦流，应记录为播种用种子投入并披露来源、批次、数量和上游种子数据集；不得将其静默追踪为非播种用参考产品 |
+| upstream_dataset_requirement | 播种用种子、肥料、植保产品、能源、水供应、运输、干燥、废物处理及其他上游投入使用已识别数据集或声明的供应商记录 |
+| disclosure | 声明终端用途、重要时的黑麦类别或品种、作物周期、地理范围、作物年度、播种用种子来源、灌溉状态、水分基准、收获和处理路线、门点、质量描述以及所有非参考输出的去向 |
+## 6. 过程清单结构
+### 过程图
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| rye_crop_production | Rye Crop Production | required |  | foreground | harvested rye grain and associated residues |
+| harvest_and_field_delivery | Harvest and Field Delivery | required |  | foreground | harvested grain at farm or conditioning hand-off |
+| primary_conditioning | Primary Drying, Cleaning, and Grading | conditional | include when primary drying, cleaning or grading is actually performed before the selected gate | foreground | conditioned rye grain at declared gate |
+| storage_and_declared_gate | Storage and Declared Gate Handoff | conditional | include when storage or a delivery hand-off materially changes the declared reference flow | foreground | declared rye grain at selected gate |
+| declared_reference_handoff | 声明交接门的产品计量 | required |  | foreground | reference_product_at_declared_handoff |
+### 过程：黑麦作物生产（`rye_crop_production`）
+#### 输入
+##### 产品流
+###### 用于黑麦作物的播种用种子（`seed_for_sowing_input`）
+播种用种子是作物建立的上游投入，不是参考产品。记录其来源和批次身份，不得把由此得到的非播种用谷物数据集标为播种用黑麦种子。
+- 选定流：黑麦，种子 `aa249eaf-0fe5-46e8-96fb-e9cac9fc2e7e`
+- 流属性/单位：Mass / kg
+- 数量规则：按田块或作物批次实测播种用种子质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_seed_input_records`
+###### 尿素肥料（`rye_crop_production_agricultural_nutrient_inputs_urea`）
+
+**rye_crop_production_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_fertilizer_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 硫酸铵肥料（`rye_crop_production_agricultural_nutrient_inputs_ammonium_sulfate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_fertilizer_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 重过磷酸钙肥料（`rye_crop_production_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_fertilizer_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`rye_crop_production_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_fertilizer_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`rye_crop_production_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_fertilizer_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`rye_crop_production_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_fertilizer_input_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`；`fao-organic-nutrients`
+
+###### 作为产品投入的灌溉水（`irrigation_water_input`）
+发生灌溉时，将输送的灌溉水作为产品投入记录。水源、取水、输送和消耗保持区分。
+- 选定流：灌溉用水 `4ad684b1-8e85-4dee-8d9c-55d1fa2d4432`
+- 流属性/单位：Mass / kg
+- 数量规则：将水表记录的灌溉体积按需要换算为质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_irrigation_records`
+- 来源：`fao-crop-evapotranspiration-56`
+###### 田间机械燃料（`field_machinery_fuel`）
+按作业和作物批次记录田间机械燃料，再进行归一化。
+此卡仍仅表示用于农业田间机械燃烧的柴油投入。
+
+- 选定流：柴油 `57e0b1a3-2d05-46b2-b61b-cf7b5b167c6f`
+- 流属性/单位：Mass / kg
+- 数量规则：按田间作业实测燃料数量，并保留燃料类型和单位
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_field_energy_records`
+##### 废物流
+不假定有废物投入。再利用有机物料、回收水或其他废物来源投入跨越前景边界时，单独记录。
+##### 基本流
+###### 土地占用（`land_occupation`）
+根据田块面积和作物持续时间记录土地占用，并在交换发布前核验具体基本流 UUID。
+- 选定流：农业用地占用
+- 流属性/单位：Area-time / ha a
+- 数量规则：实测田块面积乘以声明的作物持续时间
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每个作物周期和每个参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：作物周期（`crop_cycle`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_land_and_output_records`
+###### 灌溉取水（`water_withdrawal`）
+只有支撑输送灌溉水记录的按水源取水才作为基本流记录。
+- 选定流：声明水类型及自然资源区室的分源自然取水
+- 流属性/单位：Volume / m3
+- 数量规则：根据按水源计量的取水记录计算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
+- 采集协议：`cp_irrigation_records`
+- 来源：`fao-crop-evapotranspiration-56`
+
+在实际水源取水边界按m³计量，与购买或输送供水量分开。采集淡水或海水、地表水或地下水、地点、资源区室、表计日期和读数及调拨；累计表按期末减期初并保留有据的表计修正。按相同时段汇总分源取水体积，按合格参考产出仅归一化一次。质量观测单列，只有密度及单位有相容证据时才按V=m/rho换算，不得隐含kg与m³等同。未特指水源的泛水身份不能代替实际水源。缺少水源、类型或换算证据时明确记录缺口，不得宣称水清单身份齐全或完整。
+
+#### 输出
+##### 产品流
+###### 收获的非播种用黑麦谷物（`harvested_rye_grain`）
+收获黑麦谷物是交给农场门或初级处理路线的输出。其身份为收获后的非播种用谷物，不得继承另一处理状态的 UUID。
+- 选定流：田间交接点的收获非播种用黑麦谷物
+- 流属性/单位：Mass / kg
+- 数量规则：实测收获谷物质量，并保留水分基准和收获批次
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：初级处理前的过程输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest_and_output_records`
+- 数量范围：QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 收获谷物过程产出
+  - 基准：过程定量参考
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
+
+###### 黑麦秸秆或田间残余物（`rye_straw_or_field_residue`）
+秸秆或其他田间残余物在被移出、销售、转移、翻埋、焚烧或以其他方式跨越前景边界时记录。留在田间的残余物通过声明去向记录，不作为产品输出直接计入。
+- 选定流：黑麦秸秆（UUID 未解析；须核实作物特定身份）
+- 流属性/单位：Mass / kg
+- 数量规则：记录跨越边界的实测残余物质量和声明去向
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_residue_and_fate_records`
+##### 废物流
+不假定有废物投入。只有在收获损失、破损谷物或其他物料离开田间路线且去向有记录时，才作为废物记录。
+##### 基本流
+除上述项目外，只有在所选方法和基本流身份均有支持时才增加直接田间排放。
+###### 直接土壤一氧化二氮排放（`direct_soil_n2o_emission`）
+根据声明的氮投入和所选 IPCC 层级或本地有依据的方法计算直接土壤 N₂O。
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 流属性/单位：Mass / kg
+- 数量规则：将所选方法因子应用于已核算的氮投入，适用时将 N₂O-N 转换为 N₂O
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：氮投入（`n_input`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`
+###### 直接氨排放（`direct_ammonia_emission`）
+所选方法、本地证据或研究目标要求时，记录直接氨排放。
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 流属性/单位：Mass / kg NH3
+- 数量规则：根据已核算的氮投入和路径方法计算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：氮投入（`n_input`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`
+
+最终交换数量为 kg NH3，即该化合物的质量；kg N 仅保留在计算台账中。方法以该物种所含氮质量报告时，仅将该物种的氮质量乘以 17/14 一次；已经是化合物质量的数值不得再次转换。没有有据的物种拆分时，不得将合并氮损失全部归为此物种。转换后的可归属质量按声明参考产出归一化一次。
+
+###### 直接硝酸盐排放（`direct_nitrate_emission`）
+所选方法、本地证据或研究目标要求时，记录直接硝酸盐排放。
+- 选定流：硝酸根 `4d9a8790-3ddd-11dd-8d68-0050c2490048`
+- 流属性/单位：Mass / kg NO3-
+- 数量规则：根据已核算的氮投入和路径方法计算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：氮投入（`n_input`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
+- 采集协议：`cp_fertilizer_input_records`
+- 来源：`ipcc-2019-managed-soils-n2o`
+
+最终交换数量为 kg NO3-，即该化合物的质量；kg N 仅保留在计算台账中。方法以该物种所含氮质量报告时，仅将该物种的氮质量乘以 62/14 一次；已经是化合物质量的数值不得再次转换。没有有据的物种拆分时，不得将合并氮损失全部归为此物种。转换后的可归属质量按声明参考产出归一化一次。
+
+### 过程：收获与田间交接（`harvest_and_field_delivery`）
+#### 输入
+##### 产品流
+###### 田间交接时接收的收获黑麦谷物（`rye_crop_received_for_harvest`）
+本转移接收作物生产路线产出的收获黑麦谷物并进行田间交接。分别记录谷物和残余物结果，连接过程中的每项收获作业仅计入一次。
+- 选定流：田间交接的收获非播种用黑麦谷物
+- 流属性/单位：Mass / kg
+- 数量规则：带水分基准的进入田间交接过程的实测收获谷物质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每次收获事件和每个参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest_and_output_records`
+###### 设备供电点的电力（`harvest_energy_input_electricity`）
+
+**harvest_energy_input 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+可分别计量时，按机器或作业记录收获燃料和电力。
+原始活动或阶段基准：每 1,000 kg 收获黑麦谷物.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_harvest_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest_energy_records`
+- 来源：`fao-agricultural-energy`
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
+###### 供应设备的柴油（`harvest_energy_input_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_harvest_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest_energy_records`
+- 来源：`fao-agricultural-energy`
+
+
+
+##### 废物流
+只有在收获损失离开收获边界且去向已知时才记录。
+##### 基本流
+只有在所选方法和流身份确认时才记录粉尘或直接燃烧排放。
+
+#### 输出
+##### 产品流
+###### 交给农场门或初级处理交接点的谷物（`grain_at_handoff`）
+交接输出为转移到所选门点路线的实测谷物质量，并保留水分基准和批次身份。
+- 选定流：田间或初级处理交接点的收获非播种用黑麦谷物
+- 流属性/单位：Mass / kg
+原始产出计量与核对要求：收获或处理交接点的实测谷物质量
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：过程定量参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest_and_output_records`
+##### 废物流
+###### 收获与田间交接损失（`harvest_field_delivery_loss`）**
+当实测谷物或异物离开前景路线且不成为参考产品输出时，记录收获与田间交接损失。
+- 选定流：黑麦籽粒废物，来自收获及田间交接
+- 流属性/单位：Mass / kg
+- 数量规则：实测损失质量和声明去向
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1,000 kg 收获黑麦谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_residue_and_fate_records`
+
+本具体卡仅表示废弃籽粒。采集记录中须分别识别物理上独立的异物、颖壳、包装及其他残余物，完成数据集前各自建立交换，不得漏计或加到籽粒数量中。组成、状态及接收路线与公开身份核验兼容前，明确保留废物流UUID未解析。
+
+##### 基本流
+没有确认的方法和身份时，不增加额外基本流。
+### 过程：初级干燥、清理和分级（`primary_conditioning`）
+#### 输入
+##### 产品流
+###### 进入初级处理的收获黑麦谷物（`grain_to_primary_conditioning`）
+只有当所选门点之前实际进行了初级干燥、清理或分级时，才使用本输入。仅有储存不要求纳入处理过程。
+- 选定流：初级处理前的收获非播种用黑麦谷物
+- 流属性/单位：Mass / kg
+- 数量规则：带水分基准的进入处理批次实测谷物质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每个处理批次和每个声明输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest_and_output_records`
+###### 设备供电点的电力（`conditioning_energy_input_electricity`）
+
+**conditioning_energy_input 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+当干燥、清理、分级和输送能源跨越处理边界时，按批次或生产线记录。
+原始活动或阶段基准：每 kg 处理后合格黑麦谷物输出.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_conditioning_energy_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_energy_records`
+- 来源：`fao-wheat-postharvest-operations-1999`；`fao-agricultural-energy`
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
+##### 废物流
+#### 输出
+##### 产品流
+###### 处理后的非播种用黑麦谷物（`conditioned_rye_grain`）
+当声明门点位于初级处理之后时，处理后的合格黑麦谷物是参考输出。
+- 选定流：完成声明干燥、清理和分级作业后的非播种用黑麦谷物
+- 流属性/单位：Mass / kg
+原始产出计量与核对要求：带水分基准和质量描述的实测合格谷物输出
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：定量参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioned_output_records`
+- 来源：`fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
+- 数量范围：QA 校验
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 本阶段合格净产出
+  - 基准：同阶段分子与分母的计量一致性；不是阶段产率或相对最终参考产出的固定比值
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
+
+##### 废物流
+所有处理拒收物、筛下物、破损谷物和包装或操作废物都必须在数据包中分配实测去向。
+##### 基本流
+只有能源记录、因子选择和基本流身份都确认时，才计算处理能源相关排放。
+###### 处理粉尘排放到空气（`conditioning_dust_to_air`）
+
+分别记录实际排入空气的粉尘和除尘器捕集的固体。声明颗粒物粒径口径、接收环境、采样点及治理设施；捕集质量不是空气排放量。只有确认实际排放身份后才绑定基本流 UUID。
+只有在实测或按声明方法计算且基本流身份已确认时，才记录粉尘排放。
+- 选定流：谷物粉尘向空气排放
+- 流属性/单位：Mass / kg
+- 数量规则：按相同时间段的出口颗粒物质量浓度乘以匹配气体状态的排气体积计算排放质量，并另计不重叠的无组织排放；也可使用适用的活动量与排放因子方法，保留粒径和治理条件。按匹配产出归一化。不得直接采用捕集质量或未经证实的统一捕集效率。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 kg 处理后黑麦谷物输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：基于采集记录计算（`calculated_from_collection`）
+- 采集协议：`cp_conditioning_reject_records`
+- 来源：`epa-fabric-filter-monitoring-2026`
+
+#### 输出
+
+##### 废物流
+
+###### 处理筛下物和拒收谷物（`conditioning_screenings_and_rejects`）**
+按物流和去向记录筛下物、异物、拒收谷物和不合格物料；不得将其计入合格参考产品。
+- 选定流：黑麦籽粒废物，来自整理拒收
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次质量和声明去向
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg 进入初级处理的谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_reject_records`
+- 来源：`fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020`
+
+本具体卡仅表示废弃籽粒。采集记录中须分别识别物理上独立的异物、颖壳、包装及其他残余物，完成数据集前各自建立交换，不得漏计或加到籽粒数量中。组成、状态及接收路线与公开身份核验兼容前，明确保留废物流UUID未解析。
+
+### 过程：储存与声明门点交接（`storage_and_declared_gate`）
+#### 输入
+##### 产品流
+###### 进入声明储存或交接的谷物（`grain_to_declared_storage`）
+当所选门点位于储存或交接之后时，才纳入本条件过程。
+- 选定流：前一声明门点的非播种用黑麦谷物
+- 流属性/单位：Mass / kg
+- 数量规则：进入储存或声明交接的实测谷物质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每个储存期间和每个参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：储存时长（`storage_duration`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_storage_and_handoff_records`
+###### 设备供电点的电力（`storage_handoff_energy_electricity`）
+
+**storage_handoff_energy 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+仅对声明储存或交接期间记录储存电力、通风或其他能源。
+原始活动或阶段基准：每 kg 谷物和声明储存时长.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_storage_and_handoff_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_storage_and_handoff_records`
+- 来源：`fao-agricultural-energy`
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
+###### 木制板条箱（`transport_packaging_input_wood_crate`）
+
+**transport_packaging_input 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+仅在声明门点使用袋、内衬或其他运输包装状态而非散装谷物时记录包装。
+原始活动或阶段基准：每 kg 声明包装门点的谷物.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：木制板条箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_records`
+- 来源：`fao-package-identities`
+
+###### 瓦楞纸板箱（`transport_packaging_input_corrugated_box`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：瓦楞纸板箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_records`
+- 来源：`fao-package-identities`
+
+###### 聚乙烯包装薄膜（`transport_packaging_input_pe_film`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：聚乙烯包装薄膜
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_packaging_records` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_packaging_records`
+- 来源：`fao-package-identities`
+
+##### 废物流
+##### 基本流
+没有确认身份和方法时，不增加储存基本流。
+#### 输出
+##### 产品流
+###### 声明门点的非播种用黑麦谷物（`declared_gate_rye_grain`）
+当所选门点包含储存或下游交接时，声明门点输出即为参考产品。
+- 选定流：完成声明储存或交接后的非播种用黑麦谷物
+- 流属性/单位：Mass / kg
+原始产出计量与核对要求：声明门点的实测谷物质量，并保留水分基准和质量描述
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：定量参考输出.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_gate_output_records`
+##### 废物流
+未在储存损失行中记录的破损或拒收物料，也必须以自己的去向记录。
+##### 基本流
+能源相关排放只有在能源记录和声明因子均确认时才计算。
+
+#### 输出
+
+##### 废物流
+
+###### 储存损失或破损谷物（`storage_loss_or_damaged_grain`）**
+包含储存时，按批次、期间、质量、损坏类别和去向记录储存损失。
+- 选定流：黑麦籽粒废物，来自储存拒收
+- 流属性/单位：Mass / kg
+- 数量规则：库存核对或处置质量实测
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 kg 进入储存的谷物.
+
+- 归一化基准：每声明的参考流
+- 基准类型：储存时长（`storage_duration`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_storage_and_handoff_records`
+
+本具体卡仅表示废弃籽粒。采集记录中须分别识别物理上独立的异物、颖壳、包装及其他残余物，完成数据集前各自建立交换，不得漏计或加到籽粒数量中。组成、状态及接收路线与公开身份核验兼容前，明确保留废物流UUID未解析。
+
+### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
+该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
+#### 输入
+##### 产品流
+###### 实际路线的交接产品（`actual_route_product_for_handoff`）
+记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
+- 选定流：所选声明门点的非播种用黑麦谷物
+- 流属性 / 单位：质量 / kg
+- 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+该计量节点不产生新的废物投入。
+##### 基本流
+该计量节点不产生新的资源投入。
+#### 输出
+##### 产品流
+###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
+- 选定流：所选声明门点的非播种用黑麦谷物
+- 流属性 / 单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+实际状态的产品 UUID 须独立核实；当前未确认时保持待核实，不继承前序或其他路线的 UUID。
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+实际损失已在发生工序记录；不得在此重复记录。
+##### 基本流
+实际排放已在发生工序记录；不得在此重复记录。
+
+## 7. 分配与联产品处理
+| 规则编号 | 适用对象 | 规则 | 来源 |
+| --- | --- | --- | --- |
+| `allocation_avoidance` | 作物、收获和处理过程 | 首先在记录支持时，将作物作业、收获、干燥、清理、分级、储存和废物处理拆分为独立过程，避免分配。 | `iso-14044-2006` |
+| `allocation_grain_and_residue` | 黑麦谷物和移出的秸秆或残余物 | 根据声明去向处理留在田间的残余物。若秸秆或其他残余物被移出或销售且不能拆分过程，使用明确声明的物理或经济分配方法，并披露敏感性。 | `iso-14044-2006`; `fao-wheat-postharvest-operations-1999` |
+| `allocation_screenings_and_rejects` | 筛下物、破损谷物和不合格物料 | 将合格谷物、筛下物、拒收物和损失作为不同输出记录并声明去向。没有明确返工或分配决定时，不得将拒收物料计入参考产品。 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `allocation_substitution` | 残余物或副产品使用 | 只有当被替代产品、路线、市场和证据均已声明时才使用替代法；不得从产品标签或泛化的残余物名称推断替代信用。 | `iso-14044-2006` |
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
+## 8. 前景数据采集、计算与质量规则
+
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `crop_protection_product_input_specific_input` | `cp_crop_protection_records` | 作业 rye_crop_production：根据可获得的原始记录，按制剂产品或有效成分记录植保产品，并声明选用的表示方式。 - 选定流：Crop protection product - 流属性/单位：Mass / kg - 数量规则：按施用批次实测制剂产品或有效成分质量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` 原数量方法：按施用批次实测制剂产品或有效成分质量 |
+
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+### 数据采集协议
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_seed_input_records` | `rye_crop_production` | seed for sowing input | seed purchase or receiving record | lot; variety; supplier; source; treatment; mass; moisture basis; date; field | weighbridge, calibrated scale, invoice, or supplier record；原始汇总与分配：sum seed mass by field and crop lot | kg | per seed lot | crop cycle | production field or farm | 每声明的参考流 | scale calibration, invoice, supplier record |
+| `cp_fertilizer_input_records` | `rye_crop_production` | fertilizer inputs | purchase and application record | product; nutrient; product mass; nutrient mass; date; field; application method | invoice, nutrient analysis, farm log, or applicator record；原始汇总与分配：sum by product and nutrient and normalize to declared output | kg product and kg nutrient | per application | crop cycle | production field or farm | 每声明的参考流 | invoice, nutrient analysis, application log |
+| `cp_irrigation_records` | `rye_crop_production` | irrigation and withdrawal | meter or pumping record | source; meter; readings; volume; pumping energy; date; field | calibrated meter, pumping log, or invoice；原始汇总与分配：sum by source and distinguish withdrawal from delivery | m3, kg, and energy unit | per event or period | irrigation season | field and water source | 每声明的参考流 | meter calibration, readings, invoice |
+| `cp_field_energy_records` | `rye_crop_production` | field machinery fuel | field operation energy record | operation; machine; fuel or electricity type; quantity; field; date | fuel log, invoice, telematics, or meter；原始汇总与分配：sum by operation and normalize to selected gate output | L, kg, MJ, or kWh | per field operation | crop cycle | production field or farm | 每声明的参考流 | invoice, machine log, telematics |
+| `cp_crop_protection_records` | `rye_crop_production` | crop protection product | application record | product; active ingredient; formulation; mass; date; field; application method | spray log, product label, or applicator record；原始汇总与分配：sum by product or active substance and normalize to output `crop_protection_product_input_specific_input`: 作业 rye_crop_production：根据可获得的原始记录，按制剂产品或有效成分记录植保产品，并声明选用的表示方式。 - 选定流：Crop protection product - 流属性/单位：Mass / kg - 数量规则：按施用批次实测制剂产品或有效成分质量 - 数值来源模式：前景记录（`foreground_record`） - 适用范围：产品特定（`product_specific`） 原始活动或阶段基准：每 1,000 kg 声明门点收获黑麦谷物. - 归一化基准：每声明的参考流 - 基准类型：过程输出（`process_output`） - 证据类型：采集记录（`collected_record`） - 采集协议：`cp_crop_protection_records` 原数量方法：按施用批次实测制剂产品或有效成分质量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg product or kg active ingredient | per application | crop cycle | production field or farm | 每声明的参考流 | label, log, applicator record |
+| `cp_land_and_output_records` | `rye_crop_production` | land, harvest, and outputs | field and harvest record | field; area; crop duration; harvest date; gross grain; residue; fate; moisture; quality | GIS or field record plus calibrated scale and dispatch records；原始汇总与分配：reconcile field outputs before normalization | ha, crop duration, kg, percent | per harvest and annual reconciliation | crop year | production field or farm | 每声明的参考流 | field map, scale calibration, harvest ticket |
+| `cp_harvest_and_output_records` | `harvest_and_field_delivery` | harvested grain and harvest energy | harvest and delivery record | field; machine; operation; grain mass; residue; loss; moisture; energy; date; hand-off | calibrated scale, harvest log, telematics, and delivery ticket；原始汇总与分配：sum by lot and declared hand-off | kg, percent, L, MJ, or kWh | per harvest event | crop cycle | field to gate hand-off | 每声明的参考流 | scale ticket, machine record, delivery record |
+| `cp_harvest_energy_records` | `harvest_and_field_delivery` | harvest energy | machine or contractor record | machine; fuel or electricity; quantity; harvested mass; period | contractor invoice, fuel log, telematics, or meter；原始汇总与分配：allocate by harvested mass and declared operation `harvest_transport_service_specific_input`: 当谷物跨越收获到门点交接边界时，记录路线特定的货运或内部搬运服务。 实测运输质量、距离、方式和路线 这是必需的具体投入采集要求，不是选定交换。按原始记录识别每种实际配方产品、载能体或独立供应服务，保留物理身份、状态、原生数量及供应商规格。完成数据集前，每种实际投入须单独建立具体卡片，核验兼容UUID或明确保留未解析身份。产品质量与所含有效成分质量是不同台账，仅凭有记录的组成换算，不将两者重复作为两次采购。成品饲料和另加组分不得重复核算成品配方。区分燃料采购、外购电力或热量及包含用能的机械服务，各按实际边界仅计一次。保留原作业、期间、归属及最终产出归一化规则。身份或记录缺失不等于零用量，不提供通用组分范围或编造配方。  | kg, L, MJ, or kWh | per harvest event or period | crop cycle | harvest operation | 每声明的参考流 | invoice, telematics, meter |
+| `cp_residue_and_fate_records` | `harvest_and_field_delivery` | residue and loss fates | residue or loss record | stream; mass; moisture; fate; destination; date; field or lot | scale ticket, baling record, field log, disposal or transfer record；原始汇总与分配：sum by stream and fate; do not merge with accepted grain | kg | per event or campaign | crop cycle | field and hand-off | 每声明的参考流 | scale ticket, fate record, field log |
+| `cp_conditioning_energy_records` | `primary_conditioning` | drying, cleaning, and grading energy | facility energy record | line; energy type; quantity; period; batch; input and output mass | meter, utility bill, equipment log, or supplier record；原始汇总与分配：allocate to batch and normalize to accepted output | kWh, MJ, kg, or L | per batch or campaign | conditioning campaign | facility and line | 每声明的参考流 | meter, bill, equipment log |
+| `cp_conditioning_reject_records` | `primary_conditioning` | screenings, rejects, and dust | conditioning reject record | batch; stream; mass; moisture; quality; fate; dust collector mass; 颗粒物粒径口径；出口浓度；排气体积及气体状态；采样时段；治理设施；无组织排放；捕集固体质量与去向；方法和适用性 | calibrated scale, reject log, dust record, or contractor record；原始汇总与分配：sum by stream and fate and reconcile to batch input; 粉尘排放按 conditioning_dust_release_accounting 核算。将捕集固体作为实际回用或废物去向单独记录，完成数据集前落实为具体交换；不得再计为空气排放。缺少排放测量或适用方法时保留证据缺口，不能默认为零 | kg and percent; kg 排放与 kg 捕集固体分别记录；浓度和体积使用匹配单位 | per batch or campaign | conditioning campaign | facility and line | 每声明的参考流 | scale, reject log, fate record |
+| `cp_conditioned_output_records` | `primary_conditioning` | conditioned reference output | conditioning output record | batch; accepted mass; moisture; grade; quality; cleaning status; gate | calibrated scale and quality test record；原始汇总与分配：sum accepted batches at declared basis | kg and percent | per batch | conditioning campaign | facility and declared gate | 每声明的参考流 | scale calibration, quality test, dispatch record |
+| `cp_storage_and_handoff_records` | `storage_and_declared_gate` | storage energy and loss | storage inventory record | lot; opening mass; closing mass; moisture; duration; energy; losses; fate | inventory reconciliation, meter, utility bill, or storage log；原始汇总与分配：reconcile mass and allocate energy by lot and duration | kg, percent, days, MJ, or kWh | per lot or storage period | declared storage duration | storage site | 每声明的参考流 | inventory record, meter, bill |
+| `cp_packaging_records` | `storage_and_declared_gate` | transport packaging | packaging issue or dispatch record | packaging type; item count; mass; capacity; lot; gate; date | packaging inventory, packing log, or supplier record；原始汇总与分配：sum packaging mass or convert item count using recorded capacity and mass | item and kg | per packaged lot | declared gate period | declared gate or packing site | 每声明的参考流 | inventory record, packing log, supplier record |
+| `cp_declared_gate_output_records` | `storage_and_declared_gate` | declared-gate output | dispatch or gate record | lot; gate; date; mass; moisture; quality; packaging or bulk state | weighbridge, scale, dispatch, or receiving record；原始汇总与分配：sum output lots and preserve gate identity | kg and percent | per shipment or gate event | declared gate period | declared gate | 每声明的参考流 | scale ticket, dispatch record, quality record |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+### 计算规则
+| 规则编号 | 适用对象 | Formula or rule | Inputs | Output | 来源 |
+| --- | --- | --- | --- | --- | --- |
+| `normalize_to_declared_gate` | 所有前景流 | 记录的流数量 / 所选声明门点的合格非播种用黑麦谷物质量 × 参考数量 | 所有适用协议；声明门点输出 | 每 1 kg 参考产品的数量 | `mass-balance-identity` |
+| `convert_moisture_basis` | 谷物质量比较 | 干物质质量 = 原始质量 × (1 - 水分比例)；保留原始值、转换值和实测水分基准 | 收获和处理质量；水分记录 | 可比质量基准 | `fao-wheat-postharvest-operations-1999`; `usda-rye-standards-2020` |
+| `calculate_water_withdrawal` | 灌溉 | 将按水源计量取水换算到声明单位并按所选门点输出归一化；单独报告输送量和消耗量 | `cp_irrigation_records`; `cp_declared_gate_output_records` | 每个参考输出的取水量 | `fao-crop-evapotranspiration-56` |
+| `calculate_direct_soil_n2o` | 肥料氮和直接 N₂O | 对已核算氮投入应用所选 IPCC 层级和因子，适用时将 N₂O-N 转换为 N₂O，并披露因子选择 | `cp_fertilizer_input_records`; 所选方法因子 | 每个参考输出的直接土壤 N₂O | `ipcc-2019-managed-soils-n2o` |
+| `reconcile_harvest_outputs` | 收获和田间交接 | 收获谷物 + 移出的残余物 + 实测损失 + 田间返回或未计量剩余 = 同一水分基准下的声明收获投入；解释剩余项 | `cp_land_and_output_records`; `cp_harvest_and_output_records`; `cp_residue_and_fate_records` | 质量平衡核对 | `mass-balance-identity` |
+| `reconcile_conditioning_outputs` | 初级处理 | 处理后合格谷物 + 筛下物 + 拒收物 + 粉尘或实测损失 = 同一水分基准下的处理投入；解释剩余项 | `cp_conditioning_reject_records`; `cp_conditioned_output_records` | 处理收率和损失核对 | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
+| `allocate_storage_energy` | 储存 | 按记录的批次质量和声明储存时长分配储存能源；有专用计量时避免分配 | `cp_storage_and_handoff_records` | 每个参考输出的储存能源 | `iso-14044-2006` |
+| `conditioning_dust_release_accounting` | 粉尘排放与捕集固体 | 排入空气的粉尘由出口排放和不重叠的无组织排放组成；出口质量由匹配气体状态和时段的浓度与体积计算，或由明确适用的活动量和排放因子计算。捕集固体单独核算回用或处置；不可将其质量直接当作排放，亦不可重复施加已包含的治理效率。保持相同粒径口径和含水率基准，保留原批次质量平衡，并按匹配最终参考产出归一化一次。 | `cp_conditioning_reject_records` | 分别核算的实际排放及捕集固体 | `epa-fabric-filter-monitoring-2026` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_fertilizer_input_records`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 数据质量要求
+| requirement_id | 适用对象 | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_non_seed_identity` | 参考产品 | 声明参考产品为非播种用黑麦谷物，并写明食品、饲料或工业用途；不得用种子质量声明替代。 | 产品元数据、合同、质量记录或发运记录 |
+| `dq_gate_and_moisture` | 参考流和输出 | 对每个核对的输出记录所选门点、原始质量、水分基准和干物质转换。 | 计量、水分检测、发运和计算记录 |
+| `dq_temporal_coverage` | 作物生产和收获 | 覆盖声明的作物周期和收获年度；披露数据是单年度、多年度平均还是情景。 | 有日期的农场、收获和投入记录 |
+| `dq_input_completeness` | 田间和处理库存 | 对播种用种子、肥料、灌溉、植保、土地、田间能源、收获能源、干燥能源、储存能源和直接排放给出量化值或说明零值/排除。 | 台账、发票、日志、计量记录和方法声明 |
+| `dq_output_fate` | 残余物、筛下物、拒收物和损失 | 记录每个非参考输出、质量基准、边界跨越、去向和处置；未解决的去向会阻止最终化。 | 计量记录、田间日志、处置、转移或销售记录 |
+| `dq_quality_descriptor` | 谷物身份 | 记录与终端用途相关的质量或等级描述，但不得把它们扩展为普遍适用的验收阈值。 | 官方等级检测、买方规格或本地质量记录 |
+| `dq_uuid_identity` | 流和基本流引用 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | 本地 identity 记录和 review metadata |
+## 9. 验证规则
+| 规则编号 | 适用对象 | 规则 | 来源 |
+| --- | --- | --- | --- |
+| `validation_non_seed_boundary` | 产品身份 | 确认参考产品为非播种用黑麦谷物，并确认播种用种子、面粉、麦芽、淀粉、乙醇和下游产品已排除或单独建模。 | `usda-rye-standards-2020`; `fao-wheat-postharvest-operations-1999` |
+| `validation_reference_flow` | 参考流 | 确认恰好一个所选输出提供实际声明门点的 1 kg 非播种用黑麦谷物，采用质量属性和 kg 单位，并记录用途、水分、质量、地理范围和作物年度。最终化前按该物理状态核实 UUID；未解析身份不等于已核实产品，实际未进行调质时不得要求调质。 | `usda-rye-standards-2020` |
+| `validation_process_completeness` | 过程图和库存 | 确认作物生产、收获以及适用的初级处理或储存过程已经纳入，或已根据声明门点明确排除。 | `fao-grain-postharvest-systems-1998`; `fao-wheat-postharvest-operations-1999` |
+| `validation_nitrogen` | 肥料和排放 | 确认产品质量与 kg N 区分，因子选择已声明，N₂O-N 转换透明，其他氮路径已处理或说明理由。 | `ipcc-2019-managed-soils-n2o` |
+| `validation_water` | 灌溉 | 确认取水、输送灌溉、消耗和水足迹结果已区分且没有重复计算。 | `fao-crop-evapotranspiration-56` |
+| `validation_moisture_and_mass_balance` | 收获和处理 | 确认质量核对使用共同水分基准，且合格谷物、残余物、筛下物、拒收物和损失均有声明去向。 | `fao-wheat-postharvest-operations-1999`; `mass-balance-identity` |
+| `validation_allocation` | 联产品和残余物 | 确认先考虑拆分，分配方法已声明，替代法有被替代产品证据，且重要时报告敏感性。 | `iso-14044-2006` |
+| `validation_uuid_review` | identity 引用 | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
+## 10. 发布数据集画像
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | unit_process |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | 当非播种用途、地理范围、作物年度、水分基准、质量描述、生产路线和门点与元数据一致时，用于下游食品、饲料、工业、谷物交易或 LCA 数据构建 |
+| excluded_use | 播种用黑麦种子；面粉；麦芽；淀粉；乙醇；加工食品或饲料；门点不兼容或物料损失/去向未解决的数据集 |
+| required_metadata | 参考流；非播种用途；重要时的黑麦类别或品种；地理范围；作物周期和年度；播种用种子来源；灌溉状态；肥料和植保记录；水分基准；质量描述；收获和处理路线；声明门点；残余物和拒收物去向；分配；质量披露 |
+| required_quality_disclosure | 原始记录覆盖、时间和地理代表性、水分和质量平衡处理、所选因子、身份覆盖和未映射流披露、遗漏投入、分配和敏感性、module checklist 结果 |
+| update_trigger | 路线、门点、水分或质量表达、终端用途范围、施肥或植保实践、灌溉、收获或处理技术、储存时长、因子来源、identity 绑定或证据状态发生重大变化 |
+## 11. 数据源
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `fao-wheat-postharvest-operations-1999` | official_guidance | FAO INPhO，*WHEAT: Post-harvest Operations*，<https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_WHEAT.pdf> | 从小麦迁移的一般谷物清理、干燥和储存背景；不提供黑麦或燕麦特定产量、水分默认值或秸秆身份。 |
+| `fao-grain-postharvest-systems-1998` | official_guidance | FAO，*Agricultural engineering in development — Grain and post-harvest systems*，<https://www.fao.org/4/t0522e/T0522E03.htm> | 收获到储存的顺序和声明的收获后交接 |
+| `fao-crop-evapotranspiration-56` | official_guidance | FAO Irrigation and drainage paper 56，*Crop evapotranspiration*，<https://www.fao.org/4/X0490E/X0490E00.htm> | 灌溉和作物用水数据采集与水量区分 |
+| `ipcc-2019-managed-soils-n2o` | method_factor | IPCC 2019 Refinement，Volume 4，Chapter 11，<https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | 管理土壤 N₂O 方法选择、活动数据和因子披露 |
+| `usda-rye-standards-2020` | official_guidance | USDA Agricultural Marketing Service，*United States Standards for Rye*，<https://www.ams.usda.gov/sites/default/files/media/RyeStandards.pdf> | 黑麦谷物质量、水分和等级描述，以及与种子语义区分 |
+| `iso-14044-2006` | standard | ISO 14044:2006，*Environmental management — Life cycle assessment — Requirements and guidelines*，<https://www.iso.org/standard/38498.html> | 分配层级、LCA 范围、清单、报告和数据质量披露 |
+| `mass-balance-identity` | method_factor | 将质量守恒作为 PCR 计算恒等式。 | 收获、处理、储存和输出核对 |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `epa-fabric-filter-monitoring-2026` | official_guidance | US EPA, Monitoring by Control Technique - Fabric Filters, updated 2026-04-06. https://www.epa.gov/air-emissions-monitoring-knowledge-base/monitoring-control-technique-fabric-filters | 捕集固体与出口颗粒物排放的区别及监测依据；不采用通用效率或排放因子 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

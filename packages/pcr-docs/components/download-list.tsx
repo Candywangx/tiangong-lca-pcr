@@ -29,8 +29,9 @@ export function DownloadList({
       <p className="pcr-section-lede">{labels.note}</p>
       <ul className="pcr-downloads" style={{ marginBlockStart: '0.75rem' }}>
         {downloads.map((download) => (
-          <li key={download.url} className="pcr-download">
-            <a className="pcr-download-name" href={download.url} download>
+          // Inline URLs contain whole files; keys only need the artifact identity.
+          <li key={`${download.name}:${download.sha256}`} className="pcr-download">
+            <a className="pcr-download-name" href={download.url} download={download.name}>
               {download.name}
             </a>
             <span className="pcr-download-meta">

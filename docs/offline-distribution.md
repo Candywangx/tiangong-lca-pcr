@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
-lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: 5f722beb80cf2e0b0bee95fe3966c1bb5b470407
+lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -279,8 +279,12 @@ the unified source or move any existing tag.
 environment. It binds canonical owner/repository IDs, tag/event/workflow/checkout
 SHAs and `main` ancestry. Its reusable qualification workflow runs complete Linux
 validation, documentation/source/SEO checks and offline distribution on Linux,
-Windows and macOS. The documentation job builds the website once and seals the
-two npm packages and web archive from the same source. The publish job downloads
+Windows and macOS. The documentation job builds and verifies the website once.
+A source/run/attempt-bound complete-file checkpoint transfers that exact export
+by artifact ID to the required product job, which verifies it before SEO and
+sealing the two npm packages and web archive from the same source. The intermediate
+export cannot be published. All sealed consumers and the reusable workflow output
+select the product job's one final bundle. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.
 

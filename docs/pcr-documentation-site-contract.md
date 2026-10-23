@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-23
-lastReviewedNote: "PCR #145 / PR #136: reviewed Fumadocs core/UI 16.17.7 and Zod 4.6.7, literal search-title rendering and semantic listbox-option acceptance with emitted Worker, keyboard selection and navigation checks. All 11 strict projects / 415 authored files and 86 focused tests pass; synthetic browser proof does not replace complete hosted corpus, coverage, sealed-web or release qualification. Runtime and methodology/publication contracts remain in force."
-lastReviewedCommit: 1024c5e95110392bc0828967b89a262723328b79
+lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair."
+lastReviewedCommit: 5f722beb80cf2e0b0bee95fe3966c1bb5b470407
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -74,9 +74,28 @@ exact release metadata bytes. Old snapshots are never rewritten by migration.
 ## Losslessness and generated artifacts
 
 The core document bundle contains the complete manifest, verified structured
-projection, declared languages and original artifact buffers. Raw downloads copy
-those buffers byte for byte. Exact-byte download hashes are distinct from the
+projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
+
+Current candidate PCRs with authored methodology and no release history may use
+native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
+`pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
+each required-language Markdown limit is 81,920 original bytes. Eligibility comes
+from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
+These bounded downloads preserve each original filename and work without
+JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
+byte to the pinned source. Current candidate HTTP URLs for these artifacts may
+change with this transport; use each record's current download links.
+Published/deprecated current artifacts, all release/history/revision artifacts,
+optional-language Markdown, larger files and structured projections retain
+physical downloads. When different source artifacts have identical inline bytes,
+only the first uses that data URL; later artifacts retain physical URLs so source
+identity and download filenames remain unambiguous. Physical responses keep
+attachment/noindex headers; inline bytes create no separately indexable HTTP
+resource. Source-relative links reuse the same source-bound download and filename.
+The exporter verifies rendered download anchors, and sealed-site qualification
+checks the largest available inline artifact per filename without
+JavaScript in Chromium, Firefox and WebKit.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -85,11 +104,23 @@ Every source block is mapped to a page/anchor or explicit source appendix.
 Unsupported source constructs, missing required files and stale projections
 cannot become empty successful output.
 
+Generation parses each source document once. A private per-call preparation step
+finishes the complete value-only source inventory before the renderer modifies
+its syntax tree. No syntax-tree references or caches are exposed through the
+public inventory API. The complete export verifier independently reads original
+source and compares the rendered blocks, tables, links, rules and ordering.
+
 Generated metadata lives in `.generated/site.json`; page HTML and complete
-structured data are separate artifacts read only at build time. Public downloads
+structured data are separate artifacts read only at build time. Physical downloads
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
+
+PCR page metadata, including historical pages and continuations, does not repeat
+the record's download list. The owning current or historical record retains the
+complete list and renders the same native download anchors on each reading page.
+Module and guide page metadata keeps its existing download fields. This removes
+redundant worker input without changing source bytes, reading routes or downloads.
 
 ### Page summaries
 
@@ -153,7 +184,7 @@ Each real document has its own canonical URL. Hreflang lists only verified,
 existing counterparts at the same version. Current complete public candidates
 may be indexed with their status visible. Scaffolds, unavailable translations,
 internal revisions, search/filter permutations and raw downloads are not normal
-indexing targets. Raw download responses carry attachment and noindex headers.
+indexing targets. Physical raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
 ## Reader navigation and presentation
@@ -282,12 +313,33 @@ complete source artifacts remain subject to the existing fidelity contract.
 
 The complete export runs locally or in GitHub qualification and has no project-owned
 elapsed-time acceptance budget. CI bounds its instrumented documentation job to
-60 minutes; stage and total durations remain reported. The old 18-minute full-build
+60 minutes; stage and total durations remain reported. A separate required product
+job performs SEO and sealing under its own 60-minute limit. The documentation job
+hands off the complete verified export through an explicit current-run artifact ID
+and a checkpoint binding source/product identity, CI plan, run/attempt, successful
+build metrics and every sorted file path, byte count and SHA-256. Full mode binds
+the current qualification and successful unchanged complete-build coverage command.
+The product job verifies the entire export before the existing canonical hosting
+transformation. Hidden files are preserved; missing, extra, changed, symlinked,
+nonregular, stale-attempt or foreign-source inputs fail closed. The handoff uses
+bounded file reads and retains the original export. Its low-compression transport
+does not alter any delivered byte. Only the product job's final sealed bundle may
+feed platform/browser qualification or publication. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
-deadline, cleanup and atomic handoff remain enforced. The export uses four workers
-with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
-guard; a heap ceiling is not proof of total resident memory.
+deadline, cleanup and atomic handoff remain enforced. The export uses two workers
+with at most one static page render in flight per worker. Its 4 GiB Node heap
+ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap
+ceiling is not proof of total resident memory.
+
+Each attempted stage emits `build-stage` diagnostics with its command, duration,
+sampled peak process-tree RSS, measurement availability, child exit code and
+passed/failed status. A zero-exit child that exceeds the RSS guard is a failed
+stage. The final `build-result` diagnostic reports failure even when cleanup or
+handoff fails after all stages. Failed runs write
+`.generated/build-failure-metrics.json` after cleanup returns, separately from
+the last successful `.generated/build-metrics.json`; neither failure receipt
+claims a successful export or relaxes the atomic output handoff.
 
 ### Build workspace storage
 
@@ -379,6 +431,69 @@ slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
 
+Search manifest version 4 adds bounded score-slot masks, reversible numeric posting
+ID deltas and optional columnar maps. The generator selects supported encodings
+only when smaller and verifies exact restoration of every original engine export.
+The Worker retains version 1, 2 and 3 readers, validates version-specific metadata
+and rejects malformed masks, columns or posting deltas before import; failed loads
+remain retryable. Complete result records, export and posting order, tokenization,
+ranking, text buckets and the 20 MB raw / 4 MB gzip per-language budgets remain
+unchanged. Build diagnostics report actual raw/gzip bytes, shards and records.
+
+Search manifest version 5 packs at most sixteen consecutive **logical v4 shards**
+into one physical file. The manifest binds the source commit and language, a unique
+URL and actual UTF-8 byte length / SHA-256 / gzip length for each physical file,
+and the contiguous logical range with every original v4 wire length, SHA-256 and
+record count. Each physical envelope uses `schemaVersion: 1` and
+`encoding: "v4-columnar-term-dictionary-delta"`; its source commit, language and
+first logical position must match the manifest. Its first-appearance dictionary
+replaces only explicitly marked columnar term strings with signed dictionary-ID
+deltas, reset to zero for each map. Unsupported/native map entries and all record
+fields remain unchanged. Dictionaries use explicit arrays and maps, including for
+Unicode and strings resembling object property names.
+
+Generation and export verification restore each original v4 JSON string exactly.
+The Worker verifies actual decoded response bytes with WebCrypto SHA-256, validates
+bounded dictionary references and restored lengths before expansion, then verifies
+each restored logical hash and record count before engine import. Physical files
+and their manifest count once toward the unchanged 20 MB raw / 4 MB gzip language
+budgets; declared logical wire sizes are verification evidence, not additional
+assets. Physical and total restored wire bytes per pack are bounded by 20 MB, and
+the existing 25 MB hosting file limit remains in force. Gzip accounting uses level
+9. Build diagnostics distinguish logical shard count from physical file count.
+
+Each logical shard still owns an independent engine and record map, even when IDs
+repeat in different shards. Original logical order, the strict 2 MB source-text
+bucket boundary, per-logical-shard thirty-hit cutoff, first-record URL deduplication
+before global title ranking, final thirty-result limit and dialog's twenty-four
+visible results remain unchanged. Initialization publishes no partial indexes;
+failed fetches, physical identities, late logical members or imports discard the
+private load and permit a fresh retry. Concurrent requests share one successful
+initialization and fetch each physical file once. The Worker retains literal v1–4
+readers; older Workers reject the new manifest version. The shared codec is emitted
+with the pinned compiler alongside the existing Worker modules. Synthetic and
+captured-input checks do not replace complete final-source and sealed-web browser
+qualification.
+
+### Inspector data transport
+
+The field inspector groups complete generated records into versioned JSON packs,
+using positional entries `[key, manifest, structured]`. Each record carries its
+exact transport key; current records and historical releases have distinct keys.
+Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
+whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
+array position, object-key order or empty value is removed. Generation requires
+each decoded record to serialize exactly as its original generated data; export
+verification repeats that comparison against the shipped pack for every record.
+The reader retains support for older unkeyed single-record payloads, rejects
+unknown versions, duplicate or missing keys and malformed records, and preserves
+the inspector's visible retry behavior. Browser qualification exercises the actual
+inspector in both languages and for available historical releases.
+
+This is lossless file packing to reduce the number of exported transport files.
+Server-side record data, byte-exact raw downloads, complete static HTML and every
+native Next navigation payload remain intact. No hosting rewrite is required.
+
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
 identities, with content-derived continuation suffixes. Tables remain whole, and
@@ -448,10 +563,11 @@ ownership markers are not submission API credentials. Keep the configured marker
 after verification; registration and actual crawl/index processing are separate
 provider operations.
 
-The documentation CI job validates the existing export with the generated
-shared checker snapshot in `scripts/vendor/workspace-seo/` after its full
-fidelity build, without rebuilding the library. The job checks that snapshot
-against its `manifest.json` before running it, so it fetches no private-repository
+The product CI job validates the authenticated existing export with the generated
+shared checker snapshot in `scripts/vendor/workspace-seo/` after the documentation
+job's full fidelity build, without rebuilding the library. The producer checks
+that snapshot against its `manifest.json`; the consumer binds the same exact source
+before running it, so the pipeline fetches no private-repository
 action and needs no token. PCR supplies hreflang in HTML; the sitemap need not
 duplicate that supported representation. The shared check validates those actual
 language links, canonical URLs, index policy, structured metadata and local

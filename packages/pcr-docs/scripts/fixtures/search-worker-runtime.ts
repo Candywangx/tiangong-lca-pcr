@@ -44,7 +44,7 @@ async function serialize(documents: Document[], language: string): Promise<Shard
   return { entries, records: documents.map(entry => entry.record) };
 }
 
-async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
+async function main(scenario: string, schemaVersion: 1 | 2 | 3 | 4): Promise<void> {
   const language = scenario === 'chinese' ? 'zh-CN' : 'en-US';
   const root = `/generated/search/${language}/`;
   const responses = new Map<string, { status: number; body: unknown }>();
@@ -75,7 +75,16 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
   const encode = (shard: Shard) => {
     if (schemaVersion === 1) return shard;
     const native = nativeShard(shard);
-    return schemaVersion === 2 ? native : { ...native, ...encodeSearchEntries(native.entries) };
+    if (schemaVersion === 4 && scenario === 'flat-v4-roundtrip') {
+      const nested = encodeSearchEntries(native.entries, 3);
+      const entries = {...nested.entries};
+      for (const key of nested.sparseMaps) entries[key] = entries[key]!.map(term => {
+        assert.ok(Array.isArray(term) && Array.isArray(term[2]));
+        return [term[0], term[1], ...term[2].flat()];
+      });
+      return {...native, entries, sparseMaps: nested.sparseMaps};
+    }
+    return schemaVersion === 2 ? native : { ...native, ...encodeSearchEntries(native.entries, schemaVersion) };
   };
   const install = async (documents: Document[][]) => {
     const shards: { url: string }[] = [];
@@ -86,7 +95,7 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
   await import(workerUrl.href);
   assert.equal(requests.length, 0, 'Import alone must not fetch or initialize an index');
 
-  if (scenario === 'wire-roundtrip') {
+  if (scenario === 'wire-roundtrip' || scenario === 'flat-v4-roundtrip') {
     const documents = [document(4, 'Wheat "seed"', 'Wheat seed 珊瑚 café', '/fixture/wheat/', 'Complete "quoted" context\\with a newline\nand Unicode 珊瑚'), document(9, 'Other scope', 'Wheat scope')];
     const original = await serialize(documents, language);
     await install([documents]);
@@ -112,11 +121,23 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
     const original = responses.get(target)!;
     const shard = original.body; assert.ok(object(shard) && object(shard.entries));
     const key = Object.keys(shard.entries).find(key => key.endsWith('.map'))!;
-    const values = schemaVersion === 3 ? [undefined, null, {}, [key, key], ['missing.map'], ['1.reg'], ['__proto__']] : [[], [key]];
+    const values = (schemaVersion === 3 || schemaVersion === 4) ? [undefined, null, {}, [key, key], ['missing.map'], ['1.reg'], ['__proto__']] : [[], [key]];
     for (const sparseMaps of values) {
       responses.set(target, { status: 200, body: { ...shard, sparseMaps } });
       const failure = await query('wheat');
       assert.equal(failure.results, undefined); assert.equal(failure.error, 'Invalid serialized search data.');
+    }
+    responses.set(target, original); assert.equal(valid(await query('wheat')).length, 4);
+  } else if (scenario === 'mask-metadata') {
+    const target = root + 'shard-0.json', original = responses.get(target)!;
+    const shard = original.body; assert.ok(object(shard));
+    for (const field of ['scoreMasks', 'postingDeltas']) {
+      const values = schemaVersion === 4 ? [undefined, false, null, 0, {}, 'true'] : [true, false, null];
+      for (const value of values) {
+        responses.set(target, {status: 200, body: {...shard, [field]: value}});
+        const failure = await query('wheat');
+        assert.equal(failure.results, undefined); assert.equal(failure.error, 'Invalid serialized search data.');
+      }
     }
     responses.set(target, original); assert.equal(valid(await query('wheat')).length, 4);
   } else if (scenario === 'english-rank') {
@@ -168,7 +189,7 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
     responses.set(target, saved); assert.equal(valid(await query('wheat')).length, 4);
     assert.equal(requests.filter(url => url.endsWith('manifest.json')).length, 2);
   } else if (scenario === 'manifest-shape') {
-    for (const invalid of [null, ...[undefined, 0, 4, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
+    for (const invalid of [null, ...[undefined, 0, 6, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
       responses.set(root + 'manifest.json', { status: 200, body: invalid });
       assert.equal((await query('wheat')).error, 'Invalid search manifest.');
     }
@@ -203,5 +224,5 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3): Promise<void> {
   } else throw new Error('Unknown search worker scenario: ' + scenario);
 }
 const scenario = process.argv[2]; assert.ok(scenario);
-const schemaVersion = Number(process.argv[3]); assert.ok(schemaVersion === 1 || schemaVersion === 2 || schemaVersion === 3);
+const schemaVersion = Number(process.argv[3]); assert.ok(schemaVersion === 1 || schemaVersion === 2 || schemaVersion === 3 || schemaVersion === 4);
 await main(scenario, schemaVersion); process.stdout.write(`PASS ${scenario}\n`);

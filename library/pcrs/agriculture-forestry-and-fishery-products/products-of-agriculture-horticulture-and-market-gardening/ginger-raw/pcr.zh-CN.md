@@ -1,8 +1,831 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.ginger-raw
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 生姜，鲜
+
+## 1. 范围与适用性
+
+本 PCR 覆盖鲜、未加工生姜根茎（*Zingiber officinale*）至农场门口交接的前景生产，包括雨养或灌溉田间生产、种姜准备、起挖、田间处理、分选分级，以及仅在农场门口交接前实施的清洗。去皮、刮皮、制干、干燥、切片、粉碎、保藏、提取、工业加工、农场后储存运输及消费包装均排除。干姜折干率不得用于表示本参考产品。
+
+## 2. 产品类别识别
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.ginger-raw |
+| classification_refs | CPC 3.0 01657, Ginger, raw; mapping relation: narrower |
+| covered_products | 去除松散土壤、可选择清洗并完成表面沥水后在农场门口交接的完整鲜生姜根茎 |
+| excluded_products | 作为种植材料销售的种姜；去皮、制干、干燥、切片、粉碎、保藏、提取或其他加工姜 |
+| representative_product | 可销售的完整 *Zingiber officinale* 鲜根茎 |
+| production_route | 种姜繁殖的管理生产、起挖、条件性初级整理及分选分级 |
+| market_state | 农场门口鲜、未加工、完整且坚实；声明清洗状态和商业等级 |
+
+管理生产父活动为 `field_production`。雨养与灌溉路线的差异体现在灌溉和泵送记录；人工与机械起挖的差异体现在能源记录；清洗与未清洗路线的差异体现在水、能源和废水记录。这些路线可存在于不同批次，但每批次须选择实际路线，互斥路线负荷不得合并。
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| What | 农场门口交接的合格鲜生姜根茎 |
+| How much | 1 kg |
+| How well | 完整、健全、坚实且可销售；基本无可见土壤与异物；声明清洗状态与等级 |
+| How long or cycle | 一个单一期间的作物周期及其关联收获、整理和分级批次；无储存 |
+| reference_flow_link | accepted_fresh_ginger |
+
+| 字段 | 值 |
+| --- | --- |
+| 参考数量 | 1 |
+| 参考产品流 | 生姜 `e30e5bf0-243f-4388-a2a0-8fdee391b4a9` |
+| 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| 参考单位 | kg |
+| 必需限定信息 | 物种或品种；地理位置；作物日期；雨养或灌溉；起挖技术；清洗或未清洗；商业等级；鲜未加工状态；农场门口交接 |
+| 绑定模式 | `fixed` |
+
+## 4. 计量与单位规则
+| rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | 合格鲜姜 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 去除松散土壤后计量净鲜质量；清洗时须在表面水沥除后计量。 |
+| `area_to_reference` | 田间记录 | Mass | kg/kg 参考产品 | 作物周期数量除以同一面积和周期的合格品质量。 |
+| `nutrient_product_mass` | 养分供应 | Mass | kg 产品及 kg 养分 | 分别采集实际产品及成分；养分属性不得重复生成产品交换。 |
+| `water_volume` | 灌溉与清洗 | Volume | m3 | 计量供水体积，或记录质量转体积所用的密度假设。 |
+| `energy_conversion` | 燃料与电力 | Energy | MJ | 保留原始载体记录并记录换算因子。 |
+
+## 5. 系统边界
+
+前景边界始于种姜及管理投入进入所表示的作物周期，止于合格鲜姜在农场门口交接。包括准备、田间管理、起挖、条件性清洗和表面沥水及分级。
+
+### 边界概化
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | 可供准备或种植的种姜，声明来源、自留比例、健康状态、适用时的贮藏损失及上游覆盖 |
+| starting_condition_role | 一个管理生姜作物周期的生物繁殖投入 |
+| product_classification_scope | 本 PCR 覆盖的鲜生姜根茎 |
+| recursive_input_rule | 自留作种的生姜仅作为投入记录一次，并包含前一周期上游覆盖或披露截断；不得计为本周期合格产出 |
+| upstream_dataset_requirement | 种姜、养分产品、水、能源、植保及服务需有兼容上游数据集或披露未解决覆盖 |
+| disclosure | 声明品种、地点、面积、日期、种姜来源、生产模式、灌溉、起挖技术、清洗状态、分级方案和拒收去向 |
+
+### 边界规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `boundary_raw_fresh` | 产品状态 | 参考产品保持鲜且未加工；排除去皮、制干、干燥、切片、粉碎、保藏及提取。 | `codex-cxs-218-1999`; `fao-ginger-postharvest-compendium` |
+| `boundary_seed` | 种姜 | 纳入本周期种姜质量及其准备处理。 | `aicrps-ginger-package`; `icar-ccari-ginger` |
+| `boundary_field` | 管理生产 | 纳入管理投入、田间能源、直接排放、残余物与损失。 | `aicrps-ginger-package`; `ipcc-2019-managed-soils` |
+| `boundary_harvest` | 起挖 | 起挖形成具有可测损失的收获批次，须独立建模。 | `aicrps-ginger-package` |
+| `boundary_conditioning` | 初级整理 | 仅在农场门口前实施时纳入清洗，并包括投入、产出、水、能源和废水。 | `icar-ccari-ginger`; `codex-cxs-218-1999` |
+| `boundary_grading` | 分级 | 枚举合格、降级和拒收状态及每项交接。 | `codex-cxs-218-1999` |
+| `boundary_route_delta` | 替代路线 | 每批次仅采用实际发生的雨养/灌溉、人工/机械、清洗/未清洗路线。 | `aicrps-ginger-package`; `icar-ccari-ginger` |
+| `boundary_post_gate` | 下游 | 本参考结果排除农场后储存、运输、包装及加工。 | `codex-cxs-218-1999` |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
+| --- | --- | --- | --- | --- | --- |
+| `field_production` | 种姜准备与田间管理生产 | `required` | 始终 | 管理生物生产父活动，含雨养/灌溉替代生产路线差异；按作物周期索引 | 所表示田块与周期的合格品质量 |
+| `harvest_lifting` | 收获与起挖 | `required` | 始终 | 独立收获，含人工/机械替代技术路线差异；按收获批次索引 | 起挖原始根茎质量 |
+| `primary_conditioning` | 初级整理 | `conditional` | 农场门口前清洗、复洗或动力去土 | 原始至整理后接口；按批次索引 | 整理后根茎质量 |
+| `sorting_grading` | 分选与分级 | `required` | 始终 | 合格、降级和拒收状态；按批次索引 | 进入的整理后质量 |
+
+### 过程：种姜准备与田间管理生产（`field_production`）
+
+管理对象是在已声明田块和作物周期内由种姜繁殖的生姜作物。投入分为繁殖材料、养分供应、水、植保或能源。交接状态为可收获的土中根茎；残余物与损失单列。
+
+#### 输入
+##### 产品流
+
+###### 种植用种姜根茎（`seed_rhizomes`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：生姜种用根茎
+- 流属性/单位：Mass / kg
+- 数量规则：按来源汇总种姜种植质量并除以合格品质量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_field_cycle_inputs`
+- 来源：`aicrps-ginger-package`; `csir-traditional-ginger-2009`
+- 数量范围：有来源支持的种姜投入强度
+  - 范围角色：典型范围（`typical_range`）
+  - 下限：0.0375
+  - 上限：0.333
+  - 单位：kg/kg accepted fresh ginger
+  - 基准：1.5-2.0 t 种姜/ha 除以报告的 6-40 t/ha 鲜姜产量
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：外部来源（`external_source`）
+  - 来源：`aicrps-ginger-package`; `icar-ccari-ginger`; `csir-traditional-ginger-2009`
+
+###### 尿素肥料投入（`nutrient_supply_products`）
+
+仅当声明的过程实际使用尿素肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：尿素肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的尿素肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_nutrient_products`
+
+###### 磷酸一铵肥料投入（`nutrient_supply_products_monoammonium_phosphate`）
+
+仅当声明的过程实际使用磷酸一铵肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：磷酸一铵肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的磷酸一铵肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_nutrient_products`
+
+###### 氯化钾肥料投入（`nutrient_supply_products_potassium_chloride`）
+
+仅当声明的过程实际使用氯化钾肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：氯化钾肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的氯化钾肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_nutrient_products`
+
+###### 施用的牛粪肥投入（`nutrient_supply_products_cattle_manure`）
+
+仅当声明的过程实际使用施用的牛粪肥时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：施用的牛粪肥
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的施用的牛粪肥数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_nutrient_products`
+
+###### 农业石灰石投入（`nutrient_supply_products_agricultural_limestone`）
+
+仅当声明的过程实际使用农业石灰石时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：农业石灰石
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的农业石灰石数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_nutrient_products`
+
+###### 田间灌溉供水（`irrigation_water`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：灌溉水
+- 流属性/单位：Volume / m3
+- 数量规则：计量或计算灌溉供水量；雨养批次记录为零
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：路线特定（`route_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_irrigation_records`
+- 来源：`aicrps-ginger-package`
+- 数量范围：灌溉路线用水筛查范围
+  - 范围角色：典型范围（`typical_range`）
+  - 下限：0
+  - 上限：1
+  - 单位：m3/kg accepted fresh ginger
+  - 基准：雨养为零；上限依据 90-100 ha-cm 用水量及 10-15 t/ha 产量
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：外部来源（`external_source`）
+  - 来源：`aicrps-ginger-package`
+
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
+
+###### 中压电力投入（`field_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+###### 柴油投入（`field_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+#### 输出
+##### 产品流
+
+###### 可收获的土中姜根茎（`harvestable_rhizomes`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：可收获的土中姜根茎
+- 流属性/单位：Mass / kg
+- 数量规则：估算或核算起挖前鲜根茎质量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_yield_reconciliation`
+- 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+##### 废物流
+
+###### 田间残余物、病株与未回收根茎（`field_residues_losses`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：田间作物残余物及生物损失
+- 流属性/单位：Mass / kg
+- 数量规则：按残余物类别和去向测量或抽样估算鲜质量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_residue_reject_routes`
+- 来源：
+- 数量范围：暂定田间残余物筛查范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.5
+  - 单位：kg fresh residue/kg accepted fresh ginger
+  - 基准：残余物及收获前损失的宽泛可替换筛查范围
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+  - 来源：
+
+##### 基本流
+
+###### 管理土壤直接氧化亚氮氮排放（`direct_n2o_n`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：氧化亚氮至空气；按分子N2O质量，身份未决
+- 流属性/单位: Mass / kg N2O
+- 数量规则：适用氮投入乘以选定的土壤直接排放因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 氮投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型：氮投入（`n_input`）
+- 证据类型：方法公式（`method_formula`）
+- 采集协议：`cp_nutrient_products`
+- 来源：`ipcc-2019-managed-soils`
+- 数量范围：IPCC 汇总土壤直接排放因子不确定范围
+  - 范围角色：不确定范围（`uncertainty_range`）
+  - 下限：0.002
+  - 上限：0.018
+  - 单位：kg N2O-N/kg N input
+  - 基准：适用的合成肥、有机改良剂及作物残余物氮投入
+  - 基准类型：氮投入（`n_input`）
+  - 证据类型：外部来源（`external_source`）
+  - 来源：`ipcc-2019-managed-soils`
+
+最终交换为 kg N2O。该物种的元素氮活动量以及按氮计的因子／范围保留在独立计算台账。归一化前将该物种的氮质量乘 44/28，仅换算一次；化合物质量不得再次换算，按氮计的范围不得直接校验化合物质量。未经有据拆分，不得将总氮损失作为该物种。保留实际接收环境与方法边界；未知身份或活动量不等于零。
+
+### 过程：收获与起挖（`harvest_lifting`）
+
+该独立节点从管理田块中起挖根茎，交接起挖原始批次，并将目标产出与土壤、茎叶、根、损伤及未回收损失区分。
+
+#### 输入
+##### 产品流
+
+###### 接收自田间生产的可收获根茎（`harvest_input_rhizomes`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：可收获的土中姜根茎
+- 流属性/单位：Mass / kg
+- 数量规则：等于匹配的田间生产交接量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：方法公式（`method_formula`）
+- 采集协议：`cp_yield_reconciliation`
+- 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+###### 中压电力投入（`harvest_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 起挖原始根茎.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+###### 柴油投入（`harvest_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 起挖原始根茎.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+#### 输出
+##### 产品流
+
+###### 起挖后的原始姜根茎（`raw_lifted_rhizomes`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：起挖后的鲜姜根茎
+- 流属性/单位：Mass / kg
+- 数量规则：整理或分级前称量收获批次
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_harvest_lots`
+- 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+##### 废物流
+
+###### 收获残余物与起挖损失（`harvest_residues_losses`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：根、茎叶、损伤根茎与未回收收获损失
+- 流属性/单位：Mass / kg
+- 数量规则：测量或抽样各残余物类别并记录去向
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_residue_reject_routes`
+- 来源：
+- 数量范围：暂定收获损失筛查范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.3
+  - 单位：kg/kg accepted fresh ginger
+  - 基准：根、茎叶、损伤及未回收根茎的宽泛可替换筛查范围
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+  - 来源：
+
+### 过程：初级整理（`primary_conditioning`）
+
+原始状态为带根或附着土壤的刚起挖根茎。整理后状态为去除松散土壤、可选择清洗并完成表面沥水的未去皮鲜根茎。未清洗批次的清洗投入为零。
+
+#### 输入
+##### 产品流
+
+###### 进入初级整理的起挖根茎（`conditioning_input_rhizomes`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：起挖后的鲜姜根茎
+- 流属性/单位：Mass / kg
+- 数量规则：等于同批次匹配的收获输出
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：方法公式（`method_formula`）
+- 采集协议：`cp_harvest_lots`
+- 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+###### 清洗供水（`washing_water`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：生姜清洗工艺水
+- 流属性/单位：Volume / m3
+- 数量规则：计量清洗与复洗用水；未清洗路线为零
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：路线特定（`route_specific`）
+原始活动或阶段基准：每 1 kg 整理后鲜根茎.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_batch`
+- 来源：`icar-ccari-ginger`
+- 数量范围：暂定清洗用水筛查范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.05
+  - 单位：m3/kg prepared fresh rhizomes
+  - 基准：未清洗批次为零；清洗用水的宽泛可替换筛查范围
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+  - 来源：
+
+###### 中压电力投入（`conditioning_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 整理后鲜根茎.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+###### 柴油投入（`conditioning_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 整理后鲜根茎.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+#### 输出
+##### 产品流
+
+###### 供分级的整理后鲜根茎（`prepared_rhizomes`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：去除松散土壤的未去皮鲜姜根茎
+- 流属性/单位：Mass / kg
+- 数量规则：去土后称量；清洗时须在表面沥水后称量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_batch`
+- 来源：`codex-cxs-218-1999`; `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+##### 废物流
+
+###### 清洗废水与分离土壤（`conditioning_effluent`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：含分离土壤的生姜清洗废水
+- 流属性/单位：Volume / m3
+- 数量规则：计量废水量；将分离固体质量与去向保留为批次属性
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：路线特定（`route_specific`）
+原始活动或阶段基准：每 1 kg 整理后鲜根茎.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning_batch`
+- 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+### 过程：分选与分级（`sorting_grading`）
+
+整理后根茎分为合格、降级但可销售及拒收状态。每一状态均有去向。仅因污物而不合格的材料可返回一个明确整理批次一次，且不得重复计量。
+
+#### 输入
+##### 产品流
+
+###### 进入分级的整理后根茎（`grading_input_rhizomes`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：整理后鲜姜根茎
+- 流属性/单位：Mass / kg
+- 数量规则：等于匹配的整理后输出；有记录的未整理路线可等于起挖输出
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：方法公式（`method_formula`）
+- 采集协议：`cp_grading_batch`
+- 来源：`mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+###### 中压电力投入（`grading_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 分级投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+###### 柴油投入（`grading_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+原始活动或阶段基准：每 1 kg 分级投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_records`
+
+#### 输出
+##### 产品流
+
+###### 农场门口合格鲜姜（`accepted_fresh_ginger`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：生姜 `e30e5bf0-243f-4388-a2a0-8fdee391b4a9`
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+原始产出计量与核对要求：恰为 1 kg 合格参考产品
+
+- 数量规则：1 千克
+- 数值来源模式：固定值（`fixed_value`）
+- 适用范围：通用（`generic`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：方法公式（`method_formula`）
+- 来源：`mass-balance-identity`
+- 数量范围：精确参考输出
+  - 范围角色：允许范围（`allowed_range`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg accepted fresh ginger
+  - 基准：精确参考流恒等关系
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`mass-balance-identity`
+
+###### 降级但可销售的鲜姜（`downgraded_fresh_ginger`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：降级但可销售的鲜姜
+- 流属性/单位：Mass / kg
+- 数量规则：称量各降级等级及去向；不得计入合格品质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_grading_batch`
+- 来源：`codex-cxs-218-1999`
+- 数量范围：暂定降级品筛查范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.25
+  - 单位：kg/kg accepted fresh ginger
+  - 基准：宽泛可替换筛查范围；以实际等级质量为准
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+  - 来源：
+
+##### 废物流
+
+###### 拒收姜与分级残余物（`grading_rejects`）
+
+该流在本过程边界内按所述数量规则记录，并与关联批次及去向核对。
+
+- 选定流：拒收姜与分级残余物
+- 流属性/单位：Mass / kg
+- 数量规则：称量各拒收状态及最终去向；复洗返回物在最终处置前不计为废物
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 合格鲜姜.
+
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_residue_reject_routes`
+- 来源：`codex-cxs-218-1999`
+- 数量范围：暂定分级拒收物筛查范围
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：0
+  - 上限：0.25
+  - 单位：kg/kg accepted fresh ginger
+  - 基准：完成已声明复洗后的宽泛可替换筛查范围
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+  - 来源：
+
+## 7. 分配与共产品处理
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `allocation_avoid` | 前景系统 | 优先按田块、作物周期、收获批次及处理批次细分并直接测量。 | `mass-balance-identity` |
+| `allocation_cycle` | 田间投入 | 归一化前将全部投入归属至所表示作物周期；共享记录按实测面积时间或其他因果驱动量分配。 | `mass-balance-identity` |
+| `allocation_run` | 运行与换批 | 将投入、产出、清洗及换批关联至一个运行或期间；共享事件仅分配一次，防止下游重复计入。 | `mass-balance-identity` |
+| `allocation_routes` | 替代路线 | 路线差异仅适用于实际采用该路线的批次；不得合并互斥路线负荷。 | `mass-balance-identity` |
+| `allocation_downgrade` | 降级产品 | 可销售降级品作为独立产品；细分后声明物理或经济分配并报告敏感性。 | `mass-balance-identity` |
+| `allocation_reject` | 拒收与返工 | 复洗材料保留原有负荷，仅增加复洗负荷；合格品排除未解决拒收物，最终处理遵循声明路线。 | `mass-balance-identity` |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
+## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_field_cycle_inputs` | `field_production` | 种姜与植保 | 发票、库存及田间日志 | 周期、田块、产品、种姜来源、制剂、数量、日期、面积 | 核对采购、库存及施用；原始汇总与分配：按实际产品与周期汇总 | 原单位及 kg | 每次事件 | 完整作物周期 | 每田块 | 每声明的参考流 | 发票、秤及库存核对 |
+| `cp_nutrient_products` | `field_production` | 全部养分产品 | 发票、成分及施用日志 | 产品、质量、成分、干物质、日期、面积 | 分别采集每一实际产品；原始汇总与分配：产品仅汇总一次；由成分计算养分 | kg 产品及养分 | 每次施用 | 完整周期 | 每田块 | 每声明的参考流 | 发票、标签/分析及日志 |
+| `cp_irrigation_records` | `field_production` | 灌溉 | 水表或流量时间日志 | 事件、水表、流量、时长、水源、面积 | 水表或流量×时间；原始汇总与分配：汇总事件；雨养明确为零 | m3 | 每次事件 | 完整周期 | 每灌溉田块 | 每声明的参考流 | 校准或流量试验 |
+| `cp_energy_records` | 所有过程 | 能源 | 发票、仪表或设备日志 | 过程、周期/批次、载体、数量、单位、因子、运行时间 | 按载体记录用量；原始汇总与分配：换算且共享用量仅分配一次 | 原单位、kWh、MJ | 每事件/批次 | 完整期间 | 每场址 | 每声明的参考流 | 发票、仪表及换算来源 |
+| `cp_yield_reconciliation` | `field_production` | 产量交接 | 抽样与质量台账 | 田块、周期、批次、样方面积/质量、估算质量、产出/损失 | 分层抽样加核算；原始汇总与分配：放大样方并核对下游 | kg 和 ha | 每批次 | 收获期 | 每田块 | 每声明的参考流 | 设计、秤检查及台账 |
+| `cp_harvest_lots` | `harvest_lifting` | 起挖根茎 | 称重单与批次日志 | 周期、批次、方法、毛重、皮重、净重、时间 | 校准秤逐批称量；原始汇总与分配：汇总关联净重 | kg | 每批次 | 完整收获期 | 每田块 | 每声明的参考流 | 称重单与校准 |
+| `cp_conditioning_batch` | `primary_conditioning` | 清洗与整理后产出 | 批次、仪表与称重记录 | 批次、进入批次、清洗/复洗、水、能源、产出、废水、固体 | 逐批计量称重；原始汇总与分配：逐批核对各状态 | kg、m3、MJ | 每批次 | 完整理期 | 每场址 | 每声明的参考流 | 校准与批次表 |
+| `cp_grading_batch` | `sorting_grading` | 等级产出 | 分级表与称重 | 批次、投入、方案、合格、降级、拒收、去向 | 各状态分别称重；原始汇总与分配：核对互斥产出状态 | kg | 每批次 | 完整分级期 | 每场址 | 每声明的参考流 | 校准与等级规范 |
+| `cp_residue_reject_routes` | 所有过程 | 残余、损失、拒收与返工 | 路线及称重/抽样记录 | 过程、周期/批次、状态、质量、方法、去向、返工关联 | 称重或代表性抽样；原始汇总与分配：按状态及最终去向汇总 | kg | 每事件/批次 | 完整系统 | 每田块/场址 | 每声明的参考流 | 称重/抽样及去向证据 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_reference_normalization` | 作物周期流 | 数量/同周期合格品质量 | 采集量；合格品质量 | 每 kg 合格鲜姜数量 | `mass-balance-identity` |
+| `calc_product_nutrients` | 养分 | 产品质量×记录的养分比例；保留产品交换 | 质量；成分 | 养分质量 | `mass-balance-identity` |
+| `calc_irrigation` | 灌溉 | 水表差值或流量×时间 | 水表/流量；时间 | m3 | `mass-balance-identity` |
+| `calc_energy` | 能源 | 载体数量×记录的换算因子 | 载体及因子 | 各载体 MJ | `mass-balance-identity` |
+| `calc_direct_n2o` | 田间 N2O | 适用氮×选定 EF1；仅在将 N2O-N 转为 N2O 时使用 44/28 | 氮；EF1 | kg N2O-N 及可选 N2O | `ipcc-2019-managed-soils` |
+| `calc_mass_reconciliation` | 各节点 | 投入=产品+废物+库存变化+记录的土壤/水/水分差异 | 所有关联状态 | 残差 | `mass-balance-identity` |
+| `calc_shared_run` | 共享设备 | 按吞吐量或运行时间仅分配一次 | 共享投入；驱动量 | 归属投入 | `mass-balance-identity` |
+| `calc_downgrade_allocation` | 降级品 | 细分后采用声明的分配并报告敏感性 | 质量与价值 | 分配负荷 | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_nutrient_products`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 数据质量要求
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | 参考产品 | 保留已核实 UUID 及限定信息。 | 元数据与流备注 |
+| `dq_temporal` | 周期 | 覆盖种植至关联农场门口批次。 | 日期日志 |
+| `dq_completeness` | 清单 | 核对库存、施用、全部产品、残余物及损失。 | 台账 |
+| `dq_seed` | 种姜 | 区分外购与自留种姜及上游覆盖。 | 来源与种植记录 |
+| `dq_nutrients` | 养分 | 保留实际产品及成分，不得重复交换。 | 标签、分析、发票 |
+| `dq_routes` | 替代路线 | 逐批记录实际路线；混合路线须有加权原始数据。 | 路线字段 |
+| `dq_instruments` | 测量 | 校准仪器或记录方法与不确定性。 | 证书/方法 |
+| `dq_emissions` | 排放 | 声明因子层级、气候、氮基准、来源及换算。 | 工作簿与引用 |
+| `dq_rejects` | 拒收 | 每项拒收物有一个返工/降级/回收/处理/处置关联及最终状态。 | 路线与去向记录 |
+| `dq_ranges` | QA | 调查超范围值；范围不替代记录，推理范围为暂定。 | 差异说明 |
+
+## 9. 校验规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `validate_reference` | 参考流 | 要求恰好 1 kg 合格鲜姜并具有指定身份及限定信息。 | `mass-balance-identity` |
+| `validate_raw_state` | 范围 | 合格产出若为去皮、制干、干燥、切片、粉碎、保藏或提取产品则失败。 | `codex-cxs-218-1999`; `fao-ginger-postharvest-compendium` |
+| `validate_parent_delta` | 路线 | 要求田间父活动，并标识灌溉、起挖及清洗替代路线改变的清单类别。 | `aicrps-ginger-package`; `icar-ccari-ginger` |
+| `validate_route_exclusion` | 替代路线 | 每批次要求一个实际路线，防止互斥路线负荷重复计量。 | `mass-balance-identity` |
+| `validate_nutrient_card` | 田间 | 每种实际肥料或改良剂须分别建立产品投入卡，保留实测产品质量和组成；拒绝笼统的养分供应交换。 | `mass-balance-identity` |
+| `validate_process_links` | 图 | 要求周期、收获批次、整理批次和分级批次关联及一致交接。 | `mass-balance-identity` |
+| `validate_batch_attribution` | 运行 | 将投入、产出、清洗及换批索引至运行/期间，并防止共享负荷重复计量。 | `mass-balance-identity` |
+| `validate_washing` | 整理 | 清洗批次要求水、整理后质量及废水；未清洗批次要求清洗投入为零并声明干式处理。 | `icar-ccari-ginger`; `mass-balance-identity` |
+| `validate_grades` | 分级 | 要求合格状态及降级或拒收状态，并为每一状态记录交接。 | `codex-cxs-218-1999` |
+| `validate_rework` | 返工 | 每一返回均标识产生与接收节点；合格品排除未解决拒收物。 | `mass-balance-identity` |
+| `validate_mass_balance` | 各节点 | 解释包括土壤、表面水、水分及损失在内的残差。 | `mass-balance-identity` |
+| `validate_ranges` | 带范围的流卡 | 已提供的数量范围须核对上下限、基准及中英文本与结构化输出的一致性；重要流缺少范围须作为候选证据缺口披露。调查异常值但不替代实测值。 | `mass-balance-identity` |
+
+## 10. 发布数据集画像
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | 农场门口合格鲜姜的前景生产数据集 |
+| downstream_use | 需要鲜生姜的系统所用二手或背景数据集 |
+| allowed_use | 地理、品种、周期、路线、技术、清洗状态、等级及交接兼容 |
+| excluded_use | 种姜；干姜、制干姜、姜粉、保藏姜或提取物；农场后储存、包装或运输 |
+| required_metadata | UUID、地理、品种、面积、日期、种姜来源、路线、产量、实际养分与植保产品、水、能源、等级、拒收物及数据年份 |
+| required_quality_disclosure | 原始数据比例、估算、异常、仪器质量、上游缺口、排放方法、分配及残差 |
+| update_trigger | 品种、地理、产量、种姜、养分、灌溉、机械化、清洗、分级、拒收路线、排放方法或证据发生实质变化 |
+
+## 11. 数据源
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `aicrps-ginger-package` | extension_guidance | AICRPS, *Package of Practices – Ginger*, https://aicrps.res.in/Extension%20Pamphlets/Ginger/English/Package%20of%20practices%20Ginger.pdf | 种姜、养分、覆盖、灌溉、收获、产量及路线 |
+| `icar-ccari-ginger` | official_guidance | ICAR-CCARI, *Crop: Ginger*, https://ccari.res.in/dss/ginger.html | 种姜、生产、养分、清洗、收获期及鲜产量 |
+| `csir-traditional-ginger-2009` | literature | Rahman et al. (2009), *Traditional practices of ginger cultivation in Northeast India*, http://nopr.niscpr.res.in/handle/123456789/2969 | 种姜和鲜姜产量范围；路线多样性 |
+| `codex-cxs-218-1999` | standard | Codex CXS 218-1999, *Standard for Ginger*, https://workspace.fao.org/sites/codex/Standards/CXS%20218-1999/CXS_218e.pdf | 鲜品身份、状态、清洁、清洗与等级 |
+| `fao-ginger-postharvest-compendium` | handbook | FAO INPhO, *Ginger: Post-harvest Operations*, https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_Ginger.pdf | 区分鲜品处理与下游加工 |
+| `ipcc-2019-managed-soils` | method_factor | IPCC 2019 Refinement, Vol. 4 Ch. 11 Table 11.1, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 直接 N2O 方法及 EF1 不确定范围 |
+| `mass-balance-identity` | method_factor | 适用于关联前景记录的质量守恒恒等式 | 交接、核算、参考输出及路线 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

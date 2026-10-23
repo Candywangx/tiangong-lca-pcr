@@ -1,8 +1,534 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.cabbages
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Cabbages
+
+## 1. Scope and Applicability
+
+This PCR covers open-field or comparable soil-based production of fresh headed cabbages, from the declared planting material at the farm boundary through managed cultivation, harvest, trimming, field sorting, and hand-off of saleable fresh cabbage at the farm gate. Purchased planting material, fertilizers, crop-protection products, water, and energy enter as upstream product inputs. Nursery production before purchased planting material, protected cultivation with materially different infrastructure or climate control, off-farm packing, cold storage, distribution, processing, retail, cooking, and end-of-life are outside the default boundary unless explicitly added as separate processes.
+
+The category includes headed cabbages represented by CPC 3.0 class 01212. It does not cover cauliflower, broccoli, kohlrabi, leafy greens classified outside 01212, fermented or otherwise processed cabbage products, or seed production.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.cabbages |
+| classification_refs | CPC 3.0: 01212 Cabbages; mapping relation: exact |
+| covered_products | Fresh headed cabbages harvested for food markets, including green, red, white, and savoy market forms when classified as CPC 01212 |
+| excluded_products | Cauliflower; broccoli; kohlrabi; non-headed leafy vegetables; cabbage seed; fermented, preserved, frozen, dried, or otherwise processed cabbage |
+| representative_product | Fresh marketable cabbage head |
+| production_route | Soil-based managed cultivation followed by harvest, trimming, and field sorting |
+| market_state | Fresh, intact or minimally trimmed cabbage at farm gate; packaging and cooling state declared separately |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Fresh marketable cabbage at the declared farm-gate hand-off |
+| How much | 1 kg |
+| How well | Saleable heads meeting the producer's declared variety, maturity, trimming, defect, and packaging specification |
+| How long or cycle | One declared cabbage crop cycle, normalized to delivered saleable mass |
+| reference_flow_link | fresh_cabbage_output |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Cabbage `aed02ce8-12e2-4410-be27-38b4abc01fc4` |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | cabbage type or variety; production geography; cultivation system; harvest maturity; trimming state; moisture basis; packaging state; farm-gate hand-off |
+
+When constructing a foreground data package, the items listed in `Required qualifiers` must be declared in dataset metadata, process notes, reference flow comment, product description, or an equivalent data package field. Missing required qualifiers make the reference flow definition incomplete for that data package.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | Fresh cabbage reference product and all cabbage product or residue mass rows | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report wet mass at the declared farm-gate state; disclose any dry-matter conversion and measured moisture basis. |
+| `nutrient_mass_basis` | Nitrogen, phosphorus, and potassium nutrient inputs | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg nutrient | Convert formulated fertilizer quantities to kg N, kg P2O5, and kg K2O using documented composition; retain formulated-product quantities separately. |
+| `water_volume_basis` | Irrigation water supplied to cultivation | Volume | m3 | Record water delivered to the field and distinguish supplied water from natural precipitation. |
+| `land_occupation_basis` | Occupied agricultural land | Area-time | m2*a | Calculate occupied area multiplied by occupation duration and normalize it to the declared crop cycle. |
+| `nitrous_oxide_basis` | Managed-soil nitrous oxide emission | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg N2O | Final elementary exchange is kg molecular N2O. Retain any model result in kg N2O-N as a separate intermediate and multiply by 44/28 exactly once before final normalization; already molecular mass is not reconverted. Use the same direct/indirect pathway ledger as cp_soil_emissions; downstream preference cannot change the substance basis of this card. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Purchased or internally supplied cabbage seed or transplant ready for establishment in the declared field |
+| starting_condition_role | Biological planting input entering managed cultivation |
+| product_classification_scope | Fresh headed cabbage products classified under CPC 3.0 01212 |
+| recursive_input_rule | Any cabbage product re-entering the system as planting or market input is recorded at its actual hand-off state and linked to a separate upstream dataset rather than recursively reproducing this PCR boundary. |
+| upstream_dataset_requirement | Use upstream datasets for planting material, nutrient products, crop-protection products, supplied water, energy carriers, packaging, and any contracted service crossing the boundary. |
+| disclosure | Declare geography, season, field area, crop duration, cabbage type or variety, planting route, irrigation regime, nutrient regime, harvest maturity, trimming and sorting practice, residue destinations, and farm-gate hand-off. |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_farm_gate` | Default cabbage product system | Include establishment, field management, irrigation, nutrient and crop-protection application, direct managed-soil emissions, harvest, trimming, field sorting, and internal movement up to the declared farm-gate hand-off. | `fao-postharvest-loss-manual`; `ipcc-2019-managed-soils` |
+| `boundary_upstream_inputs` | Purchased inputs and utilities | Represent production of purchased planting material, fertilizers, crop-protection products, energy, and supplied water through linked upstream datasets; do not duplicate their production inside cultivation. | `codex-fresh-produce-hygiene` |
+| `boundary_post_farm_gate` | Cooling, packing, storage, and distribution after farm-gate hand-off | Exclude by default and add as explicit downstream processes when the declared product hand-off includes them. | `fao-horticultural-marketing` |
+| `boundary_residue_fate` | Outer leaves, rejected heads, and other crop residues | Record each physically distinct residue and its destination; include field-return effects in cultivation and link off-site treatment or use to a separate downstream dataset. | `ipcc-2019-managed-soils`; `fao-postharvest-loss-manual` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `field_cultivation` | Managed cabbage field cultivation | required | Always included | Establish and manage the cabbage crop to harvestable maturity | One declared field and crop cycle |
+| `harvest_field_preparation` | Harvest, trimming, and field sorting | required | Always included | Remove mature heads, trim and sort them, and establish the farm-gate product state | kg fresh cabbage entering harvest and field preparation |
+
+### Process: Managed cabbage field cultivation (`field_cultivation`)
+
+#### Inputs
+
+##### Product flows
+
+###### Urea fertilizer (`field_cultivation_agricultural_nutrient_inputs_urea`)
+
+**Collection scope and applicability for field_cultivation_agricultural_nutrient_inputs.** The following concrete identities have separate cards and apply only when use or generation is evidenced inside the original process scope. They are not mandatory inputs or a default recipe. Document non-use; missing records are not zero. Add a separate concrete card for any other actual material instead of substituting one of these names or UUIDs. Preserve attribution and boundaries and avoid double counting components included in outsourced services.
+
+Collect each fertilizer product separately. Preserve each actual product identity, quantity, formulation, nutrient composition, application event, and allocation; do not count a compound product more than once.
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_cultivation_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cultivation_inputs`
+- Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Ammonium sulfate fertilizer (`field_cultivation_agricultural_nutrient_inputs_ammonium_sulfate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the product UUID does not establish actual use or upstream-provider compatibility. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Ammonium sulfate `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_cultivation_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cultivation_inputs`
+- Sources: `fao-fertilizer-identities`
+
+Use this product identity only when the actual formulation and grade are compatible. Retain supplier composition and mass records; do not substitute nutrient mass, dilute solution mass or service activity for the product mass. The UUID alone supplies neither a dose nor an emission factor.
+
+###### Triple superphosphate fertilizer (`field_cultivation_agricultural_nutrient_inputs_triple_superphosphate`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Triple superphosphate fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_cultivation_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cultivation_inputs`
+- Sources: `fao-fertilizer-identities`
+
+###### Potassium chloride fertilizer (`field_cultivation_agricultural_nutrient_inputs_potassium_chloride`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Potassium chloride fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_cultivation_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cultivation_inputs`
+- Sources: `fao-fertilizer-identities`
+
+###### Cattle manure applied as fertilizer (`field_cultivation_agricultural_nutrient_inputs_cattle_manure`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Cattle manure applied as fertilizer
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_cultivation_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cultivation_inputs`
+- Sources: `fao-organic-nutrients`
+
+###### Composted plant residues applied to soil (`field_cultivation_agricultural_nutrient_inputs_plant_compost`)
+
+Confirm identity, grade, state and unit from equipment, supplier and contemporaneous measurements; the UUID remains unverified. Count physical product mass once and retain moisture, N/P/K composition and application events; nutrient quantities are calculated attributes, not additional purchases of the same product. Give unlisted compound and organic fertilizers separate cards identified by formulation or feedstock.
+
+- Selected flow: Composted plant residues applied to soil
+- Flow property / unit: Mass / kg
+- Amount rule: Collect raw quantities for this identity under `cp_cultivation_inputs` and calculate the exchange per declared reference flow using the original attribution rules.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cultivation_inputs`
+- Sources: `fao-organic-nutrients`
+
+###### Irrigation water supplied (`irrigation_water_input`)
+
+Supplied irrigation water is recorded at the field delivery point; natural precipitation is not recorded as this product input.
+
+- Selected flow: Irrigation water supply
+- Flow property / unit: Volume / m3
+- Amount rule: Record metered or calculated water delivered to the field, net of documented recirculation returned within the same system.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cultivation_inputs`
+- Sources: `fao-irrigation-handbook`
+- Range: Provisional irrigation-volume screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 15000
+  - Unit: m3/ha
+  - Basis: broad screening interval per planted hectare and crop cycle; zero is permitted for rainfed production
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Diesel fuel (`field_operation_energy_diesel`)
+
+Actual diesel tractor operations for tillage, planting, nutrient application, crop protection and field movement. Irrigation pumping is separately assessed from its actual prime mover and must not be silently assigned to diesel.
+
+Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect only this carrier quantity attributable to this node under `cp_field_energy`. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_field_energy`
+- Sources: `route-energy-fao`
+
+Apply `field_operation_energy_identification` in Section 8. No numerical range or default is inherited from the former aggregate card.
+
+##### Waste flows
+
+##### Elementary flows
+
+###### Agricultural land occupation (`agricultural_land_occupation`)
+
+The occupied field area crosses the environmental resource boundary for the duration of the cabbage crop cycle.
+
+- Selected flow: Agricultural land occupation
+- Flow property / unit: Area-time / m2*a
+- Amount rule: Calculate occupied area multiplied by the fraction of a year between field establishment and harvest completion.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_crop_area_cycle`
+- Sources:
+
+#### Outputs
+
+##### Product flows
+
+###### Mature cabbage crop in the field (`mature_cabbage_crop_handoff`)
+
+This internal product hand-off represents physically mature cabbage heads before cutting, trimming, and field sorting. Its mass is reconciled with saleable heads and physically distinct residue streams.
+
+- Selected flow: Mature cabbage crop in field before harvest
+- Flow property / unit: Mass / kg wet crop
+- Amount rule: Determine harvestable standing crop mass from harvest records and mass reconciliation.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_crop_output`
+- Sources: `fao-horticultural-marketing`
+- Range: Provisional mature-crop yield screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 5000
+  - Upper: 150000
+  - Unit: kg wet crop/ha
+  - Basis: broad screening interval before harvest trimming and sorting
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+###### Nitrous oxide from managed soil (`managed_soil_n2o`)
+
+Direct and applicable indirect managed-soil nitrous oxide is calculated from collected nitrogen inputs, crop-residue nitrogen, and the selected IPCC or justified higher-tier method.
+
+- Selected flow: Nitrous oxide emission to ambient air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Calculate direct and applicable indirect N2O-N from collected nitrogen pathways without double counting residue nitrogen.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_soil_emissions`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Provisional managed-soil N2O-N screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 25
+  - Unit: kg N2O-N/ha
+  - Basis: broad first-pass interval per crop cycle; replace with calculated method output
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+The final exchange is kg N2O. Keep species-specific elemental-N activity and any N-based factor/range in a separate calculation ledger. Convert that species-specific N mass by 44/28 exactly once before normalization; never reconvert compound mass or apply an N-based range directly to compound mass. A total nitrogen-loss pool is not this species without a supported split. Retain the actual receiving compartment and method boundaries; unknown identity or activity is not zero.
+
+### Process: Harvest, trimming, and field sorting (`harvest_field_preparation`)
+
+#### Inputs
+
+##### Product flows
+
+###### Mature cabbage crop received from field cultivation (`mature_cabbage_crop_input`)
+
+The mature standing crop hand-off enters harvest and field preparation with the same physical state and mass basis used by the cultivation output.
+
+- Selected flow: Mature cabbage crop in field before harvest
+- Flow property / unit: Mass / kg wet crop
+- Amount rule: Equal the corresponding `mature_cabbage_crop_handoff` quantity for the same field and crop cycle.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_crop_output`
+- Sources: `fao-horticultural-marketing`
+- Range: Linked mature-crop hand-off QA guardrail
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 5000
+  - Upper: 150000
+  - Unit: kg wet crop/ha
+  - Basis: same mature-crop mass interval as the corresponding cultivation output before harvest trimming and sorting
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Fresh marketable cabbage (`fresh_cabbage_output`)
+
+Saleable trimmed cabbage heads leave the foreground system at the declared farm-gate hand-off. The flow identity is fixed, while variety, maturity, trimming, moisture, packaging, and location qualifiers remain foreground facts.
+
+- Selected flow: Cabbage `aed02ce8-12e2-4410-be27-38b4abc01fc4`
+- Flow property / unit: Mass / kg
+Raw output measurement and reconciliation: Weigh or reconcile saleable cabbage mass at the declared farm-gate hand-off.
+
+- Amount rule: 1 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle and per 1 kg reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_harvest_outputs`
+- Sources: `fao-horticultural-marketing`
+- Range: Provisional saleable-yield screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 5000
+  - Upper: 120000
+  - Unit: kg fresh cabbage/ha
+  - Basis: broad screening interval after trimming and field sorting
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+###### Outer cabbage leaves returned to field (`outer_leaves_field_return`)
+
+Outer leaves removed during harvest and trimming are recorded separately when they remain on or are returned to the field; they are not combined with rejected whole heads sent elsewhere.
+
+- Selected flow: Fresh outer cabbage leaves returned to field
+- Flow property / unit: Mass / kg wet residue
+- Amount rule: Weigh, estimate from sampled mass fractions, or reconcile wet outer-leaf mass returned to the field.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_harvest_outputs`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Provisional field-returned outer-leaf estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 80000
+  - Unit: kg wet leaves/ha
+  - Basis: broad screening interval for leaves removed and returned to the field
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Rejected cabbage heads sent off-site (`rejected_heads_offsite`)
+
+Whole or substantially intact heads rejected during field sorting are recorded separately by actual destination, because off-site animal feed, recovery, composting, treatment, and disposal are different hand-offs.
+
+- Selected flow: Rejected fresh cabbage heads sent off-site, destination specified
+- Flow property / unit: Mass / kg wet heads
+- Amount rule: Weigh or reconcile rejected-head mass and record each off-site destination separately in the foreground package.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per ha planted cabbage crop per crop cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_harvest_outputs`
+- Sources: `fao-postharvest-loss-manual`
+- Range: Provisional rejected-head screening estimate
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 50000
+  - Unit: kg wet heads/ha
+  - Basis: broad screening interval for rejected heads leaving the field system
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_subdivide_first` | Cultivation and harvest processes | Use process subdivision and mass reconciliation before allocation; do not allocate between an internal standing-crop hand-off and the same crop after harvest. | `fao-horticultural-marketing` |
+| `allocation_residue_classification` | Outer leaves and rejected heads | Classify field-returned leaves as residues and off-site rejected heads by actual destination; do not treat either as an intended co-product unless evidence shows a deliberate product function and market hand-off. | `ipcc-2019-managed-soils`; `fao-postharvest-loss-manual` |
+| `allocation_intended_coproduct` | Any additional revenue-bearing intended output | If subdivision cannot isolate an additional intended output, apply economic allocation using documented farm-gate revenues for the same reporting period and disclose prices, currency, period, and sensitivity. |  |
+
+Concrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Route-specific energy identification requirements
+
+Select energy exchanges from the actual product state, operation, equipment and supply records. The conditional cards below are not a mandatory or exhaustive fuel list. For each requirement, document applicability and the used carrier, supplier, service period, native quantity and allocation; add a separate physically specific card and verify its UUID for any actual input not yet represented. An unidentified input remains an explicit completeness gap, never a zero or a generic energy exchange. Evidence of manual work, ambient drying or a bypass can justify non-use only for the affected operation. Preserve every required operation even when no example card is supplied.
+
+Separate purchased supply from on-site conversion. Link self-generated electricity internally to the foreground generator and count its actual fuel and emissions there once; do not also charge a purchased-electricity supply for the same internal transfer. Likewise do not count supplier-side fuel again with purchased heat. Reconcile shared meters and contractor-included energy against existing cards, with one physical quantity assigned once. Retain source quantities, output throughput, shared-service allocation and excluded post-gate activities. For each carrier, apply period/output attribution once and scale to the declared reference quantity using matched accepted final output in the same product unit; do not normalize an already normalized amount again. Process-native intensities require a measured throughput link to that final output. These requirements do not set a consumption default or certify dataset completeness.
+
+| requirement_id | collection_protocol_id | Required operation and evidence |
+| --- | --- | --- |
+| `field_operation_energy_identification` | `cp_field_energy` | Actual diesel tractor operations for tillage, planting, nutrient application, crop protection and field movement. Irrigation pumping is separately assessed from its actual prime mover and must not be silently assigned to diesel. Raw activity or stage basis: per ha planted cabbage crop per crop cycle. (`route-energy-fao`) |
+
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_cultivation_inputs` | `field_cultivation` | planting material, nutrient products, irrigation water, crop-protection products | purchase, application, meter, and field-operation records | product identity; lot; quantity; composition; active ingredient; application date; treated area; delivered water | Reconcile invoices, application logs, composition labels, irrigation meters, and field logs; Raw aggregation and attribution: Sum by physical identity and convert with documented composition; retain zero-use declarations `crop_protection_inputs_specific_input`: Crop-protection inputs cross the boundary as the actual herbicide, insecticide, fungicide, or other active ingredients applied. Foreground records must retain each physical identity and formulated product separately. Calculate each active ingredient from formulated-product quantity and composition; do not aggregate unlike substances into one final exchange. This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `codex-fresh-produce-hygiene` | item; kg product; kg nutrient; kg active ingredient; m3 | Each delivery and application | Complete crop cycle | Each field and crop cycle | per declared reference flow | invoices; labels; calibration records; application logs; meter readings |
+| `cp_field_energy` | `field_cultivation` | field-operation energy | fuel, electricity, and equipment-hour records | carrier identity; quantity; unit; equipment; operation; meter or invoice period | Reconcile carrier purchases and meters to equipment and field-operation logs; Raw aggregation and attribution: Convert each carrier to energy with documented factors and prevent double counting purchased energy and equipment estimates Route-specific requirements: `field_operation_energy_identification`: Actual diesel tractor operations for tillage, planting, nutrient application, crop protection and field movement. Irrigation pumping is separately assessed from its actual prime mover and must not be silently assigned to diesel. Raw activity or stage basis: per ha planted cabbage crop per crop cycle. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | L; kg; kWh; MJ; h | Each operation or billing period | Complete crop cycle | Each field and equipment set | per declared reference flow | invoices; meters; equipment logs; conversion-factor source |
+| `cp_crop_area_cycle` | `field_cultivation` | agricultural land occupation | cadastral, GIS, and crop-calendar records | planted area; establishment date; harvest-completion date; shared-area fraction | Measure or verify field area and crop occupation dates; Raw aggregation and attribution: Area multiplied by occupation duration; allocate shared field area by documented occupied fraction | ha; date | Once per field and crop cycle | Establishment through harvest completion | Each field | per declared reference flow | GIS or cadastral record; crop calendar |
+| `cp_crop_output` | `field_cultivation` | mature cabbage crop hand-off | harvest and sample-mass records | harvested area; head count; sampled head mass; gross harvested mass; field identifier | Weigh harvest lots or calculate from stratified head-count and mass samples; Raw aggregation and attribution: Sum gross mature crop and reconcile with saleable and residue outputs | kg wet crop | Each harvest event | Full harvest window | Each field and crop cycle | per declared reference flow | calibrated scale records; sampling plan; harvest log |
+| `cp_soil_emissions` | `field_cultivation` | managed-soil nitrous oxide | nutrient, residue, soil-amendment, volatilization, leaching, and field-management records | N inputs by pathway; residue dry matter and N content; removal fraction; emission factors; conversion basis | Apply the declared IPCC tier or justified higher-tier model to collected field records; Raw aggregation and attribution: Calculate pathway emissions separately, sum without double counting, and normalize to crop output | kg N; kg dry matter; fraction; kg N2O-N ; kg molecular N2O after one conversion| Each application and annual or crop-cycle calculation | Complete crop cycle with declared annualization | Each field and emission stratum | per declared reference flow | source records; factor version; calculation workbook; independent formula check |
+| `cp_harvest_outputs` | `harvest_field_preparation` | saleable heads, outer leaves, rejected heads | scale, lot, grading, and destination records | incoming crop mass; saleable mass; leaf residue mass; rejected-head mass; destination; variety; maturity; trimming and packaging state | Weigh each output where practicable and use documented representative sampling for unweighed field residues; Raw aggregation and attribution: Sum by output state and destination; reconcile all outputs to incoming mature crop within the declared tolerance | kg wet mass | Each harvest or dispatch lot | Full harvest and field-dispatch window | Each field, lot, and destination | per declared reference flow | calibrated scale; sample sheets; grade records; dispatch records; mass-balance check |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_nutrient_mass` | Nutrient inputs | nutrient mass = formulated-product mass × declared nutrient mass fraction; retain N, P2O5, and K2O separately | product mass; composition | kg N; kg P2O5; kg K2O |  |
+| `calc_field_energy` | Field-operation energy | carrier energy = measured carrier quantity × documented lower-heating-value or electricity conversion; sum only after retaining carrier identities | carrier quantity; conversion factor | MJ by carrier and total MJ |  |
+| `calc_land_occupation` | Agricultural land occupation | occupied area-time = planted area × occupation days / 365.25 | planted area; establishment date; harvest-completion date | m2*a |  |
+| `calc_mature_crop` | Mature cabbage crop hand-off | gross mature crop = measured gross harvest or sampled mean head mass × harvested head count | gross mass or head-count sample records | kg wet mature crop | `fao-horticultural-marketing` |
+| `calc_harvest_mass_balance` | Harvest outputs | incoming mature crop = saleable cabbage + outer leaves + rejected heads + documented uncollected loss, within declared uncertainty | all harvest output masses; uncollected loss estimate | reconciled kg wet mass and closure ratio | `fao-postharvest-loss-manual` |
+| `calc_managed_soil_n2o` | Managed-soil nitrous oxide | Apply the declared IPCC direct and applicable indirect N2O equations to collected N inputs and residue pathways; prevent double counting of removed, burned, or field-returned residues. | N inputs; residue N; removal and burning fractions; leaching and volatilization parameters; selected factors | kg N2O-N per crop cycle | `ipcc-2019-managed-soils` |
+| `cabbage_planting_material_identity_and_fate` | `field_cultivation` | For the original cabbage_planting_material collection role at this operation, identify the actual physical form, species/material, composition, state and supply/treatment boundary before creating exchanges. Each seed lot, transplant, crown, cutting, larval stage, formulation, coating, preservative or separated residue actually used/generated requires its own concrete card where relevant to this role; these examples are alternatives, not a required recipe. Retain existing collection records and route-specific source evidence. Count-based planting records require measured or supplier-supported mass-per-unit when matched to a mass-based provider; retain count and mass as linked attributes rather than two purchases. Do not merge separate husk/shell or separate agents. A real mixed stream requires composition and recipient evidence and is counted once. Before completeness, record every applicable amount and native unit, link a compatible verified UUID or explicitly unresolved identity, preserve stock/return attribution, and normalize the attributable raw quantity once to the accepted reference output. Missing records are not zero; aggregate ranges are not individual-input defaults. | `cp_cultivation_inputs` | Identity-specific exchanges and reconciled activity records |  |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_soil_emissions`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | All inputs and outputs | Retain physical product or substance identity, supplier or source, state, and destination sufficient to resolve every final exchange to a concrete UUID. | invoices; labels; specifications; dispatch and destination records |
+| `dq_temporal` | Cultivation and harvest inventory | Cover one complete representative crop cycle and disclose multi-season aggregation, crop failure, and partial harvests. | dated crop calendar; field and harvest logs |
+| `dq_mass_balance` | Mature crop and harvest outputs | Reconcile saleable heads, outer leaves, rejected heads, and documented field loss to the mature crop input; investigate material closure gaps. | calibrated scale records; sampling records; reconciliation worksheet |
+| `dq_nutrient_emissions` | Nutrient inputs and managed-soil emissions | Preserve nutrient composition, residue fate, calculation tier, factor version, and pathway separation so emissions are reproducible. | product labels; application logs; residue records; calculation workbook |
+| `dq_water_energy` | Irrigation and field energy | Record meter coverage, estimation periods, allocation to the cabbage field, conversion factors, and any shared equipment or utility use. | meter records; invoices; equipment logs; allocation worksheet |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validation_reference_identity` | Reference flow | Require the fixed cabbage UUID, mass property, mass unit group, kg reference unit, and all required foreground qualifiers. |  |
+| `validation_process_completeness` | Process map and inventory | Require both declared processes and require every collected or calculated flow row to reference an existing collection protocol. |  |
+| `validation_binding_specificity` | All flow bindings | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |
+| `validation_mass_balance` | Harvest, trimming, and sorting | Require reconciliation of incoming mature crop with saleable cabbage, outer leaves, rejected heads, and documented uncollected loss within a declared tolerance. | `fao-postharvest-loss-manual` |
+| `validation_residue_destination` | Crop residues | Require separate identities and destinations for field-returned outer leaves and off-site rejected heads and prevent double counting in residue-N calculations. | `ipcc-2019-managed-soils` |
+| `validation_n2o_reproducibility` | Managed-soil N2O | Require declared method tier, factor source and version, all nitrogen pathways, conversion basis, and reproducible calculation. | `ipcc-2019-managed-soils` |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Foreground farm-gate cabbage production dataset |
+| downstream_use | `secondary_dataset`; `background_dataset` after review and identity resolution |
+| allowed_use | Product carbon footprints, comparative LCA, supply-chain modelling, and agricultural inventory studies consistent with the declared cabbage type, geography, production system, and farm-gate boundary |
+| excluded_use | Protected or soilless cultivation without added route processes; processed cabbage products; retail or consumption modelling; geographies or systems materially inconsistent with the declared dataset |
+| required_metadata | cabbage type or variety; geography; field area; season and crop duration; planting material; irrigation; nutrient and crop-protection regimes; harvest maturity; trimming, sorting and packaging state; residue destinations; allocation method; reference-flow qualifiers |
+| required_quality_disclosure | foreground coverage; measured versus estimated shares; mass-balance closure; meter and scale quality; source and factor versionss; reasoned-estimate replacements; uncertainty and representativeness |
+| update_trigger | Change in cultivation system, geography, input regime, yield or rejection pattern, residue destination, harvest or farm-gate state, allocation method, platform identity, or material source evidence |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `fao-postharvest-loss-manual` | `official_guidance` | FAO, Prevention of post-harvest food losses: fruits, vegetables and root crops, https://www.fao.org/4/T0073E/T0073E01.htm | Post-harvest quality effects, sorting losses, residue separation, and mass-balance requirements |
+| `fao-horticultural-marketing` | `official_guidance` | FAO, Horticultural marketing: a resource and training manual for extension officers, https://www.fao.org/4/a0185e/a0185e0c.htm | Cabbage harvest maturity, cutting and trimming, handling, sorting, and farm-gate product state |
+| `fao-irrigation-handbook` | `handbook` | FAO, Technical handbook on pressurized irrigation techniques, https://www.fao.org/4/a1336e/a1336e.pdf | Cabbage crop-stage irrigation method context and separation of effective rainfall from irrigation supply |
+| `ipcc-2019-managed-soils` | `method_factor` | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil N2O calculation and crop-residue nitrogen treatment |
+| `codex-fresh-produce-hygiene` | `official_guidance` | Codex/FAO, Code of Hygienic Practice for the Primary Production, Harvesting and Packing of Fresh Fruits and Vegetables, https://www.fao.org/4/x8735e/x8735e0n.htm | Input, application, harvest, lot, water-quality, and packing record requirements |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | conditional concrete identities and method context; does not establish site use or quantities |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | conditional concrete identities and method context; does not establish site use or quantities |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted. |

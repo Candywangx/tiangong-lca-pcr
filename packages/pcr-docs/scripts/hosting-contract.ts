@@ -1,6 +1,8 @@
 import {isUnknownRecord,unknownField} from "../../pcr-core/src/types.ts";
 import assert from "node:assert/strict";
 import { gettingStartedGuides } from "../lib/getting-started.ts";
+import { INLINE_DOWNLOAD_NAMES, INLINE_MANIFEST_LIMIT, decodeInlineDownloadUrl } from "./raw-download.ts";
+import { createHash } from "node:crypto";
 /** EdgeOne documents one URL-path wildcard (including nested paths), with optional suffix. */
 export function matchesPath(pattern: string, pathname: string) {
   if (
@@ -30,7 +32,7 @@ export function headersFor(config: unknown, pathname: string, { firstMatch = fal
   }
   return result;
 }
-export function verifyHostingContract(config: unknown, downloads: readonly {url:string}[]) {
+export function verifyHostingContract(config: unknown, downloads: readonly {url:string;name?:string;bytes?:number;sha256?:string}[]) {
   assert.equal(unknownField(config,"outputDirectory"), "packages/pcr-docs/out");
   assert.equal(unknownField(config,"installCommand"), "node --version");
   assert.equal(unknownField(config,"buildCommand"), "node builder/scripts/product-web-materialize.ts");
@@ -51,6 +53,14 @@ export function verifyHostingContract(config: unknown, downloads: readonly {url:
     assert.equal(guideHeaders["cache-control"], "public, max-age=0, must-revalidate");
     }
     for (const raw of downloads) {
+      const inline = decodeInlineDownloadUrl(raw.url);
+      if (inline) {
+        assert.ok(INLINE_DOWNLOAD_NAMES.some(name => name === raw.name), 'Inline download filename');
+        if (raw.name === 'manifest.yaml') assert.ok(inline.length <= INLINE_MANIFEST_LIMIT, 'Inline manifest length');
+        assert.equal(raw.bytes, inline.length, 'Inline download length');
+        assert.equal(raw.sha256, 'sha256:' + createHash('sha256').update(inline).digest('hex'), 'Inline download hash');
+        continue;
+      }
       const headers = headersFor(config, raw.url, { firstMatch });
       assert.equal(
         headers["x-robots-tag"],
@@ -68,6 +78,7 @@ export function verifyHostingContract(config: unknown, downloads: readonly {url:
       "search-engine.mjs",
       "search-terms.mjs",
       "search-wire.mjs",
+      "search-pack.mjs",
     ]) {
       const headers = headersFor(config, "/generated/" + file, { firstMatch });
       assert.match(

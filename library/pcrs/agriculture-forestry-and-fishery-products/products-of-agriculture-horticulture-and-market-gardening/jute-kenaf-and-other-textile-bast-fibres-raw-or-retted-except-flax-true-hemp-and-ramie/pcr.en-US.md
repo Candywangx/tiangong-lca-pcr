@@ -1,8 +1,984 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.jute-kenaf-and-other-textile-bast-fibres-raw-or-retted-except-flax-true-hemp-and-ramie
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Jute, kenaf, and other textile bast fibres, raw or retted, except flax, true hemp and ramie
+
+## 1. Scope and Applicability
+
+This PCR covers managed cultivation, harvest and producer-gate preparation of jute, kenaf and other eligible textile bast fibres delivered raw or retted. It includes declared whole-stem, ribbon-retting, water-retting, microbial-assisted and mechanical extraction routes when the accepted output remains raw or retted bast fibre.
+
+Flax, true hemp, ramie, cotton, coir, sisal, abaca, yarn, woven goods, pulp, chemically modified fibre and finished textile products are excluded. Each dataset shall declare species, plant part, raw or retted state, extraction route, moisture basis, grade and producer hand-off.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.jute-kenaf-and-other-textile-bast-fibres-raw-or-retted-except-flax-true-hemp-and-ramie |
+| classification_refs | CPC 3.0 `01922`, path `0 > 01 > 019 > 0192 > 01922`; mapping relation: exact |
+| covered_products | raw or retted jute, kenaf and other eligible textile bast fibres at producer gate |
+| excluded_products | flax; true hemp; ramie; cotton; coir; sisal; abaca; yarn; fabric; pulp; chemically modified or finished fibre |
+| representative_product | accepted raw or retted jute or kenaf bast fibre |
+| production_route | managed crop production and harvest followed by declared raw mechanical extraction or retting, extraction, washing, drying and grading |
+| market_state | dry or otherwise stabilized raw or retted fibre, graded and ready for producer hand-off |
+
+The parent route is managed biological production. Whole-stem retting, ribbon retting, microbial-assisted retting and mechanical extraction are alternative production and technology routes. They may coexist only as separately measured strata; route-specific water, energy, treatment aids, yield, wastewater, residues and grades shall not be averaged without production weighting.
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | accepted raw or retted jute, kenaf or other eligible textile bast fibre at producer hand-off |
+| How much | 1,000 kg mass at declared moisture basis |
+| How well | declared species, raw or retted state, extraction route, moisture content, grade and foreign-matter basis; rejected and downgraded fibre excluded |
+| How long or cycle | one declared crop cycle and the identified retting, extraction and conditioning batches attributed to the delivered lot |
+| reference_flow_link | reference_fibre |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | Jute, kenaf, and other textile bast fibres, raw or retted `bcf2ea60-81e8-43cb-879f-ac473e43f521` |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | species; raw or retted; whole-stem, ribbon or mechanical extraction route; producer gate; moisture content; grade; foreign matter; geography and production period |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | accepted reference fibre | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Measure accepted fibre at hand-off and report moisture content; do not substitute stem mass or oven-dry mass without an explicit conversion. |
+| `moisture_conversion` | all fibre and biomass transfers | mass fraction | kg water/kg wet material | Retain sampled moisture basis and use lot-specific wet-to-declared-basis conversion. |
+| `batch_linkage` | retting, extraction, washing, drying and grading | batch and lot identity | batch, lot | Link inputs, outputs, cleaning, rework and rejects to the producing batch or period. |
+| `water_balance` | retting and washing | volume | m3 | Distinguish gross withdrawal, recirculation, evaporation and discharge. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | prepared agricultural field before sowing the declared bast-fibre crop |
+| starting_condition_role | foreground start for managed cultivation; previous crop and soil condition are disclosed context |
+| product_classification_scope | raw or retted eligible textile bast fibres under CPC 3.0 `01922` |
+| recursive_input_rule | purchased fibre of the same category shall be traced as a separate upstream product and excluded from foreground crop yield |
+| upstream_dataset_requirement | use supplier-specific or representative datasets for seed, nutrient and crop-protection products, water, energy carriers, treatment aids and transport selected from foreground records |
+| disclosure | species, cultivar, location, crop cycle, yield, harvest state, extraction/retting route, batch mode, water source, drying route, moisture basis, grades, residues, wastewater and hand-off; single-period accounting with no storage |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_producer_gate` | all routes | Include cultivation, harvest and the declared extraction, retting, washing, drying and grading needed to reach the raw or retted producer-gate state; exclude spinning and later manufacture. Use single-period accounting with no storage. | `fao-ijo-jute-retting-1998` |
+| `boundary_route_separation` | alternative routes | Keep whole-stem, ribbon, microbial-assisted and mechanical routes as separate measured strata until production-weighted aggregation. | `fao-ijo-jute-retting-1998` |
+| `boundary_batch_events` | treatment and conditioning | Attribute inputs, outputs, cleaning, rework and rejects to the responsible batch or production period and prevent shared burdens from being counted twice. | `fao-ijo-jute-retting-1998` |
+| `boundary_destination` | residues and rejects | Record each output hand-off as intended product, downgraded product, recovered material, returned biomass, waste or emission according to actual destination. | `mass-balance-identity` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `crop_production` | Managed bast-fibre crop production and harvest | required | all managed-crop routes | managed biological production and independent harvest node | one crop hectare-cycle and harvested stem mass |
+| `retting_extraction` | Optional retting and fibre extraction | conditional | reference product is retted or mechanically extracted fibre | batch mode material treatment and primary conditioning node with an alternative technology route delta | one declared retting or extraction batch |
+| `washing_drying_grading` | Washing, drying, stabilization and grading | required | extracted fibre is delivered as the reference product | preservation, stabilization, grading and hand-off node | 1,000 kg accepted reference fibre |
+
+### Process: Managed bast-fibre crop production and harvest (`crop_production`)
+
+#### Inputs
+
+##### Product flows
+
+###### Planting seed for the declared bast crop (`planting_seed`)
+
+Record species, cultivar, germination basis and seed actually sown.
+
+- Selected flow: Jute seed, unspecified `d33e2a9b-1868-4489-a4f9-24d6d8cb9052`
+- Flow property / unit: Mass / kg
+- Amount rule: Record actual physical seed-product mass used, net of documented unused returns, with its supplier/lot, treatment, purity and germination/viability attributes. Pure-live-seed equivalent = physical seed mass × purity fraction × viability fraction is a separate quality/rate attribute, never the purchased-product exchange mass or another purchase. If only pure-live-seed rate is known, recover physical quantity using evidenced nonzero lot fractions; otherwise leave physical seed use incomplete. Retain the original stock, period and reference-output attribution.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+- Sources: `fao-ijo-jute-retting-1998`
+- Range: Seed-rate QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: kg/ha
+  - Basis: per cultivated hectare-cycle
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Fertilizer, urea input (`crop_nutrients`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+
+###### Fertilizer, monoammonium phosphate input (`crop_nutrients_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+
+###### Fertilizer, potassium chloride input (`crop_nutrients_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+
+###### Cattle manure, as applied input (`crop_nutrients_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+
+###### Agricultural limestone input (`crop_nutrients_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+
+###### Irrigation water (`crop_irrigation`)
+
+Record supplied irrigation by source and event; record zero for rainfed production.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
+- Amount rule: metered delivery or flow-rate times operating time
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+- Sources:
+- Range: Provisional irrigation screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 15000
+  - Unit: m3/ha
+  - Basis: per cultivated hectare-cycle
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`crop_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_crop_cycle`
+
+###### Diesel fuel input (`crop_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_crop_cycle`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+##### Waste flows
+
+
+##### Elementary flows
+
+###### Agricultural land occupation (`land_occupation`)
+
+Record occupied agricultural land for the crop cycle.
+
+- Selected flow: Agriculture land occupation `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- Flow property / unit: Area*time `93a60a56-a3c8-21da-a746-0800200c9a66` / ha*a
+- Amount rule: cultivated area multiplied by occupied-year fraction
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_crop_cycle`
+- Sources: `area-time-identity`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
+
+#### Outputs
+
+##### Product flows
+
+###### Harvested bast-crop stems or bark ribbons (`harvested_stems`)
+
+Transfer harvested whole stems or mechanically separated bark ribbons to the selected raw-fibre or retting route.
+
+- Selected flow: Harvested bast-crop stems or bark ribbons, internal transfer
+- Flow property / unit: Mass / kg fresh matter
+- Identity resolution: Internal foreground transfer or grade output; no external database UUID is applicable.
+- Amount rule: measured harvested mass by species, field and lot
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_crop_cycle`
+- Sources: `fao-ijo-jute-retting-1998`
+- Range: Harvest mass QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100000
+  - Unit: kg fresh stems/ha
+  - Basis: per cultivated hectare-cycle
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Sources: `fao-ijo-jute-retting-1998`
+
+
+##### Waste flows
+
+###### Field rejects and uncollected crop material (`field_rejects`)
+
+Record crop material rejected, left in field, burned, recovered or removed, with destination.
+
+- Selected flow: Field-rejected bast-crop biomass
+- Flow property / unit: Mass / kg
+- Identity resolution: Deferred by actual material state and destination; the initial search returned wood, other-crop residues and unrelated generic waste, with no compatible jute or kenaf reject identity.
+- Amount rule: measured or mass-balance-estimated rejected biomass by destination
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_crop_cycle`
+- Sources: `mass-balance-identity`
+- Range: Field reject fraction
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg harvested stems
+  - Basis: per cultivated hectare-cycle
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `mass-balance-identity`
+
+
+##### Elementary flows
+
+###### Dinitrogen monoxide, to air (`soil_n_emissions`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Ammonia, to air (`soil_n_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Nitrogen monoxide, to air (`soil_n_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Nitrate, to water (`soil_n_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Carbon dioxide, fossil, to air (`soil_n_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Carbon dioxide, fossil, to air (`direct_combustion_emissions`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+###### Carbon dioxide, biogenic, to air (`direct_combustion_emissions_co2_biogenic`)
+
+Record Carbon dioxide, biogenic, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Carbon dioxide, biogenic, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, biogenic, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+###### Methane, to air (`direct_combustion_emissions_ch4`)
+
+Record Methane, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Methane, to air
+- Flow property / unit: Mass / kg CH4
+- Amount rule: Measured or method-calculated mass of Methane, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+###### Dinitrogen monoxide, to air (`direct_combustion_emissions_n2o`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+###### Particulate matter, particle size unspecified, to air (`direct_combustion_emissions_dust`)
+
+Record Particulate matter, particle size unspecified, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per cultivated hectare-cycle before accepted-fibre normalization.
+
+- Selected flow: Particulate matter, particle size unspecified, to air
+- Flow property / unit: Mass / kg
+- Amount rule: Measured or method-calculated mass of Particulate matter, particle size unspecified, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `fuel_inventory`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_crop_cycle`
+- Sources: `ipcc-2006-mobile-combustion`
+
+### Process: Optional retting and fibre extraction (`retting_extraction`)
+
+#### Inputs
+
+##### Product flows
+
+###### Harvested stems or bark ribbons received (`retting_feed`)
+
+Receive the internal lot with species, fresh mass, moisture and route retained.
+
+- Selected flow: Harvested bast-crop stems or bark ribbons, internal transfer
+- Flow property / unit: Mass / kg fresh matter
+- Identity resolution: Internal foreground transfer or grade output; no external database UUID is applicable.
+- Amount rule: measured batch input mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per retting or extraction batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_retting_batch`
+- Sources: `fao-ijo-jute-retting-1998`
+- Range: Batch feed QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 20000
+  - Unit: kg/batch
+  - Basis: per retting or extraction batch
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Sources: `fao-ijo-jute-retting-1998`
+
+###### Retting and washing process water (`retting_water`)
+
+Record water added or withdrawn by source, batch and reuse loop.
+
+- Selected flow: Process water for retting and washing
+- Flow property / unit: Volume / m3
+- Amount rule: metered or calculated gross make-up water
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per retting or extraction batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_retting_batch`
+- Sources: `fao-ijo-jute-retting-1998`
+- Range: Provisional retting-water screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100
+  - Unit: m3/t feed
+  - Basis: per retting or extraction batch
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Sources: `fao-ijo-jute-retting-1998`
+
+###### Electricity, medium voltage input (`retting_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per retting or extraction batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_retting_batch`
+
+###### Diesel fuel input (`retting_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per retting or extraction batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_retting_batch`
+
+Required treatment-material records: enumerate each actually used field-treatment product or retting aid by concrete composition, product identity, quantity and application event before the package is complete; do not publish a generic treatment-material exchange or assume zero when identity is missing.
+
+###### Inter-node freight transport (`inter_node_transport`)
+
+Record only transport between included foreground sites.
+
+- Selected flow: Freight transport service
+- Flow property / unit: Transport service / t*km
+- Amount rule: loaded mass times route distance by mode
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+Raw activity or stage basis: per transferred batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Transport service (`transport_service`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_retting_batch`
+- Sources:
+- Range: Provisional inter-node transport screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1000
+  - Unit: t*km/t feed
+  - Basis: per transferred batch
+  - Basis kind: Transport service (`transport_service`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+
+##### Waste flows
+
+
+##### Elementary flows
+
+
+#### Outputs
+
+##### Product flows
+
+###### Extracted raw or retted bast fibre (`extracted_fibre`)
+
+Transfer extracted fibre to washing, drying and grading with moisture and retting state retained.
+
+- Selected flow: Extracted bast fibre, internal transfer
+- Flow property / unit: Mass / kg
+- Identity resolution: Internal foreground transfer or grade output; no external database UUID is applicable.
+- Amount rule: measured wet fibre mass by batch
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per retting or extraction batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_retting_batch`
+- Sources: `fao-ijo-jute-retting-1998`
+- Range: Fibre yield mass-balance range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg feed
+  - Basis: per retting or extraction batch
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `fao-ijo-jute-retting-1998`
+
+
+##### Waste flows
+
+###### Retting wastewater (`retting_wastewater`)
+
+Record wastewater volume and destination; characterize relevant oxygen demand, solids, nutrients and treatment.
+
+- Selected flow: Retting wastewater
+- Flow property / unit: Volume / m3
+- Identity resolution: Deferred by wastewater composition, treatment state and destination; the initial search returned route-specific industrial or municipal wastewater rows that do not match jute retting.
+- Amount rule: Use measured wastewater actually crossing the defined retting/extraction boundary to its recorded external destination. Do not deduct internal reuse, recirculation or evaporation from an already measured external discharge. When discharge is estimated, use the complete process-water equation in Calculation Rules with every incoming/outgoing water component and stock term, documenting uncertainty; keep liquid volume and its water/solid/pollutant components distinct. Normalize once through matched accepted fibre output.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per retting or extraction batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_retting_batch`
+- Sources: `water-balance-identity`
+
+No universal numeric bound is established by the cited balance identity or method. Derive a lot/site-specific check from measured inputs, outputs, moisture, growth where applicable, stocks, losses and uncertainty on compatible bases. Report numeric screening unavailable until supported; retain the measured exchange and investigate residuals without clipping or substituting a default.
+
+###### Woody core, bark and extraction residues (`retting_residues`)
+
+Record each residue as intended co-product, recovered material, returned biomass or waste according to actual destination.
+
+- Selected flow: Jute or kenaf extraction residues
+- Flow property / unit: Mass / kg
+- Identity resolution: Deferred by separated material and destination; the initial search returned coconut shell, wood bark and other unrelated residues, not jute or kenaf extraction residue.
+- Amount rule: measured residue mass by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per retting or extraction batch.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_retting_batch`
+- Sources: `mass-balance-identity`
+- Range: Residue mass-balance range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg feed
+  - Basis: per retting or extraction batch
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `mass-balance-identity`
+
+
+##### Elementary flows
+
+
+### Process: Washing, drying, stabilization and grading (`washing_drying_grading`)
+
+#### Inputs
+
+##### Product flows
+
+###### Extracted fibre received for conditioning (`conditioning_feed`)
+
+Receive the internal fibre lot; for a raw, unretted route, receive mechanically separated fibre with route declared.
+
+- Selected flow: Extracted bast fibre, internal transfer
+- Flow property / unit: Mass / kg
+- Identity resolution: Internal foreground transfer or grade output; no external database UUID is applicable.
+- Amount rule: measured incoming fibre mass and moisture
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per conditioning lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_lot`
+- Sources:
+- Range: Conditioning-feed QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 2000
+  - Unit: kg/t accepted fibre
+  - Basis: per conditioning lot
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Final washing water (`final_wash_water`)
+
+Record clean water used after fibre extraction and any reuse loop.
+
+- Selected flow: Process water for final washing
+- Flow property / unit: Volume / m3
+- Amount rule: metered or calculated make-up water
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per conditioning lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_lot`
+- Sources: `fao-ijo-jute-retting-1998`
+- Range: Provisional final-wash screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 50
+  - Unit: m3/t accepted fibre
+  - Basis: per conditioning lot
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Sources: `fao-ijo-jute-retting-1998`
+
+###### Electricity, medium voltage input (`conditioning_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per conditioning lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_conditioning_lot`
+
+###### Diesel fuel input (`conditioning_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per conditioning lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_conditioning_lot`
+
+##### Waste flows
+
+
+##### Elementary flows
+
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted raw or retted bast fibre (`reference_fibre`)
+
+Record accepted jute, kenaf or eligible other bast fibre as an intended output at producer hand-off.
+
+- Selected flow: Jute, kenaf, and other textile bast fibres, raw or retted `bcf2ea60-81e8-43cb-879f-ac473e43f521`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: measured accepted mass at declared moisture and grade
+
+- Amount rule: 1000 kg
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per 1,000 kg reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_lot`
+- Sources:
+- Range: Reference-flow identity range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg
+  - Basis: per 1,000 kg reference product
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `mass-balance-identity`
+
+###### Downgraded fibre sent to a declared market (`downgraded_fibre`)
+
+Record this saleable downgraded grade as an intended output separately from accepted reference fibre and waste.
+
+- Selected flow: Downgraded bast fibre, internal grade output
+- Flow property / unit: Mass / kg
+- Identity resolution: Internal foreground transfer or grade output; no external database UUID is applicable.
+- Amount rule: measured downgraded mass by grade and destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+Raw activity or stage basis: per conditioning lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_lot`
+- Sources: `mass-balance-identity`
+- Range: Downgraded-fibre balance range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg incoming fibre
+  - Basis: per conditioning lot
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `mass-balance-identity`
+
+
+##### Waste flows
+
+###### Rejected fibre and grading debris (`grading_rejects`)
+
+Record rejected or off-spec material by rework, recovery, discard or treatment destination.
+
+- Selected flow: Rejected bast fibre and grading debris
+- Flow property / unit: Mass / kg
+- Identity resolution: Deferred by fibre state and treatment destination; the initial search returned cord-thread, fabric and cotton wastes, with no compatible raw bast-fibre grading reject.
+- Amount rule: measured reject mass by disposition
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per conditioning lot.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning_lot`
+- Sources: `mass-balance-identity`
+- Range: Reject mass-balance range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg/kg incoming fibre
+  - Basis: per conditioning lot
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `mass-balance-identity`
+
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_mass_first` | fibre and intended co-products | First preserve physical mass and moisture balances by batch. Where fibre, sticks, seeds or other outputs are intended products, avoid allocation by subdivision when separately metered; otherwise report and justify the selected physical or economic relation. | `mass-balance-identity` |
+| `allocation_residue_destination` | sticks, bark, fines and crop residues | Do not assign avoided burdens without a declared substitution model. Returned biomass, sold co-product and waste treatment are distinct destinations. | `mass-balance-identity` |
+| `allocation_rework` | rework and rejected material | Return reworked material and its additional burdens to the producing batch; exclude downgraded and rejected mass from accepted reference output and prevent double counting. | `mass-balance-identity` |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_crop_cycle` | `crop_production` | crop inputs, harvested stems, rejects and soil emissions | field log, invoice, meter, harvest record | field, species, cultivar, area, dates, seed, nutrient products and composition, irrigation, energy, crop protection, harvest and residues | reconcile invoices, application logs, meters and harvest weights; Raw aggregation and attribution: sum by field and route, then normalize through accepted fibre yield | native units plus kg, m3, MJ and ha | each operation and harvest lot | complete declared crop cycle | every included field | per declared reference flow | invoices, calibrated scales/meters, application and harvest logs |
+| `cp_retting_batch` | `retting_extraction` | retting/extraction batch inputs and outputs | batch sheet, meter, weigh ticket, laboratory result | feed mass/moisture, route, time, water, energy, aids, fibre, wastewater, residues and destinations ; process-water control volume, external supply/returns, internal recirculation separately, opening/closing water stocks, product/residue water, measured discharge, evaporation evidence and residual uncertainty | batch-level readings and mass/water reconciliation; Raw aggregation and attribution: sum compatible route batches; production-weight aggregation only | kg, m3, MJ, t*km | each batch | all batches supplying the reference lot | every included retting/extraction site | per declared reference flow | batch identifiers, meter/scale checks, water-quality and destination evidence |
+| `cp_conditioning_lot` | `washing_drying_grading` | washing, drying, grade and hand-off | lot sheet, meter, weigh ticket, grade test | incoming mass/moisture, water, energy, drying route, accepted grade, downgraded grade, rejects and destination ; process-water control volume, external supply/returns, internal recirculation separately, opening/closing water stocks, product/residue water, measured discharge, evaporation evidence and residual uncertainty | lot-level measurement and reconciliation; Raw aggregation and attribution: normalize accepted output to 1,000 kg at declared moisture | kg, m3, MJ | each lot | all lots in reporting period | every included conditioning site | per declared reference flow | scale/meter calibration, moisture and grade test, dispatch record |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_moisture_basis` | material transfers | declared-basis mass = wet mass × (1 − measured moisture fraction)/(1 − declared moisture fraction) | wet mass, measured moisture, declared moisture | comparable material mass | `mass-balance-identity` |
+| `calc_route_yield` | crop through accepted fibre | accepted fibre yield = accepted declared-basis fibre mass / cultivated area; retain intermediate stem and extraction yields | accepted fibre, harvested stems, area | kg accepted fibre/ha and process yields | `mass-balance-identity` |
+| `calc_water_balance` | retting and washing | Use one defined process control volume and matched period in water-mass units. Discharged water = external supplied water + water in incoming product/material + other actual external water inflows + opening water stock - water in all outgoing products/residues - actual evaporation - water in separately exported streams - closing water stock. Convert measured volumes only with a compatible documented density. Internal recirculation remains within that boundary and cancels; do not subtract it again from fresh-water inflow. A genuinely external reclaimed-water receipt is an external inflow. Retain liquid discharge separately from its dry solids/pollutant masses. Prefer measured discharge and use the balance as reconciliation; missing components or unexplained residuals are gaps, not automatic wastewater, evaporation or zero. | water and moisture records | wastewater volume | `water-balance-identity` |
+| `calc_n_emissions` | managed soil | calculate species and compartments from recorded nitrogen activity data using the declared inventory method | nitrogen products, residues, method factors | separate nitrogen exchanges | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_crop_cycle`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | reference lot | Species, raw/retted state, route, moisture basis and grade shall be traceable from field and batch to dispatch. | field, batch, lot and dispatch identifiers |
+| `dq_completeness` | all nodes | Reconcile accepted fibre, co-products, downgraded material, rejects, wastewater and residues; explain every material gap. | signed mass and water balances |
+| `dq_temporal` | reporting period | Cover one complete crop cycle and every treatment batch supplying the output; disclose any proxy period. | dated logs and coverage statement |
+| `dq_route` | alternative routes | Report route-specific sample count, mass and burdens before aggregation. | route-stratified records |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | severity |
+| --- | --- | --- | --- |
+| `validate_reference_identity` | reference flow | UUID, Mass property, mass unit group, product state and required qualifiers shall match the declared accepted fibre. | error |
+| `validate_flow_bindings` | all cards | Resolve every parameterized card to a concrete compatible UUID from actual foreground identity, and retain unresolved or internal status exactly as audited. | error |
+| `validate_ranges` | all cards | Check each supplied range for complete bounds, unit, basis, evidence and bilingual alignment. Require compatible quantitative evidence for any enforced limit. If no supported bound exists, retain measured quantities and explicitly report range screening unavailable; do not invent a range or declare that check complete. Investigate deviations rather than overwrite measured values. | |
+| `validate_route_balance` | every route and batch | Input mass shall reconcile with accepted, downgraded, co-product, residue, reject and measured loss outputs after moisture conversion. | error |
+| `validate_rework` | rejects and rework | Rework shall remain linked to its producing node and shall not be counted both as new input and accepted output. | error |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | foreground production dataset for raw or retted eligible bast fibre |
+| downstream_use | `secondary_dataset`; `background_dataset` after review |
+| allowed_use | fibre-product systems matching species, route, state, moisture, grade, geography and period |
+| excluded_use | flax, true hemp, ramie, cotton, coir, sisal, abaca, yarn, fabric, pulp or chemically modified fibre without a separate model |
+| required_metadata | species; cultivar; field and sites; crop cycle; raw/retted and extraction route; batch mode; moisture; grade; water and energy route; co-product and waste destinations |
+| required_quality_disclosure | temporal, geographic and technological representativeness; route coverage; measured versus estimated shares; mass/water closure; unresolved identities |
+| update_trigger | material change in cultivar, route, water source, retting aid, extraction/drying technology, grade specification, yield, allocation or background identity |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `fao-ijo-jute-retting-1998` | official_guidance | FAO and International Jute Organisation, *Improved Retting and Extraction of Jute: Project Findings and Recommendations*, Rome, 1998, https://www.fao.org/fishery/docs/CDrom/aquaculture/a0845t/volume2/docrep/field/381307.htm | route decomposition, harvesting, sorting, retting, extraction, washing and immediate drying |
+| `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11 | managed-soil nitrogen-emission calculation |
+| `ipcc-2006-mobile-combustion` | method_factor | IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2, Chapter 3 | direct combustion-emission calculation from foreground fuel use |
+| `mass-balance-identity` | method_factor | conservation-of-mass identity | mass balance, yield, allocation and reject validation |
+| `water-balance-identity` | method_factor | process water-balance identity | retting and washing water reconciliation |
+| `area-time-identity` | method_factor | occupied area multiplied by time | land-occupation calculation |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source. |

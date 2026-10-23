@@ -1,8 +1,910 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.alfalfa-for-forage-and-silage
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
 # Alfalfa for forage and silage
+
+## 1. Scope and Applicability
+
+This PCR covers managed perennial production and cutting of alfalfa (*Medicago sativa*) delivered fresh and unprocessed at the farm gate for direct forage use or later silage production. The foreground begins with field preparation for stand establishment, includes establishment-year and established-stand management, and ends when accepted freshly cut biomass is weighed or credibly estimated at farm-gate hand-off.
+
+Ensiling, fermentation, hay field-curing, artificial drying, baling, pelletizing, feed formulation, animal feeding, off-farm transport, and storage after farm-gate hand-off are excluded. Grazed alfalfa, alfalfa seed production, alfalfa meal, hay, silage, and mixed forage whose alfalfa share cannot be separated are excluded products.
+
+Alfalfa is a perennial, nitrogen-fixing forage managed through establishment, repeated regrowth periods and repeated cuts. Rainfed and irrigated routes may coexist as declared alternatives. Conventional, organic, reduced-tillage and differing cutting schedules may also coexist, but route-specific inputs, yields, field emissions and stand persistence shall not be averaged without production-weighted evidence.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.alfalfa-for-forage-and-silage |
+| classification_refs | CPC 3.0 `01912`, path `0 > 01 > 019 > 0191 > 01912`; mapping relation: narrower |
+| covered_products | freshly cut, unprocessed alfalfa forage at farm gate; fresh alfalfa intended for subsequent ensiling outside this boundary |
+| excluded_products | alfalfa hay; silage; dried meal; pellets; seed; grazed biomass; inseparable alfalfa-grass mixtures |
+| representative_product | accepted freshly cut alfalfa biomass |
+| production_route | managed perennial stand establishment, regrowth management, repeated cutting and fresh farm-gate hand-off |
+| market_state | fresh, unprocessed, unbaled biomass at farm gate |
+
+The managed-biological-production parent is perennial field production. Irrigation changes the water-input and pumping-energy requirements relative to rainfed production; reduced tillage, organic management and cutting technology can change field-operation energy, nutrient products, crop protection and loss records. These routes coexist only as separate declared strata. Ensiling and hay manufacture are mutually exclusive with this reference-product route because they change the product state after the farm-gate hand-off.
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | accepted freshly cut alfalfa forage at farm gate |
+| How much | 1,000 kg fresh mass |
+| How well | unensiled, unfermented, undried and unbaled; declared dry-matter fraction and harvest quality basis; foreign material and rejected biomass excluded |
+| How long or cycle | one declared production year and its identified cuts, with establishment burdens annualized over the actual stand life |
+| reference_flow_link | accepted_fresh_alfalfa |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | Alfalfa for forage and silage `bff9b03b-b5c0-486e-99f6-0a2ab67d725c` |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | production mix, at farm gate; fresh unprocessed produce; harvest date and cut number; stand age and establishment year; fresh mass and dry-matter fraction; pure alfalfa or declared separable alfalfa share; rainfed or irrigation route |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_fresh_mass` | accepted reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Measure or calculate fresh mass at farm-gate hand-off; do not substitute hay-equivalent or dry-matter mass. |
+| `dry_matter_disclosure` | every accepted cut | mass fraction | kg dry matter/kg fresh matter | Determine from a representative sample or a documented laboratory result and retain the sampling basis. |
+| `area_time_basis` | stand establishment and annual production | area and time | ha, stand-year | Record establishment area, production area, stand age, productive stand life and reporting-year fraction separately. |
+| `cut_indexing` | harvest and regrowth periods | count and date | cut, date | Assign every accepted output, field operation and loss to a cut or to the whole stand-year. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | prepared field before the target alfalfa stand is seeded |
+| starting_condition_role | foreground starting condition for stand establishment; prior crop and soil state are disclosed context |
+| product_classification_scope | fresh unprocessed alfalfa forage under CPC 3.0 `01912` |
+| recursive_input_rule | purchased fresh alfalfa of the same category is not treated as a production input; if blended or resold, model it as a separately traced upstream product and exclude it from on-farm yield |
+| upstream_dataset_requirement | use supplier-specific or representative datasets for seed, nutrient products, crop-protection products, water supply and energy carriers selected from foreground records |
+| disclosure | field location, stand establishment year, stand age, expected and realized stand life, production year, cut schedule, irrigation route, management route, previous crop, dry-matter method and farm-gate hand-off |
+
+### Boundary Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_fresh_gate` | reference product | Stop at accepted freshly cut biomass at farm gate; exclude curing, drying, baling, ensiling, fermentation and downstream feed manufacture. | `uc-alfalfa-establishment`; `usda-ars-alfalfa-management-2024` |
+| `boundary_establishment` | stand establishment | Include seedbed preparation, seed and inoculation, establishment inputs, field operations and establishment losses; annualize them only across the actual productive output of that stand. | `umn-alfalfa-establishment` |
+| `boundary_regrowth_periods` | established stand | Include production-year management and index operations by stand-year and, where attributable, by regrowth period or cut. | `usda-ars-alfalfa-management-2024` |
+| `boundary_water_route` | irrigated production | Include supplied irrigation water and pumping energy only when irrigation occurs; rainfed production records zero supplied irrigation water rather than an imputed requirement. | `umn-alfalfa-drought-2024`; `uc-alfalfa-irrigation` |
+| `boundary_direct_field_emissions` | managed soil | Include direct and indirect nitrogen-related field emissions and amendment-related carbon dioxide where the relevant inputs or residue-renewal events occur; avoid double counting returned and removed biomass. | `ipcc-2019-managed-soils` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `stand_establishment` | Perennial stand establishment | required | new stand or replacement stand is established | managed biological production preparation and establishment phase | one hectare established stand and its actual productive life |
+| `annual_regrowth_management` | Established-stand regrowth management | required | every productive stand-year | continuous production across a season, divided into attributable regrowth periods; alternative technology and biological route deltas remain separate declared strata | one productive hectare-year and its accepted fresh yield |
+| `forage_harvest_handoff` | Repeated cutting and farm-gate hand-off | required | each accepted cut | independent harvest/capture and acceptance node | accepted fresh mass by cut, summed to 1,000 kg reference product |
+
+### Process: Perennial stand establishment (`stand_establishment`)
+
+#### Inputs
+
+##### Product flows
+
+###### Alfalfa seed for sowing (`establishment_seed`)
+
+Record certified or otherwise documented alfalfa seed by pure-live-seed basis. Keep seed-coating mass separate where the tag permits.
+
+- Selected flow: Alfalfa seed for sowing
+- Flow property / unit: Mass / kg
+- Identity resolution: Unresolved after one initial and one refined search; returned candidates were forage alfalfa, processed alfalfa or another forage species rather than alfalfa seed for sowing.
+- Amount rule: Record actual physical seed-product mass used, net of documented unused returns, with its supplier/lot, treatment, purity and germination/viability attributes. Pure-live-seed equivalent = physical seed mass × purity fraction × viability fraction is a separate quality/rate attribute, never the purchased-product exchange mass or another purchase. If only pure-live-seed rate is known, recover physical quantity using evidenced nonzero lot fractions; otherwise leave physical seed use incomplete. Retain the original stock, period and reference-output attribution.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `umn-alfalfa-establishment`
+- Range: Establishment seeding QA range
+  - Range role: Typical range (`typical_range`)
+  - Lower: 10
+  - Upper: 30
+  - Unit: kg pure live seed/ha established
+  - Basis: per hectare newly established stand
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `umn-alfalfa-establishment`
+
+###### Rhizobium inoculant (`establishment_inoculant`)
+
+Record the inoculant product supplied for seed coating or in-furrow application separately from seed mass; use zero when no inoculant is supplied.
+
+- Selected flow: Rhizobium inoculant `ead26d6b-6270-4b4f-92a9-e81927e6a718`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured purchased and applied inoculant product mass for the seeded area
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `umn-alfalfa-establishment`
+- Range: Provisional inoculant-product QA screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5
+  - Unit: kg inoculant product/ha established
+  - Basis: inoculant product supplied per hectare newly established stand
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Fertilizer, urea input (`establishment_nutrients`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+
+###### Fertilizer, monoammonium phosphate input (`establishment_nutrients_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+
+###### Fertilizer, potassium chloride input (`establishment_nutrients_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+
+###### Cattle manure, as applied input (`establishment_nutrients_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+
+###### Agricultural limestone input (`establishment_nutrients_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+
+###### Establishment irrigation water (`establishment_irrigation_water`)
+
+Record gross water supplied for germination and establishment by source and event; use zero for a rainfed route.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
+- Amount rule: metered delivery or calculated volume from flow rate and operating time
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `uc-alfalfa-establishment`
+- Range: Provisional establishment-water screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 5000
+  - Unit: m3/ha established
+  - Basis: gross supplied establishment water per hectare
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`establishment_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_establishment_records`
+
+###### Diesel fuel input (`establishment_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_establishment_records`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+##### Waste flows
+
+##### Elementary flows
+
+###### Land occupation during establishment (`establishment_land_occupation`)
+
+Record occupied agricultural land during the establishment phase without treating it as a Product-flow input.
+
+- Selected flow: Agriculture land occupation `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- Flow property / unit: Area*time `93a60a56-a3c8-21da-a746-0800200c9a66` / ha*a
+- Amount rule: established area multiplied by establishment-phase duration in years
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare newly established stand before stand-life annualization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_establishment_records`
+- Sources:
+- Range: Physical establishment land-time range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: ha*a/ha established
+  - Basis: establishment duration cannot exceed the first stand-year
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `area-time-identity`
+
+#### Outputs
+
+##### Product flows
+
+###### Established alfalfa stand transferred to production (`established_stand`)
+
+Transfer the successfully established stand and its attributed establishment burden to subsequent productive stand-years; this is an internal foreground state, not the reference product.
+
+- Selected flow: Established alfalfa stand, internal transfer
+- Flow property / unit: Area / ha
+- Identity resolution: Internal foreground transfer; no external database UUID is applicable.
+- Amount rule: surveyed successfully established area
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per hectare seeded area.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_establishment_records`
+- Sources: `uc-alfalfa-establishment`
+- Range: Established-area mass-balance range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: ha established/ha seeded
+  - Basis: successfully established fraction of seeded area
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `area-balance-identity`
+
+##### Waste flows
+
+##### Elementary flows
+
+### Process: Established-stand regrowth management (`annual_regrowth_management`)
+
+#### Inputs
+
+##### Product flows
+
+###### Established stand carried into the stand-year (`stand_year_input`)
+
+Record the productive area and stand age carried from establishment or the preceding production year.
+
+- Selected flow: Established alfalfa stand, internal transfer
+- Flow property / unit: Area / ha
+- Identity resolution: Internal foreground transfer; no external database UUID is applicable.
+- Amount rule: productive alfalfa area at the start of the reporting year
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive stand-year.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stand_year_records`
+- Sources:
+- Range: Productive-area consistency range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: ha productive/ha enrolled
+  - Basis: productive fraction of enrolled stand area
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `area-balance-identity`
+
+###### Fertilizer, urea input (`annual_nutrients`)
+
+Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, urea
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stand_year_records`
+
+###### Fertilizer, monoammonium phosphate input (`annual_nutrients_monoammonium_phosphate`)
+
+Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, monoammonium phosphate
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stand_year_records`
+
+###### Fertilizer, potassium chloride input (`annual_nutrients_potassium_chloride`)
+
+Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Fertilizer, potassium chloride
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stand_year_records`
+
+###### Cattle manure, as applied input (`annual_nutrients_cattle_manure`)
+
+Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Cattle manure, as applied
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stand_year_records`
+
+###### Agricultural limestone input (`annual_nutrients_agricultural_limestone`)
+
+Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Agricultural limestone
+- Flow property / unit: Mass / kg product
+- Amount rule: Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stand_year_records`
+
+###### Annual irrigation water (`annual_irrigation_water`)
+
+Record gross irrigation delivery by source, event and regrowth period; record zero for rainfed production.
+
+- Selected flow: Irrigation water
+- Flow property / unit: Volume / m3
+- Amount rule: metered delivery or calculated volume from flow rate and operating time
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_stand_year_records`
+- Sources: `umn-alfalfa-drought-2024`; `usda-ars-alfalfa-irrigation`
+
+The cited crop-water requirement or precipitation-plus-irrigation context is not a supplied-irrigation amount or validity bound. Collect actual delivered irrigation at its stated meter/boundary, or derive it from a fully declared site water balance distinguishing effective rainfall, soil-water storage, conveyance/application efficiency and returns. No numeric delivery range is established here; rainfed zero requires evidence and a measured value outside a literature water-demand context must not be clipped.
+
+###### Electricity, medium voltage input (`annual_field_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_stand_year_records`
+
+###### Diesel fuel input (`annual_field_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_stand_year_records`
+
+Required crop-protection records: before completing the foreground package, enumerate every actually applied formulated product separately, retaining trade name, active ingredient, salt or chemical form, concentration, density where needed, application quantity, date and treated area. Select one physically specific product identity per exchange. Derive active-substance releases separately by substance and receiving compartment. Missing formulation identity is a completeness gap; do not replace it with a generic pesticide, invented example, or assumed zero.
+
+##### Waste flows
+
+##### Elementary flows
+
+###### Productive agricultural land occupation (`annual_land_occupation`)
+
+Record the occupied productive alfalfa area for the reporting stand-year.
+
+- Selected flow: Agriculture land occupation `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- Flow property / unit: Area*time `93a60a56-a3c8-21da-a746-0800200c9a66` / ha*a
+- Amount rule: productive area multiplied by reporting-year fraction
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Crop cycle (`crop_cycle`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_stand_year_records`
+- Sources:
+- Range: Physical stand-year land-time range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: ha*a/ha*a enrolled
+  - Basis: productive fraction of the reporting hectare-year
+  - Basis kind: Crop cycle (`crop_cycle`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `area-time-identity`
+
+#### Outputs
+
+##### Product flows
+
+###### Harvest-ready fresh alfalfa biomass (`harvest_ready_biomass`)
+
+Transfer standing biomass accepted for cutting to the harvest node by cut number. This internal state excludes unharvested regrowth and rejected patches.
+
+- Selected flow: Harvest-ready fresh alfalfa biomass, internal transfer
+- Flow property / unit: Mass / kg fresh matter
+- Identity resolution: Internal foreground transfer; no external database UUID is applicable.
+- Amount rule: measured or estimated standing fresh biomass released to each cut
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare and identified cut.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_cut_records`
+- Sources:
+- Range: Provisional fresh standing-biomass screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 100000
+  - Unit: kg fresh matter/ha per cut
+  - Basis: biomass released from one productive hectare to an identified cut
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Waste flows
+
+##### Elementary flows
+
+###### Dinitrogen monoxide, to air (`managed_soil_n_emissions`)
+
+Record Dinitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg N2O
+- Amount rule: Measured or method-calculated mass of Dinitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as N2O-N, convert to N2O once using 44/28.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_stand_year_records`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Ammonia, to air (`managed_soil_n_emissions_nh3`)
+
+Record Ammonia, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Selected flow: Ammonia, to air
+- Flow property / unit: Mass / kg NH3
+- Amount rule: Measured or method-calculated mass of Ammonia, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_stand_year_records`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Nitrogen monoxide, to air (`managed_soil_n_emissions_no`)
+
+Record Nitrogen monoxide, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg NO
+- Amount rule: Measured or method-calculated mass of Nitrogen monoxide, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_stand_year_records`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Nitrate, to water (`managed_soil_n_emissions_nitrate`)
+
+Record Nitrate, to water as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Selected flow: Nitrate, to water
+- Flow property / unit: Mass / kg NO3-
+- Amount rule: Measured or method-calculated mass of Nitrate, to water, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output. If reported as nitrate-N, convert to NO3- once using 62/14.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_stand_year_records`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Carbon dioxide, fossil, to air (`managed_soil_n_emissions_co2_fossil`)
+
+Record Carbon dioxide, fossil, to air as one substance and receiving-medium exchange only when measurement or the selected applicable method establishes this pathway. Retain the actual receiving compartment and verify the precise flow identity. Other substances require separate exchanges; this card does not imply a default release.
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg CO2
+- Amount rule: Measured or method-calculated mass of Carbon dioxide, fossil, to air, retaining activity data, factors, substance basis and receiving compartment; normalize once to the declared reference output.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `n_input`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_stand_year_records`
+- Sources: `ipcc-2019-managed-soils`
+
+###### Amendment-related carbon dioxide (`amendment_co2`)
+
+Calculate carbon dioxide from urea or carbonate amendment only when the corresponding product was applied.
+
+- Selected flow: Carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CO2
+- Amount rule: selected method factor multiplied by recorded urea or carbonate amendment mass
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per productive hectare-year before yield normalization.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Method formula (`method_formula`)
+- Collection protocol: `cp_stand_year_records`
+- Sources: `ipcc-2019-managed-soils`
+- Range: Nonnegative amendment-carbon screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 1
+  - Unit: kg CO2/kg applicable amendment product
+  - Basis: carbon-dioxide result per kilogram applicable amendment before yield normalization
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `ipcc-2019-managed-soils`
+
+### Process: Repeated cutting and farm-gate hand-off (`forage_harvest_handoff`)
+
+#### Inputs
+
+##### Product flows
+
+###### Harvest-ready biomass received from the field (`harvest_biomass_input`)
+
+Record the internal biomass entering each cut and preserve its stand-year and cut identity.
+
+- Selected flow: Harvest-ready fresh alfalfa biomass, internal transfer
+- Flow property / unit: Mass / kg fresh matter
+- Identity resolution: Internal foreground transfer; no external database UUID is applicable.
+- Amount rule: mass released by `harvest_ready_biomass` for the identified cut
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per identified cut.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_cut_records`
+- Sources:
+- Range: Internal-transfer consistency range
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 0
+  - Upper: 100000
+  - Unit: kg fresh matter/ha per cut
+  - Basis: biomass entering one identified cut
+  - Basis kind: Process output (`process_output`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Electricity, medium voltage input (`harvest_energy`)
+
+Include this conditional card only when Electricity, medium voltage is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: Measured quantity of Electricity, medium voltage used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg accepted fresh reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_cut_records`
+
+###### Diesel fuel input (`harvest_energy_diesel`)
+
+Include this conditional card only when Diesel fuel is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: Measured quantity of Diesel fuel used by this process and period; report zero or not applicable only when the route records establish absence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+Raw activity or stage basis: per 1,000 kg accepted fresh reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_cut_records`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted fresh alfalfa forage (`accepted_fresh_alfalfa`)
+
+This is the sole reference-product output. Sum accepted cut lots only after recording fresh mass, dry-matter fraction and rejection status.
+
+- Selected flow: Alfalfa for forage and silage `bff9b03b-b5c0-486e-99f6-0a2ab67d725c`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+Raw output measurement and reconciliation: exactly 1,000 kg accepted fresh mass after normalization
+
+- Amount rule: 1000 kg
+- Value mode: Fixed value (`fixed_value`)
+- Specificity: Generic (`generic`)
+Raw activity or stage basis: reference flow.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Identity reference (`identity_reference`)
+- Sources:
+- Range: Reference-flow identity
+  - Range role: Allowed range (`allowed_range`)
+  - Lower: 1000
+  - Upper: 1000
+  - Unit: kg fresh matter
+  - Basis: one normalized reference flow
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Method formula (`method_formula`)
+  - Sources: `reference-flow-identity`
+
+##### Waste flows
+
+###### Rejected or lost cut biomass (`rejected_cut_biomass`)
+
+Record cut biomass that is rejected, left in-field after cutting, sent to a separately traced recovery destination or discarded. Reworked or downgraded material remains linked to the producing cut and is never counted in accepted output.
+
+- Selected flow: Rejected or lost fresh alfalfa biomass
+- Flow property / unit: Mass / kg fresh matter
+- Identity resolution: Unresolved after one initial and one refined search; returned Waste-flow candidates were heat, metal/electrical scrap, wood waste, potato rejects or generic kitchen/garden biowaste rather than rejected fresh alfalfa biomass.
+- Amount rule: incoming harvest biomass minus accepted fresh output and other measured destinations
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+Raw activity or stage basis: per 1,000 kg accepted fresh reference product.
+
+- Normalization basis: per declared reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_cut_records`
+- Sources: `umn-alfalfa-harvest-loss`
+- Range: Provisional rejected/lost biomass screen
+  - Range role: QA guardrail (`qa_guardrail`)
+  - Lower: 0
+  - Upper: 500
+  - Unit: kg fresh biomass/1,000 kg accepted product
+  - Basis: rejected and lost fresh biomass relative to accepted fresh output
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_establishment_life` | establishment burdens | Attribute establishment inputs, emissions and losses to all accepted fresh output produced over the actual stand life. Use realized stand termination and output where known; disclose any prospective lifetime used for an incomplete stand. Do not allocate the same establishment burden again in later stand-years. | `umn-alfalfa-establishment`; `usda-ars-alfalfa-management-2024` |
+| `allocation_stand_year` | annual management burdens | Assign stand-year inputs first to the reporting hectare-year, then divide by accepted fresh output from that year. Do not spread annual inputs across other production years. | `area-time-identity` |
+| `allocation_cut` | cut-specific operations | Assign harvest energy, cut-specific irrigation and losses to the identified cut; shared annual operations use a documented physical basis such as area or accepted fresh mass across cuts. | `usda-ars-alfalfa-management-2024` |
+| `allocation_rejects` | rejected or downgraded biomass | Keep burdens with the producing stand-year and cut unless an evidenced recovered-product allocation is declared. Exclude rejected biomass from accepted reference output. |  |
+| `allocation_no_double_count` | all periods | Establishment, stand-year and cut records carry unique phase and period identifiers; each input, output, loss and field event may enter the normalized result once only. |  |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+Inventory completeness: conditional named cards are examples of individual exchanges, not an exhaustive recipe or a requirement to use those products. Before completing a foreground package, enumerate every actual planting stock, nutrient, crop-protection formulation, asset material, operating service, carrier, packaging material, waste stream and applicable elementary substance separately, using its physical identity, state, native property/unit, origin or receiving compartment, and measured or method-calculated quantity. Missing identity or quantity remains a completeness gap, never an assumed zero. Preserve the actual lot and phase basis; do not sum intermediate transfers as additional final output or duplicate burdens included in purchased services.
+
+Retain raw site, lot, cycle and stage quantities and denominators in each collection protocol. Reconcile stocks, losses, moisture and co-product attribution first, then normalize: normalized exchange = attributable raw exchange × declared reference quantity / accepted hand-off product quantity on the same boundary and measurement basis. Apply perennial-establishment and shared-operation attribution before this normalization. Never set an internal-transfer quantity equal to the final reference quantity. Per declared reference flow means the amount, unit and product state in section 3; the data package must declare its actual route and gate.
+
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_establishment_records` | `stand_establishment` | establishment inputs and successful area | invoices, field-operation logs, seed tags, meter records, soil tests and stand survey | field_id, seeded_area, established_area, seed_mass, pure_live_seed_fraction, inoculant_mass, nutrient_product_mass, nutrient_composition, water_volume, energy_carrier_quantity, operation_date, product_application | reconcile purchase and application records to the target field and survey establishment; Raw aggregation and attribution: sum event quantities; retain product identity; annualize only through `calc_establishment_attribution` | stated row units | each event and end-of-establishment survey | entire establishment phase | each target field | per declared reference flow | invoices, seed certificates, calibrated meters, soil analyses and dated field logs |
+| `cp_stand_year_records` | `annual_regrowth_management` | productive area, management inputs and field emissions | field logs, meter records, invoices, soil and tissue tests, weather and emission-model inputs | field_id, stand_age, productive_area, date, regrowth_period, nutrient_product, nutrient_composition, irrigation_volume, energy_quantity, crop_protection_mass, residue_return, amendment_mass | collect every event against one field, stand-year and where possible one regrowth period; Raw aggregation and attribution: sum within stand-year; retain regrowth-period tags; normalize through annual accepted output | stated row units | each event for a complete production year | complete reporting stand-year | each productive field | per declared reference flow | complete event log, meter calibration, invoices and method version |
+| `cp_cut_records` | `forage_harvest_handoff` | cut input, accepted fresh mass, dry matter, energy and rejects | harvester or scale records, load tickets, fuel records and representative samples | field_id, stand_year, cut_number, harvest_date, incoming_biomass, accepted_fresh_mass, rejected_mass, destination, dry_matter_fraction, energy_quantity | identify every cut and reconcile incoming, accepted and rejected mass; Raw aggregation and attribution: sum accepted loads by cut and year; retain cut-specific rejects and energy; normalize to 1,000 kg accepted fresh mass | kg, kg/kg, MJ | every cut and load | all cuts in the reporting production year | each target field and farm-gate hand-off | per declared reference flow | calibrated scale or documented yield-estimation method, sample chain and mass-balance reconciliation |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_establishment_attribution` | establishment cards | establishment quantity × reporting-year accepted output / accepted output over actual stand life; for a completed stand use realized lifetime output | establishment quantity, stand-year outputs, termination date | establishment burden assigned to reporting output | `area-time-identity` |
+| `calc_fresh_normalization` | all cards | attributed row quantity ÷ accepted fresh mass × 1,000 kg | attributed row quantity, accepted fresh mass | row quantity per reference flow | `reference-flow-identity` |
+| `calc_energy` | energy cards | sum carrier quantity × declared net-energy conversion; retain carrier identity and do not add service and fuel representations of the same operation | carrier quantities, electricity, conversion factors, operation ids | MJ by process and period |  |
+| `calc_cut_mass_balance` | each cut | harvest-ready input = accepted fresh output + rejected/lost biomass + separately traced destinations, within stated measurement uncertainty | incoming biomass, accepted mass, rejected mass, other destinations | reconciled cut mass balance | `mass-balance-identity` |
+| `calc_managed_soil_emissions` | nitrogen and amendment emissions | apply the declared inventory-method equations and factors to actual relevant N, urea, lime, residue and renewal activity data; separate species and compartments | recorded activity data, method version and factors | species-specific elementary exchanges | `ipcc-2019-managed-soils` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim. | `cp_stand_year_records`; species-specific activity ledger, method pathway and factor basis, matched accepted output | Identity-specific exchanges and reconciled activity records |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | reference product | Confirm fresh, unprocessed, unensiled, undried and unbaled state at farm-gate hand-off. | product description, harvest and dispatch records |
+| `dq_period_completeness` | multi-period attribution | Identify establishment phase, every productive stand-year, every included cut, stand termination and any missing records; document prospective lifetime assumptions. | period index and stand history |
+| `dq_mass_and_moisture` | accepted output | Use calibrated fresh-mass measurement or a documented field estimate and a representative dry-matter sample for each cut. | calibration, sample and laboratory records |
+| `dq_input_completeness` | all processes | Reconcile seed, nutrient products, water, energy and crop-protection records to field area, operation and reporting period. | invoice-to-field reconciliation |
+| `dq_route_separation` | alternative routes | Keep rainfed/irrigated, management-system and harvest-technology strata separate unless production-weighted aggregation is demonstrated. | stratum records and weighting calculation |
+| `dq_flow_resolution` | parameterized cards | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | concrete flow identity evidence |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_reference_gate` | reference product | Reject a package that includes ensiling, fermentation, drying, baling or feed manufacture in the reference-product process. |  |
+| `validate_stand_periods` | all processes | Require establishment year, stand age, reporting stand-year, cut identifiers, actual or prospective stand life, and termination treatment; reject double attribution across periods. |  |
+| `validate_nutrient_consolidation` | each applicable process | Require a separate atomic card for each actual fertilizer or amendment with measured product quantity and composition; do not bind a generic nutrient group as one exchange. |  |
+| `validate_n_fixing_crop` | annual nutrient records | Do not accept routine mineral-N input without evidence of the route-specific need; require nodulation or soil/plant evidence when mineral N is reported. | `umn-alfalfa-fertilizer` |
+| `validate_cut_balance` | each cut | Require accepted output plus rejects and other destinations to reconcile with harvest-ready input within disclosed measurement uncertainty. | `mass-balance-identity` |
+| `validate_irrigation_route` | water card | Require zero supplied irrigation water for rainfed strata and event-linked measured or calculated delivery for irrigated strata. |  |
+| `validate_reject_path` | rejected biomass | Require each rejected state to be left in field, recovered, downgraded or discarded with a declared destination; it shall not enter accepted output. |  |
+| `validate_route_delta` | alternative routes | Require evidence for any claimed change in topology, inventory, calculation or validation and prevent averaging mutually exclusive post-harvest product states. |  |
+| `validate_range_shape` | cards with ranges | For each supplied Range, require role, lower/upper bounds, unit, basis, basis kind, evidence kind and applicable source ids. Report missing important-flow ranges as candidate evidence gaps. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | foreground production dataset for fresh farm-gate alfalfa forage |
+| downstream_use | secondary dataset and background dataset after review |
+| allowed_use | crop-production inventories, livestock-feed supply chains and later silage systems that add downstream transformation explicitly |
+| excluded_use | direct representation of hay, silage, pellets, meal, grazed forage, seed production or feed manufacturing |
+| required_metadata | location, field, establishment year, stand age and life, reporting year, cut schedule, irrigation and management route, accepted fresh mass, dry-matter fraction, reject destinations and reference-gate evidence |
+| required_quality_disclosure | record completeness by phase and cut, mass estimation method, dry-matter sampling, route separation, prospective stand-life assumptions, concrete flow identity verification and emission-method version |
+| update_trigger | changed product gate, new route, revised stand-life attribution, changed cutting schedule, material yield or moisture change, new emission method, or newly verified flow identity |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `umn-alfalfa-establishment` | extension_guidance | University of Minnesota Extension, “Alfalfa establishment: Management strategies”, https://extension.umn.edu/agriculture/crop-production/forages/alfalfa-establishment-management-strategies | pure-live-seed basis, seed rate, coating/inoculation, establishment nutrients and perennial establishment records |
+| `umn-alfalfa-fertilizer` | extension_guidance | University of Minnesota Extension, “Alfalfa fertilizer recommendations”, https://extension.umn.edu/agriculture/crop-production/nutrient-management-for-minnesota-crops/fertilizing-alfalfa | soil-test and yield-goal nutrient decisions, lime timing and limits on routine N fertilizer |
+| `uc-alfalfa-establishment` | extension_guidance | UC Statewide IPM Program, “Planting and Establishing a Stand”, https://ipm.ucanr.edu/agriculture/alfalfa/planting-and-establishing-a-stand-stand-establishment/ | establishment operations, irrigation, seedbed and stand acceptance |
+| `uc-alfalfa-irrigation` | extension_guidance | UC Statewide IPM Program, “Irrigation and Wheel Traffic Considerations”, https://ipm.ucanr.edu/PMG/C001/m001scirrwheel.html | irrigation timing, field traffic and regrowth management |
+| `uc-alfalfa-established-ipm` | extension_guidance | UC Statewide IPM Program, “Integrated Weed Management in Established Alfalfa”, https://ipm.ucanr.edu/agriculture/alfalfa/integrated-weed-management-in-established-alfalfa/ | established-stand management, irrigation timing and crop-protection records |
+| `umn-alfalfa-drought-2024` | extension_guidance | University of Minnesota Extension, “Alfalfa during drought”, reviewed 2024, https://extension.umn.edu/agriculture/crop-production/forages/alfalfa-during-drought | crop water-use rate, irrigation scheduling and rainfed/irrigated route separation |
+| `umn-alfalfa-harvest-loss` | extension_guidance | University of Minnesota Extension, “Alfalfa scissors cut sampling procedure”, https://extension.umn.edu/agriculture/crop-production/forages/alfalfa-scissors-cut-sampling-procedure | harvest quality sampling and harvest-loss evidence |
+| `usda-ars-alfalfa-irrigation` | literature | USDA Agricultural Research Service, “Effect of sprinkler irrigation depth and uniformity on alfalfa yield and quality”, https://www.ars.usda.gov/research/publications/publication/?seqNo115=337586 | seasonal water use, multiple cuts and water-productivity context |
+| `usda-ars-alfalfa-management-2024` | dataset | USDA Agricultural Research Service project report 440524, FY2024, https://www.ars.usda.gov/research/project/?accnNo=440524&fy=2024 | perennial stand life, cutting schedules, cut contribution and route-specific management |
+| `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement to the 2006 Guidelines, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | managed-soil N2O, indirect nitrogen emissions, lime/urea CO2 and forage-renewal residue N |
+| `area-time-identity` | method_factor | Physical area-time identity | establishment and stand-year attribution |
+| `area-balance-identity` | method_factor | Physical area balance identity | seeded, established and productive area checks |
+| `mass-balance-identity` | method_factor | Physical mass-conservation identity | cut mass reconciliation and rejected biomass |
+| `reference-flow-identity` | method_factor | PCR normalization identity | exact reference output and normalization |

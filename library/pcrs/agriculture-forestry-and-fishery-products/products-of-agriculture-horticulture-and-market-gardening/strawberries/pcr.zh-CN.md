@@ -1,8 +1,815 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.strawberries
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 草莓
+
+## 1. 范围与适用性
+本规则适用于在农场大门或首次声明交接点交付的栽培草莓，覆盖作物周期、采收、分级、可选初级调理、投入、产出、损失、拒收物和联产品；除非明确声明，否则不含零售、消费者使用和报废。
+
+## 2. 产品类别身份
+产品为草莓果实（CPC 01354），可来自露地、保护地或混合生产。应说明生产系统、地点/区域、作物年度、重要时的品种/品种组和交接点。
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.strawberries |
+| classification_refs | CPC 3.0 / 01354; mapping relation: exact |
+| covered_products | 栽培的新鲜草莓 |
+| excluded_products | 苗圃材料、加工产品、零售和消费者使用 |
+| representative_product | 声明交接点的可销售新鲜草莓 |
+
+## 3. 参考流
+| 字段 | 值 |
+| --- | --- |
+| What | 声明交接点的可销售草莓 |
+| How much | 1 kg 鲜草莓 |
+| How well | 等级、成熟度、水分状态和可销售状态 |
+| How long or cycle | 一个作物年度或生产周期 |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | 声明交接点的可销售新鲜草莓（UUID 未解析；有意留空） |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | 生产系统；地点/区域；作物年度；品种/品种组；采收和可销售质量；拒收/损失/返工/回收去向；灌溉和能源；肥料产品及养分基础；调理；交接点；分配基础；报告期和资产归属 |
+
+每份前景数据包须声明实际路线、终端产品状态和交接门，保留原始称量、质量平衡及批次追溯记录。以该门的唯一交接参考输出归一化，前序工序采用实测转移数量。
+
+唯一参考输出为 `reference_product_at_declared_handoff`，由下列实际路线在声明交接门的产品承接。原路线输出编号用于追溯实际来源和物理状态，不再分别固定为参考数量。
+
+## 4. 计量与单位规则
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `measurement-01` | all product and waste masses | 质量 | kg | 使用一个声明的交接基础，并核对采收、可销售、降级、拒收和丢弃质量。 |
+| `measurement-02` | fertilizer and amendments | 产品和养分质量 | kg 产品；kg N/P/K | 记录实际产品质量和声明的养分基准；养分质量不替代产品质量。 |
+| `measurement-03` | area, time, water and energy | 活动特定属性 | 声明的活动单位 | 保留原始单位并记录换算、灌溉来源和能源载体。 |
+
+## 5. 系统边界
+### 边界概化
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | 受管理的草莓地点和作物周期，包括可归属的建植投入 |
+| starting_condition_role | 草莓生产的起始条件 |
+| product_classification_scope | 对应 CPC 3.0 01354 的栽培新鲜草莓果实 |
+| recursive_input_rule | 对声明的外购投入停止同类产品递归，并链接其上游数据集 |
+| upstream_dataset_requirement | 为跨越边界的外购投入和服务提供适用背景数据集 |
+| disclosure | 声明系统、地点、周期、交接点、产量、损失、投入、去向、分配和未解析身份 |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary-01` | foreground system | 起始于受管理的草莓地点和作物周期，包括可归属的建植投入。 | `source-02` |
+| `boundary-02` | foreground system | 包括种苗、土壤/基质准备、肥料/改良剂、作物保护、灌溉、田间/温室能源、可归属基础设施、采收、分级和交接前初级调理。 | `source-02` |
+| `boundary-03` | purchased inputs and waste | 外购投入须使用适用背景数据并披露未解析身份；残余物、损失、拒收物和废物在声明去向前仍在边界内。 | `source-02` |
+
+## 6. 过程清单结构
+### 过程图
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `process-01` | 作物栽培管理 | required | 全部作物周期作业 | managed biological production | 作物周期和可销售 kg |
+| `process-02` | 采收和捕获 | required | 全部采收作业 | harvest capture | 采收和可销售 kg |
+| `process-03` | 分级和交付 | required | 发生分级或交付时 | grading and sorting | 交付 kg |
+| `process-04` | 初级调理 | conditional | 交付前发生清洗、冷却或包装时 | primary conditioning | 调理 kg |
+| declared_reference_handoff | 声明交接门的产品计量 | required |  | foreground | reference_product_at_declared_handoff |
+
+### 过程：作物栽培管理（`process-01`）
+#### 输入
+##### 产品流
+###### 种植材料（`row-01`）
+按地点或地块记录种植材料、品种或品种组、繁殖形态、数量和供应商。
+- 选定流：草莓种植材料（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg 产品
+- 数量规则：供应商、发票和种植记录
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 可销售草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：作物周期（`crop_cycle`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-cultivation`
+- 来源：`source-01`
+###### 尿素肥料（`process_01_agricultural_nutrient_inputs_urea`）
+
+**process_01_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+逐一采集每种肥料产品。保留每种实际产品的身份、数量、配方、养分组成、施用事件和分配关系；复合产品不得重复计数。
+原始活动或阶段基准：每 1 kg 可销售草莓.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 硫酸铵肥料（`process_01_agricultural_nutrient_inputs_ammonium_sulfate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：硫酸铵 `8c6f0cbb-16d7-4dc9-8d55-e8dea17d7faf`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-fertilizer-identities`
+
+仅当实际配方及等级兼容时使用此产品身份。保留供应商组成及质量记录，不以养分质量、稀释溶液质量或服务活动替代产品质量。UUID本身不提供剂量或排放因子。
+
+###### 重过磷酸钙肥料（`process_01_agricultural_nutrient_inputs_triple_superphosphate`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：重过磷酸钙肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-fertilizer-identities`
+
+###### 氯化钾肥料（`process_01_agricultural_nutrient_inputs_potassium_chloride`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：氯化钾肥料
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-fertilizer-identities`
+
+###### 作为肥料施用的牛粪（`process_01_agricultural_nutrient_inputs_cattle_manure`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：作为肥料施用的牛粪
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-organic-nutrients`
+
+###### 施入土壤的植物残体堆肥（`process_01_agricultural_nutrient_inputs_plant_compost`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 按产品实物质量计一次，并保留含水率、N/P/K 配方及施用事件；养分量是计算属性，不得另计同一产品。未列出的复合肥和有机肥须按配方或原料单独建卡。
+
+- 选定流：施入土壤的植物残体堆肥
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-organic-nutrients`
+
+###### 灌溉水（`row-04`）
+记录灌溉水源、体积及地块或生产单元的施用基础。
+- 选定流：灌溉供水（UUID unresolved；intentionally blank）
+- 流属性/单位：体积 / m3
+- 数量规则：水表、交付单、发票或作业日志
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 可销售草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：作物周期（`crop_cycle`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-cultivation`
+- 来源：`source-01`
+###### 设备供电点的电力（`row_18_electricity`）
+
+**row_18 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+记录栽培作业使用的电力、燃料和其他能源载体。
+原始活动或阶段基准：每 1 kg 可销售草莓.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能源 / kWh
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-agricultural-energy`
+
+此绑定为使用点交流电，未特指供电技术、电压及供应方。须确认实际为交流供电，直流电需另选身份。数据库参考为1 MJ：保留电表kWh，链接参考数量时按1 kWh = 3.6 MJ仅换算一次。内部发电衔接前景发电过程，不额外计入外购电力负担。
+
+###### 供应设备的柴油（`row_18_diesel`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 电力记录供应点；燃料保留品种、密度和热值口径；外购热量与本地燃料产热互斥核算，禁止把供热燃料再计一次。
+
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_cultivation` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_cultivation`
+- 来源：`source-01`；`fao-agricultural-energy`
+
+#### 输出
+##### 产品流
+###### 作物产出（`row-05`）
+根据分级前采收批次记录计算作物产出。
+- 选定流：草莓作物产出（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：作物和采收质量记录
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 可销售草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp-cultivation`
+- 来源：`source-01`
+##### 废物流
+###### 残余物和田间损失（`row-06`）
+记录作物残余物和田间损失的数量、去向以及处理或回收路线。
+- 选定流：作物残余物和田间损失（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：田间记录、损失估算和质量平衡
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 可销售草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-cultivation`
+- 来源：`source-01`
+
+### 过程：采收和捕获（`process-02`）
+#### 输入
+##### 产品流
+###### 可采收果实（`row-07`）
+根据移出和分级前的作物记录计算可采收果实。
+- 选定流：可采收果实（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：作物估算与采收记录对账
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 采收草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp-harvest`
+- 来源：`source-01`
+#### 输出
+##### 产品流
+###### 采收草莓（`row-08`）
+使用校准秤或采收日志记录送往分级或交付的草莓。
+- 选定流：采收草莓（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：称重单或采收日志
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 采收草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-harvest`
+- 来源：`source-01`
+##### 废物流
+###### 采收损失（`row-09`）
+记录田间损失或偶发材料并注明去向。
+- 选定流：采收损失（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：损失记录和质量平衡
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 采收草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-harvest`
+- 来源：`source-01`
+
+### 过程：分级和交付（`process-03`）
+#### 输入
+##### 产品流
+###### 进入分级的果实（`row-10`）
+将进入分级的质量与采收批次记录对账。
+- 选定流：进入分级的草莓（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：接收记录和采收对账
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp-grading`
+- 来源：`source-01`
+#### 输出
+##### 产品流
+###### 可销售等级（`row-11`）
+记录接收的可销售等级和发运重量。
+- 选定流：新鲜可销售草莓（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+原始产出计量与核对要求：分级和发运记录
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-grading`
+- 来源：`source-01`
+###### 降级或其他用途果（`row-12`）
+将降级或其他用途果与合格商品等级分开记录，并披露其去向。
+- 选定流：降级或其他用途草莓（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：分级记录和去向核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-grading`
+- 来源：`source-01`
+##### 废物流
+###### 拒收或丢弃果实（`row-13`）
+记录拒收果实、损失及处理路线。
+- 选定流：草莓拒收物或废物（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：拒收记录和质量平衡
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-grading`
+- 来源：`source-01`
+
+### 过程：初级调理（`process-04`）
+#### 输入
+##### 产品流
+###### 进入调理的原料果（`row-14`）
+适用时记录调理接收的原料果，并将其与进料分级或发运批次关联。
+- 选定流：进入调理的原料草莓（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：进料记录和批次核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：作物周期（`crop_cycle`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-conditioning`
+- 来源：`source-01`
+###### 调理用水（`row-15`）
+当清洗或其他调理用水跨越前景边界时，记录其数量。
+- 选定流：调理供水（UUID unresolved；intentionally blank）
+- 流属性/单位：体积 / m3
+- 数量规则：水表、发票和运行日志
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：作物周期（`crop_cycle`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-conditioning`
+- 来源：`source-01`
+###### 木制板条箱（`row_19_wood_crate`）
+
+**row_19 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
+
+当包装或呈现材料跨越前景边界时，记录调理运行消耗的材料。
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：木制板条箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_conditioning` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning`
+- 来源：`source-01`；`fao-package-identities`
+
+###### 瓦楞纸板箱（`row_19_corrugated_box`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：瓦楞纸板箱
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_conditioning` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning`
+- 来源：`source-01`；`fao-package-identities`
+
+###### 聚乙烯包装薄膜（`row_19_pe_film`）
+
+用设备、供应商及同期计量记录确认身份、等级、状态和单位；UUID 尚未确认。 记录组成、净质量、使用次数和归还损耗；可重复使用品按实际周转归属，包装与产品质量分开。不同处理去向分别建交换，不假定回收抵扣。
+
+- 选定流：聚乙烯包装薄膜
+- 流属性 / 单位：质量 / kg
+- 数量规则：依 `cp_conditioning` 采集本卡身份的原始数量，按原有归属规则计算每声明参考流的交换量。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_conditioning`
+- 来源：`source-01`；`fao-package-identities`
+
+###### 交流电 (`row-20_electricity`)
+
+草莓批次实际电动清洗、冷却、稳定化及包装设备；若有独立热处理，按实际设备确认其供能。
+
+仅对本节点有记录的交流用电启用。该身份未特指电压、技术及供应方，须记录并选择兼容上游供应。保留实测kWh，按1 kWh = 3.6 MJ准确换算为MJ；不得将电能视为燃烧燃料或有效热。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性 / 单位：能量（数据库参考属性：净热值） `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- 数量规则：按`cp-conditioning`仅采集归属本节点的该载能体数量。包含能耗的服务及共用量仅对账归属一次；归属量乘声明参考数量，再除以相同产品单位下匹配的最终合格产出数量。保留过程原生吞吐记录，不对最终参考量再次归一化。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：per declared reference flow
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp-conditioning`
+- 来源：`route-energy-fao`
+
+执行第8节`row-20_identification`要求。不继承原集合卡的数值范围或默认值。
+
+#### 输出
+##### 产品流
+###### 交付处的调理草莓（`row-16`）
+记录声明交付处的最终调理草莓。
+- 选定流：交付处新鲜草莓（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+原始产出计量与核对要求：发运记录
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-conditioning`
+- 来源：`source-01`
+##### 废物流
+###### 调理损失和拒收物（`row-17`）
+记录调理损失、拒收物和去向。
+- 选定流：调理损失或拒收物（UUID unresolved；intentionally blank）
+- 流属性/单位：质量 / kg
+- 数量规则：运行质量平衡和废物记录
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+原始活动或阶段基准：每 1 kg 交付草莓.
+
+- 归一化基准：每声明的参考流
+- 数量范围：宽泛的临时 QA 护栏；以场址特定记录替换
+  - 范围角色：QA 护栏（`qa_guardrail`）
+  - 下限：0
+  - 上限：1000
+  - 单位：每 kg 产品的声明流单位
+  - 基准：一个声明的作物周期；超出范围须说明
+  - 基准类型：作物周期（`crop_cycle`）
+  - 证据类型：推理估计（`reasoned_estimate`）
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp-conditioning`
+- 来源：`source-01`
+
+
+### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
+该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
+#### 输入
+##### 产品流
+###### 实际路线的交接产品（`actual_route_product_for_handoff`）
+记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
+- 选定流：声明交接点的可销售新鲜草莓（UUID 未解析；有意留空）
+- 流属性 / 单位：质量 / kg
+- 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+该计量节点不产生新的废物投入。
+##### 基本流
+该计量节点不产生新的资源投入。
+#### 输出
+##### 产品流
+###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
+- 选定流：声明交接点的可销售新鲜草莓（UUID 未解析；有意留空）
+- 流属性 / 单位：质量 / kg
+- 数量规则：1 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+实际状态的产品 UUID 须独立核实；当前未确认时保持待核实，不继承前序或其他路线的 UUID。
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+实际损失已在发生工序记录；不得在此重复记录。
+##### 基本流
+实际排放已在发生工序记录；不得在此重复记录。
+
+## 7. 分配与联产品处理
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation-01` | plots, systems, runs, grades and conditioning lines | 记录支持时分开核算地块、系统、批次、等级和调理线；否则披露汇总基础。 | `source-03` |
+| `allocation-02` | shared burdens and co-products | 列出有意产出并采用一种有记录的物理或经济基础；残余物和废物除非明确声明为产品，否则不分配。 | `source-03` |
+| `allocation-03` | crop-year and multi-period assets | 将建植和跨期资产关联到作物年度、阶段、替换和终止；事件未解决时不得最终确定。 | `source-03` |
+| `allocation-04` | downgrade, recovery and disposal | 明确返工、回收、降级和处置路径；拒收果不计入合格产出且不得重复计量。 | `source-03` |
+
+具体身份卡不继承原集合卡的数量范围。实际数量由原始记录、库存/计量对账及声明参考流计算；在取得对应身份、单位、期间和边界一致的证据前，不提供默认量或数值筛查范围。缺少范围是质量披露项，并非零投入或完整性证明。
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
+## 8. 前景数据采集、计算与质量规则
+
+### 完成数据集前确认具体投入身份
+
+依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。
+
+| requirement_id | collection_protocol_id | 保留的采集范围 |
+| --- | --- | --- |
+| `row_03_specific_input` | `cp-cultivation` | 作业 process_01：记录实际使用的作物保护产品、有效成分或制剂、施用事件和去向。 原数量方法：施用日志、供应商记录和发票 |
+
+
+### 按实际路线确认能源身份
+
+按实际产品状态、作业、设备及供能记录选择能源交换。下列条件式卡片不是必用或穷尽的燃料清单。逐项记录适用性、所用载能体、供应商、服务期间、原生数量及分配；对于尚未表示的实际投入，须另建物理身份具体的卡片并核验UUID。未识别投入仍是明确的完整性缺口，不得记为零或笼统能源交换。人工、环境干燥或绕过某节点的证据，仅能支持相应作业的未使用结论。即使未列示例卡，也须保留全部必需作业的调查。
+
+区分外购供能与现场转换。自产电力通过内部连接衔接前景发电过程，其实际燃料及排放只在发电节点计入一次；同一内部转移不得再计外购电力供应。外购热亦不得重复计入供应商侧燃料。将共用电表、承包服务已含能耗与现有卡片对账，同一物理数量仅归属一次。保留原始量、输出吞吐、共用服务分配及出口后活动排除要求。逐载能体仅进行一次期间与输出归属，以相同产品单位下匹配的最终合格产出缩放至声明参考数量，不再次归一化已归一化数量。过程原生强度须通过实测吞吐衔接最终产出。这些要求不设用量默认值，也不证明数据集完整。
+
+| requirement_id | collection_protocol_id | 必需作业及证据 |
+| --- | --- | --- |
+| `row-20_identification` | `cp-conditioning` | 草莓批次实际电动清洗、冷却、稳定化及包装设备；若有独立热处理，按实际设备确认其供能。 原始活动或阶段基准：每 1 kg 交付草莓. (`route-energy-fao`) |
+
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp-cultivation` | `process-01` | inputs and outputs | 发票、日志、水表、田间簿 | 产品、养分、数量、用水、能源、作物产出 | 对账供应商和田间记录；原始汇总与分配：按地点和周期汇总 `row_03_specific_input`: 作业 process_01：记录实际使用的作物保护产品、有效成分或制剂、施用事件和去向。 原数量方法：施用日志、供应商记录和发票 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | kg、kg 养分、m3、kWh | 作业/月度 | 全作物周期 | 各地点/地块 | 每声明的参考流 | 发票、水表和审查 |
+| `cp-harvest` | `process-02` | harvested fruit and loss | 称重单和采收日志 | 批次、日期、质量、地块、去向 | 每批次称量并对账；原始汇总与分配：汇总批次 | kg | 每批次 | 采收季 | 各地块 | 每声明的参考流 | 校准秤和日志 |
+| `cp-grading` | `process-03` | incoming, accepted and rejected fruit | 分级和发运记录 | 进料、等级、质量、去向 | 批次质量平衡；原始汇总与分配：核对全部状态 | kg | 每批次 | 分级期间 | 各产线/地点 | 每声明的参考流 | 发运和去向记录 |
+| `cp-conditioning` | `process-04` | conditioning input, output and waste | 运行日志、水表、发票 | 批次、投入、公用工程、产出、废物 | 与批次关联的对账；原始汇总与分配：按批次质量分配 按路线确认要求：`row-20_identification`: 草莓批次实际电动清洗、冷却、稳定化及包装设备；若有独立热处理，按实际设备确认其供能。 原始活动或阶段基准：每 1 kg 交付草莓. (`route-energy-fao`) 对每项适用投入核验实际使用、设备及供能，完成数据集前须按每种实际载能体分别建立具体交换。身份或数量证据缺失仍为待补证，不记为零。区分外购供应、内部发电及承包服务包含项，仅计入一次能耗；不以条件式示例替代未核实路线。 | kg、m3、kWh | 每次运行 | 调理期间 | 调理单元 | 每声明的参考流 | 水表和运行记录 |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | process_01 | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 实际生产节点；土壤/介质路线；气候土壤；肥料产品量及组成；残体去向及氮；相关矿化/有机土/排泄活动；方法层级方程版本；路径因子及单位；石灰尿素；实际燃料；物质/环境；供应覆盖; 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calculation-01` | all normalized rows | 流数量 / 声明交接点的合格草莓质量。 | 流数量；合格质量 | 每 kg 合格草莓的数量 | `source-03` |
+| `calculation-02` | site or period aggregation | 按数量加权汇总并披露分母；不得直接平均强度。 | 地点/期间数量；分母 | 加权强度 | `source-03` |
+| `calculation-03` | fertilizer and amendments | 产品质量 × 声明的养分比例；分别保留产品质量和养分质量。 | 产品质量；养分比例 | 产品和养分数量 | `source-02` |
+| `calculation-04` | harvest, grading and conditioning | 在声明容差内核对进料与合格、降级、回收、返工、拒收和丢弃状态。 | 全部质量记录 | 质量平衡结果 | `source-03` |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_environment_coverage` | 实际管理生产节点 | 针对实际自主管理生产节点，逐项记录土壤直接 N2O、挥发/沉降间接 N2O、淋溶/径流间接 N2O、NH3/NOx 与养分损失，以及实际施石灰/尿素 CO2 的适用性。主核算依次采用有代表性的路径实测、经验证且适用于作物/土壤/管理的场址或国家方法；否则 N2O 与石灰/尿素 CO2 采用适用的2006 IPCC及2019修订管理土壤方程，按气候和投入类别选因子。保留确切版本、方程、层级、活动量及因子单位和气候/管理适用性，不规定通用剂量或因子。无土/设施路线须采用适用于实际介质的方法，不强套土壤因子。化肥、有机投入、残体、实际相关矿化/有机土和排泄物路径使用同一田块期间氮台账；路径不适用须证明，缺数不能填零。直接及各间接分量分别计算，逐项只分配到匹配的现有或新增具体卡一次，不将总量与组成重复相加。N2O-N 乘44/28转分子 N2O 一次。NH3、NOx及养分/农药损失采用适用实测或有据物质/去向模型；总N/P或未解释平衡差不等于某化合物释放。保留实际接收环境及分子、元素或报告口径，间接形成不能在来源台账再扣同一氮。实际本地燃烧另按燃料特定的燃烧方法记录；外购电、热和服务承接上游覆盖一次。有据释放按具体身份建卡，复用现有匹配卡，采用已核实UUID或明确未决身份。适用方法、活动量、因子或身份缺失会阻止完整性，不构成有据零值；原始活动/释放总量归属后按匹配合格参考产出归一化一次。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 | `review-ipcc-soils-2019` |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
+
+### 数据质量要求
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `quality-01` | all foreground records | 记录时间、地理和技术代表性、完整性、测量或估算方法、不确定性及数据质量说明。 | 田间记录、日志和审查 |
+| `quality-02` | identity and qualifiers | 记录生产系统、地点/区域、作物年度、品种/品种组、交接点和未解析身份状态。 | 数据集元数据和来源记录 |
+| `quality-03` | mass and allocation | 使用校准称量或有记录的估算，核对批次，并保留分配和去向证据。 | 称重记录、质量平衡和去向记录 |
+
+## 9. 验证规则
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validation-01` | reference flow | 确认 1 kg 参考基础、质量属性和 kg 单位；未解析参考身份仍是明确审查缺口。 | `source-03` |
+| `validation-02` | process sequence | 确认栽培—采收—分级—调理/交接顺序，并为每个产出、损失、拒收物和废物状态指定去向。 | `source-03` |
+| `validation-03` | mass balance | 在记录容差内确认进料等于合格、降级、回收、返工和丢弃状态之和。 | `source-03` |
+| `validation-04` | products, nutrients and allocation | 确认产品/养分基础、单位、作物年度归属、分配、期间和返工处理，避免重复计量。 | `source-02`、`source-03` |
+| `validation-05` | dataset completeness | 缺少限定信息、身份、证据、去向或分配决定时，数据集必须进入审查。 | `source-03` |
+
+## 10. 已发布数据集画像
+| Field | Value |
+| --- | --- |
+| dataset_role | 农场大门草莓 LCA 的二级前景数据集 |
+| downstream_use | 前景过程和生命周期模型构建 |
+| allowed_use | 声明的草莓系统、交接点、地理范围和报告周期 |
+| excluded_use | 加工、零售、消费者使用或实质不同的系统 |
+| required_metadata | 地点、系统、品种/品种组、周期、产量、投入、损失、去向、分配和身份状态 |
+| required_quality_disclosure | 完整性、代表性、测量、估算、不确定性和未解析 UUID |
+| update_trigger | 技术、边界、投入、分配或报告基础发生实质变化 |
+
+## 11. 数据源
+| source_id | type | Reference | Use |
+| --- | --- | --- | --- |
+| `source-01` | dataset | 当前产品路线证据和草莓生产周期前景记录 | 身份、数量、边界、产出状态和采集完整性 |
+| `source-02` | official_guidance | 审查阶段选定的官方农艺指南 | 实践背景，不替代场址特定数量 |
+| `source-03` | standard | 审查阶段选定的 ISO 14040/14044 一致 LCA 原则和项目规则 | 边界、分配、记录和数据质量 |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `fao-fertilizer-identities` | official_guidance | FAO Fertilizer Specifications, https://www.fao.org/agriculture/crops/thematic-sitemap/theme/spi/plantnutrition/fertspecs/en/ | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-organic-nutrients` | official_guidance | FAO How to Make and Use Compost, https://www.fao.org/4/i2230e/i2230e.pdf | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-agricultural-energy` | official_guidance | FAO Energy demand and consumption in African agriculture, Annex C case-study results, https://www.fao.org/4/v9766e/v9766e08.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `fao-package-identities` | official_guidance | FAO Packaging for fruits, vegetables and root crops, section 4, https://www.fao.org/4/x5016e/X5016E04.htm | 条件性具体身份和方法依据；不证明场址使用，也不设定用量 |
+| `route-energy-fao` | official_guidance | FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm | 仅支持设备及载能体可能性，适用性由现场记录确定；不采用能耗强度、燃料比例或默认组合。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |
+| `review-ipcc-soils-2019` | official_guidance | IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | 管理土壤直接/间接N2O及石灰/尿素CO2方法语境；因子须匹配实际适用性及场址活动，不是产品默认值。 |

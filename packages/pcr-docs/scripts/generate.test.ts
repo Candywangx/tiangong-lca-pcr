@@ -1,3 +1,11 @@
+import {readSearchManifest,unpackSearchFile} from "../lib/search-pack.ts";
+import {parseGenerationReport} from "./generation-report.ts";
+import {verifySearchAssets} from "./search-assets.ts";
+import {decodeInlineDownloadUrl} from "./raw-download.ts";
+import {decodeRecordData} from "../lib/record-data.ts";
+import {decodeSearchEntries} from "../lib/search-wire.ts";
+import {Index} from "flexsearch";
+import {searchTerms} from "../lib/search-terms.ts";
 import {parseSiteManifest} from "../lib/site-contracts.ts";
 import {isUnknownRecord} from "../../pcr-core/src/types.ts";
 import {assertManifest} from "../../../builder/lib/schema-contracts.ts";
@@ -33,7 +41,7 @@ import { parseYaml, renderYaml } from "../../pcr-core/src/yaml-lite.ts";
 const script = fileURLToPath(new URL("./generate.ts", import.meta.url));
 const hash = (bytes: string | Uint8Array) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
-test("real generator preserves multilingual released snapshots and excludes open revision bodies", () => {
+test("real generator preserves multilingual released snapshots and excludes open revision bodies", async () => {
   const temporary = fs.mkdtempSync(path.join(tmpdir(), "pcr-site-history-")),
     root = path.join(temporary, "source"),
     output = path.join(temporary, "output");
@@ -202,6 +210,17 @@ test("real generator preserves multilingual released snapshots and excludes open
         record.versions!.map((item) => item.version),
         ["1.0.0", "1.1.0"],
       );
+    const allRecords = [site.records[0]!, ...site.historicalRecords!];
+    for (const page of site.pages.filter(page => page.kind === "pcr"))
+      assert.equal(Object.hasOwn(page, "downloads"), false, "current/history PCR metadata uses its owning record's downloads");
+    assert.ok(allRecords.every(record => record.downloads.length > 0), "every current/history record retains original downloads");
+    assert.equal(new Set(allRecords.map(record => record.dataUrl)).size, 1, "Current and historical data share one bounded transport pack");
+    for (const record of allRecords) {
+      const packed: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", record.dataUrl), "utf8"));
+      const expected = fs.readFileSync(path.join(output, ".generated", record.dataPath), "utf8");
+      assert.equal(JSON.stringify(decodeRecordData(packed, record.dataKey)), expected);
+      assert.equal(fs.existsSync(path.join(output, "public/generated", record.dataPath)), false);
+    }
     const source = createDocumentSource(site);
     assert.deepEqual(
       publicHomeLanguages(site).map((language) => language.code),
@@ -210,15 +229,17 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 3, "new indexes use lossless sparse score slots");
+      assert.equal(search.schemaVersion, 5, "physical packs preserve independent v4 logical indexes");
       assert.equal(search.language, language);
-      assert.ok(Array.isArray(search.shards) && search.shards.length > 0);
-      for (const shard of search.shards) {
-        assert.ok(isUnknownRecord(shard) && typeof shard.url === "string");
-        const data: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", shard.url), "utf8"));
-        assert.ok(isUnknownRecord(data) && isUnknownRecord(data.entries));
-        assert.ok(Object.values(data.entries).length > 0);
-        assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
+      const packed=readSearchManifest(search,language);
+      assert.ok(packed.files.length > 0);
+      for(const file of packed.files){
+       const members=await unpackSearchFile(packed,file,fs.readFileSync(path.join(output,"public",file.url)),hash);
+       for(const data of members){
+        const index = new Index({tokenize: "strict", encode: (value: unknown) => searchTerms(value, language)});
+        for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 4, data.scoreMasks, data.postingDeltas, data.columnarMaps))) index.import(key, JSON.stringify(payload));
+        assert.ok(index.search("wheat", {limit: 30}).length > 0, "Restored logical exports remain readable by the pinned engine");
+       }
       }
       const currentPages = recordPages(site, site.records[0]!, language);
       assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);
@@ -269,6 +290,8 @@ test("real generator preserves multilingual released snapshots and excludes open
         .filter((page) => page.kind === "catalog" && page.language === "de-DE")
         .every((page) => !page.indexable),
     );
+    const searchReport=parseGenerationReport(fs.readFileSync(path.join(output,".generated/report.json"),"utf8"));
+    await verifySearchAssets(path.join(output,"public"),searchReport.sourceCommit,searchReport.search);
     const report = parseReport(
       fs.readFileSync(path.join(output, ".generated/report.json")),
     );
@@ -354,11 +377,28 @@ test("metadata summaries describe the page they belong to, and report title-only
       languages: ["en-US", "zh-CN"],
       titles: { "en-US": "Synthetic wheat seed", "zh-CN": "合成测试小麦种子" },
     });
+    fs.appendFileSync(path.join(fixture.pcrDir, "pcr.en-US.md"), "\n[Original metadata](manifest.yaml)\n[Metadata fields](manifest.yaml#fields)\n");
+    for (const language of ['en-US', 'zh-CN']) {
+      const filename = path.join(fixture.pcrDir, `pcr.${language}.md`);
+      const opening = fs.readFileSync(filename, 'utf8') + '\n\n';
+      const text = language === 'zh-CN' ? '原文保真🙂 ' : 'Original source bytes. ';
+      const repeats = Math.floor((72 * 1024 - Buffer.byteLength(opening)) / Buffer.byteLength(text));
+      fs.writeFileSync(filename, opening + text.repeat(repeats) + '\n');
+      assert.ok(fs.statSync(filename).size > 64 * 1024 && fs.statSync(filename).size <= 72 * 1024 + 1);
+    }
+    const candidateManifest = path.join(fixture.pcrDir, "manifest.yaml");
+    const candidate = checkedManifest(fs.readFileSync(candidateManifest, "utf8"));
+    candidate.modules = { core: ["reference-flow"] };
+    fs.writeFileSync(candidateManifest, renderYaml(candidate));
+    const modulePath = "library/modules/core/reference-flow.md";
+    fs.mkdirSync(path.dirname(path.join(root, modulePath)), { recursive: true });
+    fs.copyFileSync(new URL("../../../library/modules/core/reference-flow.md", import.meta.url), path.join(root, modulePath));
+    syncStructured({root, pcr: fixture.libraryPath});
     lifecycle({
       root,
       pcr: fixture.libraryPath,
-      status: "active",
-      "content-maturity": "reviewed_methodology",
+      status: "candidate",
+      "content-maturity": "authored_methodology",
       translation: "zh-CN=reviewed",
     });
     const registryPath = "classifications/aliases/pcr-id-aliases.yaml";
@@ -446,6 +486,11 @@ test("metadata summaries describe the page they belong to, and report title-only
     }
 
     const pages = site.pages.filter((page) => page.kind === "pcr");
+    assert.ok(pages.every(page => !Object.hasOwn(page, "downloads")), "PCR page metadata does not duplicate native download URLs");
+    assert.equal(site.records[0]!.downloads.length, 4, "complete PCR sources remain on the record");
+    const modulePage = site.pages.find(page => page.kind === "module");
+    assert.ok(modulePage?.downloads?.some(download => download.name === "reference-flow.md"), "non-PCR module pages retain their download links");
+    assert.ok(site.pages.filter(page => page.kind === "guide").every(page => Array.isArray(page.downloads)), "guide metadata retains its existing shape");
     const record = pages.find((page) => page.language === "en-US" && page.part?.index === 0);
     const chineseRecord = pages.find((page) => page.language === "zh-CN" && page.part?.index === 0);
     assert.ok(record && chineseRecord, "fixture must generate both required language pages");
@@ -466,7 +511,7 @@ test("metadata summaries describe the page they belong to, and report title-only
     assert.equal(
       report.summaries.pages,
       site.pages.filter(
-        (page) => page.kind === "pcr" || page.kind === "guide" || (page.kind === "catalog" && page.slugs.length > 1),
+        (page) => page.kind === "pcr" || page.kind === "guide" || page.kind === "module" || (page.kind === "catalog" && page.slugs.length > 1),
       ).length,
       "every document and category page is counted",
     );
@@ -481,6 +526,34 @@ test("metadata summaries describe the page they belong to, and report title-only
       "no fixture title is long enough to hide an available paragraph",
     );
     assert.ok(report.summaries.catalog_pages! > 0);
+    const metadata = report.downloads.filter(file => file.name === "manifest.yaml");
+    assert.equal(metadata.length, 1, "relative links reuse one source-bound download");
+    const inline = metadata[0]!;
+    assert.ok(inline.url.startsWith("data:application/octet-stream;base64,"));
+    assert.deepEqual(decodeInlineDownloadUrl(inline.url), fs.readFileSync(path.join(fixture.pcrDir, "manifest.yaml")));
+    assert.equal(fs.existsSync(path.join(output, "public/generated/raw", fixture.libraryPath, "manifest.yaml")), false);
+    for (const page of site.pages.filter(page => page.kind === "pcr" && page.language === "en-US")) {
+      const html = fs.readFileSync(path.join(output, ".generated", page.htmlPath!), "utf8");
+      assert.ok(html.includes(inline.url));
+      assert.ok(html.includes(inline.url + '#fields'));
+      assert.ok(html.includes('download="manifest.yaml"'));
+    }
+    for (const name of ["pcr.en-US.md", "pcr.zh-CN.md"]) {
+      const raw = report.downloads.find(file => file.sourcePath === fixture.libraryPath + "/" + name);
+      assert.ok(raw && raw.url.startsWith("data:"), "candidate required-language Markdown uses native inline transport: " + name);
+      assert.deepEqual(decodeInlineDownloadUrl(raw.url), fs.readFileSync(path.join(fixture.pcrDir, name)));
+      assert.equal(fs.existsSync(path.join(output, "public/generated/raw", fixture.libraryPath, name)), false);
+    }
+    const first = fs.readFileSync(path.join(output, ".generated/site.json"));
+    const repeated = spawnSync(process.execPath, [script, "--source-root", root, "--output-root", output], {encoding:"utf8", maxBuffer:4*1024*1024});
+    assert.equal(repeated.status, 0, repeated.stderr);
+    assert.deepEqual(fs.readFileSync(path.join(output, ".generated/site.json")), first);
+
+    fs.appendFileSync(path.join(fixture.pcrDir, "manifest.yaml"), "\n# Uncommitted eligibility substitution\n");
+    const substituted = spawnSync(process.execPath, [script, "--source-root", root, "--output-root", output], {encoding:"utf8", maxBuffer:4*1024*1024});
+    assert.notEqual(substituted.status, 0, "inline eligibility must use the pinned manifest bytes");
+    assert.match(substituted.stderr, /Source differs from pinned Git commit: .*manifest.yaml/u);
+    assert.deepEqual(fs.readFileSync(path.join(output, ".generated/site.json")), first, "failed source binding preserves the previous complete artifact set");
 
     const domain = site.pages.find(
       (page) => page.kind === "catalog" && page.language === "en-US" && page.slugs.length === 2,

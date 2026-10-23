@@ -1,8 +1,962 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.lentils-dry
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 干扁豆
+
+## 1. 范围与适用性
+
+本PCR涵盖受控田间生产、直接联合收获或割晒后联合收获、脱粒、农场清理、分级以及条件性通风或干燥后的成熟干燥完整Lens culinaris粮粒，交接点为农场门。排除青鲜蔬菜扁豆、作为种子销售的种用商品、芽菜、脱皮或分瓣扁豆、面粉、熟制品、下游工业加工、包装及离场运输。
+
+## 2. 产品类别身份
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.lentils-dry |
+| classification_refs | CPC 3.0: 01704 Lentils, dry; mapping relation: narrower |
+| covered_products | 农场门成熟干燥完整Lens culinaris粮粒 |
+| excluded_products | 青鲜蔬菜扁豆；种用商品；芽菜；脱皮/分瓣扁豆；面粉；熟制及下游加工产品 |
+| representative_product | 成熟干燥完整扁豆粮粒 |
+| production_route | 受控生物生产父活动field_production；每批次互斥选择直接联合收获或割晒后联合收获；清理和分级；直接联合收获与割晒后联合收获之间的替代技术路线差异会改变收获作业记录；条件性通风/干燥改变能源、水分损失和验证记录 |
+| market_state | 声明类别、颜色、等级、水分、损伤、裂粒/破碎、杂质和调理路线的未加工完整干粮粒 |
+
+## 3. 参考流
+| Field | Value |
+| --- | --- |
+| What | 农场门成熟干燥完整Lens culinaris粮粒 |
+| How much | 1,000 kg |
+| How well | 声明类别、颜色、等级、水分、裂粒/破碎及损伤比例、杂质、收获和调理路线 |
+| How long or cycle | 一个作物周期至农场门交接 |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1000 |
+| Reference product flow | 干小扁豆 |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | Lens culinaris；成熟完整粮粒；市场类别和颜色；农场门等级；湿基水分；裂粒/破碎和损伤比例；杂质；收获路线；通风/干燥状态 |
+
+每份前景数据包须声明实际路线、终端产品状态和交接门，保留原始称量、质量平衡及批次追溯记录。以该门的唯一交接参考输出归一化，前序工序采用实测转移数量。
+
+唯一参考输出为 `reference_product_at_declared_handoff`，由下列实际路线在声明交接门的产品承接。原路线输出编号用于追溯实际来源和物理状态，不再分别固定为参考数量。
+
+## 4. 计量与单位规则
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | 粮粒、残体、拒收物和损失质量 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 报告水分基准，并在归一化前换算到声明的农场门水分。 |
+| `field_area` | 田间记录 | Area | ha | 使用同一收获面积归一化作物周期投入和产出。 |
+| `moisture_balance` | 通风和干燥 | Mass fraction | % wet basis | 逐批测量进出料水分，并用湿基质量平衡计算去除水分。 |
+
+## 5. 系统边界
+
+前景系统从已准备田块和种植材料开始。田间生产将成熟站立作物交给独立收获节点；收获将未清理粮粒交给初级处理；分级形成合格、降级和拒收状态；条件性稳定化结束于农场门交接。每批次的直接联合收获与割晒后联合收获互斥。作业记录按田块、批次和运行批号索引，共享负荷按实测吞吐量仅分配一次。数据集采用覆盖一个作物周期的单一期间清单；除条件性稳定化外无储存，也无跨周期资产事件。
+
+### 边界概化
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | 已准备田块以及供一个作物周期使用的外购或自留种子 |
+| starting_condition_role | 前景作物生产起始条件 |
+| product_classification_scope | 农场门成熟干燥完整Lens culinaris粮粒 |
+| recursive_input_rule | 用作种子的自留扁豆粮粒仅作为上一作物周期的种子投入记录一次，不在当前周期递归生成。 |
+| upstream_dataset_requirement | 对种子、实际养分和作物保护产品、能源、电力和灌溉供应使用上游数据集。 |
+| disclosure | 声明地理位置、作物年份、品种/类别、田块面积、前茬、耕作、灌溉、收获路线、批次水分和等级、调理路线及全部残体去向。 |
+
+### 边界规则
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `boundary_farm_gate` | all processes | 纳入田间作业、收获、脱粒、农场清理、分级和交接前条件性通风/干燥；排除下游加工。 | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |
+| `boundary_route` | harvest | 每批次仅选择一种收获路线，仅在适用时记录割晒作业和落粒。 | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |
+| `boundary_conditioning` | stabilization | 仅在需要时纳入通风/干燥，并保留进出料水分、能源、时长和拒收证据。 | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| `field_production` | 扁豆田间管理生产 | required | 一个作物周期 | 受控生物生产父活动；从已准备田块到成熟站立作物 | 每种植公顷、每作物周期 |
+| `harvest_threshing` | 收获与脱粒 | required | 每批选择直接联合收获或割晒后联合收获 | 具有替代技术路线差异的独立收获节点；从站立作物到未清理粮粒 | 每收获公顷 |
+| `primary_conditioning` | 农场清理 | required | 至少一次清理 | 初级处理；从收获粮粒到清洁粮粒 | 每1,000 kg清洁粮粒 |
+| `grading_sorting` | 分级与去向指定 | required | 每个农场门批次 | 区分合格、降级、拒收和返工状态 | 每1,000 kg分级投入 |
+| `stabilization` | 通风或干燥 | conditional | 进料水分或储存风险需要干预 | 稳定化节点；从合格粮粒到稳定农场门粮粒 | 每1,000 kg最终干扁豆 |
+| declared_reference_handoff | 声明交接门的产品计量 | required |  | foreground | reference_product_at_declared_handoff |
+
+### 过程：扁豆田间管理生产 (`field_production`)
+
+#### 输入
+##### 产品流
+
+###### 种植用种子 (`planting_seed`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 种植用扁豆种子
+- 流属性/单位: Mass / kg
+- 数量规则: 计量的播种种子质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_field_inputs`
+- 来源: `manitoba-lentils-production-management`
+- 数量范围: 完整定量QA范围
+  - 范围角色: QA校验 (`qa_guardrail`)
+  - 下限: 33.6
+  - 上限: 89.7
+  - 单位: kg/ha
+  - 基准: 每种植公顷种子
+  - 基准类型: 作物周期 (`crop_cycle`)
+  - 证据类型: 外部来源 (`external_source`)
+  - 来源: `manitoba-lentils-production-management`
+
+###### 尿素肥料投入（`agricultural_nutrient_supply`）
+
+仅当声明的过程实际使用尿素肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：尿素肥料
+- 数量规则：记录该过程和期间实际使用的尿素肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_field_inputs`
+
+###### 磷酸一铵肥料投入（`agricultural_nutrient_supply_monoammonium_phosphate`）
+
+仅当声明的过程实际使用磷酸一铵肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：磷酸一铵肥料
+- 数量规则：记录该过程和期间实际使用的磷酸一铵肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_field_inputs`
+
+###### 氯化钾肥料投入（`agricultural_nutrient_supply_potassium_chloride`）
+
+仅当声明的过程实际使用氯化钾肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：氯化钾肥料
+- 数量规则：记录该过程和期间实际使用的氯化钾肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_field_inputs`
+
+###### 施用的牛粪肥投入（`agricultural_nutrient_supply_cattle_manure`）
+
+仅当声明的过程实际使用施用的牛粪肥时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：施用的牛粪肥
+- 数量规则：记录该过程和期间实际使用的施用的牛粪肥数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_field_inputs`
+
+###### 农业石灰石投入（`agricultural_nutrient_supply_agricultural_limestone`）
+
+仅当声明的过程实际使用农业石灰石时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：农业石灰石
+- 数量规则：记录该过程和期间实际使用的农业石灰石数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg 产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_field_inputs`
+
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
+
+###### 灌溉水 (`irrigation_water`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 灌溉水
+- 流属性/单位: Volume / m3
+- 数量规则: 计量或计算的输送灌溉水；经核实雨养田为零
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_field_inputs`
+- 来源: `fao-crop-water-needs`
+
+灌溉须区分作物蒸散需求、净灌溉量与总供水／取水量，核对有效降雨、土壤水库存变化、毛管补给、施用效率及实际供水边界，采用场址计量或有记录的水平衡。通用作物需水表不能确立通用灌溉上限。
+
+###### 中压电力投入（`field_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 依据采集计算 (`calculated_from_collection`)
+- 采集协议: `cp_energy_operations`
+
+###### 柴油投入（`field_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 依据采集计算 (`calculated_from_collection`)
+- 采集协议: `cp_energy_operations`
+
+##### 废物流
+
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 成熟站立扁豆作物 (`standing_mature_crop`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 成熟站立扁豆作物
+- 流属性/单位: Mass / kg
+- 数量规则: 用收获粮粒、残体和田间损失进行质量平衡
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 依据采集计算 (`calculated_from_collection`)
+- 采集协议: `cp_harvest_mass_balance`
+- 来源: `mass-balance-identity`; `ndsu-pulse-field-guide-2019`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+##### 废物流
+
+
+##### 基本流
+
+#### 输出
+
+##### 基本流
+
+###### 管理土壤氧化亚氮 (`soil_n2o`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 排放到空气的氧化亚氮
+- 流属性/单位: Mass / kg
+- 数量规则: 依据采集的氮投入和残体记录采用IPCC选定层级计算
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每作物周期每种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 方法公式 (`method_formula`)
+- 采集协议: `cp_field_emissions`
+- 来源: `ipcc-2019-managed-soils`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+### 过程：收获与脱粒 (`harvest_threshing`)
+
+#### 输入
+##### 产品流
+
+###### 接收的站立作物 (`standing_crop_input`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 成熟站立扁豆作物
+- 流属性/单位: Mass / kg
+- 数量规则: 等于同一田块的成熟站立作物交接量
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每收获种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 方法公式 (`method_formula`)
+- 采集协议: `cp_harvest_mass_balance`
+- 来源: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+###### 中压电力投入（`harvest_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 路线特定 (`route_specific`)
+原始活动或阶段基准：每收获种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 依据采集计算 (`calculated_from_collection`)
+- 采集协议: `cp_energy_operations`
+
+###### 柴油投入（`harvest_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 路线特定 (`route_specific`)
+原始活动或阶段基准：每收获种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 依据采集计算 (`calculated_from_collection`)
+- 采集协议: `cp_energy_operations`
+
+##### 废物流
+
+
+##### 基本流
+
+
+#### 输出
+##### 产品流
+
+###### 未清理收获粮粒 (`harvested_grain`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 未清理收获扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 秤量或校准产量监测器测得并记录水分的质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每收获种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_mass_balance`
+- 来源: `ndsu-pulse-field-guide-2019`
+- 数量范围: 完整定量QA范围
+  - 范围角色: QA校验 (`qa_guardrail`)
+  - 下限: 500
+  - 上限: 4000
+  - 单位: kg/ha
+  - 基准: 每公顷未清理收获粮粒
+  - 基准类型: 作物周期 (`crop_cycle`)
+  - 证据类型: 外部来源 (`external_source`)
+  - 来源: `ndsu-pulse-field-guide-2019`
+
+###### 回收秸秆和荚壳材料 (`straw_pod_material`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 扁豆秸秆和荚壳材料
+- 流属性/单位: Mass / kg
+- 数量规则: 实测回收干物质；仅在有独立预期交接时作为产品
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每收获种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_harvest_mass_balance`
+- 来源: `mass-balance-identity`
+
+本行不规定固定数值筛选界限。批次特定的一致性界限须按声明基准，依据实测进入量、水分、库存、损失和不确定性推导。守恒本身不能给出通用得率、用水量或计量容差区间。获得相容证据之前，明确报告数值范围筛查不可用，不得裁剪实测值或代入假定值。
+
+##### 废物流
+
+###### 田间与收获损失 (`field_harvest_loss`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 田间损失的扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 代表性损失样方外推至收获面积
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 路线特定 (`route_specific`)
+原始活动或阶段基准：每收获种植公顷.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 作物周期 (`crop_cycle`)
+- 证据类型: 依据采集计算 (`calculated_from_collection`)
+- 采集协议: `cp_harvest_mass_balance`
+- 来源: `ndsu-pulse-field-guide-2019`
+
+引用指南不能为全部所覆盖路线确立该宽数值区间。采用匹配的批次实测及水分／损失平衡；有路线特定证据支持界限之前，报告数值筛查不可用。不得以删除的范围替代实测得率或损失。
+
+##### 基本流
+
+
+### 过程：农场清理 (`primary_conditioning`)
+
+#### 输入
+##### 产品流
+
+###### 接收未清理粮粒 (`uncleaned_grain_input`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 未清理收获扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 与收获批次关联的实测投入质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每1,000 kg清洁粮粒产出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+###### 中压电力投入（`cleaning_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：每1,000 kg清洁粮粒产出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_energy_operations`
+
+###### 柴油投入（`cleaning_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 技术特定 (`technology_specific`)
+原始活动或阶段基准：每1,000 kg清洁粮粒产出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_energy_operations`
+
+##### 废物流
+
+
+##### 基本流
+
+
+#### 输出
+##### 产品流
+
+###### 清洁粮粒 (`cleaned_grain`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 清洁扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 去除松散杂质后的实测产出
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每1,000 kg清洁粮粒产出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_lot`
+- 来源: `mass-balance-identity`
+- 数量范围: 完整定量QA范围
+  - 范围角色: QA校验 (`qa_guardrail`)
+  - 下限: 1000
+  - 上限: 1000
+  - 单位: kg/1000 kg output
+  - 基准: 清洁产出定量基准
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 方法公式 (`method_formula`)
+  - 来源: `mass-balance-identity`
+
+##### 废物流
+
+###### 清理拒收物和杂质 (`cleaning_rejects`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 清理拒收物和杂质
+- 流属性/单位: Mass / kg
+- 数量规则: 按返工、回收或处置去向计量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每1,000 kg清洁粮粒产出.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_conditioning_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+##### 基本流
+
+
+### 过程：分级与去向指定 (`grading_sorting`)
+
+#### 输入
+##### 产品流
+
+###### 接收清洁粮粒 (`cleaned_grain_input`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 清洁扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 保留批次身份的实测分级投入
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每1,000 kg分级投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grading_lot`
+- 来源: `mass-balance-identity`
+- 数量范围: 完整定量QA范围
+  - 范围角色: QA校验 (`qa_guardrail`)
+  - 下限: 1000
+  - 上限: 1000
+  - 单位: kg/1000 kg input
+  - 基准: 进入分级的清洁粮粒
+  - 基准类型: 过程产出 (`process_output`)
+  - 证据类型: 方法公式 (`method_formula`)
+  - 来源: `mass-balance-identity`
+
+##### 废物流
+
+
+##### 基本流
+
+
+#### 输出
+##### 产品流
+
+###### 预期合格等级粮粒 (`accepted_grade_grain`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 合格等级扁豆粮粒
+- 流属性/单位: Mass / kg
+原始产出计量与核对要求：实测合格质量，排除降级、拒收和返工量
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每1,000 kg分级投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grading_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+###### 预期降级共产品粮粒 (`downgraded_grain`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 降级扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 具有独立去向的实测降级质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每1,000 kg分级投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grading_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+##### 废物流
+
+###### 分级拒收物与返工料 (`grading_rejects`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 拒收扁豆材料
+- 流属性/单位: Mass / kg
+- 数量规则: 按返回、回收或处置去向计量裂粒、破损粒、变色粒、受损粒或杂质
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每1,000 kg分级投入.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 过程产出 (`process_output`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_grading_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+##### 基本流
+
+
+### 过程：通风或干燥 (`stabilization`)
+
+#### 输入
+##### 产品流
+
+###### 需稳定化的合格粮粒 (`accepted_grain_input`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 合格等级扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 实测湿基投入质量和进料水分
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每1,000 kg最终干扁豆.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 基准流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_stabilization_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+###### 中压电力（`stabilization_energy`）
+
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每1,000 kg最终干扁豆。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_operations`
+- 来源：`ndsu-pulse-field-guide-2019`
+
+###### 柴油（`stabilization_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每1,000 kg最终干扁豆。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_operations`
+- 来源：`ndsu-pulse-field-guide-2019`
+
+###### 购入蒸汽（`stabilization_energy_steam`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：每1,000 kg最终干扁豆。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy_operations`
+- 来源：`ndsu-pulse-field-guide-2019`
+
+##### 废物流
+
+
+##### 基本流
+
+
+#### 输出
+##### 产品流
+
+###### 农场门干扁豆 (`lentils_dry_farm_gate`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 扁豆（干） `ec8a8323-9812-417c-896f-3b98f11d3cc9`
+- 流属性/单位: Mass / kg
+原始产出计量与核对要求：在声明出料水分下1,000 kg基准产品
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式: 固定值 (`fixed_value`)
+- 适用范围: 产品特定 (`product_specific`)
+原始活动或阶段基准：每1,000 kg基准产品.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 基准流 (`reference_flow`)
+- 证据类型: 方法公式 (`method_formula`)
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+- 数量范围: 完整定量QA范围
+  - 范围角色: QA校验 (`qa_guardrail`)
+  - 下限: 1000
+  - 上限: 1000
+  - 单位: kg/1000 kg reference product
+  - 基准: 每基准流最终合格粮粒
+  - 基准类型: 基准流 (`reference_flow`)
+  - 证据类型: 方法公式 (`method_formula`)
+  - 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+##### 废物流
+
+###### 稳定化拒收物 (`stabilization_rejects`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 稳定化拒收扁豆粮粒
+- 流属性/单位: Mass / kg
+- 数量规则: 按去向计量热损伤、霉变或拒收质量
+- 数值来源模式: 前景记录 (`foreground_record`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每1,000 kg最终干扁豆.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 基准流 (`reference_flow`)
+- 证据类型: 采集记录 (`collected_record`)
+- 采集协议: `cp_stabilization_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+##### 基本流
+
+###### 去除水分 (`water_removed`)
+
+按关联田块或批次记录该流，并保留其去向和交接。
+
+- 选定流: 排放到空气的水
+- 流属性/单位: Mass / kg
+- 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
+- 数值来源模式: 计算值 (`calculated_value`)
+- 适用范围: 场址特定 (`site_specific`)
+原始活动或阶段基准：每1,000 kg最终干扁豆.
+
+- 归一化基准：每声明的参考流
+- 基准类型: 基准流 (`reference_flow`)
+- 证据类型: 方法公式 (`method_formula`)
+- 采集协议: `cp_stabilization_lot`
+- 来源: `mass-balance-identity`; `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019`
+
+引用的平衡恒等式或方法不能确立通用数值界限。按相容基准，依据批次／场址实测投入、产出、水分、适用时的生长量、库存、损失与不确定性推导检查；未获支持前报告数值筛查不可用，保留实测交换，调查残差，不裁剪数值或代入默认值。
+
+### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
+该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
+#### 输入
+##### 产品流
+###### 实际路线的交接产品（`actual_route_product_for_handoff`）
+记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
+- 选定流：干小扁豆
+- 流属性 / 单位：质量 / kg
+- 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+该计量节点不产生新的废物投入。
+##### 基本流
+该计量节点不产生新的资源投入。
+#### 输出
+##### 产品流
+###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
+- 选定流：干小扁豆
+- 流属性 / 单位：质量 / kg
+- 数量规则：1000 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+实际状态的产品 UUID 须独立核实；当前未确认时保持待核实，不继承前序或其他路线的 UUID。
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+实际损失已在发生工序记录；不得在此重复记录。
+##### 基本流
+实际排放已在发生工序记录；不得在此重复记录。
+
+## 7. 分配与共产品处理
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_single_product` | grain only | 当其他产出为残体或废物时，将负荷归于合格干扁豆；披露去向但不给予抵扣。 | `mass-balance-identity` |
+| `allocation_coproduct` | intended outputs | 列举每个具有独立预期用途的秸秆/荚壳或降级粮粒产出并采用披露的研究特定分配；因果关系支持时采用干质量，否则披露经济分配和价格。 | `mass-balance-identity` |
+| `allocation_batch` | fields, lots and runs | 将投入、产出、清洁和换线与运行批次关联；共享负荷按实测吞吐量仅分配一次。 | `mass-balance-identity` |
+| `allocation_rework` | returned material | 保留既有负荷，仅增加返工增量，并在最终去向仅计量一次。 | `mass-balance-identity` |
+
+## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_field_inputs` | `field_production` | seed, nutrient, protection, irrigation | invoices, logs, meter | field; area; product; amount; analysis; date | 将施用记录与田块核对；原始汇总与分配：按产品汇总后按面积归一化 | kg; L; m3; ha | each application | crop cycle | each field | 每声明的参考流 | invoice; calibrated meter; label |
+| `cp_energy_operations` | all | fuel and electricity | meter and machine log | process; field/lot; carrier; quantity; factor; runtime | 仪表与日志核对；原始汇总与分配：按有据因子换算；仅分配一次 | L; kg; kWh; MJ | each operation | crop cycle to hand-off | field/facility | 每声明的参考流 | calibration; invoice; runtime |
+| `cp_field_emissions` | `field_production` | N2O | calculated record | N by source; residue N; factors; fractions | 选定IPCC层级；原始汇总与分配：先逐田块计算 | kg N; kg N2O | crop cycle | crop cycle | each field | 每声明的参考流 | factor version; calculation sheet |
+| `cp_harvest_mass_balance` | `harvest_threshing` | grain, residues, losses | scale, monitor, samples | field; route; area; masses; moisture; loss | 称量和代表性损失采样；原始汇总与分配：水分对齐并核对产出 | kg; %; ha | field/lot | harvest | each field | 每声明的参考流 | calibration; sampling plan |
+| `cp_conditioning_lot` | `primary_conditioning` | grain and rejects | scale and log | lot; input; output; moisture; pass; reject; destination | 称量每个进出流；原始汇总与分配：汇总遍次且不重复返工 | kg; % | lot/pass | conditioning | each lot | 每声明的参考流 | calibration; closure |
+| `cp_grading_lot` | `grading_sorting` | accepted, downgrade, reject, rework | ticket and test | lot; grade; colour; moisture; splits; damage; foreign matter; mass; destination | 称量并分类每个产出；原始汇总与分配：核对互斥去向 | kg; % | lot | grading | each lot | 每声明的参考流 | ticket; test; calibration |
+| `cp_stabilization_lot` | `stabilization` | grain, water, reject | moisture, scale, operation log | lot; inlet/outlet mass and moisture; reject; airflow; duration; energy ；含拒收物/残体的全部进出水；实际加水/降雨；单独液体转出；期初期末水库存；含水率及密度；有据蒸发| 干预前后检测并称量；原始汇总与分配：含拒收物的水分平衡 | kg; %; h | lot | intervention | each lot | 每声明的参考流 | calibrated moisture meter and scale |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_normalization` | all | normalized amount = process amount × 1,000 / accepted final mass | process amount; final mass | per 1,000 kg reference flow | `mass-balance-identity` |
+| `calc_moisture` | grain/drying | dry solids = wet mass × (1 − moisture fraction); reconcile water in rejects | wet masses and moisture | aligned grain and water removed | `mass-balance-identity`; `manitoba-lentils-production-management` |
+| `calc_n2o` | soil | 采用披露的IPCC层级，并按44/28将N2O-N换算为N2O。 | N activity and factors | kg N2O | `ipcc-2019-managed-soils` |
+| `calc_mass_balance` | harvest/conditioning/grading | input = exclusive outputs + losses + releases + stock change within uncertainty | linked masses | closure | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_field_emissions`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
+
+### 数据质量要求
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | reference product | 保留物种、类别、颜色、年份、等级、水分、裂粒/破碎、损伤、杂质、收获和调理路线。 | lot ticket and tests |
+| `dq_completeness` | crop cycle | 覆盖全部田间作业和收获、清理、分级、返工及稳定化批次。 | field-to-lot trace |
+| `dq_mass_balance` | material processes | 核对全部产品、残体、废物、损失、排放和库存变化。 | closure worksheet |
+| `dq_representativeness` | dataset | 报告地理、作物年份、田块、类别、灌溉、收获路线、干燥比例和汇总权重。 | metadata and lot index |
+
+## 9. 验证规则
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validate_identity` | reference flow | 要求固定UUID、1,000 kg数量和全部限定条件。 | `manitoba-lentils-production-management` |
+| `validate_route` | harvest | 每批次仅选直接联合收获或割晒后联合收获之一，不得同时计入两条路线。 | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |
+| `validate_nutrient_cardinality` | field production | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 | `ipcc-2019-managed-soils` |
+| `validate_outputs` | harvest/grading | 列举预期产品、残体、损失、合格、降级、拒收及交接；对每个共产品作出归属决定。 | `mass-balance-identity` |
+| `validate_rework` | cleaning/grading | 将每个不合格状态关联到返工、降级、回收或处置，并防止重复计量。 | `mass-balance-identity` |
+| `validate_batch` | all runs | 将投入、产出、清洁和换线关联到田块/批次/运行批号，并仅分配一次共享负荷。 | `mass-balance-identity` |
+| `validate_conditioning` | stabilization | 使用稳定化时，要求进出料水分、能源、时长、去除水分、拒收物和闭合。 | `manitoba-lentils-production-management`; `ndsu-pulse-field-guide-2019` |
+| `validate_ranges` | all cards | 逐条检查已提供范围的上下限、单位、基准、证据及双语一致性。任何强制界限均须有相容定量证据；无支持界限时保留实测数量并明确报告范围筛查不可用，不得编造范围或宣称该项检查完整。调查偏离，不以范围覆盖实测值。 | |
+
+## 10. 发布数据集概况
+
+| Field | Value |
+| --- | --- |
+| dataset_role | 农场门干扁豆前景生产数据集 |
+| downstream_use | `secondary_dataset`; `background_dataset` 经代表性审查后 |
+| allowed_use | 需要农场门成熟完整干扁豆粮粒的LCA和足迹 |
+| excluded_use | 蔬菜扁豆、种用商品、芽菜、分瓣、面粉、熟制品或未披露下游加工 |
+| required_metadata | 地理；作物年份；田块/批次覆盖；类别；颜色；等级；水分；裂粒/损伤/杂质；前茬；耕作；灌溉；收获和调理路线；去向；分配 |
+| required_quality_disclosure | 初级数据覆盖；校准；缺失数据；估算；质量平衡；因子版本；权重；范围例外 |
+| update_trigger | 类别组合、地理、年份、管理、路线、技术、规格、去向、分配或因子变化 |
+
+## 11. 数据来源
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| `manitoba-lentils-production-management` | official_guidance | Province of Manitoba, Lentils — Production and Management, https://www.gov.mb.ca/agriculture/crops/crop-management/print,lentils.html | 播种量、路线、收获水分、裂粒、通风和等级问题 |
+| `ndsu-pulse-field-guide-2019` | extension_guidance | NDSU Extension A1922, Pulse Crop Production Field Guide for North Dakota, https://www.ndsu.edu/agriculture/sites/default/files/2025-09/a1922.pdf | 生产、收获、损伤和自然风干燥 |
+| `fao-crop-water-needs` | official_guidance | FAO, Crop Water Needs, Chapter 3, https://www.fao.org/4/s2022e/s2022e07.htm | 扁豆/豆类作物系数和灌溉背景 |
+| `ipcc-2019-managed-soils` | method_factor | IPCC, 2019 Refinement, Volume 4 Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html | 管理土壤N2O方法和氮活动数据 |
+| `mass-balance-identity` | method_factor | 对水分对齐的投入、产出、损失、排放和库存变化应用质量守恒 | 交接、水分、质量平衡、分配和返工 |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
