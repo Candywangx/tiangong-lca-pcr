@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-23
-lastReviewedNote: "PCR #141: reviewed the bounded site-capacity correction: record-owned PCR downloads, 80 KiB candidate Markdown / 16 KiB manifests, two workers with one page render each, and failed-stage RSS/exit diagnostics preserving prior output. 68 focused tests and all 11 strict projects / 419 authored files pass on macOS ARM64; exact complete 1,457-record source, file/search/RSS, browser/no-JS, sealed-product and hosted qualification remain pending. Search behavior/budgets, canonical methodology, lifecycle/translation approval and ownership are unchanged; this review does not complete the official-name audit or publication. PCR #143 composition: retains all 57 PR139 candidate records and their accepted edges together with reviewed PCR141 canonical and site-capacity repairs. Original contribution bytes are preserved; generated indexes require recomputation. This local candidate still needs the official-name audit, complete fresh hosted qualification, merge of PR138 before PR139, workspace integration and stable publication."
-lastReviewedCommit: "060707dffe67f6dcbf0d98ae37d0c2714535ab04"
+lastReviewedNote: "PCR #141: reviewed lossless v5 physical search packs of at most 16 original v4 logical shards, source/byte/hash validation, atomic retry and physical-asset-plus-manifest accounting under unchanged 20 MB / 4 MB budgets. 217 docs tests, 11 strict projects / 425 authored files and six bounded real Chromium/Firefox/WebKit Worker cases pass. Replay restores all 86 captured aaf4 logical wires, native entries and complete records exactly. Final name-corrected full-corpus generation, Next export, resource/file limits, sealed-product and hosted qualification remain pending; no canonical methodology, ranking, logical partition, approval, dependencies or production state changed. PCR #143 composition retains all 57 PR139 candidates and 1248 complete accepted edges (1399 material records, 1693 aliases) with reviewed PCR141 names and search v5. Canonical contribution bytes and reviewed transport bytes are preserved. Final exact-source full hosted qualification, PR138-before-PR139 merge order, workspace integration and publication remain required."
+lastReviewedCommit: "46e1291309f7ed5596b1e295cecffd302628714c"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -422,6 +422,41 @@ and rejects malformed masks, columns or posting deltas before import; failed loa
 remain retryable. Complete result records, export and posting order, tokenization,
 ranking, text buckets and the 20 MB raw / 4 MB gzip per-language budgets remain
 unchanged. Build diagnostics report actual raw/gzip bytes, shards and records.
+
+Search manifest version 5 packs at most sixteen consecutive **logical v4 shards**
+into one physical file. The manifest binds the source commit and language, a unique
+URL and actual UTF-8 byte length / SHA-256 / gzip length for each physical file,
+and the contiguous logical range with every original v4 wire length, SHA-256 and
+record count. Each physical envelope uses `schemaVersion: 1` and
+`encoding: "v4-columnar-term-dictionary-delta"`; its source commit, language and
+first logical position must match the manifest. Its first-appearance dictionary
+replaces only explicitly marked columnar term strings with signed dictionary-ID
+deltas, reset to zero for each map. Unsupported/native map entries and all record
+fields remain unchanged. Dictionaries use explicit arrays and maps, including for
+Unicode and strings resembling object property names.
+
+Generation and export verification restore each original v4 JSON string exactly.
+The Worker verifies actual decoded response bytes with WebCrypto SHA-256, validates
+bounded dictionary references and restored lengths before expansion, then verifies
+each restored logical hash and record count before engine import. Physical files
+and their manifest count once toward the unchanged 20 MB raw / 4 MB gzip language
+budgets; declared logical wire sizes are verification evidence, not additional
+assets. Physical and total restored wire bytes per pack are bounded by 20 MB, and
+the existing 25 MB hosting file limit remains in force. Gzip accounting uses level
+9. Build diagnostics distinguish logical shard count from physical file count.
+
+Each logical shard still owns an independent engine and record map, even when IDs
+repeat in different shards. Original logical order, the strict 2 MB source-text
+bucket boundary, per-logical-shard thirty-hit cutoff, first-record URL deduplication
+before global title ranking, final thirty-result limit and dialog's twenty-four
+visible results remain unchanged. Initialization publishes no partial indexes;
+failed fetches, physical identities, late logical members or imports discard the
+private load and permit a fresh retry. Concurrent requests share one successful
+initialization and fetch each physical file once. The Worker retains literal v1–4
+readers; older Workers reject the new manifest version. The shared codec is emitted
+with the pinned compiler alongside the existing Worker modules. Synthetic and
+captured-input checks do not replace complete final-source and sealed-web browser
+qualification.
 
 ### Inspector data transport
 
