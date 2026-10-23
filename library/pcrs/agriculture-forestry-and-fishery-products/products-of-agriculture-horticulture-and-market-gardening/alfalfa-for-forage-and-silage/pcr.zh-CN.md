@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Alfalfa for forage and silage `bff9b03b-b5c0-486e-99f6-0a2ab67d725c` |
+| 参考产品流 | 饲草和青贮紫花苜蓿 `bff9b03b-b5c0-486e-99f6-0a2ab67d725c` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -126,7 +126,7 @@ sync_with: pcr.en-US.md
 
 将用于拌种或沟施的接种剂产品与种子质量分开记录；未供应接种剂时记为零。
 
-- 选定流： Rhizobium inoculant `ead26d6b-6270-4b4f-92a9-e81927e6a718`
+- 选定流： 根瘤菌接种剂 `ead26d6b-6270-4b4f-92a9-e81927e6a718`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按播种面积记录购入并施用的接种剂产品质量
 - 数值来源模式： Foreground record (`foreground_record`)
@@ -294,7 +294,7 @@ sync_with: pcr.en-US.md
 
 记录建植阶段占用的农业土地，不得将其作为产品流投入处理。
 
-- 选定流： Agriculture land occupation `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- 选定流： 农业用地占用 `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
 - 流属性/单位： Area*time `93a60a56-a3c8-21da-a746-0800200c9a66` / ha*a
 - 数量规则： established area multiplied by establishment-phase duration in years
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -523,7 +523,7 @@ sync_with: pcr.en-US.md
 
 记录报告生产年度所占用的苜蓿生产面积。
 
-- 选定流： Agriculture land occupation `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- 选定流： 农业用地占用 `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
 - 流属性/单位： Area*time `93a60a56-a3c8-21da-a746-0800200c9a66` / ha*a
 - 数量规则： productive area multiplied by reporting-year fraction
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -662,7 +662,9 @@ sync_with: pcr.en-US.md
 
 仅在施用相应产品时计算尿素或碳酸盐改良剂产生的二氧化碳。
 
-- 选定流： Carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+排放介质仍为空气，环境分区为未指定；化石来源限定不变。
+
+- 选定流： 二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CO2
 - 数量规则： selected method factor multiplied by recorded urea or carbonate amendment mass
 - 数值来源模式： Calculated value (`calculated_value`)
@@ -758,7 +760,7 @@ sync_with: pcr.en-US.md
 
 这是唯一参考产品输出。记录鲜质量、干物质比例和拒收状态后，方可汇总各次刈割的合格批次。
 
-- 选定流： Alfalfa for forage and silage `bff9b03b-b5c0-486e-99f6-0a2ab67d725c`
+- 选定流： 饲草和青贮紫花苜蓿 `bff9b03b-b5c0-486e-99f6-0a2ab67d725c`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：exactly 1,000 kg accepted fresh mass after normalization
 

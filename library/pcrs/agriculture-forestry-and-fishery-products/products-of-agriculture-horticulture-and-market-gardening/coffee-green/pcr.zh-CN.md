@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Coffee, green |
+| Reference product flow | 绿咖啡 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -297,7 +297,7 @@ sync_with: pcr.en-US.md
 
 按区块、品种组、作物年度及含水率基准，记录采收损失和加工发生之前的咖啡樱桃产量。这是中间产出，不是 PCR 参考流。
 
-- 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
+- 选定流：植株上的采收前新鲜咖啡樱桃
 - 流属性/单位：质量 / kg fresh cherries
 - 数量规则：按区块和作物年度称量或透明估算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -348,7 +348,9 @@ sync_with: pcr.en-US.md
 
 记录从声明咖啡林分接收的樱桃批次，保留区块、作物年度、成熟度和含水率信息。
 
-- 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
+此 UUID 仅适用于已采收、称重并接收以供收集的新鲜咖啡樱桃批次，不表示植株上采收前的樱桃总量。
+
+- 选定流：新鲜咖啡樱桃 `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
 - 数量规则：关联区块和采收日期的称重批次投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -405,7 +407,7 @@ sync_with: pcr.en-US.md
 
 记录交给湿法或干法加工的采收批次，包括接收方、交接时间及路线状态。
 
-- 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
+- 选定流：新鲜咖啡樱桃 `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries
 - 数量规则：磅单或批次质量平衡
 - 数值来源模式：计算值（`calculated_value`）
@@ -672,7 +674,7 @@ sync_with: pcr.en-US.md
 
 按批次、等级、含水率、缺陷标准、目的地和交接门记录净合格绿咖啡；这是本 PCR 的参考输出。
 
-- 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
+- 选定流：绿咖啡 `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：声明门称量的合格净绿咖啡输出
 
@@ -698,7 +700,7 @@ sync_with: pcr.en-US.md
 
 只有存在独立交接和声明用途时，才将降级、次级或单独销售的绿咖啡作为预期输出记录；不得同时计为合格参考输出和共产品。
 
-- 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
+- 选定流：绿咖啡 `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
 - 数量规则：按等级、接收方和目的地称量输出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -756,7 +758,7 @@ sync_with: pcr.en-US.md
 
 记录入库合格生咖啡批次，包括含水率基准、批次身份及声明的储存开始时间。
 
-- 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
+- 选定流：绿咖啡 `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
 - 数量规则：按含水率和门状态记录进入储存的称重批次
 - 数值来源模式：前景记录（`foreground_record`）
@@ -815,7 +817,7 @@ sync_with: pcr.en-US.md
 
 记录储存对账后在声明交付门发运的生咖啡净批次。
 
-- 选定流：Coffee, green `b8869823-9c26-4580-9c45-95a626e0ca2a`
+- 选定流：绿咖啡 `b8869823-9c26-4580-9c45-95a626e0ca2a`
 - 流属性/单位：质量 / kg
 原始产出计量与核对要求：声明门发出的称重批次，扣除皮重和记录的储存损失
 

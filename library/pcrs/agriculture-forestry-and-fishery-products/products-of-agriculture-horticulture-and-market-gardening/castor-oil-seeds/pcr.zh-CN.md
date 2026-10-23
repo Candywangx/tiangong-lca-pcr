@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Castor Seed（蓖麻籽）`d52055a9-c05b-4edd-ad58-f3271a360458` |
+| Reference product flow | 蓖麻籽 `d52055a9-c05b-4edd-ad58-f3271a360458` |
 | Reference flow property | Mass（质量）`93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass（质量）`93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -739,7 +739,7 @@ sync_with: pcr.en-US.md
 
 唯一参考产品：经分离、必要干燥、清理和分级后、榨油前的收获未加工种子。
 
-- 选定流: Castor Seed（蓖麻籽）`d52055a9-c05b-4edd-ad58-f3271a360458`
+- 选定流: 蓖麻籽 `d52055a9-c05b-4edd-ad58-f3271a360458`
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：申报水分下 1,000 kg 净合格种子
 

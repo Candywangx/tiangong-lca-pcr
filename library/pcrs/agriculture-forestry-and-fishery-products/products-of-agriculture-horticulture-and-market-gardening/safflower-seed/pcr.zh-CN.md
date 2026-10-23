@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Safflower seed |
+| Reference product flow | 红花籽 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -564,7 +564,7 @@ sync_with: pcr.en-US.md
 
 完整合格籽粒交农场门销售或实际门前干燥；仅将最终交付质量计为参考产出。
 
-- 选定流：Safflower seed `30eacea6-7a8a-457f-a766-c93480303927`
+- 选定流：红花籽 `30eacea6-7a8a-457f-a766-c93480303927`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：按实测水分称量合格籽粒。
 
@@ -748,7 +748,7 @@ sync_with: pcr.en-US.md
 
 实测最终质量/水分取代干燥前分级质量成为参考产出；不施加全球统一目标水分。
 
-- 选定流：Safflower seed `30eacea6-7a8a-457f-a766-c93480303927`
+- 选定流：红花籽 `30eacea6-7a8a-457f-a766-c93480303927`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：按实际水分称量最终合格籽粒。
 

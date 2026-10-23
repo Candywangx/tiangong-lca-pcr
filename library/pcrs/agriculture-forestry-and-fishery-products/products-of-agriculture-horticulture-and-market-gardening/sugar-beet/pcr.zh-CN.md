@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Sugar beet `b48c1ece-b700-4491-86bb-ff46c0a4768b` |
+| Reference product flow | 甜菜 `b48c1ece-b700-4491-86bb-ff46c0a4768b` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -661,7 +661,7 @@ sync_with: pcr.en-US.md
 
 该独立产品产出在声明过程边界处定量记录，拥有明确交接，并与相邻状态核对。
 
-- 选定流: 糖用甜菜 `b48c1ece-b700-4491-86bb-ff46c0a4768b`
+- 选定流: 甜菜 `b48c1ece-b700-4491-86bb-ff46c0a4768b`
 - 流属性/单位：质量 / kg
 
 原参考状态单位说明：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
