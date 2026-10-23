@@ -547,13 +547,14 @@ Whole unheaded/ungutted harvested fish leaves harvest in actual live/fresh state
 
 ##### Waste flows
 
-###### Harvest rejects requiring waste handling (`harvest_rejects`)
+###### Non-viable whole harvested fish sent to disposal (`harvest_rejects`)
 
-Damaged/dead fish and incidental removed material sent to waste treatment require separate material identities and destinations; stock left in the culture unit is not waste.
+Only non-viable whole fish actually rejected and handed to the documented waste recipient, by species, event and measured wet fish mass. Exclude incidental sediment, gear and other materials, live stock remaining in production, saleable fish and free drainage. Every actual non-fish material still requires its own identified atomic exchange and destination under the existing waste collection protocol; missing identity blocks completion, not a zero.
 
-- Selected flow: Harvest rejects requiring waste handling
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Non-viable whole harvested fish sent to disposal
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Binding:
 - Amount rule: Measured rejected wet material mass by species/material, event and handler.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
@@ -562,15 +563,14 @@ Damaged/dead fish and incidental removed material sent to waste treatment requir
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_waste_harvest`
 - Sources: `fao-carp-2009`
-- Range: Provisional reasoned QA screen only; actual site records take precedence and values outside the screen require explanation, not clipping
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 5
+  - Upper: U_harvest_rejects
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ### Process: Pre-gate live holding or chilling (`preservation`)
 
@@ -852,6 +852,8 @@ The actual accepted non-Salmonidae food fish is whole, unheaded and ungutted in 
 | `dq_complete_packaging_materials` | `dispatch`; inputs; product | Identify and separately collect every actual exchange covered by “Actual protective packaging and reusable containers”; retain all following collection, quantity and normalization obligations: Enumerate bags, boxes, liners, labels and live tanks as actual material roles at farm loading; use return/reuse/loss and cleaning evidence to attribute stock components. Carrier water and ice are excluded from fish mass. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Binding: Amount rule: Measured disposable material and allocated reusable component mass from packaging ledger. Value mode: Foreground record (`foreground_record`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Collected record (`collected_record`) Collection protocol: `cp_packaging` Sources: `fao-freshwater-marketing` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_dispatch_rejects` | `dispatch`; outputs; waste | Identify and separately collect every actual exchange covered by “Producer-gate fish and packaging rejects”; retain all following collection, quantity and normalization obligations: Separate rejected whole-fish material from discarded packaging by actual handler and identity; reusable returns are inventory movements. Do not count rejects within accepted reference biomass. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Binding: Amount rule: Measured rejected fish and package masses by material and documented destination. Value mode: Foreground record (`foreground_record`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Collected record (`collected_record`) Collection protocol: `cp_gate` Sources: `fao-freshwater-marketing` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_culture_sludge` | `farm_services`; outputs; waste | Identify and independently collect every actual sediment, solid-residue and sludge waste stream; retain source stage/unit/period, removal event, wet mass, dry solids, nutrient analysis and evidenced recipient without double owning the same material. Collect under `cp_waste_farm_services` and normalize to final accepted net fish mass. Establish independent Range evidence and exact UUID for each child; no grouped total, bound or binding is inherited. Any unresolved actual stream, fate, quantity, range evidence or UUID makes the final dataset incomplete and fails validation; unknown is not zero. | per-waste-stream measurements, wet/dry basis, recipient receipts and range/identity verification |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 

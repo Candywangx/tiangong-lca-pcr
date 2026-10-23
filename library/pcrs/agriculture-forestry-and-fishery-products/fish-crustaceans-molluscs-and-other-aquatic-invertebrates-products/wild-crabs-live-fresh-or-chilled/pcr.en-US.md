@@ -986,11 +986,13 @@ Measure actual live whole-crab transfer from capture or an actually still-live p
 
   - Sources: `wild-crab-foreground-method`
 
-###### Actual externally supplied holding water (`hold_water_supplied`)
+###### Externally supplied liquid freshwater (`hold_water_supplied`)
 
-Disaggregate supplied freshwater, treated process water or supplied seawater by actual treatment, salinity and provider; incompatible identities are not interchanged. Do not purchase the same volume withdrawn directly in hold_water_abstracted.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Actual externally supplied holding water
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 
@@ -1009,24 +1011,84 @@ Disaggregate supplied freshwater, treated process water or supplied seawater by 
 - Collection protocol: `cp_live_hold`
 
 - Sources: `wild-crab-foreground-method`
-
-- Range: Independent-reference protocol screening interval; not a default amount
-
-  - Range role: QA guardrail (`qa_guardrail`)
-
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-
   - Upper: U_hold_water_supplied
-
   - Unit: kg
-
   - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
-  - Basis kind: Reference flow (`reference_flow`)
 
-  - Evidence kind: Method formula (`method_formula`)
+###### Externally supplied liquid brackish water (`hold_water_supplied_brackish`)
 
-  - Sources: `wild-crab-foreground-method`
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+
+- Amount rule: Collect actual node quantities with cp_live_hold; under the section 8 two-view rule retain unallocated physical transfers, stocks and destinations, assign shared resources once, and normalize by matching accepted final net kg. Co-product LCA allocation is a separately labelled projection applied once.
+
+- Value mode: Calculated value (`calculated_value`)
+
+- Specificity: Site-specific (`site_specific`)
+
+- Normalization basis: per 1 kg reference flow
+
+- Basis kind: Reference flow (`reference_flow`)
+
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+
+- Collection protocol: `cp_live_hold`
+
+- Sources: `wild-crab-foreground-method`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_hold_water_supplied_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`hold_water_supplied_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+
+- Amount rule: Collect actual node quantities with cp_live_hold; under the section 8 two-view rule retain unallocated physical transfers, stocks and destinations, assign shared resources once, and normalize by matching accepted final net kg. Co-product LCA allocation is a separately labelled projection applied once.
+
+- Value mode: Calculated value (`calculated_value`)
+
+- Specificity: Site-specific (`site_specific`)
+
+- Normalization basis: per 1 kg reference flow
+
+- Basis kind: Reference flow (`reference_flow`)
+
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+
+- Collection protocol: `cp_live_hold`
+
+- Sources: `wild-crab-foreground-method`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_hold_water_supplied_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -2026,11 +2088,13 @@ The sole final reference: actual qualifying crab body in native shell and actual
 
   - Sources: `wild-crab-foreground-method`
 
-###### Actual physical packaging dispatched with the accepted lot (`presentation_packaging_handover`)
+###### Reusable transport crate accompanying the accepted crab lot (`presentation_packaging_handover`)
 
-Record actual disposable packaging mass/ownership crossing the gate separately from net crabs, rejects and closing stock. For returnable crates retain full physical dispatch, return and stock mass in the asset movement ledger, separately from replacement/manufacturing service shares. Do not infer a waste fate or independently allocated food co-product from dispatch. No packaging is invented for actual bulk handling.
+Conditional physical dispatch of one identified reusable transport-crate product, with actual construction material, tare, ownership and return records. This is a crate-product exchange, not the sum of boxes, ties, cushions, labels or replacement/manufacturing service shares. Existing presentation-packaging requirements still require every actual disposable item or other packaging product to be independently identified, measured and represented by its own atomic card before completion; no packaging is presumed for bulk handling.
 
-- Selected flow: Actual physical packaging dispatched with the accepted lot
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Reusable transport crate accompanying the accepted crab lot
 
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 
@@ -2049,24 +2113,14 @@ Record actual disposable packaging mass/ownership crossing the gate separately f
 - Collection protocol: `cp_presentation`
 
 - Sources: `wild-crab-foreground-method`
-
-- Range: Independent-reference protocol screening interval; not a default amount
-
-  - Range role: QA guardrail (`qa_guardrail`)
-
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-
   - Upper: U_presentation_packaging_handover
-
   - Unit: kg
-
   - Basis: per 1 kg reference flow
-
-  - Basis kind: Reference flow (`reference_flow`)
-
-  - Evidence kind: Method formula (`method_formula`)
-
-  - Sources: `wild-crab-foreground-method`
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -2234,7 +2288,7 @@ Apply lot_attribution to every nonfinal row: retain raw collected values separat
 | --- | --- | --- | --- | --- | --- |
 | `lot_attribution` | all inventory rows | Keep two explicitly labelled views. First reconcile unallocated physical receipts, transfers, products, losses and stocks for the complete declared cohort/trip/run; pair internal transfers in the same state and unit, retaining their measured mass. Assign shared resource/service events to actual consuming nodes and periods once using evidenced service shares, without shrinking product, biomass, water or waste partitions by a co-product share. Divide this physical inventory by the matching positive accepted final net kg. Separately derive a labelled single-output LCA burden/inventory projection using section 7 co-product allocation exactly once, retaining the unallocated inventory and allocation matrix. Never test allocated exchanges against an unallocated physical balance, apply output shares again downstream, or set an internal quantity to the final 1 kg. | Node protocols; allocation ledger; accepted final net mass; stock history | Attributed exchange per 1 kg reference flow | `wild-crab-foreground-method` |
 | `reference_envelope` | all nonfinal row ranges | Establish U_row separately for each actual instantiated identity/state, node and pre_sort/post_sort pass. Use the maximum normalized amount of an independent representative reference campaign times a predeclared uncertainty margin not less than 1, or a supplier design envelope in matching numerator unit and final-net-kg basis times that margin; retain raw quantities, reference net kg, sample size, scope and margin rationale. Exclude the target lot from its own envelope and never pool different substances under one umbrella bound. Without independent evidence the instance remains uninstantiated, not numerically QA-cleared or a complete quantitative data package. | Independent campaign records; scope; uncertainty margin | U_row | `wild-crab-foreground-method` |
-| `conditional_interface_envelopes` | capture_internal_water_ice_transfer; grading_internal_water_ice_receipt; grading_internal_water_ice_transfer; live_hold_internal_water_ice_receipt; live_hold_internal_water_ice_transfer; fresh_chill_internal_water_ice_receipt; fresh_chill_internal_water_ice_transfer; presentation_internal_water_ice_receipt; presentation_actual_source_water; presentation_internal_water_ice_transfer; presentation_water_ice_handover; presentation_packaging_handover | For each explicitly listed conditional interface card instantiate actual identity, state, node, pass and numerator unit before establishing U_row from the same-view normalized maximum of an independent representative campaign times a predeclared margin at least 1, or a matching-unit/basis supplier design envelope. Retain samples, source, basis and uncertainty; never use the target batch to establish its own upper bound. Unverified service unit/support or absent independent envelope remains an unresolved instance, not numeric QA-cleared or zero. Reconcile physical water/ice/packaging movements separately from service-share quantities. | independent reference records; actual unit and basis | U_row | `wild-crab-foreground-method` |
+| `conditional_interface_envelopes` | capture_internal_water_ice_transfer_water; capture_internal_water_ice_transfer_ice; grading_internal_water_ice_receipt_water; grading_internal_water_ice_receipt_ice; grading_internal_water_ice_transfer_water; grading_internal_water_ice_transfer_ice; live_hold_internal_water_ice_receipt_water; live_hold_internal_water_ice_receipt_ice; live_hold_internal_water_ice_transfer_water; live_hold_internal_water_ice_transfer_ice; fresh_chill_internal_water_ice_receipt_water; fresh_chill_internal_water_ice_receipt_ice; fresh_chill_internal_water_ice_transfer_water; fresh_chill_internal_water_ice_transfer_ice; presentation_internal_water_ice_receipt_water; presentation_internal_water_ice_receipt_ice; presentation_actual_source_water; presentation_internal_water_ice_transfer_water; presentation_internal_water_ice_transfer_ice; presentation_water_ice_handover_water; presentation_water_ice_handover_ice; presentation_packaging_handover | For each explicitly listed conditional interface card instantiate actual identity, state, node, pass and numerator unit before establishing U_row from the same-view normalized maximum of an independent representative campaign times a predeclared margin at least 1, or a matching-unit/basis supplier design envelope. Retain samples, source, basis and uncertainty; never use the target batch to establish its own upper bound. Unverified service unit/support or absent independent envelope remains an unresolved instance, not numeric QA-cleared or zero. Reconcile physical water/ice/packaging movements separately from service-share quantities. | independent reference records; actual unit and basis | U_row | `wild-crab-foreground-method` |
 
 ### Data Quality Requirements
 
@@ -2302,6 +2356,8 @@ Apply lot_attribution to every nonfinal row: retain raw collected values separat
 | `dq_complete_presentation_rejects` | `presentation`; outputs; waste | Identify and separately collect every actual exchange covered by “Rejected whole crabs and packaging at first handover”; retain all following collection, quantity and normalization obligations: Measure actual rejected crab mass separately from packaging, with viability, food/nonfood status, recipient and reason. Rejects never inflate accepted net reference mass, and returned reusable crates remain asset stocks rather than automatic waste. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Collect actual node quantities with cp_presentation; under the section 8 two-view rule retain unallocated physical transfers, stocks and destinations, assign shared resources once, and normalize by matching accepted final net kg. Co-product LCA allocation is a separately labelled projection applied once. Value mode: Calculated value (`calculated_value`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Calculated from collection (`calculated_from_collection`) Collection protocol: `cp_presentation` Sources: `wild-crab-foreground-method` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_presentation_other_air_emissions` | `presentation`; outputs; elementary | Identify and separately collect every actual exchange covered by “Other actual direct air releases by substance and compartment”; retain all following collection, quantity and normalization obligations: Disaggregate fuel pollutants, refrigerant leaks or other actual direct releases by identified substance, particle size where relevant and air compartment; do not bind broad NOx/VOC/PM umbrellas to one invented species. Retain factor or analytical evidence and reconcile charge/recovery stocks. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Collect actual node quantities with cp_presentation; under the section 8 two-view rule retain unallocated physical transfers, stocks and destinations, assign shared resources once, and normalize by matching accepted final net kg. Co-product LCA allocation is a separately labelled projection applied once. Value mode: Calculated value (`calculated_value`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Calculated from collection (`calculated_from_collection`) Collection protocol: `cp_presentation` Sources: `wild-crab-foreground-method` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_presentation_dissolved_releases` | `presentation`; outputs; elementary | Identify and separately collect every actual exchange covered by “Actual substances in direct gate-cleaning discharge”; retain all following collection, quantity and normalization obligations: Each material cleaning chemical or dissolved substance requires actual identity, concentration/flow basis and receiving compartment, separate from carrier water and collected treatment waste. No sanitary or universal toxicity outcome is implied. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Collect actual node quantities with cp_presentation; under the section 8 two-view rule retain unallocated physical transfers, stocks and destinations, assign shared resources once, and normalize by matching accepted final net kg. Co-product LCA allocation is a separately labelled projection applied once. Value mode: Calculated value (`calculated_value`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Calculated from collection (`calculated_from_collection`) Collection protocol: `cp_presentation` Sources: `wild-crab-foreground-method` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 

@@ -545,11 +545,11 @@ process_inventory:
                 source_ids: []
       waste:
         - row_id: harvest_rejects
-          role: "Harvest rejects to actual treatment destination"
-          name: "Harvest rejects to actual treatment destination"
+          role: "Non-viable whole harvested fish sent to disposal"
+          name: "Non-viable whole harvested fish sent to disposal"
           flow_type: "waste"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Report unsaleable biomass and actual associated materials separately by measured mass and destination; intentional saleable outputs are product entries in cp_outputs_grow_out; cp_outputs_dispatch."
+          description: "Only non-viable whole fish actually rejected and handed to the documented waste recipient, by species, event and measured wet fish mass. Exclude incidental sediment, gear and other materials, live stock remaining in production, saleable fish and free drainage. Every actual non-fish material still requires its own identified atomic exchange and destination under the existing waste collection protocol; missing identity blocks completion, not a zero. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "Actual attributable kg from cp_waste_harvest, normalized once by accepted final net fish mass"
             value_mode: "foreground_record"
@@ -564,7 +564,7 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "1"
+                upper: "U_harvest_rejects"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -662,11 +662,11 @@ process_inventory:
                 source_ids: []
       waste:
         - row_id: preservation_loss
-          role: "Pre-gate holding or chilling rejects and mortalities"
-          name: "Pre-gate holding or chilling rejects and mortalities"
+          role: "Non-viable whole fish from preservation sent to disposal"
+          name: "Non-viable whole fish from preservation sent to disposal"
           flow_type: "waste"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Measure state-specific rejected fish, mortalities and separately drained liquid; retain the disposal destination and do not assume gate throughput equals harvest biomass."
+          description: "Only rejected non-viable whole-fish wet biomass actually sent to disposal. Separately drained water, ice melt and other liquids are excluded from this numerator and are owned by the matching preservation wastewater or receiving-medium water card; record their amounts and fates separately. Retain losses and upstream burdens; do not force gate throughput to harvest biomass. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "Actual attributable kg from cp_waste_preservation, normalized once by accepted final net fish mass"
             value_mode: "foreground_record"
@@ -681,7 +681,7 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "1"
+                upper: "U_preservation_loss"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -902,11 +902,11 @@ process_inventory:
         []
       waste:
         - row_id: effluent_treatment
-          role: "Actual treatment-bound wastewater from selected stages"
-          name: "Actual treatment-bound wastewater from selected stages"
+          role: "Aquaculture wastewater from seed_rearing handed to external treatment"
+          name: "Aquaculture wastewater from seed_rearing handed to external treatment"
           flow_type: "waste"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "This card is the once-only shared_services central treatment-bound wastewater ledger for actual external-treatment handovers from seed_rearing, grow_out, pre_gate_transfer, harvest, preservation, dispatch and utility operations. Record each actual source stage, culture or operation unit, cohort, period, unique discharge event and receiving treatment provider/boundary; do not also report the same water and pollutant quantities as untreated direct environmental release or repeat collected sludge in this ledger. When wastewater crosses a technosphere handover, record provider, contaminant composition and treatment boundary; do not also model the same untreated release directly to the environment."
+          description: "Only actual wastewater generated by seed_rearing, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass"
             value_mode: "foreground_record"
@@ -921,7 +921,163 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "100000"
+                upper: "U_effluent_treatment"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: effluent_treatment_grow_out
+          role: "Aquaculture wastewater from grow_out handed to external treatment"
+          name: "Aquaculture wastewater from grow_out handed to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual wastewater generated by grow_out, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_shared_services
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_effluent_treatment_grow_out"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: effluent_treatment_pre_gate_transfer
+          role: "Aquaculture wastewater from pre_gate_transfer handed to external treatment"
+          name: "Aquaculture wastewater from pre_gate_transfer handed to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual wastewater generated by pre_gate_transfer, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_shared_services
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_effluent_treatment_pre_gate_transfer"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: effluent_treatment_harvest
+          role: "Aquaculture wastewater from harvest handed to external treatment"
+          name: "Aquaculture wastewater from harvest handed to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual wastewater generated by harvest, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_shared_services
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_effluent_treatment_harvest"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: effluent_treatment_preservation
+          role: "Aquaculture wastewater from preservation handed to external treatment"
+          name: "Aquaculture wastewater from preservation handed to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual wastewater generated by preservation, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_shared_services
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_effluent_treatment_preservation"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: effluent_treatment_dispatch
+          role: "Aquaculture wastewater from dispatch handed to external treatment"
+          name: "Aquaculture wastewater from dispatch handed to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual wastewater generated by dispatch, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_shared_services
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_effluent_treatment_dispatch"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: effluent_treatment_shared_services
+          role: "Aquaculture wastewater from shared_services handed to external treatment"
+          name: "Aquaculture wastewater from shared_services handed to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual wastewater generated by shared_services, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_shared_services
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_effluent_treatment_shared_services"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1782,6 +1938,14 @@ dataset_production:
       applies_to: "grow_out; outputs; waste"
       requirement: "Identify and independently collect every actual sediment, solid-residue and sludge waste stream; retain source stage/unit/period, removal event, wet mass, dry solids, nutrient analysis and evidenced recipient without double owning the same material. Collect under cp_waste_grow_out and normalize to final accepted net fish mass. Establish independent Range evidence and exact UUID for each child; no grouped total, bound or binding is inherited. Any unresolved actual stream, fate, quantity, range evidence or UUID makes the final dataset incomplete and fails validation; unknown is not zero."
       evidence: "per-waste-stream measurements, wet/dry basis, recipient receipts and range/identity verification"
+    - id: dq_atomic_card_identity
+      applies_to: "all inventory rows"
+      requirement: "Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase."
+      evidence: "Per-card identity, provider, state, destination and paired records"
+    - id: dq_atomic_range_evidence
+      applies_to: "repaired atomic flow cards"
+      requirement: "U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required."
+      evidence: "Independent envelope evidence; retained raw records and uncertainty"
 validation_rules:
   - rule_id: validate_reference
     applies_to: "farmed_salmonidae_handover"
@@ -1852,7 +2016,7 @@ data_sources:
     used_for: "Defined 1 kg reference and final 1–1 kg method-definition Range; not an external measured range"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a212a4397dd625cd9ec1abac66e5b25a95ade0dc899cd94f1ab89d8ec84b301a"
+  source_sha256: "sha256:ecc3b99e2e8985898eebd2a1383537565ff1362ce5d4e18766771c3917d4b06c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7237"
@@ -1903,16 +2067,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_51882"
+    - unit_id: "normative_64383"
       family: "allocation"
       span:
         start:
-          offset: 51882
-          line: 882
+          offset: 64383
+          line: 1036
           column: 1
         end:
-          offset: 53926
-          line: 893
+          offset: 66427
+          line: 1047
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivision | all intended outputs | Enumerate reference fish and every actual intentional output with purpose, state, handover and period. Subdivide independently metered hatchery, grow-out, transfer and handling operations before allocation. | `ghg-product-allocation` |\n| allocation_causal | shared output burdens | If subdivision is insufficient, use evidenced causal physical drivers such as actual feed, biomass-time, water/energy service or limiting load; a convenient mass fraction alone is not proof of causality. | `ghg-product-allocation` |\n| allocation_fallback | unresolved physical causality | Only where a causal relation cannot be supported, disclose economic fallback using representative actual quantities and contemporaneous prices; assess sensitivity and state the reason for the fallback. | `ghg-product-allocation` |\n| allocation_residues | loss, waste and non-reference products | Do not assign final fish reference mass to rejects, mortalities, escaped stock or other products. A purposeful saleable output is not simultaneously disposal waste; treatment and upstream burdens remain explicit. | `ghg-product-allocation` |\n| allocation_carryover | retained broodstock and standing stock | Allocate production inputs to actual period cohorts; carry forward evidenced attributable burden for retained broodstock/standing fish into the next period, with consistent opening/closing stock and no loss or duplicate recognition. Escapes have separate stock/fate records, not automatic disposal waste or co-products. | `ghg-product-allocation` |\n| allocation_periods | cohorts and shared_services | Link early-life, grow-out, fallowing/cleaning, harvest and asset service to actual cohorts, runs and periods. Enumerate all asset consumers, replacement and termination events; attribution shares must reconcile across all periods without repeating manufacture or utilities. | `ghg-product-allocation` |\n\n"
       headings:
@@ -1931,12 +2095,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 51882
-              line: 882
+              offset: 64383
+              line: 1036
               column: 1
             end:
-              offset: 51922
-              line: 882
+              offset: 64423
+              line: 1036
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1951,16 +2115,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_144847"
+    - unit_id: "normative_158788"
       family: "validation"
       span:
         start:
-          offset: 144847
-          line: 996
+          offset: 158788
+          line: 1152
           column: 1
         end:
-          offset: 147495
-          line: 1009
+          offset: 161436
+          line: 1165
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | farmed_salmonidae_handover | Confirm complete food Salmonidae, aquaculture origin, actual live/fresh/chilled state and first producer gate; cp_mass supports 1 kg net wet fish excluding ice, water and containers. | `salmonidae-reference-definition` |\n| validate_routes | grow_out and route alternatives | Required parent grow_out exists; own/purchased stage flags and technology deltas have current evidence and coherent coexistence. Freshwater-only trout has no automatic smolt or sea stage; evidenced staged marine routes include pre-gate transfer resources. | `fao-trout-culture`; `fao-atlantic-salmon-culture`; `noaa-atlantic-salmon-aquaculture` |\n| validate_handoffs | all stage outputs | Actual biomass/count records reconcile growth, stocking, transfers, harvest and dispatch; internal fish amounts are not fixed to final reference. State-specific preservation has before/after evidence; unknown state is a gap. |  |\n| validate_water_emissions | water, waste and elementary cards | Separate supply, abstraction, circulation, return, sludge and pollutant ledgers; every actual emission has substance, element/compound basis, receiving medium and evidence. Aggregated effluent cannot duplicate substances. | `noaa-atlantic-salmon-aquaculture` |\n| validate_energy | shared_services | Match actual region/voltage/provider, heat and fuel grade; reconcile meters and direct combustion without double-counting upstream fuel/heat or non-fossil CO2. |  |\n| validate_outputs | intentional outputs and disposal | Enumerate actual output handovers, residues, waste, mortality, escapes and losses. Verify subdivision/causal allocation before disclosed fallback, with all shared burdens and service periods counted once. | `ghg-product-allocation` |\n| validate_coverage | foreground package | Report performed and skipped checks, missing supplier/measurement/identity evidence, screening departures and uncertainties; only a completed data package with concrete verified exchanges can be finalized. |  |\n| `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |\n\n"
       headings:
@@ -1979,12 +2143,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 144847
-              line: 996
+              offset: 158788
+              line: 1152
               column: 1
             end:
-              offset: 144869
-              line: 996
+              offset: 158810
+              line: 1152
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -2094,184 +2258,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_51882"
+      unit_id: "normative_64383"
       source_span:
         start:
-          offset: 51995
-          line: 886
+          offset: 64496
+          line: 1040
           column: 1
         end:
-          offset: 52280
-          line: 886
+          offset: 64781
+          line: 1040
           column: 286
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_causal"
       identity_kind: "explicit"
-      unit_id: "normative_51882"
+      unit_id: "normative_64383"
       source_span:
         start:
-          offset: 52281
-          line: 887
+          offset: 64782
+          line: 1041
           column: 1
         end:
-          offset: 52559
-          line: 887
+          offset: 65060
+          line: 1041
           column: 279
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_fallback"
       identity_kind: "explicit"
-      unit_id: "normative_51882"
+      unit_id: "normative_64383"
       source_span:
         start:
-          offset: 52560
-          line: 888
+          offset: 65061
+          line: 1042
           column: 1
         end:
-          offset: 52846
-          line: 888
+          offset: 65347
+          line: 1042
           column: 287
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_residues"
       identity_kind: "explicit"
-      unit_id: "normative_51882"
+      unit_id: "normative_64383"
       source_span:
         start:
-          offset: 52847
-          line: 889
+          offset: 65348
+          line: 1043
           column: 1
         end:
-          offset: 53153
-          line: 889
+          offset: 65654
+          line: 1043
           column: 307
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_carryover"
       identity_kind: "explicit"
-      unit_id: "normative_51882"
+      unit_id: "normative_64383"
       source_span:
         start:
-          offset: 53154
-          line: 890
+          offset: 65655
+          line: 1044
           column: 1
         end:
-          offset: 53568
-          line: 890
+          offset: 66069
+          line: 1044
           column: 415
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_periods"
       identity_kind: "explicit"
-      unit_id: "normative_51882"
+      unit_id: "normative_64383"
       source_span:
         start:
-          offset: 53569
-          line: 891
+          offset: 66070
+          line: 1045
           column: 1
         end:
-          offset: 53924
-          line: 891
+          offset: 66425
+          line: 1045
           column: 356
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 144942
-          line: 1000
+          offset: 158883
+          line: 1156
           column: 1
         end:
-          offset: 145214
-          line: 1000
+          offset: 159155
+          line: 1156
           column: 273
     - pointer: "/validation_rules/1"
       rule_id: "validate_routes"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 145215
-          line: 1001
+          offset: 159156
+          line: 1157
           column: 1
         end:
-          offset: 145615
-          line: 1001
+          offset: 159556
+          line: 1157
           column: 401
     - pointer: "/validation_rules/2"
       rule_id: "validate_handoffs"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 145616
-          line: 1002
+          offset: 159557
+          line: 1158
           column: 1
         end:
-          offset: 145887
-          line: 1002
+          offset: 159828
+          line: 1158
           column: 272
     - pointer: "/validation_rules/3"
       rule_id: "validate_water_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 145888
-          line: 1003
+          offset: 159829
+          line: 1159
           column: 1
         end:
-          offset: 146213
-          line: 1003
+          offset: 160154
+          line: 1159
           column: 326
     - pointer: "/validation_rules/4"
       rule_id: "validate_energy"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 146214
-          line: 1004
+          offset: 160155
+          line: 1160
           column: 1
         end:
-          offset: 146416
-          line: 1004
+          offset: 160357
+          line: 1160
           column: 203
     - pointer: "/validation_rules/5"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 146417
-          line: 1005
+          offset: 160358
+          line: 1161
           column: 1
         end:
-          offset: 146706
-          line: 1005
+          offset: 160647
+          line: 1161
           column: 290
     - pointer: "/validation_rules/6"
       rule_id: "validate_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 146707
-          line: 1006
+          offset: 160648
+          line: 1162
           column: 1
         end:
-          offset: 146960
-          line: 1006
+          offset: 160901
+          line: 1162
           column: 254
     - pointer: "/validation_rules/7"
       rule_id: "validate_inventory_completion"
       identity_kind: "explicit"
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 146961
-          line: 1007
+          offset: 160902
+          line: 1163
           column: 1
         end:
-          offset: 147493
-          line: 1007
+          offset: 161434
+          line: 1163
           column: 533
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2300,27 +2464,27 @@ normative_context:
           column: 272
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_51882"
+      unit_id: "normative_64383"
       source_span:
         start:
-          offset: 51882
-          line: 882
+          offset: 64383
+          line: 1036
           column: 1
         end:
-          offset: 51922
-          line: 882
+          offset: 64423
+          line: 1036
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_144847"
+      unit_id: "normative_158788"
       source_span:
         start:
-          offset: 144847
-          line: 996
+          offset: 158788
+          line: 1152
           column: 1
         end:
-          offset: 144869
-          line: 996
+          offset: 158810
+          line: 1152
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2329,5 +2493,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a212a4397dd625cd9ec1abac66e5b25a95ade0dc899cd94f1ab89d8ec84b301a"
-  generated_content_sha256: "sha256:4101e2df74632b0e47102d8ce14595d5ee1943013a9e03f97cc290fd6a93ac5a"
+    sha256: "sha256:ecc3b99e2e8985898eebd2a1383537565ff1362ce5d4e18766771c3917d4b06c"
+  generated_content_sha256: "sha256:8879b3aab1eb98faa571fcea10b1f37218a195902b754daac2010aa21c4bb921"

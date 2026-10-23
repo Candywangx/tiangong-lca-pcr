@@ -154,11 +154,13 @@ Record observed capture and initial removal with species, condition, effort, loc
   - Basis kind: reference_flow
   - Evidence kind: reasoned_estimate
 
-###### Actual direct water abstraction (`capture_water_abstraction`)
+###### Freshwater directly abstracted from the identified freshwater source (`capture_water_abstraction`)
 
-Only actual water crossing from the environment; specify marine/fresh source and volume-to-mass evidence when needed. Recirculation stays an internal loop, not repeated withdrawal. Purchased water is recorded separately and cannot be the same quantity.
+Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID.
 
-- Selected flow: Actual direct water abstraction
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Freshwater directly abstracted from the identified freshwater source
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_capture_mass. No substitution of an allocated share for physical amount.
 - Value mode: foreground_record
@@ -168,14 +170,40 @@ Only actual water crossing from the environment; specify marine/fresh source and
 - Evidence kind: collected_record
 - Collection protocol: `cp_capture_mass`
 - Sources: `noaa-caribbean-spiny-lobster`
-- Range: Unresolved independent evidence envelope; not a default, empirical threshold or clipping limit
-  - Range role: qa_guardrail
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
   - Upper: U_capture_water_abstraction
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Seawater directly abstracted from the marine environment (`capture_water_abstraction_seawater`)
+
+Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Seawater directly abstracted from the marine environment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_capture_mass. No substitution of an allocated share for physical amount.
+- Value mode: foreground_record
+- Specificity: site_specific
+- Normalization basis: per 1 kg reference flow
+- Basis kind: reference_flow
+- Evidence kind: collected_record
+- Collection protocol: `cp_capture_mass`
+- Sources: `noaa-caribbean-spiny-lobster`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_capture_water_abstraction_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 #### Outputs
 
@@ -313,11 +341,13 @@ Declare actual geography, voltage, provider and purchased versus generated bound
 
 ##### Elementary flows
 
-###### Actual direct water abstraction (`grading_water_abstraction`)
+###### Freshwater directly abstracted from the identified freshwater source (`grading_water_abstraction`)
 
-Only actual water crossing from the environment; specify marine/fresh source and volume-to-mass evidence when needed. Recirculation stays an internal loop, not repeated withdrawal. Purchased water is recorded separately and cannot be the same quantity.
+Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID.
 
-- Selected flow: Actual direct water abstraction
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Freshwater directly abstracted from the identified freshwater source
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_grading_mass. No substitution of an allocated share for physical amount.
 - Value mode: foreground_record
@@ -327,14 +357,40 @@ Only actual water crossing from the environment; specify marine/fresh source and
 - Evidence kind: collected_record
 - Collection protocol: `cp_grading_mass`
 - Sources: `ross-live-argus-grading-2024`
-- Range: Unresolved independent evidence envelope; not a default, empirical threshold or clipping limit
-  - Range role: qa_guardrail
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
   - Upper: U_grading_water_abstraction
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Seawater directly abstracted from the marine environment (`grading_water_abstraction_seawater`)
+
+Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Seawater directly abstracted from the marine environment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_grading_mass. No substitution of an allocated share for physical amount.
+- Value mode: foreground_record
+- Specificity: site_specific
+- Normalization basis: per 1 kg reference flow
+- Basis kind: reference_flow
+- Evidence kind: collected_record
+- Collection protocol: `cp_grading_mass`
+- Sources: `ross-live-argus-grading-2024`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_grading_water_abstraction_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 #### Outputs
 
@@ -472,11 +528,13 @@ Declare actual geography, voltage, provider and purchased versus generated bound
 
 ##### Elementary flows
 
-###### Actual direct water abstraction (`holding_water_abstraction`)
+###### Freshwater directly abstracted from the identified freshwater source (`holding_water_abstraction`)
 
-Only actual water crossing from the environment; specify marine/fresh source and volume-to-mass evidence when needed. Recirculation stays an internal loop, not repeated withdrawal. Purchased water is recorded separately and cannot be the same quantity.
+Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID.
 
-- Selected flow: Actual direct water abstraction
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Freshwater directly abstracted from the identified freshwater source
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_holding_mass. No substitution of an allocated share for physical amount.
 - Value mode: foreground_record
@@ -486,14 +544,40 @@ Only actual water crossing from the environment; specify marine/fresh source and
 - Evidence kind: collected_record
 - Collection protocol: `cp_holding_mass`
 - Sources: `noaa-caribbean-spiny-lobster`
-- Range: Unresolved independent evidence envelope; not a default, empirical threshold or clipping limit
-  - Range role: qa_guardrail
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
   - Upper: U_holding_water_abstraction
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Seawater directly abstracted from the marine environment (`holding_water_abstraction_seawater`)
+
+Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Seawater directly abstracted from the marine environment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_holding_mass. No substitution of an allocated share for physical amount.
+- Value mode: foreground_record
+- Specificity: site_specific
+- Normalization basis: per 1 kg reference flow
+- Basis kind: reference_flow
+- Evidence kind: collected_record
+- Collection protocol: `cp_holding_mass`
+- Sources: `noaa-caribbean-spiny-lobster`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_holding_water_abstraction_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 #### Outputs
 
@@ -631,11 +715,13 @@ Declare actual geography, voltage, provider and purchased versus generated bound
 
 ##### Elementary flows
 
-###### Actual direct water abstraction (`presentation_water_abstraction`)
+###### Freshwater directly abstracted from the identified freshwater source (`presentation_water_abstraction`)
 
-Only actual water crossing from the environment; specify marine/fresh source and volume-to-mass evidence when needed. Recirculation stays an internal loop, not repeated withdrawal. Purchased water is recorded separately and cannot be the same quantity.
+Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID.
 
-- Selected flow: Actual direct water abstraction
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Freshwater directly abstracted from the identified freshwater source
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_presentation_mass. No substitution of an allocated share for physical amount.
 - Value mode: foreground_record
@@ -645,14 +731,40 @@ Only actual water crossing from the environment; specify marine/fresh source and
 - Evidence kind: collected_record
 - Collection protocol: `cp_presentation_mass`
 - Sources: `noaa-caribbean-spiny-lobster`
-- Range: Unresolved independent evidence envelope; not a default, empirical threshold or clipping limit
-  - Range role: qa_guardrail
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
   - Upper: U_presentation_water_abstraction
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Seawater directly abstracted from the marine environment (`presentation_water_abstraction_seawater`)
+
+Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Seawater directly abstracted from the marine environment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_presentation_mass. No substitution of an allocated share for physical amount.
+- Value mode: foreground_record
+- Specificity: site_specific
+- Normalization basis: per 1 kg reference flow
+- Basis kind: reference_flow
+- Evidence kind: collected_record
+- Collection protocol: `cp_presentation_mass`
+- Sources: `noaa-caribbean-spiny-lobster`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_presentation_water_abstraction_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 #### Outputs
 
@@ -790,11 +902,13 @@ Declare actual geography, voltage, provider and purchased versus generated bound
 
 ##### Elementary flows
 
-###### Actual direct water abstraction (`handover_water_abstraction`)
+###### Freshwater directly abstracted from the identified freshwater source (`handover_water_abstraction`)
 
-Only actual water crossing from the environment; specify marine/fresh source and volume-to-mass evidence when needed. Recirculation stays an internal loop, not repeated withdrawal. Purchased water is recorded separately and cannot be the same quantity.
+Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID.
 
-- Selected flow: Actual direct water abstraction
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Freshwater directly abstracted from the identified freshwater source
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_handover_mass. No substitution of an allocated share for physical amount.
 - Value mode: foreground_record
@@ -804,14 +918,40 @@ Only actual water crossing from the environment; specify marine/fresh source and
 - Evidence kind: collected_record
 - Collection protocol: `cp_handover_mass`
 - Sources: `noaa-caribbean-spiny-lobster`
-- Range: Unresolved independent evidence envelope; not a default, empirical threshold or clipping limit
-  - Range role: qa_guardrail
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
   - Upper: U_handover_water_abstraction
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: reference_flow
-  - Evidence kind: reasoned_estimate
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Seawater directly abstracted from the marine environment (`handover_water_abstraction_seawater`)
+
+Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Seawater directly abstracted from the marine environment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_handover_mass. No substitution of an allocated share for physical amount.
+- Value mode: foreground_record
+- Specificity: site_specific
+- Normalization basis: per 1 kg reference flow
+- Basis kind: reference_flow
+- Evidence kind: collected_record
+- Collection protocol: `cp_handover_mass`
+- Sources: `noaa-caribbean-spiny-lobster`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_handover_water_abstraction_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 #### Outputs
 
@@ -997,6 +1137,8 @@ Only actual foreground fossil CO2 supported by source, carbon/fuel activity and 
 | `dq_complete_handover_live_release` | `handover`; outputs; elementary | Identify and separately collect every actual exchange covered by “Actual living organisms returned to the environment”; retain all following collection, quantity and normalization obligations: Require actual species, time, location, life state and release record at this node/pass. Separate target animals, live attractants and incidental organisms; no assumed survival or universal legal permission. Do not rename post-handling releases as pre-capture non-catch. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_handover_mass. No substitution of an allocated share for physical amount. Value mode: foreground_record Specificity: site_specific Normalization basis: per 1 kg reference flow Basis kind: reference_flow Evidence kind: collected_record Collection protocol: `cp_handover_mass` Sources: `noaa-caribbean-spiny-lobster` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_handover_water_discharge` | `handover`; outputs; elementary | Identify and separately collect every actual exchange covered by “Actual direct discharge, evaporation or other water destination”; retain all following collection, quantity and normalization obligations: Expand real receiving medium and identity; separately track water carrier and constituent pollutants without duplicate whole-stream water. Reconcile intake, recirculation, body exchange, carried water, treatment transfers, discharge and opening/closing stock with measured uncertainty. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_handover_mass. No substitution of an allocated share for physical amount. Value mode: foreground_record Specificity: site_specific Normalization basis: per 1 kg reference flow Basis kind: reference_flow Evidence kind: collected_record Collection protocol: `cp_handover_mass` Sources: `noaa-caribbean-spiny-lobster` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_handover_other_environmental_releases` | `handover`; outputs; elementary | Identify and separately collect every actual exchange covered by “Other actual substance or material releases”; retain all following collection, quantity and normalization obligations: Expand individually evidenced pollutant species, receiving compartment and basis, including actual refrigerant, fuel/material leakage, lost gear or biological material where applicable. Do not use one UUID for the umbrella; exclude separately recorded fossil CO2, live returns and water carrier. Non-mass ecological interactions remain auxiliary observations. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg Amount rule: Recorded actual concrete exchanges, uniquely owned by this node/pass, reconciled physically and expressed per 1 kg reference flow; use cp_handover_mass. No substitution of an allocated share for physical amount. Value mode: foreground_record Specificity: site_specific Normalization basis: per 1 kg reference flow Basis kind: reference_flow Evidence kind: collected_record Collection protocol: `cp_handover_mass` Sources: `noaa-caribbean-spiny-lobster` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 

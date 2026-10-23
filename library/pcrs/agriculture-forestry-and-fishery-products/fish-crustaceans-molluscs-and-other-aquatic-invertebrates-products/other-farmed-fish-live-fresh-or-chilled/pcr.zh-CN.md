@@ -410,11 +410,13 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 实际冰水浴供水（`chilling_water`）
+###### 外部供应的液态淡水 (`chilling_water`)
 
-按来源分开供水实例；体积转质量须测量体积及密度；直接取海水时以基本输入实例记录。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：实际冰水浴供水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：实际可归属 chilling_water 实例数量除以验收鱼净质量 A；保留原生原始数量与实例身份。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -423,14 +425,64 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_kill_chill`
-- 数量范围：每个 chilling_water 实例的暂定未解决依据范围；用经审查前景依据替换 U_chilling_water_instance
-  - 范围角色：不确定性范围（`uncertainty_range`）
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：U_chilling_water_instance
+  - 上限：U_chilling_water
   - 单位：kg
-  - 基准：每 1 kg 参考流；独立实例范围，非跨实例共用上限
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`chilling_water_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：实际可归属 chilling_water_brackish 实例数量除以验收鱼净质量 A；保留原生原始数量与实例身份。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_kill_chill`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_chilling_water_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`chilling_water_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：实际可归属 chilling_water_seawater 实例数量除以验收鱼净质量 A；保留原生原始数量与实例身份。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_kill_chill`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_chilling_water_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -872,6 +924,8 @@ sync_with: pcr.en-US.md
 | `collect_support_waste` | `shared_support`; 输出; 废物流 | 逐一识别本范围内实际发生的每个具体物理或化学交换，并补充独立清单卡；不得把本采集范围作为一个流。每卡须独立确定物质/物种、状态、流类型、属性、原生单位、数量、证据、归一化、去向与UUID。不得把本范围总量、共同上限或UUID复制给各子卡。每项实际交换按其真实来源和去向确定最终方向及产品/废物/基本流类型；本采集范围不指定通用交换类型。 采集范围：实际维护和退役废物送处理. 分别记录油、网、设备、清洁液等各废物及去向；说明回收责任，不给无依据替代抵扣。 <br> - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg <br> - 数量规则：实际可归属 collect_support_waste 实例数量除以验收鱼净质量 A；保留原生原始数量与实例身份。 <br> - 数值来源模式：前景记录（`foreground_record`） <br> - 适用范围：场址特定（`site_specific`） <br> - 归一化基准：每 1 kg 参考流 <br> - 基准类型：参考流（`reference_flow`） <br> - 证据类型：采集记录（`collected_record`） <br> - 采集协议：`cp_shared_support` <br> - 数量范围：每个 collect_support_waste 实例的暂定未解决依据范围；用经审查前景依据替换 U_support_waste_instance <br> - 范围角色：不确定性范围（`uncertainty_range`） <br> - 下限：0 <br> - 上限：U_support_waste_instance <br> - 单位：kg <br> - 基准：每 1 kg 参考流；独立实例范围，非跨实例共用上限 <br> - 基准类型：参考流（`reference_flow`） <br> - 证据类型：推理估算（`reasoned_estimate`） | 本过程采集协议、原始记录和逐流身份、数量、范围及去向证据 |
 | `collect_support_other_releases` | `shared_support`; 输出; 基本流 | 逐一识别本范围内实际发生的每个具体物理或化学交换，并补充独立清单卡；不得把本采集范围作为一个流。每卡须独立确定物质/物种、状态、流类型、属性、原生单位、数量、证据、归一化、去向与UUID。不得把本范围总量、共同上限或UUID复制给各子卡。每项实际交换按其真实来源和去向确定最终方向及产品/废物/基本流类型；本采集范围不指定通用交换类型。 采集范围：实际其他污染物与制冷剂向已知介质释放. 按实际明确物质/形态/粒径/制冷剂及接收介质逐项记录；采用实测或有据模型并说明因子边界与不确定性，不绑定未指明空气排放 UUID。 <br> - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg <br> - 数量规则：实际可归属 collect_support_other_releases 实例数量除以验收鱼净质量 A；保留原生原始数量与实例身份。 <br> - 数值来源模式：前景记录（`foreground_record`） <br> - 适用范围：场址特定（`site_specific`） <br> - 归一化基准：每 1 kg 参考流 <br> - 基准类型：参考流（`reference_flow`） <br> - 证据类型：采集记录（`collected_record`） <br> - 采集协议：`cp_shared_support` <br> - 数量范围：每个 collect_support_other_releases 实例的暂定未解决依据范围；用经审查前景依据替换 U_support_other_releases_instance <br> - 范围角色：不确定性范围（`uncertainty_range`） <br> - 下限：0 <br> - 上限：U_support_other_releases_instance <br> - 单位：kg <br> - 基准：每 1 kg 参考流；独立实例范围，非跨实例共用上限 <br> - 基准类型：参考流（`reference_flow`） <br> - 证据类型：推理估算（`reasoned_estimate`） | 本过程采集协议、原始记录和逐流身份、数量、范围及去向证据 |
 | `dq_logistics_water_balance` | 运输、服务和水/营养物平衡 | 运输实际载荷包括随行水、冰、包装及其他货物；空返或调位虽无产品载荷仍有活动负荷，须以实际燃料/距离/车辆服务及明确分配计入，不能以零吨公里消去。完整服务与其已覆盖燃料、材料、资产和直接排放不得重复计入。外部取水、供水产品、内部循环和实际返排水分别计量；内部循环不得再从外部取水中重复扣减。净营养物增量/滞留只用于独立平衡诊断，不自动成为负基本流、负排放或避免负荷。 | 实际载荷和车辆活动记录、服务覆盖、同批水/物质平衡与方法证据 |
+| `dq_atomic_card_identity` | 所有清单行 | 每卡表示一个实物身份明确的交换，不是集合或选择器。Electricity 保留为单一电能流；供应者、地域及电压是实际采集限定信息，不因其待定就推测拆卡。实际其他材料、废物流、碳来源及受纳介质在完成前须分别识别并形成原子卡。保留全部原有采集义务；缺卡或身份未解析不表示零或豁免交换。配对内部水转移保留相同实际水质、转移编号、数量及上游负担，不再采购一次。 | 逐卡身份、供应者、状态、去向及配对记录 |
+| `dq_atomic_range_evidence` | 修复后的原子流卡 | U_row 是待补证要求，不是数值估计、默认值、截断限值或完成证明。须从独立代表性记录或兼容的有凭据供应者设计上界确定各卡自身同单位同参考基准包络，保留范围、方法及不确定性。不复用已移除的合计范围、不复制兄弟卡数量、不用目标批次自身确定上界，也不编造数值。适用证据缺失时阻断数量 QA 完成；仍须实际计量。 | 独立包络证据；原始记录及不确定性 |
 
 ## 9. 校验规则
 

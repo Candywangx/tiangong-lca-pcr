@@ -173,11 +173,13 @@ Conditional external breeder introduction/replacement: document breeder origin, 
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Externally supplied rearing and cleaning water (`rearing_water`)
+###### Externally supplied liquid freshwater (`rearing_water`)
 
-Record supplier and actual untreated/municipal/treated process-quality water separately, with salinity and fish suitability. Do not bind an unspecified supply umbrella to one industrial process-water identity.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Externally supplied rearing and cleaning water
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Measured attributable kg from `cp_water_managed_rearing`; apply collected-period attribution per 1 kg reference flow
 - Value mode: Foreground record (`foreground_record`)
@@ -187,15 +189,66 @@ Record supplier and actual untreated/municipal/treated process-quality water sep
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_water_managed_rearing`
 - Sources: `uf-ifas-ras-fa099`
-
-- Range: Replaceable provisional screening estimate; not empirical or compliance limit
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 100000
+  - Upper: U_rearing_water
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`rearing_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Measured attributable kg from `cp_water_managed_rearing`; apply collected-period attribution per 1 kg reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_managed_rearing`
+- Sources: `uf-ifas-ras-fa099`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_rearing_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`rearing_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Measured attributable kg from `cp_water_managed_rearing`; apply collected-period attribution per 1 kg reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_managed_rearing`
+- Sources: `uf-ifas-ras-fa099`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_rearing_water_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ###### Actual supplier and voltage-specific rearing electricity (`rearing_electricity`)
 
@@ -323,11 +376,13 @@ Conditional wastewater delivered to an actual on-site/off-site treatment boundar
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Removed aquaculture solids routed to treatment or disposal (`rearing_sludge`)
+###### Collected aquaculture sludge sent to treatment (`rearing_sludge`)
 
-Measure filter backwash/sludge/pond-cleaning solids with moisture and destination. No fertilizer credit unless actual product quality, buyer and separate output review establish saleable use.
+Only the physically collected sludge stream, with actual moisture, solids composition and treatment recipient. Exclude liquid filter backwash, separately excavated pond sediment and in-situ deposits; no automatic fertilizer credit.
 
-- Selected flow: Removed aquaculture solids routed to treatment or disposal
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Collected aquaculture sludge sent to treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Measured attributable kg from `cp_waste_managed_rearing`; apply collected-period attribution per 1 kg reference flow
 - Value mode: Foreground record (`foreground_record`)
@@ -336,15 +391,64 @@ Measure filter backwash/sludge/pond-cleaning solids with moisture and destinatio
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_waste_managed_rearing`
-
-- Range: Replaceable provisional screening estimate; not empirical or compliance limit
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 1000
+  - Upper: U_rearing_sludge
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Excavated pond-bottom sediment sent to treatment (`rearing_sludge_pond_sediment`)
+
+Conditional actual pond-bottom sediment removal to a documented recipient; measure wet mass and solids separately. Do not repeat the same parcel as collected sludge or in-situ sediment release.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Excavated pond-bottom sediment sent to treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Measured attributable kg from `cp_waste_managed_rearing`; apply collected-period attribution per 1 kg reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_waste_managed_rearing`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_rearing_sludge_pond_sediment
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Filter-backwash wastewater sent to treatment (`rearing_sludge_backwash`)
+
+Conditional liquid filter-backwash effluent physically handed to treatment; record composition, water content and recipient. If solids are separated first, count them as sludge and only the remaining liquid here; do not repeat it in another effluent card.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Filter-backwash wastewater sent to treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Measured attributable kg from `cp_waste_managed_rearing`; apply collected-period attribution per 1 kg reference flow
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_waste_managed_rearing`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_rearing_sludge_backwash
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Elementary flows
 
@@ -1126,6 +1230,8 @@ All protocols retain raw period/event totals and output attribution separately; 
 | `dq_complete_dispatch_withdrawal` | `farm_dispatch`; inputs; elementary | Identify and separately collect every actual exchange covered by “Actual natural-source water abstracted for live dispatch”; retain all following collection, quantity and normalization obligations: Conditional new direct water withdrawal for packing/cleaning with actual source/resource and measured mass. Water carried from conditioning is logged as internal transfer and not freshly abstracted again. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Measured attributable kg from `cp_water_farm_dispatch`; apply collected-period attribution per 1 kg reference flow Value mode: Foreground record (`foreground_record`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Collected record (`collected_record`) Collection protocol: `cp_water_farm_dispatch` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_packing_rejects` | `farm_dispatch`; outputs; waste | Identify and separately collect every actual exchange covered by “On-farm rejected dispatch packaging”; retain all following collection, quantity and normalization obligations: Actual damaged/rejected packaging sent to recorded recovery/disposal; packaging leaving with the fish is not on-farm waste. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Measured attributable kg from `cp_waste_farm_dispatch`; apply collected-period attribution per 1 kg reference flow Value mode: Foreground record (`foreground_record`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Collected record (`collected_record`) Collection protocol: `cp_waste_farm_dispatch` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_dispatch_water_substances` | `farm_dispatch`; outputs; elementary | Identify and separately collect every actual exchange covered by “Actual dispatch preparation substances released to specific water medium”; retain all following collection, quantity and normalization obligations: Expand actual measured composition from wash/overflow to concrete substances and receiving medium; unresolved composition is a data gap, never assumed zero. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Measured attributable kg from `cp_emissions_farm_dispatch`; apply collected-period attribution per 1 kg reference flow Value mode: Foreground record (`foreground_record`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Collected record (`collected_record`) Collection protocol: `cp_emissions_farm_dispatch` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 

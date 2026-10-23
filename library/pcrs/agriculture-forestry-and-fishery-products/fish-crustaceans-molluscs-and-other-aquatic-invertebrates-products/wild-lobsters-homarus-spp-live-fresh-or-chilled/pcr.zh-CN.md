@@ -169,11 +169,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际其他外供水或内部转移水 (`capture_other_water_receipt`)
+###### 外部供应的液态淡水 (`capture_other_water_receipt`)
 
-按来源、处理及供方展开实际外供水，或以相同编号和边界质量配对内部水转移。排除处理工业供水、自取水及节点内反复循环。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：实际其他外供水或内部转移水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_capture_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -182,10 +184,85 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_capture_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_capture_other_water_receipt
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`capture_other_water_receipt_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_capture_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_capture_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_capture_other_water_receipt_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`capture_other_water_receipt_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_capture_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_capture_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_capture_other_water_receipt_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 本节点接收的内部转移液态载水 (`capture_other_water_receipt_internal`)
+
+仅计一种实物身份明确的内部液态水转移，保留实际来源、盐度、水质及配对的上游转移编号和质量。保留既有上游负担，不是外部购水、新取水或总循环量。不同实际水身份或未配对转移属于未完成，不是一个合计接收量。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：本节点接收的内部转移液态载水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_capture_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_capture_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_capture_other_water_receipt_internal
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -239,11 +316,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际直接抽取的海水或其他环境水 (`capture_self_abstracted_water`)
+###### 从已识别淡水源直接取用的淡水 (`capture_self_abstracted_water`)
 
-识别实际淡水或海水来源、地点及新增取水计量。新增抽取只计一次；循环及配对产品水接收不属于取水。海水路线不强制淡水。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接抽取的海水或其他环境水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_capture_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -252,10 +331,35 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_capture_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_capture_self_abstracted_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`capture_self_abstracted_water_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_capture_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_capture_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_capture_self_abstracted_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -318,11 +422,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际向另一前景节点转移的水 (`capture_internal_water_transfer`)
+###### 转给已识别前景接收方的液态载水 (`capture_internal_water_transfer`)
 
-以配对 other_water_receipt、实际质量及来源记录真实跨节点转移。排除节点内泵送通量及已包含在另项载水转移中的水；不是销售、处置或新增取水。
+仅计转给接收节点对应 *_other_water_receipt_internal 卡的一种实际液态水转移，保留完全相同水质、盐度、转移编号、事件及未分配质量。排除已归属其他载水或冰转移的水、本节点泵循环、外购、废物及环境排放。接收方未知或转移未匹配属于未完成。
 
-- 选定流：实际向另一前景节点转移的水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：转给已识别前景接收方的液态载水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_capture_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -331,10 +437,10 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_capture_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_capture_internal_water_transfer
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -581,11 +687,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际其他外供水或内部转移水 (`grade_other_water_receipt`)
+###### 外部供应的液态淡水 (`grade_other_water_receipt`)
 
-按来源、处理及供方展开实际外供水，或以相同编号和边界质量配对内部水转移。排除处理工业供水、自取水及节点内反复循环。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：实际其他外供水或内部转移水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_grade_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -594,10 +702,85 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_grade_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_grade_other_water_receipt
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`grade_other_water_receipt_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_grade_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_grade_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_grade_other_water_receipt_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`grade_other_water_receipt_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_grade_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_grade_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_grade_other_water_receipt_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 本节点接收的内部转移液态载水 (`grade_other_water_receipt_internal`)
+
+仅计一种实物身份明确的内部液态水转移，保留实际来源、盐度、水质及配对的上游转移编号和质量。保留既有上游负担，不是外部购水、新取水或总循环量。不同实际水身份或未配对转移属于未完成，不是一个合计接收量。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：本节点接收的内部转移液态载水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_grade_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_grade_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_grade_other_water_receipt_internal
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -628,11 +811,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接抽取的海水或其他环境水 (`grade_self_abstracted_water`)
+###### 从已识别淡水源直接取用的淡水 (`grade_self_abstracted_water`)
 
-识别实际淡水或海水来源、地点及新增取水计量。新增抽取只计一次；循环及配对产品水接收不属于取水。海水路线不强制淡水。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接抽取的海水或其他环境水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_grade_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -641,10 +826,35 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_grade_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_grade_self_abstracted_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`grade_self_abstracted_water_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_grade_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_grade_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_grade_self_abstracted_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -706,11 +916,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际向另一前景节点转移的水 (`grade_internal_water_transfer`)
+###### 转给已识别前景接收方的液态载水 (`grade_internal_water_transfer`)
 
-以配对 other_water_receipt、实际质量及来源记录真实跨节点转移。排除节点内泵送通量及已包含在另项载水转移中的水；不是销售、处置或新增取水。
+仅计转给接收节点对应 *_other_water_receipt_internal 卡的一种实际液态水转移，保留完全相同水质、盐度、转移编号、事件及未分配质量。排除已归属其他载水或冰转移的水、本节点泵循环、外购、废物及环境排放。接收方未知或转移未匹配属于未完成。
 
-- 选定流：实际向另一前景节点转移的水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：转给已识别前景接收方的液态载水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_grade_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -719,10 +931,10 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_grade_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_grade_internal_water_transfer
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -967,11 +1179,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际其他外供水或内部转移水 (`live_maintenance_other_water_receipt`)
+###### 外部供应的液态淡水 (`live_maintenance_other_water_receipt`)
 
-按来源、处理及供方展开实际外供水，或以相同编号和边界质量配对内部水转移。排除处理工业供水、自取水及节点内反复循环。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：实际其他外供水或内部转移水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -980,10 +1194,85 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_live_maintenance_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_live_maintenance_other_water_receipt
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`live_maintenance_other_water_receipt_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_live_maintenance_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_live_maintenance_other_water_receipt_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`live_maintenance_other_water_receipt_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_live_maintenance_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_live_maintenance_other_water_receipt_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 本节点接收的内部转移液态载水 (`live_maintenance_other_water_receipt_internal`)
+
+仅计一种实物身份明确的内部液态水转移，保留实际来源、盐度、水质及配对的上游转移编号和质量。保留既有上游负担，不是外部购水、新取水或总循环量。不同实际水身份或未配对转移属于未完成，不是一个合计接收量。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：本节点接收的内部转移液态载水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_live_maintenance_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_live_maintenance_other_water_receipt_internal
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1012,11 +1301,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 有记录保活系统实际外供氧气 (`live_maintenance_oxygen`)
+###### 保活供应的压缩气态氧 (`live_maintenance_oxygen`)
 
-仅限真实系统使用时的实际送达氧气；识别纯度、气态或液态或压缩状态、供方送达及计量质量或有依据参比条件换算。空气泵送不等于采购纯氧，工业出厂氧本身不能证明此身份。
+仅在实际供应压缩气态氧时启用，保留纯度、压力、供应者、气体净质量及气瓶皮重充装证据。排除交付液氧及曝气空气；自制氧计其实际资源，不另购入同量气体。
 
-- 选定流：有记录保活系统实际外供氧气
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：保活供应的压缩气态氧
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1025,10 +1316,35 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_live_maintenance_mass`
-- 数量范围：暂定可替换实物质量筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：100
+  - 上限：U_live_maintenance_oxygen
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 保活供应的液氧 (`live_maintenance_oxygen_liquid`)
+
+仅在实际交付液氧时启用，保留纯度、低温交付状态、供应者及实测净质量。区分本液态输入与实际场内汽化所得气体，不将同一氧量再作外购压缩气体。实际自营转化发生时计入其资源。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：保活供应的液氧
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_live_maintenance_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_live_maintenance_oxygen_liquid
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1036,11 +1352,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接抽取的海水或其他环境水 (`live_maintenance_self_abstracted_water`)
+###### 从已识别淡水源直接取用的淡水 (`live_maintenance_self_abstracted_water`)
 
-识别实际淡水或海水来源、地点及新增取水计量。新增抽取只计一次；循环及配对产品水接收不属于取水。海水路线不强制淡水。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接抽取的海水或其他环境水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1049,10 +1367,35 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_live_maintenance_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_live_maintenance_self_abstracted_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`live_maintenance_self_abstracted_water_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_live_maintenance_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_live_maintenance_self_abstracted_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1114,11 +1457,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际向另一前景节点转移的水 (`live_maintenance_internal_water_transfer`)
+###### 转给已识别前景接收方的液态载水 (`live_maintenance_internal_water_transfer`)
 
-以配对 other_water_receipt、实际质量及来源记录真实跨节点转移。排除节点内泵送通量及已包含在另项载水转移中的水；不是销售、处置或新增取水。
+仅计转给接收节点对应 *_other_water_receipt_internal 卡的一种实际液态水转移，保留完全相同水质、盐度、转移编号、事件及未分配质量。排除已归属其他载水或冰转移的水、本节点泵循环、外购、废物及环境排放。接收方未知或转移未匹配属于未完成。
 
-- 选定流：实际向另一前景节点转移的水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：转给已识别前景接收方的液态载水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_live_maintenance_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1127,10 +1472,10 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_live_maintenance_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_live_maintenance_internal_water_transfer
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1375,11 +1720,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际其他外供水或内部转移水 (`presentation_other_water_receipt`)
+###### 外部供应的液态淡水 (`presentation_other_water_receipt`)
 
-按来源、处理及供方展开实际外供水，或以相同编号和边界质量配对内部水转移。排除处理工业供水、自取水及节点内反复循环。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：实际其他外供水或内部转移水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1388,10 +1735,85 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_presentation_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_presentation_other_water_receipt
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`presentation_other_water_receipt_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_presentation_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_presentation_other_water_receipt_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`presentation_other_water_receipt_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_presentation_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_presentation_other_water_receipt_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 本节点接收的内部转移液态载水 (`presentation_other_water_receipt_internal`)
+
+仅计一种实物身份明确的内部液态水转移，保留实际来源、盐度、水质及配对的上游转移编号和质量。保留既有上游负担，不是外部购水、新取水或总循环量。不同实际水身份或未配对转移属于未完成，不是一个合计接收量。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：本节点接收的内部转移液态载水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_presentation_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_presentation_other_water_receipt_internal
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1422,11 +1844,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接抽取的海水或其他环境水 (`presentation_self_abstracted_water`)
+###### 从已识别淡水源直接取用的淡水 (`presentation_self_abstracted_water`)
 
-识别实际淡水或海水来源、地点及新增取水计量。新增抽取只计一次；循环及配对产品水接收不属于取水。海水路线不强制淡水。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接抽取的海水或其他环境水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1435,10 +1859,35 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_presentation_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_presentation_self_abstracted_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`presentation_self_abstracted_water_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_presentation_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_presentation_self_abstracted_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1500,11 +1949,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际向另一前景节点转移的水 (`presentation_internal_water_transfer`)
+###### 转给已识别前景接收方的液态载水 (`presentation_internal_water_transfer`)
 
-以配对 other_water_receipt、实际质量及来源记录真实跨节点转移。排除节点内泵送通量及已包含在另项载水转移中的水；不是销售、处置或新增取水。
+仅计转给接收节点对应 *_other_water_receipt_internal 卡的一种实际液态水转移，保留完全相同水质、盐度、转移编号、事件及未分配质量。排除已归属其他载水或冰转移的水、本节点泵循环、外购、废物及环境排放。接收方未知或转移未匹配属于未完成。
 
-- 选定流：实际向另一前景节点转移的水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：转给已识别前景接收方的液态载水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1513,10 +1964,10 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_presentation_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_presentation_internal_water_transfer
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1761,11 +2212,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 实际其他外供水或内部转移水 (`handover_other_water_receipt`)
+###### 外部供应的液态淡水 (`handover_other_water_receipt`)
 
-按来源、处理及供方展开实际外供水，或以相同编号和边界质量配对内部水转移。排除处理工业供水、自取水及节点内反复循环。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：实际其他外供水或内部转移水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1774,10 +2227,85 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_handover_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_handover_other_water_receipt
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`handover_other_water_receipt_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_handover_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_handover_other_water_receipt_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`handover_other_water_receipt_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_handover_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_handover_other_water_receipt_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 本节点接收的内部转移液态载水 (`handover_other_water_receipt_internal`)
+
+仅计一种实物身份明确的内部液态水转移，保留实际来源、盐度、水质及配对的上游转移编号和质量。保留既有上游负担，不是外部购水、新取水或总循环量。不同实际水身份或未配对转移属于未完成，不是一个合计接收量。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：本节点接收的内部转移液态载水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_handover_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_handover_other_water_receipt_internal
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1808,11 +2336,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接抽取的海水或其他环境水 (`handover_self_abstracted_water`)
+###### 从已识别淡水源直接取用的淡水 (`handover_self_abstracted_water`)
 
-识别实际淡水或海水来源、地点及新增取水计量。新增抽取只计一次；循环及配对产品水接收不属于取水。海水路线不强制淡水。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接抽取的海水或其他环境水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1821,10 +2351,35 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_handover_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_handover_self_abstracted_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`handover_self_abstracted_water_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_handover_mass`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_handover_self_abstracted_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1888,11 +2443,13 @@ sync_with: pcr.en-US.md
   - 证据类型：`method_formula`
   - 来源：`mass-balance-identity`
 
-###### 实际向另一前景节点转移的水 (`handover_internal_water_transfer`)
+###### 转给已识别前景接收方的液态载水 (`handover_internal_water_transfer`)
 
-以配对 other_water_receipt、实际质量及来源记录真实跨节点转移。排除节点内泵送通量及已包含在另项载水转移中的水；不是销售、处置或新增取水。
+仅计转给接收节点对应 *_other_water_receipt_internal 卡的一种实际液态水转移，保留完全相同水质、盐度、转移编号、事件及未分配质量。排除已归属其他载水或冰转移的水、本节点泵循环、外购、废物及环境排放。接收方未知或转移未匹配属于未完成。
 
-- 选定流：实际向另一前景节点转移的水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：转给已识别前景接收方的液态载水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。
 - 数值来源模式：`calculated_value`
@@ -1901,10 +2458,10 @@ sync_with: pcr.en-US.md
 - 基准类型：`reference_flow`
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_handover_mass`
-- 数量范围：暂定可替换水筛选，不是经验或默认数量
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：10000
+  - 上限：U_handover_internal_water_transfer
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -2158,6 +2715,8 @@ sync_with: pcr.en-US.md
 | `dq_complete_presentation_body_waste` | `presentation`; outputs; waste | 逐项识别并独立计量“实际送处理的拒收原体或脱落组织”包含的实际交换；这些采集和换算责任全部适用：以事件编号、实际质量及处理交接识别死亡、状态拒收及脱落组织；待检仍是有身份库存，不自动变废物。排除已销售或环境放归个体。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 数量规则：由 cp_presentation_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。 数值来源模式：`calculated_value` 适用范围：`site_specific` 归一化基准：每 1 kg 参考流 基准类型：`reference_flow` 证据类型：`calculated_from_collection` 采集协议：`cp_presentation_mass` 每项实际子交换必须有独立数量、原生单位、归一化、去向、UUID和Range证据；不得继承集合总量、范围或绑定。未落实则最终数据包不完整且校验失败，未知不等于零。 | 所链接协议的逐流原始记录和身份、去向、范围证据 |
 | `dq_complete_handover_alternative_product` | `handover`; outputs; product | 逐项识别并独立计量“实际独立验收的其他龙虾或捕获物产品”包含的实际交换；这些采集和换算责任全部适用：按物种、原体或状态、质量、用途、接收方及交接展开实际非参考输出。可包括实际验收的降级活体或另行验收的死亡食用原体，但均非活体参考产品。仅拒收而无验收用途不构成共产品。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。 数值来源模式：`calculated_value` 适用范围：`site_specific` 归一化基准：每 1 kg 参考流 基准类型：`reference_flow` 证据类型：`calculated_from_collection` 采集协议：`cp_handover_mass` 每项实际子交换必须有独立数量、原生单位、归一化、去向、UUID和Range证据；不得继承集合总量、范围或绑定。未落实则最终数据包不完整且校验失败，未知不等于零。 | 所链接协议的逐流原始记录和身份、去向、范围证据 |
 | `dq_complete_handover_body_waste` | `handover`; outputs; waste | 逐项识别并独立计量“实际送处理的拒收原体或脱落组织”包含的实际交换；这些采集和换算责任全部适用：以事件编号、实际质量及处理交接识别死亡、状态拒收及脱落组织；待检仍是有身份库存，不自动变废物。排除已销售或环境放归个体。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 数量规则：由 cp_handover_mass 实际原始记录保留未分配实物接收、转移、库存及去向，共享事件、节点或期间责任归属一次后按第 8 节除以正最终验收原体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次；保留实物台账及分配矩阵。 数值来源模式：`calculated_value` 适用范围：`site_specific` 归一化基准：每 1 kg 参考流 基准类型：`reference_flow` 证据类型：`calculated_from_collection` 采集协议：`cp_handover_mass` 每项实际子交换必须有独立数量、原生单位、归一化、去向、UUID和Range证据；不得继承集合总量、范围或绑定。未落实则最终数据包不完整且校验失败，未知不等于零。 | 所链接协议的逐流原始记录和身份、去向、范围证据 |
+| `dq_atomic_card_identity` | 所有清单行 | 每卡表示一个实物身份明确的交换，不是集合或选择器。Electricity 保留为单一电能流；供应者、地域及电压是实际采集限定信息，不因其待定就推测拆卡。实际其他材料、废物流、碳来源及受纳介质在完成前须分别识别并形成原子卡。保留全部原有采集义务；缺卡或身份未解析不表示零或豁免交换。配对内部水转移保留相同实际水质、转移编号、数量及上游负担，不再采购一次。 | 逐卡身份、供应者、状态、去向及配对记录 |
+| `dq_atomic_range_evidence` | 修复后的原子流卡 | U_row 是待补证要求，不是数值估计、默认值、截断限值或完成证明。须从独立代表性记录或兼容的有凭据供应者设计上界确定各卡自身同单位同参考基准包络，保留范围、方法及不确定性。不复用已移除的合计范围、不复制兄弟卡数量、不用目标批次自身确定上界，也不编造数值。适用证据缺失时阻断数量 QA 完成；仍须实际计量。 | 独立包络证据；原始记录及不确定性 |
 
 ## 9. 校验规则
 

@@ -135,11 +135,13 @@ Litopenaeus setiferus only, head and native shell retained. This is the measured
 
 ##### Elementary flows
 
-###### Carbon dioxide from actual directly owned combustion to air (`capture_co2`)
+###### Fossil carbon dioxide emitted to the declared air compartment (`capture_co2`)
 
-Conditional actual combustion only, excluding CO2 already represented by full operational background services. Record fuel carbon basis, oxidation, fossil/biogenic distinction, factor source and engine activity; purchased fuel supply is not the direct emission.
+Only the fossil-carbon fraction of actual directly owned combustion CO2 at this node, with verified actual receiving-air compartment, fuel composition or factor, oxidation and period ownership. Exclude biogenic CO2, animal respiration, CO2-equivalent and emissions already included in purchased inclusive services. Missing carbon-origin evidence is a gap, not an assumed fossil fraction.
 
-- Selected flow: Carbon dioxide from actual directly owned combustion to air
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Fossil carbon dioxide emitted to the declared air compartment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Collect attributable physical quantity using cp_capture; retain actual transfer and destination records.
 - Value mode: Foreground record (`foreground_record`)
@@ -148,14 +150,39 @@ Conditional actual combustion only, excluding CO2 already represented by full op
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
-- Range: Provisional unresolved range evidence; independently establish actual bound
-  - Range role: Uncertainty range (`uncertainty_range`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: U_row,i
+  - Upper: U_capture_co2
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Biogenic carbon dioxide emitted to the declared air compartment (`capture_co2_biogenic`)
+
+Only the evidenced biogenic-carbon fraction of actual directly owned combustion CO2 at this node, in the independently identified air compartment. Derive from actual fuel-carbon composition and oxidation or measurement; no assumed biogenic share, climate-neutrality claim or duplicate fossil/supplier emission.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Biogenic carbon dioxide emitted to the declared air compartment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect attributable physical quantity using cp_capture; retain actual transfer and destination records.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_capture`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_capture_co2_biogenic
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ### Process: Catch sorting and destination assignment (`sorting`)
 
@@ -223,11 +250,13 @@ Assign accepted selected whole head-on shell-on lots to conditioning if active, 
 
 ##### Elementary flows
 
-###### Carbon dioxide from actual directly owned combustion to air (`sorting_co2`)
+###### Fossil carbon dioxide emitted to the declared air compartment (`sorting_co2`)
 
-Conditional actual combustion only, excluding CO2 already represented by full operational background services. Record fuel carbon basis, oxidation, fossil/biogenic distinction, factor source and engine activity; purchased fuel supply is not the direct emission.
+Only the fossil-carbon fraction of actual directly owned combustion CO2 at this node, with verified actual receiving-air compartment, fuel composition or factor, oxidation and period ownership. Exclude biogenic CO2, animal respiration, CO2-equivalent and emissions already included in purchased inclusive services. Missing carbon-origin evidence is a gap, not an assumed fossil fraction.
 
-- Selected flow: Carbon dioxide from actual directly owned combustion to air
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Fossil carbon dioxide emitted to the declared air compartment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Collect attributable physical quantity using cp_sorting; retain actual transfer and destination records.
 - Value mode: Foreground record (`foreground_record`)
@@ -236,14 +265,39 @@ Conditional actual combustion only, excluding CO2 already represented by full op
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_sorting`
-- Range: Provisional unresolved range evidence; independently establish actual bound
-  - Range role: Uncertainty range (`uncertainty_range`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: U_row,i
+  - Upper: U_sorting_co2
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Biogenic carbon dioxide emitted to the declared air compartment (`sorting_co2_biogenic`)
+
+Only the evidenced biogenic-carbon fraction of actual directly owned combustion CO2 at this node, in the independently identified air compartment. Derive from actual fuel-carbon composition and oxidation or measurement; no assumed biogenic share, climate-neutrality claim or duplicate fossil/supplier emission.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Biogenic carbon dioxide emitted to the declared air compartment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect attributable physical quantity using cp_sorting; retain actual transfer and destination records.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sorting`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_sorting_co2_biogenic
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ### Process: Actual whole-product washing or dip (`conditioning`)
 
@@ -376,11 +430,13 @@ Conditional technosphere waste; record composition, water and chemical basis, de
 
 ##### Elementary flows
 
-###### Carbon dioxide from actual directly owned combustion to air (`conditioning_co2`)
+###### Fossil carbon dioxide emitted to the declared air compartment (`conditioning_co2`)
 
-Conditional actual combustion only, excluding CO2 already represented by full operational background services. Record fuel carbon basis, oxidation, fossil/biogenic distinction, factor source and engine activity; purchased fuel supply is not the direct emission.
+Only the fossil-carbon fraction of actual directly owned combustion CO2 at this node, with verified actual receiving-air compartment, fuel composition or factor, oxidation and period ownership. Exclude biogenic CO2, animal respiration, CO2-equivalent and emissions already included in purchased inclusive services. Missing carbon-origin evidence is a gap, not an assumed fossil fraction.
 
-- Selected flow: Carbon dioxide from actual directly owned combustion to air
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Fossil carbon dioxide emitted to the declared air compartment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Collect attributable physical quantity using cp_conditioning; retain actual transfer and destination records.
 - Value mode: Foreground record (`foreground_record`)
@@ -389,14 +445,39 @@ Conditional actual combustion only, excluding CO2 already represented by full op
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning`
-- Range: Provisional unresolved range evidence; independently establish actual bound
-  - Range role: Uncertainty range (`uncertainty_range`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: U_row,i
+  - Upper: U_conditioning_co2
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Biogenic carbon dioxide emitted to the declared air compartment (`conditioning_co2_biogenic`)
+
+Only the evidenced biogenic-carbon fraction of actual directly owned combustion CO2 at this node, in the independently identified air compartment. Derive from actual fuel-carbon composition and oxidation or measurement; no assumed biogenic share, climate-neutrality claim or duplicate fossil/supplier emission.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Biogenic carbon dioxide emitted to the declared air compartment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect attributable physical quantity using cp_conditioning; retain actual transfer and destination records.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_conditioning`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_conditioning_co2_biogenic
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ### Process: Icing and chilled holding (`preservation`)
 
@@ -487,11 +568,13 @@ Declare holding time, actual temperature records, ice state and native shell. Ha
 
 ##### Elementary flows
 
-###### Carbon dioxide from actual directly owned combustion to air (`preservation_co2`)
+###### Fossil carbon dioxide emitted to the declared air compartment (`preservation_co2`)
 
-Conditional actual combustion only, excluding CO2 already represented by full operational background services. Record fuel carbon basis, oxidation, fossil/biogenic distinction, factor source and engine activity; purchased fuel supply is not the direct emission.
+Only the fossil-carbon fraction of actual directly owned combustion CO2 at this node, with verified actual receiving-air compartment, fuel composition or factor, oxidation and period ownership. Exclude biogenic CO2, animal respiration, CO2-equivalent and emissions already included in purchased inclusive services. Missing carbon-origin evidence is a gap, not an assumed fossil fraction.
 
-- Selected flow: Carbon dioxide from actual directly owned combustion to air
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Fossil carbon dioxide emitted to the declared air compartment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Collect attributable physical quantity using cp_preservation; retain actual transfer and destination records.
 - Value mode: Foreground record (`foreground_record`)
@@ -500,14 +583,39 @@ Conditional actual combustion only, excluding CO2 already represented by full op
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preservation`
-- Range: Provisional unresolved range evidence; independently establish actual bound
-  - Range role: Uncertainty range (`uncertainty_range`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: U_row,i
+  - Upper: U_preservation_co2
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Biogenic carbon dioxide emitted to the declared air compartment (`preservation_co2_biogenic`)
+
+Only the evidenced biogenic-carbon fraction of actual directly owned combustion CO2 at this node, in the independently identified air compartment. Derive from actual fuel-carbon composition and oxidation or measurement; no assumed biogenic share, climate-neutrality claim or duplicate fossil/supplier emission.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Biogenic carbon dioxide emitted to the declared air compartment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect attributable physical quantity using cp_preservation; retain actual transfer and destination records.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_preservation`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_preservation_co2_biogenic
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ### Process: Actual box or crate presentation (`packaging`)
 
@@ -575,11 +683,13 @@ Packaging changes presentation only; shrimp net mass remains separate from ice a
 
 ##### Elementary flows
 
-###### Carbon dioxide from actual directly owned combustion to air (`packaging_co2`)
+###### Fossil carbon dioxide emitted to the declared air compartment (`packaging_co2`)
 
-Conditional actual combustion only, excluding CO2 already represented by full operational background services. Record fuel carbon basis, oxidation, fossil/biogenic distinction, factor source and engine activity; purchased fuel supply is not the direct emission.
+Only the fossil-carbon fraction of actual directly owned combustion CO2 at this node, with verified actual receiving-air compartment, fuel composition or factor, oxidation and period ownership. Exclude biogenic CO2, animal respiration, CO2-equivalent and emissions already included in purchased inclusive services. Missing carbon-origin evidence is a gap, not an assumed fossil fraction.
 
-- Selected flow: Carbon dioxide from actual directly owned combustion to air
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Fossil carbon dioxide emitted to the declared air compartment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Collect attributable physical quantity using cp_packaging; retain actual transfer and destination records.
 - Value mode: Foreground record (`foreground_record`)
@@ -588,14 +698,39 @@ Conditional actual combustion only, excluding CO2 already represented by full op
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_packaging`
-- Range: Provisional unresolved range evidence; independently establish actual bound
-  - Range role: Uncertainty range (`uncertainty_range`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: U_row,i
+  - Upper: U_packaging_co2
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Biogenic carbon dioxide emitted to the declared air compartment (`packaging_co2_biogenic`)
+
+Only the evidenced biogenic-carbon fraction of actual directly owned combustion CO2 at this node, in the independently identified air compartment. Derive from actual fuel-carbon composition and oxidation or measurement; no assumed biogenic share, climate-neutrality claim or duplicate fossil/supplier emission.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Biogenic carbon dioxide emitted to the declared air compartment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect attributable physical quantity using cp_packaging; retain actual transfer and destination records.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_packaging_co2_biogenic
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ### Process: First harvester physical recipient handover (`receipt`)
 
@@ -663,11 +798,13 @@ Litopenaeus setiferus, US Gulf near-bottom otter trawl, raw never-frozen accepte
 
 ##### Elementary flows
 
-###### Carbon dioxide from actual directly owned combustion to air (`receipt_co2`)
+###### Fossil carbon dioxide emitted to the declared air compartment (`receipt_co2`)
 
-Conditional actual combustion only, excluding CO2 already represented by full operational background services. Record fuel carbon basis, oxidation, fossil/biogenic distinction, factor source and engine activity; purchased fuel supply is not the direct emission.
+Only the fossil-carbon fraction of actual directly owned combustion CO2 at this node, with verified actual receiving-air compartment, fuel composition or factor, oxidation and period ownership. Exclude biogenic CO2, animal respiration, CO2-equivalent and emissions already included in purchased inclusive services. Missing carbon-origin evidence is a gap, not an assumed fossil fraction.
 
-- Selected flow: Carbon dioxide from actual directly owned combustion to air
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Fossil carbon dioxide emitted to the declared air compartment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Collect attributable physical quantity using cp_receipt; retain actual transfer and destination records.
 - Value mode: Foreground record (`foreground_record`)
@@ -676,14 +813,39 @@ Conditional actual combustion only, excluding CO2 already represented by full op
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_receipt`
-- Range: Provisional unresolved range evidence; independently establish actual bound
-  - Range role: Uncertainty range (`uncertainty_range`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: U_row,i
+  - Upper: U_receipt_co2
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Biogenic carbon dioxide emitted to the declared air compartment (`receipt_co2_biogenic`)
+
+Only the evidenced biogenic-carbon fraction of actual directly owned combustion CO2 at this node, in the independently identified air compartment. Derive from actual fuel-carbon composition and oxidation or measurement; no assumed biogenic share, climate-neutrality claim or duplicate fossil/supplier emission.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Biogenic carbon dioxide emitted to the declared air compartment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Collect attributable physical quantity using cp_receipt; retain actual transfer and destination records.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_receipt`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_receipt_co2_biogenic
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ## 7. Allocation and Co-product Handling
 
@@ -757,6 +919,8 @@ Conditional actual combustion only, excluding CO2 already represented by full op
 | `collect_receipt_rejects` | `receipt`; Outputs; Waste flows | Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Recipient unsaleable rejects and removed ice or water by fate. This waste card covers only actual unsaleable biomass or removed ice/water sent to a confirmed treatment/disposal provider, independently recorded by fate and next owner. Returned, reusable or resale products are not automatically waste and remain traceable in product/return ledgers without disappearing from trip accounting. Directly discharged carrier water belongs in the water balance and its measured/modelled pollutants in collect_receipt_other_releases; whole-biomass fates remain independent. <br> - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg <br> - Amount rule: Collect attributable physical quantity using cp_receipt; retain actual transfer and destination records. <br> - Value mode: Foreground record (`foreground_record`) <br> - Specificity: Site-specific (`site_specific`) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (`reference_flow`) <br> - Evidence kind: Collected record (`collected_record`) <br> - Collection protocol: `cp_receipt` <br> - Range: Provisional unresolved range evidence; independently establish actual bound <br> - Range role: Uncertainty range (`uncertainty_range`) <br> - Lower: 0 <br> - Upper: U_row,i <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (`reference_flow`) <br> - Evidence kind: Reasoned estimate (`reasoned_estimate`) | Node collection protocol, original records and individual identity, quantity, range and destination evidence |
 | `collect_receipt_other_releases` | `receipt`; Outputs; Elementary flows | Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual non-CO2 pollutant and leakage releases by substance basis and medium. Conditional zero, one or multiple actual direct emissions/leakages, excluding this node's separately listed CO2 and all full-service releases. Specify each combustion substance/species/particle size, refrigerant identity or measured discharged pollutant, amount basis and air/water/soil receiving medium; bulk biomass and wastewater are not automatic elemental pollutants. <br> - Flow property / unit: Actual instance property / native unit of each actual instance <br> - Amount rule: Collect attributable physical quantity using cp_receipt; retain actual transfer and destination records. <br> - Value mode: Foreground record (`foreground_record`) <br> - Specificity: Site-specific (`site_specific`) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (`reference_flow`) <br> - Evidence kind: Collected record (`collected_record`) <br> - Collection protocol: `cp_receipt` <br> - Range: Provisional unresolved range evidence; independently establish actual bound <br> - Range role: Uncertainty range (`uncertainty_range`) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit of each actual instance <br> - Basis: per 1 kg reference flow; independent actual native-unit instance <br> - Basis kind: Reference flow (`reference_flow`) <br> - Evidence kind: Reasoned estimate (`reasoned_estimate`) | Node collection protocol, original records and individual identity, quantity, range and destination evidence |
 | `dq_logistics_water_balance` | logistics, services and water/nutrient balances | Actual payload includes accompanying water, ice, packaging and other cargo. Empty return/repositioning still consumes activity: account for its actual fuel/distance/vehicle service and explicit attribution; zero cargo tonne-kilometres cannot erase that duty. Do not duplicate a complete service and covered fuel, materials, assets or direct releases. Measure external abstraction, supplied water product, internal circulation and actual returned/discharged water separately; never deduct internal recirculation again from external intake. Net nutrient increment/retention is a separate balance diagnostic, never automatically a negative elementary flow, negative emission or avoided burden. | Actual load/vehicle duty records, service scope, same-lot water/substance balance and method evidence |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 

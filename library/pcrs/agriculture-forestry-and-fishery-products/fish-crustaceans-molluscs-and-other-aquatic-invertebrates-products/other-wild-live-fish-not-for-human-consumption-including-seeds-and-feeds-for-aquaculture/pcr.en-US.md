@@ -176,11 +176,13 @@ This is one actual externally supplied water exchange, not an assumed industrial
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
 
-###### Other externally supplied water for the actual stage (`capture_other_supplied_water`)
+###### Externally supplied liquid freshwater (`capture_other_supplied_water`)
 
-Actual externally supplied freshwater, brackish water or seawater not fitting the treated-process-water card; provider and salinity distinct.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other externally supplied water for the actual stage
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
 - Value mode: `calculated_value`
@@ -190,10 +192,62 @@ Actual externally supplied freshwater, brackish water or seawater not fitting th
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_capture`
 - Sources: `wild-live-method-2026`
-- Range: Replaceable provisional author QA screen
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
   - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 100000
+  - Upper: U_capture_other_supplied_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`capture_other_supplied_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_capture`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_capture_other_supplied_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`capture_other_supplied_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_capture`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_capture_other_supplied_water_seawater
   - Unit: kg
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
@@ -482,11 +536,13 @@ This is one actual externally supplied water exchange, not an assumed industrial
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
 
-###### Other externally supplied water for the actual stage (`holding_other_supplied_water`)
+###### Externally supplied liquid freshwater (`holding_other_supplied_water`)
 
-Actual externally supplied freshwater, brackish water or seawater not fitting the treated-process-water card; provider and salinity distinct.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other externally supplied water for the actual stage
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
 - Value mode: `calculated_value`
@@ -496,10 +552,62 @@ Actual externally supplied freshwater, brackish water or seawater not fitting th
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_holding`
 - Sources: `wild-live-method-2026`
-- Range: Replaceable provisional author QA screen
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
   - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 100000
+  - Upper: U_holding_other_supplied_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`holding_other_supplied_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_holding`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_holding_other_supplied_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`holding_other_supplied_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_holding`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_holding_other_supplied_water_seawater
   - Unit: kg
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
@@ -785,11 +893,13 @@ This is one actual externally supplied water exchange, not an assumed industrial
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
 
-###### Other externally supplied water for the actual stage (`transfer_other_supplied_water`)
+###### Externally supplied liquid freshwater (`transfer_other_supplied_water`)
 
-Actual externally supplied freshwater, brackish water or seawater not fitting the treated-process-water card; provider and salinity distinct.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other externally supplied water for the actual stage
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
 - Value mode: `calculated_value`
@@ -799,10 +909,62 @@ Actual externally supplied freshwater, brackish water or seawater not fitting th
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_transfer`
 - Sources: `wild-live-method-2026`
-- Range: Replaceable provisional author QA screen
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
   - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 100000
+  - Upper: U_transfer_other_supplied_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`transfer_other_supplied_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_transfer`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_transfer_other_supplied_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`transfer_other_supplied_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_transfer`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_transfer_other_supplied_water_seawater
   - Unit: kg
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
@@ -1088,11 +1250,13 @@ This is one actual externally supplied water exchange, not an assumed industrial
   - Basis kind: `reference_flow`
   - Evidence kind: `reasoned_estimate`
 
-###### Other externally supplied water for the actual stage (`handover_other_supplied_water`)
+###### Externally supplied liquid freshwater (`handover_other_supplied_water`)
 
-Actual externally supplied freshwater, brackish water or seawater not fitting the treated-process-water card; provider and salinity distinct.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other externally supplied water for the actual stage
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
 - Value mode: `calculated_value`
@@ -1102,10 +1266,62 @@ Actual externally supplied freshwater, brackish water or seawater not fitting th
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_handover`
 - Sources: `wild-live-method-2026`
-- Range: Replaceable provisional author QA screen
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
   - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 100000
+  - Upper: U_handover_other_supplied_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`handover_other_supplied_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_handover`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_handover_other_supplied_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`handover_other_supplied_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_handover`
+- Sources: `wild-live-method-2026`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_handover_other_supplied_water_seawater
   - Unit: kg
   - Basis: per 1 kg reference flow
   - Basis kind: `reference_flow`
@@ -1387,6 +1603,8 @@ Water analyses retain elemental/species units, sample times, flow and duration, 
 | `dq_complete_handover_abstracted_water` | `handover`; inputs; elementary | Identify and separately collect every actual exchange covered by “Water abstracted directly from the declared environment”; retain all following collection, quantity and normalization obligations: Actual withdrawal by water body and salinity; measure external inflow once and retain volume, density, date and location. Internal circulation is an auxiliary activity. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence. Value mode: `calculated_value` Specificity: `site_specific` Normalization basis: per 1 kg reference flow Basis kind: `reference_flow` Evidence kind: `calculated_from_collection` Collection protocol: `cp_handover` Sources: `wild-live-method-2026` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_handover_solid_waste` | `handover`; outputs; waste | Identify and separately collect every actual exchange covered by “Spent physical consumables and separated solids for treatment”; retain all following collection, quantity and normalization obligations: Actual cleaning solids, used filters, damaged gear, spilled materials or package rejects; split composition, destination and hazardous status. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence. Value mode: `calculated_value` Specificity: `site_specific` Normalization basis: per 1 kg reference flow Basis kind: `reference_flow` Evidence kind: `calculated_from_collection` Collection protocol: `cp_handover` Sources: `wild-live-method-2026` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_handover_substance_releases` | `handover`; outputs; elementary | Identify and separately collect every actual exchange covered by “Actual substance-specific direct releases and refrigerant leakage”; retain all following collection, quantity and normalization obligations: Conditional concrete umbrella: each actual nitrogen/phosphorus species, health-product residue, exhaust substance/particle class, spilled lubricant, refrigerant or gear material crossing to environment gets its own identity, medium and kg substance basis. Use concentration, flow, duration and background correction for waterborne loads. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Attributable measured stage quantity divided by the same accepted gate net viable-live wet biomass; retain original quantities, counts, times and attribution evidence. Value mode: `calculated_value` Specificity: `site_specific` Normalization basis: per 1 kg reference flow Basis kind: `reference_flow` Evidence kind: `calculated_from_collection` Collection protocol: `cp_handover` Sources: `wild-live-method-2026` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 

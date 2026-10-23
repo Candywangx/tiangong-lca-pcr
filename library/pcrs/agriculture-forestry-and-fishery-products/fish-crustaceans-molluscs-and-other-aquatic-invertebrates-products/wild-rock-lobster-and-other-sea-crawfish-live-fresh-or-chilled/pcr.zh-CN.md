@@ -154,11 +154,13 @@ sync_with: pcr.en-US.md
   - 基准类型：reference_flow
   - 证据类型：reasoned_estimate
 
-###### 实际直接取水（`capture_water_abstraction`）
+###### 从已识别淡水源直接取用的淡水 (`capture_water_abstraction`)
 
-仅记录从环境跨入的实际取水，声明海水或淡水来源，必要时保留体积转质量依据。循环水属内部环路，不得重复记取水。外购水单列，不能与此处为同一数量。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接取水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_capture_mass。不得以分配份额替代实物数量。
 - 数值来源模式：foreground_record
@@ -168,14 +170,40 @@ sync_with: pcr.en-US.md
 - 证据类型：collected_record
 - 采集协议：`cp_capture_mass`
 - 来源：`noaa-caribbean-spiny-lobster`
-- 数量范围：未决独立证据包络；不是默认值、经验阈值或裁剪界限
-  - 范围角色：qa_guardrail
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
   - 上限：U_capture_water_abstraction
   - 单位：kg
   - 基准：每 1 kg 参考流
-  - 基准类型：reference_flow
-  - 证据类型：reasoned_estimate
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`capture_water_abstraction_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_capture_mass。不得以分配份额替代实物数量。
+- 数值来源模式：foreground_record
+- 适用范围：site_specific
+- 归一化基准：每 1 kg 参考流
+- 基准类型：reference_flow
+- 证据类型：collected_record
+- 采集协议：`cp_capture_mass`
+- 来源：`noaa-caribbean-spiny-lobster`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_capture_water_abstraction_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 #### 输出
 
@@ -313,11 +341,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接取水（`grading_water_abstraction`）
+###### 从已识别淡水源直接取用的淡水 (`grading_water_abstraction`)
 
-仅记录从环境跨入的实际取水，声明海水或淡水来源，必要时保留体积转质量依据。循环水属内部环路，不得重复记取水。外购水单列，不能与此处为同一数量。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接取水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_grading_mass。不得以分配份额替代实物数量。
 - 数值来源模式：foreground_record
@@ -327,14 +357,40 @@ sync_with: pcr.en-US.md
 - 证据类型：collected_record
 - 采集协议：`cp_grading_mass`
 - 来源：`ross-live-argus-grading-2024`
-- 数量范围：未决独立证据包络；不是默认值、经验阈值或裁剪界限
-  - 范围角色：qa_guardrail
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
   - 上限：U_grading_water_abstraction
   - 单位：kg
   - 基准：每 1 kg 参考流
-  - 基准类型：reference_flow
-  - 证据类型：reasoned_estimate
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`grading_water_abstraction_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_grading_mass。不得以分配份额替代实物数量。
+- 数值来源模式：foreground_record
+- 适用范围：site_specific
+- 归一化基准：每 1 kg 参考流
+- 基准类型：reference_flow
+- 证据类型：collected_record
+- 采集协议：`cp_grading_mass`
+- 来源：`ross-live-argus-grading-2024`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_grading_water_abstraction_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 #### 输出
 
@@ -472,11 +528,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接取水（`holding_water_abstraction`）
+###### 从已识别淡水源直接取用的淡水 (`holding_water_abstraction`)
 
-仅记录从环境跨入的实际取水，声明海水或淡水来源，必要时保留体积转质量依据。循环水属内部环路，不得重复记取水。外购水单列，不能与此处为同一数量。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接取水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_holding_mass。不得以分配份额替代实物数量。
 - 数值来源模式：foreground_record
@@ -486,14 +544,40 @@ sync_with: pcr.en-US.md
 - 证据类型：collected_record
 - 采集协议：`cp_holding_mass`
 - 来源：`noaa-caribbean-spiny-lobster`
-- 数量范围：未决独立证据包络；不是默认值、经验阈值或裁剪界限
-  - 范围角色：qa_guardrail
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
   - 上限：U_holding_water_abstraction
   - 单位：kg
   - 基准：每 1 kg 参考流
-  - 基准类型：reference_flow
-  - 证据类型：reasoned_estimate
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`holding_water_abstraction_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_holding_mass。不得以分配份额替代实物数量。
+- 数值来源模式：foreground_record
+- 适用范围：site_specific
+- 归一化基准：每 1 kg 参考流
+- 基准类型：reference_flow
+- 证据类型：collected_record
+- 采集协议：`cp_holding_mass`
+- 来源：`noaa-caribbean-spiny-lobster`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_holding_water_abstraction_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 #### 输出
 
@@ -631,11 +715,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接取水（`presentation_water_abstraction`）
+###### 从已识别淡水源直接取用的淡水 (`presentation_water_abstraction`)
 
-仅记录从环境跨入的实际取水，声明海水或淡水来源，必要时保留体积转质量依据。循环水属内部环路，不得重复记取水。外购水单列，不能与此处为同一数量。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接取水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_presentation_mass。不得以分配份额替代实物数量。
 - 数值来源模式：foreground_record
@@ -645,14 +731,40 @@ sync_with: pcr.en-US.md
 - 证据类型：collected_record
 - 采集协议：`cp_presentation_mass`
 - 来源：`noaa-caribbean-spiny-lobster`
-- 数量范围：未决独立证据包络；不是默认值、经验阈值或裁剪界限
-  - 范围角色：qa_guardrail
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
   - 上限：U_presentation_water_abstraction
   - 单位：kg
   - 基准：每 1 kg 参考流
-  - 基准类型：reference_flow
-  - 证据类型：reasoned_estimate
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`presentation_water_abstraction_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_presentation_mass。不得以分配份额替代实物数量。
+- 数值来源模式：foreground_record
+- 适用范围：site_specific
+- 归一化基准：每 1 kg 参考流
+- 基准类型：reference_flow
+- 证据类型：collected_record
+- 采集协议：`cp_presentation_mass`
+- 来源：`noaa-caribbean-spiny-lobster`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_presentation_water_abstraction_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 #### 输出
 
@@ -790,11 +902,13 @@ sync_with: pcr.en-US.md
 
 ##### 基本流
 
-###### 实际直接取水（`handover_water_abstraction`）
+###### 从已识别淡水源直接取用的淡水 (`handover_water_abstraction`)
 
-仅记录从环境跨入的实际取水，声明海水或淡水来源，必要时保留体积转质量依据。循环水属内部环路，不得重复记取水。外购水单列，不能与此处为同一数量。
+仅在从一种已识别环境淡水源及来源隔室实际新增取水时启用。保留来源、计量、原生体积及转质量所需实际密度；排除海水、外部供水、配对转移和重复循环。不预设取水或来源隔室 UUID。
 
-- 选定流：实际直接取水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从已识别淡水源直接取用的淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_handover_mass。不得以分配份额替代实物数量。
 - 数值来源模式：foreground_record
@@ -804,14 +918,40 @@ sync_with: pcr.en-US.md
 - 证据类型：collected_record
 - 采集协议：`cp_handover_mass`
 - 来源：`noaa-caribbean-spiny-lobster`
-- 数量范围：未决独立证据包络；不是默认值、经验阈值或裁剪界限
-  - 范围角色：qa_guardrail
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
   - 上限：U_handover_water_abstraction
   - 单位：kg
   - 基准：每 1 kg 参考流
-  - 基准类型：reference_flow
-  - 证据类型：reasoned_estimate
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 从海洋环境直接取用的海水 (`handover_water_abstraction_seawater`)
+
+仅在从海洋环境实际新增取海水时启用，保留来源地点、盐度、数量及计量换算证据。不是淡水、外供水或循环量。新增取用只计一次，实际排水及库存去向分别保留。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：从海洋环境直接取用的海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_handover_mass。不得以分配份额替代实物数量。
+- 数值来源模式：foreground_record
+- 适用范围：site_specific
+- 归一化基准：每 1 kg 参考流
+- 基准类型：reference_flow
+- 证据类型：collected_record
+- 采集协议：`cp_handover_mass`
+- 来源：`noaa-caribbean-spiny-lobster`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_handover_water_abstraction_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 #### 输出
 
@@ -997,6 +1137,8 @@ sync_with: pcr.en-US.md
 | `dq_complete_handover_live_release` | `handover`; 输出; 基本流 | 必须辨认并分别采集“实际放回环境的活体生物”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：须有本节点及回次的实际物种、时间、位置、存活状态和放归记录。区分目标动物、活体诱集物及附带生物；不假定存活率或普遍法律许可。操作后的放归不能改称捕前未捕获。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_handover_mass。不得以分配份额替代实物数量。 数值来源模式：foreground_record 适用范围：site_specific 归一化基准：每 1 kg 参考流 基准类型：reference_flow 证据类型：collected_record 采集协议：`cp_handover_mass` 来源：`noaa-caribbean-spiny-lobster` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_handover_water_discharge` | `handover`; 输出; 基本流 | 必须辨认并分别采集“实际直接排水、蒸发或其他水去向”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：按真实接收介质及身份展开，区分水载体和组分污染物，不重复整个水流。按测量不确定性核对取水、循环、动物水分交换、携带水、处理转移、排水及期初期末库存。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_handover_mass。不得以分配份额替代实物数量。 数值来源模式：foreground_record 适用范围：site_specific 归一化基准：每 1 kg 参考流 基准类型：reference_flow 证据类型：collected_record 采集协议：`cp_handover_mass` 来源：`noaa-caribbean-spiny-lobster` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_handover_other_environmental_releases` | `handover`; 输出; 基本流 | 必须辨认并分别采集“其他实际物质或材料释放”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：展开逐项有依据的污染物种类、接收介质及基准，适用时含实际制冷剂、燃料或材料泄漏、遗失渔具或生物材料。不得为此伞形卡指定单一 UUID；排除已单列化石 CO2、活体放归及水载体。非质量生态相互作用仍为辅助观察。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 数量规则：记录由本节点回次唯一拥有的实际具体交换，完成实物核对并以每1 kg参考流表达；采用cp_handover_mass。不得以分配份额替代实物数量。 数值来源模式：foreground_record 适用范围：site_specific 归一化基准：每 1 kg 参考流 基准类型：reference_flow 证据类型：collected_record 采集协议：`cp_handover_mass` 来源：`noaa-caribbean-spiny-lobster` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
+| `dq_atomic_card_identity` | 所有清单行 | 每卡表示一个实物身份明确的交换，不是集合或选择器。Electricity 保留为单一电能流；供应者、地域及电压是实际采集限定信息，不因其待定就推测拆卡。实际其他材料、废物流、碳来源及受纳介质在完成前须分别识别并形成原子卡。保留全部原有采集义务；缺卡或身份未解析不表示零或豁免交换。配对内部水转移保留相同实际水质、转移编号、数量及上游负担，不再采购一次。 | 逐卡身份、供应者、状态、去向及配对记录 |
+| `dq_atomic_range_evidence` | 修复后的原子流卡 | U_row 是待补证要求，不是数值估计、默认值、截断限值或完成证明。须从独立代表性记录或兼容的有凭据供应者设计上界确定各卡自身同单位同参考基准包络，保留范围、方法及不确定性。不复用已移除的合计范围、不复制兄弟卡数量、不用目标批次自身确定上界，也不编造数值。适用证据缺失时阻断数量 QA 完成；仍须实际计量。 | 独立包络证据；原始记录及不确定性 |
 
 ## 9. 校验规则
 

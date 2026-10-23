@@ -209,11 +209,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: capture_other_water_receipt
-          role: "Actual other externally supplied or internally transferred water"
-          name: "Actual other externally supplied or internally transferred water"
+          role: "Externally supplied liquid freshwater"
+          name: "Externally supplied liquid freshwater"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Expand actual external water by source/treatment/provider, or pair a measured internal-water transfer using the same id and boundary mass. Exclude treated-industrial supply, own abstraction and repeated in-node recirculation."
+          description: "Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_capture_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -228,7 +228,85 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_capture_other_water_receipt"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: capture_other_water_receipt_brackish
+          role: "Externally supplied liquid brackish water"
+          name: "Externally supplied liquid brackish water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_capture_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_capture_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_capture_other_water_receipt_brackish"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: capture_other_water_receipt_seawater
+          role: "Externally supplied liquid seawater"
+          name: "Externally supplied liquid seawater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_capture_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_capture_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_capture_other_water_receipt_seawater"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: capture_other_water_receipt_internal
+          role: "Internally transferred liquid carrier water received at this node"
+          name: "Internally transferred liquid carrier water received at this node"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only one physically identified internal liquid-water transfer, with actual source, salinity, quality and paired upstream transfer ID and mass. It carries its existing upstream burden; it is not an external water purchase, new abstraction or gross recirculation. Different actual water identities or unpaired transfers are incomplete, not one aggregated receipt. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_capture_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_capture_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_capture_other_water_receipt_internal"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -293,11 +371,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: capture_self_abstracted_water
-          role: "Actual directly abstracted marine or other environmental water"
-          name: "Actual directly abstracted marine or other environmental water"
+          role: "Freshwater directly abstracted from the identified freshwater source"
+          name: "Freshwater directly abstracted from the identified freshwater source"
           flow_type: "elementary"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Identify actual freshwater/seawater source, location and new intake meter. Count new abstraction once; recirculation and paired product-water receipt are not abstraction. Do not mandate freshwater on a seawater route."
+          description: "Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_capture_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -312,7 +390,33 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_capture_self_abstracted_water"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: capture_self_abstracted_water_seawater
+          role: "Seawater directly abstracted from the marine environment"
+          name: "Seawater directly abstracted from the marine environment"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_capture_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_capture_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_capture_self_abstracted_water_seawater"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -384,11 +488,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: capture_internal_water_transfer
-          role: "Actual water transferred to a different foreground node"
-          name: "Actual water transferred to a different foreground node"
+          role: "Liquid carrier water transferred to the identified foreground recipient"
+          name: "Liquid carrier water transferred to the identified foreground recipient"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Record a real cross-node transfer with paired other_water_receipt, actual mass and source. Exclude in-node pump throughput and any water already included in a separate carrier-water transfer; not a sale, disposal or new abstraction."
+          description: "Only one actual liquid-water transfer to the recipient node's corresponding *_other_water_receipt_internal card, preserving the identical water quality, salinity, transfer ID, event and unallocated mass. Exclude water already owned by a separate carrier-water/ice transfer, local pump circulation, external purchase, waste and environmental discharge. Unknown recipient or unmatched transfer is incomplete. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_capture_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -403,7 +507,7 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_capture_internal_water_transfer"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -686,11 +790,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: grade_other_water_receipt
-          role: "Actual other externally supplied or internally transferred water"
-          name: "Actual other externally supplied or internally transferred water"
+          role: "Externally supplied liquid freshwater"
+          name: "Externally supplied liquid freshwater"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Expand actual external water by source/treatment/provider, or pair a measured internal-water transfer using the same id and boundary mass. Exclude treated-industrial supply, own abstraction and repeated in-node recirculation."
+          description: "Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_grade_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -705,7 +809,85 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_grade_other_water_receipt"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grade_other_water_receipt_brackish
+          role: "Externally supplied liquid brackish water"
+          name: "Externally supplied liquid brackish water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_grade_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grade_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_grade_other_water_receipt_brackish"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grade_other_water_receipt_seawater
+          role: "Externally supplied liquid seawater"
+          name: "Externally supplied liquid seawater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_grade_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grade_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_grade_other_water_receipt_seawater"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grade_other_water_receipt_internal
+          role: "Internally transferred liquid carrier water received at this node"
+          name: "Internally transferred liquid carrier water received at this node"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only one physically identified internal liquid-water transfer, with actual source, salinity, quality and paired upstream transfer ID and mass. It carries its existing upstream burden; it is not an external water purchase, new abstraction or gross recirculation. Different actual water identities or unpaired transfers are incomplete, not one aggregated receipt. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_grade_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grade_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_grade_other_water_receipt_internal"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -743,11 +925,11 @@ process_inventory:
         []
       elementary:
         - row_id: grade_self_abstracted_water
-          role: "Actual directly abstracted marine or other environmental water"
-          name: "Actual directly abstracted marine or other environmental water"
+          role: "Freshwater directly abstracted from the identified freshwater source"
+          name: "Freshwater directly abstracted from the identified freshwater source"
           flow_type: "elementary"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Identify actual freshwater/seawater source, location and new intake meter. Count new abstraction once; recirculation and paired product-water receipt are not abstraction. Do not mandate freshwater on a seawater route."
+          description: "Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_grade_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -762,7 +944,33 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_grade_self_abstracted_water"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grade_self_abstracted_water_seawater
+          role: "Seawater directly abstracted from the marine environment"
+          name: "Seawater directly abstracted from the marine environment"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_grade_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grade_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_grade_self_abstracted_water_seawater"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -833,11 +1041,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: grade_internal_water_transfer
-          role: "Actual water transferred to a different foreground node"
-          name: "Actual water transferred to a different foreground node"
+          role: "Liquid carrier water transferred to the identified foreground recipient"
+          name: "Liquid carrier water transferred to the identified foreground recipient"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Record a real cross-node transfer with paired other_water_receipt, actual mass and source. Exclude in-node pump throughput and any water already included in a separate carrier-water transfer; not a sale, disposal or new abstraction."
+          description: "Only one actual liquid-water transfer to the recipient node's corresponding *_other_water_receipt_internal card, preserving the identical water quality, salinity, transfer ID, event and unallocated mass. Exclude water already owned by a separate carrier-water/ice transfer, local pump circulation, external purchase, waste and environmental discharge. Unknown recipient or unmatched transfer is incomplete. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_grade_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -852,7 +1060,7 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_grade_internal_water_transfer"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1133,11 +1341,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: live_maintenance_other_water_receipt
-          role: "Actual other externally supplied or internally transferred water"
-          name: "Actual other externally supplied or internally transferred water"
+          role: "Externally supplied liquid freshwater"
+          name: "Externally supplied liquid freshwater"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Expand actual external water by source/treatment/provider, or pair a measured internal-water transfer using the same id and boundary mass. Exclude treated-industrial supply, own abstraction and repeated in-node recirculation."
+          description: "Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -1152,7 +1360,85 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_live_maintenance_other_water_receipt"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: live_maintenance_other_water_receipt_brackish
+          role: "Externally supplied liquid brackish water"
+          name: "Externally supplied liquid brackish water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_maintenance_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_live_maintenance_other_water_receipt_brackish"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: live_maintenance_other_water_receipt_seawater
+          role: "Externally supplied liquid seawater"
+          name: "Externally supplied liquid seawater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_maintenance_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_live_maintenance_other_water_receipt_seawater"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: live_maintenance_other_water_receipt_internal
+          role: "Internally transferred liquid carrier water received at this node"
+          name: "Internally transferred liquid carrier water received at this node"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only one physically identified internal liquid-water transfer, with actual source, salinity, quality and paired upstream transfer ID and mass. It carries its existing upstream burden; it is not an external water purchase, new abstraction or gross recirculation. Different actual water identities or unpaired transfers are incomplete, not one aggregated receipt. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_maintenance_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_live_maintenance_other_water_receipt_internal"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1187,11 +1473,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: live_maintenance_oxygen
-          role: "Actual externally supplied oxygen for the recorded live-maintenance system"
-          name: "Actual externally supplied oxygen for the recorded live-maintenance system"
+          role: "Delivered compressed gaseous oxygen for live maintenance"
+          name: "Delivered compressed gaseous oxygen for live maintenance"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only actual delivered oxygen when the real system uses it; identify purity, gas/liquid/compressed state, supplier delivery and measured mass or supported reference-condition conversion. Air pumping is not purchased pure oxygen and industrial factory oxygen alone does not prove this identity."
+          description: "Conditional actual delivered compressed gaseous oxygen, with purity, pressure, supplier, net mass and cylinder tare/refill evidence. Exclude delivered liquid oxygen and aeration air; internal generation has its own actual resources, not a second purchased gas supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -1206,7 +1492,33 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "100"
+                upper: "U_live_maintenance_oxygen"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: live_maintenance_oxygen_liquid
+          role: "Delivered liquid oxygen for live maintenance"
+          name: "Delivered liquid oxygen for live maintenance"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual liquid-oxygen delivery, with purity, cryogenic delivery state, supplier and measured net mass. Distinguish this incoming liquid from gas produced by actual on-site vaporization; do not count the same oxygen again as purchased compressed gas. Include actual owned conversion resources where they occur. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_maintenance_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_live_maintenance_oxygen_liquid"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1216,11 +1528,11 @@ process_inventory:
         []
       elementary:
         - row_id: live_maintenance_self_abstracted_water
-          role: "Actual directly abstracted marine or other environmental water"
-          name: "Actual directly abstracted marine or other environmental water"
+          role: "Freshwater directly abstracted from the identified freshwater source"
+          name: "Freshwater directly abstracted from the identified freshwater source"
           flow_type: "elementary"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Identify actual freshwater/seawater source, location and new intake meter. Count new abstraction once; recirculation and paired product-water receipt are not abstraction. Do not mandate freshwater on a seawater route."
+          description: "Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -1235,7 +1547,33 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_live_maintenance_self_abstracted_water"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: live_maintenance_self_abstracted_water_seawater
+          role: "Seawater directly abstracted from the marine environment"
+          name: "Seawater directly abstracted from the marine environment"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_maintenance_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_live_maintenance_self_abstracted_water_seawater"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1306,11 +1644,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: live_maintenance_internal_water_transfer
-          role: "Actual water transferred to a different foreground node"
-          name: "Actual water transferred to a different foreground node"
+          role: "Liquid carrier water transferred to the identified foreground recipient"
+          name: "Liquid carrier water transferred to the identified foreground recipient"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Record a real cross-node transfer with paired other_water_receipt, actual mass and source. Exclude in-node pump throughput and any water already included in a separate carrier-water transfer; not a sale, disposal or new abstraction."
+          description: "Only one actual liquid-water transfer to the recipient node's corresponding *_other_water_receipt_internal card, preserving the identical water quality, salinity, transfer ID, event and unallocated mass. Exclude water already owned by a separate carrier-water/ice transfer, local pump circulation, external purchase, waste and environmental discharge. Unknown recipient or unmatched transfer is incomplete. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_live_maintenance_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -1325,7 +1663,7 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_live_maintenance_internal_water_transfer"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1606,11 +1944,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: presentation_other_water_receipt
-          role: "Actual other externally supplied or internally transferred water"
-          name: "Actual other externally supplied or internally transferred water"
+          role: "Externally supplied liquid freshwater"
+          name: "Externally supplied liquid freshwater"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Expand actual external water by source/treatment/provider, or pair a measured internal-water transfer using the same id and boundary mass. Exclude treated-industrial supply, own abstraction and repeated in-node recirculation."
+          description: "Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_presentation_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -1625,7 +1963,85 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_presentation_other_water_receipt"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: presentation_other_water_receipt_brackish
+          role: "Externally supplied liquid brackish water"
+          name: "Externally supplied liquid brackish water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_presentation_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_presentation_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_presentation_other_water_receipt_brackish"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: presentation_other_water_receipt_seawater
+          role: "Externally supplied liquid seawater"
+          name: "Externally supplied liquid seawater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_presentation_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_presentation_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_presentation_other_water_receipt_seawater"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: presentation_other_water_receipt_internal
+          role: "Internally transferred liquid carrier water received at this node"
+          name: "Internally transferred liquid carrier water received at this node"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only one physically identified internal liquid-water transfer, with actual source, salinity, quality and paired upstream transfer ID and mass. It carries its existing upstream burden; it is not an external water purchase, new abstraction or gross recirculation. Different actual water identities or unpaired transfers are incomplete, not one aggregated receipt. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_presentation_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_presentation_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_presentation_other_water_receipt_internal"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1663,11 +2079,11 @@ process_inventory:
         []
       elementary:
         - row_id: presentation_self_abstracted_water
-          role: "Actual directly abstracted marine or other environmental water"
-          name: "Actual directly abstracted marine or other environmental water"
+          role: "Freshwater directly abstracted from the identified freshwater source"
+          name: "Freshwater directly abstracted from the identified freshwater source"
           flow_type: "elementary"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Identify actual freshwater/seawater source, location and new intake meter. Count new abstraction once; recirculation and paired product-water receipt are not abstraction. Do not mandate freshwater on a seawater route."
+          description: "Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_presentation_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -1682,7 +2098,33 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_presentation_self_abstracted_water"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: presentation_self_abstracted_water_seawater
+          role: "Seawater directly abstracted from the marine environment"
+          name: "Seawater directly abstracted from the marine environment"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_presentation_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_presentation_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_presentation_self_abstracted_water_seawater"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -1753,11 +2195,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: presentation_internal_water_transfer
-          role: "Actual water transferred to a different foreground node"
-          name: "Actual water transferred to a different foreground node"
+          role: "Liquid carrier water transferred to the identified foreground recipient"
+          name: "Liquid carrier water transferred to the identified foreground recipient"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Record a real cross-node transfer with paired other_water_receipt, actual mass and source. Exclude in-node pump throughput and any water already included in a separate carrier-water transfer; not a sale, disposal or new abstraction."
+          description: "Only one actual liquid-water transfer to the recipient node's corresponding *_other_water_receipt_internal card, preserving the identical water quality, salinity, transfer ID, event and unallocated mass. Exclude water already owned by a separate carrier-water/ice transfer, local pump circulation, external purchase, waste and environmental discharge. Unknown recipient or unmatched transfer is incomplete. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_presentation_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -1772,7 +2214,7 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_presentation_internal_water_transfer"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -2053,11 +2495,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: handover_other_water_receipt
-          role: "Actual other externally supplied or internally transferred water"
-          name: "Actual other externally supplied or internally transferred water"
+          role: "Externally supplied liquid freshwater"
+          name: "Externally supplied liquid freshwater"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Expand actual external water by source/treatment/provider, or pair a measured internal-water transfer using the same id and boundary mass. Exclude treated-industrial supply, own abstraction and repeated in-node recirculation."
+          description: "Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -2072,7 +2514,85 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_handover_other_water_receipt"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: handover_other_water_receipt_brackish
+          role: "Externally supplied liquid brackish water"
+          name: "Externally supplied liquid brackish water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_handover_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_handover_other_water_receipt_brackish"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: handover_other_water_receipt_seawater
+          role: "Externally supplied liquid seawater"
+          name: "Externally supplied liquid seawater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_handover_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_handover_other_water_receipt_seawater"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: handover_other_water_receipt_internal
+          role: "Internally transferred liquid carrier water received at this node"
+          name: "Internally transferred liquid carrier water received at this node"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only one physically identified internal liquid-water transfer, with actual source, salinity, quality and paired upstream transfer ID and mass. It carries its existing upstream burden; it is not an external water purchase, new abstraction or gross recirculation. Different actual water identities or unpaired transfers are incomplete, not one aggregated receipt. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_handover_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_handover_other_water_receipt_internal"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -2110,11 +2630,11 @@ process_inventory:
         []
       elementary:
         - row_id: handover_self_abstracted_water
-          role: "Actual directly abstracted marine or other environmental water"
-          name: "Actual directly abstracted marine or other environmental water"
+          role: "Freshwater directly abstracted from the identified freshwater source"
+          name: "Freshwater directly abstracted from the identified freshwater source"
           flow_type: "elementary"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Identify actual freshwater/seawater source, location and new intake meter. Count new abstraction once; recirculation and paired product-water receipt are not abstraction. Do not mandate freshwater on a seawater route."
+          description: "Conditional actual new freshwater abstraction from one identified environmental source and source compartment. Record source, meter, native volume and actual density if converting to mass; exclude marine water, external supply, paired transfers and repeated circulation. Do not assume abstraction or a source-compartment UUID. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -2129,7 +2649,33 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_handover_self_abstracted_water"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: handover_self_abstracted_water_seawater
+          role: "Seawater directly abstracted from the marine environment"
+          name: "Seawater directly abstracted from the marine environment"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual new marine seawater abstraction, with source location, salinity, quantity and metering/conversion evidence. Not freshwater, supplied water or recirculation. Count the new intake once and retain actual discharge and storage fates separately. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_handover_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_handover_self_abstracted_water_seawater"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -2202,11 +2748,11 @@ process_inventory:
                 source_ids:
                   - mass-balance-identity
         - row_id: handover_internal_water_transfer
-          role: "Actual water transferred to a different foreground node"
-          name: "Actual water transferred to a different foreground node"
+          role: "Liquid carrier water transferred to the identified foreground recipient"
+          name: "Liquid carrier water transferred to the identified foreground recipient"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Record a real cross-node transfer with paired other_water_receipt, actual mass and source. Exclude in-node pump throughput and any water already included in a separate carrier-water transfer; not a sale, disposal or new abstraction."
+          description: "Only one actual liquid-water transfer to the recipient node's corresponding *_other_water_receipt_internal card, preserving the identical water quality, salinity, transfer ID, event and unallocated mass. Exclude water already owned by a separate carrier-water/ice transfer, local pump circulation, external purchase, waste and environmental discharge. Unknown recipient or unmatched transfer is incomplete. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix."
             value_mode: "calculated_value"
@@ -2221,7 +2767,7 @@ process_inventory:
             ranges:
               - role: qa_guardrail
                 lower: "0"
-                upper: "10000"
+                upper: "U_handover_internal_water_transfer"
                 unit: "kg"
                 basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
@@ -2938,6 +3484,14 @@ dataset_production:
       applies_to: "handover; outputs; waste"
       requirement: "Individually identify and independently measure the actual exchanges within “Actual rejected bodies or detached tissue sent to treatment”; all collection and conversion obligations apply: Identify mortality, condition rejection and detached tissue with event id, physical mass and treatment handoff; pending inspection remains identified stock, not automatically waste. Exclude bodies already sold or environmentally released. Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg Amount rule: From actual raw records in cp_handover_mass, retain the unallocated physical receipts/transfers/stocks/fates, assign shared event/node/period ownership once and divide by positive final accepted native-body kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain the physical ledger and allocation matrix. Value mode: calculated_value Specificity: site_specific Normalization basis: per 1 kg reference flow Basis kind: reference_flow Evidence kind: calculated_from_collection Collection protocol: cp_handover_mass Every actual child requires its own quantity, native unit, normalization, destination, UUID and Range evidence; no grouped total, bound or binding is inherited. Any unresolved applicable child makes the final dataset incomplete and fails validation; unknown is not zero."
       evidence: "per-flow original records under linked protocols and identity, fate and range evidence"
+    - id: dq_atomic_card_identity
+      applies_to: "all inventory rows"
+      requirement: "Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase."
+      evidence: "Per-card identity, provider, state, destination and paired records"
+    - id: dq_atomic_range_evidence
+      applies_to: "repaired atomic flow cards"
+      requirement: "U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required."
+      evidence: "Independent envelope evidence; retained raw records and uncertainty"
 validation_rules:
   - rule_id: identity_scope
     applies_to: "reference and actual products"
@@ -2995,7 +3549,7 @@ data_sources:
     used_for: "Exact reference quantity and mass accounting identity, not an external empirical dataset."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a8d31cbe2fe58bfbcfec7c55fd6df2917f76fd2b7056acb04200388632b8bb4e"
+  source_sha256: "sha256:e0985712dab0173f79d20b0e09aad96abf57d87018e0c1b257b529ecbc41cfc0"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4548"
@@ -3046,16 +3600,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_131364"
+    - unit_id: "normative_173780"
       family: "allocation"
       span:
         start:
-          offset: 131364
-          line: 2050
+          offset: 173780
+          line: 2607
           column: 1
         end:
-          offset: 134549
-          line: 2060
+          offset: 176965
+          line: 2617
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `physical_then_lca` | all inventory rows | Retain an unallocated actual physical ledger of inputs, products, paired transfers, stocks and losses. Assign shared resource-event/node/period ownership once, then normalize by positive accepted final native-body kg. Separately label the single-output LCA view, apply the relevant output attribution once, retain the original physical ledger and full allocation matrix. Never shrink physical partitions by economic shares, check an allocated mass against an unallocated closure or allocate an already attributed intermediate again. |  |\n| `allocation_precedence` | actual intended outputs | Enumerate concrete accepted live grades and any other independently intended catch/bait/dead-food output with recipient and handoff; exclude disposal, live return, packaging accompaniment and internal recirculation from automatic coproduct treatment. First subdivide independently measured activity; then use evidenced causal physical consumption for inseparable joint resources; if not supported, use same-boundary same-period positive realized-value shares and disclose price basis and sensitivity. Missing value/causality is a data gap, not a default mass share or substitution credit. |  |\n| `period_matrix` | trips, holding periods and assets | Index preparation, deployment, soak/retrieval, transfer, post-gate return, idle/cleaning, seasonal holding, acquisition, replacement and retirement. Link each actual event and output to a trip/lot/period; retain failed/no-output-period burdens in the campaign with relevant outputs, never divide by zero or drop failed trips. Assign actual asset service over its documented users/periods using evidenced time/use basis; no universal lifetime and no reset of full manufacture every trip. |  |\n| `secondary_bait_attribution` | purchased_secondary_bait; own_bait_receipt | For actual secondary bait retain origin and the supplier declared prior-system burden inherited at its recovery handoff, plus nonembedded recovery/preparation/storage/delivery once. If the supplier documents an allocated valuable byproduct, inherit that allocation; if its justified waste-cutoff starts at recovery, disclose that boundary and include all recovery onward burdens. Do not add full original-fish burdens again or silently grant zero-burden residues. Competing cutoff interpretations are separate sensitivity scenarios, not simultaneous credits. Own-caught bait retains its own capture attribution once. | `fishres-secondary-lobster-bait-2025` |\n| `shared_owner` | shared vessel, equipment, facility or service | Maintain a resource scope register covering actual capture, grade, live_maintenance, presentation and handover consumers and service periods. Shared vessel/hauler/gear, holding tank/cold room, reusable crates and outsourced inclusive services have one owning event and a documented causal time/use/space matrix. Exclude already embedded service resources and other periods shares; allocated reusable-asset manufacturing mass is not physical disposable packaging handed to the buyer. |  |\n\n"
       headings:
@@ -3074,12 +3628,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 131364
-              line: 2050
+              offset: 173780
+              line: 2607
               column: 1
             end:
-              offset: 131404
-              line: 2050
+              offset: 173820
+              line: 2607
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -3094,16 +3648,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_259806"
+    - unit_id: "normative_303662"
       family: "validation"
       span:
         start:
-          offset: 259806
-          line: 2162
+          offset: 303662
+          line: 2721
           column: 1
         end:
-          offset: 262927
-          line: 2173
+          offset: 306783
+          line: 2732
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `identity_scope` | reference and actual products | Require wild marine Homarus species, actual native-shell living whole food body, actual appendage/molt condition, source and first producer gate. Exclude spiny/rock lobster, Nephrops, crayfish, farming/fattening, detached parts, dead/frozen/cooked reference and nonfood seed/broodstock/ornamental use. Each concrete final exchange requires verified identity and supports. | `cpc3-wild-homarus` |\n| `closure_and_sequence` | all node passes | Reconcile native-body and incidental biomass separately from water/ice/accessories and gear/bait, including opening/closing stocks, accepted alternatives, waste, live returns, actual mortality and environmental loss. Match transfer/pass ids and state history, never fixed 1 kg for upstream feed. Check actual grade before final food handover and reinspection after condition changes; unknown balance or sequence blocks quantitative completeness. |  |\n| `quantity_and_ranges` | every active concrete exchange | Collect actual quantities before normalization; zeros require actual inactive role or measured zero, never missing data. Provisional reasoned ranges are screening hypotheses, not default amounts, empirical QA or legal acceptance. Evaluate each expanded identity and pass independently against external/supplier or independent campaign evidence with documented units, bounds and uncertainty; investigate values outside the provisional range without truncation. Never use a batch maximum to validate itself. |  |\n| `attribution_and_route` | all resource and output owners | Check gear-event exclusivity/current evidence, actual production mode and periods, complete intended outputs/handoffs, period and shared allocation matrices, secondary bait inheritance and inclusive-service scope. Retain the unallocated physical ledger and one labelled single-output LCA derivation; no duplicate catch, fuel, internal water, own bait, resource ownership or second output share. |  |\n| `trace_and_safety` | completed data package | Retain actual authority/market acceptance requirements and evidence appropriate to place/time without converting NOAA regional guidance into a global legal rule. Record viability, handling conditions and current release; cold maintenance does not resurrect dead bodies or reverse unsafe history. Complete protocol, identity, support, measurement and uncertainty evidence is required; checker success alone does not establish product safety or complete inventory. |  |\n| `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |\n\n"
       headings:
@@ -3122,12 +3676,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 259806
-              line: 2162
+              offset: 303662
+              line: 2721
               column: 1
             end:
-              offset: 259828
-              line: 2162
+              offset: 303684
+              line: 2721
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -3211,145 +3765,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "physical_then_lca"
       identity_kind: "explicit"
-      unit_id: "normative_131364"
+      unit_id: "normative_173780"
       source_span:
         start:
-          offset: 131477
-          line: 2054
+          offset: 173893
+          line: 2611
           column: 1
         end:
-          offset: 132059
-          line: 2054
+          offset: 174475
+          line: 2611
           column: 583
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_131364"
+      unit_id: "normative_173780"
       source_span:
         start:
-          offset: 132060
-          line: 2055
+          offset: 174476
+          line: 2612
           column: 1
         end:
-          offset: 132707
-          line: 2055
+          offset: 175123
+          line: 2612
           column: 648
     - pointer: "/allocation_rules/2"
       rule_id: "period_matrix"
       identity_kind: "explicit"
-      unit_id: "normative_131364"
+      unit_id: "normative_173780"
       source_span:
         start:
-          offset: 132708
-          line: 2056
+          offset: 175124
+          line: 2613
           column: 1
         end:
-          offset: 133255
-          line: 2056
+          offset: 175671
+          line: 2613
           column: 548
     - pointer: "/allocation_rules/3"
       rule_id: "secondary_bait_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_131364"
+      unit_id: "normative_173780"
       source_span:
         start:
-          offset: 133256
-          line: 2057
+          offset: 175672
+          line: 2614
           column: 1
         end:
-          offset: 133992
-          line: 2057
+          offset: 176408
+          line: 2614
           column: 737
     - pointer: "/allocation_rules/4"
       rule_id: "shared_owner"
       identity_kind: "explicit"
-      unit_id: "normative_131364"
+      unit_id: "normative_173780"
       source_span:
         start:
-          offset: 133993
-          line: 2058
+          offset: 176409
+          line: 2615
           column: 1
         end:
-          offset: 134547
-          line: 2058
+          offset: 176963
+          line: 2615
           column: 555
     - pointer: "/validation_rules/0"
       rule_id: "identity_scope"
       identity_kind: "explicit"
-      unit_id: "normative_259806"
+      unit_id: "normative_303662"
       source_span:
         start:
-          offset: 259901
-          line: 2166
+          offset: 303757
+          line: 2725
           column: 1
         end:
-          offset: 260349
-          line: 2166
+          offset: 304205
+          line: 2725
           column: 449
     - pointer: "/validation_rules/1"
       rule_id: "closure_and_sequence"
       identity_kind: "explicit"
-      unit_id: "normative_259806"
+      unit_id: "normative_303662"
       source_span:
         start:
-          offset: 260350
-          line: 2167
+          offset: 304206
+          line: 2726
           column: 1
         end:
-          offset: 260845
-          line: 2167
+          offset: 304701
+          line: 2726
           column: 496
     - pointer: "/validation_rules/2"
       rule_id: "quantity_and_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_259806"
+      unit_id: "normative_303662"
       source_span:
         start:
-          offset: 260846
-          line: 2168
+          offset: 304702
+          line: 2727
           column: 1
         end:
-          offset: 261415
-          line: 2168
+          offset: 305271
+          line: 2727
           column: 570
     - pointer: "/validation_rules/3"
       rule_id: "attribution_and_route"
       identity_kind: "explicit"
-      unit_id: "normative_259806"
+      unit_id: "normative_303662"
       source_span:
         start:
-          offset: 261416
-          line: 2169
+          offset: 305272
+          line: 2728
           column: 1
         end:
-          offset: 261876
-          line: 2169
+          offset: 305732
+          line: 2728
           column: 461
     - pointer: "/validation_rules/4"
       rule_id: "trace_and_safety"
       identity_kind: "explicit"
-      unit_id: "normative_259806"
+      unit_id: "normative_303662"
       source_span:
         start:
-          offset: 261877
-          line: 2170
+          offset: 305733
+          line: 2729
           column: 1
         end:
-          offset: 262392
-          line: 2170
+          offset: 306248
+          line: 2729
           column: 516
     - pointer: "/validation_rules/5"
       rule_id: "validate_inventory_completion"
       identity_kind: "explicit"
-      unit_id: "normative_259806"
+      unit_id: "normative_303662"
       source_span:
         start:
-          offset: 262393
-          line: 2171
+          offset: 306249
+          line: 2730
           column: 1
         end:
-          offset: 262925
-          line: 2171
+          offset: 306781
+          line: 2730
           column: 533
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -3378,27 +3932,27 @@ normative_context:
           column: 215
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_131364"
+      unit_id: "normative_173780"
       source_span:
         start:
-          offset: 131364
-          line: 2050
+          offset: 173780
+          line: 2607
           column: 1
         end:
-          offset: 131404
-          line: 2050
+          offset: 173820
+          line: 2607
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_259806"
+      unit_id: "normative_303662"
       source_span:
         start:
-          offset: 259806
-          line: 2162
+          offset: 303662
+          line: 2721
           column: 1
         end:
-          offset: 259828
-          line: 2162
+          offset: 303684
+          line: 2721
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -3407,5 +3961,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a8d31cbe2fe58bfbcfec7c55fd6df2917f76fd2b7056acb04200388632b8bb4e"
-  generated_content_sha256: "sha256:1ac6d3e8604d67cc47d9af98dc8e6ad7c9453cc2caf20275e627c81e7dc1094a"
+    sha256: "sha256:e0985712dab0173f79d20b0e09aad96abf57d87018e0c1b257b529ecbc41cfc0"
+  generated_content_sha256: "sha256:b6c8e30f1f81d312241475dd735c0f37cee10b0342700314418bc7c03fdc3204"

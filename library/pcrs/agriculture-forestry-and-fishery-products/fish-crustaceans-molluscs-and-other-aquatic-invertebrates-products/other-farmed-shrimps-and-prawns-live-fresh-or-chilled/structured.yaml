@@ -412,11 +412,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: wash_water
-          role: "Actual supplied washing-water instances"
-          name: "Actual supplied washing-water instances"
+          role: "Externally supplied liquid freshwater"
+          name: "Externally supplied liquid freshwater"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record each purchased or internally treated supply and actual use; retain quality/salinity/provider state. For direct untreated abstraction instead use raw-water card and separately owned pumping; no duplicate supplier service."
+          description: "Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "Collect each actual instance amount for this row with cp_wash, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence."
             value_mode: "calculated_value"
@@ -429,11 +429,63 @@ process_inventory:
               collection_protocol_id: cp_wash
               source_ids: []
             ranges:
-              - role: uncertainty_range
+              - role: qa_guardrail
                 lower: "0"
-                upper: "U_instance"
+                upper: "U_wash_water"
                 unit: "m3"
-                basis: "per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wash_water_brackish
+          role: "Externally supplied liquid brackish water"
+          name: "Externally supplied liquid brackish water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Collect each actual instance amount for this row with cp_wash, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wash
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_wash_water_brackish"
+                unit: "m3"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wash_water_seawater
+          role: "Externally supplied liquid seawater"
+          name: "Externally supplied liquid seawater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Collect each actual instance amount for this row with cp_wash, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wash
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_wash_water_seawater"
+                unit: "m3"
+                basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
@@ -650,11 +702,11 @@ process_inventory:
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
         - row_id: chill_water
-          role: "Actual supplied ice-bath water instances"
-          name: "Actual supplied ice-bath water instances"
+          role: "Externally supplied liquid freshwater"
+          name: "Externally supplied liquid freshwater"
           flow_type: "product"
           property_unit: "Volume / m3"
-          description: "Record bath filling and renewal independently of ice and product body mass, quality/salinity and provider; direct abstraction uses raw-water card."
+          description: "Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
           amount:
             expression: "Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence."
             value_mode: "calculated_value"
@@ -667,11 +719,63 @@ process_inventory:
               collection_protocol_id: cp_chill
               source_ids: []
             ranges:
-              - role: uncertainty_range
+              - role: qa_guardrail
                 lower: "0"
-                upper: "U_instance"
+                upper: "U_chill_water"
                 unit: "m3"
-                basis: "per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: chill_water_brackish
+          role: "Externally supplied liquid brackish water"
+          name: "Externally supplied liquid brackish water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chill
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_chill_water_brackish"
+                unit: "m3"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: chill_water_seawater
+          role: "Externally supplied liquid seawater"
+          name: "Externally supplied liquid seawater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water. This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero."
+          amount:
+            expression: "Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chill
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "U_chill_water_seawater"
+                unit: "m3"
+                basis: "per 1 kg reference flow"
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
@@ -941,7 +1045,7 @@ allocation_rules:
     source_ids: []
   - rule_id: a_assets
     applies_to: "shared_assets"
-    rule: "For shared infrastructure enumerate pond, harvest, wash, sort, chill, pack and receipt consumers actually using each asset over its service periods. Prefer meters for energy/water; use measured pump hydraulic work or equipment-hours for residual operation, occupied pond-area-time for pond land/levees, and loaded tonne-kilometres with assigned empty/return travel for vehicle services. Allocate capital/repair using documented actual lifetime service shares, including replacement/termination; once-only ledger reconciles all shares."
+    rule: "For shared infrastructure enumerate pond, harvest, wash, sort, chill_ice; chill_water, pack and receipt consumers actually using each asset over its service periods. Prefer meters for energy/water; use measured pump hydraulic work or equipment-hours for residual operation, occupied pond-area-time for pond land/levees, and loaded tonne-kilometres with assigned empty/return travel for vehicle services. Allocate capital/repair using documented actual lifetime service shares, including replacement/termination; once-only ledger reconciles all shares."
     source_ids: []
   - rule_id: a_waste
     applies_to: "losses"
@@ -998,7 +1102,7 @@ dataset_production:
       aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "calibration; traceable lots; sample design; signed receipt; service/asset ledger; reconciliation and uncertainty"
     - protocol_id: cp_chill
-      process_id: "chill"
+      process_id: "chill_ice_chill_water"
       flow_role: "Ice-water killing, chilling and holding inputs, transfers, services, residues and releases"
       record_type: "event, meter, invoice, sampling, asset and acceptance records"
       raw_fields: "selected lot/transfer; pre/post live/dead state and head/shell/never-frozen evidence; bath water/ice provider and pre-dispatch amounts/top-ups; time and recorded actual temperature; actual additives/refrigerant and active basis; holding energy; spent bath and rejects/destinations; node/crop/event/date/site and reporting-window ids; transfer/custody; each actual instance property/unit/substance/provider; direct utility/fuel and full-service coverage flags; meter/invoice/asset id, service-life/replacement/maintenance and consumer-period shares; actual pollutant/substance/basis/medium, model factor/source and uncertainty; native measured amount, attributable share and receipt denominator A"
@@ -1149,23 +1253,23 @@ dataset_production:
       requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Other actual node-owned environmental release instances excluding separately listed fossil carbon dioxide. Conditional umbrella for separately owned actual combustion pollutants, biological/pond emissions including actual biogenic carbon dioxide, nutrient effluent, direct wastewater, refrigerant leakage, spillage and other releases as applicable to this node. Identify each substance/species, chemical reporting basis and receiving air/water/soil medium; keep independent measured/modelled amount and native unit. Exclude this node's fossil CO2 card and any supplier-service included releases. Product-delivery releases belong exclusively to receipt; other nodes' logistics releases are limited to their incoming materials. Dissolved nutrient loads are not total effluent volume; biomass waste is not automatically an elementary emission. <br> - Flow property / unit: Actual instance property / native unit <br> - Amount rule: Collect each actual instance amount for this row with cp_sort, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_sort <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_chill_materials
-      applies_to: "chill; Inputs; Product flows"
+      applies_to: "chill_ice; chill_water; Inputs; Product flows"
       requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual chilling additives, cleaning agents and refrigerant recharge instances. Conditional each actual material separately: formulation or refrigerant substance, purpose, delivered amount and active/product basis. This is an inventory requirement, not chemical, dose, temperature or safety advice. <br> - Flow property / unit: Actual instance property / native unit <br> - Amount rule: Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_chill <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_chill_utilities_services_assets
-      applies_to: "chill; Inputs; Product flows"
+      applies_to: "chill_ice; chill_water; Inputs; Product flows"
       requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual node-owned utility, fuel, equipment and external service instances. Conditional umbrella: instantiate each actual purchased electricity/provider, fuel grade, pump/aerator or other equipment, repair/capital replacement, input-material logistics/treatment/contract service in its independently verified native unit. Full background service and separately modelled direct operation are exclusive. Onsite electricity is an internal transfer when its fuels/assets/releases are modelled. Include idle, failed and shared duty allocated once; only the receipt node owns product delivery vehicle and cold-chain operation; other nodes' logistics are limited to their own incoming materials. Inputs already explicit in this node are excluded from this collection obligation. <br> - Flow property / unit: Actual instance property / native unit <br> - Amount rule: Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_chill <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_chill_raw_water
-      applies_to: "chill; Inputs; Elementary flows"
+      applies_to: "chill_ice; chill_water; Inputs; Elementary flows"
       requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual direct untreated ice-bath water abstraction instances. Conditional direct abstraction only; identify source, volume and owning pump; supplied-water quantities excluded. <br> - Flow property / unit: Volume / m3 <br> - Amount rule: Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_chill <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: m3 <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_chill_waste
-      applies_to: "chill; Outputs; Waste flows"
+      applies_to: "chill_ice; chill_water; Outputs; Waste flows"
       requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual chilling waste transferred to treatment or disposal. Only actual waste transferred to treatment or disposal belongs here: separately record spent bath, meltwater and discarded whole-product losses by phase, quantity basis and actual recipient/destination. Direct carrier-water discharge belongs to the water balance and its actual pollutant substances/receiving medium belong to owned release cards; neither is automatically a waste transfer. Do not treat dilution as pollutant removal or discarded biomass as automatic elementary emissions. <br> - Flow property / unit: Actual instance property / native unit <br> - Amount rule: Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_chill <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_chill_other_releases
-      applies_to: "chill; Outputs; Elementary flows"
+      applies_to: "chill_ice; chill_water; Outputs; Elementary flows"
       requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Other actual node-owned environmental release instances excluding separately listed fossil carbon dioxide. Conditional umbrella for separately owned actual combustion pollutants, biological/pond emissions including actual biogenic carbon dioxide, nutrient effluent, direct wastewater, refrigerant leakage, spillage and other releases as applicable to this node. Identify each substance/species, chemical reporting basis and receiving air/water/soil medium; keep independent measured/modelled amount and native unit. Exclude this node's fossil CO2 card and any supplier-service included releases. Product-delivery releases belong exclusively to receipt; other nodes' logistics releases are limited to their incoming materials. Dissolved nutrient loads are not total effluent volume; biomass waste is not automatically an elementary emission. <br> - Flow property / unit: Actual instance property / native unit <br> - Amount rule: Collect each actual instance amount for this row with cp_chill, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_chill <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_pack_materials
@@ -1186,7 +1290,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_receipt_coldchain_materials
       applies_to: "receipt; Inputs; Product flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual transit ice top-ups and cold-chain material instances. Conditional umbrella: separately record actual transit ice/water top-ups, coolant or refrigerant recharge, and other delivered cold-chain materials by substance/formulation, provider, native quantity and verified property/unit. Only receipt owns product-transit top-ups; pre-dispatch chilling inputs stay with chill. Do not add materials already included in a full cold-chain service. Free ice/water never enters accepted product mass. <br> - Flow property / unit: Actual instance property / native unit <br> - Amount rule: Collect each actual instance amount for this row with cp_receipt, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_receipt <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual transit ice top-ups and cold-chain material instances. Conditional umbrella: separately record actual transit ice/water top-ups, coolant or refrigerant recharge, and other delivered cold-chain materials by substance/formulation, provider, native quantity and verified property/unit. Only receipt owns product-transit top-ups; pre-dispatch chilling inputs stay with chill_ice; chill_water. Do not add materials already included in a full cold-chain service. Free ice/water never enters accepted product mass. <br> - Flow property / unit: Actual instance property / native unit <br> - Amount rule: Collect each actual instance amount for this row with cp_receipt, attribute once under section 7, and divide by the same accepted net receipt mass A; retain its native unit and measurement/model evidence. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_receipt <br> - Range: Provisional unresolved evidence marker; independent upper bound required; no empirical range, default or hard limit <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_instance <br> - Unit: native unit <br> - Basis: per 1 kg reference flow; each actual instance has an independent U_instance, never mixed-unit totals <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_receipt_utilities_services_assets
       applies_to: "receipt; Inputs; Product flows"
@@ -1208,6 +1312,14 @@ dataset_production:
       applies_to: "logistics, services and water/nutrient balances"
       requirement: "Actual payload includes accompanying water, ice, packaging and other cargo. Empty return/repositioning still consumes activity: account for its actual fuel/distance/vehicle service and explicit attribution; zero cargo tonne-kilometres cannot erase that duty. Do not duplicate a complete service and covered fuel, materials, assets or direct releases. Measure external abstraction, supplied water product, internal circulation and actual returned/discharged water separately; never deduct internal recirculation again from external intake. Net nutrient increment/retention is a separate balance diagnostic, never automatically a negative elementary flow, negative emission or avoided burden."
       evidence: "Actual load/vehicle duty records, service scope, same-lot water/substance balance and method evidence"
+    - id: dq_atomic_card_identity
+      applies_to: "all inventory rows"
+      requirement: "Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase."
+      evidence: "Per-card identity, provider, state, destination and paired records"
+    - id: dq_atomic_range_evidence
+      applies_to: "repaired atomic flow cards"
+      requirement: "U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required."
+      evidence: "Independent envelope evidence; retained raw records and uncertainty"
 validation_rules:
   - rule_id: v_scope
     applies_to: "eligibility"
@@ -1265,7 +1377,7 @@ data_sources:
     used_for: "Only final reference output 1..1; no evidence for any nonfinal amount or yield."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:4a2a5a0c2844c964f8c1bebb67a350ae742e6df5392d787b0701335c024cd956"
+  source_sha256: "sha256:407bb87bd09d7822c86cb768a0bc4665960d31375401671e5fc024b9a562a803"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5673"
@@ -1316,18 +1428,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54424"
+    - unit_id: "normative_60706"
       family: "allocation"
       span:
         start:
-          offset: 54424
-          line: 838
+          offset: 60706
+          line: 942
           column: 1
         end:
-          offset: 56885
-          line: 848
+          offset: 63184
+          line: 952
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `a_direct` | all_outputs | First subdivide by measured crop, operation, grade, destination and exclusive equipment/service. Assign seed/feed/pond management to its crop, washing/sorting/chilling to actually treated lots and transport to actually carried lots; identify every sale product and handoff before residual allocation. |  |\n| `a_residual` | joint_shrimp_lots | For inseparable residual burdens of one pond crop or joint sorting event, allocate across intended shrimp sale lots by measured whole wet mass at a common pre-divergence handoff, excluding free water/ice and tare. Retain grade/state-specific masses and justify biomass production/handling causality; test realized first-sale revenue shares as sensitivity when grades differ materially in price. Do not use final accepted mass to disguise omitted other products. |  |\n| `a_failure` | periods | Include nonproductive/failed crop and maintenance duty in the declared reporting-window pond burden pool; attribute to the same pond's intended sale output over that window using the residual rule. Disclose failure timing and reasons. If no intended sale output exists, retain an unnormalized failed-operation record and widen only an evidenced reporting window; never divide by zero or delete failed duty. |  |\n| `a_assets` | shared_assets | For shared infrastructure enumerate pond, harvest, wash, sort, chill, pack and receipt consumers actually using each asset over its service periods. Prefer meters for energy/water; use measured pump hydraulic work or equipment-hours for residual operation, occupied pond-area-time for pond land/levees, and loaded tonne-kilometres with assigned empty/return travel for vehicle services. Allocate capital/repair using documented actual lifetime service shares, including replacement/termination; once-only ledger reconciles all shares. |  |\n| `a_waste` | losses | Retain mortality, rejected/discarded biomass and associated treatment within the responsible crop/node burden pool; assign actual treatment once. Other intended products remain products; no automatic substitution/ecological credits. Receipt rejection/return fate keeps its original burden ownership; no default zero-burden replacement. Reprocessing or return-to-upstream loops are outside this declared route; an actual loop requires methodology review before inclusion. |  |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `a_direct` | all_outputs | First subdivide by measured crop, operation, grade, destination and exclusive equipment/service. Assign seed/feed/pond management to its crop, washing/sorting/chilling to actually treated lots and transport to actually carried lots; identify every sale product and handoff before residual allocation. |  |\n| `a_residual` | joint_shrimp_lots | For inseparable residual burdens of one pond crop or joint sorting event, allocate across intended shrimp sale lots by measured whole wet mass at a common pre-divergence handoff, excluding free water/ice and tare. Retain grade/state-specific masses and justify biomass production/handling causality; test realized first-sale revenue shares as sensitivity when grades differ materially in price. Do not use final accepted mass to disguise omitted other products. |  |\n| `a_failure` | periods | Include nonproductive/failed crop and maintenance duty in the declared reporting-window pond burden pool; attribute to the same pond's intended sale output over that window using the residual rule. Disclose failure timing and reasons. If no intended sale output exists, retain an unnormalized failed-operation record and widen only an evidenced reporting window; never divide by zero or delete failed duty. |  |\n| `a_assets` | shared_assets | For shared infrastructure enumerate pond, harvest, wash, sort, chill_ice; chill_water, pack and receipt consumers actually using each asset over its service periods. Prefer meters for energy/water; use measured pump hydraulic work or equipment-hours for residual operation, occupied pond-area-time for pond land/levees, and loaded tonne-kilometres with assigned empty/return travel for vehicle services. Allocate capital/repair using documented actual lifetime service shares, including replacement/termination; once-only ledger reconciles all shares. |  |\n| `a_waste` | losses | Retain mortality, rejected/discarded biomass and associated treatment within the responsible crop/node burden pool; assign actual treatment once. Other intended products remain products; no automatic substitution/ecological credits. Receipt rejection/return fate keeps its original burden ownership; no default zero-burden replacement. Reprocessing or return-to-upstream loops are outside this declared route; an actual loop requires methodology review before inclusion. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1344,12 +1456,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54424
-              line: 838
+              offset: 60706
+              line: 942
               column: 1
             end:
-              offset: 54464
-              line: 838
+              offset: 60746
+              line: 942
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1364,16 +1476,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_148336"
+    - unit_id: "normative_156194"
       family: "validation"
       span:
         start:
-          offset: 148336
-          line: 913
+          offset: 156194
+          line: 1019
           column: 1
         end:
-          offset: 151621
-          line: 926
+          offset: 159479
+          line: 1032
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_scope` | eligibility | Check species/synonym, actual hatchery postlarvae and semi-intensive Tumbes brackish earthen-pond/outlet bag-net route against records; another route or final state requires another methodology or explicit review. |  |\n| `v_reference` | reference | Require one accepted_whole_shrimp final output, matching reference name and same-lot denominator A > 0 at first processor receipt; free ice/water and tare excluded, head/organs/shell included, never frozen and before deheading/freezing documented. |  |\n| `v_transfer` | node_links | Reconcile every node transfer id, crop/event/date, state and own quantity. Check washing-before-independent-grading order and packaging activation or bypass; early incidental removal remains harvest-owned. Do not impose seed/live/chilled/final mass equality; explain losses, other grades, rejection/returns and measurement uncertainty. |  |\n| `v_ownership` | completeness | Review all crop phases including failed/nonproductive duty, utilities/materials, land/history, assets/replacement, service coverage and direct combustion/leakage/discharge by node. Check every shared consumer, period and burden ledger for omissions/duplicates; exclude separately listed fossil CO2 from other-release instances. |  |\n| `v_native` | quantity_and_identity | Each applicable collection obligation expands into zero, one or multiple actual native-unit instances with independent identity, verified support and quantity evidence. A missing actual substance/provider/gate/property/unit is unresolved, never a generic fixed UUID; final TIDAS exchanges require concrete verified identities. |  |\n| `v_ranges` | range_evidence | All 0..U_row/U_instance ranges below are provisional unresolved evidence markers with independently determined upper bounds, not empirical ranges, zero defaults or hard validation limits. For multi-formulation or multi-lot rows, each actual formulation/lot independently owns its U_row upper bound, including U_formulated_feed; there is no shared cap or mixed-identity total. Replace with reviewed data; exact 1..1 applies only to same accepted-lot A/A normalization. | `same-lot-normalization` |\n| `v_disclosure` | finalization | Disclose performed/skipped checks, uncertainty, source age/applicability, unresolved quantities/identities, output allocation rationale/sensitivity and all qualifiers. Checker pass does not verify UUID detail or prove publication readiness; unresolved reference/support identities block final concrete datasets. |  |\n| `validate_atomic_completion` | all applicable per-flow collection obligations and final exchanges | Final dataset completion and validation require every actual exchange to have an independent atomic card and its own quantity, property/native unit, collection or calculation evidence, range/uncertainty evidence, normalization, actual destination and verified UUID. Unknown identity, activity state, quantity, range evidence or fate blocks completion; it is never zero, a presumed bypass or permission to omit an obligation. Every important concrete flow retains its own range/uncertainty evidence collection duty; a symbolic upper bound is not an empirical range. | |\n\n"
       headings:
@@ -1392,12 +1504,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 148336
-              line: 913
+              offset: 156194
+              line: 1019
               column: 1
             end:
-              offset: 148358
-              line: 913
+              offset: 156216
+              line: 1019
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1494,171 +1606,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_direct"
       identity_kind: "explicit"
-      unit_id: "normative_54424"
+      unit_id: "normative_60706"
       source_span:
         start:
-          offset: 54537
-          line: 842
+          offset: 60819
+          line: 946
           column: 1
         end:
-          offset: 54871
-          line: 842
+          offset: 61153
+          line: 946
           column: 335
     - pointer: "/allocation_rules/1"
       rule_id: "a_residual"
       identity_kind: "explicit"
-      unit_id: "normative_54424"
+      unit_id: "normative_60706"
       source_span:
         start:
-          offset: 54872
-          line: 843
+          offset: 61154
+          line: 947
           column: 1
         end:
-          offset: 55375
-          line: 843
+          offset: 61657
+          line: 947
           column: 504
     - pointer: "/allocation_rules/2"
       rule_id: "a_failure"
       identity_kind: "explicit"
-      unit_id: "normative_54424"
+      unit_id: "normative_60706"
       source_span:
         start:
-          offset: 55376
-          line: 844
+          offset: 61658
+          line: 948
           column: 1
         end:
-          offset: 55813
-          line: 844
+          offset: 62095
+          line: 948
           column: 438
     - pointer: "/allocation_rules/3"
       rule_id: "a_assets"
       identity_kind: "explicit"
-      unit_id: "normative_54424"
+      unit_id: "normative_60706"
       source_span:
         start:
-          offset: 55814
-          line: 845
+          offset: 62096
+          line: 949
           column: 1
         end:
-          offset: 56384
-          line: 845
-          column: 571
+          offset: 62683
+          line: 949
+          column: 588
     - pointer: "/allocation_rules/4"
       rule_id: "a_waste"
       identity_kind: "explicit"
-      unit_id: "normative_54424"
+      unit_id: "normative_60706"
       source_span:
         start:
-          offset: 56385
-          line: 846
+          offset: 62684
+          line: 950
           column: 1
         end:
-          offset: 56883
-          line: 846
+          offset: 63182
+          line: 950
           column: 499
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 148431
-          line: 917
+          offset: 156289
+          line: 1023
           column: 1
         end:
-          offset: 148677
-          line: 917
+          offset: 156535
+          line: 1023
           column: 247
     - pointer: "/validation_rules/1"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 148678
-          line: 918
+          offset: 156536
+          line: 1024
           column: 1
         end:
-          offset: 148960
-          line: 918
+          offset: 156818
+          line: 1024
           column: 283
     - pointer: "/validation_rules/2"
       rule_id: "v_transfer"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 148961
-          line: 919
+          offset: 156819
+          line: 1025
           column: 1
         end:
-          offset: 149331
-          line: 919
+          offset: 157189
+          line: 1025
           column: 371
     - pointer: "/validation_rules/3"
       rule_id: "v_ownership"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 149332
-          line: 920
+          offset: 157190
+          line: 1026
           column: 1
         end:
-          offset: 149697
-          line: 920
+          offset: 157555
+          line: 1026
           column: 366
     - pointer: "/validation_rules/4"
       rule_id: "v_native"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 149698
-          line: 921
+          offset: 157556
+          line: 1027
           column: 1
         end:
-          offset: 150068
-          line: 921
+          offset: 157926
+          line: 1027
           column: 371
     - pointer: "/validation_rules/5"
       rule_id: "v_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 150069
-          line: 922
+          offset: 157927
+          line: 1028
           column: 1
         end:
-          offset: 150597
-          line: 922
+          offset: 158455
+          line: 1028
           column: 529
     - pointer: "/validation_rules/6"
       rule_id: "v_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 150598
-          line: 923
+          offset: 158456
+          line: 1029
           column: 1
         end:
-          offset: 150948
-          line: 923
+          offset: 158806
+          line: 1029
           column: 351
     - pointer: "/validation_rules/7"
       rule_id: "validate_atomic_completion"
       identity_kind: "explicit"
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 150949
-          line: 924
+          offset: 158807
+          line: 1030
           column: 1
         end:
-          offset: 151619
-          line: 924
+          offset: 159477
+          line: 1030
           column: 671
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1687,27 +1799,27 @@ normative_context:
           column: 289
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54424"
+      unit_id: "normative_60706"
       source_span:
         start:
-          offset: 54424
-          line: 838
+          offset: 60706
+          line: 942
           column: 1
         end:
-          offset: 54464
-          line: 838
+          offset: 60746
+          line: 942
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_148336"
+      unit_id: "normative_156194"
       source_span:
         start:
-          offset: 148336
-          line: 913
+          offset: 156194
+          line: 1019
           column: 1
         end:
-          offset: 148358
-          line: 913
+          offset: 156216
+          line: 1019
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1716,5 +1828,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:4a2a5a0c2844c964f8c1bebb67a350ae742e6df5392d787b0701335c024cd956"
-  generated_content_sha256: "sha256:084d23cac9082595524372f933adb2987c250ed8110c808411d298c8d84e58bc"
+    sha256: "sha256:407bb87bd09d7822c86cb768a0bc4665960d31375401671e5fc024b9a562a803"
+  generated_content_sha256: "sha256:df2b69ae9712f97543c5d1e9a87953c6e8622af19064279207723569687443f7"

@@ -176,11 +176,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 该阶段其他外供水 (`capture_other_supplied_water`)
+###### 外部供应的液态淡水 (`capture_other_supplied_water`)
 
-不符合处理工艺水行的实际外供淡水、半咸水或海水；区分供应方和盐度。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：该阶段其他外供水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
 - 数值来源模式：`calculated_value`
@@ -190,10 +192,62 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_capture`
 - 来源：`wild-live-method-2026`
-- 数量范围：可替换的暂定作者校验范围
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：100000
+  - 上限：U_capture_other_supplied_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`capture_other_supplied_water_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_capture`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_capture_other_supplied_water_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`capture_other_supplied_water_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_capture`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_capture_other_supplied_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -482,11 +536,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 该阶段其他外供水 (`holding_other_supplied_water`)
+###### 外部供应的液态淡水 (`holding_other_supplied_water`)
 
-不符合处理工艺水行的实际外供淡水、半咸水或海水；区分供应方和盐度。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：该阶段其他外供水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
 - 数值来源模式：`calculated_value`
@@ -496,10 +552,62 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_holding`
 - 来源：`wild-live-method-2026`
-- 数量范围：可替换的暂定作者校验范围
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：100000
+  - 上限：U_holding_other_supplied_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`holding_other_supplied_water_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_holding`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_holding_other_supplied_water_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`holding_other_supplied_water_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_holding`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_holding_other_supplied_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -785,11 +893,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 该阶段其他外供水 (`transfer_other_supplied_water`)
+###### 外部供应的液态淡水 (`transfer_other_supplied_water`)
 
-不符合处理工艺水行的实际外供淡水、半咸水或海水；区分供应方和盐度。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：该阶段其他外供水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
 - 数值来源模式：`calculated_value`
@@ -799,10 +909,62 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_transfer`
 - 来源：`wild-live-method-2026`
-- 数量范围：可替换的暂定作者校验范围
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：100000
+  - 上限：U_transfer_other_supplied_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`transfer_other_supplied_water_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_transfer`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_transfer_other_supplied_water_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`transfer_other_supplied_water_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_transfer`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_transfer_other_supplied_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1088,11 +1250,13 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 该阶段其他外供水 (`handover_other_supplied_water`)
+###### 外部供应的液态淡水 (`handover_other_supplied_water`)
 
-不符合处理工艺水行的实际外供淡水、半咸水或海水；区分供应方和盐度。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水；排除已单列的处理工业水供应。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：该阶段其他外供水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
 - 数值来源模式：`calculated_value`
@@ -1102,10 +1266,62 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_handover`
 - 来源：`wild-live-method-2026`
-- 数量范围：可替换的暂定作者校验范围
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
   - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：100000
+  - 上限：U_handover_other_supplied_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`handover_other_supplied_water_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_handover`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_handover_other_supplied_water_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`handover_other_supplied_water_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_handover`
+- 来源：`wild-live-method-2026`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_handover_other_supplied_water_seawater
   - 单位：kg
   - 基准：每 1 kg 参考流
   - 基准类型：`reference_flow`
@@ -1387,6 +1603,8 @@ sync_with: pcr.en-US.md
 | `dq_complete_handover_abstracted_water` | `handover`; 输入; 基本流 | 必须辨认并分别采集“从声明环境直接取用的水”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：按水体与盐度记录实际取水；外部入流仅计一次，保留体积、密度、日期和位置。内部循环作为辅助活动。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。 数值来源模式：`calculated_value` 适用范围：`site_specific` 归一化基准：每 1 kg 参考流 基准类型：`reference_flow` 证据类型：`calculated_from_collection` 采集协议：`cp_handover` 来源：`wild-live-method-2026` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_handover_solid_waste` | `handover`; 输出; 废物流 | 必须辨认并分别采集“送处理的废耗材与分离固体”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：实际清洗固体、废滤材、损坏渔具、散落材料或包装剔除物；区分组成、去向与危害属性。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。 数值来源模式：`calculated_value` 适用范围：`site_specific` 归一化基准：每 1 kg 参考流 基准类型：`reference_flow` 证据类型：`calculated_from_collection` 采集协议：`cp_handover` 来源：`wild-live-method-2026` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_handover_substance_releases` | `handover`; 输出; 基本流 | 必须辨认并分别采集“实际分物质直接排放与制冷剂泄漏”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：条件性具体角色集合：实际跨入环境的每种氮磷形态、健康产品残留、尾气物质或颗粒级别、泄漏润滑剂、制冷剂和渔具材料均使用独立身份、介质与物质 kg 基准。水中负荷采用浓度、流量、时长及背景校正。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：以该阶段归属的实测数量除以同一验收交接活鱼净湿生物量；保留原始质量、尾数、时间及分配证据。 数值来源模式：`calculated_value` 适用范围：`site_specific` 归一化基准：每 1 kg 参考流 基准类型：`reference_flow` 证据类型：`calculated_from_collection` 采集协议：`cp_handover` 来源：`wild-live-method-2026` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
+| `dq_atomic_card_identity` | 所有清单行 | 每卡表示一个实物身份明确的交换，不是集合或选择器。Electricity 保留为单一电能流；供应者、地域及电压是实际采集限定信息，不因其待定就推测拆卡。实际其他材料、废物流、碳来源及受纳介质在完成前须分别识别并形成原子卡。保留全部原有采集义务；缺卡或身份未解析不表示零或豁免交换。配对内部水转移保留相同实际水质、转移编号、数量及上游负担，不再采购一次。 | 逐卡身份、供应者、状态、去向及配对记录 |
+| `dq_atomic_range_evidence` | 修复后的原子流卡 | U_row 是待补证要求，不是数值估计、默认值、截断限值或完成证明。须从独立代表性记录或兼容的有凭据供应者设计上界确定各卡自身同单位同参考基准包络，保留范围、方法及不确定性。不复用已移除的合计范围、不复制兄弟卡数量、不用目标批次自身确定上界，也不编造数值。适用证据缺失时阻断数量 QA 完成；仍须实际计量。 | 独立包络证据；原始记录及不确定性 |
 
 ## 9. 验证规则
 

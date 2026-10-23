@@ -198,11 +198,13 @@ Conditional identity: only actual externally purchased treated industrial proces
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Other actual externally supplied water at capture (`capture_other_water`)
+###### Externally supplied liquid freshwater (`capture_other_water`)
 
-Expand the actual supplied freshwater/seawater/potable water identity and intended use excluding the matching industrial-water card. Supplier burden retained; internal transfers use the separate receiving role.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other actual externally supplied water at capture
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Measure actual role quantity under cp_capture under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
 - Value mode: Calculated value (`calculated_value`)
@@ -211,14 +213,64 @@ Expand the actual supplied freshwater/seawater/potable water identity and intend
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_capture`
-- Range: Role-specific provisional broad screening estimate; not empirical QA thresholds
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 10000
+  - Upper: U_capture_other_water
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`capture_other_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_capture under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_capture`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_capture_other_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`capture_other_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_capture under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_capture`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_capture_other_water_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -615,11 +667,13 @@ Conditional identity: only actual externally purchased treated industrial proces
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Other actual externally supplied water at condition (`condition_other_water`)
+###### Externally supplied liquid freshwater (`condition_other_water`)
 
-Expand the actual supplied freshwater/seawater/potable water identity and intended use excluding the matching industrial-water card. Supplier burden retained; internal transfers use the separate receiving role.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other actual externally supplied water at condition
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Measure actual role quantity under cp_condition under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
 - Value mode: Calculated value (`calculated_value`)
@@ -628,14 +682,64 @@ Expand the actual supplied freshwater/seawater/potable water identity and intend
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_condition`
-- Range: Role-specific provisional broad screening estimate; not empirical QA thresholds
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 10000
+  - Upper: U_condition_other_water
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`condition_other_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_condition under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_condition`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_condition_other_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`condition_other_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_condition under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_condition`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_condition_other_water_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -1076,11 +1180,13 @@ Conditional identity: only actual externally purchased treated industrial proces
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Other actual externally supplied water at grade (`grade_other_water`)
+###### Externally supplied liquid freshwater (`grade_other_water`)
 
-Expand the actual supplied freshwater/seawater/potable water identity and intended use excluding the matching industrial-water card. Supplier burden retained; internal transfers use the separate receiving role.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other actual externally supplied water at grade
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Measure actual role quantity under cp_grade under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
 - Value mode: Calculated value (`calculated_value`)
@@ -1089,14 +1195,64 @@ Expand the actual supplied freshwater/seawater/potable water identity and intend
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_grade`
-- Range: Role-specific provisional broad screening estimate; not empirical QA thresholds
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 10000
+  - Upper: U_grade_other_water
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`grade_other_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_grade under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_grade`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_grade_other_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`grade_other_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_grade under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_grade`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_grade_other_water_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -1202,11 +1358,13 @@ Measured fish passed to the next actual event, preserving actual eligibility and
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Saleable downgraded and other destination fish (`grade_other_products`)
+###### Whole Gadiformes fish sold in a downgraded food grade (`grade_other_products`)
 
-Expand each actual accepted grade/form/species/use and handover destination. Pending conditioning fish for the reference route remain internal onward fish, not an independent final sale.
+Only actually sold whole ungutted target Gadiformes of one declared species and downgraded food grade, with food acceptance and independent handover evidence. Exclude reference-route pending fish, gutted carcasses, non-food uses and waste. Actual other species, forms or uses still require independent atomic output cards and the existing allocation review, not omission or inclusion in this quantity.
 
-- Selected flow: Saleable downgraded and other destination fish
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Whole Gadiformes fish sold in a downgraded food grade
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Measure actual role quantity under cp_grade under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
 - Value mode: Calculated value (`calculated_value`)
@@ -1215,14 +1373,39 @@ Expand each actual accepted grade/form/species/use and handover destination. Pen
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_grade`
-- Range: Role-specific provisional broad screening estimate; not empirical QA thresholds
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 100
+  - Upper: U_grade_other_products
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Head-on gutted Gadiformes fish sold in a downgraded food grade (`grade_other_products_gutted`)
+
+Conditional actual separate sale of one declared target species/grade as head-on gutted food fish. Record actual gill state and acceptance; exclude whole ungutted fish, the same reference-channel parcel, non-food sales and waste. Keep actual output allocation and transfer evidence.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Head-on gutted Gadiformes fish sold in a downgraded food grade
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_grade under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_grade`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_grade_other_products_gutted
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -1515,11 +1698,13 @@ Conditional identity: only actual externally purchased treated industrial proces
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Other actual externally supplied water at preserve (`preserve_other_water`)
+###### Externally supplied liquid freshwater (`preserve_other_water`)
 
-Expand the actual supplied freshwater/seawater/potable water identity and intended use excluding the matching industrial-water card. Supplier burden retained; internal transfers use the separate receiving role.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other actual externally supplied water at preserve
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Measure actual role quantity under cp_preserve under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
 - Value mode: Calculated value (`calculated_value`)
@@ -1528,14 +1713,64 @@ Expand the actual supplied freshwater/seawater/potable water identity and intend
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_preserve`
-- Range: Role-specific provisional broad screening estimate; not empirical QA thresholds
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 10000
+  - Upper: U_preserve_other_water
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`preserve_other_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_preserve under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_preserve`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_preserve_other_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`preserve_other_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_preserve under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_preserve`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_preserve_other_water_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ###### Actual purchased capture-fishery chilling ice (`preserve_ice`)
 
@@ -1955,11 +2190,13 @@ Conditional identity: only actual externally purchased treated industrial proces
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Other actual externally supplied water at present (`present_other_water`)
+###### Externally supplied liquid freshwater (`present_other_water`)
 
-Expand the actual supplied freshwater/seawater/potable water identity and intended use excluding the matching industrial-water card. Supplier burden retained; internal transfers use the separate receiving role.
+Only actual externally supplied liquid freshwater of one documented treatment grade and supply identity; exclude the separately recorded treated-industrial-water supply. Record actual suitability, treatment, supplier and quantity; this card contains no seawater, brackish water, own abstraction or internal transfer.
 
-- Selected flow: Other actual externally supplied water at present
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid freshwater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Measure actual role quantity under cp_present under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
 - Value mode: Calculated value (`calculated_value`)
@@ -1968,14 +2205,64 @@ Expand the actual supplied freshwater/seawater/potable water identity and intend
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_present`
-- Range: Role-specific provisional broad screening estimate; not empirical QA thresholds
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 10000
+  - Upper: U_present_other_water
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid brackish water (`present_other_water_brackish`)
+
+Conditional actual supplied liquid brackish water with documented salinity, treatment grade, suitability and supplier. Exclude freshwater, seawater, direct abstraction, circulation and any separately recorded industrial-water supply.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid brackish water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_present under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_present`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_present_other_water_brackish
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Externally supplied liquid seawater (`present_other_water_seawater`)
+
+Conditional actual supplied liquid seawater with documented salinity, treatment, suitability and supplier. This is a technosphere supply, not direct marine abstraction, recirculation or an additional purchase of internally transferred water.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Externally supplied liquid seawater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_present under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_present`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_present_other_water_seawater
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -2332,11 +2619,13 @@ Actual food-accepted, fresh or nonfrozen chilled carcass with head retained and 
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `reference-normalization-identity`
 
-###### Free water and remaining ice handed across first gate (`handover_carrier_out`)
+###### Liquid carrier water accompanying first handover (`handover_carrier_out`)
 
-Record actual recipient-accepted water/ice accompanying product, separate from net fish. It is an interface flow, not automatically a saleable co-product; leftover producer stock remains a stock.
+Only actual liquid water physically accepted with the product, measured separately from remaining solid ice, fish and packaging. Pair water receipts, melting, stocks and the actual recipient; this accompanying exchange is not automatically a saleable co-product or waste.
 
-- Selected flow: Free water and remaining ice handed across first gate
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Liquid carrier water accompanying first handover
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Measure actual role quantity under cp_handover under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
 - Value mode: Calculated value (`calculated_value`)
@@ -2345,14 +2634,39 @@ Record actual recipient-accepted water/ice accompanying product, separate from n
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_handover`
-- Range: Role-specific provisional broad screening estimate; not empirical QA thresholds
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 1000
+  - Upper: U_handover_carrier_out
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Solid water ice remaining at first handover (`handover_carrier_out_ice`)
+
+Only actual remaining solid water ice physically accompanying accepted product. Do not copy the combined water/ice mass, include melted liquid water or infer a co-product credit; pair actual ice receipts, melting, stocks and recipient.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Solid water ice remaining at first handover
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: Measure actual role quantity under cp_handover under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_handover`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_handover_carrier_out_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Waste flows
 
@@ -2573,6 +2887,8 @@ Only actual independently owned fossil combustion at the gate with compatible un
 | `dq_complete_preserve_external_service` | `preserve`; inputs; product | Individually identify and independently measure the actual exchanges within “Actual externally supplied service at preserve”; all collection and conversion obligations apply: Conditional actual contracted capture/support, gutting/cleaning, grading, cold/ice manufacture or presentation service according to this node responsibility; instantiate each provider and actual native invoiced functional unit from the node auxiliary service ledger. provider_service_unit is an unresolved semantic placeholder, not a verified unit or permission to invent material kg for a service. A real provider service referenced to kg handled is allowed only after verifying that native service reference, conversion and property/unit-group support; it is not a material-mass substitution. Retain scope/resource inclusion matrix and supplier burden, excluding already included fuel, electricity, water, ice and consumables. Flow property / unit: Actual provider-specific service property (support unresolved) / provider_service_unit Amount rule: Measure actual role quantity under cp_preserve under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares. Value mode: Calculated value (`calculated_value`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Calculated from collection (`calculated_from_collection`) Collection protocol: `cp_preserve` Every actual child requires its own quantity, native unit, normalization, destination, UUID and Range evidence; no grouped total, bound or binding is inherited. Any unresolved applicable child makes the final dataset incomplete and fails validation; unknown is not zero. | per-flow original records under linked protocols and identity, fate and range evidence |
 | `dq_complete_present_external_service` | `present`; inputs; product | Individually identify and independently measure the actual exchanges within “Actual externally supplied service at present”; all collection and conversion obligations apply: Conditional actual contracted capture/support, gutting/cleaning, grading, cold/ice manufacture or presentation service according to this node responsibility; instantiate each provider and actual native invoiced functional unit from the node auxiliary service ledger. provider_service_unit is an unresolved semantic placeholder, not a verified unit or permission to invent material kg for a service. A real provider service referenced to kg handled is allowed only after verifying that native service reference, conversion and property/unit-group support; it is not a material-mass substitution. Retain scope/resource inclusion matrix and supplier burden, excluding already included fuel, electricity, water, ice and consumables. Flow property / unit: Actual provider-specific service property (support unresolved) / provider_service_unit Amount rule: Measure actual role quantity under cp_present under the quantity method in this section and section 8: first close unallocated physical transfers, losses and stocks and own shared resources once, then divide by positive accepted final carcass kg; a separate single-output LCA view allocates burdens only once under section 7, retaining physical ledger and allocation matrix without multiplying mass partitions by economic shares. Value mode: Calculated value (`calculated_value`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Calculated from collection (`calculated_from_collection`) Collection protocol: `cp_present` Every actual child requires its own quantity, native unit, normalization, destination, UUID and Range evidence; no grouped total, bound or binding is inherited. Any unresolved applicable child makes the final dataset incomplete and fails validation; unknown is not zero. | per-flow original records under linked protocols and identity, fate and range evidence |
 | `dq_complete_handover_external_service` | `handover`; inputs; product | Individually identify and independently measure the actual exchanges within “Actual provider-native gate weighing or handling service”; all collection and conversion obligations apply: Only a genuinely purchased gate weighing/handling service: record provider, real task/invoice functional quantity, scope and compatible upstream dataset. provider_service_unit and reference property/unitgroup remain unresolved until verified. A genuine kg-handled supplier reference is allowed with verified native support and measured conversion; never substitute material kg for service hours. Exclude provider-inclusive utilities/direct emissions from producer direct rows, while separately owned operations remain accounted. Flow property / unit: Actual provider-specific service property (support unresolved) / provider_service_unit Amount rule: Measure actual role quantity under cp_handover: close unallocated physical receipts, transfers, outputs, losses and stocks and own shared node/period resources once, then divide by positive accepted final net carcass kg under section 8. Separately apply section 7 once to the labelled single-output LCA view; retain physical ledger and allocation matrix, never shrink mass partitions by output shares. Value mode: `calculated_value` Specificity: `site_specific` Normalization basis: per 1 kg reference flow Basis kind: `reference_flow` Evidence kind: `calculated_from_collection` Collection protocol: `cp_handover` Every actual child requires its own quantity, native unit, normalization, destination, UUID and Range evidence; no grouped total, bound or binding is inherited. Any unresolved applicable child makes the final dataset incomplete and fails validation; unknown is not zero. | per-flow original records under linked protocols and identity, fate and range evidence |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 

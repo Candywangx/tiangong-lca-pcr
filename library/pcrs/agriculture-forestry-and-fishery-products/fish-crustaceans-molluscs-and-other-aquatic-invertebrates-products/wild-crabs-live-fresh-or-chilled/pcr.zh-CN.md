@@ -986,11 +986,13 @@ sync_with: pcr.en-US.md
 
   - 来源：`wild-crab-foreground-method`
 
-###### 实际外供暂养用水 (`hold_water_supplied`)
+###### 外部供应的液态淡水 (`hold_water_supplied`)
 
-按实际处理、盐度及供应者拆分供应淡水、处理工艺水或海水，不互换不兼容身份。不重复采购已在 hold_water_abstracted 直接提取的水量。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：实际外供暂养用水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 
@@ -1009,24 +1011,84 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_live_hold`
 
 - 来源：`wild-crab-foreground-method`
-
-- 数量范围：独立参考调查协议筛查范围；非默认用量
-
-  - 范围角色：QA 校验 (`qa_guardrail`)
-
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
-
   - 上限：U_hold_water_supplied
-
   - 单位：kg
-
   - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
-  - 基准类型：参考流 (`reference_flow`)
 
-  - 证据类型：方法公式 (`method_formula`)
+###### 外部供应的液态半咸水 (`hold_water_supplied_brackish`)
 
-  - 来源：`wild-crab-foreground-method`
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+
+- 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+
+- 数量规则：依据 cp_live_hold 采集实际节点数量；按第 8 节两种视图规则先保留未分配物理转移、存量及去向，唯一归属共享资源，再以相匹配最终验收净千克归一化。共产品 LCA 分配另列且仅计一次。
+
+- 数值来源模式：计算值 (`calculated_value`)
+
+- 适用范围：场址特定 (`site_specific`)
+
+- 归一化基准：每 1 kg 参考流
+
+- 基准类型：参考流 (`reference_flow`)
+
+- 证据类型：由采集记录计算 (`calculated_from_collection`)
+
+- 采集协议：`cp_live_hold`
+
+- 来源：`wild-crab-foreground-method`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_hold_water_supplied_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`hold_water_supplied_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+
+- 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+
+- 数量规则：依据 cp_live_hold 采集实际节点数量；按第 8 节两种视图规则先保留未分配物理转移、存量及去向，唯一归属共享资源，再以相匹配最终验收净千克归一化。共产品 LCA 分配另列且仅计一次。
+
+- 数值来源模式：计算值 (`calculated_value`)
+
+- 适用范围：场址特定 (`site_specific`)
+
+- 归一化基准：每 1 kg 参考流
+
+- 基准类型：参考流 (`reference_flow`)
+
+- 证据类型：由采集记录计算 (`calculated_from_collection`)
+
+- 采集协议：`cp_live_hold`
+
+- 来源：`wild-crab-foreground-method`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_hold_water_supplied_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -2026,11 +2088,13 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 
   - 来源：`wild-crab-foreground-method`
 
-###### 随验收批次实际发出的实物包装 (`presentation_packaging_handover`)
+###### 随验收蟹批次交出的周转运输箱 (`presentation_packaging_handover`)
 
-与蟹净质量、拒收及期末存量分开记录跨边界一次性包装实物质量及所有权。周转箱在资产流转账保留完整实物发出、返还及存量质量，与更换制造服务份额分开；不得因发出而推断废物去向或独立分配的食品共产品。实际散装不虚构包装。
+仅在实物发出一种已识别周转运输箱产品时启用，保留实际构成材料、皮重、所有权及返还记录。本卡是箱体产品交换，不是纸箱、捆扎物、缓冲物、标签或更换制造服务份额的合计。原有呈现包装要求仍强制对实际一次性物品或其他包装产品分别识别、计量并在完成前各自形成原子卡；散装不预设包装。
 
-- 选定流：随验收批次实际发出的实物包装
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：随验收蟹批次交出的周转运输箱
 
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 
@@ -2049,24 +2113,14 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 - 采集协议：`cp_presentation`
 
 - 来源：`wild-crab-foreground-method`
-
-- 数量范围：独立参考调查协议筛查范围；非默认用量
-
-  - 范围角色：QA 校验 (`qa_guardrail`)
-
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
-
   - 上限：U_presentation_packaging_handover
-
   - 单位：kg
-
   - 基准：每 1 kg 参考流
-
-  - 基准类型：参考流 (`reference_flow`)
-
-  - 证据类型：方法公式 (`method_formula`)
-
-  - 来源：`wild-crab-foreground-method`
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 废物流
 
@@ -2234,7 +2288,7 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 | --- | --- | --- | --- | --- | --- |
 | `lot_attribution` | 所有清单行 | 明确保留两种标注视图。先对完整声明群体、航次或运行核对未作共产品分配的实际接收、转移、产品、损失及存量；内部转移按相同状态与单位配对并保留实测质量。以有证据的服务份额，将共享资源或服务事件一次归属实际使用节点及期间，不用共产品份额缩小产品、生物量、水或废物分区。将此物理清单除以相匹配且为正的最终验收净千克。再根据第 7 节共产品规则，仅分配一次并另行生成标注的单输出 LCA 负荷或清单投影，同时保留未分配清单及分配矩阵。不得用已分配交换检验未分配物理闭合、在下游再次乘输出份额，或把内部数量设为最终 1 kg。 | 节点协议；分配台账；验收最终净质量；库存历史 | 每 1 kg 参考流归属交换 | `wild-crab-foreground-method` |
 | `reference_envelope` | 所有非最终行范围 | 对每个实际实例化身份、状态、节点及 pre_sort/post_sort 作业段分别建立 U_row。采用独立代表性参考批次归一化量的最大值乘预先声明且不小于 1 的不确定性裕度，或具有同单位和基准的供应商设计包络乘该裕度；保留原始量、参考净千克、样本量、适用范围及裕度依据。目标批次不得参与建立其自身上界，多物质集合卡不能共用池化上界。缺少独立证据则该实例范围未实例化，不能声称数值 QA 通过或完成定量数据包。 | 独立调查记录；范围；不确定度裕量 | U_row | `wild-crab-foreground-method` |
-| `conditional_interface_envelopes` | capture_internal_water_ice_transfer; grading_internal_water_ice_receipt; grading_internal_water_ice_transfer; live_hold_internal_water_ice_receipt; live_hold_internal_water_ice_transfer; fresh_chill_internal_water_ice_receipt; fresh_chill_internal_water_ice_transfer; presentation_internal_water_ice_receipt; presentation_actual_source_water; presentation_internal_water_ice_transfer; presentation_water_ice_handover; presentation_packaging_handover | 对每张明确列出的条件接口卡，在实际身份、状态、节点、作业段及单位实例化后，以独立代表性参考运行的同视图归一化最大值乘预先声明且不小于 1 的裕度，或同单位与基准供应设计包络建立 U_row。保留样本、来源、基准及不确定性；不得用目标批次建立自身上界。服务单位及支持未核实或独立包络缺失均是未解决实例，不能声称数值 QA 通过，不填零。水冰与包装的实物流转和服务折算量分别闭合。 | 独立参考记录；实际单位与基准 | U_row | `wild-crab-foreground-method` |
+| `conditional_interface_envelopes` | capture_internal_water_ice_transfer_water; capture_internal_water_ice_transfer_ice; grading_internal_water_ice_receipt_water; grading_internal_water_ice_receipt_ice; grading_internal_water_ice_transfer_water; grading_internal_water_ice_transfer_ice; live_hold_internal_water_ice_receipt_water; live_hold_internal_water_ice_receipt_ice; live_hold_internal_water_ice_transfer_water; live_hold_internal_water_ice_transfer_ice; fresh_chill_internal_water_ice_receipt_water; fresh_chill_internal_water_ice_receipt_ice; fresh_chill_internal_water_ice_transfer_water; fresh_chill_internal_water_ice_transfer_ice; presentation_internal_water_ice_receipt_water; presentation_internal_water_ice_receipt_ice; presentation_actual_source_water; presentation_internal_water_ice_transfer_water; presentation_internal_water_ice_transfer_ice; presentation_water_ice_handover_water; presentation_water_ice_handover_ice; presentation_packaging_handover | 对每张明确列出的条件接口卡，在实际身份、状态、节点、作业段及单位实例化后，以独立代表性参考运行的同视图归一化最大值乘预先声明且不小于 1 的裕度，或同单位与基准供应设计包络建立 U_row。保留样本、来源、基准及不确定性；不得用目标批次建立自身上界。服务单位及支持未核实或独立包络缺失均是未解决实例，不能声称数值 QA 通过，不填零。水冰与包装的实物流转和服务折算量分别闭合。 | 独立参考记录；实际单位与基准 | U_row | `wild-crab-foreground-method` |
 
 ### 数据质量要求
 
@@ -2302,6 +2356,8 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 | `dq_complete_presentation_rejects` | `presentation`; 输出; 废物流 | 必须辨认并分别采集“首次交接剔除整蟹及包装”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：分别称量剔除蟹与包装，记录活力、食品/非食品状态、接收者及原因。剔除物不得增加合格参考净质量，返还周转箱属于资产库存而非自动废物。 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：依据 cp_presentation 采集实际节点数量；按第 8 节两种视图规则先保留未分配物理转移、存量及去向，唯一归属共享资源，再以相匹配最终验收净千克归一化。共产品 LCA 分配另列且仅计一次。 数值来源模式：计算值 (`calculated_value`) 适用范围：场址特定 (`site_specific`) 归一化基准：每 1 kg 参考流 基准类型：参考流 (`reference_flow`) 证据类型：由采集记录计算 (`calculated_from_collection`) 采集协议：`cp_presentation` 来源：`wild-crab-foreground-method` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_presentation_other_air_emissions` | `presentation`; 输出; 基本流 | 必须辨认并分别采集“按物质与介质拆分的其他实际直接空气排放”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：按明确物质、相关时的粒径及空气介质拆分燃料污染物、制冷剂泄漏或其他实际直接排放；不可把 NOx/VOC/PM 集合项强配到虚构单一物种。保留系数或分析证据，核对充注/回收库存。 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：依据 cp_presentation 采集实际节点数量；按第 8 节两种视图规则先保留未分配物理转移、存量及去向，唯一归属共享资源，再以相匹配最终验收净千克归一化。共产品 LCA 分配另列且仅计一次。 数值来源模式：计算值 (`calculated_value`) 适用范围：场址特定 (`site_specific`) 归一化基准：每 1 kg 参考流 基准类型：参考流 (`reference_flow`) 证据类型：由采集记录计算 (`calculated_from_collection`) 采集协议：`cp_presentation` 来源：`wild-crab-foreground-method` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_presentation_dissolved_releases` | `presentation`; 输出; 基本流 | 必须辨认并分别采集“交接清洁直接排水中的实际物质”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：每项重要清洁化学物或溶解物须实际身份、浓度/流量基准及接收介质，与载体水及收集处理废物分开。不暗示卫生或通用毒性结果。 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：依据 cp_presentation 采集实际节点数量；按第 8 节两种视图规则先保留未分配物理转移、存量及去向，唯一归属共享资源，再以相匹配最终验收净千克归一化。共产品 LCA 分配另列且仅计一次。 数值来源模式：计算值 (`calculated_value`) 适用范围：场址特定 (`site_specific`) 归一化基准：每 1 kg 参考流 基准类型：参考流 (`reference_flow`) 证据类型：由采集记录计算 (`calculated_from_collection`) 采集协议：`cp_presentation` 来源：`wild-crab-foreground-method` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
+| `dq_atomic_card_identity` | 所有清单行 | 每卡表示一个实物身份明确的交换，不是集合或选择器。Electricity 保留为单一电能流；供应者、地域及电压是实际采集限定信息，不因其待定就推测拆卡。实际其他材料、废物流、碳来源及受纳介质在完成前须分别识别并形成原子卡。保留全部原有采集义务；缺卡或身份未解析不表示零或豁免交换。配对内部水转移保留相同实际水质、转移编号、数量及上游负担，不再采购一次。 | 逐卡身份、供应者、状态、去向及配对记录 |
+| `dq_atomic_range_evidence` | 修复后的原子流卡 | U_row 是待补证要求，不是数值估计、默认值、截断限值或完成证明。须从独立代表性记录或兼容的有凭据供应者设计上界确定各卡自身同单位同参考基准包络，保留范围、方法及不确定性。不复用已移除的合计范围、不复制兄弟卡数量、不用目标批次自身确定上界，也不编造数值。适用证据缺失时阻断数量 QA 完成；仍须实际计量。 | 独立包络证据；原始记录及不确定性 |
 
 ## 9. 校验规则
 

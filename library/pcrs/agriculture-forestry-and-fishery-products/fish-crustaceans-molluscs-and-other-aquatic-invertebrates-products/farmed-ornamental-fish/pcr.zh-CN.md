@@ -173,11 +173,13 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 外部供应育成与清洗水（`rearing_water`）
+###### 外部供应的液态淡水 (`rearing_water`)
 
-按供应商及真实原水/市政水/处理工艺水分别记录，注明盐度及鱼适用性；不得把未定供水总类绑定到某工业工艺水身份。
+仅记录一种有凭据处理等级及供应身份的实际外供液态淡水。记录实际适用性、处理、供应者及数量；本卡不含海水、半咸水、自取水或内部转移。
 
-- 选定流：外部供应育成与清洗水
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态淡水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：从 `cp_water_managed_rearing` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流
 - 数值来源模式：前景记录（`foreground_record`）
@@ -187,15 +189,66 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_water_managed_rearing`
 - 来源：`uf-ifas-ras-fa099`
-
-- 数量范围：可替换暂定筛查估算；不是经验值或合规限值
-  - 范围角色：QA 筛查（`qa_guardrail`）
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：100000
+  - 上限：U_rearing_water
   - 单位：kg
   - 基准：每 1 kg 参考流
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态半咸水 (`rearing_water_brackish`)
+
+仅在实际供应液态半咸水时启用，保留盐度、处理等级、适用性和供应者凭据。排除淡水、海水、直接取水、循环量及已单列的工业水供应。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态半咸水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：从 `cp_water_managed_rearing` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_managed_rearing`
+- 来源：`uf-ifas-ras-fa099`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_rearing_water_brackish
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 外部供应的液态海水 (`rearing_water_seawater`)
+
+仅在实际供应液态海水时启用，保留盐度、处理、适用性及供应者凭据。这是技术系统供水，不是海洋直接取水、循环量或内部转移水的重复采购。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：外部供应的液态海水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：从 `cp_water_managed_rearing` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_water_managed_rearing`
+- 来源：`uf-ifas-ras-fa099`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_rearing_water_seawater
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ###### 真实供应商与电压的养殖电力（`rearing_electricity`）
 
@@ -323,11 +376,13 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 送处理或处置的移除养殖固体（`rearing_sludge`）
+###### 收集后送处理的养殖污泥 (`rearing_sludge`)
 
-实测过滤反洗/污泥/清塘固体、含水率及去向；没有真实产品品质、买方与独立产出审查不得给肥料替代信用。
+仅记录实物收集的污泥，保留实际含水率、固体组成及处理接收方。排除液态过滤反洗废水、另行挖除的池底沉积物及原位沉积；不自动给肥料信用。
 
-- 选定流：送处理或处置的移除养殖固体
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：收集后送处理的养殖污泥
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：从 `cp_waste_managed_rearing` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流
 - 数值来源模式：前景记录（`foreground_record`）
@@ -336,15 +391,64 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_waste_managed_rearing`
-
-- 数量范围：可替换暂定筛查估算；不是经验值或合规限值
-  - 范围角色：QA 筛查（`qa_guardrail`）
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
   - 下限：0
-  - 上限：1000
+  - 上限：U_rearing_sludge
   - 单位：kg
   - 基准：每 1 kg 参考流
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 挖除后送处理的池底沉积物 (`rearing_sludge_pond_sediment`)
+
+仅在实际挖除池底沉积物并交有记录接收方时启用，分别计量湿质量及固体。不得把同一批物料再列为收集污泥或原位沉积释放。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：挖除后送处理的池底沉积物
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：从 `cp_waste_managed_rearing` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_waste_managed_rearing`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_rearing_sludge_pond_sediment
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
+
+
+###### 送处理的过滤反洗废水 (`rearing_sludge_backwash`)
+
+仅在液态过滤反洗废水实物交付处理时启用，记录组成、含水状态及接收方。若先行分离固体，固体列入污泥，本卡只计余下液体；不在其他废水卡重复计量。
+
+本卡只记录所命名原子交换，保留原有采集协议、归属及参考分母。自身数量采用实际记录，不复制原合计或兄弟卡总量；发生情况或身份未知不作零。
+
+- 选定流：送处理的过滤反洗废水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- 数量规则：从 `cp_waste_managed_rearing` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考流
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_waste_managed_rearing`
+- 数量范围：本原子交换待独立证据确定的包络；不是默认值或经验限值
+  - 范围角色：`qa_guardrail`
+  - 下限：0
+  - 上限：U_rearing_sludge_backwash
+  - 单位：kg
+  - 基准：每 1 kg 参考流
+  - 基准类型：`reference_flow`
+  - 证据类型：`reasoned_estimate`
 
 ##### 基本流
 
@@ -1126,6 +1230,8 @@ sync_with: pcr.en-US.md
 | `dq_complete_dispatch_withdrawal` | `farm_dispatch`; 输入; 基本流 | 必须辨认并分别采集“活鱼发运实际天然取水”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：包装/清洗实际新增天然取水时启用，记录真实来源/资源及实测质量；暂养带入水为内部转移，不再作新取水。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：从 `cp_water_farm_dispatch` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流 数值来源模式：前景记录（`foreground_record`） 适用范围：场址特定（`site_specific`） 归一化基准：每 1 kg 参考流 基准类型：参考流（`reference_flow`） 证据类型：采集记录（`collected_record`） 采集协议：`cp_water_farm_dispatch` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_packing_rejects` | `farm_dispatch`; 输出; 废物流 | 必须辨认并分别采集“农场内发运包装废品”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：实际破损/废弃包装送已记录回收/处置；随鱼出场包装不是场内废物。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：从 `cp_waste_farm_dispatch` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流 数值来源模式：前景记录（`foreground_record`） 适用范围：场址特定（`site_specific`） 归一化基准：每 1 kg 参考流 基准类型：参考流（`reference_flow`） 证据类型：采集记录（`collected_record`） 采集协议：`cp_waste_farm_dispatch` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
 | `dq_complete_dispatch_water_substances` | `farm_dispatch`; 输出; 基本流 | 必须辨认并分别采集“发运准备排至特定水介质的真实物质”涵盖的每项实际交换，以下各项采集、数量和归一化责任仍适用：按清洗/溢流水真实实测组成展开具体物质和接收介质，组成不明是数据缺口，不可假定为零。 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg 数量规则：从 `cp_emissions_farm_dispatch` 获取分配后的实测 kg；按采集期间归属折算至每 1 kg 参考流 数值来源模式：前景记录（`foreground_record`） 适用范围：场址特定（`site_specific`） 归一化基准：每 1 kg 参考流 基准类型：参考流（`reference_flow`） 证据类型：采集记录（`collected_record`） 采集协议：`cp_emissions_farm_dispatch` 按每项具体交换分别落实原生单位、实测量、去向和独立范围证据；本责任不提供子项数量、默认值或允许范围；须独立建立每项子交换的范围证据。禁止漏报实际交换。 | 所链接采集协议的逐流原始记录、身份和去向证据 |
+| `dq_atomic_card_identity` | 所有清单行 | 每卡表示一个实物身份明确的交换，不是集合或选择器。Electricity 保留为单一电能流；供应者、地域及电压是实际采集限定信息，不因其待定就推测拆卡。实际其他材料、废物流、碳来源及受纳介质在完成前须分别识别并形成原子卡。保留全部原有采集义务；缺卡或身份未解析不表示零或豁免交换。配对内部水转移保留相同实际水质、转移编号、数量及上游负担，不再采购一次。 | 逐卡身份、供应者、状态、去向及配对记录 |
+| `dq_atomic_range_evidence` | 修复后的原子流卡 | U_row 是待补证要求，不是数值估计、默认值、截断限值或完成证明。须从独立代表性记录或兼容的有凭据供应者设计上界确定各卡自身同单位同参考基准包络，保留范围、方法及不确定性。不复用已移除的合计范围、不复制兄弟卡数量、不用目标批次自身确定上界，也不编造数值。适用证据缺失时阻断数量 QA 完成；仍须实际计量。 | 独立包络证据；原始记录及不确定性 |
 
 ## 9. 验证规则
 

@@ -464,11 +464,13 @@ Measure actual accepted whole harvested biomass and live/fresh state; reconcile 
 
 ##### Waste flows
 
-###### Harvest rejects to actual treatment destination (`harvest_rejects`)
+###### Non-viable whole harvested fish sent to disposal (`harvest_rejects`)
 
-Report unsaleable biomass and actual associated materials separately by measured mass and destination; intentional saleable outputs are product entries in cp_outputs_grow_out; cp_outputs_dispatch.
+Only non-viable whole fish actually rejected and handed to the documented waste recipient, by species, event and measured wet fish mass. Exclude incidental sediment, gear and other materials, live stock remaining in production, saleable fish and free drainage. Every actual non-fish material still requires its own identified atomic exchange and destination under the existing waste collection protocol; missing identity blocks completion, not a zero.
 
-- Selected flow: Harvest rejects to actual treatment destination
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Non-viable whole harvested fish sent to disposal
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Actual attributable kg from cp_waste_harvest, normalized once by accepted final net fish mass
 - Value mode: Foreground record (`foreground_record`)
@@ -477,14 +479,14 @@ Report unsaleable biomass and actual associated materials separately by measured
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_waste_harvest`
-- Range: Provisional reasoned QA screen; actual records take precedence for the declared role
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 1
+  - Upper: U_harvest_rejects
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Elementary flows
 
@@ -576,11 +578,13 @@ Measure whole fish biomass and actual live/fresh/chilled state after the bounded
 
 ##### Waste flows
 
-###### Pre-gate holding or chilling rejects and mortalities (`preservation_loss`)
+###### Non-viable whole fish from preservation sent to disposal (`preservation_loss`)
 
-Measure state-specific rejected fish, mortalities and separately drained liquid; retain the disposal destination and do not assume gate throughput equals harvest biomass.
+Only rejected non-viable whole-fish wet biomass actually sent to disposal. Separately drained water, ice melt and other liquids are excluded from this numerator and are owned by the matching preservation wastewater or receiving-medium water card; record their amounts and fates separately. Retain losses and upstream burdens; do not force gate throughput to harvest biomass.
 
-- Selected flow: Pre-gate holding or chilling rejects and mortalities
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Non-viable whole fish from preservation sent to disposal
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Actual attributable kg from cp_waste_preservation, normalized once by accepted final net fish mass
 - Value mode: Foreground record (`foreground_record`)
@@ -589,14 +593,14 @@ Measure state-specific rejected fish, mortalities and separately drained liquid;
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_waste_preservation`
-- Range: Provisional reasoned QA screen; actual records take precedence for the declared role
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 1
+  - Upper: U_preservation_loss
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Elementary flows
 
@@ -808,13 +812,13 @@ No independent exchange is presumed; actual absence must be supported by the rel
 
 ##### Waste flows
 
-###### Actual treatment-bound wastewater from selected stages (`effluent_treatment`)
+###### Aquaculture wastewater from seed_rearing handed to external treatment (`effluent_treatment`)
 
-This card is the once-only shared_services central treatment-bound wastewater ledger for actual external-treatment handovers from seed_rearing, grow_out, pre_gate_transfer, harvest, preservation, dispatch and utility operations. Record each actual source stage, culture or operation unit, cohort, period, unique discharge event and receiving treatment provider/boundary; do not also report the same water and pollutant quantities as untreated direct environmental release or repeat collected sludge in this ledger.
+Only actual wastewater generated by seed_rearing, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards.
 
-When wastewater crosses a technosphere handover, record provider, contaminant composition and treatment boundary; do not also model the same untreated release directly to the environment.
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
 
-- Selected flow: Actual treatment-bound wastewater from selected stages
+- Selected flow: Aquaculture wastewater from seed_rearing handed to external treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - Amount rule: Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass
 - Value mode: Foreground record (`foreground_record`)
@@ -823,14 +827,164 @@ When wastewater crosses a technosphere handover, record provider, contaminant co
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_water_shared_services`
-- Range: Provisional reasoned QA screen; actual records take precedence for the declared role
-  - Range role: QA guardrail (`qa_guardrail`)
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
   - Lower: 0
-  - Upper: 100000
+  - Upper: U_effluent_treatment
   - Unit: kg
   - Basis: per 1 kg reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Aquaculture wastewater from grow_out handed to external treatment (`effluent_treatment_grow_out`)
+
+Only actual wastewater generated by grow_out, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Aquaculture wastewater from grow_out handed to external treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_shared_services`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_effluent_treatment_grow_out
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Aquaculture wastewater from pre_gate_transfer handed to external treatment (`effluent_treatment_pre_gate_transfer`)
+
+Only actual wastewater generated by pre_gate_transfer, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Aquaculture wastewater from pre_gate_transfer handed to external treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_shared_services`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_effluent_treatment_pre_gate_transfer
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Aquaculture wastewater from harvest handed to external treatment (`effluent_treatment_harvest`)
+
+Only actual wastewater generated by harvest, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Aquaculture wastewater from harvest handed to external treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_shared_services`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_effluent_treatment_harvest
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Aquaculture wastewater from preservation handed to external treatment (`effluent_treatment_preservation`)
+
+Only actual wastewater generated by preservation, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Aquaculture wastewater from preservation handed to external treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_shared_services`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_effluent_treatment_preservation
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Aquaculture wastewater from dispatch handed to external treatment (`effluent_treatment_dispatch`)
+
+Only actual wastewater generated by dispatch, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Aquaculture wastewater from dispatch handed to external treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_shared_services`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_effluent_treatment_dispatch
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
+
+
+###### Aquaculture wastewater from shared_services handed to external treatment (`effluent_treatment_shared_services`)
+
+Only actual wastewater generated by shared_services, of one recorded composition/salinity and treatment handover identity. Retain unique source-stage, unit, cohort, event, quantity and receiving-provider records in the shared ledger; do not merge a different source or receiving boundary into this card. Record only the external handover, not duplicate untreated direct releases or collected sludge. If wastewater is physically mixed before a handover, establish one separate composition-defined mixed-wastewater exchange and exclude its constituents from these uncombined-source cards.
+
+This card records only the named atomic exchange, retaining the existing collection protocol, attribution and reference denominator. Use actual records for its own quantity, never a copied parent or sibling total; unknown occurrence or identity is not zero.
+
+- Selected flow: Aquaculture wastewater from shared_services handed to external treatment
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
+- Amount rule: Actual attributable kg from cp_water_shared_services, normalized once by accepted final net fish mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_water_shared_services`
+- Range: Unresolved independent evidence envelope for this atomic exchange; no default or empirical limit
+  - Range role: `qa_guardrail`
+  - Lower: 0
+  - Upper: U_effluent_treatment_shared_services
+  - Unit: kg
+  - Basis: per 1 kg reference flow
+  - Basis kind: `reference_flow`
+  - Evidence kind: `reasoned_estimate`
 
 ##### Elementary flows
 
@@ -992,6 +1146,8 @@ Where an actual hatchery, transport, harvest, handling or treatment operation is
 | `dq_complete_other_culture_emissions` | `shared_services`; outputs; elementary | Identify and separately collect every actual exchange covered by “Other identified culture substances to documented compartments”; retain all following collection, quantity and normalization obligations: This card belongs to the once-only shared_services central release ledger for evidenced emissions from seed_rearing, grow_out, pre_gate_transfer, harvest, preservation, dispatch and actual utility operations. Each concrete exchange records its actual source node, culture or operation unit, cohort and period, linked to a unique discharge event; do not repeat the same release at the source stage or count substances retained in collected sludge again as direct emissions. A conditional requirement for actual treatment residues or other releases: instantiate each chemical substance and receiving medium from monitoring or justified model evidence. Aggregate organic load is not an identified elementary substance. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Actual attributable kg from cp_emissions_shared_services, normalized once by accepted final net fish mass Value mode: Foreground record (`foreground_record`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Collected record (`collected_record`) Collection protocol: `cp_emissions_shared_services` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_other_combustion_emissions` | `shared_services`; outputs; elementary | Identify and separately collect every actual exchange covered by “Identified direct combustion pollutants to actual air compartment”; retain all following collection, quantity and normalization obligations: Instantiate actual chemical species and particle size from source-specific measurements or current factor models; fuel production background must not duplicate direct exhaust. Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg Amount rule: Actual attributable kg from cp_emissions_shared_services, normalized once by accepted final net fish mass Value mode: Foreground record (`foreground_record`) Specificity: Site-specific (`site_specific`) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (`reference_flow`) Evidence kind: Collected record (`collected_record`) Collection protocol: `cp_emissions_shared_services` Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted. | per-flow original records under the linked protocol, identity and destination evidence |
 | `dq_complete_growout_sludge` | `grow_out`; outputs; waste | Identify and independently collect every actual sediment, solid-residue and sludge waste stream; retain source stage/unit/period, removal event, wet mass, dry solids, nutrient analysis and evidenced recipient without double owning the same material. Collect under `cp_waste_grow_out` and normalize to final accepted net fish mass. Establish independent Range evidence and exact UUID for each child; no grouped total, bound or binding is inherited. Any unresolved actual stream, fate, quantity, range evidence or UUID makes the final dataset incomplete and fails validation; unknown is not zero. | per-waste-stream measurements, wet/dry basis, recipient receipts and range/identity verification |
+| `dq_atomic_card_identity` | all inventory rows | Each card represents one physically identified exchange, not a collection or selector. Keep Electricity as one electrical-energy flow; supplier, geography and voltage remain actual collected qualifiers, not grounds for speculative splitting. Other actual materials, waste streams, carbon origins and receiving media must have separate identities and atomic cards before completion. Preserve every existing collection obligation; an absent card or unresolved identity never means zero or a waived exchange. Paired internal water transfers retain the same actual quality, transfer id, quantity and upstream burden, without another purchase. | Per-card identity, provider, state, destination and paired records |
+| `dq_atomic_range_evidence` | repaired atomic flow cards | U_row is an unresolved evidence requirement, not a numerical estimate, default, clipping limit or completeness pass. Establish each card's own matching-unit/reference-basis upper envelope from independent representative records or a compatible documented supplier/design bound, retaining scope, method and uncertainty. Do not reuse a removed aggregate range, copy a sibling quantity, derive a bound from the target batch itself or invent a value. Applicable missing evidence blocks quantitative QA completion; actual measurements remain required. | Independent envelope evidence; retained raw records and uncertainty |
 
 ## 9. Validation Rules
 
