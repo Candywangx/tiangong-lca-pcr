@@ -25,7 +25,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.civil-low-enriched-uranium-hexafluoride |
-| classification_refs | CPC3.0:33620；建议narrower子集，待独立映射接受 |
+| classification_refs | CPC 3.0:33620；narrower范围限于本件定义的产品和路线；映射接受决策由classifications/mappings/另行维护。 |
 | covered_products | 生产者交付门的一种分开记录的常规民用低富集固态UF6化合物 |
 | excluded_products | 钚；再处理铀；先进或高富集等级；金属、氧化物、陶瓷、合金、分散体或配制混合物；燃料组件；仅按分离功计量的浓缩服务 |
 | representative_product | 有独立核实净化合物质量和供方证书的实际民用UF6验收批次 |

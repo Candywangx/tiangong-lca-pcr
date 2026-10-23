@@ -950,7 +950,7 @@ dataset_production:
         - brito-bagasse-2021
     - id: physical_balance
       applies_to: "manufacturing"
-      rule: "Furnish ledger: dry furnish/resin/additive inputs + opening stock = dry board + actual exported residues + unresinated material transferred to boiler + solids/organics lost + closing stock, including quantified reaction terms. Boiler fuel and combustion products have their own elemental-carbon ledger. Transfers have equal endpoints and cancel when aggregating; fuel oxidation is not unexplained solids loss. Water and carbon balances include reaction terms. Never apply allocation shares to physical outputs."
+      rule: "Before burden allocation, reconcile whole-stream mass and elemental carbon separately: opening stock + inputs = closing stock + outputs + reported residual, using actual composition and all relevant boundary crossings. Chemical reactions do not generate or consume total elemental carbon. Separately reconcile molecular H2O and reactive wood/resin components using opening stock + inputs + evidenced formation = closing stock + outputs + evidenced consumption + reported residual. Quantify only actual cure/thermal/oxidation pathways and extent; phase changes are transfers, not reactions. A zero reaction term requires evidence of absence; unknown extent remains unresolved, with no assumed full cure, generic yield or balancing emission. Track retained binder/additives and wood versus fossil carbon separately. Internal transfers cancel only with matched endpoints; measured outputs containing reaction products are counted once. Keep uncertainty explicit and do not apply burden shares to physical outputs. Keep boiler fuel, combustion air/oxygen and combustion products in a separate stage ledger; fuel oxidation is not unexplained furnish loss."
       inputs:
         - cp_stage
         - cp_recipe
@@ -1043,7 +1043,7 @@ data_sources:
     used_for: "Natural-gas boiler emission species and operating/control dependence; source testing preferred. No factor or heating-value default and no legal compliance threshold adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:624ccfe8e4a1b3e2127da7919b429e5f39f92755f5482495a71a4b208e7e3b51"
+  source_sha256: "sha256:74da274a48b60026dfe8716dea16c0ad0a4c5a01fc01d2ac1428ea42c154a882"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5623"
@@ -1142,15 +1142,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44328"
+    - unit_id: "normative_44968"
       family: "validation"
       span:
         start:
-          offset: 44328
+          offset: 44968
           line: 654
           column: 1
         end:
-          offset: 46147
+          offset: 46787
           line: 664
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | finished_board | Require one reference output of 1 m3 net board and all qualifiers; reject wood/fibre-faced, flax, bamboo and mixed-furnish substitution or grade conformity inferred from a laboratory study. | brito-bagasse-2021 |\n| validate_atomic | all inventory rows | Every row is one atomic flow with verified property/unit and physical stage. UUID gaps require explicit review; no nearby product, correction flow or wrong medium is acceptable. Additional site exchanges must be declared separately. | brito-bagasse-2021 |\n| validate_balance | manufacturing | Require matched internal transfer endpoints and finite unallocated dry-solids/water/carbon balances with uncertainty, and a separate allocated burden ledger. Internal residues cannot appear as both new fuel purchase and recycled transfer. | brito-bagasse-2021 |\n| validate_emissions | elementary emissions | Use outdoor-air unspecified flows only while finer outdoor location is uncharacterized, disclosed as a limitation; finer known subcompartment requires verified replacement. Keep PM2.5, 2.5–10 and >10 as mutually exclusive intervals; never add nested PM10/TSP again. Require actual NO/NO2 speciation, species mass and carbon origin. Retain biogenic CO2 in LCI; missing measurements or factors remain gaps. | epa-bagasse-combustion-1996; epa-gas-combustion-2026 |\n| validate_supply | gas; uf_resin; bagasse_input; wax | Block quantitative use where gas reference m3, resin/emulsion concentration or bagasse moisture/upstream economic status is unknown. Do not claim zero burden, generic density, net heat from an MJ label, or a species emission from a reporting equivalent. | epa-bagasse-combustion-1996; epa-gas-combustion-2026 |\n\n"
@@ -1170,11 +1170,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44328
+              offset: 44968
               line: 654
               column: 1
             end:
-              offset: 44350
+              offset: 44990
               line: 654
               column: 23
           text: "## 9. Validation Rules"
@@ -1285,66 +1285,66 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_44328"
+      unit_id: "normative_44968"
       source_span:
         start:
-          offset: 44423
+          offset: 45063
           line: 658
           column: 1
         end:
-          offset: 44674
+          offset: 45314
           line: 658
           column: 252
     - pointer: "/validation_rules/1"
       rule_id: "validate_atomic"
       identity_kind: "explicit"
-      unit_id: "normative_44328"
+      unit_id: "normative_44968"
       source_span:
         start:
-          offset: 44675
+          offset: 45315
           line: 659
           column: 1
         end:
-          offset: 44971
+          offset: 45611
           line: 659
           column: 297
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_44328"
+      unit_id: "normative_44968"
       source_span:
         start:
-          offset: 44972
+          offset: 45612
           line: 660
           column: 1
         end:
-          offset: 45270
+          offset: 45910
           line: 660
           column: 299
     - pointer: "/validation_rules/3"
       rule_id: "validate_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_44328"
+      unit_id: "normative_44968"
       source_span:
         start:
-          offset: 45271
+          offset: 45911
           line: 661
           column: 1
         end:
-          offset: 45778
+          offset: 46418
           line: 661
           column: 508
     - pointer: "/validation_rules/4"
       rule_id: "validate_supply"
       identity_kind: "explicit"
-      unit_id: "normative_44328"
+      unit_id: "normative_44968"
       source_span:
         start:
-          offset: 45779
+          offset: 46419
           line: 662
           column: 1
         end:
-          offset: 46145
+          offset: 46785
           line: 662
           column: 367
   diagnostics:
@@ -1386,14 +1386,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44328"
+      unit_id: "normative_44968"
       source_span:
         start:
-          offset: 44328
+          offset: 44968
           line: 654
           column: 1
         end:
-          offset: 44350
+          offset: 44990
           line: 654
           column: 23
 projection_metadata:
@@ -1403,5 +1403,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:624ccfe8e4a1b3e2127da7919b429e5f39f92755f5482495a71a4b208e7e3b51"
-  generated_content_sha256: "sha256:e3989f71fe1e7f517d33d598b5510a39a09237d9918df93726d1bac57f0a5bbb"
+    sha256: "sha256:74da274a48b60026dfe8716dea16c0ad0a4c5a01fc01d2ac1428ea42c154a882"
+  generated_content_sha256: "sha256:da183116f52c5532458e751768c349bec5c3fe4ca50e64671e5a2c5f0142f2a5"

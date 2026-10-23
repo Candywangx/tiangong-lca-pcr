@@ -1281,7 +1281,7 @@ dataset_production:
       flow_role: "each resin/wax/coating by layer"
       record_type: "collected_record"
       raw_fields: "commercial formulation, resin chemistry and residual reactive groups, solids method, carrier water, free monomer, face/core layer ID, dosing mass, layup orientation, cure settings and evidenced extent/pathways, retained cured composition, reaction H2O formation/consumption and CO2, uncertainty"
-      collection_method: "Calibrated dosing/load-cell and supplier certificate reconciliation by layer; separate PF, pMDI, wax and carrier water. Use actual supplied formulation and representative cure/composition evidence to quantify only onsite reaction extent, including PF condensation water and pMDI water consumption/CO2 formation; distinguish other evidenced cure pathways, retained binder and unreacted material. No assumed full cure, sample recipe or universal yield; unknown extent remains unresolved. Count formulation and its constituent breakdown once, without repeating upstream resin manufacture. Sum measured consumption separately for each material and layer; divide by net accepted finished OSB mass"
+      collection_method: "Calibrated dosing/load-cell and supplier certificate reconciliation by layer; separate PF, pMDI, wax and carrier water. Use actual supplied formulation and representative cure/composition evidence to quantify only onsite reaction extent, including PF condensation water and pMDI water consumption/CO2 formation; distinguish other evidenced cure pathways, retained binder and unreacted material. No assumed full cure, sample recipe or universal yield; unknown extent remains unresolved. Count formulation and its constituent breakdown once, without repeating upstream resin manufacture. Sum measured consumption separately for each material and layer; divide by net accepted finished OSB mass. Record each actual complete resin/wax/coating supply once in its verified wet/dry provider basis; retain PF/pMDI/wax/active/carrier/additive analytical subledgers without extra purchases. Require supplier formulation preparation/delivery once; real independently purchased additions and onsite mixing/utilities stay separate. Preserve raw stock/loss/internal-transfer ledgers."
       unit: "kg"
       frequency: "per lot and monthly reconciliation"
       temporal_coverage: "One representative production period with seasonal/grade coverage"
@@ -1419,6 +1419,7 @@ dataset_production:
         - corrim-osb-us-2025
         - epa-osb-2002
         - epa-wood-boiler-2022
+        - frihart-joining-2023
     - id: pm_partition
       applies_to: "air_pm25, air_pmcoarse, air_pmover10"
       rule: "For one compatible post-control sampling method, disjoint PM2.5–10 = cumulative PM10 - cumulative PM2.5; PM>10 = compatible total PM - cumulative PM10. Use only nonnegative supported differences; otherwise keep missing fractions unresolved. Do not sum PM10 with its PM2.5 subset or add condensable PM twice."
@@ -1454,6 +1455,7 @@ validation_rules:
       - usda-wood-handbook-2021
       - epa-osb-2002
       - epa-wood-boiler-2022
+      - frihart-joining-2023
   - rule_id: v_emissions
     applies_to: "p_osb"
     rule: "Include biogenic CO2 and fossil binder/fuel carbon separately. Verify each emission species and medium; never replace sulfur dioxide with sulfur oxides, propanal with propanol, or MDI monomer with polymeric resin. Speciate remaining identified organics as additional atomic rows; a VOC total is a closure diagnostic, not added to its species."
@@ -1483,10 +1485,14 @@ data_sources:
     type: "literature"
     reference: "Maureen Puettmann, Life Cycle Assessment of Oriented Strand Board Production – United States; submitted 2025-03-21, revisions 2025-04-02/05-06, edited 2025-07-22. https://corrim.org/wp-content/uploads/2025/07/LCA-Report-OSB-07222025.pdf"
     used_for: "Sections 3.2.3–3.2.6, 4.3–4.8, 5.2–5.4.5; Tables 7, 9–12 and Figure 4. US 23 mills, 2022/2023; route and collection evidence only, not universal numeric defaults; table-label conflicts require primary-data resolution."
+  - id: "frihart-joining-2023"
+    type: "handbook"
+    reference: "C. R. Frihart et al., Joining and Reassembling of Wood, Chapter 14, Springer Handbook of Wood Science and Technology (2023), printed pp.732–733, Figure 14.19; DOI 10.1007/978-3-030-81315-4_14. https://research.fs.usda.gov/download/treesearch/66341.pdf"
+    used_for: "Isocyanate-water reaction via unstable carbamic acid forms amine and CO2; subsequent urea/biuret formation supports the pMDI reaction-aware component ledger. Mechanism is not a site-specific extent, full-cure assumption or fixed water/CO2 yield."
   - id: "usda-wood-handbook-2021"
     type: "handbook"
     reference: "USDA Forest Products Laboratory, Wood handbook—wood as an engineering material, FPL-GTR-282 (2021). https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
-    used_for: "Chapter 11 pp.11–10–11–11, OSB/particleboard distinction and layer-specific resin; Chapters 4/13 moisture methods. Chapter 10 pp.10–7–10–11 and Table 10–1: thermosetting/formulation context, pMDI reaction with water producing CO2 and PF hot-press cure; glossary Polymer p.G–12: condensation loss of water. Together with actual supplied chemistry these support reaction-aware ledgers, not a fixed cure extent or water/CO2 yield. Whole-mass/element conservation and the formation/consumption equation are declared engineering derivations requiring actual composition and extent. Historical species/processing examples do not fix current grade, recipe, density or lifetime."
+    used_for: "Chapter 11 pp.11–10–11–11, OSB/particleboard distinction and layer-specific resin; Chapters 4/13 moisture methods. Chapter 10 pp.10–7–10–11 and Table 10–1: thermosetting/formulation context, moisture-assisted isocyanate cure and PF hot-press cure; the explicit pMDI-water CO2 mechanism is supported separately by frihart-joining-2023; glossary Polymer p.G–12: condensation loss of water. Together with actual supplied chemistry these support reaction-aware ledgers, not a fixed cure extent or water/CO2 yield. Whole-mass/element conservation and the formation/consumption equation are declared engineering derivations requiring actual composition and extent. Historical species/processing examples do not fix current grade, recipe, density or lifetime."
   - id: "epa-osb-2002"
     type: "official_guidance"
     reference: "US EPA, AP-42 10.6.1 Waferboard/Oriented Strandboard Manufacturing (March 2002). https://www.epa.gov/sites/default/files/2020-10/documents/c10s06-1.pdf"
@@ -1501,7 +1507,7 @@ data_sources:
     used_for: "Metering/reference conditions, pressure-temperature-compressibility volume conversion and associated measurements. Used for engineering state correspondence only, not current legal-compliance certification or fixed standard P/T. Wet-to-dry mole correction and OSB normalization are declared method derivations requiring actual composition and measured state."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:bbad55a9e2422c29e1996f8319bde64011d552a5d25289c881d99fe94f207aa1"
+  source_sha256: "sha256:3b199e3a4da0fe9bbc87f65ec3ce9a99932195be6b199939571949a47fc51a82"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5467"
@@ -1600,18 +1606,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_81306"
+    - unit_id: "normative_81706"
       family: "validation"
       span:
         start:
-          offset: 81306
+          offset: 81706
           line: 960
           column: 1
         end:
-          offset: 83666
+          offset: 84088
           line: 970
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | finished_osb | Exactly one finished reference output; net mass excludes packaging; all qualifiers and the actual layer architecture/grade must be provided. | corrim-osb-us-2025 |\n| v_basis | all inventory rows | Reference amount, normalization basis and collection denominator agree in both languages. Before burden allocation verify whole-mass and elemental C/H/O conservation, energy reconciliation and separate reaction-aware H2O/reactive-component ledgers under wood_water_carbon. Require actual formulation, cure/oxidation extent, air/oxygen/humidity, retained product/residue and exhaust composition with uncertainty, including PF-generated H2O, pMDI-consumed H2O/fossil CO2 and actual combustion products. Reject external-only H2O/dry-resin closure, assumed full cure/oxidation, default yields, altered measurements, duplicated reaction products or internal transfers. Unknown formation/consumption or unmatched stage endpoints leave balance completeness unresolved; report residuals against evidenced uncertainty, not a fabricated balancing amount. | usda-wood-handbook-2021; epa-osb-2002; epa-wood-boiler-2022 |\n| v_emissions | p_osb | Include biogenic CO2 and fossil binder/fuel carbon separately. Verify each emission species and medium; never replace sulfur dioxide with sulfur oxides, propanal with propanol, or MDI monomer with polymeric resin. Speciate remaining identified organics as additional atomic rows; a VOC total is a closure diagnostic, not added to its species. | epa-osb-2002; corrim-osb-us-2025 |\n| v_scope_extension | p_osb | Add each actual unlisted fuel, chemical, refrigerant, packaging component, wastewater outlet pollutant or exported heat as a separate exact exchange with a collection protocol. Different binder/treatment/overlay variants require applicability review. No unexamined cut-off based on small mass. | epa-osb-2002 |\n| v_case_limits | p_osb | CORRIM is a 23-facility US 2022/2023 survey (report submitted 2025-03-21, edited 2025-07-22). Its numeric density, moisture, fuel mix, adhesive rates, yields and allocation percentages are not defaults. Resolve its repeated PM labels and conflicting by-product percentage/species labels against primary records before numerical use. | corrim-osb-us-2025 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | finished_osb | Exactly one finished reference output; net mass excludes packaging; all qualifiers and the actual layer architecture/grade must be provided. | corrim-osb-us-2025 |\n| v_basis | all inventory rows | Reference amount, normalization basis and collection denominator agree in both languages. Before burden allocation verify whole-mass and elemental C/H/O conservation, energy reconciliation and separate reaction-aware H2O/reactive-component ledgers under wood_water_carbon. Require actual formulation, cure/oxidation extent, air/oxygen/humidity, retained product/residue and exhaust composition with uncertainty, including PF-generated H2O, pMDI-consumed H2O/fossil CO2 and actual combustion products. Reject external-only H2O/dry-resin closure, assumed full cure/oxidation, default yields, altered measurements, duplicated reaction products or internal transfers. Unknown formation/consumption or unmatched stage endpoints leave balance completeness unresolved; report residuals against evidenced uncertainty, not a fabricated balancing amount. | usda-wood-handbook-2021; epa-osb-2002; epa-wood-boiler-2022; frihart-joining-2023 |\n| v_emissions | p_osb | Include biogenic CO2 and fossil binder/fuel carbon separately. Verify each emission species and medium; never replace sulfur dioxide with sulfur oxides, propanal with propanol, or MDI monomer with polymeric resin. Speciate remaining identified organics as additional atomic rows; a VOC total is a closure diagnostic, not added to its species. | epa-osb-2002; corrim-osb-us-2025 |\n| v_scope_extension | p_osb | Add each actual unlisted fuel, chemical, refrigerant, packaging component, wastewater outlet pollutant or exported heat as a separate exact exchange with a collection protocol. Different binder/treatment/overlay variants require applicability review. No unexamined cut-off based on small mass. | epa-osb-2002 |\n| v_case_limits | p_osb | CORRIM is a 23-facility US 2022/2023 survey (report submitted 2025-03-21, edited 2025-07-22). Its numeric density, moisture, fuel mix, adhesive rates, yields and allocation percentages are not defaults. Resolve its repeated PM labels and conflicting by-product percentage/species labels against primary records before numerical use. | corrim-osb-us-2025 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1628,11 +1634,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 81306
+              offset: 81706
               line: 960
               column: 1
             end:
-              offset: 81328
+              offset: 81728
               line: 960
               column: 23
           text: "## 9. Validation Rules"
@@ -1704,66 +1710,66 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_81306"
+      unit_id: "normative_81706"
       source_span:
         start:
-          offset: 81401
+          offset: 81801
           line: 964
           column: 1
         end:
-          offset: 81595
+          offset: 81995
           line: 964
           column: 195
     - pointer: "/validation_rules/1"
       rule_id: "v_basis"
       identity_kind: "explicit"
-      unit_id: "normative_81306"
+      unit_id: "normative_81706"
       source_span:
         start:
-          offset: 81596
+          offset: 81996
           line: 965
           column: 1
         end:
-          offset: 82537
+          offset: 82959
           line: 965
-          column: 942
+          column: 964
     - pointer: "/validation_rules/2"
       rule_id: "v_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_81306"
+      unit_id: "normative_81706"
       source_span:
         start:
-          offset: 82538
+          offset: 82960
           line: 966
           column: 1
         end:
-          offset: 82941
+          offset: 83363
           line: 966
           column: 404
     - pointer: "/validation_rules/3"
       rule_id: "v_scope_extension"
       identity_kind: "explicit"
-      unit_id: "normative_81306"
+      unit_id: "normative_81706"
       source_span:
         start:
-          offset: 82942
+          offset: 83364
           line: 967
           column: 1
         end:
-          offset: 83282
+          offset: 83704
           line: 967
           column: 341
     - pointer: "/validation_rules/4"
       rule_id: "v_case_limits"
       identity_kind: "explicit"
-      unit_id: "normative_81306"
+      unit_id: "normative_81706"
       source_span:
         start:
-          offset: 83283
+          offset: 83705
           line: 968
           column: 1
         end:
-          offset: 83664
+          offset: 84086
           line: 968
           column: 382
   diagnostics:
@@ -1805,14 +1811,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_81306"
+      unit_id: "normative_81706"
       source_span:
         start:
-          offset: 81306
+          offset: 81706
           line: 960
           column: 1
         end:
-          offset: 81328
+          offset: 81728
           line: 960
           column: 23
 projection_metadata:
@@ -1822,5 +1828,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:bbad55a9e2422c29e1996f8319bde64011d552a5d25289c881d99fe94f207aa1"
-  generated_content_sha256: "sha256:a5ce3fe92f526b380f1ed4dc507c47c4b533ef9e525594a79dd6a3daec40754a"
+    sha256: "sha256:3b199e3a4da0fe9bbc87f65ec3ce9a99932195be6b199939571949a47fc51a82"
+  generated_content_sha256: "sha256:7ee6e04bc090398a566f1a9961257e7908dcdf04388b5214ebf1173d9ad52e21"

@@ -23,7 +23,7 @@ BREF 示例收率、BAT 关联浓度、历史 IPCC 因子或生产者产能均�
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.ethylene-propylene-butylene-butadiene |
-| classification_refs | CPC 3.0 `33421`；拟议 `narrower` 适用关系，不是已接受映射 |
+| classification_refs | CPC 3.0:33421；narrower范围限于本件定义的产品和路线；映射接受决策由classifications/mappings/另行维护。 |
 | covered_products | 指定化石乙烷裂解及一体化前脱甲烷分离路线，在管道装置界限交付的合格气态乙烯（CAS 74-85-1）。 |
 | excluded_products | 以纯丁二烯或各丁烯为参考；其他烯烃制造／回收路线；液态乙烯发运；下游聚合物和萃取芳烃。 |
 | representative_product | 声明管道装置界限处一种已验收大宗乙烯气体品级。 |

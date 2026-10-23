@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-21"
-lastReviewedCommit: "40e87795369c6fdb29e1cf4f0835b5dc4ad82a75"
-lastReviewedNote: "Scoped search-only v5 migration for CPC04 PR #26: shared dictionary and physical packing preserve native logical indexes, full result records and ranking. Download packaging, methodology, classifications, CI and budgets remain unchanged; fresh validation is recorded separately."
+lastReviewedAt: 2026-10-23
+lastReviewedNote: "PCR #145 / PR #136: reviewed Fumadocs core/UI 16.17.7 and Zod 4.6.7, literal search-title rendering and semantic listbox-option acceptance with emitted Worker, keyboard selection and navigation checks. All 11 strict projects / 415 authored files and 86 focused tests pass; synthetic browser proof does not replace complete hosted corpus, coverage, sealed-web or release qualification. Runtime and methodology/publication contracts remain in force."
+lastReviewedCommit: 1024c5e95110392bc0828967b89a262723328b79
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

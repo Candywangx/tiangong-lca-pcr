@@ -20,7 +20,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.anthraquinone-hydrogen-peroxide-solution |
-| classification_refs | CPC 3.0:34280; narrower 建议范围关系，不是已接受映射 |
+| classification_refs | CPC 3.0:34280；narrower范围限于本件定义的产品和路线；映射接受决策由classifications/mappings/另行维护。 |
 | covered_products | AO 路线工业过氧化氢水溶液；当前选定标称 30 wt-% 散装牌号 |
 | excluded_products | 第 1 节列出的 CPC34280 其他化合物及排除路线/复配产品 |
 | representative_product | 过氧化氢（30%） |
@@ -847,7 +847,7 @@ sync_with: pcr.en-US.md
 | calc_composition | peroxide_product | A = sum(m_lot × w_lot)；W = sum(m_lot × (1 − w_lot − a_lot))；添加剂/杂质 = sum(m_lot × a_lot)。在分配前核对三项之和与完整溶液质量。按浓度加权的补充活性质量归一负荷采用 A，明确与必须采用 Q 的清单分开。 | cp_product | 独立活性物/水/添加剂实物账 | evonik-hydrogen-peroxide-brochure |
 | calc_component_balance | quinone_in; xylene_in; phosphate_in; catalyst_in | 期初组分存量 + 外部接收 + 实际生成 = 期末组分存量 + 外部转交 + 测量排放 + 测量转化/销毁；内部转交在聚合边界抵消。总循环另记。仅补充量不等于全部溶剂排放。 | cp_materials; cp_waste; cp_air; cp_effluent | 组分残差及记录的不确定性 | jrc-lvoc-hydrogen-peroxide-2017 |
 | calc_energy | electricity_in; steam_in | 电能（MJ）= 测量 kWh × 3.6。仅质量匹配的间接回路、无库存变动/其他出口/功时，交付热量（MJ）= sum(m × (h_steam − h_condensate)) / 1000 再扣实测边界热损失，采用 kg 及 kJ/kg。否则先以全部入口/出口焓、能量库存、功及相关动能/势能项闭合完整实测能量平衡，再求热量。实际湿蒸汽比焓 = (1 − 干度) × 饱和液体比焓 + 干度 × 饱和蒸气比焓，采用实测饱和状态。不提供固定蒸汽到 MJ 系数或 GCV/NCV 等价关系。 | cp_energy | 分列电力 MJ、蒸汽 kg 及核实交付热 MJ | iapws-if97-2012; jrc-lvoc-hydrogen-peroxide-2017 |
-| calc_emission | air and freshwater outputs | 物种质量 = sum(兼容物种浓度 × 匹配体积流量 × 期间时长)，明确量纲换算。核对点源、无组织源及处理残余量，不重复捕集/回用物料或总碳指标。 | cp_air; cp_effluent | 每物种及接收介质的 kg | jrc-lvoc-hydrogen-peroxide-2017 |
+| calc_emission | air and freshwater outputs | 物种质量 = sum(兼容物种浓度 × 匹配体积流量 × 区间时长)，浓度换为kg/m3，流量和时间单位相容且干湿及温压基准一致。浓度或流量变化时采用足够时间分辨率的积分；等价方法为区间流量加权浓度 × 实测区间累计体积，不再乘时长。核对点源、无组织源及处理残余量，不重复捕集/回用物料或总碳指标。 | cp_air; cp_effluent | 每物种及接收介质的 kg | jrc-lvoc-hydrogen-peroxide-2017 |
 | calc_species_elements | p_ao | 物种 i：期初 + 外部投入 + 实际生成 = 期末 + 外部输出 + 实际消耗；内部交接抵消。守恒元素 e：期初元素质量 + 外部元素投入 = 期末元素质量 + 外部元素输出，采用核实分子式分数及实测混合物组成。总实物质量无反应生成/销毁项。明确跟踪过氧化氢合成、降解、分解及水净生成/消耗；化学计量描述有证据的反应程度，不假设工厂收率或销毁分数。 | cp_balance; cp_product; cp_materials; cp_gases; cp_water; cp_waste; cp_air; cp_effluent | 分列分子、元素和完整质量残差及不确定性 | jrc-lvoc-hydrogen-peroxide-2017; evonik-hydrogen-peroxide-brochure; jrc-ilcd-general-guide-2010 |
 
 ### 数据质量要求
@@ -886,6 +886,6 @@ sync_with: pcr.en-US.md
 | 来源 id | 类型 | 参考 | 用途 |
 | --- | --- | --- | --- |
 | jrc-lvoc-hydrogen-peroxide-2017 | official_guidance | European Commission JRC109279, LVOC BREF (2017), DOI 10.2760/77304. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/JRC109279_LVOC_Bref.pdf | 第 12.2、12.3.1–12.3.6 和 13.11 节；印刷页549–564和627–628（PDF586–601及664–665）：AO 边界、实际溶剂/催化剂选项、水/空气/废物及热回收计量需求。保留范围/适用条件；历史数值、运行参数、BAT-AEL 和单厂值不作清单默认值。 |
-| evonik-hydrogen-peroxide-brochure | handbook | Evonik, Hydrogen Peroxide – Leadership through innovation, undated acquired brochure. https://products.evonik.com/assets/95/41/Evonik_Hydrogen_Peroxide_Brochure_EN_Asset_2439541.pdf | PDF14–19、21页：生产者 AO 过程、水溶液与纯物种、牌号/浓度及交付状态。生产者特定牌号声明不作通用验收规范；无盐溶液物性表不确立实际密度或能耗。 |
+| evonik-hydrogen-peroxide-brochure | handbook | Evonik, Hydrogen Peroxide — Applications and attributes for a sustainable, versatile chemical, undated acquired brochure. https://products.evonik.com/assets/95/41/Evonik_Hydrogen_Peroxide_Brochure_EN_Asset_2439541.pdf | PDF14–19、21页：生产者 AO 过程、水溶液与纯物种、牌号/浓度及交付状态。生产者特定牌号声明不作通用验收规范；无盐溶液物性表不确立实际密度或能耗。 |
 | jrc-ilcd-general-guide-2010 | official_guidance | European Commission JRC48157, EUR24708EN, DOI 10.2788/38479, ILCD Handbook: General guide for Life Cycle Assessment – Detailed guidance, first edition (2010). https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf | 第 7.4.2.5–7.4.2.11 节（印刷页197–214，PDF217–234）及 7.9.1–7.9.3 节（印刷页254–265，PDF274–285）：库存/组成和运行周期记录、原始数据与参考量同期间归一、质量核查、由目标决定的多功能性、过程拆分、实物因果及服务归属。支持核算方法，不证明本生产者配方、实测数量或科学批准。 |
 | iapws-if97-2012 | official_guidance | IAPWS R7-97(2012), Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam. https://iapws.org/technical-guidance/release/IF97-Rev.download | 第 1–3、5–8 和 12 节（PDF3–35、46–48页）：普通水状态焓、液体/蒸气/饱和区间、参考约定及不确定性。须有有效实测状态和干度并采用核实实现；不证明实际供汽状态、供方热量约定或通用 kg 到 MJ 系数。 |

@@ -14,14 +14,14 @@ sync_with: pcr.en-US.md
 
 本方法仅适用于化石异丙苯干式空气氧化，经硫酸催化裂解、氢氧化钠中和、分馏和水相回收得到的未刻意加水散装分离工业苯酚。供货允许实际残余水和杂质，必须实测并声明，不能假定纯苯酚。覆盖纯化和加热储存/装载；实际熔融或固态须声明。依据 jrc-lvoc-2017 第8章；ineos-phenol-product 的牌号说明仅用于区分未稀释产品与水溶液，不作为通用纯度要求。
 
-CPC3.0:34139包含不兼容产品，只能提出narrower映射。明确不涵盖变性乙醇（34131）、其他醇、工业脂肪醇、取代酚/酚醇、煤焦油回收、苯直接氧化、甲苯/苯甲酸、磺化或氯苯水解、湿式氧化、其他催化/中和剂、AMS加氢及刻意配成苯酚水溶液。未涵盖子类保留；配制溶液不能复用本供货净质量分母。
+CPC3.0:34139包含不兼容产品，本方法仅覆盖声明的narrower子集，映射决策由classifications/mappings/另行维护。明确不涵盖变性乙醇（34131）、其他醇、工业脂肪醇、取代酚/酚醇、煤焦油回收、苯直接氧化、甲苯/苯甲酸、磺化或氯苯水解、湿式氧化、其他催化/中和剂、AMS加氢及刻意配成苯酚水溶液。未涵盖子类保留；配制溶液不能复用本供货净质量分母。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.other-alcohols-phenols-phenol-alcohols-and-their-halogenated-sulphonated-nitrated-or-ni-22ef3ba5 |
-| classification_refs | CPC 3.0:34139; narrower; 仅为候选语义关联，非已接受映射 |
+| classification_refs | CPC 3.0:34139；narrower范围限于本件定义的产品和路线；映射接受决策由classifications/mappings/另行维护。 |
 | covered_products | 未稀释分离工业苯酚，CAS108-95-2，实际残余水/杂质已声明 |
 | excluded_products | 其他醇/酚家族、刻意配成水溶液、粗裂解混合物及第1节排除路线 |
 | representative_product | 异丙苯路线散装工业苯酚；不设通用纯度默认值 |

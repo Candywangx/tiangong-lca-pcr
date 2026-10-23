@@ -24,7 +24,7 @@ An O2/N2/Ar product contains measured trace impurities but is not an intentional
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.cryogenic-air-separation-gases |
-| classification_refs | CPC 3.0 34210; narrower scope suggestion only, no accepted mapping |
+| classification_refs | CPC 3.0:34210; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
 | covered_products | Separately specified GOX, GAN, GAR, LOX, LIN and LAR from the same cryogenic ASU, in the reference configuration |
 | excluded_products | Hydrogen; recovered CO2; PSA/membrane gases; other rare gases; gas mixtures and solutions; inorganic oxygen compounds of non-metals |
 | representative_product | Accepted gaseous oxygen at plant gate (GOX), with the complete same-ASU co-product ledger |

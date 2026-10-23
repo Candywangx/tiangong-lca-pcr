@@ -23,7 +23,7 @@ No BREF exemplar yields, BAT-associated concentrations, historical IPCC emission
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.ethylene-propylene-butylene-butadiene |
-| classification_refs | CPC 3.0 `33421`; proposed `narrower` applicability, not an accepted mapping |
+| classification_refs | CPC 3.0:33421; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
 | covered_products | Conforming gaseous ethylene (CAS 74-85-1) delivered from the defined fossil-ethane cracker and integrated front-end-demethaniser separation. |
 | excluded_products | Pure butadiene or individual butenes as references; other olefin manufacture/recovery routes; liquid ethylene shipment; downstream polymers and extracted aromatics. |
 | representative_product | One accepted bulk ethylene gas grade at the declared pipeline battery limit. |

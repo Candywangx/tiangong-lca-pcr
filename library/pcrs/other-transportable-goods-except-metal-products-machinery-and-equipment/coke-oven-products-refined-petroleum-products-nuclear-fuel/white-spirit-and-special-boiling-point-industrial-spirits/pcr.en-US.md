@@ -22,7 +22,7 @@ The declared foreground begins at receipt of separately metered refinery naphtha
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.white-spirit-and-special-boiling-point-industrial-spirits |
-| classification_refs | CPC 3.0 33350; proposed narrower relationship, subject to independent acceptance. |
+| classification_refs | CPC 3.0:33350; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
 | covered_products | Bulk white spirit and SBP petroleum-solvent mixtures from fractionation, with actually operated HDS/hydrogenation declared. |
 | excluded_products | White mineral oil; isolated chemical solvents; synthetic isoparaffins; type 2 solvent extraction; formulated products; retail packs; generic feedstock or fuel grades. |
 | representative_product | One assayed and accepted bulk petroleum-solvent SKU at custody transfer. |

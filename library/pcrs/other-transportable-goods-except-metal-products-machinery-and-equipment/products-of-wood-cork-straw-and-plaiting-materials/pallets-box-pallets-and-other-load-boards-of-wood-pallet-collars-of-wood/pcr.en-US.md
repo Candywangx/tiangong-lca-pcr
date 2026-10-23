@@ -365,7 +365,7 @@ Reject a pressed-wood, recovered-parts or repair/pool dataset under this PCR. Re
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| usda-pallet-2020 | literature | [USDA Forest Service, FPL-RP-707 (2020)](https://research.fs.usda.gov/download/treesearch/61866.pdf), §1.2.2, §1.4, §2.5; printed pp. 6, 9, 16–17 | manufacturing stages and stage allocation distinction only; US 2016 survey and service assumptions do not supply defaults |
+| usda-pallet-2020 | literature | [USDA Forest Service, FPL-RP-707 (2020)](https://research.fs.usda.gov/download/treesearch/61866.pdf), §1.2.2, §1.4, §2.5; printed pp. 6, 8, 16–17 | manufacturing stages and stage allocation distinction only; US 2016 survey and service assumptions do not supply defaults |
 | ippc-ispm15-2018 | standard | [IPPC ISPM 15, 2018, published 2019](https://www.ippc.int/static/media/files/publication/en/2019/02/ISPM_15_2018_En_WoodPackaging_Post-CPM13_Rev_Annex1and2_Fixed_2019-02-01.pdf), §2.1, Annex 1; printed pp. 7, 12 | processed-wood distinction and supplier part HT boundary/claim conditions; no energy factor |
 | usda-wood-handbook-2021 | handbook | [USDA FPL-GTR-282 (2021)](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf), Chapters 4, 13; printed pp. 4–1, 13–2 | dry-basis moisture and oven-dry sampling; no universal density or default moisture |
 | epa-sawmill-dust-2014 | official_guidance | [EPA Region 10 sawmill PM PTE memorandum, 8 May 2014](https://www.epa.gov/sites/default/files/2016-09/documents/spmpteef_memo.pdf), activity table and notes, printed pp. 1–2 | nested size definitions and dust screening only; PNW Indian Country PTE factors exclude boilers and are not actual pallet-emission defaults |

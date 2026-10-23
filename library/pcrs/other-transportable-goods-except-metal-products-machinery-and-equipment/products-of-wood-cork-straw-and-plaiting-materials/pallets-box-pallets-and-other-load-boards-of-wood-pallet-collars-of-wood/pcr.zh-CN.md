@@ -365,7 +365,7 @@ content_maturity: authored_methodology
 
 | 来源ID | 类型 | 参考文献 | 用途 |
 | --- | --- | --- | --- |
-| usda-pallet-2020 | literature | [USDA Forest Service, FPL-RP-707 (2020)](https://research.fs.usda.gov/download/treesearch/61866.pdf), §1.2.2, §1.4, §2.5; printed pp. 6, 9, 16–17 | 仅制造阶段及阶段分配区分；美国2016调查及服务假设不提供默认值 |
+| usda-pallet-2020 | literature | [USDA Forest Service, FPL-RP-707 (2020)](https://research.fs.usda.gov/download/treesearch/61866.pdf), §1.2.2, §1.4, §2.5; printed pp. 6, 8, 16–17 | 仅制造阶段及阶段分配区分；美国2016调查及服务假设不提供默认值 |
 | ippc-ispm15-2018 | standard | [IPPC ISPM 15, 2018, published 2019](https://www.ippc.int/static/media/files/publication/en/2019/02/ISPM_15_2018_En_WoodPackaging_Post-CPM13_Rev_Annex1and2_Fixed_2019-02-01.pdf), §2.1, Annex 1; printed pp. 7, 12 | 加工木材区分及供方零件热处理边界/声明条件；无能源系数 |
 | usda-wood-handbook-2021 | handbook | [USDA FPL-GTR-282 (2021)](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf), Chapters 4, 13; printed pp. 4–1, 13–2 | 干基含水率及烘干取样；无通用密度或默认含水率 |
 | epa-sawmill-dust-2014 | official_guidance | [EPA Region 10 sawmill PM PTE memorandum, 8 May 2014](https://www.epa.gov/sites/default/files/2016-09/documents/spmpteef_memo.pdf), activity table and notes, printed pp. 1–2 | 仅嵌套粒径定义及粉尘筛查；太平洋西北印第安地区PTE系数排除锅炉，不是实际托盘排放默认值 |
