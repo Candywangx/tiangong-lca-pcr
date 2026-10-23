@@ -65,7 +65,7 @@ This is a declared production unit, not equal service across different board des
 | --- | --- |
 | declared_starting_condition | Untreated kiln-dried single-piece sugar maple blanks received at the machining plant |
 | starting_condition_role | foreground_input |
-| product_classification_scope | Specific cutting-board subset of wooden kitchenware; CPC 31912 narrower candidate only |
+| product_classification_scope | Specific cutting-board subset of wooden kitchenware; CPC 3.0:31912 narrower scope; mapping acceptance is maintained separately in classifications/mappings/. |
 | recursive_input_rule | Finished cutting boards are not purchased normal inputs. Internal rework stays inside the unit; any purchased same-category board requires separate starting-condition review and excludes reusing this primary-manufacture result without disclosure. |
 | upstream_dataset_requirement | Match wood forestry, sawing and actual kiln drying through delivery to receipt; match electricity, complete belts, actual applicable oil and box supply. Add inbound freight separately when not included in a verified delivered-input dataset; record actual route, mode, load and distance. Do not double count freight or drying. |
 | disclosure | Supplier/site/year/species/moisture, actual recipe and starting state, foreground map, upstream delivery scope, waste receivers, omissions and uncertainty |
