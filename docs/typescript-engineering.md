@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: 4cdd719f13d87e717d592cf5297c80ad13800db5
-lastReviewedNote: "PCR #143: reviewed exact composition of the 57 PR139 candidates with PCR141 canonical repairs, lossless site transport and bounded capacity corrections. Authoritative union retains 1248 accepted edges; normal generators yield 1399 material PCRs and 1693 aliases. All expected canonical Git blobs were preserved, followed by the one-line lac Chinese translation-status correction matching its manifest. Builder/runtime ownership, strict projects, full source-bound CI, coverage limitations and scientific/translation/publication boundaries remain unchanged. Local derived checks pass; official-name audit and complete fresh hosted qualification remain required. PR138 must merge before PR139; workspace integration and stable publication remain pending."
+lastReviewedCommit: 74444f16b5cd073a745f0199a76ace383ed79ce9
+lastReviewedNote: "PCR #141: reviewed the complete 213-record content repair and 1191-edge classification union with merged dependency repairs, lossless download/inspector transport, bounded build resources and search v5. The physical dictionary envelopes retain original logical indexes, native entries, full records and all query/legacy-reader semantics under unchanged budgets. Independent content/localization and runtime review are complete; focused, strict and bounded browser checks do not substitute for fresh complete hosted corpus/site/coverage qualification. Final 1457-record combined capacity measurement, PR138-before-PR139-before-PR137 ordering, workspace integration and stable publication remain pending. Scientific and translation lifecycle states are not promoted. PCR #143 retains all 57 additional candidates, 1248 accepted edges, 1399 material records and 1693 aliases with the exact reviewed transport and name repairs. Complete fresh hosted qualification remains pending for this composition."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
