@@ -26,7 +26,7 @@ checkPaths:
   - library/modules/**
 lastReviewedAt: 2026-10-23
 lastReviewedCommit: e8e90b992f9c4dc4ac092a2a5c24b33b80a1cd42
-lastReviewedNote: "PCR #141: reviewed corpus regression assertions for accepted CPC 01152 barley and the retained unmapped 99000 pilot. Tests check the ginned-cotton interface, blocked fibre-preparation overlap and unreviewed wood interfaces explicitly. Runtime, lifecycle and publication contracts are unchanged by these test repairs; fresh complete source qualification and the official-name audit remain pending."
+lastReviewedNote: "PCR #141: reviewed corpus regression assertions for accepted CPC 01152 barley and the retained unmapped 99000 pilot. Tests check the ginned-cotton interface, blocked fibre-preparation overlap and unreviewed wood interfaces explicitly. Runtime, lifecycle and publication contracts are unchanged by these test repairs; fresh complete source qualification and the official-name audit remain pending. PCR #144 / PR #135: reviewed latest compatible @types/node 24.19.2 and npm 12.2.0 lock regeneration against pinned Node 24.19.0. All 11 strict projects / 415 authored files, release-runtime preflight and four runtime tests pass on macOS ARM64; full hosted Linux, corpus, coverage, browser and sealed-product qualification remain required. Canonical methodology, publication and runtime pins retain their existing contracts."
 ---
 
 # Authoring Guide

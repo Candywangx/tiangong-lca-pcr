@@ -1,0 +1,1929 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.sodium-chlorate-brine-electrolysis-crystals"
+  classification_refs: "CPC 3.0:34240; proposed narrower relation for this electrolysis/crystal subset only"
+  covered_products: "Dried bulk NaClO3 crystals from the declared sodium-chloride electrolyte route, with disclosed assay/free moisture/co-salts"
+  excluded_products: "Other chlorate cations/oxidation states; mixed formulations; delivered solutions; wet cake; hydrate products; unrelated salts"
+  representative_product: "Accepted dried crystalline sodium chlorate in bulk at the manufacturing gate"
+  production_route: "Solid salt dissolution → impurity precipitation/filtration → dichromate-assisted brine electrolysis and reaction → vacuum concentration/crystallization → washing/separation → drying/bulk storage; scrubbed hydrogen branch; closed mother-liquor loop"
+  market_state: "Bulk dried crystal product, declared residual free moisture and impurities; no assumed concentration or purity"
+functional_unit:
+  what: "Supply crystalline sodium chlorate as an industrial chemical intermediate"
+  how_much: "1 kg reference flow"
+  how_well: "Accepted grade with actual NaClO3 assay, residual free moisture, chloride, chromium and other co-salts disclosed; no use-performance equivalence inferred"
+  how_long_or_cycle: "One production/delivery gate reference; service life not applicable"
+  reference_flow_link: "chlorate_product"
+system_boundary:
+  rules:
+    - rule_id: b_route
+      applies_to: "chlorate_production"
+      rule: "Include brine making/purification, rectification/electrolysis/reaction, crystallization/washing/drying, hydrogen scrubbing, solid handling, actual effluent/waste management and represented consumable replacement. Retain stage meters even when modelled as one foreground unit."
+      source_ids:
+        - eu-lvics-2007
+        - epa-chlorate-2022
+    - rule_id: b_loops
+      applies_to: "chlorate_production"
+      rule: "Keep a physical stage ledger for recycle links with equal quantities/composition at both ends; inventory changes, spills, recovered dust and actual purges are measured. Internal mother liquor, wet crystal and finished crystal transfers are not duplicate external product outputs."
+      source_ids:
+        - eu-lvics-2007
+    - rule_id: b_interfaces
+      applies_to: "all inventory rows"
+      rule: "Preserve all upstream production and actual transport/treatment burdens through compatible provider links. Declare foreground/background interfaces; outsourced wastewater is a waste transfer and not a site freshwater pollutant discharge. Extend the actual recipient’s treatment inventory through its own measured releases without duplicating it."
+      source_ids:
+        - eu-lvics-2007
+        - eu-ef-multifunctionality-2021
+    - rule_id: b_emissions
+      applies_to: "all elementary output rows"
+      rule: "Include measured atmospheric and actual receiving-water releases after abatement, including start/stop events and leaks. Closed-loop or negligible historical emissions are not proof of zero; not-applicable/zero, missing measurement and nondetect remain distinct. Different receiving media require separately verified identities."
+      source_ids:
+        - eu-lvics-2007
+    - rule_id: b_capital
+      applies_to: "chlorate_production"
+      rule: "Declare capital-equipment treatment under the study method; do not hide consumed electrode/filter replacements as capital. No default infrastructure, fuel boiler, packaging or refrigerated route is inserted. Any actual extension must have its own atomic rows, basis and applicable original evidence."
+      source_ids:
+        - eu-lvics-2007
+        - eu-ef-multifunctionality-2021
+boundary_abstraction:
+  declared_starting_condition: "Delivered solid NaCl, actual supplied auxiliaries, treated industrial water and contracted utilities at the plant gate"
+  starting_condition_role: "Foreground input interface; no exemption for upstream production"
+  product_classification_scope: "Sodium-chlorate crystal electrolysis subset of CPC 34240; classification does not define feed recipe or technology"
+  recursive_input_rule: "Internal mother liquor/wash/condensate/heat recycle remains within the integrated unit. Purchased same-category crystal is separate upstream material and cannot be recounted as newly generated product."
+  upstream_dataset_requirement: "Link each external input and transport/treatment service to a compatible verified supplier/background quantity, chemistry, source and boundary; unresolved identity or basis is disclosed and prevents complete dataset claims."
+  disclosure: "Site/time/grade; incoming and outgoing phase/component ledgers; process stages; provider interfaces and losses; recovery, wastes and actual receiving media; missing measurements and allocation decision"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Sodium chlorate"
+    uuid: "763dbb4e-a338-4348-b2a8-bf07b6bf7b47"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual SKU/grade"
+    - "NaClO3/CAS"
+    - "solid crystal state"
+    - "net product mass excluding tare"
+    - "assay basis"
+    - "free moisture"
+    - "co-salts and total/valence-specific chromium"
+    - "route and electrolyte additive/hydration state"
+    - "batch/site/time"
+    - "feed origin/purity"
+    - "utility/voltage/provider definitions and supply geography (China for the listed electricity and CaCl2 identities)"
+    - "hydrogen destination/purity"
+    - "treatment and receiving media"
+    - "allocation decision"
+    - "bulk delivery boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_crystal
+    applies_to: "chlorate_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure accepted net dried crystal-product mass P for the represented period using calibrated weighing and acceptance/stock records; exclude packaging/container tare. The inventory reference is 1 kg supplied crystal product, not 1 kg pure active salt. Use cp_product."
+  - id: one_denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "Declared row unit"
+    rule: "Every inventory row is per 1 kg reference flow. Collection aggregates the same period’s actual attributable row quantity and divides by P; intermediate salts, liquor circulation and hydrogen quantities never replace P."
+  - id: phase_components
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "For each actual supplied solution or wet waste retain gross physical mass and separately measured solute/free-water/other-component masses. Hydration state requires actual formula/assay and bound-water mass; do not treat crystal water as active salt or as a second purchased-water exchange."
+  - id: electricity_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain metered AC kWh and the energy conversion 1 kWh = 3.6 MJ. Verify supplier delivery voltage/loss boundary and electrical-energy meaning; a thermal property label does not make electricity a fuel. Record DC demand diagnostically, not as another purchased electricity input."
+  - id: steam_net_heat
+    applies_to: "steam_heat, heat_export"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Net useful heat is measured inlet enthalpy minus return/export enthalpy at the declared interface; retain mass, pressure, temperature and quality evidence, provider definition and losses. Do not infer net heat from a database MJ or steam mass property."
+  - id: gas_mass_basis
+    applies_to: "nitrogen_product, hydrogen_product, hydrogen_air, oxygen_air, nitrogen_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use actual calibrated gas measurement, composition, absolute pressure, temperature, compressibility and wet/dry convention to determine species mass; a secondary database mass coefficient is not a measured density."
+  - id: water_phase_basis
+    applies_to: "process_water, water_air, water_discharge"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "Declared row unit"
+    rule: "Purchased process water and vapour use kg; liquid freshwater discharge uses m3. Volume-to-mass uses measured relevant density/temperature/composition. Separate carrier water, bound water, condensate returns, recirculation and ambient humidity; preserve each physical phase."
+  - id: effluent_species
+    applies_to: "chloride_water, sodium_water, chlorate_water, chromium_vi_water, chromium_iii_water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Match laboratory species and mass basis: chloride/Na+/ClO3− as ions, Cr(VI)/Cr(III) as Cr. Convert salt-equivalent results only with documented chemical formula and molar masses; no total-Cr substitution for a valence, and no double salt/ion addition."
+  - id: particle_partition
+    applies_to: "chlorate_dust, pm25_air, pm10_air, pmover10_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "The size intervals are disjoint, and generic PM rows contain only remaining non-chlorate mass after validated chemical/size partition. Do not add species-specific NaClO3 dust a second time as PM; without a defensible partition choose one inventory representation and retain the other measurement as characterization evidence."
+process_map:
+  - id: chlorate_production
+    name: "Integrated bulk crystal manufacture"
+    inclusion: "required"
+    inclusion_condition: "Declared brine-electrolysis/dichromate/vacuum-crystallization route"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted net dried crystal product"
+process_inventory:
+  - id: chlorate_production
+    label: "Integrated bulk crystal manufacture"
+    inputs:
+      product:
+        - row_id: salt_feed
+          role: "Sodium chloride"
+          name: "Sodium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a413ea86-0887-42c8-be77-3bee86d5863b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Solid sodium chloride enters brine preparation. This identity requires the recorded purity to meet the record’s ≥99.5% condition; retain the actual origin, assay, moisture, sulfate and insolubles. Weigh the supplied solid; neither pure NaCl stoichiometry nor the BREF historical salt consumption replaces receipts and inventory changes."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased treated industrial water enters dissolution, crystal washing, scrubber makeup and cooling makeup. Record each use separately before aggregation. Count fresh makeup once; recirculating cooling water, wash recycle and mother liquor are internal movements. Supplier abstraction/treatment remains upstream. Metered volume needs measured temperature-dependent density for this Mass identity."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "China-supply grid-average 1–35 kV AC electricity at the plant delivery meter supplies rectification, pumping, evaporation, drying and auxiliaries. Retain stage meters and AC/DC conversion losses without adding DC cell energy a second time. The exact property name is Net calorific value: preserve this database energy property and obtain provider confirmation that exchange MJ represents delivered electrical energy; it is not fuel consumption or an inferred calorific factor."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide（30%）"
+          name: "Sodium hydroxide（30%）"
+          flow_type: "product"
+          flow_ref:
+            uuid: "47926319-2558-4b19-bbab-0ff264fca360"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use this row only for purchased 30% by-mass sodium hydroxide solution used in impurity precipitation, pH control or alkaline scrubbing. Record actual acceptance assay and total solution mass, with carrier water in the component ledger. A different concentration requires its own compatible identity and supply basis; 30% is an identity condition, never a default dosing recipe."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: sodium_carbonate
+          role: "Anhydrous sodium carbonate for brine purification"
+          name: "Anhydrous sodium carbonate for brine purification"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include if sodium carbonate is actually used for calcium precipitation. Record the supplied anhydrous grade, assay, moisture and manufacturing source. The quantities are measured batch additions. The actual soda-ash supply route and grade require their own compatible physical identity and quantity basis; a recycling-route supply cannot be silently treated as another manufacturing source."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: calcium_chloride
+          role: "Calcium chloride, CaCl2"
+          name: "Calcium chloride, CaCl2"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cbe945c7-53a6-4c34-8002-795b73aabf48"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional anhydrous solid calcium chloride from the declared China supply consumption mix for sulfate precipitation. Declare whether used and retain actual grade, purity and water content. A hydrated crystal or supplied solution cannot be treated as identical kilograms of anhydrous salt: preserve its full physical mass and separately reconcile bound or carrier water and the background basis."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: hydrochloric_acid
+          role: "Hydrochloric acid (30%)"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased 30% by-mass hydrochloric acid solution for cell pH adjustment and acid washing. Record weighed solution, verified concentration and the destination stage; account for carrier water and any washing emissions. Other supplied grades require compatible separate identity; no historical acid-use default is adopted."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: sodium_dichromate
+          role: "Sodium dichromate"
+          name: "Sodium dichromate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5e170be8-9cff-4002-baaa-01cbe42053f5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "For the declared dichromate-assisted route, this row identifies anhydrous Na2Cr2O7 from the record’s chromium-ore roasting/dissolving route. Require supplier confirmation of that route, CAS/grade and delivered hydration state. Track fresh additions, opening/closing electrolyte stocks, Cr(VI), Cr(III), product carryover and waste. Dihydrate or supplied solution needs a separate compatible flow basis; do not apply anhydrous kilograms to its gross mass."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: peroxide
+          role: "Hydrogen peroxide (30%)"
+          name: "Hydrogen peroxide (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b21960ac-f3c4-4f00-ba92-527ca1dd5d12"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include purchased 30% by-mass hydrogen peroxide solution only when it is the actual hypochlorite-reduction reagent before crystallization. Keep supplied solution mass, assay and carrier water, treatment batch and residual oxidants. No BREF example dose or alternate reagent is silently assigned."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: nitrogen_product
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "92233c86-8e75-441c-94de-03cc91bc7c10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional purchased gaseous nitrogen for purging. The selected product identity describes N2 inerting gas at plant; its bottling-use description does not establish a manufacturing route restriction or this installation’s quantity/vent fraction. Obtain actual source, gas purity, pressure, temperature, wet/dry state, standard-volume convention and supplier basis. Determine gas mass using calibrated weighing or validated volume/composition/condition conversion. Native Mass reference must represent measured kg consistently; neither a database meanValue nor an unexplained primary-property coefficient is a measured density or permission to rescale the exchange."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: steam_heat
+          role: "Imported process heat carried by steam"
+          name: "Imported process heat carried by steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include only net delivered steam heat used for evaporation/vacuum operation or drying. Measure incoming steam and returned condensate mass, pressure, temperature and steam quality; reconcile enthalpy at the contractual interface. Steam physical identity must match the actual pressure and quality; an MJ property alone does not prove the provider’s net-heat basis. Preserve physical water transfers as well as energy without counting steam generation twice."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: anode
+          role: "Titanium Ruthenium Electrode"
+          name: "Titanium Ruthenium Electrode"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d76b86d3-e656-49f5-940d-933b1ab65a8f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional replacement of a titanium Ru/Ir mixed-metal-oxide-coated anode compatible with the selected physical identity. Record actual substrate, coating composition, supplier, installed net mass, coating/recoating service and campaign life. Include consumed replacements over the represented production; do not infer catalyst loading or life from the broad electrode description."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: cathode
+          role: "Steel cathode for sodium-chlorate electrolysis"
+          name: "Steel cathode for sodium-chlorate electrolysis"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional installed steel cathode replacement; record alloy, configuration, contamination, net mass and campaign production. The actual steel-cathode component and supplier mass reference must be established before linking its background supply."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: filter_cartridge
+          role: "Brine-compatible replacement filter cartridge"
+          name: "Brine-compatible replacement filter cartridge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Replacement of one assembled brine-compatible cartridge is one component flow, not a collection of filtration materials. Retain actual medium/housing, grade, mass, service life and brine/chromium compatibility. A coolant/mist cartridge is a different service; toxicity units do not measure consumed cartridge mass."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: incoming_bag
+          role: "Paper Bag"
+          name: "Paper Bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0a8faf13-9861-4805-bcee-a212c6dceb04"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only the actual paper bag arriving with sodium dichromate. Measure the empty bag mass separately from chemical net contents; reconcile opening/closing packaging stock, reuse/return and the paper fraction of empty_bag. Retained reagent belongs to the chemical component ledger once. Verify the actual assembled paper bag, lining and supplier basis; any separate liner or other container has its own actual atomic exchange. No assumed packaging weight or disposal rate."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chlorate_product
+          role: "Sodium chlorate"
+          name: "Sodium chlorate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "763dbb4e-a338-4348-b2a8-bf07b6bf7b47"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted dried sodium-chlorate crystals leave the integrated unit in bulk. The reference is the whole accepted crystalline-powder net contents P, including retained free water and actual impurities, excluding bulk-container tare, not dry active NaClO3 equivalent. Match that supplied powder to the native crystalline sodium-chlorate product and its Mass/kg reference; an active-salt-only provider amount requires a separately justified component conversion, never redefinition of P. Record batch assay, residual free moisture, chloride, chromium and other identified co-salts. Wet cakes, mother liquor and dissolving into a delivery solution are not this reference output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product
+              source_ids:
+                - eu-lvics-2007
+                - epa-chlorate-2022
+                - nouryon-chlorate-manual
+            ranges: []
+        - row_id: hydrogen_product
+          role: "Purified hydrogen co-product from sodium-chlorate electrolysis"
+          name: "Purified hydrogen co-product from sodium-chlorate electrolysis"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only accepted hydrogen exported to an identified user. Measure total gas and hydrogen purity, residual chlorine/oxygen, pressure, temperature and destination; report hydrogen species mass separately from the gas-mixture physical ledger. Retain actual purification burden. Electrolysis-generated hydrogen requires a compatible source-route identity and cannot inherit an unrelated coal/methanol/ethylene background route. Exported, vented, stored and internally transferred gas must close without theoretical-yield substitution."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: heat_export
+          role: "Exported recovered electrolyte heat"
+          name: "Exported recovered electrolyte heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional useful recovered heat delivered to a named external user. Record supply/return conditions and measured net enthalpy transfer; internal reuse in brine heating or crystallization is not a co-product sale. Natural-gas combustion heat is not interchangeable with recovered electrolytic heat."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+      waste:
+        - row_id: brine_cake
+          role: "Chromium-free brine-purification filter cake"
+          name: "Sludge"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Before mixing with dichromate recycle, weigh precipitated Ca/Mg/sulfate/insoluble cake and retained brine. Record solids, water, sodium, chloride, carbonate carbon, sulfate and receiver acceptance; absence of chromium requires analytical evidence. Use this broad identity only when the actual outlet is wet semi-solid sludge from industrial aqueous treatment; verify each row’s actual salinity, chromium-bearing/free state, moisture and receiving treatment. Dry solids or incompatible recipient bases need another identity. No municipal origin is presumed for the declared industrial outlet."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: chromium_sludge
+          role: "Chromium-bearing electrolyte filtration sludge"
+          name: "Sludge"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this later chromium-bearing cake separate from primary brine cake. Weigh wet mass, determine solids and retained liquor, total chromium and valence fractions; disclose salt carryover, hazard status, destination and treatment. Do not use municipal or paper sludge identity. Use this broad identity only when the actual outlet is wet semi-solid sludge from industrial aqueous treatment; verify each row’s actual salinity, chromium-bearing/free state, moisture and receiving treatment. Dry solids or incompatible recipient bases need another identity. No municipal origin is presumed for the declared industrial outlet."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: spent_filter
+          role: "Chromium-contaminated spent brine filter cartridge"
+          name: "Chromium-contaminated spent brine filter cartridge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh the discarded cartridge with retained liquor and solids; characterize substrate, Cr(VI)/Cr(III), chlorate and leachability for its actual recipient. A single discarded composite cartridge remains one flow."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: spent_anode
+          role: "Spent coated titanium electrolysis anode"
+          name: "Spent coated titanium electrolysis anode"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional removed anode goes to an identified metal recovery/recoating recipient. Weigh substrate/coating and retained contamination; distinguish returned substrate from purchased new electrode and separately record any actual recoating service."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: spent_cathode
+          role: "Spent steel electrolysis cathode"
+          name: "Spent steel electrolysis cathode"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional removed steel cathode is weighed and characterized for salt/chromium contamination and actual recycling/treatment acceptance. Generic metallic waste does not establish recipient compatibility."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: empty_bag
+          role: "Dichromate-contaminated discarded paper bag"
+          name: "Dichromate-contaminated discarded paper bag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only if this actual incoming reagent package is discarded. Weigh paper and residues together; retain wet/dry condition and chromium/chlorate contamination and disposal acceptance. Other package components need separate rows; bulk chlorate delivery adds no assumed product bag."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: wastewater
+          role: "Chloride-chlorate-chromium aqueous purge to external treatment"
+          name: "Chloride-chlorate-chromium aqueous purge to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This is one actual segregated liquid outlet, not a collection of wastes. Measure solution mass/volume, density, dissolved and suspended solids, sodium, chloride, chlorate, chromium valences and receiver acceptance. Record purge, cleaning liquor and condensate by actual outlet before aggregation; segregated compositions/destinations require separate flows. It is not a direct environmental discharge at this transfer."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+      elementary:
+        - row_id: chlorate_dust
+          role: "Sodium chlorate"
+          name: "Sodium chlorate"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "00a1aa9f-2693-4272-bf30-8f34704fcdb7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Sodium chlorate particle mass actually released beyond abatement to outdoor air, unspecified subcompartment. Determine exhaust, fugitives, chemical composition and recovered dust separately; recovered material returned to the loop is not an emission. This species mass must not also be entered as generic particulate mass."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: hydrogen_air
+          role: "hydrogen"
+          name: "hydrogen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-949c-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Hydrogen species in measured vented gas after scrubbing, including start/stop events. Split species using contemporaneous composition and actual gas conditions. Sold hydrogen is excluded from this vent quantity; no assumed utilization percentage."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: chlorine_air
+          role: "chlorine"
+          name: "chlorine"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9b45-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measured molecular Cl2 surviving alkaline scrubbing in offgas and vents. Chlorine dioxide, chloride aerosol and hydrogen chloride are different species and cannot be reported as this flow; retain monitoring species and concentration basis."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: hcl_air
+          role: "hydrogen chloride"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured hydrogen chloride escaping acid-tank ventilation or acid washing after abatement. Use HCl species mass, not Cl2-equivalent or total chloride; do not assume a positive emission."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: oxygen_air
+          role: "oxygen"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9745-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Reaction-generated oxygen in separated gas actually vented to outdoor air. Distinguish it from ambient carrier-air oxygen; do not infer a side-reaction yield from the ideal chlorate equation."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: nitrogen_air
+          role: "dinitrogen"
+          name: "dinitrogen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aad2-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased purge dinitrogen actually discharged, conditional on its use. Exclude entrained ambient-air nitrogen from the process-added species ledger; retain any exported-gas carryover and measured stock change."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: water_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net process-derived water vapour to outdoor air from drying and cooling. Separate incoming ambient humidity, condensate recovery, steam returns and actual net chemical formation/consumption of H2O; derive from measured moisture/gas or a reaction-aware reconciled water balance with uncertainty, not assumed evaporation."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: water_discharge
+          role: "Water"
+          name: "Water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "5e50fc01-19c6-4377-a1cc-bc65a12498ea"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional water component of an actual site-authorized discharge to fresh water after any on-site treatment. Record the actual gross effluent volume/mass/density, temperature and dissolved/suspended components separately. The Water exchange is the H2O component quantity, using effluent_water_component and an explicitly compatible provider volume convention, rather than silently treating all saline solution as pure water and adding the solutes again. Not a resource withdrawal, sewer transfer or water-vapour flow."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: chloride_water
+          role: "chloride"
+          name: "chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9508-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Chloride ion mass in the same final freshwater discharge. Retain laboratory reporting as Cl− and dilution/recovery evidence; NaCl-equivalent reporting must be converted on the documented chemical basis before entry, without double-counting dissolved salt."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - eu-lvics-2007
+                - epa-anions-300-1
+            ranges: []
+        - row_id: sodium_water
+          role: "Sodium, ion"
+          name: "Sodium, ion"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "6a3f413e-8aab-4c58-93b0-1f51c9714adb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Sodium ion mass in final freshwater discharge, measured or derived from a validated same-outlet analysis. It is not metallic sodium. Sodium in product, sludge, recycling and externally transferred effluent remains separately in the physical sodium ledger."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: chlorate_water
+          role: "chlorate"
+          name: "chlorate"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9b3f-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Chlorate ion (ClO3−) mass in the final freshwater discharge. Sodium chlorate reporting is a different mass basis; reconcile the laboratory species and documented molar-mass conversion and the separate sodium ion, never enter both salt and ion as duplicate solute mass."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - eu-lvics-2007
+                - epa-anions-300-1
+            ranges: []
+        - row_id: chromium_vi_water
+          role: "chromium (vi)"
+          name: "chromium (vi)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-8fd7-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dissolved hexavalent chromium mass reported as Cr in final freshwater effluent. Preserve sampling filtration, valence stability, chloride/sulfate matrix interference tests and lab basis. Sodium dichromate mass or total Cr is not identical to this quantity."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - eu-lvics-2007
+                - epa-crvi-218-6
+            ranges: []
+        - row_id: chromium_iii_water
+          role: "chromium (iii)"
+          name: "chromium (iii)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-8fd0-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dissolved trivalent chromium mass reported as Cr in the same freshwater discharge. Require validated speciation or a validated difference between same-sample dissolved total Cr and dissolved Cr(VI); unfiltered total chromium and particulate chromium cannot silently become Cr(III). A difference requires matched analytical fractions, recovery, preservation and uncertainty demonstrating that the residual represents Cr(III); a negative or indeterminate residual remains unresolved, never zero-filled."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - eu-lvics-2007
+                - epa-crvi-218-6
+            ranges: []
+        - row_id: pm25_air
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional remaining non-chlorate particle mass in the PM2.5 size fraction discharged to outdoor air. Chemical and size-resolved monitoring must first subtract the sodium-chlorate species mass already in chlorate_dust for this fraction; otherwise choose one representation and retain the other as characterization evidence. No default emission factor."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: pm10_air
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional remaining non-chlorate particles in the disjoint PM2.5–PM10 interval, with the same speciation partition as pm25_air. It is not inclusive PM10; subtract nested PM2.5 only when sampling conditions and quantitative definitions are compatible, and never add inclusive and interval totals together."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: pmover10_air
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional remaining non-chlorate particles >PM10, physically disjoint from the two smaller fractions and chlorate_dust. Collected filter dust, indoor exposure and recycled material are not this outdoor release; unknown size/speciation stays pending."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+        - row_id: carbonate_co2_air
+          role: "Mineral-carbon carbon dioxide from acid washing"
+          name: "Mineral-carbon carbon dioxide from acid washing"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional measured CO2 from actual acid contact with carbonate-bearing deposits. Establish source carbon origin and speciation and reconcile the inorganic-carbon ledger; this is not a boiler emission factor. The actual mineral-carbon origin and provider/characterization quantity convention must be established before linking this exchange; a fossil-carbon label alone is insufficient. No biogenic carbon is erased if actually present: add its separately verified atomic exchange with origin evidence."
+          amount:
+            expression: "Actual measured quantity per 1 kg reference flow, collected through the stated protocol and normalized from the same-period physical total as defined in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-lvics-2007
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "The unallocated physical ledger contains the full measured chlorate crystal, useful hydrogen, recovered external heat, actual wastes and releases. Allocation operates on attributable environmental burdens; it never multiplies a co-product’s physical mass/heat by its own allocation share. This separation is essential to preserve material/element and energy closure. The generic hierarchy in eu-ef-multifunctionality-2021 Annex I §4.5 informs this PCR; no claim of a complete PEF study or sector-specific approval follows."
+    source_ids: []
+  - rule_id: a_physical
+    applies_to: "chlorate_production"
+    rule: "Preserve measured physical quantities for all outputs, internal reuse, stocks, wastes and releases before allocating. Sold hydrogen, vented H2 and internal gas movements are distinct; recovered internal heat is not an exported co-product."
+    source_ids:
+      - eu-lvics-2007
+      - eu-ef-multifunctionality-2021
+  - rule_id: a_hierarchy
+    applies_to: "shared burdens"
+    rule: "Investigate subdivision/system expansion first, then a relevant demonstrated physical relationship. Assign separable crystal-drying or hydrogen-conditioning activities to their actual outputs; do not infer a causal allocation from theoretical mass ratio or generic heating values. Record the rejected choices and justification."
+    source_ids:
+      - eu-ef-multifunctionality-2021
+  - rule_id: a_economic
+    applies_to: "non-separable joint burdens"
+    rule: "If the earlier hierarchy cannot supply a defensible method, use actual period-matched accepted output gate values: crystal value, useful exported hydrogen value and useful exported recovered-heat value. Apply economic_share only to the remaining joint environmental burdens, retain sensitivity and actual prices, and leave unknown value/share unresolved."
+    source_ids:
+      - eu-ef-multifunctionality-2021
+  - rule_id: a_wastes
+    applies_to: "all waste output rows"
+    rule: "Establish product versus waste from actual acceptance/use and the study’s applicable methodology, not merely a flow name or positive mass. Retain measured waste transport/treatment responsibilities. No routine sale, avoided burden or recycling credit is presumed."
+    source_ids:
+      - eu-lvics-2007
+      - eu-ef-multifunctionality-2021
+  - rule_id: a_substitution
+    applies_to: "hydrogen_product, heat_export"
+    rule: "Any separate system-expansion/substitution scenario needs an empirically established user, displaced product/service, compatible technology and quantity basis. Do not combine a substitution credit and allocation benefit for the same outlet. Report the expanded system and uncertainty explicitly."
+    source_ids:
+      - eu-ef-multifunctionality-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "chlorate_production"
+      flow_role: "chlorate_product"
+      record_type: "acceptance_and_stock_records"
+      raw_fields: "batch; SKU; calibrated net accepted mass P; free moisture; NaClO3 assay and wet/dry basis; chloride/co-salts; total/valence-specific Cr; rejected/reworked mass; opening/closing stock"
+      collection_method: "Weigh accepted bulk dry crystal, excluding container tare; sample representative lots for actual moisture/assay and impurities using a validated matrix-specific lab method. Reconcile production, dispatch and stock without recounting rework. Manufacturer solution titration is planning evidence, not a validated crystal default."
+      unit: "kg; assay mass fraction"
+      frequency: "each batch; stock at period bounds"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; acceptance; assay basis and matrix recovery; moisture method"
+    - protocol_id: cp_inputs
+      process_id: "chlorate_production"
+      flow_role: "chemical inputs, nitrogen and incoming_bag"
+      record_type: "receipts_dosing_and_stock"
+      raw_fields: "row_id; supplier/SKU/CAS; delivery grade/state/route; solution/hydrate formula; assay; free/bound/carrier water; weigh/dose records; opening/closing stock; return; actual incoming bag tare/liner and package stock; gas T/P/composition/Z"
+      collection_method: "Reconcile delivered and consumed material per row using calibrated weighing/dosing and inventory changes. Keep each supplier solution/hydrate gross mass and components. Record incoming_bag empty mass separately from chemical net contents and bind actual package stocks/returns to the outgoing paper and retained-reagent ledgers. Gas volume needs the actual reference-condition conversion; assay/source differences require separate grade records."
+      unit: "kg; gas conditions; mass fraction"
+      frequency: "each receipt and dose; inventory at bounds"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "supplier original; certificates; scale/doser calibration; physical/source compatibility"
+    - protocol_id: cp_water
+      process_id: "chlorate_production"
+      flow_role: "process_water, water_air"
+      record_type: "water_meter_and_phase_balance"
+      raw_fields: "inlet meters by use; makeup; recycle-link ends; actual density/T; solution carrier water; hydrate bound water; steam/condensate physical water; product moisture; wet wastes; discharge; humidity; stock"
+      collection_method: "Measure fresh supplied water by use and convert the Mass row with actual density. Reconcile water in purchased solutions, internal loops, steam/return, accepted product, wet wastes, final discharge and net vapour. Subtract inlet ambient humidity and do not count recycle throughput as withdrawal."
+      unit: "kg; m3; temperature; humidity"
+      frequency: "continuous meters; matched samples; events"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; density/sample conditions; phase closure and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "chlorate_production"
+      flow_role: "electricity"
+      record_type: "energy_meter_records"
+      raw_fields: "AC inlet kWh; voltage/grid/provider; stage meters; rectifier losses; DC cell measurement; meter boundary; idle/start-stop; shared auxiliaries"
+      collection_method: "Read plant AC and stage meters, reconcile losses and shared loads; retain actual provider loss boundary. Convert kWh to MJ using 3.6 exactly; no source energy-use range substitutes for measured values."
+      unit: "kWh; MJ; voltage"
+      frequency: "continuous; aggregate matched period"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; provider reference-energy confirmation; AC/DC balance"
+    - protocol_id: cp_steam
+      process_id: "chlorate_production"
+      flow_role: "steam_heat"
+      record_type: "steam_heat_interface_measurement"
+      raw_fields: "steam mass flow; absolute/gauge pressure definition; temperature; quality; provider inlet enthalpy; returned condensate mass/T/enthalpy; water losses; heat meter; vacuum/dryer stages"
+      collection_method: "Measure the contractual steam/condensate interface and validate its enthalpy method with actual supplier conditions. Keep net delivered MJ and all physical water transfers. Unknown pressure or provider heat basis remains unresolved rather than being represented by a convenient steam UUID."
+      unit: "kg; pressure; temperature; kJ/kg; MJ"
+      frequency: "continuous flow/heat; matched condition samples"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "flowmeter/heatmeter calibration; supplier net-heat definition; enthalpy method and uncertainty"
+    - protocol_id: cp_consumables
+      process_id: "chlorate_production"
+      flow_role: "anode, cathode, filter_cartridge"
+      record_type: "replacement_campaign_records"
+      raw_fields: "row_id; installed component SKU/material/coating; actual net mass; removal date; reuse/recoating; service life; represented campaign output; contamination; receiver"
+      collection_method: "Weigh and record each actual replacement/component or verified recoating service. Attribute the consumed portion to the represented campaign using documented life/output, keeping return and new supply separate; no generic lifetime or assumed throughput default."
+      unit: "kg; campaign output kg"
+      frequency: "each replacement; campaign reconciliation"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "component/supplier specification; weigh tickets; traceable campaign attribution"
+    - protocol_id: cp_coproduct
+      process_id: "chlorate_production"
+      flow_role: "hydrogen_product, heat_export"
+      record_type: "export_delivery_records"
+      raw_fields: "hydrogen total gas; species fraction; residual Cl2/O2; T/P/Z/wet-dry; accepted/exported/vented/storage quantities; gas recipient; heat supply/return conditions and net delivered enthalpy; internal heat reuse"
+      collection_method: "Measure actual useful external gas/heat acceptance and its purification/conditioning. Reconcile generated species against vent/export/storage using compatible gas bases. Track internal heat separately; do not assume theoretical hydrogen ratio or substitution benefit."
+      unit: "kg hydrogen; gas conditions; MJ"
+      frequency: "continuous; each delivery; period bounds"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "recipient acceptance; gas analyzer; meter calibration; heat interface basis"
+    - protocol_id: cp_waste
+      process_id: "chlorate_production"
+      flow_role: "all waste output rows"
+      record_type: "segregated_transfer_records"
+      raw_fields: "row_id/outlet; wet mass; volume/density; dry solids; retained water; Na/Cl/ClO3/Ca/Mg/sulfate/Cr/total inorganic C; Cr valences and leachability; contaminated substrate; source stage; receiver/treatment"
+      collection_method: "Weigh each separated outlet before aggregation, sample actual composition/hazard state and bind its accepting treatment. Keep primary brine cake, chromium cake, cartridges, electrodes, paper bags and liquid purge physically separate. Distinct outlet compositions or recipients cannot be collapsed into one selector row."
+      unit: "kg wet; kg dry; m3; concentrations"
+      frequency: "each shipment/outlet; representative matched samples"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh tickets; analysis; receiver acceptance; waste-water component reconciliation"
+    - protocol_id: cp_air
+      process_id: "chlorate_production"
+      flow_role: "all atmospheric elementary output rows"
+      record_type: "abatement_outlet_and_fugitive_measurement"
+      raw_fields: "outlet/location; duration; wet/dry gas volume/T/P; background carrier air; H2/Cl2/HCl/O2/N2/water; CO2 carbon origin; NaClO3 dust species/size; residual PM bins; captured/recycled dust; events; detection limits"
+      collection_method: "Measure after actual abatement and document fugitive estimates with actual sampling basis and uncertainty. Gas concentrations and volume must share conditions; subtract ambient carrier gas/humidity when reporting process-generated oxygen/nitrogen/water. Reconcile actual H2 and captured/recycled dust. Resolve non-overlapping species/size representation; nondetect is not zero and unmeasured is not not-applicable."
+      unit: "kg species; gas volume; conditions; duration"
+      frequency: "representative operation and each start/stop/upset"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling method/matrix validation; blanks/recoveries; size/species partition; uncertainty"
+    - protocol_id: cp_effluent
+      process_id: "chlorate_production"
+      flow_role: "all freshwater elementary output rows"
+      record_type: "final_outlet_monitoring"
+      raw_fields: "receiver/outlet; matched discharge volume/time; density/T; filtered and unfiltered analysis; Cl−/Na+/ClO3−/sulfate/Ca/Mg; dissolved Cr(VI)/Cr(III), unfiltered total Cr; particulate Cr(VI)/Cr(III) and total particulate Cr; suspended-solid composition; species/salt units; dilution/recovery; preservation; non-detect"
+      collection_method: "Monitor the actual final site freshwater outlet only. Sum time-matched concentration-times-volume with stated unit conversions and lab species basis. Validate high-chloride/sulfate matrix and valence stability; Method218.6 filtration is analytical selection, not removal of particulate chromium from the actual discharge. Establish dissolved and particulate Cr(VI)/Cr(III) by actual matrix-validated laboratory speciation, with total-Cr recovery and separate analytical fractions; no dissolved method establishes particulate valence. Other ions or suspended species observed at the outlet need their own verified atomic exchanges before completeness can be claimed."
+      unit: "m3 water; kg species; concentration units"
+      frequency: "matched flow-weighted samples; events"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "lab species definition; matrix spike/dilution; filtered/unfiltered reconciliation; receiving-medium verification"
+    - protocol_id: cp_internal
+      process_id: "chlorate_production"
+      flow_role: "physical stage links"
+      record_type: "stage_mass_component_energy_balance"
+      raw_fields: "stage/link id; two-end time-matched mass/composition; recycle/stock; actual species formation/consumption and reaction extent; wet crystal/accepted product/reject; Na/Cl/Ca/Mg/S/Cr/inorganic C/H/O/N; water/free/bound/carrier fractions; gas species; heat; measurement uncertainty"
+      collection_method: "Keep a complete unallocated physical register and balances at each stage and the integrated boundary, matching both ends of internal liquor/water/solid/gas/heat links. Retain whole mother-liquor, liquid/solid stocks, accepted and rejected product, full generated/exported/vented/stored hydrogen, steam/condensate transfers, incoming/returned/discarded containers and maintenance materials. Container tare excluded from P still belongs in this physical register; add each actual external packaging, return or maintenance exchange atomically and reconcile residues without counting their chemical mass twice. Account for actual net chemical water formation/consumption and its conversion into hydrogen/oxygen-bearing compounds through the actual species/element ledger. Quantify moisture, co-salts, losses, purge and inventory changes; investigate residuals against declared measurement uncertainty rather than filling an invented balancing flow."
+      unit: "kg; component fractions; m3; MJ"
+      frequency: "matched batch/campaign and period bounds"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated measurements; link agreement; component closure and residual investigation"
+    - protocol_id: cp_allocation
+      process_id: "chlorate_production"
+      flow_role: "shared environmental burdens"
+      record_type: "multifunctionality_decision_and_market_records"
+      raw_fields: "decision hierarchy; directly attributable activity; shared burden; actual accepted output quantities; product-specific gate prices/currency/time; value of hydrogen/heat; system-expansion/substitution evidence; selected shares/sensitivity"
+      collection_method: "Document why subdivision/system expansion can or cannot be used, then examine a relevant causal physical relationship. Use period-matched actual gate economic values only if earlier choices are inapplicable and justified. Retain allocation-free physical outputs and a separate attributed burden account; an unvalued outlet is not proof of zero value."
+      unit: "row unit; kg; MJ; currency"
+      frequency: "each study period; contracts/price updates"
+      temporal_coverage: "matched represented period/batch/campaign"
+      site_scope: "declared site and compatible grade/route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "decision evidence; invoices/contracts; actual useful output; value sensitivity"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "I_i = X_i / P; X_i is the actual row quantity over the matched represented period after any stated unit conversion; P is accepted net supplied crystal-product mass in kg. The reference row is 1 kg, all co-product physical outputs remain their full actual X_i/P. Allocation is a separate burden calculation."
+      inputs:
+        - X_i
+        - P
+        - cp_product
+        - "row collection protocol"
+      output: "row unit per 1 kg reference flow"
+      source_ids:
+        - eu-lvics-2007
+    - id: supplied_components
+      applies_to: "solution and hydrate input rows, wet wastes, chlorate_product"
+      rule: "For a measured mass fraction w_j on the as-supplied basis, component mass C_j = supplied gross mass × w_j. Convert dry-basis assay only using the same sample’s measured moisture and declared basis. Reconcile component sum with gross physical mass; do not add its carrier/bound water again as a second external flow."
+      inputs:
+        - "gross mass"
+        - "actual assay/moisture"
+        - "hydration formula"
+        - cp_inputs
+        - cp_product
+        - cp_waste
+      output: "kg each component; gross-mass closure"
+      source_ids:
+        - eu-lvics-2007
+        - nouryon-chlorate-manual
+    - id: measured_species_discharge
+      applies_to: "all air and freshwater species rows"
+      rule: "Species mass = sum of time-matched flow volume × species concentration × documented unit conversion, with validated density/gas conditions/dilution if required. Subtract background carrier gas where the row represents net process-derived species. Use actual ionic/elemental reporting basis and investigate detection/uncertainty; no default factor."
+      inputs:
+        - "actual outlet flow/time"
+        - "actual species analyses"
+        - "reporting basis"
+        - cp_air
+        - cp_effluent
+      output: "kg each emitted species"
+      source_ids:
+        - eu-lvics-2007
+        - epa-crvi-218-6
+        - epa-anions-300-1
+    - id: effluent_water_component
+      applies_to: "water_discharge"
+      rule: "Determine gross discharged liquid mass G by calibrated weighing or actual gross volume and solution density. Determine water mass W = G − measured non-water component mass, using a complete non-overlapping composition ledger. Water-component equivalent volume = W / measured water density at the declared reference condition only if that convention matches the provider/characterization definition; preserve gross effluent volume independently. Unknown composition or volume convention remains pending, never approximated by pure-water gross mass plus duplicate solutes."
+      inputs:
+        - "actual gross effluent mass/volume/density"
+        - "complete composition"
+        - "water density/convention"
+        - cp_effluent
+        - cp_water
+      output: "m3 H2O component on verified convention"
+      source_ids:
+        - eu-lvics-2007
+        - epa-anions-300-1
+    - id: steam_enthalpy
+      applies_to: "steam_heat, heat_export"
+      rule: "Net useful heat = sum of measured inlet mass × inlet specific enthalpy minus sum of contractual return mass × return specific enthalpy, converted to MJ on a consistent datum. Retain separate losses and water stocks/returns; supplier agreement and calibrated enthalpy method are prerequisites."
+      inputs:
+        - "actual mass/T/pressure/quality"
+        - "provider interface"
+        - cp_steam
+        - cp_coproduct
+      output: "MJ net delivered or exported heat"
+      source_ids:
+        - eu-lvics-2007
+    - id: physical_closure
+      applies_to: "all stage links and external material outputs"
+      rule: "For whole physical mass and each conserved element, actual external input minus actual external output equals closing minus opening stock within stated measurement uncertainty. Molecular-species balances instead include actual formation and consumption: input + formation − output − consumption = stock change. Water, NaCl, NaClO3 and chromium valences are not individually conserved through reaction. Internal link quantities/composition agree at both ends and cancel at the integrated boundary. Preserve transformation of water into H2 and oxygen-bearing compounds; the reaction NaCl + 3 H2O → NaClO3 + 3 H2 constrains chemistry, never a plant yield or emissions amount. No invented balancing exchange."
+      inputs:
+        - "measured links/inputs/outputs/stocks"
+        - composition
+        - cp_internal
+      output: "component/element residual and uncertainty"
+      source_ids:
+        - eu-lvics-2007
+        - epa-chlorate-2022
+    - id: economic_share
+      applies_to: "non-separable joint environmental burdens"
+      rule: "If justified by a_hierarchy, s_c = V_c / (V_c + V_h + V_e), where each V is the same-period actual accepted output gate value for crystal, useful exported H2 or useful exported recovered heat. Attributed crystal burden = directly assigned crystal burden + s_c × remaining joint burden. Use actual prices/quantities; no unknown-value-to-zero conversion; do not scale physical co-product outputs."
+      inputs:
+        - "actual gate values"
+        - "separable/joint burdens"
+        - cp_allocation
+      output: "crystal environmental-burden share and sensitivity"
+      source_ids:
+        - eu-ef-multifunctionality-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Actual SKU/state/source/route and background reference quantity must match each conditional identity; a UUID is not a completed process dataset. Missing or contradictory fields remain pending."
+      evidence: "Supplier originals, direct identity and reference property/unit verification, actual provider basis"
+    - id: dq_product_basis
+      applies_to: "chlorate_product"
+      requirement: "One accepted net supplied crystal basis, with same sample wet/dry assay, free moisture, co-salts and chromium. No mother-liquor/wet-cake/solution substitution and no packaging tare."
+      evidence: "cp_product; nouryon-chlorate-manual; epa-chlorate-2022"
+    - id: dq_closed_ledger
+      applies_to: "all stages and outputs"
+      requirement: "Whole physical mass, phase water, Na/Cl/Ca/Mg/S/Cr/inorganic-carbon and gas/heat ledgers include all actual stocks, residues, purge, co-salts, carryover, emissions and recovery. Investigate uncertainty-resolved imbalance; no allocation of physical outputs to make it close."
+      evidence: "cp_internal; cp_inputs; cp_water; cp_waste; cp_coproduct; eu-lvics-2007"
+    - id: dq_water_speciation
+      applies_to: "all freshwater outputs"
+      requirement: "Laboratory filtration selects the dissolved analytical fraction only. Reconcile unfiltered total and dissolved/particulate species; unlisted sulfate/Ca/Mg/other ions or particulate chromium are additional atomic requirements when present, not losses erased by analytical filtration. Demonstrate industrial matrix applicability of the selected method."
+      evidence: "cp_effluent; epa-crvi-218-6; epa-anions-300-1"
+    - id: dq_air_partition
+      applies_to: "all atmospheric outputs"
+      requirement: "Cl2, HCl, H2, O2, N2, water and dust retain distinct species quantities. PM bins and NaClO3 dust do not overlap; preserve measured carbon origin if CO2 occurs. No biological CO2 omission by reporting convention."
+      evidence: "cp_air; eu-lvics-2007"
+    - id: dq_temporal
+      applies_to: "all inventory rows"
+      requirement: "Align period/site/route/grade and quantities including idle and start/stop events. Source historical European values or one producer’s observed supply data are not universal recipes, ranges or yields."
+      evidence: "Actual synchronized records; eu-lvics-2007 scope limitations"
+    - id: dq_gaps
+      applies_to: "all inventory rows"
+      requirement: "Distinguish unavailable UUID, unresolved provider basis, measurement gap, nondetect, zero and non-applicability. Keep uncertainty and residuals explicit; a range-free row requires actual collection, not an invented prior."
+      evidence: "Declared gap register; measurement uncertainty; cp protocols"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "chlorate_product"
+    rule: "Require one final reference row with exactly 1 kg accepted net supplied dried crystal; verify chemical/route/state and all qualifiers. Same-salt internal links are not extra reference outputs."
+    source_ids:
+      - eu-lvics-2007
+      - epa-chlorate-2022
+      - nouryon-chlorate-manual
+  - rule_id: v_denominator
+    applies_to: "all inventory rows"
+    rule: "Inventory basis, collection aggregation and normalization use the same P and per 1 kg reference flow. No active-mass, wet-cake, solution, hydrogen or packaging denominator substitution; both languages keep the same rule/row ids and formulas."
+    source_ids:
+      - eu-lvics-2007
+  - rule_id: v_identity
+    applies_to: "all inventory rows"
+    rule: "Verify actual source, species/CAS, route, grade, media, reference property/unit and provider background amount compatibility. Unresolved identities stay blank and block complete linked-dataset claims, not silently replaced by other products/elementary compartments."
+    source_ids:
+      - eu-lvics-2007
+  - rule_id: v_phase_balance
+    applies_to: "all physical links and outputs"
+    rule: "Reconcile physical mass, water and component/element stocks across all actual outlets. Confirm paired internal links, full co-product physical output, mother liquor, retained water, crystalline/free water, co-salts, filtrate, sludge and gases without double counting. Unsupported relationships and unexplained residuals require review."
+    source_ids:
+      - eu-lvics-2007
+      - epa-chlorate-2022
+  - rule_id: v_release
+    applies_to: "all elementary output rows"
+    rule: "Require actual release outlet/receiver and valid species/unit/sampling basis after abatement. External waste transfer is not an environmental release; dissolved-only analytical filtration does not justify dropping particulate matter or other measured ions. Separate Cl2/HCl and non-overlapping dust/PM bins."
+    source_ids:
+      - eu-lvics-2007
+      - epa-crvi-218-6
+      - epa-anions-300-1
+  - rule_id: v_utilities
+    applies_to: "electricity, steam_heat, heat_export"
+    rule: "Verify AC voltage/grid/loss interface and exact reference energy property; retain AC/DC meter reconciliation. Verify steam pressure/quality and contractual net heat/enthalpy/water interface before provider linkage; MJ alone is insufficient."
+    source_ids:
+      - eu-lvics-2007
+  - rule_id: v_allocation
+    applies_to: "shared environmental burdens"
+    rule: "Validate the selected hierarchy, actual useful outputs and gate values, directly assigned versus joint burdens and sensitivity; never mechanically scale physical co-product output. Avoid simultaneous allocation and substitution benefits for the same output."
+    source_ids:
+      - eu-ef-multifunctionality-2021
+  - rule_id: v_completeness
+    applies_to: "all inventory rows"
+    rule: "No completed dataset claim with missing actual quantities, provider bases, UUIDs required for linkage, unresolved measured species or incompatible evidence. Add actual grade/route/compound/service extensions as individual atomic exchanges with their own source and identity checks. Do not declare review/publication from mechanical checks."
+    source_ids:
+      - eu-lvics-2007
+      - eu-ef-multifunctionality-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset only after actual data collection, provider linkage and separate review"
+  downstream_use: "Supply of the declared dried bulk sodium-chlorate crystal at its stated gate"
+  allowed_use: "Declared route/state/grade and measured supplied-product mass; explicit conditional guidance until unresolved evidence is completed"
+  excluded_use: "Other salts/oxidation states; solution or wet-cake/hydrate basis; packaged delivery or different process variants without actual extensions; unproved substitution credits; claims of scientific approval"
+  required_metadata: "Reference qualifiers; site/period/route/grade; actual source and supplier bases; upstream/foreground interfaces; physical/component water and stock ledgers; gas/heat destinations; emission media; waste treatment; allocation choices; uncertainty and remaining gaps"
+  required_quality_disclosure: "Actual coverage of collection/checks, measurement limitations, unknown UUID/provider links, source metadata classification debt, nondetect handling, uncertainty and independent scientific/translation review state"
+  update_trigger: "Changed route/additive/grade/hydration/delivery form; different source or utility conditions; new measured species/outlet; changed treatment or hydrogen/heat use; updated representative field evidence or source clarification"
+data_sources:
+  - id: "eu-lvics-2007"
+    type: "official_guidance"
+    reference: "European Commission, Reference Document on Best Available Techniques for the Manufacture of Large Volume Inorganic Chemicals – Solids and Others Industry, August2007; §7.13, printed pp.513–527 / PDF pp.558–572; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/lvic-s_bref_0907.pdf"
+    used_for: "Route, Figure7.39 stage interfaces, brine impurities/auxiliaries, mother-liquor and water recovery, hydrogen/heat branches, species releases and segregated waste. 2007 European descriptive/BAT evidence only; no current permit, universal recipe or amount range."
+  - id: "epa-chlorate-2022"
+    type: "official_guidance"
+    reference: "US EPA, Sodium Chlorate Supply Chain – Full Profile, EPA817-F-22-043, December2022, manufacturing section printed p.1 / PDF p.2; https://www.epa.gov/system/files/documents/2023-03/Sodium%20Chlorate%20Supply%20Chain%20Profile.pdf"
+    used_for: "NaCl-brine electrolysis identity and balanced reaction; crystallization, washing/drying and hydrogen branch. Supply-chain context is not a yield, shelf-life or inventory default."
+  - id: "nouryon-chlorate-manual"
+    type: "handbook"
+    reference: "Nouryon, Sodium chlorate Product information manual, undated producer manual as acquired 2026-10-13; physical form pp.5–6, analytical scope pp.16–18; https://www.nouryon.com/globalassets/inriver/resources/brochure-nouryon-sodiumchlorate-product-information-manual.pdf"
+    used_for: "Crystal versus solution identity and solution assay planning. Formula, typical density, performance and solution-method concentration intervals are not adopted as general crystal or high-salt-matrix defaults; current SKU assay needs actual validated collection."
+  - id: "epa-crvi-218-6"
+    type: "official_guidance"
+    reference: "US EPA, Method218.6, Revision3.3, May1994, §§1–2, PDF pp.3–4; https://www.epa.gov/sites/default/files/2015-08/documents/method_218-6_rev_3-3_1994.pdf"
+    used_for: "Dissolved Cr(VI) analytical fraction, industrial-effluent scope, high-anion interference and valence preservation. Not total Cr, Cr(III), particulate Cr, a quantitative default or current regulatory holding-time advice."
+  - id: "epa-anions-300-1"
+    type: "official_guidance"
+    reference: "US EPA, Method300.1, Revision1.0,1997, §§1–3, PDF pp.2–4; https://www.epa.gov/sites/production/files/2015-08/documents/method_300-1_1997.pdf"
+    used_for: "Chloride/chlorate and other anion identity and QA principles. Source water/drinking-water scope; industrial brine/effluent matrix needs demonstrated applicability and actual validation, not automatic certification."
+  - id: "eu-ef-multifunctionality-2021"
+    type: "official_guidance"
+    reference: "European Commission, C(2021)9332 final, Annexes1–2,16December2021, AnnexI §4.5, PDF/printed pp.63–64; https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "General subdivision/system-expansion → meaningful physical → other/economic relation hierarchy and justification. No animal-specific factors, default share or price, unproved substitution benefit or complete PEF compliance claim."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f83a6142848f5a780d03bf5811b414cdc7cce9667acc7a09a8e742c0a366eab8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8666"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8666
+          line: 67
+          column: 1
+        end:
+          offset: 11814
+          line: 88
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Delivered solid NaCl, actual supplied auxiliaries, treated industrial water and contracted utilities at the plant gate |\n| starting_condition_role | Foreground input interface; no exemption for upstream production |\n| product_classification_scope | Sodium-chlorate crystal electrolysis subset of CPC 34240; classification does not define feed recipe or technology |\n| recursive_input_rule | Internal mother liquor/wash/condensate/heat recycle remains within the integrated unit. Purchased same-category crystal is separate upstream material and cannot be recounted as newly generated product. |\n| upstream_dataset_requirement | Link each external input and transport/treatment service to a compatible verified supplier/background quantity, chemistry, source and boundary; unresolved identity or basis is disclosed and prevents complete dataset claims. |\n| disclosure | Site/time/grade; incoming and outgoing phase/component ledgers; process stages; provider interfaces and losses; recovery, wastes and actual receiving media; missing measurements and allocation decision |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | chlorate_production | Include brine making/purification, rectification/electrolysis/reaction, crystallization/washing/drying, hydrogen scrubbing, solid handling, actual effluent/waste management and represented consumable replacement. Retain stage meters even when modelled as one foreground unit. | eu-lvics-2007, epa-chlorate-2022 |\n| b_loops | chlorate_production | Keep a physical stage ledger for recycle links with equal quantities/composition at both ends; inventory changes, spills, recovered dust and actual purges are measured. Internal mother liquor, wet crystal and finished crystal transfers are not duplicate external product outputs. | eu-lvics-2007 |\n| b_interfaces | all inventory rows | Preserve all upstream production and actual transport/treatment burdens through compatible provider links. Declare foreground/background interfaces; outsourced wastewater is a waste transfer and not a site freshwater pollutant discharge. Extend the actual recipient’s treatment inventory through its own measured releases without duplicating it. | eu-lvics-2007, eu-ef-multifunctionality-2021 |\n| b_emissions | all elementary output rows | Include measured atmospheric and actual receiving-water releases after abatement, including start/stop events and leaks. Closed-loop or negligible historical emissions are not proof of zero; not-applicable/zero, missing measurement and nondetect remain distinct. Different receiving media require separately verified identities. | eu-lvics-2007 |\n| b_capital | chlorate_production | Declare capital-equipment treatment under the study method; do not hide consumed electrode/filter replacements as capital. No default infrastructure, fuel boiler, packaging or refrigerated route is inserted. Any actual extension must have its own atomic rows, basis and applicable original evidence. | eu-lvics-2007, eu-ef-multifunctionality-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 10
+              column: 1
+            end:
+              offset: 344
+              line: 10
+              column: 65
+          text: "# Sodium chlorate crystals by sodium-chloride brine electrolysis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8666
+              line: 67
+              column: 1
+            end:
+              offset: 8687
+              line: 67
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_59191"
+      family: "allocation"
+      span:
+        start:
+          offset: 59191
+          line: 776
+          column: 1
+        end:
+          offset: 61716
+          line: 788
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nThe unallocated physical ledger contains the full measured chlorate crystal, useful hydrogen, recovered external heat, actual wastes and releases. Allocation operates on attributable environmental burdens; it never multiplies a co-product’s physical mass/heat by its own allocation share. This separation is essential to preserve material/element and energy closure. The generic hierarchy in `eu-ef-multifunctionality-2021` Annex I §4.5 informs this PCR; no claim of a complete PEF study or sector-specific approval follows.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_physical | chlorate_production | Preserve measured physical quantities for all outputs, internal reuse, stocks, wastes and releases before allocating. Sold hydrogen, vented H2 and internal gas movements are distinct; recovered internal heat is not an exported co-product. | eu-lvics-2007, eu-ef-multifunctionality-2021 |\n| a_hierarchy | shared burdens | Investigate subdivision/system expansion first, then a relevant demonstrated physical relationship. Assign separable crystal-drying or hydrogen-conditioning activities to their actual outputs; do not infer a causal allocation from theoretical mass ratio or generic heating values. Record the rejected choices and justification. | eu-ef-multifunctionality-2021 |\n| a_economic | non-separable joint burdens | If the earlier hierarchy cannot supply a defensible method, use actual period-matched accepted output gate values: crystal value, useful exported hydrogen value and useful exported recovered-heat value. Apply economic_share only to the remaining joint environmental burdens, retain sensitivity and actual prices, and leave unknown value/share unresolved. | eu-ef-multifunctionality-2021 |\n| a_wastes | all waste output rows | Establish product versus waste from actual acceptance/use and the study’s applicable methodology, not merely a flow name or positive mass. Retain measured waste transport/treatment responsibilities. No routine sale, avoided burden or recycling credit is presumed. | eu-lvics-2007, eu-ef-multifunctionality-2021 |\n| a_substitution | hydrogen_product, heat_export | Any separate system-expansion/substitution scenario needs an empirically established user, displaced product/service, compatible technology and quantity basis. Do not combine a substitution credit and allocation benefit for the same outlet. Report the expanded system and uncertainty explicitly. | eu-ef-multifunctionality-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 10
+              column: 1
+            end:
+              offset: 344
+              line: 10
+              column: 65
+          text: "# Sodium chlorate crystals by sodium-chloride brine electrolysis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 59191
+              line: 776
+              column: 1
+            end:
+              offset: 59231
+              line: 776
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_81526"
+      family: "validation"
+      span:
+        start:
+          offset: 81526
+          line: 833
+          column: 1
+        end:
+          offset: 84443
+          line: 846
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | chlorate_product | Require one final reference row with exactly 1 kg accepted net supplied dried crystal; verify chemical/route/state and all qualifiers. Same-salt internal links are not extra reference outputs. | eu-lvics-2007, epa-chlorate-2022, nouryon-chlorate-manual |\n| v_denominator | all inventory rows | Inventory basis, collection aggregation and normalization use the same P and per 1 kg reference flow. No active-mass, wet-cake, solution, hydrogen or packaging denominator substitution; both languages keep the same rule/row ids and formulas. | eu-lvics-2007 |\n| v_identity | all inventory rows | Verify actual source, species/CAS, route, grade, media, reference property/unit and provider background amount compatibility. Unresolved identities stay blank and block complete linked-dataset claims, not silently replaced by other products/elementary compartments. | eu-lvics-2007 |\n| v_phase_balance | all physical links and outputs | Reconcile physical mass, water and component/element stocks across all actual outlets. Confirm paired internal links, full co-product physical output, mother liquor, retained water, crystalline/free water, co-salts, filtrate, sludge and gases without double counting. Unsupported relationships and unexplained residuals require review. | eu-lvics-2007, epa-chlorate-2022 |\n| v_release | all elementary output rows | Require actual release outlet/receiver and valid species/unit/sampling basis after abatement. External waste transfer is not an environmental release; dissolved-only analytical filtration does not justify dropping particulate matter or other measured ions. Separate Cl2/HCl and non-overlapping dust/PM bins. | eu-lvics-2007, epa-crvi-218-6, epa-anions-300-1 |\n| v_utilities | electricity, steam_heat, heat_export | Verify AC voltage/grid/loss interface and exact reference energy property; retain AC/DC meter reconciliation. Verify steam pressure/quality and contractual net heat/enthalpy/water interface before provider linkage; MJ alone is insufficient. | eu-lvics-2007 |\n| v_allocation | shared environmental burdens | Validate the selected hierarchy, actual useful outputs and gate values, directly assigned versus joint burdens and sensitivity; never mechanically scale physical co-product output. Avoid simultaneous allocation and substitution benefits for the same output. | eu-ef-multifunctionality-2021 |\n| v_completeness | all inventory rows | No completed dataset claim with missing actual quantities, provider bases, UUIDs required for linkage, unresolved measured species or incompatible evidence. Add actual grade/route/compound/service extensions as individual atomic exchanges with their own source and identity checks. Do not declare review/publication from mechanical checks. | eu-lvics-2007, eu-ef-multifunctionality-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 280
+              line: 10
+              column: 1
+            end:
+              offset: 344
+              line: 10
+              column: 65
+          text: "# Sodium chlorate crystals by sodium-chloride brine electrolysis"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 81526
+              line: 833
+              column: 1
+            end:
+              offset: 81548
+              line: 833
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_route"
+      identity_kind: "explicit"
+      unit_id: "normative_8666"
+      source_span:
+        start:
+          offset: 9924
+          line: 82
+          column: 1
+        end:
+          offset: 10270
+          line: 82
+          column: 347
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_loops"
+      identity_kind: "explicit"
+      unit_id: "normative_8666"
+      source_span:
+        start:
+          offset: 10271
+          line: 83
+          column: 1
+        end:
+          offset: 10602
+          line: 83
+          column: 332
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_8666"
+      source_span:
+        start:
+          offset: 10603
+          line: 84
+          column: 1
+        end:
+          offset: 11035
+          line: 84
+          column: 433
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_8666"
+      source_span:
+        start:
+          offset: 11036
+          line: 85
+          column: 1
+        end:
+          offset: 11427
+          line: 85
+          column: 392
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_capital"
+      identity_kind: "explicit"
+      unit_id: "normative_8666"
+      source_span:
+        start:
+          offset: 11428
+          line: 86
+          column: 1
+        end:
+          offset: 11812
+          line: 86
+          column: 385
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 59233
+          line: 778
+          column: 1
+        end:
+          offset: 59757
+          line: 778
+          column: 525
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 59830
+          line: 782
+          column: 1
+        end:
+          offset: 60154
+          line: 782
+          column: 325
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 60155
+          line: 783
+          column: 1
+        end:
+          offset: 60549
+          line: 783
+          column: 395
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_economic"
+      identity_kind: "explicit"
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 60550
+          line: 784
+          column: 1
+        end:
+          offset: 60983
+          line: 784
+          column: 434
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_wastes"
+      identity_kind: "explicit"
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 60984
+          line: 785
+          column: 1
+        end:
+          offset: 61333
+          line: 785
+          column: 350
+    - pointer: "/allocation_rules/5"
+      rule_id: "a_substitution"
+      identity_kind: "explicit"
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 61334
+          line: 786
+          column: 1
+        end:
+          offset: 61714
+          line: 786
+          column: 381
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 81621
+          line: 837
+          column: 1
+        end:
+          offset: 81910
+          line: 837
+          column: 290
+    - pointer: "/validation_rules/1"
+      rule_id: "v_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 81911
+          line: 838
+          column: 1
+        end:
+          offset: 82209
+          line: 838
+          column: 299
+    - pointer: "/validation_rules/2"
+      rule_id: "v_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 82210
+          line: 839
+          column: 1
+        end:
+          offset: 82529
+          line: 839
+          column: 320
+    - pointer: "/validation_rules/3"
+      rule_id: "v_phase_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 82530
+          line: 840
+          column: 1
+        end:
+          offset: 82955
+          line: 840
+          column: 426
+    - pointer: "/validation_rules/4"
+      rule_id: "v_release"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 82956
+          line: 841
+          column: 1
+        end:
+          offset: 83358
+          line: 841
+          column: 403
+    - pointer: "/validation_rules/5"
+      rule_id: "v_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 83359
+          line: 842
+          column: 1
+        end:
+          offset: 83672
+          line: 842
+          column: 314
+    - pointer: "/validation_rules/6"
+      rule_id: "v_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 83673
+          line: 843
+          column: 1
+        end:
+          offset: 84012
+          line: 843
+          column: 340
+    - pointer: "/validation_rules/7"
+      rule_id: "v_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 84013
+          line: 844
+          column: 1
+        end:
+          offset: 84441
+          line: 844
+          column: 429
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8666"
+      source_span:
+        start:
+          offset: 8666
+          line: 67
+          column: 1
+        end:
+          offset: 8687
+          line: 67
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8666"
+      source_span:
+        start:
+          offset: 8715
+          line: 71
+          column: 1
+        end:
+          offset: 9851
+          line: 78
+          column: 219
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 59191
+          line: 776
+          column: 1
+        end:
+          offset: 59231
+          line: 776
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 59233
+          line: 778
+          column: 1
+        end:
+          offset: 59757
+          line: 778
+          column: 525
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 59830
+          line: 782
+          column: 1
+        end:
+          offset: 60154
+          line: 782
+          column: 325
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 60155
+          line: 783
+          column: 1
+        end:
+          offset: 60549
+          line: 783
+          column: 395
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 60550
+          line: 784
+          column: 1
+        end:
+          offset: 60983
+          line: 784
+          column: 434
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 60984
+          line: 785
+          column: 1
+        end:
+          offset: 61333
+          line: 785
+          column: 350
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_59191"
+      source_span:
+        start:
+          offset: 61334
+          line: 786
+          column: 1
+        end:
+          offset: 61714
+          line: 786
+          column: 381
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_81526"
+      source_span:
+        start:
+          offset: 81526
+          line: 833
+          column: 1
+        end:
+          offset: 81548
+          line: 833
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f83a6142848f5a780d03bf5811b414cdc7cce9667acc7a09a8e742c0a366eab8"
+  generated_content_sha256: "sha256:c293296a12ddaeca41d052ec8a0f1457677ec9fbb39170aa86a19dee241e31b8"
