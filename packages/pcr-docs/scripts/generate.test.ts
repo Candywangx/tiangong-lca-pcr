@@ -208,6 +208,9 @@ test("real generator preserves multilingual released snapshots and excludes open
         ["1.0.0", "1.1.0"],
       );
     const allRecords = [site.records[0]!, ...site.historicalRecords!];
+    for (const page of site.pages.filter(page => page.kind === "pcr"))
+      assert.equal(Object.hasOwn(page, "downloads"), false, "current/history PCR metadata uses its owning record's downloads");
+    assert.ok(allRecords.every(record => record.downloads.length > 0), "every current/history record retains original downloads");
     assert.equal(new Set(allRecords.map(record => record.dataUrl)).size, 1, "Current and historical data share one bounded transport pack");
     for (const record of allRecords) {
       const packed: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", record.dataUrl), "utf8"));
@@ -375,10 +378,17 @@ test("metadata summaries describe the page they belong to, and report title-only
       const filename = path.join(fixture.pcrDir, `pcr.${language}.md`);
       const opening = fs.readFileSync(filename, 'utf8') + '\n\n';
       const text = language === 'zh-CN' ? '原文保真🙂 ' : 'Original source bytes. ';
-      const repeats = Math.floor((40 * 1024 - Buffer.byteLength(opening)) / Buffer.byteLength(text));
+      const repeats = Math.floor((72 * 1024 - Buffer.byteLength(opening)) / Buffer.byteLength(text));
       fs.writeFileSync(filename, opening + text.repeat(repeats) + '\n');
-      assert.ok(fs.statSync(filename).size > 32768 && fs.statSync(filename).size <= 40961);
+      assert.ok(fs.statSync(filename).size > 64 * 1024 && fs.statSync(filename).size <= 72 * 1024 + 1);
     }
+    const candidateManifest = path.join(fixture.pcrDir, "manifest.yaml");
+    const candidate = checkedManifest(fs.readFileSync(candidateManifest, "utf8"));
+    candidate.modules = { core: ["reference-flow"] };
+    fs.writeFileSync(candidateManifest, renderYaml(candidate));
+    const modulePath = "library/modules/core/reference-flow.md";
+    fs.mkdirSync(path.dirname(path.join(root, modulePath)), { recursive: true });
+    fs.copyFileSync(new URL("../../../library/modules/core/reference-flow.md", import.meta.url), path.join(root, modulePath));
     syncStructured({root, pcr: fixture.libraryPath});
     lifecycle({
       root,
@@ -472,6 +482,11 @@ test("metadata summaries describe the page they belong to, and report title-only
     }
 
     const pages = site.pages.filter((page) => page.kind === "pcr");
+    assert.ok(pages.every(page => !Object.hasOwn(page, "downloads")), "PCR page metadata does not duplicate native download URLs");
+    assert.equal(site.records[0]!.downloads.length, 4, "complete PCR sources remain on the record");
+    const modulePage = site.pages.find(page => page.kind === "module");
+    assert.ok(modulePage?.downloads?.some(download => download.name === "reference-flow.md"), "non-PCR module pages retain their download links");
+    assert.ok(site.pages.filter(page => page.kind === "guide").every(page => Array.isArray(page.downloads)), "guide metadata retains its existing shape");
     const record = pages.find((page) => page.language === "en-US" && page.part?.index === 0);
     const chineseRecord = pages.find((page) => page.language === "zh-CN" && page.part?.index === 0);
     assert.ok(record && chineseRecord, "fixture must generate both required language pages");
@@ -492,7 +507,7 @@ test("metadata summaries describe the page they belong to, and report title-only
     assert.equal(
       report.summaries.pages,
       site.pages.filter(
-        (page) => page.kind === "pcr" || page.kind === "guide" || (page.kind === "catalog" && page.slugs.length > 1),
+        (page) => page.kind === "pcr" || page.kind === "guide" || page.kind === "module" || (page.kind === "catalog" && page.slugs.length > 1),
       ).length,
       "every document and category page is counted",
     );

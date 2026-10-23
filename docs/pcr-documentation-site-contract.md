@@ -80,7 +80,7 @@ existing normalized-text projection fingerprint.
 Current candidate PCRs with authored methodology and no release history may use
 native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
 `pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
-each required-language Markdown limit is 49,152 original bytes. Eligibility comes
+each required-language Markdown limit is 81,920 original bytes. Eligibility comes
 from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
 These bounded downloads preserve each original filename and work without
 JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
@@ -109,6 +109,12 @@ structured data are separate artifacts read only at build time. Physical downloa
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
+
+PCR page metadata, including historical pages and continuations, does not repeat
+the record's download list. The owning current or historical record retains the
+complete list and renders the same native download anchors on each reading page.
+Module and guide page metadata keeps its existing download fields. This removes
+redundant worker input without changing source bytes, reading routes or downloads.
 
 ### Page summaries
 
@@ -304,9 +310,19 @@ elapsed-time acceptance budget. CI bounds its instrumented documentation job to
 60 minutes; stage and total durations remain reported. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
-deadline, cleanup and atomic handoff remain enforced. The export uses four workers
-with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
-guard; a heap ceiling is not proof of total resident memory.
+deadline, cleanup and atomic handoff remain enforced. The export uses two workers
+with at most one static page render in flight per worker. Its 4 GB Node heap
+ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap
+ceiling is not proof of total resident memory.
+
+Each attempted stage emits `build-stage` diagnostics with its command, duration,
+sampled peak process-tree RSS, measurement availability, child exit code and
+passed/failed status. A zero-exit child that exceeds the RSS guard is a failed
+stage. The final `build-result` diagnostic reports failure even when cleanup or
+handoff fails after all stages. Failed runs write
+`.generated/build-failure-metrics.json` after cleanup returns, separately from
+the last successful `.generated/build-metrics.json`; neither failure receipt
+claims a successful export or relaxes the atomic output handoff.
 
 ### Build workspace storage
 

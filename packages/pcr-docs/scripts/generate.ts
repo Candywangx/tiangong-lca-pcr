@@ -328,7 +328,9 @@ function renderDocument({
         sourceNodeIds: part.sourceNodeIds,
         sourceHeadingId: part.sourceHeadingId,
         sourceHeadingAnchor: i === 0 ? rendered.sourceHeadingAnchor : undefined,
-        downloads,
+        // PCR pages read the complete list from their current/historical record. Repeating
+        // native data URLs in every chapter's metadata only increases each worker's heap.
+        ...(extra.kind === "pcr" ? {} : { downloads }),
         alternates:
           extra.indexable === false
             ? {}

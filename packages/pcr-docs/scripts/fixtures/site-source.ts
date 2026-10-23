@@ -368,7 +368,13 @@ async function run(temporary: string, scenario: string): Promise<void> {
         const { PathnameContext } = await import(pathToFileURL(path.join(nextRoot, 'dist/shared/lib/hooks-client-context.shared-runtime.js')).href) as { PathnameContext: Context<string|null> };
         const wrap = (element: ReturnType<typeof createElement>) => createElement(PathnameContext, { value: page.url }, createElement(RootProvider, { search: { enabled: false } }, createElement(DocsLayout, { tree: source.navigationTree({locale:'en',domain:'agriculture',subdomain:'seeds',record}), nav:{enabled:false}, sidebar:{enabled:false}, tabs:false }, element)));
         const detailedRecord = { ...record, readiness: { status: 'review_required', blockers: [{code:'BOUNDARY_REVIEW',message:'Boundary <needs review>'}], warnings:[{code:'TRANSLATION_WARNING',message:'Translation & evidence pending'}] }, classificationRefs:[{system:'cpc',version:'3.0',code:'01111',mapping_type:'exact'},{system:'hs',version:'2022',code:'1201'}], downloads:[{name:'pcr.en-US.md',url:'/original.md',bytes:4000,sha256:'sha256:'+'c'.repeat(64)}], versions:[{version:'1.0.0',urls:{'en-US':'/en/docs/pcr/agriculture/seeds/wheat/versions/1.0.0/'}},{version:'0.9.0',urls:{'de-DE':'/de/old/'}}] };
+        assert.equal(page.downloads, undefined, 'PCR renderer must work from the record without page download copies');
+        const inlineBytes = Buffer.from('原始字节🙂 '.repeat(4200));
+        assert.ok(inlineBytes.length > 64 * 1024 && inlineBytes.length <= 80 * 1024);
+        const inlineUrl = 'data:application/octet-stream;base64,' + inlineBytes.toString('base64');
+        detailedRecord.downloads.push({ name:'pcr.zh-CN.md',url:inlineUrl,bytes:inlineBytes.length,sha256:'sha256:'+'d'.repeat(64) });
         const current = render(wrap(createElement(PcrRecordPage, { record:detailedRecord, page, html: '<p id="normative">Full normative text</p>' })));
+        assert.equal(current.querySelector('a[download="pcr.zh-CN.md"]')?.getAttribute('href'), inlineUrl, 'server HTML retains the complete native download');
         assert.match(current.body.textContent ?? '', /Review required/);
         assert.equal(current.querySelector('#normative')?.textContent, 'Full normative text');
         assert.equal(current.querySelector('a[rel="next"]')?.getAttribute('href'), '/en/docs/pcr/agriculture/seeds/wheat/part-2/');
@@ -380,7 +386,8 @@ async function run(temporary: string, scenario: string): Promise<void> {
         assert.equal(current.querySelectorAll('[aria-labelledby="pcr-history-heading"] a').length, 1);
         assert.equal(current.querySelector('a[download]')?.getAttribute('href'), '/original.md');
         const continuationPage = manifest.pages.find(item => item.locale==='zh' && item.pcrId===record.id && item.part?.index===1)!;
-        const continuation = render(wrap(createElement(PcrRecordPage, {record, page:continuationPage,html:'<p>Second chapter</p>'})));
+        const continuation = render(wrap(createElement(PcrRecordPage, {record:detailedRecord, page:continuationPage,html:'<p>Second chapter</p>'})));
+        assert.equal(continuation.querySelector('a[download="pcr.zh-CN.md"]')?.getAttribute('href'), inlineUrl, 'continuations retain the record-owned download');
         assert.equal(continuation.querySelector('a[rel="prev"]')?.getAttribute('href'), '/zh/docs/pcr/agriculture/seeds/wheat/');
         assert.equal(continuation.querySelector('[data-structured-summary]'), null);
         const missingVersion = render(wrap(createElement(PcrRecordPage, {record:{...record,version:null,updatedAt:null,sourcePath:'',translationStatus:{}},page:{...page,title:'L'.repeat(181),sourceSha256:undefined},html:'<p>Draft</p>'})));

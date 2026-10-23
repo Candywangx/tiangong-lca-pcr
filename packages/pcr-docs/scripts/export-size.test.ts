@@ -9,7 +9,7 @@ test('medium required-language downloads preserve original Unicode bytes within 
   const sibling = {path: directory + 'manifest.yaml', bytes: manifest};
   for (const name of ['pcr.en-US.md', 'pcr.zh-CN.md']) {
     const opening = Buffer.from('\ufeff# Source / 原文🙂\r\n\r\n' + name + '\r\n');
-    const original = Buffer.concat([opening, Buffer.alloc(40 * 1024 - opening.length, 32)]);
+    const original = Buffer.concat([opening, Buffer.alloc(72 * 1024 - opening.length, 32)]);
     const url = inlineDownloadUrl(directory + name, original, false, sibling);
     assert.ok(url, 'medium canonical Markdown should retain native inline transport');
     assert.deepEqual(decodeInlineDownloadUrl(url), original);
@@ -48,6 +48,8 @@ test("bounded candidate manifest downloads preserve exact bytes and physical rel
 });
 
 test("bounded required-language downloads use their exact sibling candidate manifest", () => {
+  assert.equal(INLINE_MARKDOWN_LIMIT, 80 * 1024);
+  assert.equal(INLINE_MANIFEST_LIMIT, 16 * 1024);
   const manifestPath = "library/pcrs/domain/category/product/manifest.yaml";
   const manifest = Buffer.from("status: candidate\ncontent_maturity: authored_methodology\n");
   const bytes = Buffer.from("\ufeff# 原始 methodology\r\n\r\nExact UTF-8 bytes.\r\n");
