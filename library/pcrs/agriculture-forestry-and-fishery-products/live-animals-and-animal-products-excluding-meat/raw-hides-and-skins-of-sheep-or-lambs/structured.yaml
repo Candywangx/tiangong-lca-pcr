@@ -216,14 +216,14 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: source_coproduct
-          role: "Actual separate animal products"
-          name: "Actually marketable meat, detached wool, milk and other goods (UUID unresolved)"
+        - row_id: source_raw_sheep_milk_product
+          role: "Raw sheep milk at its independent phase handover"
+          name: "Raw sheep milk at its independent phase handover"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record only existing outputs at their own phase and gate; attached fleece is not detached wool. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output."
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Record only existing outputs at their own phase and gate; attached fleece is not detached wool. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -233,15 +233,43 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_source
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kg/kg"
-                basis: "per kg node output"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: source_detached_sheep_wool_product
+          role: "Detached sheep wool at its independent phase handover"
+          name: "Detached sheep wool at its independent phase handover"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Record only existing outputs at their own phase and gate; attached fleece is not detached wool. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_source
+              source_ids: []
+            ranges: []
+        - row_id: source_separate_sheep_meat_product
+          role: "Separately removed raw sheep meat at its actual source handover"
+          name: "Separately removed raw sheep meat at its actual source handover"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Record only existing outputs at their own phase and gate; attached fleece is not detached wool. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output. Only meat already physically separated and independently handed over at this source event belongs here. Meat still contained in source_skinbearing is part of that transfer, not an additional source output. If meat separates at a later responsible node, identify it there through matched records instead of reporting it twice; never invent meat on the fallen-animal route. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_source
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -730,7 +758,7 @@ dataset_production:
       flow_role: "cohort, actual slaughter or lawful recovery, independently marketable outputs by phase"
       record_type: "lot ledger"
       raw_fields: "cohort, actual slaughter or lawful recovery, independently marketable outputs by phase"
-      collection_method: "calibrated scale, meter and tickets; Raw aggregation requirements: sum once by lot and period. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "calibrated scale, meter and tickets; Raw aggregation requirements: sum once by lot and period. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. source_coproduct_specific_output: Preserve every actual intended output previously collected under source_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "kg;period"
       frequency: "each lot/period"
       temporal_coverage: "all relevant events"
@@ -955,7 +983,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:30450961fcca1f6738dff5c3a1b7414986b7003c95bfa0a228a68c536af9aced"
+  source_sha256: "sha256:ee48728d70c88f0254717d0a860bc0d513c606ec3b040e2b0c2ae507fb2c5ad2"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6016"
@@ -1006,16 +1034,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_34527"
+    - unit_id: "normative_39549"
       family: "allocation"
       span:
         start:
-          offset: 34527
-          line: 667
+          offset: 39549
+          line: 697
           column: 1
         end:
-          offset: 36167
-          line: 678
+          offset: 41189
+          line: 708
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_slaughter | slaughter route | Enumerate each genuinely marketable meat, skin, detached wool, milk or other output at its real phase and gate. Use documented causal physical attribution if defensible; otherwise document economic allocation with period-specific prices and sensitivity. Never assign all animal burden to the skin or automatic zero burden. | fao-hides-skins |\n| a_fallen | fallen route | Document pre-existing animal burden, lawful recovery and terminal-treatment counterfactual; justify burden attribution and any separately reported avoided-treatment credit without invented meat. | fao-hides-statistics |\n| a_grade | grades and cure | Count every saleable grade at one handover only; separately sold trim requires its own product decision. Moisture/salt mass changes do not create extra skin. | fao-hides-skins |\n| a_period | phases and shared assets | Index breeding, lactation, shearing, finishing, slaughter/recovery and replacement across actual periods. Charge shared slaughter floor, cleaning, cold room and curing assets once using evidenced service time, throughput or other causal driver. | fao-hides-skins |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1034,12 +1062,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 34527
-              line: 667
+              offset: 39549
+              line: 697
               column: 1
             end:
-              offset: 34567
-              line: 667
+              offset: 39589
+              line: 697
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1054,16 +1082,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_53529"
+    - unit_id: "normative_59303"
       family: "validation"
       span:
         start:
-          offset: 53529
-          line: 723
+          offset: 59303
+          line: 753
           column: 1
         end:
-          offset: 55223
-          line: 734
+          offset: 60997
+          line: 764
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | reference lot | Reject non-sheep/lamb, tanned or further prepared goods or missing age, fleece, state, gate or net mass. | un-cpc-3-notes |\n| v_route | source and removal | Require an independent skin-removal handoff; slaughter route lists real co-products; fallen route has lawful recovery and no invented meat. | fao-hides-statistics;fao-small-ruminant-slaughter |\n| v_balance | each batch | Reconcile accepted, downgraded and rejected skin, residue, stock and moisture/salt change, investigating residual against site measurement uncertainty. | fao-hides-skins |\n| v_attribution | products, phases and shared services | Reject unsupported zero-burden skin, duplicated attached fleece/detached wool, repeated animal phase or shared plant burden, or absent allocation evidence. | fao-hides-skins |\n| v_uuid | concrete dataset exchanges | Unresolved cards cannot become final exchanges; CPC label alone cannot make tanned sheepskin or manufactured leather an exact raw Mass flow. |  |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n\n"
       headings:
@@ -1082,12 +1110,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 53529
-              line: 723
+              offset: 59303
+              line: 753
               column: 1
             end:
-              offset: 53551
-              line: 723
+              offset: 59325
+              line: 753
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1171,145 +1199,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_slaughter"
       identity_kind: "explicit"
-      unit_id: "normative_34527"
+      unit_id: "normative_39549"
       source_span:
         start:
-          offset: 34640
-          line: 671
+          offset: 39662
+          line: 701
           column: 1
         end:
-          offset: 35016
-          line: 671
+          offset: 40038
+          line: 701
           column: 377
     - pointer: "/allocation_rules/1"
       rule_id: "a_fallen"
       identity_kind: "explicit"
-      unit_id: "normative_34527"
+      unit_id: "normative_39549"
       source_span:
         start:
-          offset: 35017
-          line: 672
+          offset: 40039
+          line: 702
           column: 1
         end:
-          offset: 35264
-          line: 672
+          offset: 40286
+          line: 702
           column: 248
     - pointer: "/allocation_rules/2"
       rule_id: "a_grade"
       identity_kind: "explicit"
-      unit_id: "normative_34527"
+      unit_id: "normative_39549"
       source_span:
         start:
-          offset: 35265
-          line: 673
+          offset: 40287
+          line: 703
           column: 1
         end:
-          offset: 35472
-          line: 673
+          offset: 40494
+          line: 703
           column: 208
     - pointer: "/allocation_rules/3"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_34527"
+      unit_id: "normative_39549"
       source_span:
         start:
-          offset: 35473
-          line: 674
+          offset: 40495
+          line: 704
           column: 1
         end:
-          offset: 35777
-          line: 674
+          offset: 40799
+          line: 704
           column: 305
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_34527"
+      unit_id: "normative_39549"
       source_span:
         start:
-          offset: 35779
-          line: 676
+          offset: 40801
+          line: 706
           column: 1
         end:
-          offset: 36165
-          line: 676
+          offset: 41187
+          line: 706
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_53529"
+      unit_id: "normative_59303"
       source_span:
         start:
-          offset: 53624
-          line: 727
+          offset: 59398
+          line: 757
           column: 1
         end:
-          offset: 53775
-          line: 727
+          offset: 59549
+          line: 757
           column: 152
     - pointer: "/validation_rules/1"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_53529"
+      unit_id: "normative_59303"
       source_span:
         start:
-          offset: 53776
-          line: 728
+          offset: 59550
+          line: 758
           column: 1
         end:
-          offset: 54002
-          line: 728
+          offset: 59776
+          line: 758
           column: 227
     - pointer: "/validation_rules/2"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_53529"
+      unit_id: "normative_59303"
       source_span:
         start:
-          offset: 54003
-          line: 729
+          offset: 59777
+          line: 759
           column: 1
         end:
-          offset: 54201
-          line: 729
+          offset: 59975
+          line: 759
           column: 199
     - pointer: "/validation_rules/3"
       rule_id: "v_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_53529"
+      unit_id: "normative_59303"
       source_span:
         start:
-          offset: 54202
-          line: 730
+          offset: 59976
+          line: 760
           column: 1
         end:
-          offset: 54434
-          line: 730
+          offset: 60208
+          line: 760
           column: 233
     - pointer: "/validation_rules/4"
       rule_id: "v_uuid"
       identity_kind: "explicit"
-      unit_id: "normative_53529"
+      unit_id: "normative_59303"
       source_span:
         start:
-          offset: 54435
-          line: 731
+          offset: 60209
+          line: 761
           column: 1
         end:
-          offset: 54620
-          line: 731
+          offset: 60394
+          line: 761
           column: 186
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_53529"
+      unit_id: "normative_59303"
       source_span:
         start:
-          offset: 54621
-          line: 732
+          offset: 60395
+          line: 762
           column: 1
         end:
-          offset: 55221
-          line: 732
+          offset: 60995
+          line: 762
           column: 601
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1338,27 +1366,27 @@ normative_context:
           column: 108
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_34527"
+      unit_id: "normative_39549"
       source_span:
         start:
-          offset: 34527
-          line: 667
+          offset: 39549
+          line: 697
           column: 1
         end:
-          offset: 34567
-          line: 667
+          offset: 39589
+          line: 697
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_53529"
+      unit_id: "normative_59303"
       source_span:
         start:
-          offset: 53529
-          line: 723
+          offset: 59303
+          line: 753
           column: 1
         end:
-          offset: 53551
-          line: 723
+          offset: 59325
+          line: 753
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1367,5 +1395,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:30450961fcca1f6738dff5c3a1b7414986b7003c95bfa0a228a68c536af9aced"
-  generated_content_sha256: "sha256:cee03d40ae3a9df7ae3a6f8d995d9322a519b807531819d502910a490c8ea1cb"
+    sha256: "sha256:ee48728d70c88f0254717d0a860bc0d513c606ec3b040e2b0c2ae507fb2c5ad2"
+  generated_content_sha256: "sha256:a0639a79f1d5505454db18d8c0d2f6557c2b8c9e56994e2516ecb5fc92920862"
