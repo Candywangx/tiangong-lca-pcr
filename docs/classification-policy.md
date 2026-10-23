@@ -21,9 +21,9 @@ checkPaths:
   - .docpact/config.yaml
   - builder/**
   - classifications/**
-lastReviewedAt: 2026-10-13
-lastReviewedCommit: 1ff58b6468c47dc2fcf416a2ea9af0c21defd95b
-lastReviewedNote: "Reviewed PCR #110/#111 combined candidate at 1ff58b64: original canonical files are retained, the regenerated catalog contains 1085 unique material records and 934 accepted CPC edges preserve classification boundaries. Unified 0.4.7 version mirrors align; runtime, reader compatibility, candidate methodology and translation states remain unchanged. Complete fresh CI, workspace integration and verified coordinated publication remain required."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: 36b61842dd66c2b0c3d361efa0f5ec4be3d022c3
+lastReviewedNote: "PCR #143 / PR #139: reviewed integration of exact PR #134 main 641e35e686b3857e31f4f808befa6419707d30c6. All 228 PR139 and 238 PR134 changed canonical files retain original bytes; 1035 accepted edges, 1186 material PCRs and 1906 aliases preserve candidate and translation states. Focused 57-record/16826 finite measurement, projection, catalog, alias, planning and category-label checks passed; fresh complete composed-source hosted qualification remains required. No scientific, translation, methodology publication or production approval is granted."
 ---
 
 # Classification Policy

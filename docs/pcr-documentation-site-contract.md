@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-17
-lastReviewedNote: "PCR #130: reviewed the source-map-js 1.2.2 security lock delta and offline mapping/PostCSS regressions on the explicit PCR #129 development dependency. Runtime pins, static export, language/source fidelity, methodology and product 0.4.7 remain unchanged. Source merge requires PCR #129/PR #126 on main first, exact merge-input revalidation, fresh full qualification and independent review; publication remains separately authorized."
-lastReviewedCommit: a9604159d0f0ccb36dfa0a6f7829564bffc072ba
+lastReviewedAt: 2026-10-23
+lastReviewedNote: "PCR #143 / PR #139: reviewed integration of exact PR #134 main 641e35e686b3857e31f4f808befa6419707d30c6. All 228 PR139 and 238 PR134 changed canonical files retain original bytes; 1035 accepted edges, 1186 material PCRs and 1906 aliases preserve candidate and translation states. Focused 57-record/16826 finite measurement, projection, catalog, alias, planning and category-label checks passed; fresh complete composed-source hosted qualification remains required. No scientific, translation, methodology publication or production approval is granted."
+lastReviewedCommit: 36b61842dd66c2b0c3d361efa0f5ec4be3d022c3
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
