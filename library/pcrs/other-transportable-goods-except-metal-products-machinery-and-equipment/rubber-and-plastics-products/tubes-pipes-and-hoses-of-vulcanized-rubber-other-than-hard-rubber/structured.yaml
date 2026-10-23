@@ -1,10 +1,1333 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "36230"
-  title: "Tubes, pipes and hoses of vulcanized rubber other than hard rubber"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.tubes-pipes-and-hoses-of-vulcanized-rubber-other-than-hard-rubber"
+  classification_refs: "CPC 3.0:36230, narrower subset; no accepted mapping implied"
+  covered_products: "Single-layer solid VMQ unreinforced platinum-addition-cured unprinted tubing, bare loose coils"
+  excluded_products: "Hard rubber; green uncured tube; TPU/other thermoplastic hose; NR/EPDM/NBR/FVMQ tubing; peroxide/condensation cure; sponge; braids/wire/multilayers; fittings or finished-hose-only assembly; reels; sterile/medical claims"
+  representative_product: "Transparent solid HCR VMQ tubing made by the compatible R plus 4305 base/PT 1 catalyst route; actual grade and dimensions must be declared, not assumed"
+  production_route: "Purchased base and catalyst whole formulations; milling/straining; screw extrusion; atmospheric electric hot-air vulcanization; actual finishing/post-cure; inspection; coiling/packing; stock and dispatch"
+  market_state: "Net accepted dispatched bare tube coils, supplied length/geometry and quality declared, removable packaging excluded from tube mass"
+functional_unit:
+  what: "Provide the specified unreinforced silicone tube for a declared industrial fluid-transfer duty; equivalence requires duty-specific evidence"
+  how_much: "1 kg net accepted dispatched tubing, on the actual supplied moisture and post-cure basis"
+  how_well: "Actual approved dimensions, tolerances, hardness/cure condition and application-specific acceptance tests; no universal pressure rating or food/medical approval"
+  how_long_or_cycle: "One complete matched reporting period with linked stock/return histories; service life is not specified by mass or this manufacturing method"
+  reference_flow_link: "product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "all inventory rows"
+      rule: "Include receipt/storage, catalyst incorporation/milling/straining, screw extrusion, atmospheric electric thermal cure, cooling, actual post-cure/finishing, dimensional/cure/defect inspection and actual coiling/packing, finished storage and factory dispatch. Keep stage records although represented by one integrated process. Do not model connector assembly from purchased finished hose as this manufacturing route."
+      source_ids:
+        - wacker-silicone-processing
+        - reiss-silicone-extrusion
+        - advantapure-apst-coils
+    - rule_id: boundary_actual
+      applies_to: "all inventory rows"
+      rule: "The cards identify concrete collection exchanges, not a common recipe. Before quantitative data use add each actual pigment, reinforcement, release agent, cleaner, fuel, compressed-air supply, refrigerant, packaging core, waste, utility export and detected emission as its own atomic card with evidence; a changed base/structure/cure outside scope requires new applicability review. Demonstrably absent options may be not_applicable; UUID gaps cannot remove real burdens."
+      source_ids:
+        - wacker-silicone-processing
+    - rule_id: boundary_stock
+      applies_to: "all inventory rows"
+      rule: "Maintain separate raw-material, WIP, production-release, finished-warehouse and dispatch ledgers. Manufacturing release P and dispatched Q are independently measured; opening finished stock + release receipts + actual returned stock = dispatch transfers + closing stock + actual losses. For this net-delivery reference retain opening/closing WIP and finished-stock quantities, compositions and carried upstream burdens; allocate actual warehouse/rework/packing/handling to the matched delivered cohort and carry undelivered burdens forward. Cancel internal handoffs exactly once."
+      source_ids:
+        - reiss-silicone-extrusion
+boundary_abstraction:
+  declared_starting_condition: "Purchased solid HCR base and catalyst paste received at the manufacturing site; actual utilities, cleaning and packaging supplies"
+  starting_condition_role: "material_inputs"
+  product_classification_scope: "Only the section 1 silicone-tube subset of CPC 3.0:36230"
+  recursive_input_rule: "Purchased finished tubing is separately disclosed as a foreground input, never a replacement for compounding/extrusion/cure. Internal recycles cancel on consolidation and retain burdens. Customer returns retain linked prior history."
+  upstream_dataset_requirement: "Use actual compatible supplied formulation, catalyst, utility and packaging backgrounds; this cradle-to-dispatch foreground starts after their production without deleting upstream burdens. UUID identity is not a background inventory."
+  disclosure: "Disclose site, period, actual supply origins, formulation grade, stage meters, electric tunnel, actual post-curing, packaging, stocks, returns, failed runs/rework, included storage/handling and outsourced operations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Tubes, pipes and hoses of vulcanized rubber other than hard rubber"
+    uuid: "7ab7f1a9-1d4b-4bd1-83cb-a3096d984e3b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual VMQ base grade and catalyst formulation"
+    - "solid single-layer wall without reinforcement"
+    - "platinum addition cure and actual tunnel energy route"
+    - "ID OD wall thickness tolerances and unprinted state"
+    - "bare loose coils without fittings reel or mandrel"
+    - "supplied length coil configuration and measured linear or whole-coil mass"
+    - "net accepted factory dispatch gate and return corrections"
+    - "actual acceptance tests and post-curing state"
+    - "matched period Q WIP finished stocks and carried burdens"
+    - "actual site supply geography and provider compatibility"
+    - "packaging composition stock reuse and physical outgoing masses"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_dispatch
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Q is the unique positive net accepted dispatched tube mass, not quality-release production, length, coil count or gross packed mass. Record actual opening/closing WIP and finished goods and carry their burdens. Unshipped finished goods are not Q. Returns/reacceptance require linked reversal and final-delivery records; the same physical tube cannot count twice."
+  - id: length_mass
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Length conversion requires measured linear mass lambda in kg/m for the same grade, ID/OD, layer/cure/moisture state and supplied configuration. Weigh traceable net sample length on a calibrated scale, lambda = sample mass / measured length; sum actual length times matched lambda. Coil/count conversion uses measured net mass of that actual coil/configuration. Record calibration, sampling variation and uncertainty; nominal density or an invented mass cannot substitute."
+  - id: wet_formulation
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Whole supplied base/paste/cleaner mass is procurement; polymer, filler, platinum, solvent and carrier water are non-additive composition subledgers. On-site blending records actual separately acquired ingredients, energy and loss. Keep reaction-water evidence independent of moisture, evaporation, utility condensate and closure residuals."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain actual physical numerator units. Convert metered volume using documented density at actual concentration/state, energy by explicit unit conversion and rate by matched duration. An already integrated gas/liquid volume is not multiplied by time again; secondary native property factors do not establish density. Execute only report_once after conversions and cohort attribution."
+process_map:
+  - id: hose_line
+    name: "Integrated silicone tube manufacture and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Only section 1 route; retain independent raw stage records"
+    role: "foreground"
+    quantitative_reference: "product"
+process_inventory:
+  - id: hose_line
+    label: "Integrated silicone tube manufacture and dispatch"
+    inputs:
+      product:
+        - row_id: hcr_base
+          role: "Purchased HCR base compound"
+          name: "HCR silicone rubber base compound for addition-cured tubing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The complete purchased solid VMQ base compound, exemplified by the ELASTOSIL R plus 4305 family, enters milling and straining. Record the actual grade, supplier formulation, crosslinker already present, supplied moisture and lot mass. Polymer, incorporated silica, additives and carrier water are constituent subledgers, not additional purchases. A broad polysiloxane identity alone does not confirm the whole filled commercial compound."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_material; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: pt_paste
+          role: "Purchased platinum catalyst paste"
+          name: "Platinum catalyst paste for HCR silicone extrusion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The whole commercial catalyst paste, exemplified by ELASTOSIL AUX Batch PT 1, is a separate purchased formulation mixed with the compatible base. Measure paste mass and retain actual concentration/carrier information; do not purchase its platinum or carrier again. The supplier distinguishes extrusion PT 1 from molding PT 2. Published example dosages and temperatures are not this PCR recipe."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_material; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: cleaner
+          role: "Aqueous isopropanol cleaning formulation"
+          name: "Aqueous isopropanol cleaning formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only if the actual line uses this identified commercial cleaner. Record whole supplied solution, measured assay, carrier water, recovery and losses; this is a foreground collection option, not a supplier cleaning recommendation or a fixed concentration. Other actual cleaners require their own chemically specific cards before data use."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_material; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Purchased water"
+          name: "Industrial supply water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meter external makeup and cleaning water with its actual quality and supply route; isolate cooling circulation from new intake. Water already in either formulation is not another purchased water input. Record any separate raw-water abstraction as its own elementary flow with source and compartment."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_water; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: electricity
+          role: "Line and dispatch electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include actual roll milling, straining, screw extrusion, electric hot-air tunnel, cooling, extraction, quality testing, optional electric post-curing, actual controlled-room HVAC/filtration, warehouse, packing and electric handling loads. Preserve warmup, standby, failures and rework. Split genuinely different supply/voltage exchanges; match actual geography and provider, not an inferred country."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_utility; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: steam
+          role: "Auxiliary steam if actually supplied"
+          name: "Industrial steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The selected curing route uses an electric atmospheric tunnel, not mandatory steam curing. Include external steam only for an actual included auxiliary operation; record supplied mass and pressure/temperature or enthalpy, direct injection and condensate separately. An absent steam system needs an evidenced not_applicable decision, not a copied zero or deleted actual burden."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_utility; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: film
+          role: "Polyethylene coil bag"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Only where the bag polymer is actually confirmed as PE, weigh the supplied PE film bag as one actual packaging article, excluding separately supplied tape and label; collect inner/outer bags separately before aggregating the same identity, without assuming bag count or mass. Native identity is PE film, CAS 9002-88-4, production mix at plant; geography/locationOfSupply and grade are unspecified. Its leather/luggage classification is inconsistent metadata debt; the comment mentions PET as a competing material, not PE composition. This identity supplies no bag thickness, recycled content, supplier background or quantity."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated cardboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include the actual whole supplied carton with its actual board, incorporated adhesive and recycled content. Retain its own stock, reuse, returns and waste ledger; do not add constituent paper/glue procurement again. No carton is assumed for a bag-only supply configuration."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: label
+          role: "Paper identification label"
+          name: "Self-adhesive paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "If used, weigh the complete supplied identification label, retaining incorporated adhesive and liner disposition separately from outgoing label mass. Other label materials require their own cards. This is not a fixed package bill of materials."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: tape
+          role: "Carton closing tape"
+          name: "Polypropylene pressure-sensitive packing tape"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "If used, measure the actual complete supplied tape roll including adhesive and its core when present; its constituent polymer and adhesive are not duplicate inputs. Identify the core and its disposition independently when present."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: returned_tube
+          role: "Actual customer-returned tubing"
+          name: "Tubes, pipes and hoses of vulcanized rubber other than hard rubber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ab7f1a9-1d4b-4bd1-83cb-a3096d984e3b"
+          property_unit: "Mass / kg"
+          description: "Only actual physical customer returns cross this input boundary. Link the original dispatch, its reversal and carried burden, subsequent inspection/rework and final disposition; internal rework is not an external purchase. Reacceptance alone creates no additional output; never count the same returned/redelivered length twice in Q. Native reference: manufactured finished vulcanized rubber tubes/pipes/hoses excluding hard rubber, production mix at plant, Product flow, Mass/kg; no CAS, additional property, fixed base rubber, geography/locationOfSupply, layer structure, fitting state, specification or lifetime is supplied. The dataset must narrow that broad identity to single-layer solid VMQ, platinum addition cure, unreinforced, unprinted bare loose coils without fittings or reel, actual grade/geometry and the net dispatch gate. It is not a background process or evidence that every rubber hose is equivalent."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_dispatch; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch
+              source_ids:
+                - reiss-silicone-extrusion
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: product
+          role: "Net accepted tubing dispatched in bare coils"
+          name: "Tubes, pipes and hoses of vulcanized rubber other than hard rubber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ab7f1a9-1d4b-4bd1-83cb-a3096d984e3b"
+          property_unit: "Mass / kg"
+          description: "Unique terminal reference output, excluding all removable packaging. Q is actual net accepted dispatched tubing mass with linked return/cancellation corrections, not newly released production. Undelivered released stock stays outside Q and retains burdens. Native reference: manufactured finished vulcanized rubber tubes/pipes/hoses excluding hard rubber, production mix at plant, Product flow, Mass/kg; no CAS, additional property, fixed base rubber, geography/locationOfSupply, layer structure, fitting state, specification or lifetime is supplied. The dataset must narrow that broad identity to single-layer solid VMQ, platinum addition cure, unreinforced, unprinted bare loose coils without fittings or reel, actual grade/geometry and the net dispatch gate. It is not a background process or evidence that every rubber hose is equivalent."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch
+              source_ids:
+                - reiss-silicone-extrusion
+                - advantapure-apst-coils
+            ranges: []
+        - row_id: offgrade_sale
+          role: "Separately sold off-grade tubing"
+          name: "Tubes, pipes and hoses of vulcanized rubber other than hard rubber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ab7f1a9-1d4b-4bd1-83cb-a3096d984e3b"
+          property_unit: "Mass / kg"
+          description: "Only if real saleable off-grade tubing leaves the plant: measure it separately, identify failed reference specifications and actual gate/value. It is not Q or a disposal waste; sharing the broad native UUID must not hide this distinct output. Native reference: manufactured finished vulcanized rubber tubes/pipes/hoses excluding hard rubber, production mix at plant, Product flow, Mass/kg; no CAS, additional property, fixed base rubber, geography/locationOfSupply, layer structure, fitting state, specification or lifetime is supplied. The dataset must narrow that broad identity to single-layer solid VMQ, platinum addition cure, unreinforced, unprinted bare loose coils without fittings or reel, actual grade/geometry and the net dispatch gate. It is not a background process or evidence that every rubber hose is equivalent."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_output; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: out_film
+          role: "PE bag accompanying delivered tubing"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Record the actual physical packaging leaving with the same delivered cohort, including returned/reused packaging movements where relevant. Its mass is excluded from net tube Q and included once in physical closure; this transfer is not another purchase or a default co-product credit. Native identity is PE film, CAS 9002-88-4, production mix at plant; geography/locationOfSupply and grade are unspecified. Its leather/luggage classification is inconsistent metadata debt; the comment mentions PET as a competing material, not PE composition. This identity supplies no bag thickness, recycled content, supplier background or quantity."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: out_carton
+          role: "Carton accompanying delivered tubing"
+          name: "Corrugated cardboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual physical packaging leaving with the same delivered cohort, including returned/reused packaging movements where relevant. Its mass is excluded from net tube Q and included once in physical closure; this transfer is not another purchase or a default co-product credit."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: out_label
+          role: "Label accompanying delivered tubing"
+          name: "Self-adhesive paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual physical packaging leaving with the same delivered cohort, including returned/reused packaging movements where relevant. Its mass is excluded from net tube Q and included once in physical closure; this transfer is not another purchase or a default co-product credit."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: out_tape
+          role: "Tape accompanying delivered tubing"
+          name: "Polypropylene pressure-sensitive packing tape"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual physical packaging leaving with the same delivered cohort, including returned/reused packaging movements where relevant. Its mass is excluded from net tube Q and included once in physical closure; this transfer is not another purchase or a default co-product credit."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: condensate
+          role: "Steam condensate returned externally"
+          name: "Steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "If supplied auxiliary steam actually condenses and returns to the utility provider, retain measured condensate mass and state as a Product output. Internal condensate circulation cancels internally; neither is water destruction or a credit for avoided new steam."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_water; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: cooling_return
+          role: "Externally returned cooling water"
+          name: "Returned cooling water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Where actual once-through supplied cooling water is returned as a utility product, meter outgoing mass/temperature separately. Internal recirculation is not an export; contaminated discharged water belongs to its actual waste/treatment route instead."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_water; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+      waste:
+        - row_id: uncured_waste
+          role: "Uncured compound loss"
+          name: "Uncured silicone compound waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh disposed mill/strainer/startup losses with whole composition; internal recoverable uncured trim retains its burden and is not another external purchase."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_output; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: cured_waste
+          role: "Rejected cured tubing and test specimens"
+          name: "Cured silicone rubber tubing waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include unsold rejected tubing, cut ends and destructive test pieces sent to actual waste treatment; separate off-grade Product sales. Cure is not reversed by ordinary remilling; never count the same reject as sale and waste."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_output; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: wastewater
+          role: "Aqueous process effluent"
+          name: "Aqueous silicone-line cleaning effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure actual aqueous cleaning/blowdown effluent and its composition, water and solids; retain on-site treatment energy/reagents and resulting atomic sludge/emissions if present. COD is a quality observation, not a mass/species conversion or reaction-water estimator."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_output; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+        - row_id: spent_cleaner
+          role: "Spent isopropanol formulation"
+          name: "Spent aqueous isopropanol cleaning liquid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "If used, weigh the actual spent formulation separately from plain aqueous effluent; retain solvent/water assay, recovered mass and disposal route. Do not also report its full mass as an air emission."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_output; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+        - row_id: waste_film
+          role: "Discarded PE film bag"
+          name: "Waste polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging damaged or discarded on site separately from film shipped with tubes and film retained for reuse."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: waste_carton
+          role: "Discarded carton"
+          name: "Waste corrugated cardboard carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual disposed cartons independently of cartons accompanying deliveries and reusable stock."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: waste_label
+          role: "Paper label backing waste"
+          name: "Waste paper release liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual paper release liner separately from the outgoing complete label. Any other liner material requires a separate specific row."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: waste_tape_core
+          role: "Discarded paperboard tape core"
+          name: "Waste paperboard tape core"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Where present, weigh actual cores separately; unused tape on discarded cores and other core materials require distinct specific rows."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_pack; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: water_air
+          role: "Actual water vapour release"
+          name: "Water vapour"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Use independently measured evaporated feed/carrier/cleaning water and moisture change in the same period. Platinum hydrosilylation adds Si-H across vinyl bonds; do not impose condensation-cure water formation or infer unknown reaction water from mass closure."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_emission; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: d4_air
+          role: "Measured D4 to air"
+          name: "Octamethylcyclotetrasiloxane"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual species-specific detection/attribution: integrate D4 concentration with matched exhaust volume and control performance. The guide permits low-molecular material removal but does not prove this species occurs or give an emission factor. Screen actual volatiles and add every other identified species separately."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_emission; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: d5_air
+          role: "Measured D5 to air"
+          name: "Decamethylcyclopentasiloxane"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual species-specific detection/attribution; distinguish D5 from D4, aerosol, captured material and residual product volatiles. No total VOC or closure residual may be assigned to D5 without independent composition evidence."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_emission; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - wacker-silicone-processing
+            ranges: []
+        - row_id: ipa_air
+          role: "Actual isopropanol evaporation"
+          name: "Isopropanol"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only for the actual isopropanol cleaner option: measure species-specific evaporative loss and reconcile remaining solvent in spent cleaner/recovery. Actual absence is evidenced, not assumed."
+          amount:
+            expression: "Collect the matched un-divided raw quantity using cp_emission; report the numerator once per reference flow under the sole section 8 reporting rule."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "all inventory rows"
+    rule: "This is attributional foreground accounting. Establish the study decision context and justify why subdivision, virtual subdivision and where applicable substitution/system expansion cannot avoid allocation under ILCD 2010 7.9.2/7.9.3. These are not freely interchangeable options and do not assert full ILCD/PEF conformance."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_causality
+    applies_to: "all inventory rows"
+    rule: "Directly assign lot materials and dedicated meters; use virtual subdivision and determining physical causality separately for each exchange before residual allocation. Justify each shared service driver from its actual function: e.g. measured line occupation/time and load for tunnel duty or occupied space times storage duration when causally determining. Equal mass shares are not a universal rule and mere correlation is insufficient. Preserve startup, failure, zero-output, rejects and rework burdens within the cohort that caused them."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_residual
+    applies_to: "all inventory rows"
+    rule: "Only remaining burdens without an identifiable determining physical relation use justified relative market values of real co-functions in their actual condition/quantity at the same joint-process exit gate. Document actual amounts, time-representative prices, grade and conditioning/transport/packaging adjustments; delivered retail prices must not stand for raw off-grade exit value. Retain uncertainty/sensitivity and the 100 percent inventory reconciliation. Do not assign one economic share to already directly assigned exchanges."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_loss
+    applies_to: "all inventory rows"
+    rule: "Saleable off-grade tubing, actual waste for treatment, utility returns and customer returns have different physical and accounting roles. Determine actual destination/value and preserve outgoing quantities independently; no fixed recovery share, avoided-product credit or arbitrary negative inventory is authorized. Internal uncured reuse retains carried burdens and actual reuse energy/loss, without a second purchase or product output."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted. For each existing collection protocol that attributes manufacture of included production, packaging or observed-service assets across uses in this route (excluding amortization of the manufactured reference product itself), additionally retain a durable asset identity, its measured full physical mass and acquisition/installation/retirement stock history, original manufacture burden vector, all historical and current beneficiaries, matched-unit service readings, the evidenced whole installed-service denominator D, supported remaining-service basis and uncertainty, prior assigned shares and remaining original manufacture balance. Carry the ledger across reporting windows and custody/provider changes. Collect actual repair, replacement, recovery and treatment separately; these records do not normalize physical movements or create an additional asset purchase. These are added fields and conservation obligations for the existing applicable protocols, not a new assumed capital inventory."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_dispatch
+      process_id: "hose_line"
+      flow_role: "product"
+      record_type: "dispatch_and_stock"
+      raw_fields: "tube/coil ID; grade; actual acceptance and dispatch timestamps; release P; net dispatched mass; returns/reversals; cancellations; final accepted length; measured lambda or coil net mass; tare; opening/closing WIP and FG; carried burden by lot"
+      collection_method: "Owner: quality manager and dispatch/production accountant. Weigh actual accepted dispatched bare coils on calibrated scales or use traceable actual matched length and measured linear mass; record whole-coil net mass for count records. Collect complete un-divided period ledgers, independently reconcile P and warehouse movements, deduplicate final deliveries and link prior returns/burdens. Include failed/zero-output/rework lots; do not divide by Q during collection."
+      unit: "kg; m"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_material
+      process_id: "hose_line"
+      flow_role: "material"
+      record_type: "receipt_dosing_and_stock"
+      raw_fields: "row_id; stage; lot; whole supplied mass; composition/assay; carrier/free water; receipts; opening/closing stock; charged mass; returned/reused compound; spills; failed runs; WIP and FG carried input burdens"
+      collection_method: "Owner: materials accountant and mixing operator. Collect raw scale/receipt/issue/stock records for each whole commercial formulation and separately purchased ingredient; reconcile its non-additive constituent/water subledger, actual mixing/straining losses and return/rework histories. Retain original units, WIP/FG carryover and un-divided raw period numerators, including unsuccessful batches."
+      unit: "kg; m3"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_utility
+      process_id: "hose_line"
+      flow_role: "utility"
+      record_type: "meters_and_stage_operation"
+      raw_fields: "row_id; supply/voltage; stage; meter start/end; rate; duration; already integrated volume; state/density; kWh; steam mass/enthalpy; cooling; post-cure; startup/standby; rework; warehouse/handling; carried utility burdens"
+      collection_method: "Owner: utilities engineer. Preserve complete raw stage meters and time/load records from receiving through electric cure, actual post-cure, controls, storage/packing/dispatch and all failed/rework/standby operations. Identify actual separately supplied utilities and returns. Do not normalize; do not multiply already integrated volumes by time. Preserve opening/closing WIP/FG carried utility burdens and actual allocation evidence."
+      unit: "kWh; MJ; kg; m3"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_water
+      process_id: "hose_line"
+      flow_role: "water"
+      record_type: "water_and_return_balance"
+      raw_fields: "row_id; supply quality; liquid mass/volume; actual density/state; formulation water; cooling recirculation; utility returns; steam injection; condensate; water vapour; WIP/FG moisture; reaction evidence"
+      collection_method: "Owner: water/utility engineer and laboratory analyst. Independently meter external water, steam and real return outlets, and assay formulation/stock water. Preserve raw physical phase and moisture ledgers; ideal hydrosilylation is addition, not condensation-water formation. Actual side-reaction species/water require independent reaction and measurement support, never residual fitting. No A/Q at collection."
+      unit: "kg; m3"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_pack
+      process_id: "hose_line"
+      flow_role: "packaging"
+      record_type: "article_stock_and_outgoing_mass"
+      raw_fields: "row_id; article/composition; whole purchased mass; constituent subledger; opening/closing unused and reused stock; receipts; returns; discarded pieces; liner/core; actual outgoing packaging by dispatched cohort; carried burdens"
+      collection_method: "Owner: packaging custodian and dispatch accountant. Weigh each actual complete supplied article and the actual mass leaving with tubing, separating liners/cores/waste, return to supplier, external reuse transfers and internal repeated use. Keep complete un-divided stock/movement and burden ledgers including packaging already on opening/closing FG. Reused material is not another procurement; packaging is not net tube Q."
+      unit: "kg; piece"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_output
+      process_id: "hose_line"
+      flow_role: "waste"
+      record_type: "outputs_weighing_and_destination"
+      raw_fields: "row_id; stage; stream; wet mass; moisture; species; cured/uncured state; sale/waste status; actual destination/value; internal recycle; test loss; failures/rework; stock/burden carryover"
+      collection_method: "Owner: environment manager and production accountant. Independently weigh each actual saleable off-grade output and waste stream, keep manifests/analysis and collection/treatment interfaces. Reconcile failed batches, trim, destructive tests, cure state and real return/rework movements without double counting. Preserve complete un-divided raw period quantities and WIP/FG carried burdens; do not solve an unknown outlet from another unknown reaction-water residual."
+      unit: "kg; m3"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_emission
+      process_id: "hose_line"
+      flow_role: "emission"
+      record_type: "species_and_exhaust_measurement"
+      raw_fields: "row_id; species; air/water compartment; sampling method; concentration; exhaust rate; duration; integrated volume; actual/standard state; water; captured/recovered mass; residual product volatiles; abnormal operations; carried burdens"
+      collection_method: "Owner: environmental measurement lead. Collect independently speciated representative raw tests and matching complete exhaust/water records for routine, startup, failure, cleaning and actual post-cure. Screen actual species before assigning any D4/D5/IPA value, reconcile captured/recycled outputs and residuals, and add any newly identified species as a separate card. Keep un-divided raw numerators and carryover; concentration times integrated volume receives no extra duration."
+      unit: "kg; mg/m3; m3"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_quality
+      process_id: "hose_line"
+      flow_role: "quality"
+      record_type: "grade_and_release_tests"
+      raw_fields: "lot; base/catalyst identity; layers; ID/OD/wall; actual cure/post-cure; acceptance specification; inspection/pressure/leak/tensile test if specified; release P; test specimen mass; failures; linkage to dispatched cohort"
+      collection_method: "Owner: quality manager. Retain actual approved product specification, lot traceability, dimensional/cure/visual results and only duty-specific validated performance tests. Weigh test losses and link them to the real manufactured cohort. No supplier marketing range, nominal density, food-contact statement, universal hose pressure or service lifetime is an observed site result. Raw records only."
+      unit: "kg; m; actual test units"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+    - protocol_id: cp_allocation
+      process_id: "hose_line"
+      flow_role: "shared_burden"
+      record_type: "exchange_specific_attribution"
+      raw_fields: "row_id; shared process; actual co-functions; direct meters; time/load/space; allocation rationale; exit condition/quantities; representative price; conditioning/transport adjustments; uncertainty; sum before/after"
+      collection_method: "Owner: LCA practitioner and site process accountant. Collect un-divided actual shared totals, identify exchange-specific determining causal relationships and virtual subdivision first, then collect same-gate market values only for justified residual burdens. Preserve full decision and sensitivity evidence. No fixed share or double assignment of already attributed exchanges."
+      unit: "actual exchange units; h; currency"
+      frequency: "each lot and full continuous intervals"
+      temporal_coverage: "same complete period and product/route/state delivered cohort, including linked prior carryover"
+      site_scope: "actual declared site and included stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, lot traceability, raw ledgers, independent analyses and complete carryover reconciliation"
+  calculation_rules:
+    - id: report_once
+      applies_to: "all inventory rows"
+      rule: "a_i = A_i / Q; reconcile raw-material and unused/reusable packaging stock withdrawals and actual supplier returns before forming A_i, so unused receipts do not become consumption. A_i is the complete raw-period exchange numerator after raw-unit conversions and exchange-specific attribution to the net-delivered cohort, including actual failed/zero-output runs, losses, rework, storage, packing and dispatch. Add attributable opening WIP/FG carried burdens and subtract closing WIP/FG carried burdens, with explicit linked return/cancellation transfers and burden corrections; retain unresolved carryovers rather than forcing release P = dispatch Q. Q is the unique positive net accepted dispatched tube mass from cp_dispatch. This is the sole normalization: cards and aggregation_rule describe this same reporting operation and do not perform sequential division. Reference output is 1 kg."
+      inputs:
+        - A_i
+        - Q
+        - cp_dispatch
+        - cp_material
+        - cp_utility
+        - cp_water
+        - cp_pack
+        - cp_output
+        - cp_emission
+        - cp_quality
+        - cp_allocation
+      output: "a_i"
+      source_ids: []
+    - id: physical_closure
+      applies_to: "all inventory rows"
+      rule: "For the independent complete physical plant ledger, opening raw materials + opening WIP + opening FG + all real external mass inputs and actual customer/utility/packaging returns = closing raw materials + closing WIP + closing FG + real external tube/off-grade Product exits + every outgoing packaging article + utility returns + wastes + measured species emissions. Include actually exchanged air/oxygen or other species where material; electricity/heat is not a mass input. Cancel internal stage/recycle/warehouse transfers once. This plant ledger is not the delivered-cohort burden numerator A_i; do not normalize it or omit undelivered stocks to force closure. Track C/Si/H/O and any actual additives by composition, and independently support each real species/reaction-water term and physical moisture/phase change. Do not fit two unknowns to one residual."
+      inputs:
+        - cp_dispatch
+        - cp_material
+        - cp_water
+        - cp_pack
+        - cp_output
+        - cp_emission
+      output: "physical_ledger"
+      source_ids:
+        - wacker-silicone-processing
+    - id: package_closure
+      applies_to: "all inventory rows"
+      rule: "For each specific packaging article, opening unused/reused/FG-attached stock + actual receipts/returns = closing unused/reused/FG-attached stock + actual mass accompanying deliveries + actual external supplier/reuse returns + wastes/losses. Track liners and cores separately and internal repeated use without new procurement. Outgoing packaging is a physical Product output even when it is part of the tube delivery function; it never enters net tube Q or creates a second purchase."
+      inputs:
+        - cp_pack
+        - cp_dispatch
+      output: "packaging_ledger"
+      source_ids: []
+    - id: asset_manufacture_share
+      applies_to: "existing capital/reusable manufacture attribution"
+      rule: "For each included original asset manufacture vector B, f_current = u_current / D only after the persistent ledger verifies the supported whole installed-service denominator, all beneficiaries and prior assigned shares. Attribute f_current * B once to the actual beneficiary before the existing single reference normalization. Check prior_shares + all current/new beneficiary shares <= 1; carry the remaining original balance. Capacity revisions reconcile the historical ledger. Full physical asset/packaging mass and actual gross stocks/returns never receive f_current. Unknown D or history leaves the final attributed result unavailable, without suppressing actual repair/replacement/service burdens."
+      inputs:
+        - asset_id
+        - original_B
+        - u_current
+        - D
+        - historical_beneficiaries
+        - prior_shares
+        - capacity_evidence
+      output: "conserved attributed manufacture vector"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Confirm actual whole formulations, solid VMQ/addition route, no reinforcement/fittings and native restrictions in every applicable card; match supplier backgrounds independently."
+      evidence: "supplier certificates and direct identities"
+    - id: quality_period
+      applies_to: "all inventory rows"
+      requirement: "Complete raw period and delivered cohort must include failure, rework, return and WIP/FG carryover quantities/burdens with unique Q. Missing carryover cannot be silently set to zero."
+      evidence: "calibrated weighing, warehouse and burden ledgers"
+    - id: quality_method
+      applies_to: "all inventory rows"
+      requirement: "No default recipe, cycle, fixed loss, density, pressure/performance, life, volatile factor or economic share is established. Retain raw measures and uncertainty; actual additional exchanges need atomic expansion before quantitative use."
+      evidence: "actual process records, tests and source conditions"
+    - id: quality_sources
+      applies_to: "all inventory rows"
+      requirement: "Keep technical mechanism/capability evidence separate from independent LCA allocation evidence and factory measurements. Industrial sources support a bounded technical synthesis, not a claim that one manufacturer uses the other supplier grade."
+      evidence: "source conditions and actual foreground evidence"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "all inventory rows"
+    rule: "Reject hard/uncured/thermoplastic or other-base tubing, reinforced/multilayer/assembled fitting products and mere finished-hose assembly as this reference. Confirm the actual grade, layer and net delivered coil configuration; broader native UUID does not expand applicability."
+    source_ids:
+      - wacker-silicone-processing
+      - reiss-silicone-extrusion
+      - advantapure-apst-coils
+  - rule_id: validate_reference
+    applies_to: "all inventory rows"
+    rule: "Reference link product selects the unique actual terminal Product output, agreeing with its UUID in both languages. Returns and saleable off-grade tubing retain their real shared UUID and distinct physical roles; neither is hidden or added to Q. Verify net measured mass/length conversion, positive Q, separate release P, matched stock/burden carryover and one report_once."
+    source_ids:
+      - reiss-silicone-extrusion
+  - rule_id: validate_completeness
+    applies_to: "all inventory rows"
+    rule: "Reconcile complete physical, formulation/water and packaging ledgers independently of attributed LCA numerators; include every real Product/utility return/packaging exit, waste and measured species. Preserve real failed/zero-output/rework/storage/handling burdens and distinguish internal transfers. No COD, secondary property factor or closure residual establishes unknown density, species or reaction water."
+    source_ids:
+      - wacker-silicone-processing
+  - rule_id: validate_allocation
+    applies_to: "all inventory rows"
+    rule: "Audit exchange-specific determining causality and virtual subdivision first; only justified residual burdens may receive same-exit-state market-value allocation. Reconcile all allocated inventories to the original and preserve price/condition and sensitivity evidence."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_asset_manufacture_conservation
+    applies_to: "existing capital/reusable manufacture attribution"
+    rule: "For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Use as an upstream manufacturing-and-dispatch dataset for the exact declared bare silicone coil supply configuration after foreground completion and review"
+  allowed_use: "Mass-based supply with declared grade, dimensions, state, actual gate, applicable native identity and complete inventory; functional comparison only with independent performance/service evidence"
+  excluded_use: "All-hose averages, fittings/assemblies, TPU, other elastomers, reinforcement, sterile/medical certification, lifetime predictions or default recipes/factors"
+  required_metadata: "Every reference qualifier; protocol owners; un-divided raw inputs; distinct P and Q; WIP/FG and carried burdens; whole formulations and water; actual packaging/exits; site/provider and native limits"
+  required_quality_disclosure: "Measurement, period completeness, uncertainty, actual not_applicable reasons, auxiliary UUID/provider gaps, native film classification debt and any unresolved stock/species relationship; methodology scientific review remains pending"
+  update_trigger: "Changed base/catalyst, cure/heat route, layers, supplier, geometry, fitting/coil state, packaging, boundary gate, performance evidence, emission species or stock accounting"
+data_sources:
+  - id: "wacker-silicone-processing"
+    type: "handbook"
+    reference: "Wacker Chemie AG, Solid and Liquid Silicone Rubber — Material and Processing Guidelines, sections 1.3/1.4, 4.3, 5.2, 6.1, pp. 10,13,37,41,45-46,66. https://www.wacker.com/h/medias/6709-EN.pdf"
+    used_for: "Industrial addition-cure chemistry, whole compound/catalyst route, extrusion/atmospheric thermal cure and conditional post-cure. Technical examples, not a universal formulation, process setting, performance/life, activity value or LCA allocation rule."
+  - id: "reiss-silicone-extrusion"
+    type: "literature"
+    reference: "Reiss Manufacturing, Silicone Rubber Extrusions, capability and FAQ page. https://reissmfg.com/extrusion/"
+    used_for: "Independent industrial VMQ solid/platinum extrusion, actual tubing and cut/coil/spool/package capabilities. Use only the unreinforced bare-coil solid subset; source does not identify a Wacker recipe, fixed layer/SKU, acceptance limit or lifetime."
+  - id: "ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook — General guide for Life Cycle Assessment — Detailed guidance, first edition March 2010, complete 7.9.2/7.9.3, printed pp. 255-272 (PDF 275-292). https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional decision context, subdivision/virtual subdivision, exchange-specific determining physical causality, only residual same-process-exit-condition market values, consistency and 100 percent rule. No fixed economic shares, avoided credits or full PEF claim."
+  - id: "advantapure-apst-coils"
+    type: "handbook"
+    reference: "NewAge Industries AdvantaPure, AdvantaSil APST Unreinforced Tubing technical sheet, 2/3/21, pp. 1-3. https://www.advantapure.com/wp-content/uploads/2022/03/AdvantaSil_APST_Silicone_Tubing-1.pdf"
+    used_for: "Real unreinforced platinum-cured single-wall coil supply, geometry and packaging endpoint, distinguished from spools and fitting assemblies. Structure/supply evidence only, not a WACKER recipe, Reiss production, universal pressure/temperature/life or certification; verify bag polymer separately and retain actual controlled-room loads."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:486dd077a16d34d7cc74b79a824909a4d7c07620e491e88819957934bd08fb38"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7784"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7784
+          line: 62
+          column: 1
+        end:
+          offset: 10731
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased solid HCR base and catalyst paste received at the manufacturing site; actual utilities, cleaning and packaging supplies |\n| starting_condition_role | material_inputs |\n| product_classification_scope | Only the section 1 silicone-tube subset of CPC 3.0:36230 |\n| recursive_input_rule | Purchased finished tubing is separately disclosed as a foreground input, never a replacement for compounding/extrusion/cure. Internal recycles cancel on consolidation and retain burdens. Customer returns retain linked prior history. |\n| upstream_dataset_requirement | Use actual compatible supplied formulation, catalyst, utility and packaging backgrounds; this cradle-to-dispatch foreground starts after their production without deleting upstream burdens. UUID identity is not a background inventory. |\n| disclosure | Disclose site, period, actual supply origins, formulation grade, stage meters, electric tunnel, actual post-curing, packaging, stocks, returns, failed runs/rework, included storage/handling and outsourced operations |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | all inventory rows | Include receipt/storage, catalyst incorporation/milling/straining, screw extrusion, atmospheric electric thermal cure, cooling, actual post-cure/finishing, dimensional/cure/defect inspection and actual coiling/packing, finished storage and factory dispatch. Keep stage records although represented by one integrated process. Do not model connector assembly from purchased finished hose as this manufacturing route. | wacker-silicone-processing; reiss-silicone-extrusion; advantapure-apst-coils |\n| boundary_actual | all inventory rows | The cards identify concrete collection exchanges, not a common recipe. Before quantitative data use add each actual pigment, reinforcement, release agent, cleaner, fuel, compressed-air supply, refrigerant, packaging core, waste, utility export and detected emission as its own atomic card with evidence; a changed base/structure/cure outside scope requires new applicability review. Demonstrably absent options may be not_applicable; UUID gaps cannot remove real burdens. | wacker-silicone-processing |\n| boundary_stock | all inventory rows | Maintain separate raw-material, WIP, production-release, finished-warehouse and dispatch ledgers. Manufacturing release P and dispatched Q are independently measured; opening finished stock + release receipts + actual returned stock = dispatch transfers + closing stock + actual losses. For this net-delivery reference retain opening/closing WIP and finished-stock quantities, compositions and carried upstream burdens; allocate actual warehouse/rework/packing/handling to the matched delivered cohort and carry undelivered burdens forward. Cancel internal handoffs exactly once. | reiss-silicone-extrusion |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 315
+              line: 10
+              column: 1
+            end:
+              offset: 391
+              line: 10
+              column: 77
+          text: "# Unreinforced platinum-addition-cured solid silicone rubber tubing in coils"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7784
+              line: 62
+              column: 1
+            end:
+              offset: 7805
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_38317"
+      family: "allocation"
+      span:
+        start:
+          offset: 38317
+          line: 572
+          column: 1
+        end:
+          offset: 43262
+          line: 582
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | all inventory rows | This is attributional foreground accounting. Establish the study decision context and justify why subdivision, virtual subdivision and where applicable substitution/system expansion cannot avoid allocation under ILCD 2010 7.9.2/7.9.3. These are not freely interchangeable options and do not assert full ILCD/PEF conformance. | ilcd-allocation-2010 |\n| allocation_causality | all inventory rows | Directly assign lot materials and dedicated meters; use virtual subdivision and determining physical causality separately for each exchange before residual allocation. Justify each shared service driver from its actual function: e.g. measured line occupation/time and load for tunnel duty or occupied space times storage duration when causally determining. Equal mass shares are not a universal rule and mere correlation is insufficient. Preserve startup, failure, zero-output, rejects and rework burdens within the cohort that caused them. | ilcd-allocation-2010 |\n| allocation_residual | all inventory rows | Only remaining burdens without an identifiable determining physical relation use justified relative market values of real co-functions in their actual condition/quantity at the same joint-process exit gate. Document actual amounts, time-representative prices, grade and conditioning/transport/packaging adjustments; delivered retail prices must not stand for raw off-grade exit value. Retain uncertainty/sensitivity and the 100 percent inventory reconciliation. Do not assign one economic share to already directly assigned exchanges. | ilcd-allocation-2010 |\n| allocation_loss | all inventory rows | Saleable off-grade tubing, actual waste for treatment, utility returns and customer returns have different physical and accounting roles. Determine actual destination/value and preserve outgoing quantities independently; no fixed recovery share, avoided-product credit or arbitrary negative inventory is authorized. Internal uncured reuse retains carried burdens and actual reuse energy/loss, without a second purchase or product output. | ilcd-allocation-2010 |\n| asset_manufacture_conservation | existing capital/reusable manufacture attribution | Within the applicable allocation decision context, original manufacture burden attributed across uses of actual capital equipment or reusable articles already included in foreground production, packaging or observed services uses one persistent same-asset ledger across all crops, products, cohorts, manufacturing/postrelease services, owners and observation periods. D is its supported whole installed service: all realized historical service plus supported remaining service in the same units as actual beneficiary use u; D must be finite and positive. Period capacity, remaining-only capacity, the physical asset/article mass alone, or current-period product Q alone is not D; supported whole-service throughput in mass units may be used when it demonstrates the causal service and matches u. This does not amortize the manufactured reference product over downstream life or change its declared reference gate/Q. The fractions u/D and all previously assigned manufacture shares together must never exceed 1. Changes of window, custody, provider or repair never restart the original manufacture balance. Replacements have distinct identities and only their real new manufacture vectors; actual repair and treatment increments remain separately accounted. Revised capacity evidence requires transparent reconciliation of prior shares and sensitivity, not a fresh ledger. Keep full physical mass and stock movements independent of burden shares. Unknown D, prior shares or beneficiary coverage requires review and no final manufacture-attributed amount; no assumed lifetime, utilization, zero or arbitrary division is permitted. For each existing collection protocol that attributes manufacture of included production, packaging or observed-service assets across uses in this route (excluding amortization of the manufactured reference product itself), additionally retain a durable asset identity, its measured full physical mass and acquisition/installation/retirement stock history, original manufacture burden vector, all historical and current beneficiaries, matched-unit service readings, the evidenced whole installed-service denominator D, supported remaining-service basis and uncertainty, prior assigned shares and remaining original manufacture balance. Carry the ledger across reporting windows and custody/provider changes. Collect actual repair, replacement, recovery and treatment separately; these records do not normalize physical movements or create an additional asset purchase. These are added fields and conservation obligations for the existing applicable protocols, not a new assumed capital inventory. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 315
+              line: 10
+              column: 1
+            end:
+              offset: 391
+              line: 10
+              column: 77
+          text: "# Unreinforced platinum-addition-cured solid silicone rubber tubing in coils"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 38317
+              line: 572
+              column: 1
+            end:
+              offset: 38357
+              line: 572
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_59316"
+      family: "validation"
+      span:
+        start:
+          offset: 59316
+          line: 620
+          column: 1
+        end:
+          offset: 61811
+          line: 630
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | all inventory rows | Reject hard/uncured/thermoplastic or other-base tubing, reinforced/multilayer/assembled fitting products and mere finished-hose assembly as this reference. Confirm the actual grade, layer and net delivered coil configuration; broader native UUID does not expand applicability. | wacker-silicone-processing; reiss-silicone-extrusion; advantapure-apst-coils |\n| validate_reference | all inventory rows | Reference link product selects the unique actual terminal Product output, agreeing with its UUID in both languages. Returns and saleable off-grade tubing retain their real shared UUID and distinct physical roles; neither is hidden or added to Q. Verify net measured mass/length conversion, positive Q, separate release P, matched stock/burden carryover and one report_once. | reiss-silicone-extrusion |\n| validate_completeness | all inventory rows | Reconcile complete physical, formulation/water and packaging ledgers independently of attributed LCA numerators; include every real Product/utility return/packaging exit, waste and measured species. Preserve real failed/zero-output/rework/storage/handling burdens and distinguish internal transfers. No COD, secondary property factor or closure residual establishes unknown density, species or reaction water. | wacker-silicone-processing |\n| validate_allocation | all inventory rows | Audit exchange-specific determining causality and virtual subdivision first; only justified residual burdens may receive same-exit-state market-value allocation. Reconcile all allocated inventories to the original and preserve price/condition and sensitivity evidence. | ilcd-allocation-2010 |\n| validate_asset_manufacture_conservation | existing capital/reusable manufacture attribution | For every included capital/reusable manufacture attribution verify same-asset continuity, whole installed service in matched units, all historical/current beneficiaries, prior assigned manufacture shares and cumulative share <= 1. Reject a reset by period, cohort, provider, owner or repair. Check distinct real replacement and incremental repair/treatment vectors separately and preserve gross physical mass. A missing denominator, unexplained previous allocation or incomplete beneficiary ledger requires explicit review and an unavailable final attributed amount; structural inspection cannot claim empirical completeness. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 315
+              line: 10
+              column: 1
+            end:
+              offset: 391
+              line: 10
+              column: 77
+          text: "# Unreinforced platinum-addition-cured solid silicone rubber tubing in coils"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 59316
+              line: 620
+              column: 1
+            end:
+              offset: 59338
+              line: 620
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7784"
+      source_span:
+        start:
+          offset: 9001
+          line: 77
+          column: 1
+        end:
+          offset: 9536
+          line: 77
+          column: 536
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_7784"
+      source_span:
+        start:
+          offset: 9537
+          line: 78
+          column: 1
+        end:
+          offset: 10080
+          line: 78
+          column: 544
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_7784"
+      source_span:
+        start:
+          offset: 10081
+          line: 79
+          column: 1
+        end:
+          offset: 10729
+          line: 79
+          column: 649
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_38317"
+      source_span:
+        start:
+          offset: 38430
+          line: 576
+          column: 1
+        end:
+          offset: 38821
+          line: 576
+          column: 392
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_38317"
+      source_span:
+        start:
+          offset: 38822
+          line: 577
+          column: 1
+        end:
+          offset: 39433
+          line: 577
+          column: 612
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_38317"
+      source_span:
+        start:
+          offset: 39434
+          line: 578
+          column: 1
+        end:
+          offset: 40038
+          line: 578
+          column: 605
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_loss"
+      identity_kind: "explicit"
+      unit_id: "normative_38317"
+      source_span:
+        start:
+          offset: 40039
+          line: 579
+          column: 1
+        end:
+          offset: 40542
+          line: 579
+          column: 504
+    - pointer: "/allocation_rules/4"
+      rule_id: "asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_38317"
+      source_span:
+        start:
+          offset: 40543
+          line: 580
+          column: 1
+        end:
+          offset: 43260
+          line: 580
+          column: 2718
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_59316"
+      source_span:
+        start:
+          offset: 59411
+          line: 624
+          column: 1
+        end:
+          offset: 59808
+          line: 624
+          column: 398
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_59316"
+      source_span:
+        start:
+          offset: 59809
+          line: 625
+          column: 1
+        end:
+          offset: 60255
+          line: 625
+          column: 447
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_59316"
+      source_span:
+        start:
+          offset: 60256
+          line: 626
+          column: 1
+        end:
+          offset: 60743
+          line: 626
+          column: 488
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_59316"
+      source_span:
+        start:
+          offset: 60744
+          line: 627
+          column: 1
+        end:
+          offset: 61082
+          line: 627
+          column: 339
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_asset_manufacture_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_59316"
+      source_span:
+        start:
+          offset: 61083
+          line: 628
+          column: 1
+        end:
+          offset: 61809
+          line: 628
+          column: 727
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7784"
+      source_span:
+        start:
+          offset: 7784
+          line: 62
+          column: 1
+        end:
+          offset: 7805
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7784"
+      source_span:
+        start:
+          offset: 7833
+          line: 66
+          column: 1
+        end:
+          offset: 8928
+          line: 73
+          column: 233
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_38317"
+      source_span:
+        start:
+          offset: 38317
+          line: 572
+          column: 1
+        end:
+          offset: 38357
+          line: 572
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_59316"
+      source_span:
+        start:
+          offset: 59316
+          line: 620
+          column: 1
+        end:
+          offset: 59338
+          line: 620
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:486dd077a16d34d7cc74b79a824909a4d7c07620e491e88819957934bd08fb38"
+  generated_content_sha256: "sha256:a2399aba2a387ff4c2d9af7737d0be12ad744b6223a5404e63ffed81804b9a30"

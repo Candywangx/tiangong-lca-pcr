@@ -1,5 +1,6 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
+  "rubber-and-plastics-products": "橡胶和塑料制品",
   "agriculture-forestry-and-fishery-products": "农业、林业和渔业产品",
   "audio-original-assets": "录音原作资产",
   "basic-chemicals": "基础化学品",
