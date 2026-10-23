@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: a9f51c65192ca26a52cc1e8428e40b860a9a2dcf
-lastReviewedNote: "PCR #141: reviewed bounded filename/content-digest React keys for generated downloads after exact 1457-record export analysis identified avoidable inline-URI key duplication. Existing constructors and 3334 rendered lists have no sibling-key collisions. Native hrefs, filenames, hashes, no-JavaScript downloads, artifact ordering, 16/80 KiB eligibility, complete HTML/RSC/source content and all budgets are unchanged. Eight existing SSR checks and the site TypeScript project pass. Storage savings remain a forecast until a fresh complete build; provider admission, complete hosted qualification, workspace integration and publication remain pending. PCR #143 composition preserves its 57 additional candidates and the reviewed incoming runtime/canonical bytes; exact-source full CI and PR138-first ordering remain required. PCR #142 preserves all 1457 material records, 1306 accepted edges, 1647 aliases and complete reviewed runtime. Fresh actual storage/file/search/memory and hosted qualification remain required; no native framework output is rewritten."
+lastReviewedCommit: 1d8bc3f9
+lastReviewedNote: "PCR #146: reviewed product 0.4.8 preparation and all three private package mirrors plus site lock root metadata. The composed 1457-record source and dependency resolutions, Node 24.19.0/npm 12.2.0, minimum reader 0.4.1, candidate methodology and immutable PCR history remain unchanged. Five existing product-identity tests and direct mirror validation pass. All six original source PRs must merge before release preparation merges; fresh release-source hosted qualification, exact workspace inclusion and coordinated stable publication remain pending."
 ---
 
 # TianGong LCA PCR Library

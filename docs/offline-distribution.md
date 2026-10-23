@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
-lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: 1d8bc3f9
+lastReviewedNote: "PCR #146: reviewed product 0.4.8 preparation and all three private package mirrors plus site lock root metadata. The composed 1457-record source and dependency resolutions, Node 24.19.0/npm 12.2.0, minimum reader 0.4.1, candidate methodology and immutable PCR history remain unchanged. Five existing product-identity tests and direct mirror validation pass. All six original source PRs must merge before release preparation merges; fresh release-source hosted qualification, exact workspace inclusion and coordinated stable publication remain pending."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
