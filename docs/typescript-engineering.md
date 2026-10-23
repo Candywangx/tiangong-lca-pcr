@@ -203,8 +203,14 @@ the run. Collect only from a frozen clean checkout. `test:coverage` requires fre
 results without claiming threshold success; `report` enforces the gates. Keep raw
 V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 
-PR and formal release qualification build one sealed product bundle in the
-documentation job. Four platform jobs download that same immutable artifact ID,
+PR and formal release qualification run the complete instrumented export in the
+documentation job. Its successful export is handed to a separate required product
+job through an exact artifact ID and a source/run/attempt-bound checkpoint of every
+path, byte count and SHA-256. Full mode also binds the current qualification ID,
+plan hash and successful unchanged full-build coverage command. The product job
+verifies the complete checkpoint before SEO and sealing; it builds no second website.
+Both jobs retain 60-minute limits. The intermediate export is not a release artifact.
+The product job creates the one sealed bundle. Four platform jobs download that same immutable artifact ID,
 verify its identity and checksums, install both tarballs with an empty cache and
 no network, then execute compiled bins with type stripping disabled against the
 pinned SQLite. A separate job extracts the same sealed web archive and runs the
@@ -289,6 +295,16 @@ real website and sealed tool/SQLite/web product from the current source, run SEO
 verification, install the exact seal on all four platforms and qualify its
 extracted web bytes in the three-browser desktop/mobile matrix. These checks
 retain scientific, translation and immutable-history boundaries.
+
+The aggregate requires the product job in both lanes, and every sealed consumer
+and reusable publication output references that job's sole final artifact ID.
+The documentation coverage artifact and exact complete-build command remain
+unchanged; source coverage may run while product sealing proceeds. Intermediate
+export transfer preserves hidden files and checks complete sorted file membership,
+identity and hashes before any existing canonical hosting transformation. Missing,
+extra, changed, stale-attempt or foreign-source files fail the handoff. A fresh
+complete run is required after a failed qualification; partial passing artifacts
+do not replace current-attempt receipts.
 
 The data lane omits full code-test/coverage qualification and reports
 `not-measured-data-only-lane`. It does not claim a passing full source coverage

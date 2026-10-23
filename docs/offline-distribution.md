@@ -279,8 +279,12 @@ the unified source or move any existing tag.
 environment. It binds canonical owner/repository IDs, tag/event/workflow/checkout
 SHAs and `main` ancestry. Its reusable qualification workflow runs complete Linux
 validation, documentation/source/SEO checks and offline distribution on Linux,
-Windows and macOS. The documentation job builds the website once and seals the
-two npm packages and web archive from the same source. The publish job downloads
+Windows and macOS. The documentation job builds and verifies the website once.
+A source/run/attempt-bound complete-file checkpoint transfers that exact export
+by artifact ID to the required product job, which verifies it before SEO and
+sealing the two npm packages and web archive from the same source. The intermediate
+export cannot be published. All sealed consumers and the reusable workflow output
+select the product job's one final bundle. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.
 
