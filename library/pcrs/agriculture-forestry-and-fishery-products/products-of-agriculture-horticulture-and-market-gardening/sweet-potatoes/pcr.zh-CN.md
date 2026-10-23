@@ -37,7 +37,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Sweet potatoes |
+| Reference product flow | 甘薯 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -651,7 +651,7 @@ sync_with: pcr.en-US.md
 
 Sweet potatoes `03d4145f-cc49-4e7b-8c45-d6ce90a90057`仅在声明条件下跨越该过程边界。
 
-- 选定流：Sweet potatoes `03d4145f-cc49-4e7b-8c45-d6ce90a90057`
+- 选定流：甘薯 `03d4145f-cc49-4e7b-8c45-d6ce90a90057`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 身份状态：fixed: detail-confirmed CPC 01530 Product flow with Mass at farm gate
 原始产出计量与核对要求：与声明的过程事件和去向关联的测量值或计算值

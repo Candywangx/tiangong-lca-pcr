@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Pigeon peas, dry |
+| 参考产品流 | 干木豆 |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -858,7 +858,9 @@ Record damaged or contaminated grain, foreign matter, dust and physical loss. As
 
 该合格参考产出排除所有未解决的拒收物和降级品。
 
-- 选定流： Pigeon peas, dry `6cac6f0d-9d09-4685-86f5-e1cc1ac94511`
+平台中文显示名“豌豆（干）”对应本卡英文“Pigeon peas, dry”及既有 UUID；本 PCR 的木豆身份保持不变，不得以其他豌豆流替换。
+
+- 选定流： 豌豆（干） `6cac6f0d-9d09-4685-86f5-e1cc1ac94511`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：exactly the accepted as-delivered reference mass with measured moisture
 

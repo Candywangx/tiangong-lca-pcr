@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Plants or plant parts for declared perfumery, pharmacy, insecticidal, fungicidal or similar use |
+| Reference product flow | 用于声明香料、药用、杀虫、杀菌或类似用途的植物或植物部分 |
 | 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -256,7 +256,7 @@ sync_with: pcr.en-US.md
 
 记录实际作物周期的栽培面积乘以占用时长；区分实质不同的土地利用分层。
 
-- 选定流: agriculture `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- 选定流: 农业用地占用 `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
 - 流属性/单位: Area*time / ha*a
 - 数量规则: cultivated area multiplied by occupation duration
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -313,7 +313,7 @@ sync_with: pcr.en-US.md
 
 使用声明的 IPCC 层级和因子，根据采集的氮活动数据计算管理土壤直接 N2O。
 
-- 选定流: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流: 一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位: Mass / kg N2O
 - 数量规则: calculated direct N2O emitted to air
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -338,7 +338,7 @@ sync_with: pcr.en-US.md
 
 按氮源和施用事件记录或计算 NH3 挥发，并保留所用氮基准或物质基准。
 
-- 选定流: ammonia `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流: 氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位: Mass / kg NH3
 - 数量规则: measured or calculated NH3 emitted to air
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -751,7 +751,7 @@ sync_with: pcr.en-US.md
 
 根据进出物料质量和含水率测量计算初级干燥去除的水分；鲜品交付路线记录为零。
 
-- 选定流: water vapour `fe0acd60-3ddc-11dd-ac04-0050c2490048`
+- 选定流: 水蒸气 `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位: Mass / kg water
 - 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式: 计算值 (`calculated_value`)
