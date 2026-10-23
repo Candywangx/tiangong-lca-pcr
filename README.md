@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: 00745562507dbe047c350333e4869251fd3d3043
-lastReviewedNote: "PCR #141: reviewed lossless v5 physical search packs of at most 16 original v4 logical shards, source/byte/hash validation, atomic retry and physical-asset-plus-manifest accounting under unchanged 20 MB / 4 MB budgets. 217 docs tests, 11 strict projects / 425 authored files and six bounded real Chromium/Firefox/WebKit Worker cases pass. Replay restores all 86 captured aaf4 logical wires, native entries and complete records exactly. Final name-corrected full-corpus generation, Next export, resource/file limits, sealed-product and hosted qualification remain pending; no canonical methodology, ranking, logical partition, approval, dependencies or production state changed."
+lastReviewedCommit: 155f03b0b7ef4fb850e30b2d3468669d24616c04
+lastReviewedNote: "PCR #141: reviewed bounded filename/content-digest React keys for generated downloads after exact 1457-record export analysis identified avoidable inline-URI key duplication. Existing constructors and 3334 rendered lists have no sibling-key collisions. Native hrefs, filenames, hashes, no-JavaScript downloads, artifact ordering, 16/80 KiB eligibility, complete HTML/RSC/source content and all budgets are unchanged. Eight existing SSR checks and the site TypeScript project pass. Storage savings remain a forecast until a fresh complete build; provider admission, complete hosted qualification, workspace integration and publication remain pending."
 ---
 
 # TianGong LCA PCR Library
