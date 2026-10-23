@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createContentHighlighter } from 'fumadocs-core/search';
 import {
   SearchDialog as SearchDialogPrimitive,
   SearchDialogClose,
@@ -66,13 +65,13 @@ const messages = {
   },
 };
 
-function toItems(results: SearchResult[], query: string): SearchItemType[] {
-  const highlighter = createContentHighlighter(query);
+function toItems(results: SearchResult[]): SearchItemType[] {
   return results.map((result) => ({
     type: 'page' as const,
     id: result.id,
     url: result.url,
-    content: highlighter.highlightMarkdown(result.content),
+    // Titles are plain text; Fumadocs highlights the rendered query matches.
+    content: result.content,
     description: result.description,
     breadcrumbs: result.breadcrumbs,
   })) satisfies SearchItemType[];
@@ -117,7 +116,7 @@ export default function SearchDialog({
       searchDocuments(value, language, current.signal)
         .then((results) => {
           if (current.signal.aborted) return;
-          setState({ kind: 'ready', items: toItems(results.slice(0, MAX_RESULTS), value) });
+          setState({ kind: 'ready', items: toItems(results.slice(0, MAX_RESULTS)) });
         })
         .catch((error: unknown) => {
           if ((error as Error)?.name === 'AbortError' || current.signal.aborted) return;
