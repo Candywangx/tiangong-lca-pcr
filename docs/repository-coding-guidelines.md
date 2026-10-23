@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: 1024c5e95110392bc0828967b89a262723328b79
-lastReviewedNote: "PCR #145 / PR #136: reviewed Fumadocs core/UI 16.17.7 and Zod 4.6.7, literal search-title rendering and semantic listbox-option acceptance with emitted Worker, keyboard selection and navigation checks. All 11 strict projects / 415 authored files and 86 focused tests pass; synthetic browser proof does not replace complete hosted corpus, coverage, sealed-web or release qualification. Runtime and methodology/publication contracts remain in force. PCR #144 / PR #135: reviewed latest compatible @types/node 24.19.2 and npm 12.2.0 lock regeneration against pinned Node 24.19.0. All 11 strict projects / 415 authored files, release-runtime preflight and four runtime tests pass on macOS ARM64; full hosted Linux, corpus, coverage, browser and sealed-product qualification remain required. Canonical methodology, publication and runtime pins retain their existing contracts. These separately reviewed changes are composed for qualification; PR #135 must merge before PR #136."
+lastReviewedCommit: 46e1291309f7ed5596b1e295cecffd302628714c
+lastReviewedNote: "PCR #141: reviewed the complete 213-record content repair and 1191-edge classification union with merged dependency repairs, lossless download/inspector transport, bounded build resources and search v5. The physical dictionary envelopes retain original logical indexes, native entries, full records and all query/legacy-reader semantics under unchanged budgets. Independent content/localization and runtime review are complete; focused, strict and bounded browser checks do not substitute for fresh complete hosted corpus/site/coverage qualification. Final 1457-record combined capacity measurement, PR138-before-PR139-before-PR137 ordering, workspace integration and stable publication remain pending. Scientific and translation lifecycle states are not promoted."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
