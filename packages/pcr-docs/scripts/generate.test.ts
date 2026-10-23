@@ -1,3 +1,6 @@
+import {readSearchManifest,unpackSearchFile} from "../lib/search-pack.ts";
+import {parseGenerationReport} from "./generation-report.ts";
+import {verifySearchAssets} from "./search-assets.ts";
 import {decodeInlineDownloadUrl} from "./raw-download.ts";
 import {decodeRecordData} from "../lib/record-data.ts";
 import {decodeSearchEntries} from "../lib/search-wire.ts";
@@ -38,7 +41,7 @@ import { parseYaml, renderYaml } from "../../pcr-core/src/yaml-lite.ts";
 const script = fileURLToPath(new URL("./generate.ts", import.meta.url));
 const hash = (bytes: string | Uint8Array) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
-test("real generator preserves multilingual released snapshots and excludes open revision bodies", () => {
+test("real generator preserves multilingual released snapshots and excludes open revision bodies", async () => {
   const temporary = fs.mkdtempSync(path.join(tmpdir(), "pcr-site-history-")),
     root = path.join(temporary, "source"),
     output = path.join(temporary, "output");
@@ -226,18 +229,17 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 4, "new indexes use lossless bounded score masks and posting deltas");
+      assert.equal(search.schemaVersion, 5, "physical packs preserve independent v4 logical indexes");
       assert.equal(search.language, language);
-      assert.ok(Array.isArray(search.shards) && search.shards.length > 0);
-      for (const shard of search.shards) {
-        assert.ok(isUnknownRecord(shard) && typeof shard.url === "string");
-        const data: unknown = JSON.parse(fs.readFileSync(path.join(output, "public", shard.url), "utf8"));
-        assert.ok(isUnknownRecord(data) && isUnknownRecord(data.entries));
-        assert.ok(Object.values(data.entries).length > 0);
-        assert.ok(Object.values(data.entries).every(Array.isArray), "exports must not be nested JSON strings");
+      const packed=readSearchManifest(search,language);
+      assert.ok(packed.files.length > 0);
+      for(const file of packed.files){
+       const members=await unpackSearchFile(packed,file,fs.readFileSync(path.join(output,"public",file.url)),hash);
+       for(const data of members){
         const index = new Index({tokenize: "strict", encode: (value: unknown) => searchTerms(value, language)});
         for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 4, data.scoreMasks, data.postingDeltas, data.columnarMaps))) index.import(key, JSON.stringify(payload));
-        assert.ok(index.search("wheat", {limit: 30}).length > 0, "Generated v4 exports remain readable by the pinned engine");
+        assert.ok(index.search("wheat", {limit: 30}).length > 0, "Restored logical exports remain readable by the pinned engine");
+       }
       }
       const currentPages = recordPages(site, site.records[0]!, language);
       assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);
@@ -288,6 +290,8 @@ test("real generator preserves multilingual released snapshots and excludes open
         .filter((page) => page.kind === "catalog" && page.language === "de-DE")
         .every((page) => !page.indexable),
     );
+    const searchReport=parseGenerationReport(fs.readFileSync(path.join(output,".generated/report.json"),"utf8"));
+    await verifySearchAssets(path.join(output,"public"),searchReport.sourceCommit,searchReport.search);
     const report = parseReport(
       fs.readFileSync(path.join(output, ".generated/report.json")),
     );

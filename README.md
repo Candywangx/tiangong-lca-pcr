@@ -327,7 +327,7 @@ npm run docs:build
 ```
 
 `docs:build` generates the full library, builds Next.js, then checks exported text,
-source blocks, original-download hashes, routes, SEO and provider file limits,
+source blocks, original-download hashes, source-bound search transport, routes, SEO and provider file limits,
 and reports the export's total bytes and artifact composition. There is no fixed
 aggregate-byte build cap; deployment capacity is checked against actual hosting
 storage and retention. Use
