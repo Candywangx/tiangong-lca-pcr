@@ -297,7 +297,7 @@ sync_with: pcr.en-US.md
 
 按区块、品种组、作物年度及含水率基准，记录采收损失和加工发生之前的咖啡樱桃产量。这是中间产出，不是 PCR 参考流。
 
-- 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
+- 选定流：植株上的采收前新鲜咖啡樱桃
 - 流属性/单位：质量 / kg fresh cherries
 - 数量规则：按区块和作物年度称量或透明估算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -347,6 +347,8 @@ sync_with: pcr.en-US.md
 ###### 可收集咖啡樱桃（`coffee_cherry_harvest_input`）
 
 记录从声明咖啡林分接收的樱桃批次，保留区块、作物年度、成熟度和含水率信息。
+
+此 UUID 仅适用于已采收、称重并接收以供收集的新鲜咖啡樱桃批次，不表示植株上采收前的樱桃总量。
 
 - 选定流：Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - 流属性/单位：质量 / kg fresh cherries

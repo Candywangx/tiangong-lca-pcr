@@ -298,7 +298,7 @@ Raw activity or stage basis: per 1 kg green coffee at gate.
 
 Record coffee cherry production by block, cultivar group, crop year and moisture basis before harvest losses and processing. This is an intermediate output, not the PCR reference flow.
 
-- Selected flow: Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
+- Selected flow: Fresh preharvest coffee cherries on plants [unmapped]
 - Flow property / unit: Mass / kg fresh cherries
 - Amount rule: weighed or transparently estimated crop output by block and crop year
 - Value mode: Foreground record (`foreground_record`)
@@ -349,6 +349,8 @@ No universal numeric bound is established by the cited balance identity or metho
 ###### Coffee cherries available for collection (`coffee_cherry_harvest_input`)
 
 Record the cherry lot received from the declared coffee stand and retain block, crop year, maturity and moisture information.
+
+This UUID applies only to freshly harvested, weighed cherry lots received for collection; it does not identify the gross preharvest cherries on plants.
 
 - Selected flow: Coffee cherries, harvested (fresh) `d1d6496d-2d4e-4ccc-b529-aa50bc82da44`
 - Flow property / unit: Mass / kg fresh cherries
