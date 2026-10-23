@@ -10,6 +10,7 @@ import { readCurrentQualificationPlan } from './qualification-plan.ts';
 import { assertCoverageQualificationBinding, qualificationBinding, type CoverageQualificationBinding } from './coverage-qualification.ts';
 import { inventory } from './coverage-inventory.ts';
 import { config, hash } from './coverage-types.ts';
+import { verifyStaticRouteAliases } from '../../packages/pcr-docs/scripts/static-route-aliases.ts';
 
 interface ExportFile { path: string; bytes: number; sha256: string }
 interface Context {
@@ -22,7 +23,7 @@ export interface WebExportCheckpoint {
   context: Context; build: Record<string, unknown>; coverage: Record<string, unknown> | null;
   tree: ExportTree;
 }
-const commands = ['scripts/generate.ts', 'node_modules/next/dist/bin/next build', 'scripts/verify.ts'];
+const commands = ['scripts/generate.ts', 'node_modules/next/dist/bin/next build', 'scripts/static-route-aliases.ts', 'scripts/verify.ts'];
 const documentationCommand = ['npm', '--prefix', 'packages/pcr-docs', 'run', 'build'];
 const metadataBytes = 32 * 1024 * 1024;
 function object(value: unknown): Record<string, unknown> {
@@ -153,6 +154,7 @@ function validateBuild(value: unknown, context: Context, tree: ExportTree): Reco
   return build;
 }
 function verifyExportIdentity(directory: string, context: Context): void {
+  verifyStaticRouteAliases(directory, context.identity.sourceCommit);
   requireThat(same(json(path.join(directory, 'generated/product-release.json')), context.identity), 'Export product identity differs.');
   const version = object(json(path.join(directory, 'generated/version.json')));
   requireThat(version.sourceCommit === context.identity.sourceCommit && version.releaseVersion === context.identity.version

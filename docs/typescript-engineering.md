@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: 0dcc15efe778b09462e260d53bc260d6b5510ca9
-lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair. PCR #143 composition preserves its 57 candidate contribution and the exact incoming reviewed code. Fresh complete source qualification and PR138-first merge order remain required."
+lastReviewedAt: 2026-10-24
+lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
+lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -504,6 +504,38 @@ provide request identity and engine cancellation semantics. Exact WebKit strings
 and prefetch evidence were also reproduced against the pinned browser runtime in
 [PCR #106](https://github.com/tiangong-lca/pcr/issues/106#issuecomment-6064168510).
 Historical failed receipts lacking those fields are not retroactively qualified.
+
+Physical native-download acceptance uses a separate cancellation classification.
+It requires the successful native download event, exact source URL, original
+filename and verified byte length/hash before accepting an engine's known
+navigation-cancel reason. It does not broaden prefetch classification or hide
+unrelated failed navigation/assets. New exports require three filenames across
+all three engines even when no inline downloads exist. Receipts preserve legacy
+inline evidence separately and record the representation-neutral native evidence.
+The local sealed server validates the complete source-bound RSC alias manifest
+before listening and serves only those declared aliases at HTTP 200; missing or
+altered retained payloads fail rather than fall back to an unrelated route.
+
+In an intentionally JavaScript-disabled native probe, Chromium can report a
+script preload or modulepreload as `csp` even when the document has no CSP policy.
+A separate classification requires that exact engine/reason, a non-navigation GET
+script with no observed HTTP status, the exact initial native-page phase and URL,
+and a declared same-origin preload bound to a regular exported JS/MJS asset.
+Query, fragment, missing, foreign, nonregular and symlinked targets receive no
+exception. Response CSP/report-only headers, CSP meta policies and explicit
+console policy errors prevent this classification. Native filename, completed
+bytes and hash checks remain required; ordinary JavaScript-enabled checks and
+prefetch rules are unchanged. Receipts retain all original request failures,
+separate expected disabled-script events, asset bindings and policy observations.
+A `csp` request reason alone never proves that a server policy is harmless.
+
+The pinned [Chromium page implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crPage.ts#L518-L519)
+disables script execution through the browser protocol; its
+[network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L490)
+can expose the protocol's blocked reason as failure text. Regression evidence must
+include realistic preload/modulepreload markup, positive native downloads,
+JavaScript-enabled controls and actual CSP/HTTP/hash failures in all three engines.
+
 
 Successive Goal runtime overlays compare both the original Goal baseline and the
 actual receiving runtime tree. They retain the original receipt behavior while

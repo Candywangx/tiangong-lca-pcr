@@ -9,7 +9,9 @@ import { pathToFileURL } from "node:url";
 import { compareSemver } from "../lib/lifecycle-policy.ts";
 import { assertIdentity, buildPackageArtifact, githubRequest, packages } from "./npm-release.ts";
 import { PRODUCT_VERSION_FILE, assertProductIdentity, productReleaseSpec, type ProductIdentity, type ProductReleaseSpec, productGit, productSha256, readProductIdentity, readProductVersion } from "./product-identity.ts";
-import { createWebProbes, writePrebuiltConfig, LEGACY_WEB_PROBE_ROUTES, WEB_PROBE_ROUTES, type WebProbes } from "./product-web.ts";
+import { createWebProbes, writePrebuiltConfig, LEGACY_WEB_PROBE_ROUTES, WEB_PROBE_ROUTES, requiresStaticRouteAliases, validateStaticRouteAliasWebProof, assertStaticRouteAliasHosting, type WebProbes } from "./product-web.ts";
+
+import { STATIC_ROUTE_ALIASES_FILE, MAX_STATIC_ROUTE_ALIASES_BYTES, verifyStaticRouteAliasInventory } from "../../packages/pcr-docs/scripts/static-route-aliases.ts";
 
 import { PRODUCT_COMPATIBILITY, READER_CAPABILITIES_FILENAME, assertImplementedReaderCapabilities, assertReaderCompatibility, validateProductCompatibility } from "./reader-compatibility.ts";
 import { isRecord, record, field, text, type JsonObject, type GitHubRequest, type ArtifactProof, type ProductManifest, type ProductPackageReceipt, type ArchiveEntry, type ArchiveFile } from "./release-types.ts";
@@ -44,10 +46,11 @@ const sameJson = (left: unknown, right: unknown) => {
     : Array.isArray(value) ? value.map(stable) : value;
   return JSON.stringify(stable(left)) === JSON.stringify(stable(right));
 };
-function assertPrebuiltHosting(hosting: unknown): void {
+function assertPrebuiltHosting(hosting: unknown, requireAliases = false): void {
   if (!hosting || typeof hosting !== "object" || Array.isArray(hosting)
     || Object.entries(hosting).some(([key, value]) => !["headers", "redirects", "rewrites"].includes(key) || !Array.isArray(value)))
     throw new Error("Web archive needs routing-only prebuilt hosting configuration.");
+  if (requireAliases) assertStaticRouteAliasHosting(hosting);
 }
 
 
@@ -262,7 +265,7 @@ export async function readProductArchive(filename: string, { allowDirectories = 
       if (type === "5") { if (size !== 0) throw new Error("Directory archive entry has a body."); continue; }
       const entry: ArchiveEntry = { path: name, bytes: size };
       const retained = collect.includes(name);
-      if (retained && size > 1024 * 1024) throw new Error("Product archive identity metadata exceeds its bound.");
+      if (retained && size > (name === STATIC_ROUTE_ALIASES_FILE ? MAX_STATIC_ROUTE_ALIASES_BYTES : 1024 * 1024)) throw new Error("Product archive identity metadata exceeds its bound.");
       const pieces: Uint8Array[] = [], hash = createHash("sha256");
       await onFileStart(entry);
       await reader.consume(size, async chunk => { hash.update(chunk); if (retained) pieces.push(chunk); await onFileChunk(entry, chunk); });
@@ -298,9 +301,9 @@ export async function buildProductRelease(root: string, tag: string, output: str
   if (webVersion.sourceCommit !== identity.sourceCommit || webVersion.releaseVersion !== identity.version || webVersion.releaseTag !== identity.tag || webVersion.sourceFingerprint !== identity.sourceFingerprint) throw new Error("Web version document differs from the product identity.");
   // Provider materialization consumes the sealed build, never a new source build.
   writePrebuiltConfig({ root, webDir });
-  const probes = createWebProbes({ webDir });
+  const probes = createWebProbes({ webDir, requireAliases: requiresStaticRouteAliases(identity.version) });
   identicalIdentity(probes.identity, identity);
-  assertPrebuiltHosting(json(path.join(webDir, "edgeone.json")));
+  assertPrebuiltHosting(json(path.join(webDir, "edgeone.json")), probes.staticRouteAliases !== undefined);
   if (lstatSync(path.resolve(output), { throwIfNoEntry: false })) throw new Error("Product release output already exists; never replace sealed artifacts.");
   output = canonicalNewPath(output);
   const relative = path.relative(root, output).split(path.sep).join("/");
@@ -370,7 +373,8 @@ export function validateProductManifest(value: unknown, { identity = null, toolc
   const validProbe = (probe: unknown, expected: string | undefined): boolean => isRecord(probe) && probe.path === expected
     && typeof probe.sha256 === "string" && /^sha256:[a-f0-9]{64}$/u.test(probe.sha256)
     && typeof probe.bytes === "number" && Number.isSafeInteger(probe.bytes) && probe.bytes > 0 && probe.bytes < 25_000_000;
-  const expectedRoutes = Array.isArray(probes.routes) && probes.routes.length === LEGACY_WEB_PROBE_ROUTES.length ? LEGACY_WEB_PROBE_ROUTES : WEB_PROBE_ROUTES;
+  const aliasProof = validateStaticRouteAliasWebProof(probes.staticRouteAliases, boundIdentity);
+  const expectedRoutes = !aliasProof && Array.isArray(probes.routes) && probes.routes.length === LEGACY_WEB_PROBE_ROUTES.length ? LEGACY_WEB_PROBE_ROUTES : WEB_PROBE_ROUTES;
   if (!Array.isArray(probes.routes) || probes.routes.length !== expectedRoutes.length
     || !probes.routes.every((probe: unknown, index: number) => validProbe(probe, expectedRoutes[index]))
     || !validProbe(probes.rawDownload, "/generated/raw/classifications/indexes/cpc-3.0-coverage.json")) throw new Error("Invalid sealed web probes.");
@@ -388,13 +392,20 @@ export function validateProductManifest(value: unknown, { identity = null, toolc
   return manifest as unknown as ProductManifest;
 }
 
-function checkWebMetadata(contents: ReadonlyMap<string, Buffer>, identity: ProductIdentity, probes: WebProbes): void {
+function checkWebMetadata(contents: ReadonlyMap<string, Buffer>, identity: ProductIdentity, probes: WebProbes, files: readonly ArchiveEntry[]): void {
   identicalIdentity(JSON.parse(contents.get("generated/product-release.json")?.toString("utf8") ?? "null"), identity);
   const version = record(JSON.parse(contents.get("generated/version.json")?.toString("utf8") ?? "null") as unknown, "archived web version");
   if (version?.sourceCommit !== identity.sourceCommit || version.releaseVersion !== identity.version || version.releaseTag !== identity.tag || version.sourceFingerprint !== identity.sourceFingerprint) throw new Error("Archived web version differs.");
   if (!sameJson(version.counts, probes.counts)) throw new Error("Archived web counts differ from probes.");
   const hosting = JSON.parse(contents.get("edgeone.json")?.toString("utf8") ?? "null");
-  assertPrebuiltHosting(hosting);
+  assertPrebuiltHosting(hosting, probes.staticRouteAliases !== undefined);
+  if (probes.staticRouteAliases) {
+    const bytes = contents.get(STATIC_ROUTE_ALIASES_FILE), proof = probes.staticRouteAliases;
+    if (!bytes || bytes.length !== proof.manifest.bytes || productSha256(bytes) !== proof.manifest.sha256) throw new Error("Archived alias manifest differs from its sealed proof.");
+    const aliases = verifyStaticRouteAliasInventory(JSON.parse(bytes.toString("utf8")), identity.sourceCommit, files);
+    for (const pair of proof.pairs) if (!aliases.pairs.some(actual => actual.source === pair.source && actual.target === pair.target
+      && actual.bytes === pair.bytes && actual.sha256 === pair.sha256)) throw new Error("Archived alias representative differs from the complete manifest.");
+  }
 }
 
 export async function verifyProductWebTree(webDir: string, value: unknown) {
@@ -402,15 +413,16 @@ export async function verifyProductWebTree(webDir: string, value: unknown) {
   const tree = regularTree(webDir), contents = new Map<string, Buffer>();
   for (const file of tree.files) {
     const proof = await fileProof(path.join(tree.root, file.path)); file.sha256 = proof.sha256;
-    if (["generated/product-release.json", "generated/version.json", "edgeone.json"].includes(file.path)) {
-      if (file.bytes > 1024 * 1024) throw new Error("Product identity metadata exceeds its bound.");
+    if (["generated/product-release.json", "generated/version.json", "edgeone.json", ...(manifest.web.probes.staticRouteAliases ? [STATIC_ROUTE_ALIASES_FILE] : [])].includes(file.path)) {
+      if (file.bytes > (file.path === STATIC_ROUTE_ALIASES_FILE ? MAX_STATIC_ROUTE_ALIASES_BYTES : 1024 * 1024)) throw new Error("Product identity metadata exceeds its bound.");
       contents.set(file.path, readFileSync(path.join(tree.root, file.path)));
     }
   }
   if (tree.files.length !== manifest.web.files || tree.files.reduce((bytes, file) => bytes + file.bytes, 0) !== manifest.web.uncompressedBytes
     || productTreeSha256(tree.files) !== manifest.web.treeSha256) throw new Error("Web materialized tree differs from its sealed manifest.");
-  checkWebMetadata(contents, manifest.identity, manifest.web.probes);
-  if (!sameJson(createWebProbes({ webDir, includeHomes: manifest.web.probes.routes.length !== LEGACY_WEB_PROBE_ROUTES.length }), manifest.web.probes)) throw new Error("Materialized web probes differ from the sealed release.");
+  tree.files.forEach(completeEntry);
+  checkWebMetadata(contents, manifest.identity, manifest.web.probes, tree.files);
+  if (!sameJson(createWebProbes({ webDir, includeHomes: manifest.web.probes.routes.length !== LEGACY_WEB_PROBE_ROUTES.length, requireAliases: manifest.web.probes.staticRouteAliases !== undefined }), manifest.web.probes)) throw new Error("Materialized web probes differ from the sealed release.");
   return { files: tree.files.length, uncompressedBytes: manifest.web.uncompressedBytes, treeSha256: manifest.web.treeSha256 };
 }
 
@@ -449,9 +461,9 @@ export async function verifyProductArtifacts(directory: string, { expectedIdenti
   }
   const webProof = proofs.find(proof => proof.filename === manifest.web.filename);
   if (!webProof || webProof.bytes !== manifest.web.bytes || webProof.sha256 !== manifest.web.sha256 || manifest.web.origin !== "https://pcr.tiangong.earth") throw new Error("Web artifact proof differs.");
-  const web = await readProductArchive(path.join(directory, manifest.web.filename), { collect: ["generated/product-release.json", "generated/version.json", "edgeone.json"] });
+  const web = await readProductArchive(path.join(directory, manifest.web.filename), { collect: ["generated/product-release.json", "generated/version.json", "edgeone.json", ...(manifest.web.probes.staticRouteAliases ? [STATIC_ROUTE_ALIASES_FILE] : [])] });
   if (web.treeSha256 !== manifest.web.treeSha256 || web.files.length !== manifest.web.files || web.files.reduce((bytes, file) => bytes + file.bytes, 0) !== manifest.web.uncompressedBytes) throw new Error("Web archive tree differs from product manifest.");
-  checkWebMetadata(web.contents, manifest.identity, manifest.web.probes);
+  checkWebMetadata(web.contents, manifest.identity, manifest.web.probes, web.files);
   for (const probe of [...manifest.web.probes.routes, manifest.web.probes.rawDownload]) {
     const relative = probe.path.endsWith("/") ? `${probe.path.slice(1)}index.html` : probe.path.slice(1);
     const file = web.files.find(entry => entry.path === relative);

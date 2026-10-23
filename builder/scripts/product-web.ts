@@ -3,13 +3,17 @@ import { execFileSync } from "node:child_process";
 import { constants, closeSync, fstatSync, lstatSync, openSync, readSync, realpathSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { performance } from "node:perf_hooks";
-import { isValidSemver } from "../lib/lifecycle-policy.ts";
+import { isValidSemver, compareSemver } from "../lib/lifecycle-policy.ts";
+
+import { STATIC_ROUTE_ALIASES_FILE, MAX_STATIC_ROUTE_ALIASES_BYTES, STATIC_ROUTE_REWRITES, rscAliasTarget, verifyStaticRouteAliases } from "../../packages/pcr-docs/scripts/static-route-aliases.ts";
 
 import type { ProductIdentity } from "./product-identity.ts";
 import { isRecord, field, type JsonObject } from "./release-types.ts";
 export interface WebCounts extends Record<string, number> { pcrs: number; pages: number; languages: number; sourceBytes: number }
 export interface WebProbe { path: string; bytes: number; sha256: string }
-export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe }
+export interface StaticRouteAliasProbe { source: string; target: string; bytes: number; sha256: string }
+export interface StaticRouteAliasWebProof { schemaVersion: 1; sourceCommit: string; manifest: WebProbe; pairs: StaticRouteAliasProbe[] }
+export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe; staticRouteAliases?: StaticRouteAliasWebProof }
 export interface WebRequestOptions { method: "GET"; redirect: "manual"; credentials: "omit"; headers: Record<string, string>; signal: AbortSignal }
 export type WebFetch = (url: string, options: WebRequestOptions) => Promise<Response>;
 export interface LiveWebsiteOptions { origin: string; identity: unknown; counts: unknown; probes: unknown; fetcher?: WebFetch; timeoutMs?: number; maxBytes?: number }
@@ -22,6 +26,36 @@ const JSON_MAX_BYTES = 64 * 1024;
 export const LEGACY_WEB_PROBE_ROUTES = ["/zh/docs/pcr/", "/en/docs/pcr/"] as const;
 export const WEB_PROBE_ROUTES = [...LEGACY_WEB_PROBE_ROUTES, "/", "/zh/", "/en/"] as const;
 const RAW_PATH = "/generated/raw/classifications/indexes/cpc-3.0-coverage.json";
+export const STATIC_ROUTE_ALIAS_PROBE_SOURCES = ["/__next._full.txt", "/en/docs/pcr/__next._full.txt", "/zh/docs/pcr/__next._full.txt"] as const;
+/** Only historical immutable releases may omit the reviewed alias profile. */
+export function requiresStaticRouteAliases(version: string): boolean { return compareSemver(version, "0.4.9") >= 0; }
+export function assertStaticRouteAliasHosting(hosting: unknown): void {
+  if (!isRecord(hosting) || !Array.isArray(hosting.rewrites)) fail("PCR_WEB_ALIAS_HOSTING", "The sealed alias profile requires internal rewrites.");
+  const rewrites = hosting.rewrites;
+  if (!STATIC_ROUTE_REWRITES.every((expected, index) => {
+    const rule: unknown = rewrites[index];
+    return isRecord(rule) && Object.keys(rule).sort().join(",") === "destination,source"
+      && rule.source === expected.source && rule.destination === expected.destination;
+  })) fail("PCR_WEB_ALIAS_HOSTING", "The sealed alias profile requires its exact internal rewrites before other rules.");
+}
+export function validateStaticRouteAliasWebProof(value: unknown, identity: ProductIdentity): StaticRouteAliasWebProof | undefined {
+  if (value === undefined && !requiresStaticRouteAliases(identity.version)) return undefined;
+  if (!isRecord(value) || Object.keys(value).sort().join(",") !== "manifest,pairs,schemaVersion,sourceCommit"
+    || value.schemaVersion !== 1 || value.sourceCommit !== identity.sourceCommit || !Array.isArray(value.pairs)
+    || value.pairs.length !== STATIC_ROUTE_ALIAS_PROBE_SOURCES.length) fail("PCR_WEB_ALIAS_PROOF_INVALID", "Current live acceptance requires the complete sealed alias proof.");
+  validateProbe(value.manifest, "/" + STATIC_ROUTE_ALIASES_FILE);
+  if (value.manifest.bytes > MAX_STATIC_ROUTE_ALIASES_BYTES) fail("PCR_WEB_ALIAS_PROOF_INVALID", "Alias manifest exceeds its bounded transport size.");
+  const pairs = value.pairs.map((pair: unknown, index: number) => {
+    const source = STATIC_ROUTE_ALIAS_PROBE_SOURCES[index];
+    if (!source || !isRecord(pair) || Object.keys(pair).sort().join(",") !== "bytes,sha256,source,target"
+      || pair.source !== source || pair.target !== rscAliasTarget(source)
+      || typeof pair.bytes !== "number" || !Number.isSafeInteger(pair.bytes) || pair.bytes < 1 || pair.bytes >= HARD_MAX_BYTES
+      || typeof pair.sha256 !== "string" || !/^[a-f0-9]{64}$/u.test(pair.sha256)) fail("PCR_WEB_ALIAS_PROOF_INVALID", "Invalid representative alias/target identity.");
+    return { source, target: String(pair.target), bytes: pair.bytes, sha256: pair.sha256 };
+  });
+  return { schemaVersion: 1, sourceCommit: identity.sourceCommit, manifest: value.manifest, pairs };
+}
+
 const identityKeys = ["schema", "version", "tag", "sourceCommit", "sourceFingerprint"] as const;
 const sha256 = (bytes: BinaryLike) => `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
@@ -160,7 +194,7 @@ export function writePrebuiltConfig({ root, webDir }: { root: string; webDir: st
 }
 
 /** Small exact-byte descriptors, derived from the verified export before sealing. */
-export function createWebProbes({ webDir, includeHomes = true }: { webDir: string; includeHomes?: boolean }): WebProbes {
+export function createWebProbes({ webDir, includeHomes = true, requireAliases }: { webDir: string; includeHomes?: boolean; requireAliases?: boolean }): WebProbes {
   webDir = controlledRoot(webDir);
   readManaged(webDir, "index.html");
   const identity = parseJson(readManaged(webDir, "generated/product-release.json", JSON_MAX_BYTES), "PCR_WEB_IDENTITY_INVALID", "Export product identity is not JSON.");
@@ -173,7 +207,19 @@ export function createWebProbes({ webDir, includeHomes = true }: { webDir: strin
     if (bytes.length === 0) fail("PCR_WEB_PROBE_INVALID", "Sealed website probes must not be empty.", { artifact: relative });
     return { path: urlPath, sha256: sha256(bytes), bytes: bytes.length };
   };
+  let staticRouteAliases: StaticRouteAliasWebProof | undefined;
+  if (requireAliases === true || requiresStaticRouteAliases(identity.version)) {
+    const aliases = verifyStaticRouteAliases(webDir, identity.sourceCommit);
+    const pairs = STATIC_ROUTE_ALIAS_PROBE_SOURCES.map(source => {
+      const pair = aliases.pairs.find(pair => pair.source === source);
+      if (!pair) fail("PCR_WEB_ALIAS_PROOF_INVALID", "Required root and bilingual catalog aliases are absent.");
+      return { ...pair };
+    });
+    staticRouteAliases = validateStaticRouteAliasWebProof({ schemaVersion: 1, sourceCommit: identity.sourceCommit,
+      manifest: describe("/" + STATIC_ROUTE_ALIASES_FILE, STATIC_ROUTE_ALIASES_FILE), pairs }, identity);
+  }
   return { identity: identityFields(identity), counts,
+    ...(staticRouteAliases ? { staticRouteAliases } : {}),
     routes: (includeHomes ? WEB_PROBE_ROUTES : LEGACY_WEB_PROBE_ROUTES).map(urlPath => describe(urlPath, `${urlPath.slice(1)}index.html`)),
     rawDownload: describe(RAW_PATH, RAW_PATH.slice(1)) };
 }
@@ -232,9 +278,10 @@ export async function verifyLiveWebsite({ origin, identity, counts, probes, fetc
     sourceFingerprint: identity.sourceFingerprint, counts: probes.counts }, identity, counts);
   const routes = probes.routes.map((probe: unknown, index: number) => { validateProbe(probe, WEB_PROBE_ROUTES[index] ?? ""); return probe; });
   const rawDownload = probes.rawDownload; validateProbe(rawDownload, RAW_PATH);
-  const deadline = performance.now() + timeoutMs, checks: { path: string; status: number; bytes?: number; sha256?: string }[] = [];
+  const aliasProof = validateStaticRouteAliasWebProof(probes.staticRouteAliases, identity);
+  const deadline = performance.now() + timeoutMs, checks: { path: string; status: number; bytes?: number; sha256?: string; contentType?: string; cacheControl?: string; nosniff?: boolean }[] = [];
 
-  const request = async (urlPath: string, { limit = maxBytes, mediaType = null, fresh = false }: { limit?: number; mediaType?: string | null; fresh?: boolean } = {}): Promise<Buffer | null> => {
+  const request = async (urlPath: string, { limit = maxBytes, mediaType = null, fresh = false, rsc = false, requireNosniff = false }: { limit?: number; mediaType?: string | null; fresh?: boolean; rsc?: boolean; requireNosniff?: boolean } = {}): Promise<Buffer | null> => {
     const url = new URL(urlPath, base), remaining = Math.ceil(deadline - performance.now());
     if (remaining <= 0) fail("PCR_WEB_TIMEOUT", "Website acceptance exhausted its execution budget.", { path: urlPath }, true);
     const controller = new AbortController();
@@ -251,6 +298,11 @@ export async function verifyLiveWebsite({ origin, identity, counts, probes, fetc
         if (response.status >= 300 && response.status < 400) fail("PCR_WEB_REDIRECT", "An unexpected website redirect was observed.", { path: urlPath, status: response.status });
         if (response.status !== 200) fail("PCR_WEB_STATUS", "Website probe did not return HTTP 200.", { path: urlPath, status: response.status }, response.status === 429 || response.status >= 500);
         if (fresh) requireFresh(response.headers, urlPath);
+        const actualType = String(response.headers.get("content-type") ?? "").split(";", 1)[0]?.trim().toLowerCase();
+        if ((rsc && !["text/plain", "text/x-component"].includes(actualType ?? ""))
+          || ((rsc || requireNosniff) && String(response.headers.get("x-content-type-options") ?? "").toLowerCase() !== "nosniff")) {
+          fail("PCR_WEB_ALIAS_HEADERS", "Alias metadata and navigation payloads require their declared MIME and nosniff.", { path: urlPath });
+        }
         if (urlPath === RAW_PATH) requireRawHeaders(response.headers);
         if (mediaType && String(response.headers.get("content-type") ?? "").split(";", 1)[0]?.trim().toLowerCase() !== mediaType) {
           fail("PCR_WEB_CONTENT_TYPE", "Website probe has an unexpected media type.", { path: urlPath });
@@ -268,7 +320,8 @@ export async function verifyLiveWebsite({ origin, identity, counts, probes, fetc
           chunks.push(Buffer.from(next.value));
         }
         const body = Buffer.concat(chunks, bytes);
-        checks.push({ path: urlPath, status: response.status, bytes, sha256: sha256(body) });
+        checks.push({ path: urlPath, status: response.status, bytes, sha256: sha256(body),
+          ...(rsc || requireNosniff ? { contentType: actualType ?? "", cacheControl: response.headers.get("cache-control") ?? "", nosniff: true } : {}) });
         return body;
       })()]);
     } catch (error) {
@@ -289,6 +342,28 @@ export async function verifyLiveWebsite({ origin, identity, counts, probes, fetc
   }
   const raw = await request(RAW_PATH, { limit: Math.max(maxBytes, rawDownload.bytes) });
   if (raw === null || raw.length !== rawDownload.bytes || sha256(raw) !== rawDownload.sha256) fail("PCR_WEB_HASH_MISMATCH", "Raw download differs from the sealed export.", { path: RAW_PATH });
+  if (aliasProof) {
+    const bytes = await request(aliasProof.manifest.path, { limit: MAX_STATIC_ROUTE_ALIASES_BYTES, mediaType: "application/json", fresh: true, requireNosniff: true });
+    if (!bytes || bytes.length !== aliasProof.manifest.bytes || sha256(bytes) !== aliasProof.manifest.sha256) fail("PCR_WEB_ALIAS_HASH_MISMATCH", "Live alias manifest differs from the sealed profile.");
+    const manifest = parseJson(bytes, "PCR_WEB_ALIAS_PROOF_INVALID", "Live alias manifest is not JSON.");
+    if (!isRecord(manifest) || manifest.schemaVersion !== 1 || manifest.sourceCommit !== identity.sourceCommit || !Array.isArray(manifest.pairs)) fail("PCR_WEB_ALIAS_PROOF_INVALID", "Live alias manifest lost its sealed source binding.");
+    const livePairs = manifest.pairs;
+    if (!aliasProof.pairs.every(pair => livePairs.some((candidate: unknown) => isRecord(candidate)
+      && candidate.source === pair.source && candidate.target === pair.target && candidate.bytes === pair.bytes && candidate.sha256 === pair.sha256))) {
+      fail("PCR_WEB_ALIAS_PROOF_INVALID", "Live alias manifest lost its sealed representative bindings.");
+    }
+    for (const pair of aliasProof.pairs) {
+      let contentType: string | undefined;
+      for (const pathname of [pair.source, pair.target]) for (const query of ["", "?_rsc=pcr-release-" + identity.sourceCommit.slice(0, 12)]) {
+        const urlPath = pathname + query;
+        const body = await request(urlPath, { limit: pair.bytes, fresh: true, rsc: true });
+        if (!body || body.length !== pair.bytes || sha256(body) !== "sha256:" + pair.sha256) fail("PCR_WEB_ALIAS_HASH_MISMATCH", "Internal alias or retained payload changed bytes or query behavior.", { path: urlPath });
+        const observed = checks.at(-1)?.contentType;
+        if (contentType !== undefined && observed !== contentType) fail("PCR_WEB_ALIAS_HEADERS", "Alias, target and query responses disagree on MIME type.", { path: urlPath });
+        contentType = observed;
+      }
+    }
+  }
   // Detect a release cutover while the route/download probes were being inspected.
   await readIdentity(); await readVersion();
   return { verified: true, origin: base.origin, identity: identityFields(identity), counts: { ...counts }, checks };

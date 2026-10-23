@@ -5,6 +5,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test, { type TestContext } from "node:test";
 import { gzipSync, gunzipSync } from "node:zlib";
+import { prepareStaticRouteAliases, STATIC_ROUTE_ALIASES_FILE, STATIC_ROUTE_REWRITES } from "../../packages/pcr-docs/scripts/static-route-aliases.ts";
+import { STATIC_ROUTE_ALIAS_PROBE_SOURCES } from "./product-web.ts";
 import { PRODUCT_MIRRORS, productSha256, readProductIdentity } from "./product-identity.ts";
 import { bootstrapProductTag, buildProductRelease, detectProductRelease, productReleaseContext, productReleaseSpec, readProductArchive, tagAndDispatchProduct, validateProductManifest, verifyProductArtifacts, verifyProductWebTree, writeProductWebArchive } from "./product-release.ts";
 import { parseNpmPackOutput, releaseSpec } from "./npm-release.ts";
@@ -257,4 +259,28 @@ test("new product sealing refuses a generated tool that omits capability metadat
     rmSync(path.join(options.output, "reader-capabilities.json"));
   } } }), /reader capabilities/u);
   assert.equal(existsSync(path.join(f.container, "missing-capabilities")), false);
+});
+
+
+test("fresh current product sealing requires complete aliases and exact committed internal rewrites", async t => {
+  const f = fixture(t); f.setVersion("0.4.9");
+  putJson(path.join(f.root, "edgeone.json"), { headers: [], redirects: [], rewrites: STATIC_ROUTE_REWRITES }); f.commit();
+  const webDir = f.prepareWeb(), output = path.join(f.container, "current-release");
+  const build = () => buildProductRelease(f.root, "v0.4.9", output, { webDir, builders: f.builders, pack: f.pack, getNpmVersion: () => f.actualNpm });
+  await assert.rejects(build(), /alias/iu); assert.equal(existsSync(output), false);
+  for (const source of STATIC_ROUTE_ALIAS_PROBE_SOURCES) {
+    const target = source.replace("__next._full.txt", "index.txt"), bytes = "Complete source-bound native RSC " + target;
+    put(path.join(webDir, source.slice(1)), bytes); put(path.join(webDir, target.slice(1)), bytes);
+  }
+  prepareStaticRouteAliases(realpathSync(webDir), readProductIdentity(f.root).sourceCommit);
+  // The rejected first build wrote only the exact committed routing file; it is safe to reuse.
+  const manifest = await build(); assert.ok(manifest.web.probes.staticRouteAliases);
+  assert.equal(manifest.web.probes.staticRouteAliases.pairs.length, 3);
+  await verifyProductArtifacts(output); await verifyProductWebTree(webDir, manifest);
+  const missing = structuredClone(manifest); delete missing.web.probes.staticRouteAliases;
+  assert.throws(() => validateProductManifest(missing), /alias/iu);
+  const aliasPath = path.join(webDir, STATIC_ROUTE_ALIASES_FILE), aliases = readFileSync(aliasPath);
+  rmSync(aliasPath); await assert.rejects(verifyProductWebTree(webDir, manifest), /tree differs/u); put(aliasPath, aliases);
+  putJson(path.join(webDir, "edgeone.json"), { headers: [], redirects: [], rewrites: [] });
+  await assert.rejects(verifyProductWebTree(webDir, manifest), /tree differs/u);
 });

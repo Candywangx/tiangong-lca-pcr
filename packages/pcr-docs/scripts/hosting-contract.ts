@@ -1,3 +1,4 @@
+import {STATIC_ROUTE_REWRITES} from "./static-route-aliases.ts";
 import {isUnknownRecord,unknownField} from "../../pcr-core/src/types.ts";
 import assert from "node:assert/strict";
 import { gettingStartedGuides } from "../lib/getting-started.ts";
@@ -38,13 +39,25 @@ export function verifyHostingContract(config: unknown, downloads: readonly {url:
   assert.equal(unknownField(config,"buildCommand"), "node builder/scripts/product-web-materialize.ts");
   // The provider imports sealed bytes; it does not run the product build toolchain.
   assert.equal(unknownField(config,"nodeVersion"), "24.18.0", "EdgeOne importer requires its qualified preinstalled Node 24 runtime");
+  assert.deepEqual(unknownField(config, "rewrites"), STATIC_ROUTE_REWRITES, "Exact Next navigation rewrites are required");
   const redirects = unknownField(config, "redirects");
   assert.ok(Array.isArray(redirects), "Hosting redirects must be an array");
   for (const source of ["/zh", "/zh/"])
     assert.ok(!redirects.some((rule) => isUnknownRecord(rule) && typeof rule.source === "string"
       && matchesPath(rule.source, source)), "Explicit Chinese-home URL must remain readable: " + source);
+  for (const source of ['/__next._full.txt', '/index.txt', '/en/docs/pcr/__next._full.txt', '/en/docs/pcr/index.txt', '/zh/docs/pcr/__next._full.txt', '/zh/docs/pcr/index.txt'])
+    assert.ok(!redirects.some(rule => isUnknownRecord(rule) && typeof rule.source === 'string' && matchesPath(rule.source, source)), 'Next navigation URLs require HTTP 200 without redirects: ' + source);
   // Specific rules carry their complete required headers, avoiding reliance on overlap precedence.
   for (const firstMatch of [false, true]) {
+    for (const route of ['/__next._full.txt', '/index.txt', '/en/docs/pcr/__next._full.txt', '/en/docs/pcr/index.txt', '/zh/docs/pcr/__next._full.txt', '/zh/docs/pcr/index.txt']) {
+      const headers = headersFor(config, route, {firstMatch});
+      assert.equal(headers['content-type'], 'text/plain; charset=utf-8', 'Next navigation MIME: ' + route);
+      assert.equal(headers['cache-control'], 'public, max-age=0, must-revalidate', 'Next navigation freshness: ' + route);
+      assert.equal(headers['x-content-type-options'], 'nosniff', 'Next navigation nosniff: ' + route);
+    }
+    const aliasHeaders = headersFor(config, '/generated/static-route-aliases.json', {firstMatch});
+    assert.equal(aliasHeaders['cache-control'], 'public, max-age=0, must-revalidate');
+    assert.equal(aliasHeaders['x-content-type-options'], 'nosniff');
     for (const guide of gettingStartedGuides) {
     const guideHeaders = headersFor(config, guide.rawUrl, { firstMatch });
     assert.equal(guideHeaders["content-type"], "text/markdown; charset=utf-8");
