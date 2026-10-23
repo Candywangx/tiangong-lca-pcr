@@ -1,10 +1,894 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "31702"
-  title: "Pallets, box pallets and other load boards, of wood; pallet collars of wood"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.pallets-box-pallets-and-other-load-boards-of-wood-pallet-collars-of-wood"
+  classification_refs: "CPC 3.0 31702; narrower"
+  covered_products: "new nailed solid coniferous sawnwood pallets; solid block or stringer design"
+  excluded_products: "pressed wood; composite parts; repair; pool service; collars; box pallets; other routes in Section 1"
+  representative_product: "accepted new pallet of the actual order configuration"
+  production_route: "purchased kiln-dried coniferous timber, supplier HT if required, electric cutting/notching, steel nailing, inspection, electric branding, unwrapped factory gate"
+  market_state: "new complete unpainted pallet, unloaded, declared moisture and treatment state"
+functional_unit:
+  what: "manufacture of an accepted new pallet; this is a declared product unit, not cargo/reuse service"
+  how_much: "1 kg"
+  how_well: "actual species, grade, dimensions, solid block/stringer design, deck/entry configuration, nail specification and documented order acceptance; rated load test basis disclosed"
+  how_long_or_cycle: "one manufacture-to-gate reporting period; no lifetime, trip count or tonne-kilometres assigned"
+  reference_flow_link: "pallet"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with receipt of dried, debarked solid coniferous timber and purchased steel nails, and ends with acceptance and unwrapped factory-gate release. Aggregate wood preparation, assembly and acceptance into one foreground unit, while keeping stage meters and mass records separate. Internal wood/component transfers are not extra exchanges; both ends of an internal physical link, if a dataset decomposes stages, must carry the same quantity and state. Reject rework stays inside until accepted or segregated as material waste. Source: usda-pallet-2020."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Use linked upstream supply models for forestry, sawmilling, kiln drying, any claimed HT, nail manufacture, grid electricity, maintenance oil and actual inbound deliveries. No default delivery distance or vehicle load is permitted. A background mill-gate timber model needs a separately evidenced inbound transport model; a delivered model must not duplicate it. Foreground onsite thermal energy is absent only for the selected route. Upstream combustion emissions, including biogenic CO2, remain in the LCI; a climate-reporting convention cannot delete them. Store wood carbon only as a measured material balance, not as an assumed negative elementary exchange or reuse benefit."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "Where HT is claimed, link the supplier treatment batch, energy/emission boundary and conformity records to received parts. ISPM 15 Annex 1 allows treatment before assembly; a conventional HT claim requires the entire wood profile, including core, to reach at least 56 °C for 30 continuous minutes. This treatment condition supplies no energy amount or drying endpoint. Do not default to steam heat: a heat purchase would need supplier net-delivered enthalpy evidence and a separately verified exchange. Changes requiring onsite HT or untreated green timber invalidate this route. Source: ippc-ispm15-2018."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "received_kiln_dried_solid_coniferous_timber"
+  starting_condition_role: "upstream supply interface, not a burden-free starting point"
+  product_classification_scope: "CPC 3.0 31702; narrower"
+  recursive_input_rule: "do not input finished pallets or recovered pallet parts in this new manufacture route"
+  upstream_dataset_requirement: "state/quantity-compatible wood/nail/energy/oil supply; evidenced drying and conditional HT; actual inbound transport; waste transport/treatment models"
+  disclosure: "actual scientific wood species and mixture shares; forest/supplier origin; moisture at receipt and gate with dry/wet basis; dimensions and tolerances; deck board count/thickness; solid block or stringer structure; entry/notch design; steel nail type, grade, coating, count and mass; net accepted pallet mass measurement; production dates and site; drying and HT provider, batch, process boundary and certificate when claimed; actual load rating/test basis or explicitly unverified; unpainted/unwrapped state; no reuse-service claim"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+    uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual scientific wood species and mixture shares"
+    - "forest/supplier origin"
+    - "moisture at receipt and gate with dry/wet basis"
+    - "dimensions and tolerances"
+    - "deck board count/thickness"
+    - "solid block or stringer structure"
+    - "entry/notch design"
+    - "steel nail type"
+    - grade
+    - coating
+    - "count and mass"
+    - "net accepted pallet mass measurement"
+    - "production dates and site"
+    - "drying and HT provider"
+    - batch
+    - "process boundary and certificate when claimed"
+    - "actual load rating/test basis or explicitly unverified"
+    - "unpainted/unwrapped state"
+    - "no reuse-service claim"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use 1 kg accepted complete net pallet at the declared gate moisture, including installed nails. Measure accepted batch net mass Q using cp_accept; exclude rejects, packaging and cargo. No assumed individual weight."
+  - id: moisture_basis
+    applies_to: "timber; pallet; sawdust_sale; offcut_sale; sawdust_waste; offcut_waste"
+    required_property_ref:
+      name: "Mass and dry-basis moisture"
+      uuid: ""
+    required_unit: "kg; kg/kg"
+    rule: "Keep as-received and oven-dry wood mass separate using cp_material/cp_residue; apply moisture_wood in Section 8. Installed steel is not wood dry mass. Source: usda-wood-handbook-2021."
+  - id: electric_unit
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Meter electrical work; convert kWh to MJ with 3.6 MJ/kWh. The database property label is a technical reference, not a fuel heating value or a delivered-heat claim."
+process_map:
+  - id: pallet_manufacture
+    name: "Electric sawing, nailing and factory-gate acceptance"
+    inclusion: "required"
+    inclusion_condition: "selected purchased kiln-dried timber route only"
+    role: "foreground manufacturing, stage records retained"
+    quantitative_reference: "1 kg"
+process_inventory:
+  - id: pallet_manufacture
+    label: "Electric sawing, nailing and factory-gate acceptance"
+    inputs:
+      product:
+        - row_id: timber
+          role: "Purchased coniferous timber"
+          name: "Kiln-dried sawn coniferous timber, at mill"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50904047-e5b0-4110-990a-53751d250267"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual species and grade, kiln-dried sawn solid wood only. Supplier records must identify moisture and any completed HT before receipt. Weigh net input; keep upstream drying/HT and inbound delivery once in the linked supply model."
+          amount:
+            expression: "Use cp_material; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: nails
+          role: "Steel nails"
+          name: "Steel fasteners"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ebfe08f5-42c8-484e-b39a-684a35981c24"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This broad identity is restricted here to one purchased steel nail specification per exchange. Record shank form, length, diameter, steel grade, coating and retained mass. Different nail specifications need separate dataset exchanges; no screw/bolt mix or generic fastener quantity."
+          amount:
+            expression: "Use cp_material; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: electricity
+          role: "Low-voltage electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter electricity for sawing/notching, nail-driving compressor, electric handling, dust extraction and acceptance. Record stage subtotals and shared-meter attribution. Use this CN user-side <1 kV identity only with compatible supply geography/voltage and background quantity; no additional grid losses already included by supply."
+          amount:
+            expression: "Use cp_energy; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: oil
+          role: "Petroleum lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual petroleum-fraction lubricating oil use. Weigh issues net of returns and stock changes and attribute to this line. This is maintenance oil, not fuel; the database heating-value descriptor is not a PCR factor. Other formulations require their own verified exchange."
+          amount:
+            expression: "Use cp_maintenance; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pallet
+          role: "Accepted finished pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One final output after cutting, notching if required, nailing, inspection and electric branding where required. No intermediate output uses the finished-pallet UUID. Net accepted mass includes wood moisture and installed nails, excluding wrapping and cargo."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_accept
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: sawdust_sale
+          role: "Sold untreated coniferous sawdust"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual separately sold coniferous sawdust with documented lawful product/co-product status, customer-accepted specification and continuing use; payment alone is insufficient. Wood material is a broad physical locator here, not a sawdust commodity background. Qualify this exchange with actual species, particle form/size, non-agglomerated and chemically untreated state, separately evidenced supplier HT when claimed, moisture, measured wet/dry mass and receiver. Exclude offcuts, bark, ground mixed fuel and any mass counted as waste or internal return. Receiver/provider reference quantity, moisture convention and downstream boundary compatibility remain to be verified before dataset use."
+          amount:
+            expression: "Use cp_residue; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: offcut_sale
+          role: "Sold untreated coniferous solid-wood offcuts"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual separately sold coniferous solid-wood offcuts with documented lawful product/co-product status, customer-accepted specification and continuing use; payment alone is insufficient. Wood material is a broad physical locator here, not a generic scrap commodity background. Qualify this separate exchange with actual species, solid form/dimensions, non-agglomerated and chemically untreated state, separately evidenced supplier HT when claimed, moisture, measured wet/dry mass and receiver. Exclude chips, sawdust and any mass counted as waste or internal return. Receiver/provider reference quantity, moisture convention and downstream boundary compatibility remain to be verified before dataset use."
+          amount:
+            expression: "Use cp_residue; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        - row_id: sawdust_waste
+          role: "Collected waste sawdust"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One untreated collected sawdust stream leaving for documented offsite treatment; separate from emitted particulate and sold sawdust. Record receiving contractor and actual treatment; the identity does not select combustion or recycling."
+          amount:
+            expression: "Use cp_residue; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: offcut_waste
+          role: "Waste untreated coniferous solid-wood offcuts"
+          name: "Offcut"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "acc22294-8e77-4784-988f-2499be3c60eb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual non-agglomerated coniferous solid-wood cutting offcuts and segregated wood from rejected pallets, leaving as waste. Record species, moisture, unimpregnated/uncoated condition, absence or actual level of adhesive contamination and receiving contractor/treatment. This broad physical identity is conditional: its isolated CPC agglomerated-waste classification conflicts with its names and woodworking description; supplier/source clarification is required. Exclude removed nails and any material counted as sale or internal return."
+          amount:
+            expression: "Use cp_residue; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: steel_waste
+          role: "Rejected steel nails"
+          name: "Scrap steel"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "0e66603a-40d3-4c52-9223-4c18d32c11fd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh rejected or recovered steel nails crossing the boundary. This CN assembly scrap identity fits assembly rejects, not machining scrap; document coating and receiver without invented recycling credit."
+          amount:
+            expression: "Use cp_residue; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: used_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual used oil removal; weigh collected waste oil, record contamination and authorized destination. Do not infer recovered mass equals fresh oil input or assign a treatment from identity alone."
+          amount:
+            expression: "Use cp_maintenance; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - usda-pallet-2020
+                - usda-wood-handbook-2021
+            ranges: []
+      elementary:
+        - row_id: pm25
+          role: "Outdoor fine wood dust"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Mass of particles up to PM2.5 released after controls to outdoor air, unspecified subcompartment. Use actual sampling or a documented site-specific emission model; captured dust is waste, not an air emission."
+          amount:
+            expression: "Use cp_air; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-sawmill-dust-2014
+            ranges: []
+        - row_id: pm_coarse
+          role: "Outdoor intermediate wood dust"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Mass of particles above PM2.5 and up to PM10 released after controls to outdoor air, unspecified subcompartment. Derive only from compatible nested measurements of the same source, period and PM definition."
+          amount:
+            expression: "Use cp_air; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-sawmill-dust-2014
+            ranges: []
+        - row_id: pm_over10
+          role: "Outdoor wood dust above PM10"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Mass of particles above PM10 released after controls to outdoor air, unspecified subcompartment. Do not add total PM or PM10 again alongside these three disjoint bins. Indoor exposure is not this flow."
+          amount:
+            expression: "Use cp_air; actual attributable amount divided by accepted net batch mass Q from cp_accept. No default quantity; nonapplicability or zero needs evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-sawmill-dust-2014
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "Maintain an unallocated physical ledger for wet/dry wood, water, nails and measured carbon, including receipts, gate product, residue destinations and stock changes. Separately maintain the environmental burden ledger. Subdivide and meter wood preparation separately from nailing/acceptance where co-products are sold. Only joint wood-preparation burdens are allocated by actual oven-dry mass of pallet wood components and eligible sold wood co-products at the split; wastes are excluded from the co-product denominator. Apply the pallet share to joint upstream timber and preparation burdens. Nailing, inspection and product-specific downstream energy belong wholly to pallets. Do not multiply co-product physical outputs or internal link quantities by the pallet allocation share. Source: usda-pallet-2020, §1.4 (stage distinction); usda-wood-handbook-2021 (dry basis)."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "Evidence of sale, customer-accepted product specification, lawful product/co-product status and continuing actual use distinguishes a co-product from waste; revenue alone establishes neither product status nor a reason to allocate burdens to a residue. Each residue mass follows exactly one sale/waste path. With no co-product the pallet share is one. Unknown mass, unresolved actual product status/use, incompatible receiver/provider quantity or moisture basis, or inseparable stage meters must remain explicit gaps in a production dataset. Assign waste handling to its generating activity and disclose the chosen offsite background boundary. No default avoided fuel/material burden, recycling credit, lifetime extension or system expansion is included."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_accept
+      process_id: "pallet_manufacture"
+      flow_role: "pallet"
+      record_type: "acceptance and weighing"
+      raw_fields: "lot; configuration; species; dimensions; block/stringer; nail specification; accepted count; tare; accepted net batch mass Q; moisture; rejects; gate"
+      collection_method: "Calibrated scale weighing of accepted complete pallets without wrapping or cargo; reconcile order and reject records. Keep measured piece weights only as supplementary actual records."
+      unit: "kg"
+      frequency: "every lot"
+      temporal_coverage: "same reporting period and accepted configuration"
+      site_scope: "actual line/site and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable original records; sampling coverage; reconciliation"
+    - protocol_id: cp_material
+      process_id: "pallet_manufacture"
+      flow_role: "timber; nails"
+      record_type: "receipts, stock and issues"
+      raw_fields: "supplier; species; grade; dimensions; wood moisture; wet and oven-dry sample masses; nail type/coating/count; mass; opening/closing stock; returns; supplier kiln/HT batches; inlet transport"
+      collection_method: "Weigh net materials by lot, reconcile supplier and stock records. Oven-dry representative species/lot wood samples to constant mass under a documented method; calibrated moisture meters require species and temperature correction evidence. Verify supplier treatment and delivery boundaries."
+      unit: "kg; kg/kg"
+      frequency: "every lot and stock close"
+      temporal_coverage: "same reporting period and accepted configuration"
+      site_scope: "actual line/site and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable original records; sampling coverage; reconciliation"
+    - protocol_id: cp_energy
+      process_id: "pallet_manufacture"
+      flow_role: "electricity"
+      record_type: "stage meter readings"
+      raw_fields: "meter; voltage; supply geography; timestamps; readings; preparation/nailing/extraction/handling/branding subtotals; allocation driver; reporting lot"
+      collection_method: "Use calibrated interval meters; reconcile line totals and invoices. Separate preparation from downstream assembly and acceptance; meter electric compressor and handling, including idle demand attributable to production."
+      unit: "kWh; MJ"
+      frequency: "continuous, close each reporting period"
+      temporal_coverage: "same reporting period and accepted configuration"
+      site_scope: "actual line/site and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable original records; sampling coverage; reconciliation"
+    - protocol_id: cp_residue
+      process_id: "pallet_manufacture"
+      flow_role: "sawdust_sale; offcut_sale; sawdust_waste; offcut_waste; steel_waste"
+      record_type: "segregated weigh tickets and destinations"
+      raw_fields: "source stage; residue type; wet/dry mass; moisture; sale or waste; particle/solid form and dimensions; treatment state; receiver; accepted product specification; lawful status/use evidence; provider/downstream reference quantity and moisture basis; invoice/manifest; recovered nails; internal return; stock; measured carbon fraction if used"
+      collection_method: "Weigh separate bins and document destination, sale/use and treatment. Verify actual customer specification, lawful product/co-product status and continuing use before treating a sold stream as product; verify receiver/provider native mass-moisture and boundary compatibility separately from the broad UUID. Sample wood moisture using the same dry-basis method. Separate wood and steel from rejects; count internal rework once and reconcile unallocated physical balances before allocating burdens."
+      unit: "kg; kg/kg"
+      frequency: "each bin/dispatch and period close"
+      temporal_coverage: "same reporting period and accepted configuration"
+      site_scope: "actual line/site and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable original records; sampling coverage; reconciliation"
+    - protocol_id: cp_maintenance
+      process_id: "pallet_manufacture"
+      flow_role: "oil; used_oil"
+      record_type: "maintenance issues and waste tickets"
+      raw_fields: "oil formulation; issue/return masses; stocks; machine hours; used-oil mass/contamination; receiver; reporting period"
+      collection_method: "Weigh fresh and used oil separately; trace service intervals and attribute to equipment using documented operating hours. Unknown uncollected oil remains a balance gap, not an assumed emission."
+      unit: "kg"
+      frequency: "each maintenance event"
+      temporal_coverage: "same reporting period and accepted configuration"
+      site_scope: "actual line/site and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable original records; sampling coverage; reconciliation"
+    - protocol_id: cp_air
+      process_id: "pallet_manufacture"
+      flow_role: "pm25; pm_coarse; pm_over10"
+      record_type: "post-control outdoor emissions"
+      raw_fields: "source; subcompartment; sampling method; PM definition; size cut; concentration; exhaust volume and conditions; operating duration; control efficiency; fugitive pathway; uncertainty"
+      collection_method: "Measure post-control stack and outdoor fugitive mass over representative operation or use a documented site-specific engineering model with validated inputs. Keep filterable/condensable definitions aligned; no automatic EPA indoor zero or PTE factor. Identify genuinely absent pathways with records."
+      unit: "kg"
+      frequency: "representative tests with continuous activity coverage"
+      temporal_coverage: "same reporting period and accepted configuration"
+      site_scope: "actual line/site and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceable original records; sampling coverage; reconciliation"
+  calculation_rules:
+    - id: normalize_batch
+      applies_to: "all inventory rows"
+      rule: "For each row, normalized amount = attributable period exchange / accepted net batch mass Q. Product output = Q / Q = 1 kg. Q must be positive and from cp_accept; retain each numerator unit."
+      inputs:
+        - "period exchange"
+        - Q
+        - cp_accept
+      output: "row amount per 1 kg reference flow"
+      source_ids: []
+    - id: moisture_wood
+      applies_to: "timber; pallet; sawdust_sale; offcut_sale; sawdust_waste; offcut_waste"
+      rule: "Dry-basis moisture fraction u = (wet wood mass - oven-dry wood mass) / oven-dry wood mass; dry wood mass = wet wood mass / (1 + u). For pallets remove measured installed steel mass before applying wood moisture. No constant u or density."
+      inputs:
+        - "wood mass"
+        - "measured u"
+        - cp_material
+        - cp_residue
+      output: "dry wood and retained water"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: electric_conversion
+      applies_to: "electricity"
+      rule: "Electrical work in MJ = metered kWh × 3.6; retain stage totals, apply the allocation rule to joint preparation only, then normalize_batch."
+      inputs:
+        - "metered kWh"
+        - cp_energy
+      output: "attributable MJ per reference flow"
+      source_ids: []
+    - id: joint_wood_share
+      applies_to: "timber; electricity; oil"
+      rule: "Pallet share = oven-dry mass of pallet wood components at split / (that mass + oven-dry mass of eligible sold wood co-products at split). Use only on joint preparation and associated upstream burdens; exclusive downstream burdens remain full. Physical row masses remain unchanged."
+      inputs:
+        - "stage meters"
+        - cp_residue
+        - "dry mass at split"
+      output: "burden allocation share"
+      source_ids:
+        - usda-pallet-2020
+    - id: dust_partition
+      applies_to: "pm25; pm_coarse; pm_over10"
+      rule: "For identical source, period and measurement definition: fine = PM2.5; middle = PM10 - PM2.5; coarse = total PM - PM10. Require total PM ≥ PM10 ≥ PM2.5 ≥ 0. Incompatible or missing measurements stay pending; never assume a particle fraction."
+      inputs:
+        - "compatible nested emissions"
+        - cp_air
+      output: "three disjoint emitted masses"
+      source_ids:
+        - epa-sawmill-dust-2014
+  data_quality_requirements:
+    - id: config_trace
+      applies_to: "all inventory rows"
+      requirement: "Same species/configuration, moisture and treatment state, gate and reporting period; a database flow identity alone is not a compatible background dataset."
+      evidence: "order, supplier and measured records"
+    - id: balance
+      applies_to: "all inventory rows"
+      requirement: "Reconcile unallocated dry wood, retained water, installed/rejected steel and stocks. If carbon accounting is used, measure species/lot carbon fraction and trace wood carbon to product, residues and actual releases; disclose residuals and uncertainty. Never solve missing water/carbon by fabricating emissions."
+      evidence: "physical ledger and distinct burden ledger"
+    - id: coverage
+      applies_to: "all inventory rows"
+      requirement: "Record applicable, absent and unknown exchanges separately. No lookup means no UUID; no activity data means no default amount. Verify the actual physical qualifiers, lawful product status/use and receiver/provider quantity-moisture compatibility before a dataset uses conditional sold-residue identities."
+      evidence: "row evidence, meters, sampling and waste destinations"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require exactly one final pallet reference output, positive accepted batch mass and identical bilingual reference basis. Check every row against its physical type, actual material state, direct-record reference property/unit and foreground collection protocol. Split nail specifications and additional actual consumables into atomic dataset exchanges; material route changes require method review. Reconcile period boundaries, stock/rework and two-ended internal links before normalizing."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject a pressed-wood, recovered-parts or repair/pool dataset under this PCR. Reject missing upstream drying/claimed HT/inbound transport, duplicated grid losses or residue destinations, allocated physical outputs, nested dust double counting, or invented mass, density, load rating or trip credit. Claimed HT needs supplier batch/conformity evidence; measurements for a different species/geometry cannot prove it. Identity gaps and unknown emissions are unresolved rather than zero. These authoring rules do not claim semantic TIDAS approval or an independently approved methodology."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "kg-based manufacture of this specified new pallet route; upstream input to a separately evidenced service model"
+  excluded_use: "unqualified cargo/load-service comparison; repair, rental or pool service; automatic reuse/substitution credit"
+  required_metadata: "actual scientific wood species and mixture shares; forest/supplier origin; moisture at receipt and gate with dry/wet basis; dimensions and tolerances; deck board count/thickness; solid block or stringer structure; entry/notch design; steel nail type, grade, coating, count and mass; net accepted pallet mass measurement; production dates and site; drying and HT provider, batch, process boundary and certificate when claimed; actual load rating/test basis or explicitly unverified; unpainted/unwrapped state; no reuse-service claim"
+  required_quality_disclosure: "primary collection coverage, dry/wet and stock balance, stage allocation, upstream provider compatibility, HT evidence, residue destinations, unresolved conditional identities and emission uncertainty"
+  update_trigger: "change of species, dimensions/structure, nails/coating, drying/HT location, voltage/geography, onsite thermal/fuel equipment or sale/treatment route"
+data_sources:
+  - id: "usda-pallet-2020"
+    type: "literature"
+    reference: "[USDA Forest Service, FPL-RP-707 (2020)](https://research.fs.usda.gov/download/treesearch/61866.pdf), §1.2.2, §1.4, §2.5; printed pp. 6, 8, 16–17"
+    used_for: "manufacturing stages and stage allocation distinction only; US 2016 survey and service assumptions do not supply defaults"
+  - id: "ippc-ispm15-2018"
+    type: "standard"
+    reference: "[IPPC ISPM 15, 2018, published 2019](https://www.ippc.int/static/media/files/publication/en/2019/02/ISPM_15_2018_En_WoodPackaging_Post-CPM13_Rev_Annex1and2_Fixed_2019-02-01.pdf), §2.1, Annex 1; printed pp. 7, 12"
+    used_for: "processed-wood distinction and supplier part HT boundary/claim conditions; no energy factor"
+  - id: "usda-wood-handbook-2021"
+    type: "handbook"
+    reference: "[USDA FPL-GTR-282 (2021)](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf), Chapters 4, 13; printed pp. 4–1, 13–2"
+    used_for: "dry-basis moisture and oven-dry sampling; no universal density or default moisture"
+  - id: "epa-sawmill-dust-2014"
+    type: "official_guidance"
+    reference: "[EPA Region 10 sawmill PM PTE memorandum, 8 May 2014](https://www.epa.gov/sites/default/files/2016-09/documents/spmpteef_memo.pdf), activity table and notes, printed pp. 1–2"
+    used_for: "nested size definitions and dust screening only; PNW Indian Country PTE factors exclude boilers and are not actual pallet-emission defaults"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d2d8eb7c5799f8863b34fcca9c6f51df879bcff386c22ed20213f5a67138e05f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5392"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5392
+          line: 58
+          column: 1
+        end:
+          offset: 8422
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe foreground boundary begins with receipt of dried, debarked solid coniferous timber and purchased steel nails, and ends with acceptance and unwrapped factory-gate release. Aggregate wood preparation, assembly and acceptance into one foreground unit, while keeping stage meters and mass records separate. Internal wood/component transfers are not extra exchanges; both ends of an internal physical link, if a dataset decomposes stages, must carry the same quantity and state. Reject rework stays inside until accepted or segregated as material waste. Source: `usda-pallet-2020`.\n\nUse linked upstream supply models for forestry, sawmilling, kiln drying, any claimed HT, nail manufacture, grid electricity, maintenance oil and actual inbound deliveries. No default delivery distance or vehicle load is permitted. A background mill-gate timber model needs a separately evidenced inbound transport model; a delivered model must not duplicate it. Foreground onsite thermal energy is absent only for the selected route. Upstream combustion emissions, including biogenic CO2, remain in the LCI; a climate-reporting convention cannot delete them. Store wood carbon only as a measured material balance, not as an assumed negative elementary exchange or reuse benefit.\n\nWhere HT is claimed, link the supplier treatment batch, energy/emission boundary and conformity records to received parts. ISPM 15 Annex 1 allows treatment before assembly; a conventional HT claim requires the entire wood profile, including core, to reach at least 56 °C for 30 continuous minutes. This treatment condition supplies no energy amount or drying endpoint. Do not default to steam heat: a heat purchase would need supplier net-delivered enthalpy evidence and a separately verified exchange. Changes requiring onsite HT or untreated green timber invalidate this route. Source: `ippc-ispm15-2018`.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | received_kiln_dried_solid_coniferous_timber |\n| starting_condition_role | upstream supply interface, not a burden-free starting point |\n| product_classification_scope | CPC 3.0 `31702`; narrower |\n| recursive_input_rule | do not input finished pallets or recovered pallet parts in this new manufacture route |\n| upstream_dataset_requirement | state/quantity-compatible wood/nail/energy/oil supply; evidenced drying and conditional HT; actual inbound transport; waste transport/treatment models |\n| disclosure | actual scientific wood species and mixture shares; forest/supplier origin; moisture at receipt and gate with dry/wet basis; dimensions and tolerances; deck board count/thickness; solid block or stringer structure; entry/notch design; steel nail type, grade, coating, count and mass; net accepted pallet mass measurement; production dates and site; drying and HT provider, batch, process boundary and certificate when claimed; actual load rating/test basis or explicitly unverified; unpainted/unwrapped state; no reuse-service claim |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 314
+              line: 9
+              column: 1
+            end:
+              offset: 387
+              line: 9
+              column: 74
+          text: "# New nailed coniferous sawnwood pallets from purchased kiln-dried timber"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5392
+              line: 58
+              column: 1
+            end:
+              offset: 5413
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_22485"
+      family: "allocation"
+      span:
+        start:
+          offset: 22485
+          line: 309
+          column: 1
+        end:
+          offset: 24160
+          line: 315
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nMaintain an unallocated physical ledger for wet/dry wood, water, nails and measured carbon, including receipts, gate product, residue destinations and stock changes. Separately maintain the environmental burden ledger. Subdivide and meter wood preparation separately from nailing/acceptance where co-products are sold. Only joint wood-preparation burdens are allocated by actual oven-dry mass of pallet wood components and eligible sold wood co-products at the split; wastes are excluded from the co-product denominator. Apply the pallet share to joint upstream timber and preparation burdens. Nailing, inspection and product-specific downstream energy belong wholly to pallets. Do not multiply co-product physical outputs or internal link quantities by the pallet allocation share. Source: `usda-pallet-2020`, §1.4 (stage distinction); `usda-wood-handbook-2021` (dry basis).\n\nEvidence of sale, customer-accepted product specification, lawful product/co-product status and continuing actual use distinguishes a co-product from waste; revenue alone establishes neither product status nor a reason to allocate burdens to a residue. Each residue mass follows exactly one sale/waste path. With no co-product the pallet share is one. Unknown mass, unresolved actual product status/use, incompatible receiver/provider quantity or moisture basis, or inseparable stage meters must remain explicit gaps in a production dataset. Assign waste handling to its generating activity and disclose the chosen offsite background boundary. No default avoided fuel/material burden, recycling credit, lifetime extension or system expansion is included.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 314
+              line: 9
+              column: 1
+            end:
+              offset: 387
+              line: 9
+              column: 74
+          text: "# New nailed coniferous sawnwood pallets from purchased kiln-dried timber"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 22485
+              line: 309
+              column: 1
+            end:
+              offset: 22525
+              line: 309
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32349"
+      family: "validation"
+      span:
+        start:
+          offset: 32349
+          line: 346
+          column: 1
+        end:
+          offset: 33449
+          line: 352
+          column: 1
+      markdown: "## 9. Validation Rules\n\nRequire exactly one final pallet reference output, positive accepted batch mass and identical bilingual reference basis. Check every row against its physical type, actual material state, direct-record reference property/unit and foreground collection protocol. Split nail specifications and additional actual consumables into atomic dataset exchanges; material route changes require method review. Reconcile period boundaries, stock/rework and two-ended internal links before normalizing.\n\nReject a pressed-wood, recovered-parts or repair/pool dataset under this PCR. Reject missing upstream drying/claimed HT/inbound transport, duplicated grid losses or residue destinations, allocated physical outputs, nested dust double counting, or invented mass, density, load rating or trip credit. Claimed HT needs supplier batch/conformity evidence; measurements for a different species/geometry cannot prove it. Identity gaps and unknown emissions are unresolved rather than zero. These authoring rules do not claim semantic TIDAS approval or an independently approved methodology.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 314
+              line: 9
+              column: 1
+            end:
+              offset: 387
+              line: 9
+              column: 74
+          text: "# New nailed coniferous sawnwood pallets from purchased kiln-dried timber"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32349
+              line: 346
+              column: 1
+            end:
+              offset: 32371
+              line: 346
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5392"
+      source_span:
+        start:
+          offset: 5415
+          line: 60
+          column: 1
+        end:
+          offset: 5995
+          line: 60
+          column: 581
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5392"
+      source_span:
+        start:
+          offset: 5997
+          line: 62
+          column: 1
+        end:
+          offset: 6675
+          line: 62
+          column: 679
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "system_boundary_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5392"
+      source_span:
+        start:
+          offset: 6677
+          line: 64
+          column: 1
+        end:
+          offset: 7284
+          line: 64
+          column: 608
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_22485"
+      source_span:
+        start:
+          offset: 22527
+          line: 311
+          column: 1
+        end:
+          offset: 23402
+          line: 311
+          column: 876
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_22485"
+      source_span:
+        start:
+          offset: 23404
+          line: 313
+          column: 1
+        end:
+          offset: 24158
+          line: 313
+          column: 755
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_32349"
+      source_span:
+        start:
+          offset: 32373
+          line: 348
+          column: 1
+        end:
+          offset: 32861
+          line: 348
+          column: 489
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_32349"
+      source_span:
+        start:
+          offset: 32863
+          line: 350
+          column: 1
+        end:
+          offset: 33447
+          line: 350
+          column: 585
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5392"
+      source_span:
+        start:
+          offset: 5392
+          line: 58
+          column: 1
+        end:
+          offset: 5413
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5392"
+      source_span:
+        start:
+          offset: 7312
+          line: 68
+          column: 1
+        end:
+          offset: 8420
+          line: 75
+          column: 549
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_22485"
+      source_span:
+        start:
+          offset: 22485
+          line: 309
+          column: 1
+        end:
+          offset: 22525
+          line: 309
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32349"
+      source_span:
+        start:
+          offset: 32349
+          line: 346
+          column: 1
+        end:
+          offset: 32371
+          line: 346
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d2d8eb7c5799f8863b34fcca9c6f51df879bcff386c22ed20213f5a67138e05f"
+  generated_content_sha256: "sha256:96e69bd7bd556dd742f5a6cb5c9cff163120d2aea0e2c8fa4a93e4cd071a47ce"

@@ -1,10 +1,1816 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34139"
-  title: "Other alcohols, phenols, phenol-alcohols, and their halogenated, sulphonated, nitrated or nitrosated derivatives; industrial fatty alcohols"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.other-alcohols-phenols-phenol-alcohols-and-their-halogenated-sulphonated-nitrated-or-ni-22ef3ba5"
+  classification_refs: "CPC 3.0:34139; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/."
+  covered_products: "Undiluted separated industrial phenol, CAS 108-95-2, with declared actual residual water/impurities"
+  excluded_products: "Other alcohol/phenol families, deliberately aqueous solutions, crude cleavage mixtures and Section 1 excluded routes"
+  representative_product: "Bulk cumene-route industrial phenol; no universal purity default"
+  production_route: "Dry air oxidation → CHP concentration → sulfuric-acid cleavage → NaOH neutralisation → fractionation/aqueous recovery → storage/loading"
+  market_state: "Separated, undiluted bulk; declared grade, measured water/impurities and actual molten/solid state"
+functional_unit:
+  what: "Separated industrial phenol supplied as chemical feedstock"
+  how_much: "1 kg accepted net product as supplied"
+  how_well: "Meets declared actual grade acceptance; measured phenol, water and impurity fractions, no default purity"
+  how_long_or_cycle: "At gate delivery; no service-life assumption"
+  reference_flow_link: "out_phenol"
+system_boundary:
+  rules:
+    - rule_id: b_route
+      applies_to: "phenol_train"
+      rule: "Include receiving fresh cumene, compressed-air dry oxidation, CHP concentration, sulfuric-acid cleavage, NaOH neutralisation, fractionation/phenol purification, phenol recovery from aqueous streams, measured internal recycling, heated bulk storage and loading. Record the actual flow diagram and each stage meter."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_utilities
+      applies_to: "utilities"
+      rule: "Include attributable electricity, steam/heat supply, air compression, cooling/makeup, vacuum, condensate return and environmental controls. Imported utilities need upstream providers; on-site fuel and emissions are foreground. Do not count internally produced steam as an additional purchased heat input."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_treatment
+      applies_to: "recovery_treatment"
+      rule: "Track oxidation peroxide pretreatment separately from fractionation phenol/solvent recovery, neutralisation salts, final treatment and sludge handling. Include abnormal operations, starts/stops, maintenance, vacuum losses, regeneration, storage and fugitives within the period."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_interface
+      applies_to: "physical_ledger"
+      rule: "Retain unallocated total physical mass, water-species, actual elemental and energy ledgers before allocation. Every internal transfer has equal mass/composition at both endpoints; recovery does not remove treatment energy or residual losses. Declare changes in inventories and off-spec rework; prevent supplier/site or waste-provider duplication."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_extensions
+      applies_to: "additional_exchanges"
+      rule: "Inventory cards are a minimum conditional checklist, not a fixed recipe or exhaustive site census. Before a usable dataset, add a separate atomic row for every actual additional reagent, resin, inhibitor, refrigerant loss, filter, ash, fuel, packaging, pollutant or transport service. Bulk tanker containers are returnable equipment, not assumed disposable packaging. No silent zero or cut-off is allowed for an unidentified material exchange. Added rows do not extend the stated route to excluded production methods."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_carriers
+      applies_to: "physical_ledger"
+      rule: "Measure wet ambient-air intake, humidity, N2/Ar, oxygen and complete vent-gas carrier separately from pollutant species. Gross air and the net consumed-O2 exchange are alternative accounting views, not additive inputs. Total vent mass includes species; never add pollutant rows twice. Track oxygen consumed and chemically bound, residual O2, water and other actual species in oxidation, combustion and treatment."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: b_assets
+      applies_to: "physical_and_burden_ledgers"
+      rule: "Record actual packing, maintenance consumables, asset/container ownership, opening/closing stocks, returnable-container returns and decommissioning destinations. Add each actual material/service as an atomic exchange. Reconcile actual acquisitions, returns, replacement waste and disposals physically, separately from lifetime-amortised infrastructure/container burdens. State lifetime, throughput, ownership and service boundary; burden fractions never replace physical items or mass."
+      source_ids:
+        - ilcd-detailed-2010
+        - jrc-lvoc-2017
+boundary_abstraction:
+  declared_starting_condition: "Accepted fresh fossil cumene at plant receipt, with recorded supply composition"
+  starting_condition_role: "External chemical-feed input, not previously produced phenol"
+  product_classification_scope: "Only the stated cumene-route undiluted separated phenol subset of CPC 3.0:34139"
+  recursive_input_rule: "Retain equal-endpoint internal cumene/phenol/acetone returns; purchased same-category inputs retain distinct upstream providers rather than recursively becoming zero burden"
+  upstream_dataset_requirement: "Cumene, chemical and utility providers compatible with actual composition, purity, energy property/measurement and geography; external waste-treatment receivers"
+  disclosure: "Actual route, stage measurements, all recovery/coproduct destinations, treatment inside/outside boundary, stocks, abnormal modes, missing identity/providers and uncertainty"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Phenol ()"
+    uuid: "16e5f88d-6275-4be5-9b11-67af4822298c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - SKU
+    - CAS
+    - "fossil cumene route"
+    - "net supply mass"
+    - "grade acceptance"
+    - "measured phenol/water/impurity fractions"
+    - "separation state"
+    - "molten/solid state and temperature"
+    - "site/period"
+    - "coproduct and recovery destinations"
+    - "allocation method"
+    - "provider quantity basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: m_mass
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use 1 kg accepted net undiluted phenol product as supplied, including measured residual water/impurities. Disclose phenol mass fraction and active phenol mass separately; never silently switch the denominator."
+  - id: m_solution
+    applies_to: "in_acid, in_caustic"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use actual supply solution mass, assay and carrier water. Active chemical mass = solution mass × measured mass fraction; water already in the supply is not additional process-water input. Match background solution concentration and reference quantity."
+  - id: m_electricity
+    applies_to: "in_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the record reference property label; convert actual meter kWh to MJ using 1 kWh = 3.6 MJ. This energy identity does not supply grid mix or loss factors."
+  - id: m_steam
+    applies_to: "in_steam"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Collect supplied steam mass and returned condensate mass separately. Derive energy using actual absolute pressure, temperature, dryness and enthalpy from iapws-if97-2012 within its validity range. Preserve supplier net/gross heat and return conventions; an MJ label or pressure-independent latent heat is insufficient."
+  - id: m_gas
+    applies_to: "in_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Convert meter volume only with recorded temperature, absolute pressure, wet/dry composition and compressibility consistent with supplier m3 reference. Retain measured heating-value basis separately; never infer density from database secondary mass coefficients."
+  - id: m_commercial
+    applies_to: "chemical_and_material_rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "For every actual catalyst, inhibitor, cleaning agent, maintenance consumable and packing material, record its specific commercial identity, grade, delivered mass and composition; active ingredient, solution carrier and disposable/returnable ownership remain distinct. Do not substitute refinery or unrelated recipe datasets for chemical-synthesis providers."
+  - id: m_emissions
+    applies_to: "elementary_rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Integrate species concentration with compatible gas/liquid flow and actual operating time; report wet/dry/standard-state corrections, detection limits, sampling recovery and uncertainty. Keep total indicators distinct from physical species mass."
+process_map:
+  - id: phenol_train
+    name: "Integrated cumene-oxidation phenol foreground"
+    inclusion: "required"
+    inclusion_condition: "Within the stated route"
+    role: "Foreground; independent stage metering, internal recycle adds no reference output"
+    quantitative_reference: "1 kg accepted net phenol as supplied"
+process_inventory:
+  - id: phenol_train
+    label: "Integrated cumene-oxidation phenol foreground"
+    inputs:
+      product:
+        - row_id: in_cumene
+          role: "Fresh fossil cumene"
+          name: "Fresh fossil cumene"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased isopropylbenzene, CAS 98-82-8; measure net fresh feed, grade and impurity profile. Separate fresh feed from internal recovered cumene and solvent circulation."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_acid
+          role: "Sulfuric acid"
+          name: "Sulfuric acid ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "This UUID applies only to actual 93–98% supplied industrial sulfuric acid with a compatible chemical-synthesis route. Record delivered solution mass and measured acid/water fractions; on-site dilution is separate measured process water. Other supply concentrations require a compatible identity. No acid dose or cleavage concentration is prescribed."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_caustic
+          role: "Sodium hydroxide neutralisation solution"
+          name: "Sodium hydroxide neutralisation solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one actual aqueous NaOH supply, its delivered mass, concentration, carrier water and supplier basis. Do not substitute a 30% or solid-grade flow unless the actual supply matches; neutralisation can form sodium phenate internally."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_electricity
+          role: "Alternating current"
+          name: "Alternating current ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value (93a60a56-a3c8-11da-a746-0800200c9a66); unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use this UUID only for purchased 1–35 kV grid-average supply to the user in China (record location CN); other supply geographies require a compatible flow. Meter compressors, vacuum equipment, pumps, cooling, treatment and heated storage; retain actual location, voltage, supplier and losses boundary."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional external supply for concentration, fractionation and recovery. Record actual pressure, temperature, dryness, mass, condensate return and supplier reference basis. Keep delivered steam kg in this physical row and condensate return in the physical ledger; separate actual pressure levels. Convert to a provider MJ reference only after its heat definition agrees with the enthalpy ledger. Do not link both steam mass and its derived heat to upstream provision for the same supply. A hard 11.0 MPaG steam record or a paper-mill steam record does not establish low-pressure chemical-service compatibility."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume (93a60a56-a3c8-22da-a746-0800200c9a66); unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Conditional pipeline fuel for on-site boiler or thermal oxidiser. Record meter volume, temperature, absolute pressure, wet/dry composition and compressibility; reconcile site and provider m3 conventions. Secondary mass coefficients do not establish density."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_water
+          role: "Process water"
+          name: "Process water ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec205030-248c-496f-9cf2-06d9d26dc6ff"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased treated process-water make-up for washing, dilution, cleaning and utilities when the same physical grade applies. Measure net external supply; exclude internal recirculation and water already contained in acid/caustic supplies. Separate different-quality water sources."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: in_carbon
+          role: "Activated carbon"
+          name: "Activated carbon ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5cad53b5-252a-4e2f-8197-8be465707405"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional VOC adsorption material; weigh actual replacement carbon and record granular grade, carbon origin, regeneration and supplier. The native absorption label conflicts with its adsorption comment; retain the chemical identity conditionally, verify actual adsorbent use and provider, and do not adopt either text as a reaction rule. The broad chemical identity provides no biomass/fossil share, capacity or replacement default."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: in_oxygen
+          role: "oxygen"
+          name: "oxygen ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "e2fb04b0-6555-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Net atmospheric oxygen consumed in reaction, combustion and included treatment, not purchased pure oxygen. Reconcile measured air throughput/composition, residual oxygen and process balance; compression energy stays in electricity."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+    outputs:
+      product:
+        - row_id: out_phenol
+          role: "Phenol"
+          name: "Phenol ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "16e5f88d-6275-4be5-9b11-67af4822298c"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Accepted separated industrial phenol, undiluted bulk at gate; net product mass includes measured residual water and impurities but excludes tank/container tare. One reference output covers purification, storage and bulk loading."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_acetone
+          role: "Acetone"
+          name: "Acetone ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d5d65ffc-92f2-4d88-b6e7-e050445978f5"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record isolated acetone, CAS 67-64-1, grade, water, impurities, net mass and destination independently of phenol. The selected record identifies liquid acetone by CAS and mass. Its wafer-production text expresses intended use; it does not establish manufacture by wafers or an exclusive purity grade. Retain chemical identity conditionally for actual finished acetone; verify actual grade, composition, provider and reference quantity. The use text and generic solvent comment do not certify an upstream provider or universal purity. Crude mixtures and deliberately formulated solutions need their own identity. No default phenol/acetone ratio is supplied."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_ams
+          role: "Separated alpha-methylstyrene"
+          name: "Separated alpha-methylstyrene"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional recovered saleable AMS, CAS 98-83-9; record actual purity, inhibitors and mass. This PCR covers distillation recovery, not AMS hydrogenation to cumene. Unseparated AMS in tar remains part of that tar stream."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_acetophenone
+          role: "Separated acetophenone"
+          name: "Separated acetophenone"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional isolated saleable acetophenone, CAS 98-86-2; record grade, mass and receiver. Do not turn acetophenone contained in heavy ends into a second product output."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_cumene
+          role: "Externally exported recovered cumene"
+          name: "Externally exported recovered cumene"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual export, measured separately from internal recycle. State mixture purity, impurities and recipient acceptance; internal recovery is never a purchased input, saleable output or avoided virgin-product credit."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      waste:
+        - row_id: out_heads
+          role: "Phenol fractionation light-end purge"
+          name: "Phenol fractionation light-end purge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional physical light-end stream exported for treatment, with actual composition, water, mass and receiver. Retain internal recovery, return and on-site destruction in stage ledgers; a recovered saleable component needs its own product identity and acceptance. Do not relabel the mixed stream as pure acetone or cumene. Heads retained inside the process cannot also be counted as external waste or pollutant release."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_tar
+          role: "Phenol fractionation heavy-end tar"
+          name: "Phenol fractionation heavy-end tar"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One physical heavy-end stream; record mass, water, phenol/ACP/AMS content, hazardous classification and treatment receiver. If burned on site, keep it only in the internal ledger and report combustion exchanges; export as waste and on-site combustion cannot both count the same mass."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_spent_carbon
+          role: "spent activated carbon"
+          name: "spent activated carbon ()"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aff33890-3f08-40f9-9310-a7f77213de05"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional exhausted adsorption carbon sent outside; record wet mass, retained organics, carbon origin, regeneration/disposal and receiver. Do not add adsorbed VOC mass as an air emission."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_primary_sludge
+          role: "Sludge"
+          name: "Sludge ()"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The native Waste flow identifies semi-solid sludge on a mass basis. Apply conditionally to this separately collected primary stream only when its phase matches; measure wet mass and dry-solids fraction separately. The water-treatment use label does not establish a treatment provider or phenol-specific contaminant composition. Dry or differently formulated residues require compatible identity. Conditional separately removed physical sludge; record wet/dry mass, water, organic contamination, salt content and receiver. Keep distinct from biological sludge."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_bio_sludge
+          role: "Sludge"
+          name: "Sludge ()"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The native Waste flow identifies semi-solid sludge on a mass basis. Apply conditionally to this separately collected biological excess stream only when its phase matches; measure wet mass and dry-solids fraction separately. The water-treatment use label does not establish a treatment provider or phenol-specific contaminant composition. Dry or differently formulated residues require compatible identity. Conditional excess sludge from included biological treatment, with actual moisture, contaminant composition and receiver. Returned activated sludge is internal, not this export."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: out_wastewater
+          role: "Phenol process wastewater to external treatment"
+          name: "Phenol process wastewater to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional transfer after site recovery/pretreatment to a named off-site treatment provider. Record volume, density, phase, hydroperoxides, species, COD and salts. This is not a final river emission; the same load cannot be duplicated in foreground receiving-water rows."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      elementary:
+        - row_id: air_phenol
+          role: "phenol"
+          name: "phenol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aa41-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual residual phenol after recovery/abatement, including storage, loading and fugitive losses; validate collection recovery for condensable phenol. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_cumene
+          role: "cumene"
+          name: "cumene ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a2-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual residual cumene from oxidiser exhaust, concentration, fractionation and fugitive sources. Condensed or adsorbed cumene is not an air release. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_acetone
+          role: "acetone"
+          name: "acetone ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9520-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual residual acetone from process vents, storage and loading, determined species by species. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_benzene
+          role: "benzene"
+          name: "benzene ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Screen feed impurity and actual process/combustion releases; no BREF example feed concentration or emission factor is prescribed. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_methanol
+          role: "methanol"
+          name: "methanol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual oxidation side-product release after treatment; distinguish measured methanol from TVOC reported as carbon. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_chp
+          role: "α,α-dimethylbenzyl hydroperoxide"
+          name: "α,α-dimethylbenzyl hydroperoxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "bdb8632d-b7d1-4415-a7dd-39048f42f953"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional measured hydroperoxide release; CAS 80-15-9 identifies CHP. Validate aerosol/condensation recovery; Method 18 alone is insufficient where volatility limitations apply. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_mhp
+          role: "Methyl hydroperoxide"
+          name: "Methyl hydroperoxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actually identified methyl hydroperoxide release; retain a validated compound-specific method. Total peroxide expressed as CHP is not this molecular mass. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_co2_fossil
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual fossil CO2 from included fuel/tar/VOC destruction and wastewater carbon conversion; close fossil-carbon balance, excluding externally modelled treatment. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_co2_bio
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional demonstrated biogenic carbon release within the selected boundary, including any combustion of biogenic carbon materials. Record actual carbon origin; retain biogenic CO2 in LCI even if an impact/reporting convention excludes it. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_methane
+          role: "methane (fossil)"
+          name: "methane (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual fossil methane from oxidiser tail gas, gas leaks or included treatment; identify carbon origin and do not treat all wastewater methane as biogenic. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_co
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual fossil-carbon CO from included combustion, distinguished from CO2. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_no
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual NO molecular mass from included combustion; a total NOx reading as NO2 equivalent cannot be assigned here without species-resolved conversion evidence. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_no2
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual NO2 molecular mass from included combustion; do not duplicate NO plus NO2 with a third NOx total row; exclude N2O from NOx. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual SO2 from fuel/tar sulfur and included combustion; do not substitute sulfur oxides aggregate or acid aerosol. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measured emitted particles at or below PM2.5; retain test definition and source. Collected dust/ash is not emitted particulate. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_pm2510
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only the disjoint >2.5 to 10 micrometre fraction; calculate from compatible same-source cumulative measurements if needed, with uncertainty. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_pm_over10
+          role: "particles (> PM10)"
+          name: "particles (> PM10) ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only the disjoint >10 micrometre fraction; do not add cumulative PM10 to these size-bin rows. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: air_water_vapour
+          role: "water vapour"
+          name: "water vapour ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual evaporative/combustion water within the foreground, including measured intake humidity and water formed/consumed internally; reconcile makeup, condensate and liquid discharge without counting gross cooling circulation. Outdoor-air unspecified compartment; qualify actual stack/fugitive source and use a compatible more specific compartment when established."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_liquid
+          role: "Liquid water discharged to freshwater"
+          name: "Liquid water discharged to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the physical water carrier separately from solute species, with actual density and recipient; maintain a non-duplicated water/solute mass ledger. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_phenol
+          role: "phenol"
+          name: "phenol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-975b-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Quantify phenol itself, using validated matrix-specific analysis; total phenols or volatile phenols are not automatically phenol mass. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_cumene
+          role: "cumene"
+          name: "cumene ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-928e-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure dissolved and separate-phase cumene with representative sampling; recovered solvent is internal. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_acetone
+          role: "acetone"
+          name: "acetone ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9524-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual measured acetone remaining after recovery and included treatment. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_methanol
+          role: "methanol"
+          name: "methanol ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a939-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional identified methanol remaining after included treatment. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_chp
+          role: "α,α-dimethylbenzyl hydroperoxide"
+          name: "α,α-dimethylbenzyl hydroperoxide ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4dd99a74-9603-4b7b-8058-12fe2759f3a3"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Separate CHP molecular mass from MHP and total peroxide as CHP; record actual pretreatment and compound-specific recovery. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_mhp
+          role: "Methyl hydroperoxide discharged to freshwater"
+          name: "Methyl hydroperoxide discharged to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Retain species-resolved measured mass; no conversion from total peroxide without validated composition. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_sulfate
+          role: "sulfate"
+          name: "sulfate ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac59-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual sulfate-ion mass (CAS 14808-79-8, SO4^2-) after treatment; the official sulfate display does not mean sodium-sulfate salt mass; distinguish elemental S, sodium sulfate and sulfate ion bases. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_sodium
+          role: "Sodium, ion"
+          name: "Sodium, ion ()"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "6a3f413e-8aab-4c58-93b0-1f51c9714adb"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual sodium-ion mass (CAS 17341-25-2, Na+); maintain ionic/salt balance without also adding sodium-sulfate salt as a second discharge. Applies only to actual final freshwater discharge after included treatment, not treatment influent; other recipients require a compatible compartment."
+          amount:
+            expression: "Measured period quantity from the linked collection protocol divided by accepted net phenol supply mass for the same period; no default"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+allocation_rules:
+  - rule_id: a_products
+    applies_to: "multifunctionality"
+    rule: "Keep phenol, acetone and actually isolated saleable AMS/acetophenone/exported cumene in the full physical output ledger, with actual mass, purity and recipient. Heavy ends, wastewater and spent carbon remain wastes unless documented positive product function and acceptance justify a different role."
+    source_ids:
+      - jrc-lvoc-2017
+      - ilcd-detailed-2010
+  - rule_id: a_hierarchy
+    applies_to: "environmental_burdens"
+    rule: "For a declared attributional dataset, first subdivide independently measured purification, storage and treatment services; allocate only the remaining inseparable burdens. Demonstrate a determining physical causal relationship where available; reaction stoichiometry or product masses alone do not establish that relationship. If unavailable, disclose justified economic allocation using actual grade-specific net quantities and consistent representative prices/time/geography, with sensitivity analysis. No universal fraction is supplied."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: a_accounting
+    applies_to: "physical_and_allocated_ledgers"
+    rule: "Preserve the unallocated process diagram and mass/water/carbon balances separately from the allocated burden account. Apply fractions to attributable environmental burdens only; never multiply physical co-product outputs or internal transfers by phenol allocation fractions. Shares must sum to one over the declared co-functions."
+    source_ids:
+      - ilcd-detailed-2010
+  - rule_id: a_recovery
+    applies_to: "recovery_and_waste"
+    rule: "Internal cumene/phenol/acetone return is an internal loop, never avoided-product credit. Do not combine system-expansion credits with an allocated attributional burden. Document external waste treatment and any externally exported recovery consistently with the selected model; actual energy recovery cannot also retain the same tar as an external waste output."
+    source_ids:
+      - ilcd-detailed-2010
+      - jrc-lvoc-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "phenol_train"
+      flow_role: "accepted and coproduct output"
+      record_type: "acceptance and batch records"
+      raw_fields: "lot; SKU; CAS; route; net mass; tare; phenol/water/impurity assay; phase; grade; receiver; opening/closing stocks"
+      collection_method: "Calibrated load-cell/scale or traceable tank mass with measured density/temperature; reconcile acceptance certificates and separate grades"
+      unit: "kg"
+      frequency: "each lot; reconcile period"
+      temporal_coverage: "Representative production period including actual abnormal modes"
+      site_scope: "Same phenol train and attributable utilities/treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records, calibration, acceptance/recovery/blanks/detection limits and uncertainty evidence"
+    - protocol_id: cp_material
+      process_id: "phenol_train"
+      flow_role: "fresh chemical and adsorbent input"
+      record_type: "receipts and consumption ledger"
+      raw_fields: "material identity; supply grade; concentration; carrier water; origin; net receipts; stock change; supplier; internal returns"
+      collection_method: "Weigh receipts and reconcile purchases, stores, actual consumption and supplier assay; meter separate fresh/recycled streams"
+      unit: "kg"
+      frequency: "each delivery and campaign"
+      temporal_coverage: "Representative production period including actual abnormal modes"
+      site_scope: "Same phenol train and attributable utilities/treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records, calibration, acceptance/recovery/blanks/detection limits and uncertainty evidence"
+    - protocol_id: cp_energy
+      process_id: "phenol_train"
+      flow_role: "electricity steam fuel"
+      record_type: "meter and utility balance"
+      raw_fields: "meter; interval; kWh; steam mass; pressure; temperature; dryness; enthalpy; condensate; fuel m3; T; absolute P; moisture; composition; Z; heating value; provider basis"
+      collection_method: "Read calibrated stage meters; reconcile compressed air, vacuum, cooling, distillation, heated storage, boiler and abatement loads; close supplier/site boundary"
+      unit: "kg; MJ; m3"
+      frequency: "continuous readings and period reconciliation"
+      temporal_coverage: "Representative production period including actual abnormal modes"
+      site_scope: "Same phenol train and attributable utilities/treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records, calibration, acceptance/recovery/blanks/detection limits and uncertainty evidence"
+    - protocol_id: cp_air
+      process_id: "phenol_train"
+      flow_role: "final species releases"
+      record_type: "monitoring and fugitive survey"
+      raw_fields: "source; compound; CAS; concentration; wet/dry basis; flow; T; P; operating hours; recovery; blanks; detection limits; carbon origin; PM size; NO/NO2 definition; events"
+      collection_method: "Use compound/matrix-validated stack sampling and GC where Method 18 applies, with low-volatility/condensation limitations checked; validated alternative for peroxides; LDAR/storage/loading survey and actual operating logs; validated source-specific combustion tests"
+      unit: "kg"
+      frequency: "representative operating modes plus abnormal events"
+      temporal_coverage: "Representative production period including actual abnormal modes"
+      site_scope: "Same phenol train and attributable utilities/treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records, calibration, acceptance/recovery/blanks/detection limits and uncertainty evidence"
+    - protocol_id: cp_water
+      process_id: "phenol_train"
+      flow_role: "water supply effluent and solutes"
+      record_type: "water balance and laboratory analysis"
+      raw_fields: "source; recipient; flow; density; separate phase; concentration by species; phenol; CHP; MHP; sulfate; sodium; COD; recovery; preservation; blank; detection limit; treatment path"
+      collection_method: "Calibrated flow and flow-proportional representative samples; validate Method 604 or equivalent for phenol in actual matrix, with independent confirmation for unfamiliar samples; validate other species separately; record before/after treatment and off-site transfers"
+      unit: "kg; m3; mg/L"
+      frequency: "matched flow/sample intervals; cover regeneration and abnormal loads"
+      temporal_coverage: "Representative production period including actual abnormal modes"
+      site_scope: "Same phenol train and attributable utilities/treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records, calibration, acceptance/recovery/blanks/detection limits and uncertainty evidence"
+    - protocol_id: cp_waste
+      process_id: "phenol_train"
+      flow_role: "external residual export"
+      record_type: "waste manifests"
+      raw_fields: "stream; wet mass; moisture; dry solids; composition; carbon source; hazardous class; receiver; treatment; reuse; weigh ticket"
+      collection_method: "Calibrated weighing and representative moisture/composition samples; receiver acceptance and treatment records; separate sludge types and spent carbon"
+      unit: "kg"
+      frequency: "each shipment and period"
+      temporal_coverage: "Representative production period including actual abnormal modes"
+      site_scope: "Same phenol train and attributable utilities/treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records, calibration, acceptance/recovery/blanks/detection limits and uncertainty evidence"
+    - protocol_id: cp_balance
+      process_id: "phenol_train"
+      flow_role: "physical balances and allocation evidence"
+      record_type: "stage and burden accounts"
+      raw_fields: "stage; total physical mass; composition; water formation/consumption; C/H/O/N/S/Na; wet air; vent carrier; O2 consumption; energy/enthalpy; stocks; internal transfers; heads/tars; independent phenol and acetone quantities; asset/container ownership/returns; price; period; uncertainty"
+      collection_method: "Reconcile each actual stage and equal-endpoint transfers; measure oxygen net consumption from air/vent composition; preserve unallocated balances and a separate justified allocation worksheet"
+      unit: "kg; MJ; price/kg"
+      frequency: "each campaign and representative period"
+      temporal_coverage: "Representative production period including actual abnormal modes"
+      site_scope: "Same phenol train and attributable utilities/treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original records, calibration, acceptance/recovery/blanks/detection limits and uncertainty evidence"
+  calculation_rules:
+    - id: c_normalise
+      applies_to: "all inventory rows"
+      rule: "Each attributable measured period exchange quantity / accepted net phenol kg for that same period; result per 1 kg reference flow. Reference-product output is exactly 1 kg; retain full physical coproduct ratios, with allocated burdens in a separate account."
+      inputs:
+        - cp_product
+        - "linked row protocol"
+      output: "per 1 kg reference flow"
+      source_ids:
+        - jrc-lvoc-2017
+        - ilcd-detailed-2010
+    - id: c_composition
+      applies_to: "reference_product, in_acid, in_caustic"
+      rule: "Component mass = actual supply mass × measured mass fraction; components and carrier water/impurities close to the same net supply mass; active phenol never replaces the reference denominator."
+      inputs:
+        - cp_product
+        - cp_material
+      output: "component masses"
+      source_ids:
+        - ineos-phenol-product
+    - id: c_electricity
+      applies_to: "in_electricity"
+      rule: "Actual meter kWh × 3.6 gives MJ; divide by accepted phenol kg for the same period; preserve the original Net calorific value property."
+      inputs:
+        - cp_energy
+        - cp_product
+      output: "MJ per 1 kg reference flow"
+      source_ids:
+        - jrc-lvoc-2017
+    - id: c_species
+      applies_to: "elementary_rows"
+      rule: "Integrate actual species concentration × compatible flow × matched time to kg, then divide by accepted net phenol kg; liquid mg/L × L × 10^-6 gives kg. For gas, reconcile moisture, temperature/pressure, oxygen corrections and instrument species/equivalent basis first."
+      inputs:
+        - cp_air
+        - cp_water
+        - cp_product
+      output: "kg species per 1 kg reference flow"
+      source_ids:
+        - epa-method18-2025
+        - epa-method604-1984
+    - id: c_balances
+      applies_to: "physical_ledger"
+      rule: "For each stage, total physical mass inputs + opening stocks = total physical mass outputs + closing stocks. Close C/H/O/N/S/Na and other actual elements using composition. Water-species inputs + opening stocks + internal chemical formation = water-species outputs + closing stocks + chemical consumption. Reaction-generated H2O is internal species conversion, never a total-mass source/sink. Cumene C9H12 + O2 → CHP C9H12O2 → phenol C6H6O + acetone C3H6O is the main reaction identity, not a recovered-product yield ratio; DMBA dehydration can form AMS and H2O. Internal transfers agree at both endpoints. Retain measured residuals and uncertainty without fictional balancing flows."
+      inputs:
+        - cp_balance
+        - "all collection protocols"
+      output: "unallocated stage balances"
+      source_ids:
+        - jrc-lvoc-2017
+    - id: c_energy_balance
+      applies_to: "physical_ledger"
+      rule: "Reconcile electricity/work, actual fuel composition/heating-value basis, steam/condensate enthalpy, reaction energy, cooling/rejected and exported heat, and stock changes independently of mass. Use one consistent enthalpy convention; never add reaction heat twice to chemical enthalpy. For an equal-mass closed steam/condensate circuit, useful heat is mass × (supply enthalpy − exit-condensate enthalpy), with enthalpy in kJ/kg; divide kJ by 1000 for MJ. If masses/endpoints differ, retain all streams and a complete consistent enthalpy balance instead of that shortcut. Provider net heat follows its own qualified supply/return boundary."
+      inputs:
+        - cp_energy
+        - cp_balance
+      output: "unallocated energy ledger"
+      source_ids:
+        - iapws-if97-2012
+        - jrc-lvoc-2017
+  data_quality_requirements:
+    - id: dq_coverage
+      applies_to: "all inventory rows"
+      requirement: "For each row disclose measured, condition not applicable or unresolved; non-detects retain detection limits rather than implying no release. Cover normal/abnormal modes and storage/loading in the same period."
+      evidence: "cp_air; cp_water; site logs"
+    - id: dq_bases
+      applies_to: "all inventory rows"
+      requirement: "No single-plant literature recipe, yield, purity, purification or energy default is transferred; actual records confirm each SKU, concentration and provider basis."
+      evidence: "cp_product; cp_material; cp_energy"
+    - id: dq_complete
+      applies_to: "foreground_dataset"
+      requirement: "Identify all additional atomic exchanges and close provider/treatment boundaries before a usable dataset; retain physical and allocated accounts and uncertainty."
+      evidence: "cp_balance; source and receiver evidence"
+validation_rules:
+  - rule_id: v_identity
+    applies_to: "reference_product"
+    rule: "Require cumene-route evidence, CAS 108-95-2, actual SKU, net mass, measured phenol/water/impurity fractions, acceptance specification and molten/solid gate state. Reject crude mixtures, deliberately aqueous solutions and excluded routes as this reference product."
+    source_ids:
+      - jrc-lvoc-2017
+      - ineos-phenol-product
+  - rule_id: v_quantity
+    applies_to: "all_inventory_rows"
+    rule: "Require one quantitative-reference phenol output while retaining every actual co-product, including independently measured acetone, and the same per-1-kg net accepted supply basis in every inventory card, collection aggregation and calculation in both languages. Reject active-phenol/solution-mass substitution, gross-tare mass and unmatched sampling periods."
+    source_ids:
+      - ineos-phenol-product
+  - rule_id: v_balance
+    applies_to: "physical_ledger"
+    rule: "Check total physical mass, water-species, all actual elements and energy balances before allocation with actual compositions, wet-air/vent carriers, bound oxygen, heads/tars, stocks, equal-endpoint recovery and off-spec losses; reaction water is never a total-mass balancing plug and carrier/species mass must not be duplicated; document site uncertainty and reconciliation tolerance without a PCR default. Distinguish product, by-product, waste transfer and final emissions."
+    source_ids:
+      - jrc-lvoc-2017
+  - rule_id: v_emission
+    applies_to: "elementary_rows"
+    rule: "Validate actual species, CAS where available, medium, source, fossil/biogenic origin, property and unit. Use post-abatement final releases; keep treatment influent and externally treated load out of final foreground discharge. TVOC as C, COD, total phenols and total peroxides are QA metrics, not substitute molecular emissions."
+    source_ids:
+      - jrc-lvoc-2017
+      - epa-method18-2025
+      - epa-method604-1984
+  - rule_id: v_size_nox
+    applies_to: "air_rows"
+    rule: "Use disjoint PM2.5, >2.5–10 and >10 micrometre fractions; do not add cumulative PM10 or collected dust. Separate actual NO and NO2 molecular masses; total NOx as NO2 equivalent requires documented composition/conversion and must not duplicate the species rows. N2O is separate. Retain any actual biogenic CO2 in LCI."
+    source_ids:
+      - jrc-lvoc-2017
+  - rule_id: v_providers
+    applies_to: "technosphere_links"
+    rule: "A UUID establishes physical identity only. Verify actual provider, grade, concentration, geography, voltage, steam pressure/net heat and gas volume conventions separately. Missing UUID/provider or unidentified exchanges remain explicit unresolved boundaries; do not claim a complete usable background dataset until they are resolved."
+    source_ids:
+      - jrc-lvoc-2017
+  - rule_id: v_evidence
+    applies_to: "foreground_dataset"
+    rule: "Require original site logs, calibrated meters/scales, analytical recovery, blanks, detection limits, representative coverage and abnormal-operation records. No historical single-plant reaction/distillation values, BREF plant ranges, manufacturer purity claims or database comments become quantity defaults. Report missing fields and uncertainty honestly."
+    source_ids:
+      - jrc-lvoc-2017
+      - epa-method18-2025
+      - epa-method604-1984
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Phenol feedstock LCI after actual collection, complete links and independent review; methodology state alone does not establish dataset completeness"
+  allowed_use: "Reuse only for matching route, supply mass, water/purity, geography/period and allocation conditions"
+  excluded_use: "Whole 34139, denatured ethanol, other alcohols/phenols, formulated aqueous solutions, excluded routes, default recipes/yields/energy or automatic background substitution when data are incomplete"
+  required_metadata: "Actual SKU/CAS, route, supply/active basis, residual water/impurities, phase, site/period, coproduct/recovery and treatment boundaries, provider reference quantities, allocation and original collection evidence"
+  required_quality_disclosure: "Missing/unresolved flows/providers, analytical/sampling coverage, uncertainty, abnormal modes, balance residuals, economic/physical allocation sensitivity and excluded subclasses"
+  update_trigger: "Changes to feed/route, purification, supply water/grade, recovery/coproduct destinations, abatement, utilities, provider measurement or market-price period"
+data_sources:
+  - id: "jrc-lvoc-2017"
+    type: "official_guidance"
+    reference: "https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/JRC109279_LVOC_Bref.pdf"
+    used_for: "European Commission JRC, 2017 LVOC BAT Reference Document, Chapter 8: 8.2.1–8.2.2.4 route; Figure 8.4; 8.3.1–8.3.3 emissions/water/recovery; 8.3.4–8.3.6 utilities, water and residues; printed pp. 396–411. Scope is this cumene route; plant examples/ranges are not quantity defaults."
+  - id: "ineos-phenol-product"
+    type: "literature"
+    reference: "https://www.ineos.com/businesses/ineos-phenol/products/phenol/"
+    used_for: "INEOS Phenol original product page, accessed 2026-10-13; undiluted and aqueous supply grades and product state. Producer-grade examples, not universal purity or density defaults."
+  - id: "epa-method18-2025"
+    type: "official_guidance"
+    reference: "https://www.epa.gov/system/files/documents/2025-04/m-18-04012025_0.pdf"
+    used_for: "US EPA Method 18, 04/01/2025, Sections 1–2 and 4: species-resolved industrial gaseous organics GC, moisture/condensation and applicability limitations. Not applicable to low-volatility/polymerising compounds without an appropriate validated alternative; no emission factor."
+  - id: "epa-method604-1984"
+    type: "official_guidance"
+    reference: "https://www.epa.gov/sites/default/files/2015-08/documents/method_604_1984.pdf"
+    used_for: "US EPA Method 604, promulgated 1984, Sections 1–3: industrial wastewater phenol GC analysis, unfamiliar-sample confirmation and matrix interference. Only phenol and listed phenols; not acetone/cumene/total peroxide analysis or a current-jurisdiction compliance claim."
+  - id: "ilcd-detailed-2010"
+    type: "official_guidance"
+    reference: "https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "JRC ILCD Detailed Guidance, first edition 2010, Sections 7.9.3 and 14.4; attributional multifunctionality/physical causality and economic allocation, recovery roles. Apply to the declared goal; no phenol coproduct share is supplied."
+  - id: "iapws-if97-2012"
+    type: "official_guidance"
+    reference: "https://iapws.org/technical-guidance/release/IF97-Rev.download"
+    used_for: "IAPWS R7-97(2012), Sections 1–2, 5–9 and 12: actual-state water/steam enthalpy, applicability regions and uncertainty; no supplier heat convention, pressure or yield default."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:76e43e9b45555700c58c57ed359ede29995058204f79588d47a58c9f6927510b"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6224"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6224
+          line: 64
+          column: 1
+        end:
+          offset: 10333
+          line: 87
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted fresh fossil cumene at plant receipt, with recorded supply composition |\n| starting_condition_role | External chemical-feed input, not previously produced phenol |\n| product_classification_scope | Only the stated cumene-route undiluted separated phenol subset of CPC 3.0:34139 |\n| recursive_input_rule | Retain equal-endpoint internal cumene/phenol/acetone returns; purchased same-category inputs retain distinct upstream providers rather than recursively becoming zero burden |\n| upstream_dataset_requirement | Cumene, chemical and utility providers compatible with actual composition, purity, energy property/measurement and geography; external waste-treatment receivers |\n| disclosure | Actual route, stage measurements, all recovery/coproduct destinations, treatment inside/outside boundary, stocks, abnormal modes, missing identity/providers and uncertainty |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | phenol_train | Include receiving fresh cumene, compressed-air dry oxidation, CHP concentration, sulfuric-acid cleavage, NaOH neutralisation, fractionation/phenol purification, phenol recovery from aqueous streams, measured internal recycling, heated bulk storage and loading. Record the actual flow diagram and each stage meter. | jrc-lvoc-2017 |\n| b_utilities | utilities | Include attributable electricity, steam/heat supply, air compression, cooling/makeup, vacuum, condensate return and environmental controls. Imported utilities need upstream providers; on-site fuel and emissions are foreground. Do not count internally produced steam as an additional purchased heat input. | jrc-lvoc-2017 |\n| b_treatment | recovery_treatment | Track oxidation peroxide pretreatment separately from fractionation phenol/solvent recovery, neutralisation salts, final treatment and sludge handling. Include abnormal operations, starts/stops, maintenance, vacuum losses, regeneration, storage and fugitives within the period. | jrc-lvoc-2017 |\n| b_interface | physical_ledger | Retain unallocated total physical mass, water-species, actual elemental and energy ledgers before allocation. Every internal transfer has equal mass/composition at both endpoints; recovery does not remove treatment energy or residual losses. Declare changes in inventories and off-spec rework; prevent supplier/site or waste-provider duplication. | jrc-lvoc-2017 |\n| b_extensions | additional_exchanges | Inventory cards are a minimum conditional checklist, not a fixed recipe or exhaustive site census. Before a usable dataset, add a separate atomic row for every actual additional reagent, resin, inhibitor, refrigerant loss, filter, ash, fuel, packaging, pollutant or transport service. Bulk tanker containers are returnable equipment, not assumed disposable packaging. No silent zero or cut-off is allowed for an unidentified material exchange. Added rows do not extend the stated route to excluded production methods. | jrc-lvoc-2017 |\n| b_carriers | physical_ledger | Measure wet ambient-air intake, humidity, N2/Ar, oxygen and complete vent-gas carrier separately from pollutant species. Gross air and the net consumed-O2 exchange are alternative accounting views, not additive inputs. Total vent mass includes species; never add pollutant rows twice. Track oxygen consumed and chemically bound, residual O2, water and other actual species in oxidation, combustion and treatment. | jrc-lvoc-2017 |\n| b_assets | physical_and_burden_ledgers | Record actual packing, maintenance consumables, asset/container ownership, opening/closing stocks, returnable-container returns and decommissioning destinations. Add each actual material/service as an atomic exchange. Reconcile actual acquisitions, returns, replacement waste and disposals physically, separately from lifetime-amortised infrastructure/container burdens. State lifetime, throughput, ownership and service boundary; burden fractions never replace physical items or mass. | ilcd-detailed-2010, jrc-lvoc-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 351
+              line: 11
+              column: 1
+            end:
+              offset: 412
+              line: 11
+              column: 62
+          text: "# Separated industrial phenol from the cumene oxidation route"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6224
+              line: 64
+              column: 1
+            end:
+              offset: 6245
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_57428"
+      family: "allocation"
+      span:
+        start:
+          offset: 57428
+          line: 818
+          column: 1
+        end:
+          offset: 59358
+          line: 827
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_products | multifunctionality | Keep phenol, acetone and actually isolated saleable AMS/acetophenone/exported cumene in the full physical output ledger, with actual mass, purity and recipient. Heavy ends, wastewater and spent carbon remain wastes unless documented positive product function and acceptance justify a different role. | jrc-lvoc-2017, ilcd-detailed-2010 |\n| a_hierarchy | environmental_burdens | For a declared attributional dataset, first subdivide independently measured purification, storage and treatment services; allocate only the remaining inseparable burdens. Demonstrate a determining physical causal relationship where available; reaction stoichiometry or product masses alone do not establish that relationship. If unavailable, disclose justified economic allocation using actual grade-specific net quantities and consistent representative prices/time/geography, with sensitivity analysis. No universal fraction is supplied. | ilcd-detailed-2010 |\n| a_accounting | physical_and_allocated_ledgers | Preserve the unallocated process diagram and mass/water/carbon balances separately from the allocated burden account. Apply fractions to attributable environmental burdens only; never multiply physical co-product outputs or internal transfers by phenol allocation fractions. Shares must sum to one over the declared co-functions. | ilcd-detailed-2010 |\n| a_recovery | recovery_and_waste | Internal cumene/phenol/acetone return is an internal loop, never avoided-product credit. Do not combine system-expansion credits with an allocated attributional burden. Document external waste treatment and any externally exported recovery consistently with the selected model; actual energy recovery cannot also retain the same tar as an external waste output. | ilcd-detailed-2010, jrc-lvoc-2017 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 351
+              line: 11
+              column: 1
+            end:
+              offset: 412
+              line: 11
+              column: 62
+          text: "# Separated industrial phenol from the cumene oxidation route"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 57428
+              line: 818
+              column: 1
+            end:
+              offset: 57468
+              line: 818
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_68917"
+      family: "validation"
+      span:
+        start:
+          offset: 68917
+          line: 860
+          column: 1
+        end:
+          offset: 71916
+          line: 872
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_identity | reference_product | Require cumene-route evidence, CAS 108-95-2, actual SKU, net mass, measured phenol/water/impurity fractions, acceptance specification and molten/solid gate state. Reject crude mixtures, deliberately aqueous solutions and excluded routes as this reference product. | jrc-lvoc-2017, ineos-phenol-product |\n| v_quantity | all_inventory_rows | Require one quantitative-reference phenol output while retaining every actual co-product, including independently measured acetone, and the same per-1-kg net accepted supply basis in every inventory card, collection aggregation and calculation in both languages. Reject active-phenol/solution-mass substitution, gross-tare mass and unmatched sampling periods. | ineos-phenol-product |\n| v_balance | physical_ledger | Check total physical mass, water-species, all actual elements and energy balances before allocation with actual compositions, wet-air/vent carriers, bound oxygen, heads/tars, stocks, equal-endpoint recovery and off-spec losses; reaction water is never a total-mass balancing plug and carrier/species mass must not be duplicated; document site uncertainty and reconciliation tolerance without a PCR default. Distinguish product, by-product, waste transfer and final emissions. | jrc-lvoc-2017 |\n| v_emission | elementary_rows | Validate actual species, CAS where available, medium, source, fossil/biogenic origin, property and unit. Use post-abatement final releases; keep treatment influent and externally treated load out of final foreground discharge. TVOC as C, COD, total phenols and total peroxides are QA metrics, not substitute molecular emissions. | jrc-lvoc-2017, epa-method18-2025, epa-method604-1984 |\n| v_size_nox | air_rows | Use disjoint PM2.5, >2.5–10 and >10 micrometre fractions; do not add cumulative PM10 or collected dust. Separate actual NO and NO2 molecular masses; total NOx as NO2 equivalent requires documented composition/conversion and must not duplicate the species rows. N2O is separate. Retain any actual biogenic CO2 in LCI. | jrc-lvoc-2017 |\n| v_providers | technosphere_links | A UUID establishes physical identity only. Verify actual provider, grade, concentration, geography, voltage, steam pressure/net heat and gas volume conventions separately. Missing UUID/provider or unidentified exchanges remain explicit unresolved boundaries; do not claim a complete usable background dataset until they are resolved. | jrc-lvoc-2017 |\n| v_evidence | foreground_dataset | Require original site logs, calibrated meters/scales, analytical recovery, blanks, detection limits, representative coverage and abnormal-operation records. No historical single-plant reaction/distillation values, BREF plant ranges, manufacturer purity claims or database comments become quantity defaults. Report missing fields and uncertainty honestly. | jrc-lvoc-2017, epa-method18-2025, epa-method604-1984 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 351
+              line: 11
+              column: 1
+            end:
+              offset: 412
+              line: 11
+              column: 62
+          text: "# Separated industrial phenol from the cumene oxidation route"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 68917
+              line: 860
+              column: 1
+            end:
+              offset: 68939
+              line: 860
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 7283
+          line: 79
+          column: 1
+        end:
+          offset: 7641
+          line: 79
+          column: 359
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 7642
+          line: 80
+          column: 1
+        end:
+          offset: 7992
+          line: 80
+          column: 351
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_treatment"
+      identity_kind: "explicit"
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 7993
+          line: 81
+          column: 1
+        end:
+          offset: 8325
+          line: 81
+          column: 333
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_interface"
+      identity_kind: "explicit"
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 8326
+          line: 82
+          column: 1
+        end:
+          offset: 8724
+          line: 82
+          column: 399
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_extensions"
+      identity_kind: "explicit"
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 8725
+          line: 83
+          column: 1
+        end:
+          offset: 9300
+          line: 83
+          column: 576
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_carriers"
+      identity_kind: "explicit"
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 9301
+          line: 84
+          column: 1
+        end:
+          offset: 9764
+          line: 84
+          column: 464
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 9765
+          line: 85
+          column: 1
+        end:
+          offset: 10331
+          line: 85
+          column: 567
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_products"
+      identity_kind: "explicit"
+      unit_id: "normative_57428"
+      source_span:
+        start:
+          offset: 57541
+          line: 822
+          column: 1
+        end:
+          offset: 57914
+          line: 822
+          column: 374
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_57428"
+      source_span:
+        start:
+          offset: 57915
+          line: 823
+          column: 1
+        end:
+          offset: 58517
+          line: 823
+          column: 603
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_accounting"
+      identity_kind: "explicit"
+      unit_id: "normative_57428"
+      source_span:
+        start:
+          offset: 58518
+          line: 824
+          column: 1
+        end:
+          offset: 58920
+          line: 824
+          column: 403
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_57428"
+      source_span:
+        start:
+          offset: 58921
+          line: 825
+          column: 1
+        end:
+          offset: 59356
+          line: 825
+          column: 436
+    - pointer: "/validation_rules/0"
+      rule_id: "v_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 69012
+          line: 864
+          column: 1
+        end:
+          offset: 69350
+          line: 864
+          column: 339
+    - pointer: "/validation_rules/1"
+      rule_id: "v_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 69351
+          line: 865
+          column: 1
+        end:
+          offset: 69771
+          line: 865
+          column: 421
+    - pointer: "/validation_rules/2"
+      rule_id: "v_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 69772
+          line: 866
+          column: 1
+        end:
+          offset: 70297
+          line: 866
+          column: 526
+    - pointer: "/validation_rules/3"
+      rule_id: "v_emission"
+      identity_kind: "explicit"
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 70298
+          line: 867
+          column: 1
+        end:
+          offset: 70716
+          line: 867
+          column: 419
+    - pointer: "/validation_rules/4"
+      rule_id: "v_size_nox"
+      identity_kind: "explicit"
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 70717
+          line: 868
+          column: 1
+        end:
+          offset: 71077
+          line: 868
+          column: 361
+    - pointer: "/validation_rules/5"
+      rule_id: "v_providers"
+      identity_kind: "explicit"
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 71078
+          line: 869
+          column: 1
+        end:
+          offset: 71466
+          line: 869
+          column: 389
+    - pointer: "/validation_rules/6"
+      rule_id: "v_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 71467
+          line: 870
+          column: 1
+        end:
+          offset: 71914
+          line: 870
+          column: 448
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 6224
+          line: 64
+          column: 1
+        end:
+          offset: 6245
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6224"
+      source_span:
+        start:
+          offset: 6273
+          line: 68
+          column: 1
+        end:
+          offset: 7210
+          line: 75
+          column: 190
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_57428"
+      source_span:
+        start:
+          offset: 57428
+          line: 818
+          column: 1
+        end:
+          offset: 57468
+          line: 818
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_68917"
+      source_span:
+        start:
+          offset: 68917
+          line: 860
+          column: 1
+        end:
+          offset: 68939
+          line: 860
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:76e43e9b45555700c58c57ed359ede29995058204f79588d47a58c9f6927510b"
+  generated_content_sha256: "sha256:86f1c8a884cca89397e94adb81a6b84afa78e5aec47237bd365a7f386e03c1a8"

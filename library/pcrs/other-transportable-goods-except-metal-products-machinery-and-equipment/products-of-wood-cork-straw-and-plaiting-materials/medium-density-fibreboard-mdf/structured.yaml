@@ -86,17 +86,17 @@ measurement_rules:
   - id: moisture_basis
     applies_to: "furnish_chips, furnish_sawdust, furnish_shavings, mdf_output"
     required_property_ref:
-      name: "Auxiliary wet/oven-dry Mass; each exchange retains its verified native reference property"
+      name: "Mass"
       uuid: ""
-    required_unit: "kg for auxiliary solids/water ledgers and mass-reference exchanges; m3 for native furnish_chips exchange"
-    rule: "Use cp_furnish and cp_output to retain auxiliary wet mass, oven-dry solids and water separately; dry-basis moisture u is water/dry mass and wet-basis moisture w is water/wet mass, both as fractions. These auxiliary kg measurements do not replace furnish_chips verified Volume/m3 exchange or normalized numerator. Convert its auxiliary kg ledger only with measured same-lot/moisture/material-state density; volume_basis and volume_conversion separately require the actual supplier solid/bulk volume definition, Vs/Vb/k and loss/gate correspondence, with unknown links unresolved."
+    required_unit: "kg"
+    rule: "Use cp_furnish and cp_output to retain wet mass, oven-dry solids and water separately; dry-basis moisture u is water/dry mass and wet-basis moisture w is water/wet mass, both as fractions. These are same-state composition measurements, not invariant stage quantities; distinguish water-specific tests from volatile loss or test-induced curing and retain uncertainty."
   - id: volume_basis
     applies_to: "furnish_chips, dryer_gas, control_gas, boiler_gas"
     required_property_ref:
       name: "Volume"
       uuid: ""
     required_unit: "m3"
-    rule: "Volume/m3 identity defines neither solid/bulk wood volume nor gas state. cp_furnish obtains supplier actual reference A, volume definition, same-lot/moisture Vs/Vb and measured k with loss/gate conversion. The applicable cp_energy or cp_energy_utilities record obtains gas T/P, dry-wet composition, Z and background-m3 reference conditions. Any unproven correspondence remains quantity compatibility pending."
+    rule: "Volume/m3 identity defines neither solid/bulk wood volume nor gas state. cp_furnish obtains supplier actual reference A, volume definition, same-lot/moisture Vs/Vb and measured k with loss/gate conversion. cp_energy and cp_energy_utilities obtain gas T/P, dry-wet composition, Z and background-m3 reference conditions. Any unproven correspondence remains quantity compatibility pending."
   - id: electricity_conversion
     applies_to: "line_electricity, boiler_electricity"
     required_property_ref:
@@ -110,7 +110,14 @@ measurement_rules:
       name: "Steam mass; delivered heat"
       uuid: ""
     required_unit: "kg; MJ"
-    rule: "The applicable cp_thermal or cp_thermal_utilities record retains steam mass, condensation/return mass, temperature/pressure/quality and enthalpy boundary. Populate heat MJ only when supplier/background definition agrees with site supply-return enthalpy balance; property or product name alone is insufficient and unknown basis remains unresolved."
+    rule: "cp_thermal and cp_thermal_utilities retain steam mass, condensation/return mass, temperature/pressure/quality and enthalpy boundary. Populate heat MJ only when supplier/background definition agrees with site supply-return enthalpy balance; property or product name alone is insufficient and unknown basis remains unresolved."
+  - id: reaction_accounting
+    applies_to: "mdf-line; utilities"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Conserve whole mass and each actual element, including C/H/O/N/S and relevant inorganic elements, across each measured stage and the utility boundary, with combustion air and stocks included. Molecular H2O and wood/resin materials are reactive species, not separately conserved solids. Their ledgers require evidenced formation and consumption at actual reaction extents under cp_recipe, cp_fuel, cp_energy, cp_energy_utilities, cp_air, cp_air_utilities, cp_water, cp_water_utilities, cp_vapour and cp_vapour_utilities; unknown terms remain uncertain, not zero. UF/MUF condensation may form H2O; pMDI-water cure consumes H2O and forms CO2; fuels and controls can form H2O. Infer neither complete cure/combustion nor a universal yield. Sources: usda-wood-joining-2023; doe-condensing-economizer-2012; epa-wood-boiler-2022."
   - id: nox_mass_basis
     applies_to: "dryer_nox, handling_nox, boiler_nox"
     required_property_ref:
@@ -250,7 +257,7 @@ process_inventory:
           flow_ref:
             uuid: "23e41b7b-0991-4cf7-8625-7a30d23bbb27"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Include only the resin actually used, in an independently supplied state matching the selected resin identity and actual provider reference. Record supplied mass, measured resin solids, water, supplier recipe and addition point. A bought prepared aqueous or otherwise compounded UF formulation requires one specific complete-formulation supply row and compatible provider preserving supplier manufacture/preparation/delivery before use; the generic resin UUID alone does not establish that complete supply. Its included resin, urea, water and additives are analytical composition only. Real independently purchased additions and actual onsite mixing water/utilities remain separate exchanges. Report resin solids separately; never equate wet formulation kg to dry resin kg or count included formulation water again as purchased process water."
+          description: "Include only the resin actually used, in an independently supplied state matching the selected resin identity and actual provider reference. Record supplied mass, measured resin solids, water, supplier recipe and addition point. A bought prepared aqueous or otherwise compounded UF formulation requires one specific complete-formulation supply row and compatible provider preserving supplier manufacture/preparation/delivery before use; the generic resin UUID alone does not establish that complete supply. Its included resin, urea, water and additives are analytical composition only. Real independently purchased additions and actual onsite mixing water/utilities remain separate exchanges. Report resin solids separately; never equate wet formulation kg to dry resin kg or count included formulation water again as purchased process water. Include only the resin actually used. Record delivered formulation mass, measured solids/carrier water and elemental composition, supplier recipe, addition point and stocks. Keep delivered resin solids distinct from cured products: actual formulation and measured cure extent determine molecular formation/consumption; UF/MUF condensation can form water, while pMDI-water reaction consumes water and forms CO2. Do not assume full cure, prescribe a reaction yield, count formulation water again as purchased process water or repeat upstream resin-synthesis water in the mill foreground."
           amount:
             expression: "Collect this actual exchange using cp_recipe and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default."
             value_mode: "calculated_value"
@@ -265,13 +272,14 @@ process_inventory:
                 - corrim-mdf-2024
                 - epa-mdf-2002
                 - usda-wood-handbook-2021
+                - usda-wood-joining-2023
             ranges: []
         - row_id: binder_muf
           role: "MUF binder"
           name: "Melamine-urea-formaldehyde adhesive resin for MDF"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Include only the resin actually used. Record delivered formulation mass, solids, water, supplier recipe and addition point; report resin solids separately and never count formulation water again as purchased process water."
+          description: "Include only the resin actually used. Record delivered formulation mass, measured solids/carrier water and elemental composition, supplier recipe, addition point and stocks. Keep delivered resin solids distinct from cured products: actual formulation and measured cure extent determine molecular formation/consumption; UF/MUF condensation can form water, while pMDI-water reaction consumes water and forms CO2. Do not assume full cure, prescribe a reaction yield, count formulation water again as purchased process water or repeat upstream resin-synthesis water in the mill foreground."
           amount:
             expression: "Collect this actual exchange using cp_recipe and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default."
             value_mode: "calculated_value"
@@ -286,13 +294,14 @@ process_inventory:
                 - corrim-mdf-2024
                 - epa-mdf-2002
                 - usda-wood-handbook-2021
+                - usda-wood-joining-2023
             ranges: []
         - row_id: binder_pmdi
           role: "pMDI binder"
           name: "Polymeric diphenylmethane diisocyanate adhesive resin for MDF"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Include only the resin actually used. Record delivered formulation mass, solids, water, supplier recipe and addition point; report resin solids separately and never count formulation water again as purchased process water."
+          description: "Include only the resin actually used. Record delivered formulation mass, measured solids/carrier water and elemental composition, supplier recipe, addition point and stocks. Keep delivered resin solids distinct from cured products: actual formulation and measured cure extent determine molecular formation/consumption; UF/MUF condensation can form water, while pMDI-water reaction consumes water and forms CO2. Do not assume full cure, prescribe a reaction yield, count formulation water again as purchased process water or repeat upstream resin-synthesis water in the mill foreground."
           amount:
             expression: "Collect this actual exchange using cp_recipe and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default."
             value_mode: "calculated_value"
@@ -307,6 +316,7 @@ process_inventory:
                 - corrim-mdf-2024
                 - epa-mdf-2002
                 - usda-wood-handbook-2021
+                - usda-wood-joining-2023
             ranges: []
         - row_id: additive_urea
           role: "Separate urea addition"
@@ -907,9 +917,9 @@ process_inventory:
           flow_ref:
             uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Collect this species after control at the stated source; record stack or fugitive capture coverage and carbon origin where specified. Applicable combustion species require actual firing/mobile activity; an untested or below-detection result is not zero."
+          description: "Measure H2O vapour at the actual post-control drying source. Use cp_vapour with consistent wet-gas flow/H2O concentration and time; retain supported separation of furnish moisture, recipe carrier water, steam condensation, inlet-air humidity, fuel moisture and actual cure/combustion/control formation or consumption where present. Trace condensate and remaining product moisture at actual destinations. Reaction water already included in measured stack H2O is not an additional emission. This row does not cover the separate boiler; a shared final stack is counted once with supported source attribution, and unknown attribution or reaction extent remains uncertain, not zero."
           amount:
-            expression: "Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default."
+            expression: "Collect this actual exchange using cp_vapour and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -917,11 +927,14 @@ process_inventory:
               kind: "process_output"
             evidence:
               kind: "calculated_from_collection"
-              collection_protocol_id: cp_air
+              collection_protocol_id: cp_vapour
               source_ids:
                 - corrim-mdf-2024
                 - epa-mdf-2002
                 - usda-wood-handbook-2021
+                - usda-wood-joining-2023
+                - doe-condensing-economizer-2012
+                - epa-stack-moisture-method4
             ranges: []
         - row_id: dryer_pm25
           role: "fibre drying air release: particles (PM2.5)"
@@ -1344,9 +1357,9 @@ process_inventory:
           flow_ref:
             uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Collect this species after control at the stated source; record stack or fugitive capture coverage and carbon origin where specified. Applicable combustion species require actual firing/mobile activity; an untested or below-detection result is not zero."
+          description: "Measure H2O vapour at the actual post-control pressing/cooling source. Use cp_vapour with consistent wet-gas flow/H2O concentration and time; retain supported separation of furnish moisture, recipe carrier water, steam condensation, inlet-air humidity, fuel moisture and actual cure/combustion/control formation or consumption where present. Trace condensate and remaining product moisture at actual destinations. Reaction water already included in measured stack H2O is not an additional emission. This row does not cover the separate boiler; a shared final stack is counted once with supported source attribution, and unknown attribution or reaction extent remains uncertain, not zero."
           amount:
-            expression: "Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default."
+            expression: "Collect this actual exchange using cp_vapour and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -1354,11 +1367,14 @@ process_inventory:
               kind: "process_output"
             evidence:
               kind: "calculated_from_collection"
-              collection_protocol_id: cp_air
+              collection_protocol_id: cp_vapour
               source_ids:
                 - corrim-mdf-2024
                 - epa-mdf-2002
                 - usda-wood-handbook-2021
+                - usda-wood-joining-2023
+                - doe-condensing-economizer-2012
+                - epa-stack-moisture-method4
             ranges: []
         - row_id: press_pm25
           role: "pressing and cooling air release: particles (PM2.5)"
@@ -1943,6 +1959,29 @@ process_inventory:
                 - corrim-mdf-2024
             ranges: []
       elementary:
+        - row_id: boiler_water_vapour
+          role: "Boiler air release: water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure gaseous H2O released to outdoor air at the actual boiler post-control outlet, using cp_vapour_utilities; this is distinct from delivered utility steam, condensate returns and dryer/press releases. Retain measured wet flue-gas flow, H2O concentration, temperature/pressure, operating time, fuel/air composition and stocks. Support source separation of fuel moisture, ambient inlet-air humidity, recipe/resin-bearing fuel contributions, actual chemical H2O formation/consumption and control-water addition. Trace captured/condensed water at its actual liquid/recovery destination, not as emitted vapour. Actual reaction extent is required for chemical source attribution; infer neither complete combustion nor a boiler yield. Total measured stack H2O already includes reaction water: do not add that formation amount again. Shared-stack amounts are attributed once on supported source records; unknown terms remain uncertain, not zero."
+          amount:
+            expression: "Collect this actual post-control gaseous H2O exchange using cp_vapour_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no default factor or yield."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_vapour_utilities
+              source_ids:
+                - epa-wood-boiler-2022
+                - doe-condensing-economizer-2012
+                - epa-stack-moisture-method4
+            ranges: []
         - row_id: boiler_co2bio
           role: "Boiler air release: carbon dioxide (biogenic)"
           name: "carbon dioxide (biogenic)"
@@ -2210,7 +2249,7 @@ process_inventory:
 allocation_rules:
   - rule_id: allocation_physical
     applies_to: "all inventory rows"
-    rule: "Retain unallocated physical stream quantities and mass/water/carbon balances; do not multiply actual MDF, residue or internal-link quantities by a burden-allocation fraction. Internal recovered dust is not a second saleable output."
+    rule: "Retain unallocated physical stream quantities and whole-mass/elemental conservation and reaction-aware species ledgers; do not multiply actual MDF, residue or internal-link quantities by a burden-allocation fraction. Internal recovered dust is not a second saleable output."
     source_ids:
       - corrim-mdf-2024
   - rule_id: allocation_single_product
@@ -2229,7 +2268,7 @@ dataset_production:
       process_id: "mdf_line"
       flow_role: "accepted MDF"
       record_type: "weighing"
-      raw_fields: "time, lot, board type, accepted net mass, area, thickness, volume, moisture/test basis, density, packaging tare, opening/closing stocks"
+      raw_fields: "time, lot, board type, accepted net mass, area, thickness, volume, moisture/test basis, density, packaging tare, opening/closing stocks; water-specific moisture method, volatile/test-cure interference, actual accepted-board elemental composition and uncertainty"
       collection_method: "Use calibrated scales and same-lot dimension/moisture tests to measure net board mass; exclude packaging/rejects and reconcile counts/stocks. Aggregation calculation: accepted net board mass in same period is denominator for per 1 kg reference flow"
       unit: "kg"
       frequency: "batch"
@@ -2253,8 +2292,8 @@ dataset_production:
       process_id: "mdf_line"
       flow_role: "each chemical"
       record_type: "supplier and dosing"
-      raw_fields: "separate resin/wax/hardener/urea/lubricant identity, delivered mass, solids, carrier water, carbon origin, dosing point, batch, stocks, recirculation"
-      collection_method: "Reconcile supplier specifications and actual recipes with calibrated dosing scales/pumps and purchases/stocks; infer no universal concentration or urea nitrogen content. Distinguish each actual independently supplied chemical from a bought complete resin/emulsion/hardener formulation. Whole bought formulations require specific compatible complete-product identities/providers retaining supplier manufacture/preparation/delivery once; included constituents/carrier water stay analytical. Actual separately purchased additions and onsite mixing/emulsification water/utilities/losses remain separate foreground records. Aggregation calculation: attributable consumption of each separate product / accepted net MDF mass, per 1 kg reference flow; solids/carrier water retained in separate physical ledgers"
+      raw_fields: "separate resin/wax/hardener/urea/lubricant identity, delivered mass, solids, carrier water, carbon origin, dosing point, batch, stocks, recirculation; actual resin constituents/functional groups and measured C/H/O/N/S and other relevant elements; cure stage, temperature/time, measured reaction extent and residual cure/composition, uncertainty"
+      collection_method: "Reconcile supplier specifications and actual recipes with calibrated dosing scales/pumps and purchases/stocks; infer no universal concentration or urea nitrogen content. Aggregation calculation: attributable consumption of each separate product / accepted net MDF mass, per 1 kg reference flow; solids/carrier water retained in separate physical ledgers Delivered solids/carrier water describe the incoming formulation, not independently conserved cured mass; determine formation/consumption only with supported actual formulation/cure records, excluding upstream synthesis. Distinguish each actual independently supplied chemical from a bought complete resin/emulsion/hardener formulation. Whole bought formulations require specific compatible complete-product identities/providers retaining supplier manufacture/preparation/delivery once; included constituents/carrier water stay analytical. Actual separately purchased additions and onsite mixing/emulsification water/utilities/losses remain separate foreground records."
       unit: "kg"
       frequency: "batch"
       temporal_coverage: "complete same declared survey period"
@@ -2265,8 +2304,8 @@ dataset_production:
       process_id: "mdf_line"
       flow_role: "electricity and each fuel; scoped to mdf-line"
       record_type: "meter and invoice"
-      raw_fields: "stage, meter, voltage, kWh, each fuel mass/volume, temperature/pressure/composition/calorific basis, hours, control use, output and stocks; each gas supplier/background actual reference A, T, absolute P, dry-wet composition, Z, background-m3 and site-meter reference conditions/gate"
-      collection_method: "Submeter refining, drying, pressing, finishing, controls and boiler; reconcile fuel purchases/stocks and purchased/on-site shares. Aggregation calculation: sum attributable stage amount of each carrier / accepted net MDF mass, per 1 kg reference flow; electricity converted to MJ Match supplier/background m3 quantity definition to site meters; unknown T/P, dry-wet composition, Z or loss gate prevents assumed conversion. This protocol attributes only actual mdf-line rows/sources; the other process uses cp_energy_utilities. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      raw_fields: "stage, meter, voltage, kWh, each fuel mass/volume, temperature/pressure/composition/calorific basis, hours, control use, output and stocks; each gas supplier/background actual reference A, T, absolute P, dry-wet composition, Z, background-m3 and site-meter reference conditions/gate; actual MDF-line fuel C/H/O/N/S and other relevant elemental composition, as-fired moisture separate from chemically bound hydrogen, resin/carbon origin, fuel/air quantities, partial-combustion residues and evidenced reaction extent with uncertainty"
+      collection_method: "Submeter refining, drying, pressing, finishing, controls and boiler; reconcile fuel purchases/stocks and purchased/on-site shares. Aggregation calculation: sum attributable stage amount of each carrier / accepted net MDF mass, per 1 kg reference flow; electricity converted to MJ Match supplier/background m3 quantity definition to site meters; unknown T/P, dry-wet composition, Z or loss gate prevents assumed conversion. This protocol attributes only actual mdf-line rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities. For actual MDF-line fuel analysis, retain the composition, moisture and reaction-extent evidence alongside the gas/energy metering here and the line cp_air/cp_vapour source records; do not assume full conversion. cp_fuel is the separate utility-stage fuel-analysis ledger."
       unit: "kWh; MJ; kg; m3"
       frequency: "shift and billing period"
       temporal_coverage: "complete same declared survey period"
@@ -2278,7 +2317,7 @@ dataset_production:
       flow_role: "electricity and each fuel; scoped to utilities"
       record_type: "meter and invoice"
       raw_fields: "stage, meter, voltage, kWh, each fuel mass/volume, temperature/pressure/composition/calorific basis, hours, control use, output and stocks; each gas supplier/background actual reference A, T, absolute P, dry-wet composition, Z, background-m3 and site-meter reference conditions/gate"
-      collection_method: "Submeter refining, drying, pressing, finishing, controls and boiler; reconcile fuel purchases/stocks and purchased/on-site shares. Aggregation calculation: sum attributable stage amount of each carrier / accepted net MDF mass, per 1 kg reference flow; electricity converted to MJ Match supplier/background m3 quantity definition to site meters; unknown T/P, dry-wet composition, Z or loss gate prevents assumed conversion. This protocol attributes only actual utilities rows/sources; the other process uses cp_energy. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      collection_method: "Submeter refining, drying, pressing, finishing, controls and boiler; reconcile fuel purchases/stocks and purchased/on-site shares. Aggregation calculation: sum attributable stage amount of each carrier / accepted net MDF mass, per 1 kg reference flow; electricity converted to MJ Match supplier/background m3 quantity definition to site meters; unknown T/P, dry-wet composition, Z or loss gate prevents assumed conversion. This protocol attributes only actual utilities rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kWh; MJ; kg; m3"
       frequency: "shift and billing period"
       temporal_coverage: "complete same declared survey period"
@@ -2290,7 +2329,7 @@ dataset_production:
       flow_role: "steam, indirect heat, condensate; scoped to mdf-line"
       record_type: "mass and enthalpy metering"
       raw_fields: "supply/return point, mass, temperature, absolute pressure, quality, enthalpy definition, condensation into fibres, recovery, losses, exports, meter, supplier/background energy definition"
-      collection_method: "Reconcile calibrated mass/heat meters and temperature/pressure records at a common enthalpy basis; obtain supplier definition and demonstrate agreement with background exchange; unknown heat basis stays unresolved. Aggregation calculation: actual delivered quantity of each carrier / accepted net MDF mass, per 1 kg reference flow; equal internal link ends, steam mass and net heat separate This protocol attributes only actual mdf-line rows/sources; the other process uses cp_thermal_utilities. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      collection_method: "Reconcile calibrated mass/heat meters and temperature/pressure records at a common enthalpy basis; obtain supplier definition and demonstrate agreement with background exchange; unknown heat basis stays unresolved. Aggregation calculation: actual delivered quantity of each carrier / accepted net MDF mass, per 1 kg reference flow; equal internal link ends, steam mass and net heat separate This protocol attributes only actual mdf-line rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg; MJ"
       frequency: "shift"
       temporal_coverage: "complete same declared survey period"
@@ -2302,7 +2341,7 @@ dataset_production:
       flow_role: "steam, indirect heat, condensate; scoped to utilities"
       record_type: "mass and enthalpy metering"
       raw_fields: "supply/return point, mass, temperature, absolute pressure, quality, enthalpy definition, condensation into fibres, recovery, losses, exports, meter, supplier/background energy definition"
-      collection_method: "Reconcile calibrated mass/heat meters and temperature/pressure records at a common enthalpy basis; obtain supplier definition and demonstrate agreement with background exchange; unknown heat basis stays unresolved. Aggregation calculation: actual delivered quantity of each carrier / accepted net MDF mass, per 1 kg reference flow; equal internal link ends, steam mass and net heat separate This protocol attributes only actual utilities rows/sources; the other process uses cp_thermal. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      collection_method: "Reconcile calibrated mass/heat meters and temperature/pressure records at a common enthalpy basis; obtain supplier definition and demonstrate agreement with background exchange; unknown heat basis stays unresolved. Aggregation calculation: actual delivered quantity of each carrier / accepted net MDF mass, per 1 kg reference flow; equal internal link ends, steam mass and net heat separate This protocol attributes only actual utilities rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg; MJ"
       frequency: "shift"
       temporal_coverage: "complete same declared survey period"
@@ -2313,8 +2352,8 @@ dataset_production:
       process_id: "mdf_line"
       flow_role: "water; scoped to mdf-line"
       record_type: "water meter"
-      raw_fields: "fresh make-up, recirculation, formulation water, steam condensation, fibre/board moisture, effluent, opening/closing storage, meter"
-      collection_method: "Calibrate boundary meters and weigh/sample fibre/board moisture; avoid duplicate fresh/recycled/steam water accounting. Aggregation calculation: attributable fresh water amount / accepted net MDF mass, per 1 kg reference flow; retain internal water balances separately This protocol attributes only actual mdf-line rows/sources; the other process uses cp_water_utilities. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      raw_fields: "fresh make-up, recirculation, formulation water, steam condensation, fibre/board moisture, effluent, opening/closing storage, meter; stage H2O inputs/outputs, actual steam/condensate and captured flue condensate destinations, wet-stack H2O, inlet humidity, recipe/fuel moisture, evidenced reaction formation/consumption and uncertainty"
+      collection_method: "Calibrate boundary meters and weigh/sample fibre/board moisture; avoid duplicate fresh/recycled/steam water accounting. Aggregation calculation: attributable fresh water amount / accepted net MDF mass, per 1 kg reference flow; retain internal water balances separately Apply molecular H2O formation/consumption ledgers as distinct from whole-mass/elemental conservation; evaporation is not feed water minus board moisture alone. Flue condensate is not automatically heating-loop condensate. This protocol attributes only actual mdf-line rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg"
       frequency: "shift"
       temporal_coverage: "complete same declared survey period"
@@ -2325,8 +2364,8 @@ dataset_production:
       process_id: "utilities"
       flow_role: "water; scoped to utilities"
       record_type: "water meter"
-      raw_fields: "fresh make-up, recirculation, formulation water, steam condensation, fibre/board moisture, effluent, opening/closing storage, meter"
-      collection_method: "Calibrate boundary meters and weigh/sample fibre/board moisture; avoid duplicate fresh/recycled/steam water accounting. Aggregation calculation: attributable fresh water amount / accepted net MDF mass, per 1 kg reference flow; retain internal water balances separately This protocol attributes only actual utilities rows/sources; the other process uses cp_water. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      raw_fields: "fresh make-up, recirculation, formulation water, steam condensation, fibre/board moisture, effluent, opening/closing storage, meter; stage H2O inputs/outputs, actual steam/condensate and captured flue condensate destinations, wet-stack H2O, inlet humidity, recipe/fuel moisture, evidenced reaction formation/consumption and uncertainty"
+      collection_method: "Calibrate boundary meters and weigh/sample fibre/board moisture; avoid duplicate fresh/recycled/steam water accounting. Aggregation calculation: attributable fresh water amount / accepted net MDF mass, per 1 kg reference flow; retain internal water balances separately Apply molecular H2O formation/consumption ledgers as distinct from whole-mass/elemental conservation; evaporation is not feed water minus board moisture alone. Flue condensate is not automatically heating-loop condensate. This protocol attributes only actual utilities rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg"
       frequency: "shift"
       temporal_coverage: "complete same declared survey period"
@@ -2350,7 +2389,7 @@ dataset_production:
       flow_role: "each waste; scoped to mdf-line"
       record_type: "transfer and composition"
       raw_fields: "separate dust/offcut/bark/ash/effluent/oil, moisture and resin/ash composition, source, recirculation destination, mass, recipient/treatment"
-      collection_method: "Weigh/meter each stream and reconcile transfer records; collected ash differs from air PM and cured residues differ from uncured fibres. Aggregation calculation: each actual external waste amount / accepted net MDF mass, per 1 kg reference flow; internal recovery retains equal links only This protocol attributes only actual mdf-line rows/sources; the other process uses cp_residues_utilities. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      collection_method: "Weigh/meter each stream and reconcile transfer records; collected ash differs from air PM and cured residues differ from uncured fibres. Aggregation calculation: each actual external waste amount / accepted net MDF mass, per 1 kg reference flow; internal recovery retains equal links only This protocol attributes only actual mdf-line rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg"
       frequency: "shift and transfer"
       temporal_coverage: "complete same declared survey period"
@@ -2362,7 +2401,7 @@ dataset_production:
       flow_role: "each waste; scoped to utilities"
       record_type: "transfer and composition"
       raw_fields: "separate dust/offcut/bark/ash/effluent/oil, moisture and resin/ash composition, source, recirculation destination, mass, recipient/treatment"
-      collection_method: "Weigh/meter each stream and reconcile transfer records; collected ash differs from air PM and cured residues differ from uncured fibres. Aggregation calculation: each actual external waste amount / accepted net MDF mass, per 1 kg reference flow; internal recovery retains equal links only This protocol attributes only actual utilities rows/sources; the other process uses cp_residues. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      collection_method: "Weigh/meter each stream and reconcile transfer records; collected ash differs from air PM and cured residues differ from uncured fibres. Aggregation calculation: each actual external waste amount / accepted net MDF mass, per 1 kg reference flow; internal recovery retains equal links only This protocol attributes only actual utilities rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg"
       frequency: "shift and transfer"
       temporal_coverage: "complete same declared survey period"
@@ -2371,22 +2410,22 @@ dataset_production:
       quality_evidence: "transfer receipts, composition, destination, stocks"
     - protocol_id: cp_fuel
       process_id: "utilities"
-      flow_role: "each wood fuel"
+      flow_role: "each actual fuel; scoped to utilities"
       record_type: "weighing and analysis"
-      raw_fields: "each fuel mass, moisture, heating value and gross/net basis, resin/carbon origin, ash, provenance/internal link, firing conditions"
-      collection_method: "Weigh each actual fuel and sample moisture/carbon composition representatively; external factors require demonstrated matching fuel/equipment conditions. Aggregation calculation: actual consumption of each fuel / accepted net MDF mass, per 1 kg reference flow"
-      unit: "kg"
+      raw_fields: "each fuel mass, moisture, heating value and gross/net basis, resin/carbon origin, ash, provenance/internal link, firing conditions; each actual gas/wood/resin-bearing fuel composition and C/H/O/N/S plus other actual elements, wet/dry mass and resin content, measured consumption/stocks, combustion air and incomplete-combustion residues, uncertainty"
+      collection_method: "Weigh each solid/liquid fuel or meter gas using cp_energy_utilities on matched quantity/state conditions; sample actual moisture and elemental composition representatively; external factors require demonstrated matching fuel/equipment conditions. Aggregation calculation: actual consumption of each fuel / accepted net MDF mass, per 1 kg reference flow Reconcile gas composition/quantity with cp_energy_utilities; retain moisture separately from chemically bound hydrogen, characterize resin-bearing fuel, and evidence actual reaction extent rather than assuming full fuel conversion. This protocol attributes only actual utilities rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      unit: "kg; m3"
       frequency: "fuel lot and shift"
       temporal_coverage: "complete same declared survey period"
-      site_scope: "plant boiler"
+      site_scope: "plant boiler; actual owning process: utilities"
       aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "weighing, composition, heating value and equipment evidence"
     - protocol_id: cp_air
       process_id: "mdf_line"
       flow_role: "each emission species and source; scoped to mdf-line"
       record_type: "stack and fugitive tests"
-      raw_fields: "source/stack/stage, species, compartment, carbon origin, concentration, gas flow, hours, oxygen/dry-wet/temperature-pressure basis, control state, detection limits, size/condensable fraction, factor applicability; NOx NO2-equivalent or actual NO+NO2 mass definition, NO/NO2 coverage, N2O exclusion and selected LCIA-mapping mass definition"
-      collection_method: "Test drying, pressing/cooling, finishing/handling and boiler separately or use applicability-verified factors times measured activity; count a shared final stack once while retaining source decomposition. Aggregation calculation: attributable post-control release mass of each species / accepted net MDF mass, per 1 kg reference flow; no overlapping size bins Prove the same monitoring/LCI/LCIA-mapping mass definition for aggregate NOx; assume no NO2 equivalence, do not duplicate speciated releases and retain pending quantity compatibility if unproven. This protocol attributes only actual mdf-line rows/sources; the other process uses cp_air_utilities. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      raw_fields: "source/stack/stage, species, compartment, carbon origin, concentration, gas flow, hours, oxygen/dry-wet/temperature-pressure basis, control state, detection limits, size/condensable fraction, factor applicability; NOx NO2-equivalent or actual NO+NO2 mass definition, NO/NO2 coverage, N2O exclusion and selected LCIA-mapping mass definition; inlet combustion/ventilation air mass or matched-state volume, composition, humidity, temperature/pressure; source-resolved wet flue-gas H2O and control condensation, residual gas/ash composition and uncertainty"
+      collection_method: "Test drying, pressing/cooling, finishing/handling and boiler separately or use applicability-verified factors times measured activity; count a shared final stack once while retaining source decomposition. Aggregation calculation: attributable post-control release mass of each species / accepted net MDF mass, per 1 kg reference flow; no overlapping size bins Prove the same monitoring/LCI/LCIA-mapping mass definition for aggregate NOx; assume no NO2 equivalence, do not duplicate speciated releases and retain pending quantity compatibility if unproven. Use cp_vapour for gaseous H2O. Include oxygen/nitrogen and other actual air/fuel elements in physical conservation, while keeping gross air humidity and source contributions explicit; unmeasured reaction terms are not zero. This protocol attributes only actual mdf-line rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg"
       frequency: "representative operating modes plus activity logs"
       temporal_coverage: "same declared period including abnormal/start-stop modes"
@@ -2397,14 +2436,38 @@ dataset_production:
       process_id: "utilities"
       flow_role: "each emission species and source; scoped to utilities"
       record_type: "stack and fugitive tests"
-      raw_fields: "source/stack/stage, species, compartment, carbon origin, concentration, gas flow, hours, oxygen/dry-wet/temperature-pressure basis, control state, detection limits, size/condensable fraction, factor applicability; NOx NO2-equivalent or actual NO+NO2 mass definition, NO/NO2 coverage, N2O exclusion and selected LCIA-mapping mass definition"
-      collection_method: "Test drying, pressing/cooling, finishing/handling and boiler separately or use applicability-verified factors times measured activity; count a shared final stack once while retaining source decomposition. Aggregation calculation: attributable post-control release mass of each species / accepted net MDF mass, per 1 kg reference flow; no overlapping size bins Prove the same monitoring/LCI/LCIA-mapping mass definition for aggregate NOx; assume no NO2 equivalence, do not duplicate speciated releases and retain pending quantity compatibility if unproven. This protocol attributes only actual utilities rows/sources; the other process uses cp_air. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      raw_fields: "source/stack/stage, species, compartment, carbon origin, concentration, gas flow, hours, oxygen/dry-wet/temperature-pressure basis, control state, detection limits, size/condensable fraction, factor applicability; NOx NO2-equivalent or actual NO+NO2 mass definition, NO/NO2 coverage, N2O exclusion and selected LCIA-mapping mass definition; inlet combustion/ventilation air mass or matched-state volume, composition, humidity, temperature/pressure; source-resolved wet flue-gas H2O and control condensation, residual gas/ash composition and uncertainty"
+      collection_method: "Test drying, pressing/cooling, finishing/handling and boiler separately or use applicability-verified factors times measured activity; count a shared final stack once while retaining source decomposition. Aggregation calculation: attributable post-control release mass of each species / accepted net MDF mass, per 1 kg reference flow; no overlapping size bins Prove the same monitoring/LCI/LCIA-mapping mass definition for aggregate NOx; assume no NO2 equivalence, do not duplicate speciated releases and retain pending quantity compatibility if unproven. Use cp_vapour_utilities for gaseous H2O. Include oxygen/nitrogen and other actual air/fuel elements in physical conservation, while keeping gross air humidity and source contributions explicit; unmeasured reaction terms are not zero. This protocol attributes only actual utilities rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
       unit: "kg"
       frequency: "representative operating modes plus activity logs"
       temporal_coverage: "same declared period including abnormal/start-stop modes"
       site_scope: "each plant emission source; actual owning process: utilities"
       aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "test methods, detection limits, stack diagram, control records, factor boundaries"
+    - protocol_id: cp_vapour
+      process_id: "mdf_line"
+      flow_role: "H2O vapour by actual source; scoped to mdf-line"
+      record_type: "wet-stack moisture and flow measurement"
+      raw_fields: "source/stack map and distinct dryer/press/boiler shares, simultaneous post-control H2O concentration and wet-gas flow with unit/state, T/P, time/modes, droplets/saturation interference, detection/uncertainty, measured inlet-air humidity/quantity, recipe carrier water/cure extent, each fuel mass/composition/moisture/reaction extent, steam/condensate, control water/condensation and stocks"
+      collection_method: "Measure gaseous H2O with a calibrated source-appropriate method (e.g. Method 4 reference procedure or demonstrated equivalent) and matched wet-gas flow; retain method prerequisites and droplet/saturation interference evaluation. Reconcile supported source contributions with actual cure/fuel/air/steam/control records; no generic chemistry or efficiency factor supplies site quantities. Aggregation calculation: attributable actual post-control gaseous H2O mass / accepted net MDF mass, per 1 kg reference flow; count shared stack once and retain gross H2O and any evidenced ambient-humidity subtraction separately. This protocol attributes only actual mdf-line rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      unit: "kg"
+      frequency: "representative modes and concurrent activity records"
+      temporal_coverage: "complete same declared survey period"
+      site_scope: "actual MDF-line dryer/press outlets; actual owning process: mdf-line"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, full stack test, source diagram, formulation/cure and fuel/air evidence, condensate/stocks and uncertainty"
+    - protocol_id: cp_vapour_utilities
+      process_id: "utilities"
+      flow_role: "H2O vapour by actual source; scoped to utilities"
+      record_type: "wet-stack moisture and flow measurement"
+      raw_fields: "source/stack map and distinct dryer/press/boiler shares, simultaneous post-control H2O concentration and wet-gas flow with unit/state, T/P, time/modes, droplets/saturation interference, detection/uncertainty, measured inlet-air humidity/quantity, recipe carrier water/cure extent, each fuel mass/composition/moisture/reaction extent, steam/condensate, control water/condensation and stocks"
+      collection_method: "Measure gaseous H2O with a calibrated source-appropriate method (e.g. Method 4 reference procedure or demonstrated equivalent) and matched wet-gas flow; retain method prerequisites and droplet/saturation interference evaluation. Reconcile supported source contributions with actual cure/fuel/air/steam/control records; no generic chemistry or efficiency factor supplies site quantities. Aggregation calculation: attributable actual post-control gaseous H2O mass / accepted net MDF mass, per 1 kg reference flow; count shared stack once and retain gross H2O and any evidenced ambient-humidity subtraction separately. This protocol attributes only actual utilities rows/sources. Retain complete raw stage/component/stock/gate records. Count a shared master-meter/final-outlet external exchange once in one explicitly corresponding row; source decomposition creates no second exchange, and paired internal-transfer ends retain equal quantities."
+      unit: "kg"
+      frequency: "representative modes and concurrent activity records"
+      temporal_coverage: "complete same declared survey period"
+      site_scope: "actual boiler post-control outlet; actual owning process: utilities"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, full stack test, source diagram, formulation/cure and fuel/air evidence, condensate/stocks and uncertainty"
   calculation_rules:
     - id: normalize_output
       applies_to: "all inventory rows"
@@ -2418,7 +2481,7 @@ dataset_production:
         - corrim-mdf-2024
     - id: moisture_conversion
       applies_to: "furnish_chips, furnish_sawdust, furnish_shavings, mdf_output"
-      rule: "Dry mass = wet mass/(1+u); water = wet mass - dry mass; w=u/(1+u). u is dry-basis and w wet-basis fraction; resin and inorganic additives are not dry wood."
+      rule: "Dry mass = wet mass/(1+u); water = wet mass - dry mass; w=u/(1+u). u is dry-basis and w wet-basis fraction; resin and inorganic additives are not dry wood. Apply only to a measured composition at the same state; wet-minus-dry test loss is not automatically pure H2O where volatiles or cure interfere, and this formula is not reaction-stage conservation."
       inputs:
         - "wet mass"
         - "dry-basis moisture"
@@ -2429,7 +2492,7 @@ dataset_production:
         - usda-wood-handbook-2021
     - id: recipe_split
       applies_to: "binder_uf, binder_muf, binder_pmdi, additive_wax, additive_hardener"
-      rule: "Formulation solids = delivered formulation mass × measured solids fraction; carrier water uses its actual formulation fraction, not assumed all nonsolids. Apply this analytical split to each actual supply in its verified complete-product or independently supplied chemical reference basis; a whole prepared formulation cannot be assigned to a constituent UUID. These component ledgers do not create duplicate purchases. Preserve supplier manufacture/preparation/delivery once and separately record true onsite purchases, mixing water/utilities and losses."
+      rule: "Formulation solids = delivered formulation mass × measured solids fraction; carrier water uses its actual formulation fraction, not assumed all nonsolids. Apply this analytical split to each actual supply in its verified complete-product or independently supplied chemical reference basis; a whole prepared formulation cannot be assigned to a constituent UUID. These component ledgers do not create duplicate purchases. Preserve supplier manufacture/preparation/delivery once and separately record true onsite purchases, mixing water/utilities and losses. Incoming formulation split does not establish cured-solid conservation; use actual reaction extent under physical_reconciliation, excluding upstream synthesis."
       inputs:
         - "delivered formulation"
         - "solids fraction"
@@ -2438,6 +2501,7 @@ dataset_production:
       output: "component ledger"
       source_ids:
         - corrim-mdf-2024
+        - usda-wood-joining-2023
     - id: volume_conversion
       applies_to: "furnish_chips, mdf_output, dryer_gas, control_gas, boiler_gas"
       rule: "Board volume = measured area × thickness. Measure chip k = Vs/Vb on the same lot/moisture/state: use Vs for a supplier/background solid-volume definition or Vb at matching compaction for bulk volume; reconcile gates using measured stocks/losses. Background-process multiplier = matching volume / its actual reference amount A; normalize the actual inventory exchange by accepted net MDF mass separately. Unknown A/definition leaves the link incomplete; unknown density/packing is no substitute. Gas quantity conversion requires measured meter T/P, dry-wet composition, Z and matching background-m3 state, with no assumed standard volume."
@@ -2450,8 +2514,8 @@ dataset_production:
         - "gas T/P/composition/Z"
         - cp_furnish
         - cp_energy
-        - cp_energy_utilities
         - cp_output
+        - cp_energy_utilities
       output: "consistent volume or mass"
       source_ids:
         - usda-wood-handbook-2021
@@ -2479,6 +2543,8 @@ dataset_production:
         - activity
         - cp_air
         - cp_air_utilities
+        - cp_vapour
+        - cp_vapour_utilities
       output: "species emission mass"
       source_ids:
         - epa-mdf-2002
@@ -2498,25 +2564,59 @@ dataset_production:
         - epa-wood-boiler-2022
     - id: physical_reconciliation
       applies_to: "mdf-line; utilities"
-      rule: "Retain each stage unallocated wood solids, resin solids, water and carbon: inputs = product/residue/emission outputs + stock change. Equal internal transfers; combustion carbon tracks wood biogenic origin separately from resin/fuel fossil origin without assuming complete combustion."
+      rule: "For each stage and utilities, opening stock + inputs = closing stock + outputs for whole mass and each actual element, including C/H/O/N/S and relevant inorganic elements. Include measured combustion/ventilation air, oxygen/nitrogen, actual fuel/recipe composition, product, residues, all gas species, condensate and stocks. Molecular H2O and wood/resin material ledgers instead use opening + inputs + evidenced formation = closing + outputs + evidenced consumption. Derive chemical terms from actual formulation, cure/fuel conditions and measured reaction extents; UF/MUF water formation, pMDI-water consumption/CO2 formation and combustion/control transformations are not default yields. Keep delivered and cured solids distinct, exclude upstream synthesis, preserve equal internal links and biogenic versus fossil carbon origin. Unknown composition/extent remains uncertain; disclose residuals and measurement uncertainty without forced closure or assuming full cure/combustion."
       inputs:
         - "stage flows"
         - stocks
-        - "component composition"
+        - "actual elemental/species composition"
+        - "reaction extents"
         - cp_furnish
         - cp_recipe
         - cp_water
-        - cp_water_utilities
+        - cp_thermal
         - cp_air
-        - cp_air_utilities
         - cp_fuel
-      output: "physical mass/water/carbon ledgers"
+        - cp_energy
+        - cp_vapour
+        - cp_water_utilities
+        - cp_thermal_utilities
+        - cp_air_utilities
+        - cp_energy_utilities
+        - cp_vapour_utilities
+      output: "whole-mass/elemental conservation and reaction-aware species ledgers"
       source_ids:
         - corrim-mdf-2024
         - epa-wood-boiler-2022
+        - usda-wood-joining-2023
+        - doe-condensing-economizer-2012
+    - id: vapour_source_reconciliation
+      applies_to: "dryer_water-vapour, press_water-vapour, boiler_water-vapour"
+      rule: "Obtain actual emitted gaseous H2O by emission_mass from simultaneous matched-state H2O concentration, wet-gas flow and operating time. Reconcile its sources using measured furnish/recipe water, fuel moisture, inlet-air humidity/quantity, steam/condensate, control water, stocks and evidenced source-specific formation/consumption at actual cure/combustion extents. Gross measured H2O contains chemical reaction water already; source decomposition is a ledger, not an extra emission. Any subtraction of pass-through ambient humidity requires measured inlet/outlet coverage and a declared convention, retaining gross total. Captured flue condensate follows its actual destination; utility-loop steam/return mass is separate. Shared stacks are counted once with supported attribution. Unknown source fractions or reaction extents remain uncertain, not assigned zero or balanced by invented yields."
+      inputs:
+        - "wet-stack H2O/flow/time"
+        - "source records and reaction extents"
+        - cp_vapour
+        - cp_recipe
+        - cp_water
+        - cp_fuel
+        - cp_air
+        - cp_thermal
+        - cp_output
+        - cp_vapour_utilities
+        - cp_water_utilities
+        - cp_air_utilities
+        - cp_thermal_utilities
+        - cp_energy
+        - cp_energy_utilities
+      output: "actual emitted H2O and supported source ledger"
+      source_ids:
+        - usda-wood-joining-2023
+        - doe-condensing-economizer-2012
+        - epa-stack-moisture-method4
+        - epa-wood-boiler-2022
     - id: nox_compatibility
       applies_to: "dryer_nox, handling_nox, boiler_nox"
-      rule: "Compare monitoring, LCI and selected LCIA-mapping NOx mass definitions and NO/NO2 coverage. Generate an aggregate quantity using the applicable cp_air or cp_air_utilities record only when all three share the same basis; infer neither NO2-equivalent mass nor NO/NO2 ratio, exclude N2O and avoid speciated duplicates. Otherwise quantity remains pending."
+      rule: "Compare monitoring, LCI and selected LCIA-mapping NOx mass definitions and NO/NO2 coverage. Generate an aggregate quantity using cp_air only when all three share the same basis; infer neither NO2-equivalent mass nor NO/NO2 ratio, exclude N2O and avoid speciated duplicates. Otherwise quantity remains pending."
       inputs:
         - "monitoring mass definition"
         - "flow mass definition"
@@ -2545,6 +2645,10 @@ dataset_production:
       applies_to: "all inventory rows"
       requirement: "Distinguish unknown, unmeasured, BDL and true zero; ranges need independent compatible evidence. This candidate has no synthesized reviewed universal ranges."
       evidence: "missingness, detection limits, range-evidence gaps"
+    - id: quality_reactions
+      applies_to: "mdf-line; utilities"
+      requirement: "Retain reaction extent, actual composition, method/stock uncertainty and gross versus source-attributed H2O. Evaluate residuals with measurement uncertainty; do not force molecular water or wood/resin solids to conserve, use missing terms as zero, or replace measured outlet H2O with an assumed boiler/cure yield."
+      evidence: "actual formulation/cure, fuel/air, wet-stack, steam/condensate and stock records"
     - id: quality_claims
       applies_to: "mdf_output"
       requirement: "Density, thickness, moisture and formaldehyde class require test state/method/date and applicable version; report titles/classification labels establish no performance/regulatory conformity."
@@ -2573,9 +2677,20 @@ validation_rules:
       - usda-wood-handbook-2021
   - rule_id: validation_balances
     applies_to: "mdf-line; utilities"
-    rule: "Reconcile separate physical solids/water/carbon ledgers and environmental-burden accounts. Demonstrate equal internal links, actual recirculation fates and allocation evidence without scaling physical coproduct outputs."
+    rule: "Verify whole-mass and actual-element C/H/O/N/S and relevant inorganic-element conservation separately from reactive H2O/wood/resin ledgers with supported formation/consumption and actual extents. Require actual formulation/cure, fuel/air, wet flue gas, steam/condensate, residues and stock records; unknown terms and unexplained residuals remain uncertain, not zero or forced closure. Preserve equal internal links, actual recirculation fates and unscaled physical outputs independently of burden allocation; assume neither full cure nor combustion."
     source_ids:
       - corrim-mdf-2024
+      - usda-wood-joining-2023
+      - doe-condensing-economizer-2012
+      - epa-wood-boiler-2022
+  - rule_id: validation_vapour
+    applies_to: "dryer_water-vapour; press_water-vapour; boiler_water-vapour"
+    rule: "Require the distinct boiler H2O output whenever the included boiler operates; dryer/press rows do not cover it. Verify gaseous air identity and measured post-control wet-stack quantity/protocol with supported recipe/cure, fuel/moisture, ambient-humidity, steam/control-water and reaction source separation. Separate captured condensate and utility carriers/returns; verify no droplet bias or unproved state conversion. Count each final stack once; do not add formation water to an already measured H2O total. Unknown source attribution/extent stays uncertain and affected source reconciliation incomplete, even if gross H2O was measured."
+    source_ids:
+      - doe-condensing-economizer-2012
+      - epa-stack-moisture-method4
+      - usda-wood-joining-2023
+      - epa-wood-boiler-2022
   - rule_id: validation_thermal
     applies_to: "line_steam; line_heat; boiler_steam; boiler_heat"
     rule: "A steam/heat MJ property is insufficient evidence of net delivered heat. Require supplier/background definition, metering boundary and matched state/enthalpy balance; unknown basis is inconclusive. Do not double count utility fuels and purchased heat."
@@ -2620,21 +2735,33 @@ data_sources:
     type: "official_guidance"
     reference: "[AP-42 Section 1.6 Wood Residue Combustion in Boilers](https://www.epa.gov/system/files/documents/2022-03/c1s6_final.pdf); March 2022; §§1.6.1–3; Tables 1.6-1 onward and PM/factor footnotes"
     used_for: "Supports separate boiler boundary, fuel/moisture/control dependence and GHG/PM bases; resin-bearing fuel requires specific applicability evidence. Treatment of biogenic CO2 in greenhouse-gas reporting is no basis for omitting it from LCI."
+  - id: "usda-wood-joining-2023"
+    type: "literature"
+    reference: "[Joining and Reassembling of Wood, Chapter 14](https://research.fs.usda.gov/download/treesearch/66341.pdf); Springer Handbook of Wood Science and Technology (2023); DOI 10.1007/978-3-030-81315-4_14; printed pp. 720–724, 730–733; Figures 14.13, 14.14, 14.19"
+    used_for: "UF/MUF formulation and cure condensation, pMDI water-consuming cure/CO2 formation and formulation-dependent reaction conditions; distinguish upstream synthesis from on-wood curing. Qualitative principles only, no site formulation, cure extent or reaction-water yield."
+  - id: "doe-condensing-economizer-2012"
+    type: "official_guidance"
+    reference: "[Considerations When Selecting a Condensing Economizer, Steam Tip Sheet 26B](https://www.energy.gov/sites/default/files/2014/05/f16/steam26b_condensing.pdf); DOE/GO-102012-3397, January 2012; pp. 1–2"
+    used_for: "Hydrocarbon combustion produces flue-gas water vapour; condensation and recovery depend on actual heat-exchanger/control conditions. Supports separation of flue water and utility-water circuit. No universal fuel chemistry, boiler efficiency, emission quantity or yield; wood/resin-bearing fuel requires actual composition and extent evidence."
+  - id: "epa-stack-moisture-method4"
+    type: "official_guidance"
+    reference: "[Method 4—Determination of Moisture Content in Stack Gases](https://www.epa.gov/sites/default/files/2020-12/documents/method_4.pdf); EPA-hosted Internet copy, §§1–2, 4, 6; retained 2026-10-14"
+    used_for: "Stack gaseous H2O measurement, reference versus approximation procedure, incorporated-method prerequisites and saturation/droplet interference. Requires an appropriate actual measurement method and matched wet-gas flow; supplies neither source fractions nor emission quantities, and establishes no legal-conformity claim."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:51f958817398de7c71bef1fdc506110bff97a5484db266ce89d1d73446f63e29"
+  source_sha256: "sha256:832966c6afca3e3596ac7af78066bbb240617cc6f66825153a8421c16d4f9233"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6613"
+    - unit_id: "normative_7060"
       family: "system_boundary"
       span:
         start:
-          offset: 6613
-          line: 62
+          offset: 7060
+          line: 63
           column: 1
         end:
-          offset: 9201
-          line: 82
+          offset: 9648
+          line: 83
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Furnish/chemicals/energy delivered to mill; on-site line to accepted uncoated MDF at mill gate; link upstream production/inbound transport and actual waste treatment separately |\n| starting_condition_role | foreground production |\n| product_classification_scope | Conventional dry-process uncoated wood subset of CPC 3.0 31441 |\n| recursive_input_rule | Record recycled MDF state, resin composition, provenance and actual mass without adding another finished output. Internal recirculation retains equal physical links; purchased recovered board carries supplier upstream boundary |\n| upstream_dataset_requirement | Bind each actual furnish, resin, energy, transport and treatment to location/year/route-compatible background data; residues are not assumed burden-free |\n| disclosure | Declare survey period, plant and output, stage coverage, on-site/purchased energy, controls, stock changes, exclusions, assumptions and actual use/disposal |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_stages | mdf-line | Include receipt, size preparation, digestion/refining, actual resin dosing, drying, forming/prepress, hot pressing, cooling, sanding/trimming and packaging; measure each stage even within one aggregated process. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n| boundary_energy | mdf-line; utilities | Choose on-site utility generation or purchased carrier for each supply share. Link equal carrier quantities at both internal ends and cancel internal transfers when aggregating; do not add purchased heat burdens to the same on-site fuels. Direct dryer/oxidizer/mobile combustion and boiler stacks remain distinct. | `corrim-mdf-2024`; `epa-mdf-2002`; `epa-wood-boiler-2022` |\n| boundary_upstream | all inventory rows | Include actual upstream manufacture and inbound transport and disclose residue allocation/recovery boundary. End at the uncoated mill gate; downstream use, service life and disposal are separate scenarios, never copied from CORRIM cradle-to-grave averages. | `corrim-mdf-2024` |\n| boundary_coverage | all inventory rows | Conditional rows are included only with actual activity/composition evidence. Missing UUID or amount is not zero and blocks complete use of the affected route. Expand every additional actual chemical, fuel, packaging or treatment exchange as its own atomic row; never conceal it in a collection label. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n\n"
       headings:
@@ -2653,12 +2780,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6613
-              line: 62
+              offset: 7060
+              line: 63
               column: 1
             end:
-              offset: 6634
-              line: 62
+              offset: 7081
+              line: 63
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -2673,18 +2800,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_115424"
+    - unit_id: "normative_121135"
       family: "allocation"
       span:
         start:
-          offset: 115424
-          line: 1519
+          offset: 121135
+          line: 1538
           column: 1
         end:
-          offset: 116622
-          line: 1527
+          offset: 122375
+          line: 1546
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_physical | all inventory rows | Retain unallocated physical stream quantities and mass/water/carbon balances; do not multiply actual MDF, residue or internal-link quantities by a burden-allocation fraction. Internal recovered dust is not a second saleable output. | `corrim-mdf-2024` |\n| allocation_single_product | mdf-line | Where accepted MDF is the only valuable product, assign attributable line burdens to MDF and retain actual waste/energy recovery separately. Determine waste versus saleable coproduct from contracts and actual use, not from the word residue. | `corrim-mdf-2024` |\n| allocation_shared | mdf-line; utilities | First separate causal stage/customer loads using submetering and source-specific activity. If irreducible shared coproduct burdens remain, document the chosen physical relationship and consistent moisture/energy basis; any economic alternative needs current transaction evidence, sensitivity and review. Do not assume that CORRIM upstream residue mass allocation or one-product A3 condition applies to every plant. | `corrim-mdf-2024` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_physical | all inventory rows | Retain unallocated physical stream quantities and whole-mass/elemental conservation and reaction-aware species ledgers; do not multiply actual MDF, residue or internal-link quantities by a burden-allocation fraction. Internal recovered dust is not a second saleable output. | `corrim-mdf-2024` |\n| allocation_single_product | mdf-line | Where accepted MDF is the only valuable product, assign attributable line burdens to MDF and retain actual waste/energy recovery separately. Determine waste versus saleable coproduct from contracts and actual use, not from the word residue. | `corrim-mdf-2024` |\n| allocation_shared | mdf-line; utilities | First separate causal stage/customer loads using submetering and source-specific activity. If irreducible shared coproduct burdens remain, document the chosen physical relationship and consistent moisture/energy basis; any economic alternative needs current transaction evidence, sensitivity and review. Do not assume that CORRIM upstream residue mass allocation or one-product A3 condition applies to every plant. | `corrim-mdf-2024` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2701,12 +2828,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 115424
-              line: 1519
+              offset: 121135
+              line: 1538
               column: 1
             end:
-              offset: 115464
-              line: 1519
+              offset: 121175
+              line: 1538
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -2721,18 +2848,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_141586"
+    - unit_id: "normative_157381"
       family: "validation"
       span:
         start:
-          offset: 141586
-          line: 1572
+          offset: 157381
+          line: 1595
           column: 1
         end:
-          offset: 144468
-          line: 1584
+          offset: 161516
+          line: 1608
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validation_reference | mdf_output | Require one final reference output, matched mass property/unit and every qualifier; same-period net accepted mass excludes packaging. Other stage states are physical-ledger entries within the line, not duplicate MDF outputs. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n| validation_quantity_compatibility | furnish_chips; dryer_gas; control_gas; boiler_gas; dryer_nox; handling_nox; boiler_nox | Confirmed UUID/property/unit does not establish quantity compatibility. Chips require supplier A, volume definition, matched-moisture/state Vs/Vb/k and loss/gate correspondence; gas requires T/P, dry-wet composition, Z and background-m3 correspondence; NOx requires common monitoring/LCI/LCIA mass definition, NO/NO2 coverage, N2O exclusion and no speciated duplicates. Any unknown remains quantity compatibility pending and the affected link/result incomplete. | `corrim-mdf-2024`; `epa-mdf-2002`; `epa-wood-boiler-2022` |\n| validation_inventory | all inventory rows | Each actual exchange has one atomic identity, state, direction, type, property/unit, protocol and denominator. Resolve blank UUIDs and route/grade mismatches before complete use of the affected route; never select a nearby board or correction flow. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n| validation_balances | mdf-line; utilities | Reconcile separate physical solids/water/carbon ledgers and environmental-burden accounts. Demonstrate equal internal links, actual recirculation fates and allocation evidence without scaling physical coproduct outputs. | `corrim-mdf-2024` |\n| validation_thermal | line_steam; line_heat; boiler_steam; boiler_heat | A steam/heat MJ property is insufficient evidence of net delivered heat. Require supplier/background definition, metering boundary and matched state/enthalpy balance; unknown basis is inconclusive. Do not double count utility fuels and purchased heat. | `epa-mdf-2002`; `corrim-mdf-2024` |\n| validation_air | all elementary outputs | Verify species, outdoor-air medium, actual source and biogenic/fossil origin; retain biogenic CO2 in LCI regardless of impact-accounting conventions. Use compatible nonoverlapping PM bins and disclose detection limits/condensables. Manufacturing factors are not boiler factors; clean-wood factors require review for resin-bearing dust. | `epa-mdf-2002`; `epa-wood-boiler-2022` |\n| validation_readiness | all inventory rows | Methodology is authored candidate guidance requiring independent scientific review. Passing structural/measurement checks establishes neither legal conformity nor a completed site LCI; unresolved identities, heat definitions and range evidence remain explicit. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validation_reference | mdf_output | Require one final reference output, matched mass property/unit and every qualifier; same-period net accepted mass excludes packaging. Other stage states are physical-ledger entries within the line, not duplicate MDF outputs. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n| validation_quantity_compatibility | furnish_chips; dryer_gas; control_gas; boiler_gas; dryer_nox; handling_nox; boiler_nox | Confirmed UUID/property/unit does not establish quantity compatibility. Chips require supplier A, volume definition, matched-moisture/state Vs/Vb/k and loss/gate correspondence; gas requires T/P, dry-wet composition, Z and background-m3 correspondence; NOx requires common monitoring/LCI/LCIA mass definition, NO/NO2 coverage, N2O exclusion and no speciated duplicates. Any unknown remains quantity compatibility pending and the affected link/result incomplete. | `corrim-mdf-2024`; `epa-mdf-2002`; `epa-wood-boiler-2022` |\n| validation_inventory | all inventory rows | Each actual exchange has one atomic identity, state, direction, type, property/unit, protocol and denominator. Resolve blank UUIDs and route/grade mismatches before complete use of the affected route; never select a nearby board or correction flow. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n| validation_balances | mdf-line; utilities | Verify whole-mass and actual-element C/H/O/N/S and relevant inorganic-element conservation separately from reactive H2O/wood/resin ledgers with supported formation/consumption and actual extents. Require actual formulation/cure, fuel/air, wet flue gas, steam/condensate, residues and stock records; unknown terms and unexplained residuals remain uncertain, not zero or forced closure. Preserve equal internal links, actual recirculation fates and unscaled physical outputs independently of burden allocation; assume neither full cure nor combustion. | `corrim-mdf-2024`; `usda-wood-joining-2023`; `doe-condensing-economizer-2012`; `epa-wood-boiler-2022` |\n| validation_vapour | dryer_water-vapour; press_water-vapour; boiler_water-vapour | Require the distinct boiler H2O output whenever the included boiler operates; dryer/press rows do not cover it. Verify gaseous air identity and measured post-control wet-stack quantity/protocol with supported recipe/cure, fuel/moisture, ambient-humidity, steam/control-water and reaction source separation. Separate captured condensate and utility carriers/returns; verify no droplet bias or unproved state conversion. Count each final stack once; do not add formation water to an already measured H2O total. Unknown source attribution/extent stays uncertain and affected source reconciliation incomplete, even if gross H2O was measured. | `doe-condensing-economizer-2012`; `epa-stack-moisture-method4`; `usda-wood-joining-2023`; `epa-wood-boiler-2022` |\n| validation_thermal | line_steam; line_heat; boiler_steam; boiler_heat | A steam/heat MJ property is insufficient evidence of net delivered heat. Require supplier/background definition, metering boundary and matched state/enthalpy balance; unknown basis is inconclusive. Do not double count utility fuels and purchased heat. | `epa-mdf-2002`; `corrim-mdf-2024` |\n| validation_air | all elementary outputs | Verify species, outdoor-air medium, actual source and biogenic/fossil origin; retain biogenic CO2 in LCI regardless of impact-accounting conventions. Use compatible nonoverlapping PM bins and disclose detection limits/condensables. Manufacturing factors are not boiler factors; clean-wood factors require review for resin-bearing dust. | `epa-mdf-2002`; `epa-wood-boiler-2022` |\n| validation_readiness | all inventory rows | Methodology is authored candidate guidance requiring independent scientific review. Passing structural/measurement checks establishes neither legal conformity nor a completed site LCI; unresolved identities, heat definitions and range evidence remain explicit. | `corrim-mdf-2024`; `epa-mdf-2002`; `usda-wood-handbook-2021` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2749,12 +2876,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 141586
-              line: 1572
+              offset: 157381
+              line: 1595
               column: 1
             end:
-              offset: 141608
-              line: 1572
+              offset: 157403
+              line: 1595
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -2773,233 +2900,246 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_stages"
       identity_kind: "explicit"
-      unit_id: "normative_6613"
+      unit_id: "normative_7060"
       source_span:
         start:
-          offset: 7742
-          line: 77
+          offset: 8189
+          line: 78
           column: 1
         end:
-          offset: 8049
-          line: 77
+          offset: 8496
+          line: 78
           column: 308
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_energy"
       identity_kind: "explicit"
-      unit_id: "normative_6613"
+      unit_id: "normative_7060"
       source_span:
         start:
-          offset: 8050
-          line: 78
+          offset: 8497
+          line: 79
           column: 1
         end:
-          offset: 8467
-          line: 78
+          offset: 8914
+          line: 79
           column: 418
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_upstream"
       identity_kind: "explicit"
-      unit_id: "normative_6613"
+      unit_id: "normative_7060"
       source_span:
         start:
-          offset: 8468
-          line: 79
+          offset: 8915
+          line: 80
           column: 1
         end:
-          offset: 8789
-          line: 79
+          offset: 9236
+          line: 80
           column: 322
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_6613"
+      unit_id: "normative_7060"
       source_span:
         start:
-          offset: 8790
-          line: 80
+          offset: 9237
+          line: 81
           column: 1
         end:
-          offset: 9199
-          line: 80
+          offset: 9646
+          line: 81
           column: 410
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_115424"
+      unit_id: "normative_121135"
       source_span:
         start:
-          offset: 115537
-          line: 1523
+          offset: 121248
+          line: 1542
           column: 1
         end:
-          offset: 115835
-          line: 1523
-          column: 299
+          offset: 121588
+          line: 1542
+          column: 341
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_single_product"
       identity_kind: "explicit"
-      unit_id: "normative_115424"
+      unit_id: "normative_121135"
       source_span:
         start:
-          offset: 115836
-          line: 1524
+          offset: 121589
+          line: 1543
           column: 1
         end:
-          offset: 116139
-          line: 1524
+          offset: 121892
+          line: 1543
           column: 304
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_shared"
       identity_kind: "explicit"
-      unit_id: "normative_115424"
+      unit_id: "normative_121135"
       source_span:
         start:
-          offset: 116140
-          line: 1525
+          offset: 121893
+          line: 1544
           column: 1
         end:
-          offset: 116620
-          line: 1525
+          offset: 122373
+          line: 1544
           column: 481
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference"
       identity_kind: "explicit"
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 141681
-          line: 1576
+          offset: 157476
+          line: 1599
           column: 1
         end:
-          offset: 142008
-          line: 1576
+          offset: 157803
+          line: 1599
           column: 328
     - pointer: "/validation_rules/1"
       rule_id: "validation_quantity_compatibility"
       identity_kind: "explicit"
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 142009
-          line: 1577
+          offset: 157804
+          line: 1600
           column: 1
         end:
-          offset: 142659
-          line: 1577
+          offset: 158454
+          line: 1600
           column: 651
     - pointer: "/validation_rules/2"
       rule_id: "validation_inventory"
       identity_kind: "explicit"
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 142660
-          line: 1578
+          offset: 158455
+          line: 1601
           column: 1
         end:
-          offset: 143019
-          line: 1578
+          offset: 158814
+          line: 1601
           column: 360
     - pointer: "/validation_rules/3"
       rule_id: "validation_balances"
       identity_kind: "explicit"
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 143020
-          line: 1579
+          offset: 158815
+          line: 1602
           column: 1
         end:
-          offset: 143307
-          line: 1579
-          column: 288
+          offset: 159516
+          line: 1602
+          column: 702
     - pointer: "/validation_rules/4"
+      rule_id: "validation_vapour"
+      identity_kind: "explicit"
+      unit_id: "normative_157381"
+      source_span:
+        start:
+          offset: 159517
+          line: 1603
+          column: 1
+        end:
+          offset: 160355
+          line: 1603
+          column: 839
+    - pointer: "/validation_rules/5"
       rule_id: "validation_thermal"
       identity_kind: "explicit"
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 143308
-          line: 1580
+          offset: 160356
+          line: 1604
           column: 1
         end:
-          offset: 143671
-          line: 1580
+          offset: 160719
+          line: 1604
           column: 364
-    - pointer: "/validation_rules/5"
+    - pointer: "/validation_rules/6"
       rule_id: "validation_air"
       identity_kind: "explicit"
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 143672
-          line: 1581
+          offset: 160720
+          line: 1605
           column: 1
         end:
-          offset: 144094
-          line: 1581
+          offset: 161142
+          line: 1605
           column: 423
-    - pointer: "/validation_rules/6"
+    - pointer: "/validation_rules/7"
       rule_id: "validation_readiness"
       identity_kind: "explicit"
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 144095
-          line: 1582
+          offset: 161143
+          line: 1606
           column: 1
         end:
-          offset: 144466
-          line: 1582
+          offset: 161514
+          line: 1606
           column: 372
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6613"
+      unit_id: "normative_7060"
       source_span:
         start:
-          offset: 6613
-          line: 62
+          offset: 7060
+          line: 63
           column: 1
         end:
-          offset: 6634
-          line: 62
+          offset: 7081
+          line: 63
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6613"
+      unit_id: "normative_7060"
       source_span:
         start:
-          offset: 6662
-          line: 66
+          offset: 7109
+          line: 67
           column: 1
         end:
-          offset: 7669
-          line: 73
+          offset: 8116
+          line: 74
           column: 173
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_115424"
+      unit_id: "normative_121135"
       source_span:
         start:
-          offset: 115424
-          line: 1519
+          offset: 121135
+          line: 1538
           column: 1
         end:
-          offset: 115464
-          line: 1519
+          offset: 121175
+          line: 1538
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_141586"
+      unit_id: "normative_157381"
       source_span:
         start:
-          offset: 141586
-          line: 1572
+          offset: 157381
+          line: 1595
           column: 1
         end:
-          offset: 141608
-          line: 1572
+          offset: 157403
+          line: 1595
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -3008,5 +3148,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:51f958817398de7c71bef1fdc506110bff97a5484db266ce89d1d73446f63e29"
-  generated_content_sha256: "sha256:73576553f72eaa0ac2adf50613416b5edfe95b3ab30023bcba1c8b2ddcb187da"
+    sha256: "sha256:832966c6afca3e3596ac7af78066bbb240617cc6f66825153a8421c16d4f9233"
+  generated_content_sha256: "sha256:3c468c25ecb08ab726e8377a1b52e6e1da930b1a21a9a3c7fb22a2c9f5a4756e"
