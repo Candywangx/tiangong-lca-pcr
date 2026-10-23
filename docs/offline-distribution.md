@@ -64,18 +64,23 @@ Installed content packages do not require Git. Prepare Node separately
 on a connected machine if the destination has no runtime. No install hooks, runtime
 network calls or implicit content downloads are used.
 
-## Combined candidate preparation for 0.4.7
+## Combined candidate preparation for 0.4.8
 
-Product 0.4.7 combines PR #110's 21 new and seven revised candidate PCRs with
-PR #111's 51 wood/paper candidates and classification decisions. The regenerated
-material index contains 1,085 records. Search retains complete records and exact
-engine imports through wire v3; methodology and translation states remain unchanged.
+Product 0.4.8 prepares the combined PR #134–#139 source batch: 1,457 material PCRs,
+1,306 accepted classification edges and 1,647 legacy aliases. It includes the
+reviewed bilingual inventory repairs and lossless search, inspector and native
+download transports needed by the expanded library. Individual methodology,
+translation and immutable PCR release states remain unchanged by product versioning.
 
-Version mirrors are preparation inputs. Publication requires fresh complete
-qualification of the combined commit, immutable sealed artifacts and the existing
-coordinated npm/website verification. The verified stable predecessor is 0.4.6;
-never move its tag or replace its published artifacts. Reader compatibility stays
-at the reviewed minimum 0.4.1, with no runtime or dependency upgrade.
+Version mirrors are preparation inputs. All six source proposals must merge before
+the release-preparation PR merges. Publication requires fresh complete qualification
+of the release source, immutable sealed artifacts and the existing coordinated
+npm/website verification. Exact workspace inclusion is separately required before
+declaring this batch complete. The verified stable predecessor
+is 0.4.7; never move its tag or replace its published artifacts. Reader compatibility
+stays at the reviewed minimum 0.4.1, and Node 24.19.0/npm 12.2.0 remain pinned.
+This version change introduces no dependency or runtime upgrade. Provider admission
+and completed stable publication require their own verified receipts.
 
 ## Build and transport
 
