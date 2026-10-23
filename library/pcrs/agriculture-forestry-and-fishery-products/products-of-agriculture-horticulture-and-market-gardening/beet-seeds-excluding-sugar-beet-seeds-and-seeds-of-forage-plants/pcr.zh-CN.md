@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Beet seeds (excluding sugar beet seeds) and seeds of forage plants |
+| 参考产品流 | 甜菜种子（糖用甜菜种子除外）及饲草植物种子 |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -664,7 +664,7 @@ sync_with: pcr.en-US.md
 
 作为废物离开的不合格种子、筛下物和杂质从合格种子中排除，并按再利用、回收或处置去向报告。可销售的降级产品在具体前景数据集中作为目标产品单独记录。
 
-- 选定流：Seed cleaning rejects `6bfe90ae-a960-45dd-b1fa-89581c562763`
+- 选定流：种子清选废弃物 `6bfe90ae-a960-45dd-b1fa-89581c562763`
 - 流属性/单位：Mass / kg
 - 数量规则：measured reject mass by destination
 - 数值来源模式：`foreground_record`

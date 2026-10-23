@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 捣碎和压榨产生的粗棕榈油是必须明确归属的预期联产品。
 
-- 选定流：Palm oil, crude `c25748fe-ebcf-4a0e-bcf9-544edb1645b1`
+- 选定流：粗棕榈油 `c25748fe-ebcf-4a0e-bcf9-544edb1645b1`
 - 流属性/单位：Mass / kg
 - 数量规则：measured crude palm oil mass at its hand-off
 - 数值来源模式：前景记录（`foreground_record`）
@@ -676,7 +676,7 @@ sync_with: pcr.en-US.md
 
 按实际预期用途与交接对分离纤维分类；用于外售或内部回收的纤维在归属中保持一致。
 
-- 选定流：Mesocarp fibre `a9b37001-a69f-4d00-bf11-6ce763cac036`
+- 选定流：棕榈果肉纤维 `a9b37001-a69f-4d00-bf11-6ce763cac036`
 - 流属性/单位：Mass / kg
 - 数量规则：measured separated fibre mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -818,7 +818,7 @@ sync_with: pcr.en-US.md
 
 按实际预期用途与交接对破核生成的壳分类，且绝不将其用作参考产品。
 
-- 选定流：Palm kernel shell `ac6ce69c-ddd1-400d-a603-901313253baa`
+- 选定流：棕榈仁壳 `ac6ce69c-ddd1-400d-a603-901313253baa`
 - 流属性/单位：Mass / kg
 - 数量规则：measured shell mass
 - 数值来源模式：前景记录（`foreground_record`）

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Cloves (whole stems), raw |
+| Reference product flow | 丁香（整梗），未加工 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -507,7 +507,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Cloves (whole stems), raw `53a5a137-db87-42e1-a85d-4b187eb5281a`
+- 选定流： 丁香（全茎），生的 `53a5a137-db87-42e1-a85d-4b187eb5281a`
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：Net accepted fresh output equals 1 kg for fresh hand-off; for a dried route it is measured input to drying and is not also counted as reference output
 

@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Maize for forage and silage `719047d6-29cc-4b2c-b61e-0bb407d6eeaf` |
+| 参考产品流 | 饲草和青贮玉米 `719047d6-29cc-4b2c-b61e-0bb407d6eeaf` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -89,7 +89,7 @@ sync_with: pcr.en-US.md
 
 记录跨入田间生产节点的外购或留用可育玉米种子；保留杂交种或品种、种子处理、发芽率、种子质量和播种面积。
 
-- 选定流: Corn Seeds `23f01fdc-33b5-4cc9-bd0f-b0cb39d7daa6`
+- 选定流: 玉米种子 `23f01fdc-33b5-4cc9-bd0f-b0cb39d7daa6`
 - 流属性/单位: Mass / kg
 - 数量规则: 实测播种种子质量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -276,7 +276,7 @@ sync_with: pcr.en-US.md
 
 记录玉米作物周期占用的农业用地面积和持续时间，不包括声明时间边界以外的无关轮作。
 
-- 选定流: arable `b88d3b6d-229e-477e-bce1-e16376f75c7b`
+- 选定流: 耕地占用 `b88d3b6d-229e-477e-bce1-e16376f75c7b`
 - 流属性/单位: Area*time / ha*a
 - 数量规则: 播种面积乘以占用持续时间
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -333,7 +333,7 @@ sync_with: pcr.en-US.md
 
 采用披露的IPCC层级和田块特定氮活动数据计算管理土壤的直接氧化亚氮排放。
 
-- 选定流: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流: 一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位: Mass / kg N2O
 - 数量规则: 依据采集的氮活动数据和所选排放因子进行IPCC计算
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -359,7 +359,7 @@ sync_with: pcr.en-US.md
 
 按氮源和施用事件记录或计算氨挥发；保留报告的氮基或物质基准。
 
-- 选定流: ammonia `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流: 氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位: Mass / kg NH3
 - 数量规则: 以NH3表示的场址模型或实测损失；必要时按17/14将NH3-N换算为NH3
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -507,7 +507,7 @@ sync_with: pcr.en-US.md
 
 记录田间收获和装载后、青贮发酵、储存、干燥或饲料制造前的合格新鲜全株玉米。本流为定量参考产出。
 
-- 选定流: Maize for forage and silage `719047d6-29cc-4b2c-b61e-0bb407d6eeaf`
+- 选定流: 饲草和青贮玉米 `719047d6-29cc-4b2c-b61e-0bb407d6eeaf`
 - 流属性/单位：质量 / kg
 
 原参考状态单位说明：Mass / kg fresh matter

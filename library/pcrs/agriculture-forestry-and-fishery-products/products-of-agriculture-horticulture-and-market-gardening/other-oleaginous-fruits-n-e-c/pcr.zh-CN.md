@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | 其他含油果实，未另分类 `d72a964f-f916-4c72-9f53-6a1126f1ecac` |
+| Reference product flow | 其他含油水果，未另列明。 `d72a964f-f916-4c72-9f53-6a1126f1ecac` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -560,7 +560,7 @@ sync_with: pcr.en-US.md
 
 仅在 `packing_handoff` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
 
-- 选定流： 其他含油果实，未另分类 `d72a964f-f916-4c72-9f53-6a1126f1ecac`
+- 选定流： 其他含油水果，未另列明。 `d72a964f-f916-4c72-9f53-6a1126f1ecac`
 - 流属性 / 单位: 质量 / kg
 原始产出计量及核对：按 `cp_packing_lot` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 

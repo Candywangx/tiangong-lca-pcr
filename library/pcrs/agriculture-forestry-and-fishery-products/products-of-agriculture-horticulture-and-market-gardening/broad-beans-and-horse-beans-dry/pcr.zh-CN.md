@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Broad beans and horse beans, dry `b9ccab43-8330-44f4-b125-456e97ec6e87` |
+| 参考产品流 | 蚕豆和马豆（干） `b9ccab43-8330-44f4-b125-456e97ec6e87` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -784,7 +784,7 @@ sync_with: pcr.en-US.md
 
 预期参考产出是在声明等级、水分和农场门口交接条件下的合格籽粒。
 
-- 选定流： Broad beans and horse beans, dry `b9ccab43-8330-44f4-b125-456e97ec6e87`
+- 选定流： 蚕豆和马豆（干） `b9ccab43-8330-44f4-b125-456e97ec6e87`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：1,000 kg net accepted grain
 

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | 黄麻、红麻及其他纺织用韧皮纤维，生的或沤制的 `bcf2ea60-81e8-43cb-879f-ac473e43f521` |
+| Reference product flow | 黄麻、槿麻和其他纺织韧皮纤维，未加工或经翻新，亚麻、真麻和苎麻除外 `bcf2ea60-81e8-43cb-879f-ac473e43f521` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -264,7 +264,7 @@ sync_with: pcr.en-US.md
 
 记录作物周期内占用的农业土地。
 
-- 选定流: 农业土地占用 `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- 选定流: 农业用地占用 `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
 - 流属性/单位: Area*time `93a60a56-a3c8-21da-a746-0800200c9a66` / ha*a
 - 数量规则: 种植面积乘占用年分数
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -812,7 +812,7 @@ sync_with: pcr.en-US.md
 
 将生产者交付点合格的黄麻、红麻或其他适用韧皮纤维记录为预期产出。
 
-- 选定流: 黄麻、红麻及其他纺织用韧皮纤维，生的或沤制的 `bcf2ea60-81e8-43cb-879f-ac473e43f521`
+- 选定流: 黄麻、槿麻和其他纺织韧皮纤维，未加工或经翻新，亚麻、真麻和苎麻除外 `bcf2ea60-81e8-43cb-879f-ac473e43f521`
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：按申报含水率和等级计量的合格质量
 

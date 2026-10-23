@@ -244,7 +244,9 @@ sync_with: pcr.en-US.md
 
 将合格采收青烟叶记录为终端产品，或记录为转入调制的实测中间产品。
 
-- 选定流： 未加工烟草，生产混合，农场门，鲜叶未加工 `e903dd1d-1d82-41e7-9526-2ae250746688`
+此卡绑定流的身份限定仍为“生产混合、农场门、鲜叶未加工”；前景青烟叶的批次、含水率和交接界面按本卡既有说明记录。
+
+- 选定流： 非制成品烟草 `e903dd1d-1d82-41e7-9526-2ae250746688`
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：在声明水分、等级和门点下实测的合格青烟叶质量
 
@@ -298,7 +300,7 @@ sync_with: pcr.en-US.md
 
 将计算的管理土壤一氧化二氮记录到已确认的未指定空气介质。
 
-- 选定流： Nitrous oxide, emissions to air, unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流： 一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位： Mass / kg N2O
 - 数量规则： calculate from collected N inputs and residues with an applicable method
 - 数值来源模式： 计算值（`calculated_value`）
@@ -323,7 +325,7 @@ sync_with: pcr.en-US.md
 
 将计算的肥料相关氨挥发记录到已确认的未指定空气介质。
 
-- 选定流： Ammonia, emissions to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流： 氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位： Mass / kg NH3
 - 数量规则： calculate by nutrient product, method, timing, weather, and factor
 - 数值来源模式： 计算值（`calculated_value`）
@@ -348,7 +350,7 @@ sync_with: pcr.en-US.md
 
 将计算或监测的硝酸盐损失记录到已确认的未指定水体介质。
 
-- 选定流： Nitrate, emissions to water, unspecified `fe0acd60-3ddc-11dd-aa31-0050c2490048`
+- 选定流： 硝酸根 `fe0acd60-3ddc-11dd-aa31-0050c2490048`
 - 流属性/单位： Mass / kg nitrate
 - 数量规则： calculate only with applicable leaching/runoff method or monitored balance
 - 数值来源模式： 计算值（`calculated_value`）
@@ -378,7 +380,9 @@ sync_with: pcr.en-US.md
 
 记录转入所选调制路线的实测采收青烟叶批次。
 
-- 选定流： 未加工烟草，生产混合，农场门，鲜叶未加工 `e903dd1d-1d82-41e7-9526-2ae250746688`
+此卡绑定流的身份限定仍为“生产混合、农场门、鲜叶未加工”；前景青烟叶的批次、含水率和交接界面按本卡既有说明记录。
+
+- 选定流： 非制成品烟草 `e903dd1d-1d82-41e7-9526-2ae250746688`
 - 流属性/单位： Mass / kg
 - 数量规则： 实测青烟叶批次质量和水分
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -506,7 +510,9 @@ sync_with: pcr.en-US.md
 
 仅记录现场调制燃烧产生的化石二氧化碳。
 
-- 选定流： Carbon dioxide (fossil), emissions to air, unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+排放介质仍为空气，环境分区为未指定；化石来源限定不变。
+
+- 选定流： 二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位： Mass / kg CO2
 - 数量规则： fuel quantity × carrier-specific carbon and oxidation factors; zero without on-site fossil combustion
 - 数值来源模式： 计算值（`calculated_value`）
