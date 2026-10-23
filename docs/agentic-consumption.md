@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: 1024c5e95110392bc0828967b89a262723328b79
-lastReviewedNote: "PCR #145 / PR #136: reviewed Fumadocs core/UI 16.17.7 and Zod 4.6.7, literal search-title rendering and semantic listbox-option acceptance with emitted Worker, keyboard selection and navigation checks. All 11 strict projects / 415 authored files and 86 focused tests pass; synthetic browser proof does not replace complete hosted corpus, coverage, sealed-web or release qualification. Runtime and methodology/publication contracts remain in force."
+lastReviewedCommit: d8aa333f31ddcf7c02b8befc65fed77e58ef5f73
+lastReviewedNote: "PCR #141: reviewed the bounded site-capacity correction: record-owned PCR downloads, 80 KiB candidate Markdown / 16 KiB manifests, two workers with one page render each, and failed-stage RSS/exit diagnostics preserving prior output. 68 focused tests and all 11 strict projects / 419 authored files pass on macOS ARM64; exact complete 1,457-record source, file/search/RSS, browser/no-JS, sealed-product and hosted qualification remain pending. Search behavior/budgets, canonical methodology, lifecycle/translation approval and ownership are unchanged; this review does not complete the official-name audit or publication."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
