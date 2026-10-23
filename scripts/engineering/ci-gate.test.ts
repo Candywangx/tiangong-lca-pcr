@@ -18,7 +18,7 @@ test('every full lane job must pass; missing, failed, cancelled or skipped canno
  const invalid=full() as Record<string,unknown>;invalid.plan=null;assert.throws(()=>verifyCiGate(plan,invalid),/Missing CI/);
 });
 test('data lane cannot skip content, sealed or browser gates or misreport code coverage',()=>{
- for(const name of ['plan','contracts','documentation','sealed-distribution','sealed-web']){
+ for(const name of ['plan','contracts','documentation','product','sealed-distribution','sealed-web']){
   const jobs=data();jobs[name]={result:'skipped'};assert.throws(()=>verifyCiGate({...plan,mode:'data'},jobs),/expected success/);
  }
  for(const name of ['test-shards','offline-distribution','provider-importer','source-coverage']){

@@ -56,7 +56,9 @@ function rendered(result: ReturnType<typeof renderMarkdown>) {
   });
 }
 test("source inventory survives splitting, nested structures, footnotes and exact code whitespace", () => {
+  const inventory = inventoryMarkdown(source, "fixture");
   const result = renderMarkdown(source, "fixture", { maxHtmlBytes: 280 });
+  assert.deepEqual(result.inventory, inventory.nodes);
   assert.ok(result.parts.length > 1);
   const documents = rendered(result);
   documents.forEach((document, i) =>
@@ -80,6 +82,25 @@ test("source inventory survives splitting, nested structures, footnotes and exac
     ),
   );
   assert.ok(documents.every((doc) => !doc.querySelector("[onclick]")));
+});
+test("public inventories expose only source values and remain isolated between calls", () => {
+  const first = inventoryMarkdown(source, "fixture");
+  const expected = structuredClone(first);
+  assert.deepEqual(Object.keys(first).sort(), ["body", "frontmatter", "nodes"]);
+  assert.ok(first.frontmatter && typeof first.frontmatter === "object" && !Array.isArray(first.frontmatter));
+  first.frontmatter.language = "changed";
+  first.nodes[0]!.text = "changed";
+  first.nodes.find((node) => node.links.length)!.links[0]!.url = "https://changed.example";
+  first.nodes.find((node) => node.tables.length)!.tables[0]![0]![0] = "changed";
+  first.nodes.find((node) => node.lists.length)!.lists[0]!.items = 99;
+  assert.deepEqual(inventoryMarkdown(source, "fixture"), expected);
+  const result = renderMarkdown(source, "fixture", { maxHtmlBytes: 280 });
+  assert.deepEqual(result.frontmatter, expected.frontmatter);
+  assert.deepEqual(result.inventory, expected.nodes);
+  rendered(result).forEach((document, i) =>
+    verifyRenderedBlocks(document, result.inventory, result.parts[i]!.sourceNodeIds),
+  );
+  assert.deepEqual(inventoryMarkdown(source, "fixture"), expected);
 });
 test("coverage validator detects dropped source blocks and altered text", () => {
   const result = renderMarkdown(source, "fixture");
@@ -120,10 +141,13 @@ test("unsafe source links fail before a sanitizer can silently discard them", ()
   );
 });
 test("ragged GFM rows keep source cells beyond the declared header width", () => {
+  const source = "---\nlanguage: en-US\n---\n# Table\n\n| a | b |\n| --- | --- |\n| one | two | undefined |\n";
+  const inventory = inventoryMarkdown(source, "ragged");
   const result = renderMarkdown(
-    "---\nlanguage: en-US\n---\n# Table\n\n| a | b |\n| --- | --- |\n| one | two | undefined |\n",
+    source,
     "ragged",
   );
+  assert.deepEqual(result.inventory, inventory.nodes);
   const [document] = rendered(result);
   assert.ok(document);
   verifyRenderedBlocks(

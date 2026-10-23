@@ -11,7 +11,7 @@ on:
     outputs:
       product_artifact_id:
         description: Artifact ID containing the verified immutable product release bundle.
-        value: ${{ jobs.documentation.outputs.product_artifact_id }}
+        value: ${{ jobs.product.outputs.product_artifact_id }}
   pull_request:
   push:
     branches:
@@ -219,7 +219,7 @@ jobs:
     # Instrumented full export runs here; EdgeOne only imports the sealed archive.
     timeout-minutes: 60
     outputs:
-      product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
+      web_export_artifact_id: ${{ steps.web-export-upload.outputs.artifact-id }}
       coverage_artifact_id: ${{ steps.documentation-coverage.outputs.artifact-id }}
     steps:
       - name: Check out complete source history
@@ -271,9 +271,6 @@ jobs:
           artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
           path: ${{ runner.temp }}/pcr-plan
           merge-multiple: true
-      - name: Identify the clean artifact candidate
-        id: candidate
-        run: node builder/scripts/product-release.ts identity
       - name: Build and verify the full static library
         env:
           NEXT_TELEMETRY_DISABLED: '1'
@@ -298,9 +295,64 @@ jobs:
           path: ${{ runner.temp }}/pcr-documentation-coverage/
           if-no-files-found: error
           retention-days: 14
+      - name: Capture the exact verified web export
+        run: >-
+          node scripts/engineering/web-export-handoff.ts capture
+          "$RUNNER_TEMP/pcr-plan" packages/pcr-docs/out
+          "$RUNNER_TEMP/pcr-web-export"
+          packages/pcr-docs/.generated/build-metrics.json
+          "$RUNNER_TEMP/pcr-documentation-coverage"
+      - name: Preserve the exact web export for product sealing
+        id: web-export-upload
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: pcr-web-export-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-web-export/
+          compression-level: 1
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  product:
+    needs: [plan, documentation]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      product_artifact_id: ${{ steps.product-upload.outputs.artifact-id }}
+    steps:
+      - name: Check out the exact product source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Set up the pinned product runtime
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Select the pinned product package manager
+        run: npm install --global npm@12.2.0 --ignore-scripts --no-audit --no-fund
+      - name: Install locked product dependencies
+        run: npm ci
+      - name: Download the exact qualification plan
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.plan.outputs.plan_artifact_id }}
+          path: ${{ runner.temp }}/pcr-plan
+          merge-multiple: true
+      - name: Download the exact verified web export
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.documentation.outputs.web_export_artifact_id }}
+          path: ${{ runner.temp }}/pcr-web-export
+          merge-multiple: true
+      - name: Authenticate the complete export before product sealing
+        run: node scripts/engineering/web-export-handoff.ts verify "$RUNNER_TEMP/pcr-plan" "$RUNNER_TEMP/pcr-web-export"
+      - name: Identify the clean artifact candidate
+        id: candidate
+        run: node builder/scripts/product-release.ts identity
       - name: Verify shared SEO invariants without rebuilding
         run: |
-          python3 scripts/vendor/workspace-seo/check.py --root packages/pcr-docs/out --origin https://pcr.tiangong.earth --output "${{ runner.temp }}/pcr-seo-report.json"
+          python3 scripts/vendor/workspace-seo/check.py --root "$RUNNER_TEMP/pcr-web-export/out" --origin https://pcr.tiangong.earth --output "${{ runner.temp }}/pcr-seo-report.json"
       - name: Preserve SEO verification report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -313,7 +365,7 @@ jobs:
       - name: Build and verify the two packages and sealed web artifact
         env:
           PRODUCT_TAG: ${{ inputs.product_tag || steps.candidate.outputs.tag }}
-        run: npm run product:build -- "$PRODUCT_TAG" dist/product-release packages/pcr-docs/out
+        run: npm run product:build -- "$PRODUCT_TAG" dist/product-release "$RUNNER_TEMP/pcr-web-export/out"
 
       - name: Preserve the exact product bundle for qualification and publication
         id: product-upload
@@ -373,7 +425,7 @@ jobs:
 
 
   sealed-distribution:
-    needs: documentation
+    needs: product
     strategy:
       fail-fast: false
       matrix:
@@ -406,7 +458,7 @@ jobs:
       - name: Download the one sealed candidate
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          artifact-ids: ${{ needs.documentation.outputs.product_artifact_id }}
+          artifact-ids: ${{ needs.product.outputs.product_artifact_id }}
           path: ${{ runner.temp }}/pcr-sealed-product
           merge-multiple: true
       - name: Qualify real offline installation of the sealed packages
@@ -423,7 +475,7 @@ jobs:
           retention-days: 14
 
   sealed-web:
-    needs: documentation
+    needs: product
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -440,7 +492,7 @@ jobs:
       - name: Download the same sealed candidate
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          artifact-ids: ${{ needs.documentation.outputs.product_artifact_id }}
+          artifact-ids: ${{ needs.product.outputs.product_artifact_id }}
           path: ${{ runner.temp }}/pcr-sealed-product
           merge-multiple: true
       - name: Qualify browsers against extracted sealed bytes
@@ -540,7 +592,7 @@ jobs:
 
   validate:
     if: always()
-    needs: [plan, contracts, test-shards, documentation, offline-distribution, provider-importer, sealed-distribution, sealed-web, source-coverage]
+    needs: [plan, contracts, test-shards, documentation, product, offline-distribution, provider-importer, sealed-distribution, sealed-web, source-coverage]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
