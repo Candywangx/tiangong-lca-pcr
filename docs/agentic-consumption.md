@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: d8aa333f31ddcf7c02b8befc65fed77e58ef5f73
-lastReviewedNote: "PCR #141: reviewed the bounded site-capacity correction: record-owned PCR downloads, 80 KiB candidate Markdown / 16 KiB manifests, two workers with one page render each, and failed-stage RSS/exit diagnostics preserving prior output. 68 focused tests and all 11 strict projects / 419 authored files pass on macOS ARM64; exact complete 1,457-record source, file/search/RSS, browser/no-JS, sealed-product and hosted qualification remain pending. Search behavior/budgets, canonical methodology, lifecycle/translation approval and ownership are unchanged; this review does not complete the official-name audit or publication."
+lastReviewedCommit: 00745562507dbe047c350333e4869251fd3d3043
+lastReviewedNote: "PCR #141: reviewed lossless v5 physical search packs of at most 16 original v4 logical shards, source/byte/hash validation, atomic retry and physical-asset-plus-manifest accounting under unchanged 20 MB / 4 MB budgets. 217 docs tests, 11 strict projects / 425 authored files and six bounded real Chromium/Firefox/WebKit Worker cases pass. Replay restores all 86 captured aaf4 logical wires, native entries and complete records exactly. Final name-corrected full-corpus generation, Next export, resource/file limits, sealed-product and hosted qualification remain pending; no canonical methodology, ranking, logical partition, approval, dependencies or production state changed."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
