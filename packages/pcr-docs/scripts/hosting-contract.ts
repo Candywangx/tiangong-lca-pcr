@@ -78,6 +78,7 @@ export function verifyHostingContract(config: unknown, downloads: readonly {url:
       "search-engine.mjs",
       "search-terms.mjs",
       "search-wire.mjs",
+      "search-pack.mjs",
     ]) {
       const headers = headersFor(config, "/generated/" + file, { firstMatch });
       assert.match(

@@ -9,7 +9,7 @@ interface SiteAuthoringManifest extends BuilderManifest {classification_refs?:Cl
 type GeneratedRecord=Omit<SitePcrRecord,"slug"> & {slug:[string,string,string]};
 type GeneratedManifest=Omit<SiteManifest,"records"|"historicalRecords"> & {records:GeneratedRecord[];historicalRecords:GeneratedRecord[]};
 interface SearchDocument {record:SearchResult;text:string}
-import type {GenerationReport,SearchShard} from "./generation-report.ts";
+import type {GenerationReport} from "./generation-report.ts";
 function checkedManifest(raw:unknown):SiteAuthoringManifest {assertManifest(raw);if(!isUnknownRecord(raw))throw new Error("Manifest must be an object");return raw as SiteAuthoringManifest;}
 function slugFor(pcrPath:string):[string,string,string] {const segments=pcrPath.slice("library/pcrs/".length).split("/");if(segments.length!==3||segments.some(part=>!part))throw new Error("Invalid canonical PCR source path: "+pcrPath);return segments as [string,string,string];}
 function availableLanguages(value:{languages:{available?:string[]}}):string[] {const languages=value.languages.available;if(!languages)throw new Error("PCR languages are not declared");return languages;}
@@ -49,6 +49,7 @@ import {
 } from "./markdown.ts";
 import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.ts";
 import { searchTerms } from "../lib/search-terms.ts";
+import { packSearchShards, unpackSearchFile, readSearchManifest, SEARCH_PACK_MEMBERS, type SearchPhysicalFile } from "../lib/search-pack.ts";
 import { encodeSearchEntries, SEARCH_SCORE_SLOTS } from "../lib/search-wire.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
@@ -989,7 +990,26 @@ async function generate() {
     docs.forEach((doc, i) => {
       doc.record.id = String(i);
     });
-    const shards: SearchShard[] = [];
+    const shards: SearchPhysicalFile[] = [];
+    let logicalShardCount = 0;
+    let pending: string[] = [];
+    async function flushPack() {
+      if (!pending.length) return;
+      const firstLogicalShard = logicalShardCount - pending.length;
+      const payload = packSearchShards(pending, commit, language, firstLogicalShard);
+      const url = `/generated/search/${language}/pack-${String(shards.length).padStart(3, "0")}.json`;
+      const logicalShards = pending.map(wire => {
+        const data: unknown = JSON.parse(wire);
+        if (!isUnknownRecord(data) || !Array.isArray(data.records)) throw new Error("Invalid search records");
+        return {wireBytes: Buffer.byteLength(wire), wireSha256: sha256(wire), records: data.records.length};
+      });
+      const descriptor: SearchPhysicalFile = {url, bytes: Buffer.byteLength(payload), gzipBytes: gzipSync(payload, {level: 9}).length, sha256: sha256(payload), firstLogicalShard, logicalShardCount: pending.length, records: logicalShards.reduce((sum, item) => sum + item.records, 0), logicalShards};
+      const restored = await unpackSearchFile({schemaVersion: 5, sourceCommit: commit, language, logicalShardCount, files: [descriptor]}, descriptor, Buffer.from(payload), sha256);
+      if (restored.some((data, index) => JSON.stringify(data) !== pending[index])) throw new Error("Search transport does not restore exact logical bytes");
+      write("public" + url.slice("/generated".length), payload);
+      shards.push(descriptor);
+      pending = [];
+    }
     let bucket: SearchDocument[] = [],
       bytes = 0;
     async function flush() {
@@ -1013,20 +1033,9 @@ async function generate() {
       });
       if (Buffer.byteLength(payload) > 20_000_000)
         throw new Error("Search shard exceeds 20MB: " + language);
-      const url =
-        "/generated/search/" +
-        language +
-        "/shard-" +
-        String(shards.length).padStart(3, "0") +
-        ".json";
-      write("public" + url.slice("/generated".length), payload);
-      shards.push({
-        url,
-        bytes: Buffer.byteLength(payload),
-        gzipBytes: gzipSync(payload, { level: 9 }).length,
-        records: bucket.length,
-        sha256: sha256(payload),
-      });
+      pending.push(payload);
+      logicalShardCount++;
+      if (pending.length === SEARCH_PACK_MEMBERS) await flushPack();
       bucket = [];
       bytes = 0;
     }
@@ -1037,24 +1046,26 @@ async function generate() {
       bytes += size;
     }
     await flush();
-    json("public/search/" + language + "/manifest.json", {
-      schemaVersion: 4,
-      language,
-      shards,
-    });
-    const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, 0);
-    const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, 0);
-    console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: shards.length, records: docs.length}));
+    await flushPack();
+    const searchManifest = JSON.stringify({schemaVersion: 5, sourceCommit: commit, language, logicalShardCount, files: shards});
+    write("public/search/" + language + "/manifest.json", searchManifest);
+    const manifestAsset = {url: `/generated/search/${language}/manifest.json`, bytes: Buffer.byteLength(searchManifest), gzipBytes: gzipSync(searchManifest, {level: 9}).length, records: 0, sha256: sha256(searchManifest)};
+    const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, manifestAsset.bytes);
+    const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, manifestAsset.gzipBytes);
+    console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: logicalShardCount, physicalFiles: shards.length, records: docs.length}));
     if (rawBytes > 20_000_000 || gzipBytes > 4_000_000)
       throw new Error(
         "Search exceeds the per-language browser budget: " + language + " (raw " + rawBytes + "/20000000; gzip " + gzipBytes + "/4000000)",
       );
+    readSearchManifest(JSON.parse(searchManifest), language);
     report.search.push({
       language,
       records: docs.length,
       rawBytes,
       gzipBytes,
       shards,
+      manifest: manifestAsset,
+      logicalShardCount,
     });
   }
   for (const page of manifest.pages) {

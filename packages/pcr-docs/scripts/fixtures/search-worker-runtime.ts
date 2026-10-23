@@ -189,7 +189,7 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3 | 4): Promise<voi
     responses.set(target, saved); assert.equal(valid(await query('wheat')).length, 4);
     assert.equal(requests.filter(url => url.endsWith('manifest.json')).length, 2);
   } else if (scenario === 'manifest-shape') {
-    for (const invalid of [null, ...[undefined, 0, 5, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
+    for (const invalid of [null, ...[undefined, 0, 6, '2'].map(version => ({ schemaVersion: version, language, shards: [] })), { schemaVersion, language: 'other-language', shards: [] }, { schemaVersion, language, shards: {} }]) {
       responses.set(root + 'manifest.json', { status: 200, body: invalid });
       assert.equal((await query('wheat')).error, 'Invalid search manifest.');
     }
