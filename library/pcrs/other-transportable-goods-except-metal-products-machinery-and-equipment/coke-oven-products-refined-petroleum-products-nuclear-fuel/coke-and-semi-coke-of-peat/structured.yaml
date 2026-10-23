@@ -1,10 +1,1477 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33120"
-  title: "Coke and semi-coke of peat"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.coke-and-semi-coke-of-peat"
+  classification_refs: "CPC 3.0 33120; proposed narrower traditional-retort scope; acceptance remains separate"
+  covered_products: "One declared peat coke or half-coke grade from the stated sod-peat retort route"
+  excluded_products: "Uncarbonised peat; peat briquettes; peat tar as reference product; wood/coal/lignite/petroleum carbon products; activated carbon; mixed-feed compacts"
+  representative_product: "Cooled, unpackaged peat coke of a measured declared grade"
+  production_route: "Receipt/forming/drying; externally heated sealed dry retort; organic/aqueous condensate separation and gas recovery; enclosed cooling and grading"
+  market_state: "At plant dispatch, net accepted mass excludes packaging"
+functional_unit:
+  what: "Supply carbonised peat solid of the declared grade; fuel and metallurgical services are not assumed equivalent"
+  how_much: "1 kg net accepted product at declared dispatch moisture"
+  how_well: "Declare moisture, volatile matter, fixed/total carbon, ash, sulfur, phosphorus, size and strength with actual test methods"
+  how_long_or_cycle: "One declared production/dispatch period; downstream use/carbon fate outside the foreground gate"
+  reference_flow_link: "peat_coke"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "retort"
+      rule: "Aggregate receipt/forming/drying, heating/leaks, gas handling/return, organic/aqueous condensation, enclosed cooling and grading; actual route equivalence is required. Other equipment requires method supplement."
+      source_ids:
+        - usgs-peat-retort-1910
+    - rule_id: boundary_land
+      applies_to: "peat_feed"
+      rule: "Link actual deposit polygon/area, climate, land use, drainage/water-table dates, extraction quantity, occupation duration, stock pools and restoration/rewetting to compatible upstream datasets. Retain continuing CO2, CH4, N2O and relevant waterborne carbon impacts with the declared time horizon; no automatic restoration credit or carbon neutrality. National inventory methods inform scope, not a plant emission factor."
+      source_ids:
+        - ipcc-wetlands-2013
+    - rule_id: boundary_outputs
+      applies_to: "retort"
+      rule: "Retain all actual gas/liquid/solid branches and water/carbon/sulfur/energy interfaces. Chemical refining, onsite wastewater treatment and direct discharges require completed additional units, never silent omission."
+      source_ids:
+        - usgs-peat-retort-1910
+    - rule_id: boundary_carbon
+      applies_to: "carbon-bearing flows"
+      rule: "Maintain physical peat, fossil auxiliary and substantiated biogenic ledgers separately from reporting. IPCC counts peat combustion CO2 in national totals like fossil fuel; this alone does not select an LCI carbon-origin UUID."
+      source_ids:
+        - ipcc-peat-classification
+    - rule_id: boundary_resources
+      applies_to: "retort"
+      rule: "Purchased water is a product input with upstream abstraction; actual onsite groundwater/surface-water abstraction is a separately identified resource input in its real medium. Never count the same water supply twice. Direct releases to air, water or soil require species and receiving submedium; waste transferred to treatment remains a technosphere waste exchange."
+      source_ids: []
+    - rule_id: boundary_support
+      applies_to: "retort"
+      rule: "Include actual support utilities, packing and maintenance exchanges. Keep whole physical mass/return/stock accounts even when a justified infrastructure cut-off excludes an environmental burden; disclose the cut-off and sensitivity. Unpackaged reference mass excludes tare, not its attributable production or handling burdens."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received uncarbonised sod peat with measured moisture and traceable deposit records"
+  starting_condition_role: "Foreground gate, not a cradle-to-gate cut-off of peatland impacts"
+  product_classification_scope: "Traditional sealed-retort subset of peat coke and half coke"
+  recursive_input_rule: "Same-category external coke input versus internal return must be explicitly metered; no recursive double counting"
+  upstream_dataset_requirement: "Match extraction, field drying, drainage, land conversion, continuing soil emissions/restoration and transport; missing land evidence leaves completeness unresolved"
+  disclosure: "Deposit/land history; upstream interface; site process map; gas/heat/dust loops; utilities; condensate and waste receivers; downstream carbon-fate exclusion"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Coke and semi-coke of peat"
+    uuid: "1d2f9eb7-cd61-4f2b-a981-2fc373805bac"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Deposit and land/drainage history"
+    - "received feed state"
+    - "exclusive peat carbon feed"
+    - "retort configuration and indirect heating"
+    - "measured temperature/residence/recovery"
+    - "coke or half-coke grade"
+    - "dispatch moisture/composition"
+    - "gate/period"
+    - "carbon-origin convention"
+    - "provider quantity bases"
+    - "unpackaged delivery"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted net unpackaged dispatch coke with cp_product. One reference unit is 1 kg; intermediate and final coke must not be counted as two reference outputs."
+  - id: moisture_basis
+    applies_to: "peat_feed; peat_coke; peat_tar; captured_dust"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Dry mass = wet mass × (1 − measured wet-basis water fraction); retain wet mass, representative sampling and a matrix-valid water-specific method. Tar drying loss can include volatile organics and cannot stand for water. Report proximate fixed carbon separately from elemental total carbon. No historic moisture/yield default."
+  - id: gas_basis
+    applies_to: "natural_gas; peat_gas"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Metered T, absolute P, wet/dry composition and compressibility must match provider m3. Gas mass conversion needs measured same-state composition/density, not secondary property coefficients."
+  - id: electricity_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Metered kWh × 3.6 = MJ; the selected UUID requires CN, 1–35 kV user-side grid-average supply. Match supplier/year; another geography, voltage or dedicated generator requires a different verified flow."
+  - id: heat_basis
+    applies_to: "heat_export"
+    required_property_ref:
+      name: "Defined delivery energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Integrate delivery mass flow × supply/return enthalpy difference; specify carrier/pressure/temperature and service definition. Steam mass or MJ alone is insufficient."
+  - id: emission_basis
+    applies_to: "elementary rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain species/source/medium, wet/dry standard-state and flow/concentration bases. NOx requires an explicit quantity convention and PM fractions must be disjoint."
+process_map:
+  - id: retort
+    name: "Traditional peat retort with preparation/recovery/cooling"
+    inclusion: "required"
+    inclusion_condition: "Actual matching sealed externally heated dry retort"
+    role: "Foreground aggregate, stages separately metered"
+    quantitative_reference: "peat_coke"
+process_inventory:
+  - id: retort
+    label: "Traditional peat retort with preparation/recovery/cooling"
+    inputs:
+      product:
+        - row_id: peat_feed
+          role: "Peat"
+          name: "Peat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "485febdb-01e0-47ad-8ebe-c500a35669bd"
+          property_unit: "Mass / kg"
+          description: "Received uncarbonised sod peat. Record deposit/land history, drainage, moisture, ash and humification; the feed is not the reference coke. Upstream quantities must match received state."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional purchased China (CN), 1–35 kV user-side grid-average supply. This selected flow cannot represent another supply country, voltage or dedicated generator. Record actual supplier/year and match its background; otherwise select a different verified atomic electricity flow. kWh × 3.6 = MJ; the native energy property is not a thermal-fuel assumption."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous pipeline natural-gas fuel mixture"
+          name: "Gaseous pipeline natural-gas fuel mixture"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional pipeline auxiliary/start-up fuel mixture only if present. Require the actual gas certificate, compression/delivery route and constituent fractions; a pure-methane CAS cannot establish a natural-gas mixture. Meter temperature, absolute pressure, wet/dry composition and compressibility must match the future verified provider reference m3; a secondary Mass coefficient is not density. No single-plant composition or heating value is a default."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: cooling_water
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df413bba-3c03-412b-a80a-c6082b6b9b33"
+          property_unit: "Mass / kg"
+          description: "Conditional external non-contact condenser make-up. Record source/treatment and mass, or volume with measured density; internal circulation is not a repeated input. Reaction-medium process water is not automatically a coolant."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: peat_coke
+          role: "Coke and semi-coke of peat"
+          name: "Coke and semi-coke of peat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1d2f9eb7-cd61-4f2b-a981-2fc373805bac"
+          property_unit: "Mass / kg"
+          description: "One accepted net unpackaged grade at declared dispatch moisture after enclosed cooling and grading. Other grades belong to separately metered campaigns/datasets; this is the only reference product output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: peat_tar
+          role: "Separated raw peat tar"
+          name: "Separated raw peat tar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only separated organic condensate exported as an actual product, excluding the aqueous phase. Record water, carbon/sulfur and receiver; coal tar is not this identity. Chemical refining is outside scope."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: peat_gas
+          role: "Exported noncondensable peat carbonisation gas"
+          name: "Exported noncondensable peat carbonisation gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A measured gas mixture crossing the plant boundary; retain water, composition, density and calorific basis. Burner return is internal, not exported. A biomass gas label does not prove peat carbon compatibility."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: heat_export
+          role: "Net delivered heat from retort gas recovery"
+          name: "Net delivered heat from retort gas recovery"
+          flow_type: "product"
+          property_unit: "Net delivered heat / MJ"
+          description: "Only actual external heat: integrate mass flow × supply/return enthalpy difference at delivery. Record carrier, pressure, temperature, returns and supplier definition. Steam mass or MJ alone does not establish net heat."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+      waste:
+        - row_id: aqueous_condensate
+          role: "Peat carbonisation aqueous condensate for external treatment"
+          name: "Peat carbonisation aqueous condensate for external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separated tar-water phase to a treatment receiver; retain dissolved organics, ammonia, sulfur, entrained tar and hazardous status. Not manganese wash water or an elementary freshwater discharge. On-site treatment/direct discharge needs its own complete unit."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: captured_dust
+          role: "Dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass / kg"
+          description: "Conditional captured peat/coke solid sent offsite as waste; declare composition, moisture and receiver. Broad industrial-dust identity supports captured solids only, not ash or airborne PM. Internal reuse remains a physical loop."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: mineral_residue
+          role: "Mineral ash residue from peat gas firing"
+          name: "Mineral ash residue from peat gas firing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional separately removed mineral residue if gas carries entrained mineral particles. Record chemistry/receiver. Ash retained in product is not waste; coal-power-plant coke ash is excluded."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: waste_tar
+          role: "Waste raw peat tar for external treatment"
+          name: "Waste raw peat tar for external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional discarded organic peat condensate crossing the gate to an actual treatment receiver. Record water, solids, organic composition, hazardous status, stocks and receiver. Exclude separately removed aqueous condensate and saleable peat_tar quantities; coal tar residue is not a peat identity. Retain storage/transfer evaporation separately as speciated air releases."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+      elementary:
+        - row_id: co2_peat
+          role: "Carbon dioxide from peat carbon, origin unresolved"
+          name: "Carbon dioxide from peat carbon, origin unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified. Preserve the physically measured unrouted peat CO2 remainder; move portions to origin-specific rows only with documented carbon convention and LCIA compatibility. Neither the peat name nor IPCC reporting treatment alone resolves source identity."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ipcc-peat-classification
+            ranges: []
+        - row_id: co2_fossil
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified. Actual fossil auxiliary CO2 plus only separately justified peat portions; do not duplicate co2_peat."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ipcc-peat-classification
+            ranges: []
+        - row_id: co2_biogenic
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified. Only explicitly substantiated origin fractions; plant ancestry alone is insufficient. Preserve established biogenic CO2 in physical LCI even when omitted from national totals; unknown peat origin stays in co2_peat."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ipcc-peat-classification
+            ranges: []
+        - row_id: co_peat
+          role: "Carbon monoxide from peat carbon, origin unresolved"
+          name: "Carbon monoxide from peat carbon, origin unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified, measured peat retort/gas-handling/firing CO; retain unclassified physical amount, do not assign a fossil UUID by analogy."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: co_fossil
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified; actual fossil auxiliary fuel CO plus only independently substantiated peat fractions, excluding origin-unresolved peat CO."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: ch4_peat
+          role: "Methane from peat carbon, origin unresolved"
+          name: "Methane from peat carbon, origin unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified; quantify unrouted leaks, vents and unburnt peat gas. Recovered fuel gas is not an elementary release; no complete-oxidation assumption."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: ch4_fossil
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified; actual auxiliary fossil methane leaks/unburnt gas and only justified peat fractions. No double count with ch4_peat and no correction flow."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified, species-specific SO2 after controls. Reconcile sulfur retained in coke, tar, condensate, gas and residue; total sulfur oxides is not automatically SO2."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: nox
+          role: "Nitrogen oxides"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified. Preserve laboratory NO/NO2 definition and any NO2-equivalent conversion; Mass/kg alone is insufficient. Exclude N2O and duplicate NO/NO2. Unknown quantity definition blocks a completed dataset link."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: pm_coarse
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified, only this disjoint emitted size fraction after controls. Survey drying/charging/discharge/grading/firing individually. Captured/recycled dust is not emitted. Derive disjoint intervals from nested data only with comparable measurement bases."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: pm_mid
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified, only this disjoint emitted size fraction after controls. Survey drying/charging/discharge/grading/firing individually. Captured/recycled dust is not emitted. Derive disjoint intervals from nested data only with comparable measurement bases."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: pm_fine
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor-air unspecified, only this disjoint emitted size fraction after controls. Survey drying/charging/discharge/grading/firing individually. Captured/recycled dust is not emitted. Derive disjoint intervals from nested data only with comparable measurement bases."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor air, unspecified submedium, CAS 7732-18-5, ordinary emission without a long-term correction. Retain measured gross outlet water and incoming air humidity separately, feed/coke/tar water, cooling evaporation, pyrolysis reaction water and combustion-generated water. Match the LCI gross/net water convention explicitly. Drying loss of volatile organics is not water; liquid discharge is a separate identity."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: n2o
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Outdoor air, unspecified submedium, CAS 10024-97-2, ordinary emission without a long-term correction. Screen N2O separately from NOx across actual burner/exhaust states; the selected identity assigns no positive amount or wood pyrolysis factor. Retain absence or detection-limit evidence."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: ammonia
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional measured post-recovery outdoor-air release, unspecified submedium, CAS 7664-41-7. Screen actual retort/recovery/storage outlets and leaks. Species NH3 mass, not ammonia-N, ammonium salt, aqueous total nitrogen or an assumed feed-nitrogen fraction. Recovery into tar or water is not an air emission; no historic partition or positive default. Add every other actually identified species as a separate row."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: benzene
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional measured post-recovery outdoor-air release, unspecified submedium, CAS 71-43-2. Screen actual retort/recovery/storage outlets and leaks. Species benzene mass, not total VOC, BTX or a gasoline-cut amount. Recovery into tar or water is not an air emission; no historic partition or positive default. Add every other actually identified species as a separate row."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - osti-peat-conversion-1980
+            ranges: []
+        - row_id: phenol
+          role: "phenol"
+          name: "phenol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aa41-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional measured post-recovery outdoor-air release, unspecified submedium, CAS 108-95-2. Screen actual retort/recovery/storage outlets and leaks. Species phenol mass, not total phenols, COD, TOC or liquid tar mass. Recovery into tar or water is not an air emission; no historic partition or positive default. Add every other actually identified species as a separate row."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - usgs-peat-retort-1910
+            ranges: []
+        - row_id: h2s
+          role: "hydrogen sulfide"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional measured post-recovery outdoor-air release, unspecified submedium, CAS 7783-06-4. Screen actual retort/recovery/storage outlets and leaks. Species H2S mass, not total sulfur or SO2; conserve sulfur remaining in condensed phases. Recovery into tar or water is not an air emission; no historic partition or positive default. Add every other actually identified species as a separate row."
+          amount:
+            expression: "Collect actual amount with the linked protocol and aggregate on the same reference basis; retain row-specific absence/detection-limit evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - osti-peat-conversion-1980
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_physical
+    applies_to: "retort"
+    rule: "Keep gross physical gas/liquid/solid, water/carbon/sulfur and energy balances before allocating environmental burdens. Never multiply actual coproduct outputs by allocation shares. Internal return and external export are mutually exclusive quantities."
+    source_ids:
+      - usgs-peat-retort-1910
+  - rule_id: allocation_order
+    applies_to: "retort"
+    rule: "Authored PCR allocation policy: limited adaptation of the GHG Product Standard hierarchy to this LCI, without claiming full GHG-standard conformity. First use measured subdivision for separable operations. For remaining shared burdens document a demonstrated causal physical relationship; otherwise use an explicit economic scenario with actual grade/product quantities and period-matched net prices, uncertainty and sensitivity. A historic profitability assertion establishes neither a share nor an avoided-burden credit."
+    source_ids:
+      - ghg-product-allocation-2011
+  - rule_id: allocation_status
+    applies_to: "peat_tar; peat_gas; heat_export; captured_dust"
+    rule: "Distinguish actual marketable coproducts from wastes using receiver contracts and quality evidence. Retain wastewater/residue treatment burdens and no arbitrary burden-free byproduct. Show allocated burden shares summing to unity for each shared burden pool; retain the unallocated physical ledger."
+    source_ids:
+      - ghg-product-allocation-2011
+  - rule_id: allocation_support
+    applies_to: "retort"
+    rule: "Assign directly attributable packing, handling, maintenance and treatment burdens to their actual operation/product before shared allocation. Economic scenarios use matched net receipts after discounts/returns, quantity states, currency/date, freight/tax boundary and treatment fees; historical capital or operating costs are not current sales prices. Shared shares sum to one; physical outputs, stocks and return links remain unweighted."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "retort"
+      flow_role: "Accepted reference grade"
+      record_type: "Weighing and laboratory records"
+      raw_fields: "Batch/grade; net mass; dispatch moisture; volatile/fixed/total carbon; ash; sulfur; phosphorus; size; strength; stocks"
+      collection_method: "Calibrated net dispatch weighing without packaging; representative grade sampling and actual accredited or validated methods; reconcile production and dispatch inventories"
+      unit: "kg"
+      frequency: "Each lot; composite sampling by declared plan"
+      temporal_coverage: "Complete declared period"
+      site_scope: "Same product grade/gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, sample chain, rejects and inventory reconciliation"
+    - protocol_id: cp_material
+      process_id: "retort"
+      flow_role: "Each solid/liquid/gas branch"
+      record_type: "Mass, acceptance and phase-composition ledger"
+      raw_fields: "Batch; phase/stage/endpoint; gross generation; sale/use/disposal/returns; mass; water/solids; elemental C/H/O/N/S/P/minerals; proximate analysis; gas composition/T/absolute P/wet-dry/Z/density/NCV; receiver; stock change"
+      collection_method: "Calibrated solid/liquid weighing or temperature/density-supported tank measurement; matched gas metering; representative phase sampling including entrained/dissolved fractions; verify both ends of transfers and receiver acceptance"
+      unit: "kg"
+      frequency: "Each lot; gas logged through operating states"
+      temporal_coverage: "Complete declared period"
+      site_scope: "All material branches"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, methods/bases, sample chain, matched links, receiver receipts, residual uncertainty"
+    - protocol_id: cp_energy
+      process_id: "retort"
+      flow_role: "Electricity, auxiliary fuel and delivered heat"
+      record_type: "Meter/provider records"
+      raw_fields: "Supply voltage/mix; kWh; natural-gas volume/T/P/wet-dry/Z; fuel composition/NCV; heat carrier/flow/pressure/supply-return enthalpy; return/export split"
+      collection_method: "Calibrated meters and supplier reference-quantity definitions; matched time-integrated net delivery enthalpy; retain internal recovery separately"
+      unit: "MJ; m3"
+      frequency: "Continuous logs reconciled to invoices"
+      temporal_coverage: "Complete declared period, including startup"
+      site_scope: "Energy delivery and internal recovery interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration; provider reference definitions; enthalpy and period reconciliation"
+    - protocol_id: cp_water
+      process_id: "retort"
+      flow_role: "Water in each actual phase and external supply/release"
+      record_type: "Water/phase balance"
+      raw_fields: "Feed/fuel/coke/tar water; external supply source/treatment or onsite abstraction medium; circuit stocks/returns; separated aqueous mass; dissolved/entrained organics/N/S; air inlet humidity; wet outlet gas; reaction/combustion water; actual blowdown and receiver"
+      collection_method: "Meter actual make-up/abstraction, weigh and water-specifically sample each phase; reconcile humid inlet/outlet and H/O elements with measured activity and uncertainty; record direct liquid discharge separately from treatment transfer"
+      unit: "kg"
+      frequency: "Continuous meters and batch phase samples"
+      temporal_coverage: "Complete declared period"
+      site_scope: "All water interfaces and matched air records"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter/sample evidence, method selectivity, source/receiver and water residual"
+    - protocol_id: cp_air
+      process_id: "retort"
+      flow_role: "Each emitted species/size/source"
+      record_type: "Monitoring and release survey"
+      raw_fields: "Outlet/leak/vent; operating state/hours; flow; concentration; gas standard T/P; wet-dry/O2 basis; species/CAS; source carbon; NOx convention; PM size definition; controls; limits"
+      collection_method: "Qualified species-specific tests and validated stack flow methods; representative tests for all operating states plus quantified leaks/vents; actual carbon-source tracing; integrate mass rates and hours; retain nondetect limits, never assume zero"
+      unit: "kg"
+      frequency: "State-representative tests and continuous activity logs"
+      temporal_coverage: "Complete declared period with startup/shutdown"
+      site_scope: "All actual air outlets and diffuse releases"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original methods/results, QA, coverage, uncertainty, detection limits and source-origin evidence"
+    - protocol_id: cp_route
+      process_id: "retort"
+      flow_role: "Route, upstream land and quality applicability"
+      record_type: "Site/supplier documentary record"
+      raw_fields: "Retort configuration; temperature/residence; gas/condensate diagram; peat deposit/land/drainage/extraction history; restoration; utility definitions; all omitted exchanges"
+      collection_method: "Verify installed route against source-bound scope; supplier land and upstream evidence; walk-through exchange survey; document gaps before data completeness"
+      unit: "record"
+      frequency: "Each campaign and material/provider change"
+      temporal_coverage: "Same declared period with land-history context"
+      site_scope: "Plant plus linked upstream providers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Process diagram, land records, applicability and completeness sign-off"
+    - protocol_id: cp_land
+      process_id: "retort"
+      flow_role: "Linked upstream peatland scope"
+      record_type: "Supplier geospatial, land-history and upstream-LCI records"
+      raw_fields: "Deposit polygon/area; land use/climate/nutrient class; water-table/drainage/extraction dates; occupation period; extracted dry carbon; above/below-ground/litter/deadwood/soil pools; CO2/CH4/N2O and relevant drainage-water carbon; actual rewetting/restoration; dataset boundary/times and included burdens"
+      collection_method: "Link traceable supplier land records to applicable drained/rewetted soil scope and upstream inventory with declared allocation/time horizon; reconcile stock/exported peat carbon and ongoing fluxes; do not copy national area factors to plant kg or credit presumed restoration"
+      unit: "record"
+      frequency: "Each deposit/land-management change; annual scope reconciliation"
+      temporal_coverage: "Land history plus declared upstream assessment horizon"
+      site_scope: "Supplier deposit and linked extraction/transport dataset"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Geospatial/date evidence, compatible LCI scope, stock/flux reconciliation and missing-coverage disclosure"
+    - protocol_id: cp_air_inlet
+      process_id: "retort"
+      flow_role: "Combustion/dryer/cooling air physical interfaces"
+      record_type: "Calibrated air/activity and weather records"
+      raw_fields: "Inlet/ingress location; dry air mass/volume; T/P; O2/N2/CO2 fractions; humidity; operating hours; matched outlet"
+      collection_method: "Measure or derive from validated equipment tests with uncertainty; account for ambient water/carbon and oxygen consumption, nitrogen pass-through and leakage without assuming stoichiometric complete combustion; preserve documented LCI gross/net reconciliation"
+      unit: "kg"
+      frequency: "State-representative tests and continuous activity/weather logs"
+      temporal_coverage: "Complete declared period"
+      site_scope: "Each air circuit and matched outlets"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Airflow/humidity calibration, dry/wet bases, inlet-outlet reconciliation"
+    - protocol_id: cp_support
+      process_id: "retort"
+      flow_role: "Each actual packing, maintenance and support exchange"
+      record_type: "Physical bill, work order and return ledger"
+      raw_fields: "Component material; measured mass/tare; purchases/stocks; duty/service life; reuse/return counts; rejects/losses; lubricant/filter/refractory/steel replacement; cleaning utilities; waste receiver; infrastructure cut-off; actual net prices/currency/date/fees"
+      collection_method: "Survey complete physical bill including inbound containers and recovery tanks, bags/liners/pallets if used; weigh each material and reconcile stocks/returns; allocate attributable maintenance by documented duty or service period, retain physical replacement/waste and supporting energy; create a separate verified card for every actual exchange"
+      unit: "kg; record"
+      frequency: "Each purchase, replacement and return, period reconciliation"
+      temporal_coverage: "Same campaign plus documented service life"
+      site_scope: "Whole support account, including upstream interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Bills, calibrated tare, work orders, return receipts, lifetime evidence, cut-off and burden reconciliation"
+  calculation_rules:
+    - id: batch_normalisation
+      applies_to: "all inventory rows"
+      rule: "Each external exchange result = its measured campaign amount divided by P; retain raw campaign amount and selected-grade P. Physical coproduct outputs use actual mass, never an allocation-weighted mass."
+      inputs:
+        - "Campaign exchange"
+        - P
+        - inventories
+        - cp_product
+      output: "Exchange per 1 kg reference flow"
+      source_ids: []
+    - id: phase_balances
+      applies_to: "retort"
+      rule: "For each gross mass/element ledger, inputs = outputs + stock increase + quantified residual. Conserve measured C, H, O, N, S, P and relevant mineral elements across feed, fuel, air, coke, organic/aqueous phases, gas, dust and residues. Convert species to element mass by molecular stoichiometry; report wet/dry/ash-free analytical bases, water, ash and proximate fixed carbon separately. Internal links cancel only after both ends agree; do not assume complete oxidation or that all non-CO/CO2 oxygen becomes water."
+      inputs:
+        - cp_material
+        - cp_water
+        - cp_energy
+        - cp_air
+        - cp_air_inlet
+      output: "Unallocated elemental and total-mass ledgers with uncertainty"
+      source_ids:
+        - osti-peat-conversion-1980
+    - id: elemental_partition
+      applies_to: "retort"
+      rule: "Measured tar/char/aqueous/gas N and S may have different distributions. A laboratory trapped-tar analysis does not close unmeasured gas or predict NOx/H2S emission amounts; keep oxygen by-difference uncertainty and measured H/O loss separate from water assignment. Collect actual species and retained phase elements before declaring closure."
+      inputs:
+        - cp_material
+        - cp_air
+        - cp_water
+      output: "Phase-specific N/S/H/O evidence and unresolved residuals"
+      source_ids:
+        - suo-peat-pyrolysis-1987
+    - id: water_closure
+      applies_to: "retort"
+      rule: "Water in feed/fuel/products, external water supply and air humidity plus separately substantiated reaction/combustion water = water in products/condensate/discharges/exhaust plus stock increase and quantified residual. Do not count stream-contained H2O again as an extra stream; water formation/consumption must reconcile the H/O ledger. Preserve gross inlet/outlet and documented net LCI water quantities."
+      inputs:
+        - cp_water
+        - cp_air_inlet
+        - cp_material
+        - cp_air
+      output: "Water ledger and LCI reconciliation"
+      source_ids:
+        - osti-peat-conversion-1980
+    - id: energy_closure
+      applies_to: "retort"
+      rule: "Use one declared energy datum and matched gross/net calorific basis, moisture and reference state. Reconcile fuel chemical energy, electricity, imported heat, sensible/latent delivery, exported energy, product chemical energy, losses and storage. Show gross stage recovery but cancel matched internal gas/heat links at aggregate boundary; internal recovery is never an additional external energy input or avoided burden."
+      inputs:
+        - cp_energy
+        - cp_material
+        - cp_air_inlet
+        - cp_product
+      output: "Unallocated energy balance"
+      source_ids: []
+    - id: support_closure
+      applies_to: "retort"
+      rule: "For each actual packing/maintenance material, reconcile purchases, stocks, service use, returns, losses and identified waste. Reuse counts and service life come from traceable records; never divide purchase mass by a guessed number of cycles. Product denominator excludes tare and counts no returned/redelivered lot twice."
+      inputs:
+        - cp_support
+        - cp_product
+      output: "Support-material ledger and attributable burdens"
+      source_ids: []
+    - id: air_integral
+      applies_to: "elementary rows"
+      rule: "For each outlet/state, emitted mass = time-integral of compatible species mass concentration × gas volume flow; sum actual states/leaks. Reconcile temperature/pressure, moisture and sampling flow states; undo reference-O2 concentration correction or apply a demonstrably compatible volume basis before integration. Keep source-origin partitions exhaustive/nonoverlapping; nondetect is bounded uncertainty, not zero."
+      inputs:
+        - cp_air
+        - "gas reference state"
+        - "operating hours"
+      output: "Species mass and completeness evidence"
+      source_ids: []
+    - id: carbon_partition
+      applies_to: "co2_peat; co2_fossil; co2_biogenic; co_peat; co_fossil; ch4_peat; ch4_fossil"
+      rule: "For each species/outlet, trace auxiliary and peat-derived physical amounts separately; retain the unassigned peat remainder after documented compatible source assignments. If physical peat/auxiliary attribution itself is unresolved, retain that additional tracing gap and the full measured total rather than call the whole remainder peat. National reporting or plant ancestry alone cannot decide LCI source; retain all totals and transfers."
+      inputs:
+        - "Physical species masses"
+        - tracing
+        - "stated LCI/LCIA convention"
+      output: "Nonoverlapping physical source ledger"
+      source_ids:
+        - ipcc-peat-classification
+  data_quality_requirements:
+    - id: route_match
+      applies_to: "retort"
+      requirement: "Prove traditional dry sealed externally heated retort; no inferred equivalence of modern equipment"
+      evidence: "cp_route and source-limited comparison"
+    - id: finite_basis
+      applies_to: "all inventory rows"
+      requirement: "Same grade, gate and campaign denominator; separate wet/dry states and stocks; retain all raw quantities and uncertainty"
+      evidence: "cp_product and linked protocols"
+    - id: closure
+      applies_to: "physical balances"
+      requirement: "Explain each measured residual against combined measurement uncertainty; no universal tolerance or balancing emission invented"
+      evidence: "Phase ledger and analytical uncertainty"
+    - id: origin
+      applies_to: "carbon species"
+      requirement: "Deposit/land history, auxiliary fuel source and explicit carbon convention; unknown identity remains unresolved, never deleted"
+      evidence: "cp_route; cp_air; compatibility decision"
+    - id: identity_basis
+      applies_to: "UUID-bearing and unresolved rows"
+      requirement: "Exact physical identity is separate from provider quantity/background compatibility. Require medium/source/species/property/unit consistency; missing UUID or NOx/heat/gas definition prevents an asserted complete dataset"
+      evidence: "Direct identity plus actual provider/site records"
+    - id: source_route_grade
+      applies_to: "reference product and every linked provider"
+      requirement: "Declare actual grade/test endpoint, route and supply geography. Missing actual collection is a dataset gap; an unverified identity, unsupported route or unknown native quantity definition remains a specific unresolved method/link issue and cannot be waived as ordinary data debt."
+      evidence: "cp_route; native records; specific compatibility decision"
+    - id: support_media_complete
+      applies_to: "retort"
+      requirement: "Complete physical packing/maintenance/returns, resource versus supplied product and actual release-medium accounts. Add all actual missing atomic rows and treatment/utility units before claiming a complete dataset; the screened list is never an exhaustive emissions recipe."
+      evidence: "cp_support; cp_water; cp_air_inlet; cp_air"
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "peat_coke"
+    rule: "Require exactly one reference output, 1 kg net declared grade, all qualifiers and same bilingual denominator. Do not substitute coal coke, wood charcoal or ordinary peat."
+    source_ids:
+      - usgs-peat-retort-1910
+  - rule_id: validation_route
+    applies_to: "retort"
+    rule: "Verify site route and all actual exchanges; unsupported equipment, chemical refining or wastewater treatment needs a completed supplement. Unknown quantity/identity or uncovered emissions are explicit incomplete findings, not passes."
+    source_ids:
+      - usgs-peat-retort-1910
+  - rule_id: validation_balance
+    applies_to: "all inventory rows"
+    rule: "Reconcile gross phase/water/carbon/sulfur/energy ledgers and matched internal loops before burden allocation. Keep source partitions and PM intervals nonoverlapping; retain biogenic CO2 when established."
+    source_ids:
+      - usgs-peat-retort-1910
+      - ipcc-peat-classification
+  - rule_id: validation_evidence
+    applies_to: "retort"
+    rule: "No historic/single-plant quantities, wood factors or guessed carbon class may replace actual collection. Separate method authorship, future dataset completeness and scientific review."
+    source_ids:
+      - usgs-peat-retort-1910
+      - vtt-peat-coke-1986-abstract
+  - rule_id: validation_land_carbon
+    applies_to: "peat_feed; carbon species"
+    rule: "Reconcile extracted physical carbon, land-stock change, continuing soil/water emissions and gate carbon without counting extracted carbon again as an assumed immediate land CO2 release. Keep every measured physical CO2 source and all stock transfers. LCI/LCIA origin definitions, uptake treatment and characterization must agree; reporting peat as fossil-like is not a shortcut to deleting CO2 or assigning all carbon one source UUID."
+    source_ids:
+      - ipcc-peat-classification
+      - ipcc-wetlands-2013
+  - rule_id: validation_support_media
+    applies_to: "retort"
+    rule: "Require matched internal gas/heat/water links, actual volatile/waste destinations, inlet humidity and element balances, whole support/returns account and verified native hard route/CAS/geography/property/unit constraints. Missing identities or uncovered exchanges remain explicit, not zero or a complete-dataset pass."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset only after a real complete foreground package and review"
+  downstream_use: "Declared grade and matching traditional-retort route, with separately modelled downstream carbon fate"
+  allowed_use: "Site-period-specific supply of the declared peat coke/half-coke grade and compatible land/utility backgrounds"
+  excluded_use: "All modern peat coking default; charcoal/coal/petroleum coke proxy; carbon-neutrality claim; activated-carbon production; unsupported emission-factor recipe"
+  required_metadata: "All reference qualifiers; site/period; gross and allocated ledgers; upstream land history; provider bases; receivers; method source limitations"
+  required_quality_disclosure: "UUID/basis gaps; carbon convention; temporal/geographic/route scope; measurement limits/residuals; allocation scenario/sensitivity; excluded downstream fate"
+  update_trigger: "Route/grade/feed/deposit/provider change; new measurements; changed land history/carbon convention; resolved flow identity; revised source applicability"
+data_sources:
+  - id: "ghg-product-allocation-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, printed p.63, Tables 9.1–9.2. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Subdivision and physical/economic relationships support the declared limited LCI allocation adaptation; no peat-plant allocation shares, avoided-burden credits or full conformity claim. Physical outputs remain unallocated; USGS 1910 supports historical process and market context only."
+  - id: "usgs-peat-retort-1910"
+    type: "official_guidance"
+    reference: "C. A. Davis, The preparation and use of peat as fuel, USGS Bulletin 442-B (1910), printed pp.121–123, PDF pp.21–23. https://pubs.usgs.gov/bul/442-B/report.pdf"
+    used_for: "Historical European sealed-retort peat coke/half coke, gas return, organic/aqueous condensate recovery and enclosed cooling. Quantities/costs and claimed profitability are not defaults; no modern plant coverage."
+  - id: "vtt-peat-coke-1986-abstract"
+    type: "literature"
+    reference: "Brandt, Sipilä and Thun, Production and use of peat coke, VTT Tiedotteita 542 (1986), publisher abstract only. https://cris.vtt.fi/en/publications/production-and-use-of-peat-coke/"
+    used_for: "Historical product/feedstock/pretreatment and grade distinctions only; full report not acquired, no default quantities or present factory status."
+  - id: "ipcc-peat-classification"
+    type: "official_guidance"
+    reference: "IPCC TFI FAQ Q2-7. https://www.ipcc-nggip.iges.or.jp/faq/faq.html"
+    used_for: "Distinction between peat identity and national GHG reporting convention; not a peat-coke manufacturing factor or LCI origin assignment."
+  - id: "osti-peat-conversion-1980"
+    type: "literature"
+    reference: "F. C. Schora and D. V. Punwani, Peat — An Energy Alternative, IGT conference paper (1980), OSTI 5328068, PDF pp.8–11, 28 and 31 (printed pp.5–8, 25 and 28). https://www.osti.gov/servlets/purl/5328068"
+    used_for: "Qualitative separation of conversion routes, pyrolysis water/carbon oxides and oxygen retained in liquids/char. Hydrogasification aqueous-organic results are route-limited cautions, never dry-retort yields, compositions or partition/emission factors."
+  - id: "ipcc-wetlands-2013"
+    type: "official_guidance"
+    reference: "IPCC (2014), 2013 Wetlands Supplement, ch.2 §§2.1–2.2, 2.4 (printed pp.2.6–2.8, 2.47–2.48); ch.3 §§3.1–3.2 (printed pp.3.4–3.7). https://www.ipcc-nggip.iges.or.jp/public/wetlands/index.html"
+    used_for: "Upstream drained/rewetted organic-soil scope, stock pools and persistent gaseous/waterborne carbon interfaces; no site default or automatic rewetting credit. National reporting categories do not select an LCI carbon-origin flow."
+  - id: "suo-peat-pyrolysis-1987"
+    type: "literature"
+    reference: "Martti Aho, Pyrolysis of peat, Suo 38(5):105–110 (1987), PDF pp.1–6, especially printed pp.106 and 108–109. https://suo.fi/pdf/9636"
+    used_for: "Nitrogen-atmosphere laboratory peat/tar/char elemental observations and incomplete gas analysis; supports phase-specific collection and uncertainty only, not industrial operating settings, yield, purity or emission factors."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:84c00a8c5c5362952c8a2f7e67057cb4f6fbd33eec50ff57995ad02bda9e13f3"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6584"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6584
+          line: 64
+          column: 1
+        end:
+          offset: 9634
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received uncarbonised sod peat with measured moisture and traceable deposit records |\n| starting_condition_role | Foreground gate, not a cradle-to-gate cut-off of peatland impacts |\n| product_classification_scope | Traditional sealed-retort subset of peat coke and half coke |\n| recursive_input_rule | Same-category external coke input versus internal return must be explicitly metered; no recursive double counting |\n| upstream_dataset_requirement | Match extraction, field drying, drainage, land conversion, continuing soil emissions/restoration and transport; missing land evidence leaves completeness unresolved |\n| disclosure | Deposit/land history; upstream interface; site process map; gas/heat/dust loops; utilities; condensate and waste receivers; downstream carbon-fate exclusion |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | retort | Aggregate receipt/forming/drying, heating/leaks, gas handling/return, organic/aqueous condensation, enclosed cooling and grading; actual route equivalence is required. Other equipment requires method supplement. | usgs-peat-retort-1910 |\n| boundary_land | peat_feed | Link actual deposit polygon/area, climate, land use, drainage/water-table dates, extraction quantity, occupation duration, stock pools and restoration/rewetting to compatible upstream datasets. Retain continuing CO2, CH4, N2O and relevant waterborne carbon impacts with the declared time horizon; no automatic restoration credit or carbon neutrality. National inventory methods inform scope, not a plant emission factor. | ipcc-wetlands-2013 |\n| boundary_outputs | retort | Retain all actual gas/liquid/solid branches and water/carbon/sulfur/energy interfaces. Chemical refining, onsite wastewater treatment and direct discharges require completed additional units, never silent omission. | usgs-peat-retort-1910 |\n| boundary_carbon | carbon-bearing flows | Maintain physical peat, fossil auxiliary and substantiated biogenic ledgers separately from reporting. IPCC counts peat combustion CO2 in national totals like fossil fuel; this alone does not select an LCI carbon-origin UUID. | ipcc-peat-classification |\n| boundary_resources | retort | Purchased water is a product input with upstream abstraction; actual onsite groundwater/surface-water abstraction is a separately identified resource input in its real medium. Never count the same water supply twice. Direct releases to air, water or soil require species and receiving submedium; waste transferred to treatment remains a technosphere waste exchange. | |\n| boundary_support | retort | Include actual support utilities, packing and maintenance exchanges. Keep whole physical mass/return/stock accounts even when a justified infrastructure cut-off excludes an environmental burden; disclose the cut-off and sensitivity. Unpackaged reference mass excludes tare, not its attributable production or handling burdens. | |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 306
+              line: 10
+              column: 1
+            end:
+              offset: 357
+              line: 10
+              column: 52
+          text: "# Traditional sealed-retort peat coke and half coke"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6584
+              line: 64
+              column: 1
+            end:
+              offset: 6605
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39135"
+      family: "allocation"
+      span:
+        start:
+          offset: 39135
+          line: 566
+          column: 1
+        end:
+          offset: 41022
+          line: 575
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_physical | retort | Keep gross physical gas/liquid/solid, water/carbon/sulfur and energy balances before allocating environmental burdens. Never multiply actual coproduct outputs by allocation shares. Internal return and external export are mutually exclusive quantities. | usgs-peat-retort-1910 |\n| allocation_order | retort | Authored PCR allocation policy: limited adaptation of the GHG Product Standard hierarchy to this LCI, without claiming full GHG-standard conformity. First use measured subdivision for separable operations. For remaining shared burdens document a demonstrated causal physical relationship; otherwise use an explicit economic scenario with actual grade/product quantities and period-matched net prices, uncertainty and sensitivity. A historic profitability assertion establishes neither a share nor an avoided-burden credit. | ghg-product-allocation-2011 |\n| allocation_status | peat_tar; peat_gas; heat_export; captured_dust | Distinguish actual marketable coproducts from wastes using receiver contracts and quality evidence. Retain wastewater/residue treatment burdens and no arbitrary burden-free byproduct. Show allocated burden shares summing to unity for each shared burden pool; retain the unallocated physical ledger. | ghg-product-allocation-2011 |\n| allocation_support | retort | Assign directly attributable packing, handling, maintenance and treatment burdens to their actual operation/product before shared allocation. Economic scenarios use matched net receipts after discounts/returns, quantity states, currency/date, freight/tax boundary and treatment fees; historical capital or operating costs are not current sales prices. Shared shares sum to one; physical outputs, stocks and return links remain unweighted. | |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 306
+              line: 10
+              column: 1
+            end:
+              offset: 357
+              line: 10
+              column: 52
+          text: "# Traditional sealed-retort peat coke and half coke"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39135
+              line: 566
+              column: 1
+            end:
+              offset: 39175
+              line: 566
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_55684"
+      family: "validation"
+      span:
+        start:
+          offset: 55684
+          line: 618
+          column: 1
+        end:
+          offset: 57775
+          line: 629
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validation_reference | peat_coke | Require exactly one reference output, 1 kg net declared grade, all qualifiers and same bilingual denominator. Do not substitute coal coke, wood charcoal or ordinary peat. | usgs-peat-retort-1910 |\n| validation_route | retort | Verify site route and all actual exchanges; unsupported equipment, chemical refining or wastewater treatment needs a completed supplement. Unknown quantity/identity or uncovered emissions are explicit incomplete findings, not passes. | usgs-peat-retort-1910 |\n| validation_balance | all inventory rows | Reconcile gross phase/water/carbon/sulfur/energy ledgers and matched internal loops before burden allocation. Keep source partitions and PM intervals nonoverlapping; retain biogenic CO2 when established. | usgs-peat-retort-1910; ipcc-peat-classification |\n| validation_evidence | retort | No historic/single-plant quantities, wood factors or guessed carbon class may replace actual collection. Separate method authorship, future dataset completeness and scientific review. | usgs-peat-retort-1910; vtt-peat-coke-1986-abstract |\n| validation_land_carbon | peat_feed; carbon species | Reconcile extracted physical carbon, land-stock change, continuing soil/water emissions and gate carbon without counting extracted carbon again as an assumed immediate land CO2 release. Keep every measured physical CO2 source and all stock transfers. LCI/LCIA origin definitions, uptake treatment and characterization must agree; reporting peat as fossil-like is not a shortcut to deleting CO2 or assigning all carbon one source UUID. | ipcc-peat-classification; ipcc-wetlands-2013 |\n| validation_support_media | retort | Require matched internal gas/heat/water links, actual volatile/waste destinations, inlet humidity and element balances, whole support/returns account and verified native hard route/CAS/geography/property/unit constraints. Missing identities or uncovered exchanges remain explicit, not zero or a complete-dataset pass. | |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 306
+              line: 10
+              column: 1
+            end:
+              offset: 357
+              line: 10
+              column: 52
+          text: "# Traditional sealed-retort peat coke and half coke"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 55684
+              line: 618
+              column: 1
+            end:
+              offset: 55706
+              line: 618
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 7561
+          line: 79
+          column: 1
+        end:
+          offset: 7826
+          line: 79
+          column: 266
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_land"
+      identity_kind: "explicit"
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 7827
+          line: 80
+          column: 1
+        end:
+          offset: 8300
+          line: 80
+          column: 474
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_outputs"
+      identity_kind: "explicit"
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 8301
+          line: 81
+          column: 1
+        end:
+          offset: 8571
+          line: 81
+          column: 271
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_carbon"
+      identity_kind: "explicit"
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 8572
+          line: 82
+          column: 1
+        end:
+          offset: 8869
+          line: 82
+          column: 298
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_resources"
+      identity_kind: "explicit"
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 8870
+          line: 83
+          column: 1
+        end:
+          offset: 9271
+          line: 83
+          column: 402
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_support"
+      identity_kind: "explicit"
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 9272
+          line: 84
+          column: 1
+        end:
+          offset: 9632
+          line: 84
+          column: 361
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_39135"
+      source_span:
+        start:
+          offset: 39248
+          line: 570
+          column: 1
+        end:
+          offset: 39558
+          line: 570
+          column: 311
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_order"
+      identity_kind: "explicit"
+      unit_id: "normative_39135"
+      source_span:
+        start:
+          offset: 39559
+          line: 571
+          column: 1
+        end:
+          offset: 40143
+          line: 571
+          column: 585
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_status"
+      identity_kind: "explicit"
+      unit_id: "normative_39135"
+      source_span:
+        start:
+          offset: 40144
+          line: 572
+          column: 1
+        end:
+          offset: 40545
+          line: 572
+          column: 402
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_support"
+      identity_kind: "explicit"
+      unit_id: "normative_39135"
+      source_span:
+        start:
+          offset: 40546
+          line: 573
+          column: 1
+        end:
+          offset: 41020
+          line: 573
+          column: 475
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_55684"
+      source_span:
+        start:
+          offset: 55779
+          line: 622
+          column: 1
+        end:
+          offset: 56012
+          line: 622
+          column: 234
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_route"
+      identity_kind: "explicit"
+      unit_id: "normative_55684"
+      source_span:
+        start:
+          offset: 56013
+          line: 623
+          column: 1
+        end:
+          offset: 56302
+          line: 623
+          column: 290
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_55684"
+      source_span:
+        start:
+          offset: 56303
+          line: 624
+          column: 1
+        end:
+          offset: 56602
+          line: 624
+          column: 300
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_55684"
+      source_span:
+        start:
+          offset: 56603
+          line: 625
+          column: 1
+        end:
+          offset: 56874
+          line: 625
+          column: 272
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_land_carbon"
+      identity_kind: "explicit"
+      unit_id: "normative_55684"
+      source_span:
+        start:
+          offset: 56875
+          line: 626
+          column: 1
+        end:
+          offset: 57413
+          line: 626
+          column: 539
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_support_media"
+      identity_kind: "explicit"
+      unit_id: "normative_55684"
+      source_span:
+        start:
+          offset: 57414
+          line: 627
+          column: 1
+        end:
+          offset: 57773
+          line: 627
+          column: 360
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 6584
+          line: 64
+          column: 1
+        end:
+          offset: 6605
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6584"
+      source_span:
+        start:
+          offset: 6633
+          line: 68
+          column: 1
+        end:
+          offset: 7488
+          line: 75
+          column: 174
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39135"
+      source_span:
+        start:
+          offset: 39135
+          line: 566
+          column: 1
+        end:
+          offset: 39175
+          line: 566
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_55684"
+      source_span:
+        start:
+          offset: 55684
+          line: 618
+          column: 1
+        end:
+          offset: 55706
+          line: 618
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:84c00a8c5c5362952c8a2f7e67057cb4f6fbd33eec50ff57995ad02bda9e13f3"
+  generated_content_sha256: "sha256:b6a5140f5bf588d3c79ee21c88a2c9c6ef1dc75a4ed361110fa43fba005619e6"

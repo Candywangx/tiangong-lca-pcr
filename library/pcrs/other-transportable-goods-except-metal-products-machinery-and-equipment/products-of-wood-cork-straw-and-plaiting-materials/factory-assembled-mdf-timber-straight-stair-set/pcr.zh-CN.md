@@ -67,7 +67,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 外购干燥木材、MDF、实际装配及包装用品于工厂接收处 |
 | starting_condition_role | foreground production |
-| product_classification_scope | 31629 下的一种配置直跑木材及 MDF 楼梯套件子集 |
+| product_classification_scope | 31629 下拟议的一种配置直跑木材及 MDF 楼梯套件子集 |
 | recursive_input_rule | 不能将外购成品楼梯重新标记为本制造过程。返工留在内部；外购替换组件须具备独立核实的上游状态。 |
 | upstream_dataset_requirement | 连接实际兼容的木材、MDF、胶、紧固件、电力、包装、入厂运输与废物处理；身份本身不是背景数据资格 |
 | disclosure | 工厂采集期、套件配置、阶段计量、库存、装配状态、排除项、废物去向、上游交接点及未决链接 |

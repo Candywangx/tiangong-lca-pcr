@@ -1,10 +1,2266 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33410"
-  title: "Propane and butanes, liquefied"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.propane-and-butanes-liquefied"
+  classification_refs: "CPC 3.0:33410; narrower"
+  covered_products: "Fossil commercial liquid propane; specified n-butane/isobutane grade; composition-defined propane-butane LPG blend"
+  excluded_products: "Standalone natural-gas fractionator reference binding; LNG; gaseous delivery; olefin-rich petrochemical gas; extraction or whole-refinery inventory; analytical/refrigerant certification; cylinder manufacture; customer combustion"
+  representative_product: "One composition-qualified commercial SKU at a declared liquid gate"
+  production_route: "Actual refinery separation/final treatment extending an existing recovery or fractionation submodel; liquid refinery-component blending/supply; liquid storage/delivery"
+  market_state: "Bulk liquid maintained by pressure, refrigeration or both"
+functional_unit:
+  what: "Deliver composition- and quality-qualified liquid propane/butane product, without useful-heat equivalence"
+  how_much: "1 kg"
+  how_well: "site and production period; one SKU and commercial grade; propane/n-butane/isobutane assay and olefin impurities; purity; water and sulfur; fossil origin; raw-feed sources and upstream gates; recovery/separation or purchased-component blending route; liquid phase at transfer; mass meter or liquid density and measured volume; temperature and absolute pressure; gas-volume wet/dry and reference conditions with compressibility; storage and loading vapour destination; utilities and steam-return basis; co-products and allocation; gate and transport scope"
+  how_long_or_cycle: "One liquid-gate supply in a declared production period"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_existing
+      applies_to: "all operations"
+      rule: "Start at the disclosed gas/liquid inlet to the existing recovery/fractionation submodel. Preserve supplier extraction/refinery conversion burdens, feed provenance and all upstream gas/liquid/solid co-products (including coke where applicable) in their original physical ledger; do not delete or duplicate them. Shared treatment, sulfur recovery, wastewater management and energy systems must have one owner. An integrated site may expose the shared physical submodel and operation-level allocation; a standalone terminal links qualified upstream datasets."
+      source_ids:
+        - ref-bref-2015
+        - epa-gas-processing-1995
+    - rule_id: boundary_stages
+      applies_to: "lpg"
+      rule: "Declare reception, actual cooling/absorption, de-ethanising, depropanising/debutanising/isomer separation, actual sweetening/drying, blending, odorisation, liquid storage and closed-loop loading/vapour handling stage meters. Their sequence is site-specific. Aggregate them as one LPG foreground unit; cancel internal same-material links with identical endpoint quantities, while retaining stage mass/energy observations. No additional finished-reference output at a storage/packaging handoff."
+      source_ids:
+        - ref-bref-2015
+        - eia-storage-2026
+    - rule_id: boundary_vapour
+      applies_to: "lpg"
+      rule: "Distinguish recovered vapour recycled internally, gas sent to an existing fuel header, gas transferred to external treatment, vented species and flare/combustion exhaust. Measure the actual recovery and destruction state; never classify all displaced LPG vapour as emitted or assume complete combustion. Refrigeration-circuit losses are tracked independently from product losses."
+      source_ids:
+        - ref-bref-2015
+        - epa-gas-processing-1995
+    - rule_id: boundary_energy
+      applies_to: "lpg"
+      rule: "Record electricity, imported steam, fuel and each actual refrigerant separately. Recovered upstream reboiling heat retains its heat interface and prior burden; it is not free steam. Imported steam is distinct from foreground boiler fuel and exhaust. Include actual refrigeration/cooling, wastewater and spent adsorbent handling. Actual additional chemicals, refrigerants, packaging, wastes and releases each require their own atomic exchange before dataset completion. A background link must cover the entire actual operation and upstream burdens; record its gate, period, composition/state and coverage. A cutoff needs a documented rationale, omitted burdens and sensitivity; missing quantities never become zero, and paired physical pipes remain in the unallocated ledger."
+      source_ids:
+        - ref-bref-2015
+    - rule_id: boundary_gate
+      applies_to: "lpg"
+      rule: "The product gate is the documented liquid custody transfer, before customer vaporisation or use. Include on-site tank residence and loading losses through that gate; off-site shipping enters only if explicitly within the declared boundary and supported by its own submodel. Allocate infrastructure over actual lifetime throughput or justify exclusion and sensitivity. Bulk tank and pressure-container manufacture are not additional foreground production stages, but their service burdens remain attributable to LPG delivery: collect container/tank identity, material and tare, lifetime throughput or service cycles, repair/replacement, inspection, cleaning/hydrotest, coating, utilities, wastes and retirement. Include actual reusable-container return/empty handling within the gate, residual LPG and returned stocks. Link complete service datasets once; add an atomic exchange for each actual material, utility, waste or release they do not cover. Do not count the entire durable container mass as consumed per filling, assume unlimited reuse, or assign a default lifetime."
+      source_ids:
+        - eia-storage-2026
+boundary_abstraction:
+  declared_starting_condition: "Burden-bearing gas/liquid feed at an existing submodel interface or purchased liquid blending components"
+  starting_condition_role: "Supplied feed; no repeated resource extraction or whole refinery"
+  product_classification_scope: "Fossil commercial liquid propane; specified n-butane/isobutane grade; composition-defined propane-butane LPG blend"
+  recursive_input_rule: "Purchased same-category components link complete supplier/gate datasets; internal recycling retains matched endpoints without another purchase or credit."
+  upstream_dataset_requirement: "Actual gas/refinery feed, blending component, utility, material, infrastructure and waste-management interfaces and burdens; disclose missing coverage."
+  disclosure: "site and production period; one SKU and commercial grade; propane/n-butane/isobutane assay and olefin impurities; purity; water and sulfur; fossil origin; raw-feed sources and upstream gates; recovery/separation or purchased-component blending route; liquid phase at transfer; mass meter or liquid density and measured volume; temperature and absolute pressure; gas-volume wet/dry and reference conditions with compressibility; storage and loading vapour destination; utilities and steam-return basis; co-products and allocation; gate and transport scope"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Liquefied petroleum gas"
+    uuid: "d54ae71a-1245-4e3f-b694-dbf2b22bbf7d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "site and production period"
+    - "one SKU and commercial grade"
+    - "propane/n-butane/isobutane assay and olefin impurities"
+    - purity
+    - "water and sulfur"
+    - "fossil origin"
+    - "raw-feed sources and upstream gates"
+    - "recovery/separation or purchased-component blending route"
+    - "liquid phase at transfer"
+    - "mass meter or liquid density and measured volume"
+    - "temperature and absolute pressure"
+    - "gas-volume wet/dry and reference conditions with compressibility"
+    - "storage and loading vapour destination"
+    - "utilities and steam-return basis"
+    - "co-products and allocation"
+    - "gate and transport scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "D is positive accepted net whole liquid product mass for the same SKU, route, site and period, collected using cp_final_product; every row uses per 1 kg reference flow. Include accepted contained water, odorant and other additives in D; D is not dry hydrocarbon mass. Exclude packaging, container tare and duplicate internal handoffs. Reconcile actual returns, heels and stock changes without subtracting a return twice."
+  - id: liquid_volume
+    applies_to: "final_product, blend_propane, blend_nbutane, blend_ibutane"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Obtain liquid mass by calibrated mass metering or m_liquid=V_liquid*rho_liquid(T,P,x), with measured liquid volume, temperature, absolute pressure and composition-compatible density. Gas volume cannot directly represent liquid product quantity; unknown liquid density/state remains unresolved."
+  - id: gas_volume
+    applies_to: "raw_gas, refinery_gas, residue_gas, fuel_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Keep raw gas volume wet/dry basis and metered/reference T/P. Convert using m_gas=P_abs*V_gas*MW(x)/(Z*R*T) in consistent units, or matching measured gas-phase density. Match provider/background m3 definition; a database secondary mass factor is not gas density."
+  - id: steam_heat
+    applies_to: "steam, condensate_return"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record steam and returned condensate using actual mass, pressure, temperature, quality and enthalpy. Net delivered heat=m_in*h_in-m_return*h_return with declared enthalpy datum, other losses and boundary. Steam mass or an MJ property alone does not establish net delivery basis."
+  - id: utilities_active
+    applies_to: "electricity, mea, teg, caustic, odorant"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "MJ; kg"
+    rule: "Preserve actual electricity reference property; 1kWh=3.6MJ. Input flow quantity is delivered-grade product mass. Active substance mass=m_product*w_active; retain carrier water/contaminants in the physical ledger, without an additional purchased-water exchange for contained water. Do not treat wet solution as pure chemical. No default concentration or quantity."
+process_map:
+  - id: lpg
+    name: "Actual LPG separation or blending and liquid delivery"
+    inclusion: "required"
+    inclusion_condition: "Actual declared site route; absent stages excluded with evidence"
+    role: "Foreground production with separate stage observations"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: lpg
+    label: "Actual LPG separation or blending and liquid delivery"
+    inputs:
+      product:
+        - row_id: raw_gas
+          role: "Wet natural gas feed supplied to LPG recovery"
+          name: "Wet natural gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only gas received at the declared recovery interface. Preserve wet/dry composition, water, acid gas and upstream gas-production burdens. Reuse the existing gas-method submodel once; extraction is not repeated."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_raw_gas and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_gas
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+                - eia-propane-2023
+            ranges: []
+        - row_id: refinery_gas
+          role: "Refinery C1-C5 gas feed to gas separation"
+          name: "Refinery C1-C5 gas feed to gas separation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only a metered refinery gas inlet. Retain contributing distillation, cracking and reforming origins and associated prior burdens; this unit does not reproduce those units."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_refinery_gas and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refinery_gas
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: mixed_ngl
+          role: "Mixed natural gas liquids feed to fractionation"
+          name: "Mixed natural gas liquids feed to fractionation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only received Y-grade liquid; preserve C2/C3/C4/C5+, sulfur, water and supplier recovery boundary. This is not finished LPG or a gaseous cubic metre."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_mixed_ngl and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mixed_ngl
+              source_ids:
+                - ref-bref-2015
+                - eia-propane-2023
+            ranges: []
+        - row_id: refinery_liquid
+          role: "Refinery C3-C4 liquid feed to LPG separation"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d54ae71a-1245-4e3f-b694-dbf2b22bbf7d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the actual liquid inlet from refinery units; record olefins and treatment history. Cancel links inside the aggregated LPG unit. Use this UUID only for a received refinery LPG liquid fraction already matching the actual commercial C3/C4 supply identity. Olefin-rich or unseparated raw liquids require another flow."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_refinery_liquid and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refinery_liquid
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: blend_propane
+          role: "Liquid propane supplied for LPG blending"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "External blending component only. Use actual batch composition, liquid mass and burden-bearing supplier dataset. Internal recovered fraction is a stage observation, not another purchase. Use only an actual compatible propane grade and supply/circuit state; collect mass and certificate composition. Supplier grade, liquid/circuit state and density-condition compatibility are separate requirements; neither record density nor an assumed refrigerant-grade purity is a PCR default."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_blend_propane and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blend_propane
+              source_ids:
+                - ref-bref-2015
+                - eia-storage-2026
+            ranges: []
+        - row_id: blend_nbutane
+          role: "Liquid n-butane supplied for LPG blending"
+          name: "Butane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e02e31b8-818f-44b7-af25-f32f1e923965"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "External blending component only. Use actual batch composition, liquid mass and burden-bearing supplier dataset. Internal recovered fraction is a stage observation, not another purchase. This UUID is normal butane, CAS106-97-8; it is not isobutane. Actual impurities, commercial grade, liquid state and recipient must be compatible."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_blend_nbutane and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blend_nbutane
+              source_ids:
+                - ref-bref-2015
+                - eia-storage-2026
+            ranges: []
+        - row_id: blend_ibutane
+          role: "Liquid isobutane supplied for LPG blending"
+          name: "Liquid isobutane supplied for LPG blending"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "External blending component only. Use actual batch composition, liquid mass and burden-bearing supplier dataset. Internal recovered fraction is a stage observation, not another purchase."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_blend_ibutane and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blend_ibutane
+              source_ids:
+                - ref-bref-2015
+                - eia-storage-2026
+            ranges: []
+        - row_id: electricity
+          role: "Electricity supplied to LPG processing"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter compression, chilling, fractionation, vapour recovery and loading separately; aggregate once. Require actual supplier, voltage and reference energy property. No incineration-power surrogate. This UUID applies only to actual 1–35 kV consumption-side grid-average AC. Use the native Net calorific value/MJ reference and a geographically/temporally compatible supplier. Other voltages, self-generation or special sources require separate verified bindings."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_electricity and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: steam
+          role: "Process steam supplied to LPG reboilers"
+          name: "Process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam only. Actual pressure, temperature, quality and condensate return define net delivered heat. Unknown supplier MJ basis stays unresolved; internally generated steam needs its own fuels and releases."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_steam and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: fuel_gas
+          role: "Natural gas supplied for on-site LPG heating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Only external gaseous natural-gas fuel; retain provider m3 T/P, wet/dry composition and compressibility. A secondary mass factor is not density. Internal refinery gas diverted to own use remains in the physical ledger, not a second external purchase. The native reference is Volume/m3, not Mass. Supplier reference T/P, wet/dry composition and compressibility must be compatible before linking background quantities; no secondary mass coefficient is treated as density."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_fuel_gas and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_gas
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: water
+          role: "Fresh process water supplied to LPG processing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased make-up only, excluding circulating cooling water. Record supply quality, metered mass and actual use. Direct withdrawal is the separate river-water row."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_water and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: mea
+          role: "Monoethanolamine make-up to LPG acid-gas treatment"
+          name: "Ethanolamine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d7079eb-ae82-427f-8d0c-95ba3e263729"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual MEA treatment not already included in the upstream dataset. Measure active MEA mass and carrier water independently; other solvents require separate identities. This UUID is supplied high-purity monoethanolamine of at least99.5% purity. Collect delivered-grade product mass; record actual assay and dilution water independently. It does not identify an entire aqueous circulating solvent solution."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_mea and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mea
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: teg
+          role: "Triethylene glycol make-up to LPG feed dehydration"
+          name: "Triethylene glycol make-up to LPG feed dehydration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual TEG dehydration unit within the declared gate; no generic solvent recipe or repeated circulation quantity."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_teg and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_teg
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: caustic
+          role: "Industrial sodium hydroxide product for LPG treatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual caustic treatment/guard bed. Record delivered product mass and active fraction; retain its contained water in the water balance without a second purchased-water exchange. This UUID is supplied industrial solid sodium hydroxide of95–98% purity. Use delivered-grade product mass, not active-pure-NaOH mass; assay and any dilution water are retained separately. Other concentrations or grades require another identity."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_caustic and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_caustic
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: sieve
+          role: "Molecular-sieve adsorbent supplied to LPG drying"
+          name: "Molecular-sieve adsorbent supplied to LPG drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual sieve replacement; supplier composition and regeneration cycles required. Mercury-removal sorbents of different chemistry require their own row."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_sieve and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sieve
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: refrigerant_propane
+          role: "Propane make-up to LPG refrigeration circuit"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual propane refrigerant, not LPG product or the circulating charge. Record recharge and retirement; other refrigerants need separate cards and emissions. Use only an actual compatible propane grade and supply/circuit state; collect mass and certificate composition. Supplier grade, liquid/circuit state and density-condition compatibility are separate requirements; neither record density nor an assumed refrigerant-grade purity is a PCR default."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_refrigerant_propane and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_propane
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: odorant
+          role: "Ethanethiol supplied for LPG odorisation"
+          name: "Ethanethiol supplied for LPG odorisation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional only on actual ethanethiol (CAS75-08-1), with certificate, purity and dose records. Collect delivered whole product mass and actual ethanethiol fraction. A formulated odorant mixture requires a separate composition-qualified formulation exchange including its carriers; ethanethiol active mass does not represent the whole formulation. Reconcile storage, dosing, spills, retained product and species releases without purchasing contained carrier twice. No compulsory odorant or default dosage; a different odorant is a different row."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_odorant and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_odorant
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: nitrogen
+          role: "Nitrogen gas supplied for LPG purging"
+          name: "Nitrogen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67bb2ea6-2fd8-43c5-b227-bca12040b773"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual external nitrogen only. Use cylinder net mass or measured composition-qualified gas volume; purge vapours require species accounting. This UUID is compatible air-separation nitrogen gas; confirm actual gaseous delivery grade and mass. Do not substitute liquid nitrogen."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_nitrogen and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nitrogen
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_water
+          role: "Fresh river water withdrawn for LPG cooling"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Only direct river withdrawal at the actual basin; do not confuse product process water or liquid emission to water. Record intake and actual return separately. This UUID is renewable river-water resource from water, Volume/m3, not wastewater or water release. Record actual basin and returned water separately."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_river_water and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_river_water
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: combustion_air
+          role: "Ambient atmospheric air entering on-site combustion"
+          name: "air"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa4-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual on-site combustion; retain measured or oxygen-balance-derived air mass, moisture and oxygen/nitrogen inputs in the physical balance. This UUID is renewable material resource from air, Mass/kg, not an air-emission flow. Retain raw combustion-air metering or oxygen balance."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_combustion_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_combustion_air
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Liquefied propane-butane product at the declared gate"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d54ae71a-1245-4e3f-b694-dbf2b22bbf7d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Exactly one selected saleable composition-qualified liquid SKU/grade per dataset. The representative LPG mixture UUID is not proof of a pure propane or pure butane identity; a distinct single-species SKU requires its own verified route/grade-compatible reference binding before dataset completion. Measure accepted whole net liquid mass D including accepted contained water and additives, excluding packaging and tare. Record dry hydrocarbon mass only as a derived composition quantity. Stage intermediates are not additional reference outputs. The representative UUID is refinery LPG supply at an industrial gate. Require an actual liquid commercial C3/C4 product and composition/grade acceptance; no database calorific value or generic density is a foreground quantity. A standalone natural-gas fractionator requires a separately verified route-compatible reference binding before use."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: residue_gas
+          role: "Methane-rich residual gas exported from LPG separation"
+          name: "Methane-rich residual gas exported from LPG separation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual exported gas; preserve C1/C2 composition, supplier basis and receiver. Internal fuel use has no exported co-product credit."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_residue_gas and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_gas
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: ethane_product
+          role: "Ethane fraction exported from LPG separation"
+          name: "ethane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "75e47deb-a71a-472e-aaff-7d6767db1e8e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only saleable exported C2 fraction with actual impurities and mass."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_ethane_product and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ethane_product
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: c5_product
+          role: "C5-plus condensate exported from LPG separation"
+          name: "C5-plus condensate exported from LPG separation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual exported stabilized condensate/light gasoline. Declare composition and receiver; recycled absorbent is internal."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_c5_product and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_c5_product
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: coproduct_propane
+          role: "Non-reference liquid propane exported as co-product"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if propane is not the selected reference SKU; retain distinct validated identity, grade and gate. Use only an actual compatible propane grade and supply/circuit state; collect mass and certificate composition. Supplier grade, liquid/circuit state and density-condition compatibility are separate requirements; neither record density nor an assumed refrigerant-grade purity is a PCR default."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_coproduct_propane and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_propane
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: coproduct_nbutane
+          role: "Non-reference liquid n-butane exported as co-product"
+          name: "Butane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e02e31b8-818f-44b7-af25-f32f1e923965"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if this n-butane grade is not the reference SKU; internal blend component is not exported. This UUID is normal butane, CAS106-97-8; it is not isobutane. Actual impurities, commercial grade, liquid state and recipient must be compatible."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_coproduct_nbutane and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_nbutane
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: coproduct_ibutane
+          role: "Non-reference liquid isobutane exported as co-product"
+          name: "Non-reference liquid isobutane exported as co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if this isobutane grade is not the reference SKU; preserve isomer assay and receiver."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_coproduct_ibutane and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_ibutane
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: condensate_return
+          role: "Liquid steam condensate returned to heat supplier"
+          name: "Liquid steam condensate returned to heat supplier"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual returned condensate; keep mass, temperature and enthalpy without a second heat credit."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_condensate_return and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_condensate_return
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+      waste:
+        - row_id: wastewater
+          role: "LPG treatment wastewater transferred for treatment"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bc2cd1d5-69d5-42d7-818f-38a69ebb18ef"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a transfer to treatment. Record water, hydrocarbons, sulfide, ammonia, amines and recipient; no electrolytic-manganese wastewater surrogate. On-site treated discharge requires receiving compartment and separate pollutant rows. This is a broad industrial wastewater transfer identity conditioned on actual compatible secondary/tertiary recipient treatment. Record chemical loads, water mass and receiving facility; a treated-water release or source-specific silicon/manganese wastewater is a different exchange."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_wastewater and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: acid_gas
+          role: "Hydrogen-sulfide-rich acid gas transferred for sulfur recovery"
+          name: "Hydrogen-sulfide-rich acid gas transferred for sulfur recovery"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual transferred acid gas; record whole mixed-stream mass and H2S/CO2/water plus other actual species fractions on the same wet/dry basis. H2S mass=m_acid_gas*w_H2S is a constituent observation, not the whole transfer quantity or an extra mass output. Link sulfur recovery and its actual sulfur products, tail gas, water and residues once. Transfer is not H2S air emission; on-site sulfur recovery requires its full submodel and sulfur product ledger."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_acid_gas and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acid_gas
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: spent_amine
+          role: "Spent monoethanolamine solvent transferred for treatment"
+          name: "Spent monoethanolamine solvent transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual discharged MEA solvent, with water and contaminant composition; regenerated circulating solvent is internal."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_spent_amine and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_amine
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: spent_sieve
+          role: "Spent LPG molecular-sieve adsorbent transferred for treatment"
+          name: "Waste molecular sieve"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2328c994-b537-46f8-81a2-60cdbe77a095"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual spent sieve; retain hydrocarbons, sulfur and measured mercury where present, plus receiver and hazardous status. Use only an actual spent molecular-sieve solid with substrate, adsorbates, mercury where present, hazardous status and receiver documented. This generic identity does not establish a treatment provider."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_spent_sieve and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_sieve
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: spent_caustic
+          role: "Spent LPG caustic solution transferred for treatment"
+          name: "Spent LPG caustic solution transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual spent caustic solution; retain water, sodium, sulfide/mercaptide, hydrocarbons and recipient treatment."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_spent_caustic and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_caustic
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+      elementary:
+        - row_id: methane_air
+          role: "Fossil methane emitted to outdoor air"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_methane_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_methane_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: ethane_air
+          role: "Fossil ethane emitted to outdoor air"
+          name: "ethane"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9219-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_ethane_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ethane_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: propane_air
+          role: "Fossil propane emitted to outdoor air"
+          name: "propane"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aae9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_propane_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_propane_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: nbutane_air
+          role: "Fossil n-butane emitted to outdoor air"
+          name: "n-butane"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-94c2-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_nbutane_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nbutane_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: ibutane_air
+          role: "Fossil isobutane emitted to outdoor air"
+          name: "isobutane"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9355-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_ibutane_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ibutane_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: ethanethiol_air
+          role: "Ethanethiol emitted to outdoor air"
+          name: "Ethanethiol emitted to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_ethanethiol_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ethanethiol_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: co2_air
+          role: "Fossil carbon dioxide emitted to outdoor air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_co2_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: h2s_air
+          role: "Hydrogen sulfide emitted to outdoor air"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_h2s_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_h2s_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: so2_air
+          role: "Sulfur dioxide emitted to outdoor air"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_so2_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_so2_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: co_air
+          role: "Carbon monoxide emitted to outdoor air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_co_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: no_air
+          role: "Nitrogen monoxide emitted to outdoor air"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_no_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_no_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: no2_air
+          role: "Nitrogen dioxide emitted to outdoor air"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual release of this species after recovery/control, with outdoor-air receiving compartment and source process. Separate leaks, vents, loading displacement, refrigerant losses and combustion/flare stacks. Record concentration quantity definition, flow, T/P, duration and uncertainty. No total-VOC/NOx or correction-flow surrogate and no assumed complete oxidation. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_no2_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_no2_air
+              source_ids:
+                - ref-bref-2015
+                - epa-gas-processing-1995
+            ranges: []
+        - row_id: pm25_air
+          role: "Particulate matter of diameter up to 2.5 micrometres emitted to outdoor air"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual particle-bearing combustion/flare/control release. Retain measurement definition of aerodynamic size, filterable/condensable basis and final outdoor-air compartment. These three bins must be mutually exclusive; cumulative PM10 and PM2.5 cannot be summed. Captured sorbent/dust is not an air release. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_pm25_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm25_air
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: pm2510_air
+          role: "Particulate matter above 2.5 and up to 10 micrometres emitted to outdoor air"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual particle-bearing combustion/flare/control release. Retain measurement definition of aerodynamic size, filterable/condensable basis and final outdoor-air compartment. These three bins must be mutually exclusive; cumulative PM10 and PM2.5 cannot be summed. Captured sorbent/dust is not an air release. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_pm2510_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm2510_air
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: pmover10_air
+          role: "Particulate matter above 10 micrometres emitted to outdoor air"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual particle-bearing combustion/flare/control release. Retain measurement definition of aerodynamic size, filterable/condensable basis and final outdoor-air compartment. These three bins must be mutually exclusive; cumulative PM10 and PM2.5 cannot be summed. Captured sorbent/dust is not an air release. This UUID is outdoor-air unspecified. Retain actual fossil origin and this species mass; known more specific air subcompartments require matching verified UUIDs, never indoor, soil, water or long-term substitutions."
+          amount:
+            expression: "Collect actual matched-period quantity using cp_pmover10_air and divide by D for per 1 kg reference flow. Retain pre-allocation physical quantity; shared burdens use the separate allocation account."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pmover10_air
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "shared burdens"
+    rule: "First subdivide by actual metered operations or assess a documented expanded system. For unresolved shared burdens, use a demonstrable causal physical relationship; if unavailable, justify same-gate period-matched economic allocation and sensitivity. Do not infer a universal mass or heating-value share from the product label."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+  - rule_id: allocation_ledgers
+    applies_to: "all rows"
+    rule: "Keep the unallocated physical process diagram and feed/product/total-mass/water/C/H/O/N/S/energy balances separate from the environmental burden account. Preserve co-product quantities, compositions, phases, receivers and stock changes. Multiply only shared burdens by accepted allocation factors; do not mechanically multiply physical co-product outputs by those factors. In the reference-specific result, selected product is 1 kg; all physical observations remain traceable by D."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+      - ref-bref-2015
+  - rule_id: allocation_internal
+    applies_to: "internal links"
+    rule: "Internal recycling of absorbent, refrigerant, vapour, gas fuel or condensate is recorded at both stage endpoints with matching quantities, but does not create a second external input or avoided-product credit. Own-use fuel is part of actual physical energy/carbon balance and its combustion has one owner. Waste disposal and flaring do not become saleable co-products."
+    source_ids:
+      - ref-bref-2015
+      - eu-pef-multifunctionality-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw_gas
+      process_id: "lpg"
+      flow_role: "raw_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_refinery_gas
+      process_id: "lpg"
+      flow_role: "refinery_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_mixed_ngl
+      process_id: "lpg"
+      flow_role: "mixed_ngl"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_refinery_liquid
+      process_id: "lpg"
+      flow_role: "refinery_liquid"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_blend_propane
+      process_id: "lpg"
+      flow_role: "blend_propane"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_blend_nbutane
+      process_id: "lpg"
+      flow_role: "blend_nbutane"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_blend_ibutane
+      process_id: "lpg"
+      flow_role: "blend_ibutane"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_electricity
+      process_id: "lpg"
+      flow_role: "electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "MJ"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_steam
+      process_id: "lpg"
+      flow_role: "steam"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Meter actual steam pressure/temperature/quality, inlet mass/enthalpy and returned condensate separately; verify supplier net-MJ basis, enthalpy datum, delivery losses and physical boundary. Unknown basis prevents a complete supply link."
+      unit: "MJ"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_fuel_gas
+      process_id: "lpg"
+      flow_role: "fuel_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "m3"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_water
+      process_id: "lpg"
+      flow_role: "water"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_mea
+      process_id: "lpg"
+      flow_role: "mea"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_teg
+      process_id: "lpg"
+      flow_role: "teg"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_caustic
+      process_id: "lpg"
+      flow_role: "caustic"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_sieve
+      process_id: "lpg"
+      flow_role: "sieve"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_refrigerant_propane
+      process_id: "lpg"
+      flow_role: "refrigerant_propane"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_odorant
+      process_id: "lpg"
+      flow_role: "odorant"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Collect delivered whole ethanethiol-grade mass, assay, storage/return stocks and actual dose. For a formulated mixture, add a separately verified whole-formulation exchange with carrier/active fractions and trace retained product, spills and species releases; no assumed dose or duplicate carrier purchase."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_nitrogen
+      process_id: "lpg"
+      flow_role: "nitrogen"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_river_water
+      process_id: "lpg"
+      flow_role: "river_water"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Meter direct withdrawal volume at the actual basin/country, convert to physical water mass with compatible measured density, and separately record return water, evaporation, losses and receiving water body. Pollution species require their own verified receiving-media exchanges; a wastewater-treatment transfer is not an elementary freshwater discharge."
+      unit: "m3"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_combustion_air
+      process_id: "lpg"
+      flow_role: "combustion_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Collect actual combustion air whole mass, moisture and oxygen/nitrogen composition using calibrated metering or documented oxygen balance; retain unreacted N2/O2 and water in gross exhaust. Pollutant species partition the carrier; unknown air or exhaust quantities cannot be zero."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_final_product
+      process_id: "lpg"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated mass meter or liquid loading weighing; volume conversion requires same-liquid composition, T/P and density. Reconcile batch acceptance, returned product/heels and opening/closing liquid and vapour stocks to independent positive D; D includes accepted water/additives, not dry hydrocarbon mass. Retain tank liquid volume and vapour space separately, with density(T,P,x) for liquid and P/T/Z/composition for vapour. These are future site measurements, not invented default quantities."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_residue_gas
+      process_id: "lpg"
+      flow_role: "residue_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_ethane_product
+      process_id: "lpg"
+      flow_role: "ethane_product"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_c5_product
+      process_id: "lpg"
+      flow_role: "c5_product"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_coproduct_propane
+      process_id: "lpg"
+      flow_role: "coproduct_propane"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_coproduct_nbutane
+      process_id: "lpg"
+      flow_role: "coproduct_nbutane"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_coproduct_ibutane
+      process_id: "lpg"
+      flow_role: "coproduct_ibutane"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_condensate_return
+      process_id: "lpg"
+      flow_role: "condensate_return"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Meter returned liquid condensate mass, temperature/pressure and enthalpy on the steam-supplier datum; retain actual flash vapour, drain, loss and return stock paths. Reconcile with inlet steam water and net heat without a duplicate heat credit."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_wastewater
+      process_id: "lpg"
+      flow_role: "wastewater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_acid_gas
+      process_id: "lpg"
+      flow_role: "acid_gas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Meter whole mixed acid-gas mass, or convert matching wet/dry P/T/Z/composition volume; assay H2S, CO2, water and other species. Retain whole kg and constituent kg as separate observations without adding them together; link receiver sulfur-recovery balance and burdens once."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_spent_amine
+      process_id: "lpg"
+      flow_role: "spent_amine"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_spent_sieve
+      process_id: "lpg"
+      flow_role: "spent_sieve"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_spent_caustic
+      process_id: "lpg"
+      flow_role: "spent_caustic"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Use calibrated scales, flow/utility meters and assays at actual stages/interfaces; reconcile matched period and opening/closing stocks, preserving raw units and dimensional conversions."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_methane_air
+      process_id: "lpg"
+      flow_role: "methane_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_ethane_air
+      process_id: "lpg"
+      flow_role: "ethane_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_propane_air
+      process_id: "lpg"
+      flow_role: "propane_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_nbutane_air
+      process_id: "lpg"
+      flow_role: "nbutane_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_ibutane_air
+      process_id: "lpg"
+      flow_role: "ibutane_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_ethanethiol_air
+      process_id: "lpg"
+      flow_role: "ethanethiol_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_co2_air
+      process_id: "lpg"
+      flow_role: "co2_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_h2s_air
+      process_id: "lpg"
+      flow_role: "h2s_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_so2_air
+      process_id: "lpg"
+      flow_role: "so2_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_co_air
+      process_id: "lpg"
+      flow_role: "co_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_no_air
+      process_id: "lpg"
+      flow_role: "no_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_no2_air
+      process_id: "lpg"
+      flow_role: "no2_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_pm25_air
+      process_id: "lpg"
+      flow_role: "pm25_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_pm2510_air
+      process_id: "lpg"
+      flow_role: "pm2510_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_pmover10_air
+      process_id: "lpg"
+      flow_role: "pmover10_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; SKU; actual route; phase; whole quantity and original unit; calibration; liquid/vapour opening/closing stocks; returns/heels; paired internal links; D; composition/purity/water/sulfur/additives; temperature/absolute pressure; gas wet/dry basis/Z; liquid density conditions; provider basis; receiving compartment or recipient; uncertainty"
+      collection_method: "Integrate calibrated source flow and this species concentration over time; retain gas wet/dry basis, T/P, monitored amount definition, efficiency and outdoor-air subcompartment. Leak estimates need equipment, screening method, operating time, composition and corresponding method provenance. Preserve before/after control quantities; no unsourced factor."
+      unit: "kg"
+      frequency: "Each batch or continuous records; monthly reconciliation"
+      temporal_coverage: "Complete production year or justified representative period; startup/shutdown and seasonality retained"
+      site_scope: "Same declared site and liquid gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, original records, assays, provider definitions, residuals and uncertainty"
+    - protocol_id: cp_allocation
+      process_id: "lpg"
+      flow_role: "shared burdens"
+      record_type: "allocation_record"
+      raw_fields: "operation physical quantities; product and gas/liquid/solid co-products; prices; currency; period; shared meters; causal evidence"
+      collection_method: "First reconcile the complete unallocated ledger, then record subdivision and causal/economic allocation by operation; do not change physical co-product amounts."
+      unit: "kg; MJ; currency"
+      frequency: "Monthly reconciliation"
+      temporal_coverage: "Same production period"
+      site_scope: "Same shared system"
+      aggregation_rule: "per 1 kg reference flow; burden account"
+      quality_evidence: "Unallocated physical ledger; shares sum to1; sensitivity"
+  calculation_rules:
+    - id: normalization
+      applies_to: "all inventory rows"
+      rule: "Normalized physical exchange=actual matched-period quantity / D; environmental burden=(direct burden+allocated shared burden)/D. Cancel internal links first; physical co-product quantities are not multiplied by allocation shares."
+      inputs:
+        - cp_final_product
+        - "row-specific cp"
+        - cp_allocation
+      output: "per 1 kg reference flow"
+      source_ids:
+        - eu-pef-multifunctionality-2021
+    - id: physical_balance
+      applies_to: "lpg"
+      rule: "Reconcile original physical ledger as sum(in)+opening_stock=sum(out)+closing_stock+residual; check total mass, water, C, H, O, N, S and energy separately. Whole carriers cross each physical boundary once; their constituent species are partitions, not additional mass. Chemical reactions redistribute species and may form/consume water, but are not extra sources or sinks of total mass or conserved elements. Measured composition with T/P/density or gas-state conversion establishes species mass. Retain combustion air, fuel, exhaust and incomplete flare conversion separately; unknown losses retain residuals and investigation."
+      inputs:
+        - "Stage meters"
+        - composition
+        - "T/P"
+        - stocks
+        - cp_allocation
+      output: "Balance residuals, uncertainty and unallocated physical ledger"
+      source_ids:
+        - ref-bref-2015
+        - epa-gas-processing-1995
+    - id: water_elements
+      applies_to: "lpg"
+      rule: "Track water in feeds, solutions, product, steam, condensate, wastewater, humid air, evaporated water and stocks. Include reaction water with measured/stoichiometric provenance in the water-species account; conserve H/O over all species independently. Reconcile C/H/O/N/S from actual compositions, including air oxygen/nitrogen, purging N2, unreacted exhaust N2/O2, odorant sulfur and amine nitrogen. Retain sodium and other actual elements where needed for caustic/adsorbent closure. Gross exhaust/wastewater carriers and their pollutant species must not be added twice to total physical mass; missing species remain identified residuals."
+      inputs:
+        - "Stage assays"
+        - "air/fuel/steam/water meters"
+        - cp_acid_gas
+        - cp_spent_amine
+        - cp_spent_caustic
+      output: "Separate water and conserved-element ledgers with residuals"
+      source_ids:
+        - ref-bref-2015
+        - epa-gas-processing-1995
+    - id: energy_balance
+      applies_to: "lpg"
+      rule: "Reconcile actual fuel/feed/product chemical energy, imported net steam heat, electricity/work, recovered heat interfaces, refrigeration duty, exported heat, heat loss and energy stocks using declared consistent enthalpy and calorific bases. Electricity, heat and cooling duty are not material mass inputs. A net-steam-MJ exchange is accompanied by physical steam/return water observations, not a second gross-steam energy burden or condensate heat credit. Cooling duty is heat moved, not additional purchased energy when electricity/fuel already supplies it. No product heating value, boiler efficiency or utility-per-product default is assumed."
+      inputs:
+        - "Actual compositions/calorimetry"
+        - "utility meters"
+        - "steam and return enthalpies"
+        - stocks
+      output: "Energy residuals and supplier-basis compatibility"
+      source_ids:
+        - ref-bref-2015
+    - id: species_emission
+      applies_to: "air emissions"
+      rule: "Species emission mass=integral(actual exit flow*matching mass concentration*dt), or documented composition/mole/volume-concentration conversion. Speciate after recovery; total VOC, carbon-equivalent readings or NO2-equivalent require explicit original monitoring basis and conversion. Do not treat all VOC as propane."
+      inputs:
+        - "Source flow"
+        - "species assay"
+        - "T/P"
+        - duration
+        - "capture/destruction observations"
+      output: "This species mass crossing gate; normalize by D"
+      source_ids:
+        - ref-bref-2015
+        - epa-gas-processing-1995
+  data_quality_requirements:
+    - id: representative
+      applies_to: "lpg"
+      requirement: "Same SKU, route, period, site and state; record seasonal blend changes and startup/shutdown separately, without pooling incompatible batch purities."
+      evidence: "Original records, assays and stage ledger"
+    - id: evidence_limits
+      applies_to: "all rows"
+      requirement: "No universal yield, recipe or range. BREF historical utility ratios are per feed, not product; EPA historical sulfur factors apply only to their specific acid-gas combustion conditions. Neither is a default. Identity lookup does not establish provider basis or complete dataset."
+      evidence: "Source limitations and foreground protocols"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Verify one selected saleable liquid product identity and one final_product output, 1 kg net reference, positive measured D, actual composition/purity and all qualifiers. An unresolved reference UUID or incompatible physical route/property/unit prevents a usable completed dataset. Do not reuse a gas/LNG reference or refrigerant circuit charge as LPG."
+    source_ids:
+      - ref-bref-2015
+      - eia-storage-2026
+  - rule_id: validate_quantity
+    applies_to: "all rows"
+    rule: "Preserve raw mass/volume/T/P and conversion provenance. Gas and liquid volume bases remain separate; supplier/background reference bases must be independently compatible, not merely identity-matched. Steam pressure and enthalpy basis, active chemical fraction and electricity property must be established."
+    source_ids:
+      - ref-bref-2015
+  - rule_id: validate_balance
+    applies_to: "lpg"
+    rule: "Reconcile feeds, liquid and gaseous products, vents, flare carbon/sulfur, water, spent materials, own use and stock change before allocation. Retain residuals and meter uncertainty; no forced zero residual. Distinguish acid gas sent for sulfur recovery from air H2S; distinguish wastewater transfer from receiving-water emissions."
+    source_ids:
+      - ref-bref-2015
+      - epa-gas-processing-1995
+  - rule_id: validate_carriers_services
+    applies_to: "lpg"
+    rule: "Check complete stage/background coverage, paired pipes, liquid/vapour inventories and returns; reconcile whole-carrier mass without adding constituent quantities twice. Require separate total mass, water, C/H/O/N/S and energy residuals. Check actual packaging and durable pressure-container/tank service life, maintenance, cleaning, return and retirement burdens with one owner and per-D service allocation; exclusions need evidence and sensitivity. A generic reference label or a matching unit cannot override conflicting source route, location, composition or grade."
+    source_ids:
+      - ref-bref-2015
+      - eia-storage-2026
+      - eu-pef-multifunctionality-2021
+  - rule_id: validate_species
+    applies_to: "air emissions"
+    rule: "Check actual species, fossil/biogenic origin, CAS where applicable, outdoor-air compartment/subcompartment and amount definition against the flow original. Never substitute nitropropane for propane, a correction flow for a pollutant, or a total VOC/NOx quantity for individual species. NO and NO2 cannot be duplicated with total NOx; NOx is not N2O. Preserve actual biogenic CO2 if an auxiliary biogenic fuel occurs, with its own added input/emission rows. Particulate bins must be disjoint with filterable/condensable definitions."
+    source_ids:
+      - ref-bref-2015
+      - epa-gas-processing-1995
+  - rule_id: validate_complete
+    applies_to: "dataset"
+    rule: "Document performed/skipped checks, identity gaps, missing upstream burdens, measurements and provider bases. Actual MEA/TEG regeneration, sulfur recovery, on-site water treatment, other refrigerants or combustion engines require complete compatible submodels, including actual BTEX/isomers, N2O and other measured releases as atomic rows. Missing, unknown, measured zero and a measured nondetect with detection limit are different; conditional not-applicable status requires route evidence. Future collection requirements do not establish actual quantities or SKU acceptance. No historical/single-plant composition, utility ratio or factor establishes a general default."
+    source_ids:
+      - ref-bref-2015
+      - epa-gas-processing-1995
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Commercial liquid propane/butane supply at the verified same composition, grade and gate, only after complete identity/provider-basis linkage"
+  excluded_use: "Standalone natural-gas fractionator reference binding; LNG; gaseous delivery; olefin-rich petrochemical gas; extraction or whole-refinery inventory; analytical/refrigerant certification; cylinder manufacture; customer combustion"
+  required_metadata: "site and production period; one SKU and commercial grade; propane/n-butane/isobutane assay and olefin impurities; purity; water and sulfur; fossil origin; raw-feed sources and upstream gates; recovery/separation or purchased-component blending route; liquid phase at transfer; mass meter or liquid density and measured volume; temperature and absolute pressure; gas-volume wet/dry and reference conditions with compressibility; storage and loading vapour destination; utilities and steam-return basis; co-products and allocation; gate and transport scope"
+  required_quality_disclosure: "Unallocated physical ledger, burden account, coverage, provider bases, identity gaps, uncertainty, skipped checks and scientific-review state"
+  update_trigger: "Changed product composition/state, feed provenance, separation/blending route, provider basis, recovery/treatment or allocation"
+data_sources:
+  - id: "ref-bref-2015"
+    type: "official_guidance"
+    reference: "European Commission JRC, Refining of Mineral Oil and Gas BREF (2015),2.12 printed pp76–77/PDF110–111;2.17 pp96–97/PDF130–131;3.12 p191/PDF225;4.12 p397/PDF431. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/REF_BREF_2015.pdf"
+    used_for: "Gas/liquid feeds, multiproduct separation, final treatment, fugitive/odorant losses and energy interfaces; no offshore extraction model or historical utility/diagram-condition defaults."
+  - id: "epa-gas-processing-1995"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 5.3 Natural Gas Processing (January1995),5.3.1–5.3.3 and Table5.3-1 caveats, PDF1 and4. https://www.epa.gov/sites/default/files/2020-09/documents/5.3_natural_gas_processing.pdf"
+    used_for: "Gas processing/acid-gas destinations, leaks and TEG-regeneration emissions evidence; historical acid-gas combustion factors and regional H2S values are not universal LPG/boiler factors."
+  - id: "eia-propane-2023"
+    type: "official_guidance"
+    reference: "US EIA, Where do hydrocarbon gas liquids come from? Propane in depth, updated26December2023, propane-production paragraphs. https://www.eia.gov/energyexplained/hydrocarbon-gas-liquids/where-do-hydrocarbon-gas-liquids-come-from-in-depth.php"
+    used_for: "Natural-gas/refinery origins and Y-grade/fractionation distinction; not a purity acceptance standard, fixed composition or yield."
+  - id: "eia-storage-2026"
+    type: "official_guidance"
+    reference: "US EIA, Transporting and storing hydrocarbon gas liquids,13October2026 acquisition snapshot, transport/storage paragraphs. https://www.eia.gov/energyexplained/hydrocarbon-gas-liquids/transporting-and-storing-hydrocarbon-gas-liquids.php"
+    used_for: "Liquid LPG components and pressure/refrigeration state; transport modes do not impose transport inclusion or numerical defaults."
+  - id: "eu-pef-multifunctionality-2021"
+    type: "official_guidance"
+    reference: "European Commission,C(2021)9332 final AnnexI,4.5,PDF63–64. https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "Multifunctionality hierarchy and allocation rationale; no claim of complete PEF conformity."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:713ee513496fe0c54ea430f9ff7db4e25aee4a4850fe9af8e33af69ffe714499"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7402"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7402
+          line: 62
+          column: 1
+        end:
+          offset: 12461
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Burden-bearing gas/liquid feed at an existing submodel interface or purchased liquid blending components |\n| starting_condition_role | Supplied feed; no repeated resource extraction or whole refinery |\n| product_classification_scope | Fossil commercial liquid propane; specified n-butane/isobutane grade; composition-defined propane-butane LPG blend |\n| recursive_input_rule | Purchased same-category components link complete supplier/gate datasets; internal recycling retains matched endpoints without another purchase or credit. |\n| upstream_dataset_requirement | Actual gas/refinery feed, blending component, utility, material, infrastructure and waste-management interfaces and burdens; disclose missing coverage. |\n| disclosure | site and production period; one SKU and commercial grade; propane/n-butane/isobutane assay and olefin impurities; purity; water and sulfur; fossil origin; raw-feed sources and upstream gates; recovery/separation or purchased-component blending route; liquid phase at transfer; mass meter or liquid density and measured volume; temperature and absolute pressure; gas-volume wet/dry and reference conditions with compressibility; storage and loading vapour destination; utilities and steam-return basis; co-products and allocation; gate and transport scope |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_existing | all operations | Start at the disclosed gas/liquid inlet to the existing recovery/fractionation submodel. Preserve supplier extraction/refinery conversion burdens, feed provenance and all upstream gas/liquid/solid co-products (including coke where applicable) in their original physical ledger; do not delete or duplicate them. Shared treatment, sulfur recovery, wastewater management and energy systems must have one owner. An integrated site may expose the shared physical submodel and operation-level allocation; a standalone terminal links qualified upstream datasets. | ref-bref-2015; epa-gas-processing-1995 |\n| boundary_stages | lpg | Declare reception, actual cooling/absorption, de-ethanising, depropanising/debutanising/isomer separation, actual sweetening/drying, blending, odorisation, liquid storage and closed-loop loading/vapour handling stage meters. Their sequence is site-specific. Aggregate them as one LPG foreground unit; cancel internal same-material links with identical endpoint quantities, while retaining stage mass/energy observations. No additional finished-reference output at a storage/packaging handoff. | ref-bref-2015; eia-storage-2026 |\n| boundary_vapour | lpg | Distinguish recovered vapour recycled internally, gas sent to an existing fuel header, gas transferred to external treatment, vented species and flare/combustion exhaust. Measure the actual recovery and destruction state; never classify all displaced LPG vapour as emitted or assume complete combustion. Refrigeration-circuit losses are tracked independently from product losses. | ref-bref-2015; epa-gas-processing-1995 |\n| boundary_energy | lpg | Record electricity, imported steam, fuel and each actual refrigerant separately. Recovered upstream reboiling heat retains its heat interface and prior burden; it is not free steam. Imported steam is distinct from foreground boiler fuel and exhaust. Include actual refrigeration/cooling, wastewater and spent adsorbent handling. Actual additional chemicals, refrigerants, packaging, wastes and releases each require their own atomic exchange before dataset completion. A background link must cover the entire actual operation and upstream burdens; record its gate, period, composition/state and coverage. A cutoff needs a documented rationale, omitted burdens and sensitivity; missing quantities never become zero, and paired physical pipes remain in the unallocated ledger. | ref-bref-2015 |\n| boundary_gate | lpg | The product gate is the documented liquid custody transfer, before customer vaporisation or use. Include on-site tank residence and loading losses through that gate; off-site shipping enters only if explicitly within the declared boundary and supported by its own submodel. Allocate infrastructure over actual lifetime throughput or justify exclusion and sensitivity. Bulk tank and pressure-container manufacture are not additional foreground production stages, but their service burdens remain attributable to LPG delivery: collect container/tank identity, material and tare, lifetime throughput or service cycles, repair/replacement, inspection, cleaning/hydrotest, coating, utilities, wastes and retirement. Include actual reusable-container return/empty handling within the gate, residual LPG and returned stocks. Link complete service datasets once; add an atomic exchange for each actual material, utility, waste or release they do not cover. Do not count the entire durable container mass as consumed per filling, assume unlimited reuse, or assign a default lifetime. | eia-storage-2026 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 9
+              column: 1
+            end:
+              offset: 349
+              line: 9
+              column: 71
+          text: "# Liquefied propane and butanes: refinery separation and bulk delivery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7402
+              line: 62
+              column: 1
+            end:
+              offset: 7423
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_63519"
+      family: "allocation"
+      span:
+        start:
+          offset: 63519
+          line: 889
+          column: 1
+        end:
+          offset: 65064
+          line: 897
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_hierarchy | shared burdens | First subdivide by actual metered operations or assess a documented expanded system. For unresolved shared burdens, use a demonstrable causal physical relationship; if unavailable, justify same-gate period-matched economic allocation and sensitivity. Do not infer a universal mass or heating-value share from the product label. | eu-pef-multifunctionality-2021 |\n| allocation_ledgers | all rows | Keep the unallocated physical process diagram and feed/product/total-mass/water/C/H/O/N/S/energy balances separate from the environmental burden account. Preserve co-product quantities, compositions, phases, receivers and stock changes. Multiply only shared burdens by accepted allocation factors; do not mechanically multiply physical co-product outputs by those factors. In the reference-specific result, selected product is 1 kg; all physical observations remain traceable by D. | eu-pef-multifunctionality-2021; ref-bref-2015 |\n| allocation_internal | internal links | Internal recycling of absorbent, refrigerant, vapour, gas fuel or condensate is recorded at both stage endpoints with matching quantities, but does not create a second external input or avoided-product credit. Own-use fuel is part of actual physical energy/carbon balance and its combustion has one owner. Waste disposal and flaring do not become saleable co-products. | ref-bref-2015; eu-pef-multifunctionality-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 9
+              column: 1
+            end:
+              offset: 349
+              line: 9
+              column: 71
+          text: "# Liquefied propane and butanes: refinery separation and bulk delivery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 63519
+              line: 889
+              column: 1
+            end:
+              offset: 63559
+              line: 889
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_117969"
+      family: "validation"
+      span:
+        start:
+          offset: 117969
+          line: 970
+          column: 1
+        end:
+          offset: 121282
+          line: 981
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | final_product | Verify one selected saleable liquid product identity and one final_product output, 1 kg net reference, positive measured D, actual composition/purity and all qualifiers. An unresolved reference UUID or incompatible physical route/property/unit prevents a usable completed dataset. Do not reuse a gas/LNG reference or refrigerant circuit charge as LPG. | ref-bref-2015; eia-storage-2026 |\n| validate_quantity | all rows | Preserve raw mass/volume/T/P and conversion provenance. Gas and liquid volume bases remain separate; supplier/background reference bases must be independently compatible, not merely identity-matched. Steam pressure and enthalpy basis, active chemical fraction and electricity property must be established. | ref-bref-2015 |\n| validate_balance | lpg | Reconcile feeds, liquid and gaseous products, vents, flare carbon/sulfur, water, spent materials, own use and stock change before allocation. Retain residuals and meter uncertainty; no forced zero residual. Distinguish acid gas sent for sulfur recovery from air H2S; distinguish wastewater transfer from receiving-water emissions. | ref-bref-2015; epa-gas-processing-1995 |\n| validate_carriers_services | lpg | Check complete stage/background coverage, paired pipes, liquid/vapour inventories and returns; reconcile whole-carrier mass without adding constituent quantities twice. Require separate total mass, water, C/H/O/N/S and energy residuals. Check actual packaging and durable pressure-container/tank service life, maintenance, cleaning, return and retirement burdens with one owner and per-D service allocation; exclusions need evidence and sensitivity. A generic reference label or a matching unit cannot override conflicting source route, location, composition or grade. | ref-bref-2015; eia-storage-2026; eu-pef-multifunctionality-2021 |\n| validate_species | air emissions | Check actual species, fossil/biogenic origin, CAS where applicable, outdoor-air compartment/subcompartment and amount definition against the flow original. Never substitute nitropropane for propane, a correction flow for a pollutant, or a total VOC/NOx quantity for individual species. NO and NO2 cannot be duplicated with total NOx; NOx is not N2O. Preserve actual biogenic CO2 if an auxiliary biogenic fuel occurs, with its own added input/emission rows. Particulate bins must be disjoint with filterable/condensable definitions. | ref-bref-2015; epa-gas-processing-1995 |\n| validate_complete | dataset | Document performed/skipped checks, identity gaps, missing upstream burdens, measurements and provider bases. Actual MEA/TEG regeneration, sulfur recovery, on-site water treatment, other refrigerants or combustion engines require complete compatible submodels, including actual BTEX/isomers, N2O and other measured releases as atomic rows. Missing, unknown, measured zero and a measured nondetect with detection limit are different; conditional not-applicable status requires route evidence. Future collection requirements do not establish actual quantities or SKU acceptance. No historical/single-plant composition, utility ratio or factor establishes a general default. | ref-bref-2015; epa-gas-processing-1995 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 279
+              line: 9
+              column: 1
+            end:
+              offset: 349
+              line: 9
+              column: 71
+          text: "# Liquefied propane and butanes: refinery separation and bulk delivery"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 117969
+              line: 970
+              column: 1
+            end:
+              offset: 117991
+              line: 970
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_existing"
+      identity_kind: "explicit"
+      unit_id: "normative_7402"
+      source_span:
+        start:
+          offset: 8879
+          line: 77
+          column: 1
+        end:
+          offset: 9516
+          line: 77
+          column: 638
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_7402"
+      source_span:
+        start:
+          offset: 9517
+          line: 78
+          column: 1
+        end:
+          offset: 10071
+          line: 78
+          column: 555
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_vapour"
+      identity_kind: "explicit"
+      unit_id: "normative_7402"
+      source_span:
+        start:
+          offset: 10072
+          line: 79
+          column: 1
+        end:
+          offset: 10520
+          line: 79
+          column: 449
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_energy"
+      identity_kind: "explicit"
+      unit_id: "normative_7402"
+      source_span:
+        start:
+          offset: 10521
+          line: 80
+          column: 1
+        end:
+          offset: 11339
+          line: 80
+          column: 819
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_7402"
+      source_span:
+        start:
+          offset: 11340
+          line: 81
+          column: 1
+        end:
+          offset: 12459
+          line: 81
+          column: 1120
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_63519"
+      source_span:
+        start:
+          offset: 63632
+          line: 893
+          column: 1
+        end:
+          offset: 64036
+          line: 893
+          column: 405
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_63519"
+      source_span:
+        start:
+          offset: 64037
+          line: 894
+          column: 1
+        end:
+          offset: 64602
+          line: 894
+          column: 566
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_internal"
+      identity_kind: "explicit"
+      unit_id: "normative_63519"
+      source_span:
+        start:
+          offset: 64603
+          line: 895
+          column: 1
+        end:
+          offset: 65062
+          line: 895
+          column: 460
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_117969"
+      source_span:
+        start:
+          offset: 118064
+          line: 974
+          column: 1
+        end:
+          offset: 118490
+          line: 974
+          column: 427
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_117969"
+      source_span:
+        start:
+          offset: 118491
+          line: 975
+          column: 1
+        end:
+          offset: 118847
+          line: 975
+          column: 357
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_117969"
+      source_span:
+        start:
+          offset: 118848
+          line: 976
+          column: 1
+        end:
+          offset: 119248
+          line: 976
+          column: 401
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_carriers_services"
+      identity_kind: "explicit"
+      unit_id: "normative_117969"
+      source_span:
+        start:
+          offset: 119249
+          line: 977
+          column: 1
+        end:
+          offset: 119922
+          line: 977
+          column: 674
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_117969"
+      source_span:
+        start:
+          offset: 119923
+          line: 978
+          column: 1
+        end:
+          offset: 120534
+          line: 978
+          column: 612
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_117969"
+      source_span:
+        start:
+          offset: 120535
+          line: 979
+          column: 1
+        end:
+          offset: 121280
+          line: 979
+          column: 746
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7402"
+      source_span:
+        start:
+          offset: 7402
+          line: 62
+          column: 1
+        end:
+          offset: 7423
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7402"
+      source_span:
+        start:
+          offset: 7451
+          line: 66
+          column: 1
+        end:
+          offset: 8806
+          line: 73
+          column: 572
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_63519"
+      source_span:
+        start:
+          offset: 63519
+          line: 889
+          column: 1
+        end:
+          offset: 63559
+          line: 889
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_117969"
+      source_span:
+        start:
+          offset: 117969
+          line: 970
+          column: 1
+        end:
+          offset: 117991
+          line: 970
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:713ee513496fe0c54ea430f9ff7db4e25aee4a4850fe9af8e33af69ffe714499"
+  generated_content_sha256: "sha256:67c69c16521cb29915a912fae62bb68ef1ec419e9673b2e11a35884c6d4e6b0b"

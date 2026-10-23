@@ -88,7 +88,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 车间收到购入的窑干未处理锯材；供方干燥负荷保留在上游 |
 | starting_condition_role | 厂门至厂门电动加工为验收包装制品 |
-| product_classification_scope | 仅指定实木包装楔块/异形垫块子集；CPC31709的narrower范围 |
+| product_classification_scope | 仅指定实木包装楔块/异形垫块子集；CPC31709建议narrower |
 | recursive_input_rule | 购入同类未成品/返工包装制品会改变路线，须另行披露供方边界；不得默替锯材或重复计精加工收益 |
 | upstream_dataset_requirement | 匹配木坯树种、干燥、含水率/参考量、林业碳/分配、供方边界及运入运输；匹配交付电压/地区/时期、润滑油和PE供方规格。身份UUID不等于背景数据集。 |
 | disclosure | 披露所有厂门、实际操作、计量表、运输供方、排除项及待决身份/背景兼容问题；厂门至厂门本身不是摇篮至厂门 |

@@ -393,7 +393,7 @@ Outdoor-air unspecified particles >PM10 from the same measured distribution. Do 
 
 ###### water vapour (`water_vapour`)
 
-Water actually evaporated from paint, cleaned tools or changed board moisture and released outdoors; derive a closed water balance after separating non-water volatile loss. Ambient humidity is not process input. No steam energy exchange is implied.
+Water actually evaporated from paint, cleaned tools or changed board moisture and released outdoors; derive a closed water balance after separating non-water volatile loss. Ambient humidity is not a purchased process-water input; retain actual inlet/outlet humidity and any measured net moisture uptake/release in the physical water ledger. No steam energy exchange is implied.
 
 - Selected flow: water vapour `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
