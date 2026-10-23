@@ -10,6 +10,7 @@ const rawConfig: unknown = JSON.parse(
 assert.ok(isUnknownRecord(rawConfig)&&Array.isArray(rawConfig.headers)&&rawConfig.headers.every(rule=>isUnknownRecord(rule)&&typeof rule.source==="string"&&Array.isArray(rule.headers)&&rule.headers.every(header=>isUnknownRecord(header)&&typeof header.key==="string"&&typeof header.value==="string"))&&Array.isArray(rawConfig.redirects));
 const config=rawConfig as {headers:{source:string;headers:{key:string;value:string}[]}[];redirects:unknown[];outputDirectory:string};
 const downloads = [
+  {url: "/generated/raw/library/pcrs/a/b/c/supplement.txt"},
   { url: "/generated/raw/library/pcrs/domain/category/item/pcr.zh-CN.md" },
   {
     url: "/generated/raw/library/pcrs/a/b/c/releases/1.0.0/manifest.snapshot.yaml",
@@ -66,4 +67,16 @@ test("moved download rules, missing module or guide MIME and redirect drift fail
 test("localized Chinese home remains explicit, including broad hosting rules", () => {
   for (const source of ["/zh", "/zh/", "/*"])
     assert.throws(() => verifyHostingContract({ ...config, redirects: [{ source, destination: "/", statusCode: 301 }] }, downloads), /Explicit Chinese-home/u);
+});
+
+test("navigation aliases reject missing or redirected routes and stale or executable payload headers", () => {
+  assert.throws(() => verifyHostingContract({...config, rewrites: []}, downloads), /Exact Next navigation rewrites/u);
+  assert.throws(() => verifyHostingContract({...config, rewrites: [{source:'/*/__next._full.txt', destination:'/:splat/index.txt'}]}, downloads), /Exact Next navigation rewrites/u);
+  for (const source of ['/__next._full.txt','/*/__next._full.txt','/en/docs/pcr/index.txt'])
+    assert.throws(() => verifyHostingContract({...config, redirects:[{source,destination:'/index.txt',statusCode:200}]}, downloads), /Next navigation URLs/u);
+  for (const [key,value] of [['Content-Type','text/html'],['Cache-Control','public, max-age=31536000, immutable'],['X-Content-Type-Options','']]) {
+    const broken = structuredClone(config);
+    broken.headers.unshift({source:'/*.txt',headers:[{key:key!,value:value!}]});
+    assert.throws(() => verifyHostingContract(broken, downloads), /Next navigation/u);
+  }
 });

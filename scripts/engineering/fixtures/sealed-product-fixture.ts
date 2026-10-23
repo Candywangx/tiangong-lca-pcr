@@ -1,3 +1,4 @@
+import {prepareStaticRouteAliases, STATIC_ROUTE_REWRITES} from "../../../packages/pcr-docs/scripts/static-route-aliases.ts";
 import { READER_CAPABILITIES } from "../../../builder/scripts/reader-compatibility.ts";
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, renameSync, rmSync, writeFileSync } from 'node:fs';
@@ -61,12 +62,12 @@ export async function sealedProductFixture(t: TestContext, usableTool: boolean, 
   const base = mkdtempSync(path.join(realpathSync(tmpdir()), 'sealed-consumer-contract-')); t.after(() => rmSync(base, { recursive: true, force: true }));
   const source = path.join(base, 'source'); mkdirSync(source);
   const npmCli = resolveNpmCli(); const npm = execFileSync(process.execPath, [npmCli, '--version'], { encoding: 'utf8' }).trim();
-  const version = '0.4.1';
+  const version = '0.4.9';
   put(source, 'product-release.json', JSON.stringify({ schema: 1, version, node: process.versions.node, npm, web: { origin: 'https://pcr.tiangong.earth', site: 'global' } }));
   for (const [file, name] of PRODUCT_MIRRORS) put(source, file, JSON.stringify({ name, version, private: true }));
   put(source, 'library/pcrs/fixture/pcr.en-US.md', 'Controlled transport identity fixture.\n');
   put(source, 'classifications/fixture.yaml', 'mappings: []\n');
-  put(source, 'edgeone.json', '{"outputDirectory":"packages/pcr-docs/out","buildCommand":"fixture source build","headers":[],"redirects":[]}\n');
+  put(source, 'edgeone.json', JSON.stringify({outputDirectory:'packages/pcr-docs/out',buildCommand:'fixture source build',headers:[],redirects:[],rewrites:STATIC_ROUTE_REWRITES}));
   const git = (...args: string[]) => execFileSync('git', args, { cwd: source, stdio: 'ignore' });
   git('init', '-q'); git('config', 'user.name', 'Sealed Test'); git('config', 'user.email', 'sealed@example.invalid'); git('add', '.'); git('commit', '-qm', 'controlled seal identity');
   const identity = readProductIdentity(source); const web = path.join(base, 'web');
@@ -76,6 +77,12 @@ export async function sealedProductFixture(t: TestContext, usableTool: boolean, 
   put(web, 'generated/product-release.json', JSON.stringify(identity));
   put(web, 'generated/version.json', JSON.stringify({ sourceCommit: identity.sourceCommit, releaseVersion: identity.version, releaseTag: identity.tag, sourceFingerprint: identity.sourceFingerprint, counts: { pcrs: 1, pages: 2, languages: 2, sourceBytes: 20 } }));
   put(web, 'generated/raw/classifications/indexes/cpc-3.0-coverage.json', '{"fixture":true}\n');
+  for (const route of ['', 'en/docs/pcr/', 'zh/docs/pcr/']) {
+    const payload = 'Controlled RSC payload: ' + route;
+    put(web, route + 'index.txt', payload);
+    put(web, route + '__next._full.txt', payload);
+  }
+  prepareStaticRouteAliases(web, identity.sourceCommit);
   const librarySource = createReadSessionFixture(t).root;
   for (const file of ['README.md']) {
     mkdirSync(path.join(librarySource, 'packages/tiangong-pcr-library'), { recursive: true });

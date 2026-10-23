@@ -1,3 +1,4 @@
+import {verifyStaticRouteAliases} from "./static-route-aliases.ts";
 import {verifySearchAssets} from "./search-assets.ts";
 import {parseSiteManifest} from "../lib/site-contracts.ts";
 import {decodeRecordData} from "../lib/record-data.ts";
@@ -32,6 +33,7 @@ const manifest = parseSiteManifest(
   );
 if (report.sourceCommit !== manifest.sourceCommit) throw new Error("Search report source identity mismatch");
 await verifySearchAssets(out, manifest.sourceCommit, report.search);
+verifyStaticRouteAliases(out, manifest.sourceCommit);
 verifyHostingContract(
   JSON.parse(fs.readFileSync(path.join(root, "edgeone.json"), "utf8")),
   report.downloads,
@@ -89,6 +91,10 @@ if (fs.existsSync(path.join(root, "product-release.json"))) {
 for (const raw of report.downloads) {
   const original = fs.readFileSync(path.join(root, raw.sourcePath));
   const inline = decodeInlineDownloadUrl(raw.url);
+  requireThat(raw.name === path.posix.basename(raw.sourcePath) && raw.bytes === original.length,
+    'Invalid original download metadata: ' + raw.sourcePath);
+  requireThat(inline || raw.url === '/generated/raw/' + raw.sourcePath,
+    'Unbound physical download URL: ' + raw.sourcePath);
   const bytes = inline ?? fs.readFileSync(path.join(out, raw.url));
   if (inline) {
     requireThat(raw.name === path.posix.basename(raw.sourcePath) && raw.bytes === inline.length,
@@ -109,11 +115,11 @@ for (const raw of report.downloads) {
   );
 }
 const downloadByUrl = new Map(report.downloads.map(raw => [raw.url, raw]));
-const inlineByRecord = new Map(manifest.records.map(record => [record.id, record.downloads.filter(raw => raw.url.startsWith('data:'))]));
+const downloadsByRecord = new Map(manifest.records.map(record => [record.id, record.downloads]));
 for (const record of manifest.records) {
-  for (const raw of inlineByRecord.get(record.id) ?? []) {
+  for (const raw of downloadsByRecord.get(record.id) ?? []) {
     const bound = downloadByUrl.get(raw.url);
-    requireThat(bound?.sha256 === raw.sha256 && bound.sourcePath === record.sourcePath + '/' + raw.name && bound.name === raw.name, 'Unbound inline download: ' + record.id);
+    requireThat(bound?.sha256 === raw.sha256 && bound.sourcePath === record.sourcePath + '/' + raw.name && bound.name === raw.name, 'Unbound native download: ' + record.id);
   }
 }
 // Every public inspector record must restore its full generated source, including historical releases.
@@ -278,9 +284,9 @@ requireThat(
 );
 for (const page of manifest.pages) {
   const document = readPage(page.url);
-  for (const raw of (!page.recordVersion && page.pcrId ? inlineByRecord.get(page.pcrId) : undefined) ?? []) {
+  for (const raw of (!page.recordVersion && page.pcrId ? downloadsByRecord.get(page.pcrId) : undefined) ?? []) {
     const link = Array.from(document.querySelectorAll<HTMLAnchorElement>('a.pcr-download-name')).find(anchor => anchor.getAttribute('href') === raw.url);
-    requireThat(link?.getAttribute('download') === raw.name, 'Missing native inline download: ' + page.url);
+    requireThat(link?.getAttribute('download') === raw.name, 'Missing native download: ' + page.url);
   }
   for (const anchor of document.querySelectorAll<HTMLAnchorElement>('a[href^="data:"]')) {
     // Source YAML fragments do not change download bytes. Reuse this loop's

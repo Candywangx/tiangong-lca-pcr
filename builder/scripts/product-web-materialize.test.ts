@@ -9,7 +9,8 @@ import { gunzipSync, gzipSync } from "node:zlib";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { readProductIdentity, type ProductIdentity } from "./product-identity.ts";
 import { writeProductWebArchive, validateProductManifest } from "./product-release.ts";
-import { createWebProbes } from "./product-web.ts";
+import { prepareStaticRouteAliases, STATIC_ROUTE_ALIASES_FILE, STATIC_ROUTE_REWRITES } from "../../packages/pcr-docs/scripts/static-route-aliases.ts";
+import { createWebProbes, requiresStaticRouteAliases, STATIC_ROUTE_ALIAS_PROBE_SOURCES } from "./product-web.ts";
 import { publishOutput, selectScratchWorkspace, type ScratchOptions, type FilesystemFacts } from "../../packages/pcr-docs/scripts/build-storage.ts";
 import { downloadProductFile, materializeProductWeb } from "./product-web-materialize.ts";
 
@@ -26,13 +27,13 @@ const writeJson = (file: string, value: unknown) => write(file, JSON.stringify(v
 const git = (root: string, ...args: string[]) => execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 
 async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; identity: ProductIdentity }) => void = () => {},
-  { producerNode = process.versions.node, producerNpm = "11.17.0" }: { producerNode?: string; producerNpm?: string } = {}) {
+  { producerNode = process.versions.node, producerNpm = "11.17.0", productVersion = "0.3.0" }: { producerNode?: string; producerNpm?: string; productVersion?: string } = {}) {
   const owned = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), "pcr-materializer-test-"));
   t.after(() => fs.rmSync(owned, { recursive: true, force: true }));
   const root = path.join(owned, "source"); fs.mkdirSync(root);
   git(root, "init", "--quiet");
   write(path.join(root, ".gitignore"), ".edgeone/\npackages/pcr-docs/out/\npackages/pcr-docs/out.stage-*/\npackages/pcr-docs/out.prev-*/\n");
-  const config = { schema: 1, version: "0.3.0", node: producerNode, npm: producerNpm,
+  const config = { schema: 1, version: productVersion, node: producerNode, npm: producerNpm,
     web: { origin: "https://pcr.tiangong.earth", site: "global" } };
   writeJson(path.join(root, "product-release.json"), config);
   for (const [relative, name] of [
@@ -58,10 +59,18 @@ async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; id
   writeJson(path.join(webDir, "generated/version.json"), { sourceCommit: identity.sourceCommit,
     releaseVersion: identity.version, releaseTag: identity.tag, sourceFingerprint: identity.sourceFingerprint,
     counts: { pcrs: 1, pages: 2, languages: 2, sourceBytes: 50 } });
-  writeJson(path.join(webDir, "edgeone.json"), { headers: [], redirects: [] });
+  writeJson(path.join(webDir, "edgeone.json"), { headers: [], redirects: [], ...(requiresStaticRouteAliases(productVersion) ? { rewrites: STATIC_ROUTE_REWRITES } : {}) });
+  if (requiresStaticRouteAliases(productVersion)) {
+    for (const source of STATIC_ROUTE_ALIAS_PROBE_SOURCES) {
+      const target = source.replace("__next._full.txt", "index.txt"), payload = "Exact current native navigation " + target;
+      write(path.join(webDir, source.slice(1)), payload); write(path.join(webDir, target.slice(1)), payload);
+    }
+    prepareStaticRouteAliases(webDir, identity.sourceCommit);
+  }
   const probes = createWebProbes({ webDir });
   mutateWeb({ webDir, identity });
-  const filename = "pcr-web-0.3.0.tar.gz", archiveFile = path.join(owned, filename);
+  const releasePath = "/tiangong-lca/pcr/releases/download/" + identity.tag + "/", manifestUrl = `https://github.com${releasePath}release.json`;
+  const filename = `pcr-web-${productVersion}.tar.gz`, archiveFile = path.join(owned, filename);
   const tree = await writeProductWebArchive(webDir, archiveFile);
   const archive = fs.readFileSync(archiveFile);
   const web = { filename, bytes: archive.length, sha256: sha256(archive), ...tree, origin: config.web.origin, probes };
@@ -478,4 +487,24 @@ test("the provider importer loads without npm-installed dependencies", t => {
   execFileSync(process.execPath, ["--input-type=module", "-e", `await import(${JSON.stringify(moduleUrl)});`], {
     cwd: owned, stdio: ["ignore", "pipe", "pipe"], timeout: 10_000,
   });
+});
+
+
+test("current alias materialization verifies the complete original manifest and retained payloads before atomic handoff", async t => {
+  const f = await fixture(t, () => {}, { productVersion: "0.4.9" });
+  const result = await materializeProductWeb(f.options);
+  assert.equal(result.identity.sourceCommit, f.identity.sourceCommit);
+  assert.deepEqual(fs.readFileSync(path.join(f.root, "packages/pcr-docs/out", STATIC_ROUTE_ALIASES_FILE)), fs.readFileSync(path.join(f.webDir, STATIC_ROUTE_ALIASES_FILE)));
+  for (const source of STATIC_ROUTE_ALIAS_PROBE_SOURCES) {
+    assert.equal(fs.existsSync(path.join(f.root, "packages/pcr-docs/out", source.slice(1))), false);
+    const target = source.replace("__next._full.txt", "index.txt");
+    assert.deepEqual(fs.readFileSync(path.join(f.root, "packages/pcr-docs/out", target.slice(1))), fs.readFileSync(path.join(f.webDir, target.slice(1))));
+  }
+  assert.deepEqual(fs.readdirSync(f.scratchBase), []);
+});
+
+test("a coherently archived current payload substitution cannot reach provider handoff or replace previous output", async t => {
+  const f = await fixture(t, ({ webDir }) => write(path.join(webDir, "index.txt"), "Substituted after alias and probe qualification"), { productVersion: "0.4.9" });
+  await assert.rejects(materializeProductWeb(f.options), /alias target bytes or hash differ/u);
+  previousIsIntact(f);
 });

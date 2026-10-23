@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { prepareStaticRouteAliases, STATIC_ROUTE_ALIASES_FILE, rscAliasTarget } from "../../packages/pcr-docs/scripts/static-route-aliases.ts";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test, { type TestContext } from "node:test";
-import { createWebProbes, verifyLiveWebsite, WebReleaseError, writePrebuiltConfig, type WebFetch } from "./product-web.ts";
+import { createWebProbes, verifyLiveWebsite, WebReleaseError, writePrebuiltConfig, type WebFetch, STATIC_ROUTE_ALIAS_PROBE_SOURCES, requiresStaticRouteAliases } from "./product-web.ts";
 
 const origin = "https://pcr.example.test";
 const identity = { schema: 1, version: "0.3.0", tag: "pcr-v0.3.0", sourceCommit: "a".repeat(40), sourceFingerprint: `sha256:${"b".repeat(64)}` };
@@ -202,4 +204,97 @@ test("transport errors are sanitized and a 503 partial release can be retried wi
   await assert.rejects(verifyLiveWebsite({ ...f.options, fetcher: async () => { throw new Error("https://private/?token=SECRET response credentials"); } }), error => code("PCR_WEB_FETCH_FAILED")(error) && error.retryable && !`${error.message}${JSON.stringify(error.details)}`.includes("SECRET"));
   await assert.rejects(verifyLiveWebsite({ ...f.options, fetcher: changed(f, rawPath, () => new Response("unavailable", { status: 503 })) }), error => code("PCR_WEB_STATUS")(error) && error.retryable);
   assert.equal((await verifyLiveWebsite(f.options)).verified, true);
+});
+
+
+function aliasFixture(t: TestContext) {
+  const f = fixture(t), currentIdentity = { ...identity, version: "0.4.9", tag: "v0.4.9" };
+  const put = (relative: string, bytes: Buffer<ArrayBuffer>) => {
+    const target = path.join(f.webDir, relative); mkdirSync(path.dirname(target), { recursive: true }); writeFileSync(target, bytes); f.files.set(relative, bytes);
+  };
+  put("generated/product-release.json", Buffer.from(JSON.stringify(currentIdentity)));
+  put("generated/version.json", Buffer.from(JSON.stringify({ ...version(), releaseVersion: "0.4.9", releaseTag: "v0.4.9" })));
+  for (const [index, source] of STATIC_ROUTE_ALIAS_PROBE_SOURCES.entries()) {
+    const target = rscAliasTarget(source); assert.ok(target);
+    const bytes = Buffer.from(`0:{"fixture":"complete RSC payload ${index}"}\n`);
+    put(target.slice(1), bytes); put(source.slice(1), bytes);
+  }
+  prepareStaticRouteAliases(realpathSync(f.webDir), currentIdentity.sourceCommit);
+  f.files.set(STATIC_ROUTE_ALIASES_FILE, Buffer.from(readFileSync(path.join(f.webDir, STATIC_ROUTE_ALIASES_FILE))));
+  const probes = createWebProbes({ webDir: f.webDir });
+  const fetcher: WebFetch = async (url, options) => {
+    const pathname = new URL(url).pathname, target = rscAliasTarget(pathname);
+    const isTarget = probes.staticRouteAliases?.pairs.some(pair => pair.target === pathname);
+    if (pathname === "/" + STATIC_ROUTE_ALIASES_FILE || target || isTarget) {
+      f.calls.push({ url, options });
+      assert.equal(options.method, "GET"); assert.equal(options.redirect, "manual"); assert.equal(options.credentials, "omit");
+      const body = f.files.get((target ?? pathname).slice(1)); assert.ok(body);
+      return new Response(body, { headers: pathname.endsWith(".json") ? { ...fresh, "content-type": "application/json", "x-content-type-options": "nosniff" }
+        : { ...fresh, "content-type": "text/plain; charset=utf-8", "x-content-type-options": "nosniff" } });
+    }
+    return f.fetcher(url, options);
+  };
+  return { ...f, currentIdentity, probes, fetcher, options: { ...f.options, identity: currentIdentity, probes, fetcher } };
+}
+
+test("current alias profile binds complete source inventory and observes both sides with and without Next queries", async t => {
+  const f = aliasFixture(t), proof = f.probes.staticRouteAliases; assert.ok(proof);
+  assert.equal(proof.pairs.length, 3);
+  const accepted = await verifyLiveWebsite(f.options);
+  assert.equal(accepted.checks.length, 25, "The five HTML routes, explicit home aliases and raw download remain alongside alias checks");
+  for (const pair of proof.pairs) for (const pathname of [pair.source, pair.target]) {
+    const checks = accepted.checks.filter(check => check.path === pathname || check.path.startsWith(pathname + "?"));
+    assert.equal(checks.length, 2); assert.ok(checks.every(check => check.sha256 === "sha256:" + pair.sha256
+      && check.bytes === pair.bytes && check.contentType === "text/plain" && check.cacheControl === fresh["cache-control"] && check.nosniff));
+  }
+  assert.ok(f.calls.filter(call => new URL(call.url).searchParams.has("_rsc")).length === 6);
+});
+
+test("current products cannot downgrade to legacy probes or ignore missing root/catalog alias proofs", async t => {
+  const f = aliasFixture(t), downgraded = { ...f.probes }; delete downgraded.staticRouteAliases;
+  await assert.rejects(verifyLiveWebsite({ ...f.options, probes: downgraded }), code("PCR_WEB_ALIAS_PROOF_INVALID"));
+  assert.equal(f.calls.length, 0, "Missing current-profile proof must fail before network activity");
+  const manifestPath = path.join(f.webDir, STATIC_ROUTE_ALIASES_FILE); rmSync(manifestPath);
+  assert.throws(() => createWebProbes({ webDir: f.webDir, requireAliases: false }), /alias/iu);
+  assert.equal(requiresStaticRouteAliases("0.4.8"), false); assert.equal(requiresStaticRouteAliases("0.4.9"), true);
+  assert.equal(requiresStaticRouteAliases("0.4.10"), true); assert.equal(requiresStaticRouteAliases("1.0.0"), true);
+});
+
+test("live internal aliases reject redirects, HTML, stale caching, missing nosniff and byte/query substitutions", async t => {
+  const f = aliasFixture(t), pair = f.probes.staticRouteAliases?.pairs[0]; assert.ok(pair);
+  const goodHeaders = { ...fresh, "content-type": "text/plain", "x-content-type-options": "nosniff" };
+  const original = f.files.get(pair.target.slice(1)); assert.ok(original);
+  for (const [label, response, expected] of [
+    ["redirect", () => new Response(null, { status: 302, headers: { location: pair.target } }), "PCR_WEB_REDIRECT"],
+    ["not-found", () => new Response("missing", { status: 404 }), "PCR_WEB_STATUS"],
+    ["html", () => new Response(original, { headers: { ...goodHeaders, "content-type": "text/html" } }), "PCR_WEB_ALIAS_HEADERS"],
+    ["stale", () => new Response(original, { headers: { ...goodHeaders, "cache-control": "public, max-age=3600, immutable" } }), "PCR_WEB_HEADERS"],
+    ["no-nosniff", () => new Response(original, { headers: { ...fresh, "content-type": "text/plain" } }), "PCR_WEB_ALIAS_HEADERS"],
+    ["wrong-bytes", () => new Response(Buffer.alloc(original.length, "x"), { headers: goodHeaders }), "PCR_WEB_ALIAS_HASH_MISMATCH"],
+  ] as const) await t.test(label, async () => {
+    const fetcher: WebFetch = (url, options) => new URL(url).pathname === pair.source ? Promise.resolve(response()) : f.fetcher(url, options);
+    await assert.rejects(verifyLiveWebsite({ ...f.options, fetcher }), code(expected));
+  });
+  const queryChanged: WebFetch = (url, options) => new URL(url).pathname === pair.target && new URL(url).search
+    ? Promise.resolve(new Response(Buffer.alloc(original.length, "q"), { headers: goodHeaders })) : f.fetcher(url, options);
+  await assert.rejects(verifyLiveWebsite({ ...f.options, fetcher: queryChanged }), code("PCR_WEB_ALIAS_HASH_MISMATCH"));
+  const mimeChanged: WebFetch = (url, options) => new URL(url).pathname === pair.target
+    ? Promise.resolve(new Response(original, { headers: { ...goodHeaders, "content-type": "text/x-component" } })) : f.fetcher(url, options);
+  await assert.rejects(verifyLiveWebsite({ ...f.options, fetcher: mimeChanged }), code("PCR_WEB_ALIAS_HEADERS"));
+});
+
+test("alias manifest hashes and required pair bindings cannot be substituted", async t => {
+  const f = aliasFixture(t), proof = f.probes.staticRouteAliases; assert.ok(proof);
+  const missingNosniff: WebFetch = (url, options) => new URL(url).pathname === proof.manifest.path
+    ? Promise.resolve(new Response(f.files.get(STATIC_ROUTE_ALIASES_FILE), { headers: { ...fresh, "content-type": "application/json" } })) : f.fetcher(url, options);
+  await assert.rejects(verifyLiveWebsite({ ...f.options, fetcher: missingNosniff }), code("PCR_WEB_ALIAS_HEADERS"));
+  const altered = Buffer.from(JSON.stringify({ schemaVersion: 1, sourceCommit: identity.sourceCommit, pairs: [] }));
+  const fetcher: WebFetch = (url, options) => new URL(url).pathname === proof.manifest.path
+    ? Promise.resolve(new Response(altered, { headers: { ...fresh, "content-type": "application/json", "x-content-type-options": "nosniff" } })) : f.fetcher(url, options);
+  await assert.rejects(verifyLiveWebsite({ ...f.options, fetcher }), code("PCR_WEB_ALIAS_HASH_MISMATCH"));
+  const rehashed = { ...f.probes, staticRouteAliases: { ...proof, manifest: { ...proof.manifest, bytes: altered.length,
+    sha256: "sha256:" + createHash("sha256").update(altered).digest("hex") } } };
+  await assert.rejects(verifyLiveWebsite({ ...f.options, probes: rehashed, fetcher }), code("PCR_WEB_ALIAS_PROOF_INVALID"));
+  const corrupted = structuredClone(f.probes); const first = corrupted.staticRouteAliases?.pairs[0]; assert.ok(first); first.target = first.source;
+  await assert.rejects(verifyLiveWebsite({ ...f.options, probes: corrupted }), code("PCR_WEB_ALIAS_PROOF_INVALID"));
 });

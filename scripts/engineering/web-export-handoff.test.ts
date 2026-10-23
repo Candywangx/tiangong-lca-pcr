@@ -12,6 +12,7 @@ import { qualificationBinding } from './coverage-qualification.ts';
 import { inventory } from './coverage-inventory.ts';
 import { config, hash } from './coverage-types.ts';
 import { captureWebExport, verifyWebExport } from './web-export-handoff.ts';
+import { prepareStaticRouteAliases, STATIC_ROUTE_ALIASES_FILE } from '../../packages/pcr-docs/scripts/static-route-aliases.ts';
 
 function put(file: string, content: string | Uint8Array): void { mkdirSync(path.dirname(file), { recursive: true }); writeFileSync(file, content); }
 function putJson(file: string, value: unknown): void { put(file, JSON.stringify(value)); }
@@ -45,13 +46,16 @@ function fixture(t: test.TestContext, mode: 'full' | 'data' = 'full') {
   mkdirSync(path.join(out, 'empty-directory'));
   putJson(path.join(out, 'generated/product-release.json'), identity);
   putJson(path.join(out, 'generated/version.json'), { sourceCommit: identity.sourceCommit, releaseVersion: identity.version, releaseTag: identity.tag, sourceFingerprint: identity.sourceFingerprint });
+  put(path.join(out, '__next._full.txt'), '0: exact navigation fixture\n');
+  put(path.join(out, 'index.txt'), '0: exact navigation fixture\n');
+  prepareStaticRouteAliases(out, identity.sourceCommit);
   const refreshMetrics = () => {
     const count = (folder: string): { files: number; bytes: number } => readdirSync(folder, { withFileTypes: true }).reduce((sum, entry) => {
       const file = path.join(folder, entry.name), child = entry.isDirectory() ? count(file) : { files: 1, bytes: lstatSync(file).size };
       return { files: sum.files + child.files, bytes: sum.bytes + child.bytes };
     }, { files: 0, bytes: 0 });
     putJson(metrics, { status: 'passed', buildMs: 40, peakResidentBytes: 100, memoryMeasurement: 'process-tree-rss',
-      stages: ['scripts/generate.ts', 'node_modules/next/dist/bin/next build', 'scripts/verify.ts'].map(command => ({ command, durationMs: 10, peakResidentBytes: 100, memoryMeasurement: 'process-tree-rss', status: 'passed', exitCode: 0 })),
+      stages: ['scripts/generate.ts', 'node_modules/next/dist/bin/next build', 'scripts/static-route-aliases.ts', 'scripts/verify.ts'].map(command => ({ command, durationMs: 10, peakResidentBytes: 100, memoryMeasurement: 'process-tree-rss', status: 'passed', exitCode: 0 })),
       relocation: { sourceCommit: identity.sourceCommit, export: { ...count(out), staged: true } } });
   };
   refreshMetrics();
@@ -98,6 +102,17 @@ test('data handoff remains required without fabricating a full-coverage receipt'
   assert.equal(captured.context.qualification, null); assert.equal(captured.coverage, null); await f.verify();
   const file = path.join(f.destination, 'checkpoint.json'), invalid = load(file); invalid.coverage = { status: 0 };
   putJson(file, invalid); await assert.rejects(f.verify(), /must not claim full coverage/u);
+});
+
+test('old three-stage receipts and missing or foreign alias metadata cannot become current handoffs', async t => {
+  for (const mutation of ['old-stages', 'missing', 'foreign'] as const) {
+    const f = fixture(t, 'data');
+    if (mutation === 'old-stages') {
+      const metrics = load(f.metrics); metrics.stages = (metrics.stages as Record<string, unknown>[]).filter(stage => stage.command !== 'scripts/static-route-aliases.ts'); putJson(f.metrics, metrics);
+    } else if (mutation === 'missing') rmSync(path.join(f.out, STATIC_ROUTE_ALIASES_FILE));
+    else { const file = path.join(f.out, STATIC_ROUTE_ALIASES_FILE), manifest = load(file); manifest.sourceCommit = 'b'.repeat(40); put(file, JSON.stringify(manifest) + '\n'); }
+    await assert.rejects(f.capture()); assert.equal(existsSync(f.destination), false);
+  }
 });
 
 test('every measured stage, RSS, completion and exact export/source count is mandatory', async t => {
