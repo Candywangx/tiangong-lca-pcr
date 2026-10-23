@@ -14,9 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
-lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: 708fae88eb7b974508fb6f81cbb7488d8baa7154
+lastReviewedNote: "PCR #144 / PR #135: reviewed latest compatible @types/node 24.19.2 and npm 12.2.0 lock regeneration against pinned Node 24.19.0. All 11 strict projects / 415 authored files, release-runtime preflight and four runtime tests pass on macOS ARM64; full hosted Linux, corpus, coverage, browser and sealed-product qualification remain required. Canonical methodology, publication and runtime pins retain their existing contracts."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
