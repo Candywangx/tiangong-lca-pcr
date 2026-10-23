@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Chick peas, dry |
+| Reference product flow | 干鹰嘴豆 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass unit group `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -625,7 +625,7 @@ sync_with: pcr.en-US.md
 
 记录满足所声明水分、等级、损伤、杂质与去向规格的成熟、未加工 desi 或 kabuli 籽粒。无后续干燥节点时，此项为参考产品。
 
-- 选定流：Chick peas, dry `c509fe95-d4ab-4db9-b593-f6329aef8dbd`
+- 选定流：鹰嘴豆（干） `c509fe95-d4ab-4db9-b593-f6329aef8dbd`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：按声明水分与等级称量的合格产出
 
@@ -802,7 +802,7 @@ sync_with: pcr.en-US.md
 
 记录最终农场门交接的冷却或干燥成熟 desi 或 kabuli 籽粒，并保留水分、等级、相关粒径等级与干燥温度历史。
 
-- 选定流：Chick peas, dry `c509fe95-d4ab-4db9-b593-f6329aef8dbd`
+- 选定流：鹰嘴豆（干） `c509fe95-d4ab-4db9-b593-f6329aef8dbd`
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：按声明水分与等级称量的稳定产出
 

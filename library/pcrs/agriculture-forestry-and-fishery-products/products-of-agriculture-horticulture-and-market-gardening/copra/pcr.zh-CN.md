@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Copra `65b49595-596f-42a7-91f4-d3722df073de` |
+| Reference product flow | 科普拉 `65b49595-596f-42a7-91f4-d3722df073de` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -632,7 +632,7 @@ sync_with: pcr.en-US.md
 
 该流按批次实测或从关联前景记录计算；内部、延后或未解析状态说明了为何不指定外部 UUID。
 
-- 选定流：椰干 `65b49595-596f-42a7-91f4-d3722df073de`
+- 选定流：科普拉 `65b49595-596f-42a7-91f4-d3722df073de`
 - 流属性/单位：质量 / kg
 
 原参考状态单位说明：质量或适用服务属性 / 声明单位

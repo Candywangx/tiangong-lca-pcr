@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | reference_amount | 1 |
-| reference_product_flow | 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6` |
+| reference_product_flow | 其他油籽（未另说明） `b547a596-eefe-42d3-82b9-78cbbb445eb6` |
 | reference_flow_property | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | reference_unit_group | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | reference_unit | kg |
@@ -471,7 +471,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程角色的真实物理流；仅在路线启用时按声明批次或作物周期建模。
 
-- 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
+- 选定流: 其他油籽（未另说明） `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
 - 数量规则：按进入时水分状态转移实测原始种子质量。
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -637,7 +637,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程角色的真实物理流；仅在路线启用时按声明批次或作物周期建模。
 
-- 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
+- 选定流: 其他油籽（未另说明） `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
 - 数量规则：将同批整理后种子的实测质量转移至分级、储存或装运。
 - 数值来源模式: 前景记录（`foreground_record`）
@@ -736,7 +736,7 @@ sync_with: pcr.en-US.md
 
 仅在 `grading_packaging_and_storage` 作业实际发生时记录该作业实测合格产出，保留物种、状态、等级、含水率、批次和真实移出交接点。此稳定行 id 表示实际路线产出；唯一最终参考产出为 reference_product_at_declared_handoff。保留原始产出并关联选定最终批次，不作为另一份最终产品重复计数。所列 UUID 仅适用于已独立确认的物理状态/交接点；不相容的上游/中间状态须另行核实或明确保持身份未解析。保留原阶段计量及采集记录。
 
-- 选定流: 其他未另分类油籽 `b547a596-eefe-42d3-82b9-78cbbb445eb6`
+- 选定流: 其他油籽（未另说明） `b547a596-eefe-42d3-82b9-78cbbb445eb6`
 - 流属性 / 单位: kg
 原始产出计量及核对：按 `cp_final` 称量实际作业净合格批次产出，保留毛重/皮重、拒收、库存、含水率及匹配后续批次记录，在最终归一化前核对。
 

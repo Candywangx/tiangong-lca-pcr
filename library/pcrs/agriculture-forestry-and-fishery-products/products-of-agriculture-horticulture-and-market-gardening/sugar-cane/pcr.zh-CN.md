@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Saccharum officinarum `d56c6f6a-8f2e-4351-8362-18a710ac31f0` |
+| Reference product flow | 甘蔗（Saccharum officinarum） `d56c6f6a-8f2e-4351-8362-18a710ac31f0` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -686,7 +686,7 @@ sync_with: pcr.en-US.md
 
 按关联田块、作物期、收获事件或批次记录该流，并保留其状态与去向。
 
-- 选定流: Saccharum officinarum（甘蔗）`d56c6f6a-8f2e-4351-8362-18a710ac31f0`
+- 选定流: 甘蔗（Saccharum officinarum） `d56c6f6a-8f2e-4351-8362-18a710ac31f0`
 - 流属性/单位：质量 / kg
 
 原参考状态单位说明：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
