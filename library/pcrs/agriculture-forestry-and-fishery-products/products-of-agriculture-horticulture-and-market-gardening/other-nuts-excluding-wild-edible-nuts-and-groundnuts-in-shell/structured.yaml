@@ -1,10 +1,1504 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "01379"
-  title: "Other nuts (excluding wild edible nuts and groundnuts), in shell"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.other-nuts-excluding-wild-edible-nuts-and-groundnuts-in-shell"
+  classification_refs: "CPC 3.0: 01379 Other nuts (excluding wild edible nuts and groundnuts), in shell; mapping relation: exact"
+  covered_products: "one declared cultivated residual nut species in shell, including areca, kola, ginkgo, macadamia, pecan, pignolia or pine nut only when it belongs in CPC 01379"
+  excluded_products: "named CPC nut leaves; wild edible nuts; groundnuts; shelled kernels; processed nuts; mixed-species lots"
+  representative_product: "one declared cultivated residual nut species with the hard shell intact"
+  production_route: "managed perennial cultivation and harvest, with conditional outer-hull removal, drying, grading, and packing"
+  market_state: "fresh farm-gate or conditioned/dried in-shell product at the declared farm or primary-conditioning gate"
+functional_unit:
+  what: "one declared residual cultivated nut species in shell at the selected terminal gate"
+  how_much: "1,000 kg as-received accepted product"
+  how_well: "species, cultivar if material, origin, orchard system, harvest year, lot, outer-hull state, intact hard-shell state, moisture basis, grade, package form, and gate declared"
+  how_long_or_cycle: "one productive harvest year and matched post-harvest batches included before the gate"
+  reference_flow_link: "reference_product_at_declared_handoff"
+system_boundary:
+  rules:
+    - rule_id: boundary_species_lot
+      applies_to: "all routes"
+      rule: "Include exactly one residual cultivated nut species and declared lot or aggregation rule; exclude named CPC nut leaves, wild nuts, groundnuts, and mixed-species pooling."
+      source_ids: []
+    - rule_id: boundary_productive_period
+      applies_to: "orchard route"
+      rule: "Include annual productive operations, harvest, direct field emissions, annualized establishment, and replacement burdens attributable to the declared harvest year."
+      source_ids: []
+    - rule_id: boundary_postharvest
+      applies_to: "conditioned route"
+      rule: "Include only actual outer-hull removal, cleaning, drying, grading, and packing before the declared gate; retain matched batch balances and moisture states."
+      source_ids:
+        - fao-codex-tree-nut-aflatoxin
+    - rule_id: boundary_food_safety
+      applies_to: "drying and storage"
+      rule: "Record elapsed time to drying, drying method, moisture endpoint, storage conditions, and rejected mould-damaged material needed to evaluate contamination prevention."
+      source_ids:
+        - fao-codex-tree-nut-aflatoxin
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "all routes"
+      rule: "Stop before hard-shell cracking, kernel separation, roasting, salting, food manufacture, distribution, retail, and consumption."
+      source_ids: []
+    - rule_id: boundary_direct_emissions
+      applies_to: "soil and on-site combustion"
+      rule: "Calculate managed-soil and on-site combustion emissions from the same nutrient, residue, and fuel records used in the inventory."
+      source_ids:
+        - ipcc-2019-managed-soils
+        - emep-eea-2023-guidebook
+        - ipcc-2006-stationary-combustion
+boundary_abstraction:
+  declared_starting_condition: "established productive orchard or plantation at reporting-period start; annualized establishment and replacement inputs cross the boundary"
+  starting_condition_role: "start of the declared productive harvest year"
+  product_classification_scope: "one cultivated residual nut species that belongs to CPC 01379 and remains in hard shell"
+  recursive_input_rule: "same-category in-shell nut input is linked to a separate upstream dataset at its actual state and gate and is not re-created through this PCR"
+  upstream_dataset_requirement: "compatible datasets for planting material, nutrients, crop protection, irrigation, energy, packaging, and any externally treated waste"
+  disclosure: "species; orchard system; age and productive area; geography; harvest year; allocation periods; yield; hull/shell state; moisture; grade; gate; conditioning route; batches; rejects; packaging; shared assets"
+reference_flow_definition:
+  reference_amount: "1000"
+  product_flow_ref:
+    name: "Other nuts (excluding wild edible nuts and groundnuts), in shell"
+    uuid: "85d33932-8c99-4207-8011-1bec84102f55"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - species
+    - "cultivar where material"
+    - origin
+    - "orchard or plantation system"
+    - "harvest year"
+    - "lot/aggregation rule"
+    - "outer-hull state"
+    - "hard-shell integrity"
+    - "moisture and basis"
+    - grade
+    - "package form"
+    - gate
+    - "included operations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass_as_received
+    applies_to: "terminal nuts in shell"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report as-received accepted mass and measured moisture; retain the moisture basis for dry-matter comparison."
+  - id: shell_state_identity
+    applies_to: "all product masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Distinguish removable outer hull from the hard shell; accepted reference product retains the hard shell."
+  - id: area_to_reference_conversion
+    applies_to: "orchard flows"
+    required_property_ref:
+      name: "activity-specific property"
+      uuid: ""
+    required_unit: "activity-specific unit"
+    rule: "Normalize annual productive-area totals to the same harvest year and accepted terminal mass."
+  - id: nutrient_content_basis
+    applies_to: "nutrient inputs"
+    required_property_ref:
+      name: "nutrient mass"
+      uuid: ""
+    required_unit: "kg N, kg P2O5, kg K2O"
+    rule: "Preserve product mass, formulation, assay, and elemental or oxide basis separately."
+  - id: batch_mass_balance
+    applies_to: "hulling, drying, grading, packing"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile incoming mass to accepted grades, downgraded product, rejects, removed hulls, and moisture loss without counting evaporated water as waste."
+process_map:
+  - id: orchard_production_harvest
+    name: "Managed nut production and harvest"
+    inclusion: "required"
+    inclusion_condition: "always"
+    role: "perennial crop production and harvest"
+    quantitative_reference: "productive area and one harvest year"
+  - id: primary_hulling_drying
+    name: "Primary hulling and drying"
+    inclusion: "conditional"
+    inclusion_condition: "outer hull removal or drying occurs before the declared gate"
+    role: "condition and stabilize in-shell nuts"
+    quantitative_reference: "matched incoming and accepted in-shell batches"
+  - id: grading_packing
+    name: "Grading and packing"
+    inclusion: "conditional"
+    inclusion_condition: "grading or packing occurs before the declared gate"
+    role: "separate grades and prepare hand-off"
+    quantitative_reference: "matched incoming, grade, reject, and packed masses"
+  - id: declared_reference_handoff
+    name: "Accepted-product measurement at declared handoff"
+    inclusion: "required"
+    inclusion_condition: "Every actual selected route, including bypass of conditional conditioning/packing/storage"
+    role: "Measurement and reconciliation only; no added physical processing"
+    quantitative_reference: "1000 kg net accepted product at the same declared gate"
+process_inventory:
+  - id: orchard_production_harvest
+    label: "Managed nut production and harvest"
+    inputs:
+      product:
+        - row_id: planting_material_input
+          role: "Planting material for replacement and establishment"
+          name: "Species-specific nut planting material"
+          flow_type: "product"
+          property_unit: "Mass or number / kg or item"
+          description: "Record only seedlings, grafted plants, seed, or rootstock entering the assessed period; separate establishment from replacement. Raw activity or stage basis: per productive hectare and reporting period."
+          amount:
+            expression: "measured quantity by species, age, and establishment purpose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_orchard_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2000"
+                unit: "items/ha·year"
+                basis: "annualized establishment and replacement plants"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: irrigation_water_input
+          role: "Irrigation water"
+          name: "Irrigation water supply"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water applied to the productive area and distinguish it from effective rainfall. Raw activity or stage basis: per productive hectare and harvest year."
+          amount:
+            expression: "metered or calculated applied irrigation water; rainfed systems record zero with evidence"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_orchard_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15000"
+                unit: "m3/ha·year"
+                basis: "one productive harvest year"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: field_energy_input_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual diesel orchard machinery for floor care, spraying, harvest or internal handling; establish nut species and equipment before activation. Activate only when equipment and purchase records identify this fuel at this node. Record grade, formulation, supplier and actual mass; convert volume using documented density, not a default. The UUID identifies a fuel product, not a combustion service or emission factor. Account for actual foreground combustion separately without duplicating an inclusive upstream service. Apply field_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
+          amount:
+            expression: "Collect only this carrier quantity attributable to this node under cp_orchard_inputs. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_orchard_inputs
+              source_ids:
+                - route-energy-fao
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: harvested_nuts_output
+          role: "Harvested nuts before primary conditioning"
+          name: "Harvested residual cultivated nut species"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the declared species and whether the fleshy or fibrous outer hull remains; the hard shell enclosing the kernel remains intact. Raw activity or stage basis: per productive hectare and harvest year."
+          amount:
+            expression: "measured accepted harvest mass with moisture and hull state"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "100"
+                upper: "20000"
+                unit: "kg/ha·year"
+                basis: "as-harvested state declared"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: orchard_residue_output
+          role: "Orchard residues and harvest rejects"
+          name: "Orchard residues and rejected harvested material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record prunings, dropped material, rejected nuts, and incidental biomass separately by fate. Raw activity or stage basis: per 1,000 kg accepted harvested nuts."
+          amount:
+            expression: "measured or reconciled mass by residue class and destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_harvest_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3000"
+                unit: "kg/1,000 kg accepted harvest"
+                basis: "all non-product biomass and rejects by fate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: soil_n2o_output
+          role: "Nitrous oxide to air"
+          name: "Nitrous oxide, emissions to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass / kg N2O"
+          description: "Calculate direct and applicable indirect managed-soil N2O from the same nutrient and residue records. Raw activity or stage basis: per productive hectare and harvest year."
+          amount:
+            expression: "applicable managed-soil method applied to collected N inputs and residues"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_orchard_emissions
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "150"
+                unit: "kg N2O/ha·year"
+                basis: "method calculation governs"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: ammonia_air_output
+          role: "Ammonia to air"
+          name: "Ammonia, emissions to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass / kg NH3"
+          description: "Calculate fertilizer-related volatilization by product, application, weather, and selected factor. Raw activity or stage basis: per productive hectare and harvest year."
+          amount:
+            expression: "applicable volatilization method applied to collected N inputs"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_orchard_emissions
+              source_ids:
+                - emep-eea-2023-guidebook
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg NH3/ha·year"
+                basis: "method calculation governs"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: nitrate_water_output
+          role: "Nitrate to water"
+          name: "Nitrate, emissions to water, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aa31-0050c2490048"
+          property_unit: "Mass / kg nitrate"
+          description: "Calculate or monitor nitrate loss only with a location-appropriate leaching or runoff method. Raw activity or stage basis: per productive hectare and harvest year."
+          amount:
+            expression: "selected leaching/runoff method or monitored balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "n_input"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_orchard_emissions
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1500"
+                unit: "kg nitrate/ha·year"
+                basis: "selected method governs"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: primary_hulling_drying
+    label: "Primary hulling and drying"
+    inputs:
+      product:
+        - row_id: conditioning_nuts_input
+          role: "Harvested nuts entering primary conditioning"
+          name: "Harvested residual cultivated nut species"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the matched incoming batch with species, outer-hull state, hard-shell state, moisture, and origin. Raw activity or stage basis: per conditioning batch and converted to accepted output."
+          amount:
+            expression: "measured incoming batch mass and moisture"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "3"
+                unit: "kg incoming/kg accepted in-shell nuts"
+                basis: "matched batch; outer-hull state declared"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_water_input
+          role: "Conditioning and cleaning water"
+          name: "Process water supply"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record only supplied process water used for washing, wet cleaning, or conditioning; dry routes may record zero. Raw activity or stage basis: per 1,000 kg accepted in-shell nuts."
+          amount:
+            expression: "metered or batch-calculated water; zero when route inactive"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "m3/1,000 kg accepted product"
+                basis: "zero for dry routes"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_energy_input_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electric hulling equipment and drying fans, retaining separate operation records; determine any drying heat carrier from the actual heater. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply conditioning_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
+          amount:
+            expression: "Collect only this carrier quantity attributable to this node under cp_conditioning_records. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - route-energy-fao
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_in_shell_output
+          role: "Conditioned nuts in shell"
+          name: "Other nuts (excluding wild edible nuts and groundnuts), in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the declared species after any required outer-hull removal and drying; the hard shell remains intact. Raw activity or stage basis: per matched batch; scale to 1,000 kg terminal product when applicable. Verify this intermediate state or co-product grade independently; the reference-output UUID is not evidence for this row."
+          amount:
+            expression: "measured accepted mass, moisture, outer-hull state, and gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.3"
+                upper: "1"
+                unit: "kg accepted/kg incoming harvest"
+                basis: "matched wet-to-dry and hulling balance"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: hulls_rejects_output
+          role: "Removed outer hulls and conditioning rejects"
+          name: "Removed outer hulls and conditioning rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record outer hulls, foreign matter, spoiled nuts, and other rejects separately by destination; hard shells of accepted product are not waste. Raw activity or stage basis: per 1,000 kg incoming harvested nuts."
+          amount:
+            expression: "measured mass plus matched mass-balance reconciliation by class and fate"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "700"
+                unit: "kg/1,000 kg incoming harvest"
+                basis: "excludes evaporated water"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: drying_fossil_co2_output
+          role: "Fossil carbon dioxide from on-site drying"
+          name: "Carbon dioxide (fossil), emissions to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg CO2"
+          description: "Record only fossil CO2 from on-site fuel combustion; zero when no fossil fuel is burned on site. Raw activity or stage basis: per 1,000 kg accepted in-shell nuts."
+          amount:
+            expression: "fuel quantity multiplied by carrier-specific carbon and oxidation factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1500"
+                unit: "kg fossil CO2/1,000 kg accepted product"
+                basis: "zero without on-site fossil combustion"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: grading_packing
+    label: "Grading and packing"
+    inputs:
+      product:
+        - row_id: grading_nuts_input
+          role: "In-shell nuts entering grading"
+          name: "Conditioned or farm-gate nuts in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the matched species-specific batch and its moisture, outer-hull state, defects, and prior conditioning. Raw activity or stage basis: per grading batch and converted to packed output."
+          amount:
+            expression: "measured incoming batch mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.5"
+                unit: "kg incoming/kg accepted packed nuts"
+                basis: "matched batch"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grading_energy_input_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy (database reference property: net calorific value) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual electric conveying, sorting, weighing and packing inside the gate. Activate only for documented alternating-current consumption at this node. The identity leaves voltage, technology and provider unspecified; record them and select compatible upstream supply. Preserve measured kWh and convert exactly to MJ using 1 kWh = 3.6 MJ; do not interpret electric energy as combustion fuel or useful heat. Apply grading_energy_input_identification in Section 8. No numerical range or default is inherited from the former aggregate card."
+          amount:
+            expression: "Collect only this carrier quantity attributable to this node under cp_grading_records. Reconcile inclusive services and shared use once; scale the attributed quantity by the declared reference amount divided by matched accepted final output quantity in the same product unit. Preserve process-native throughput records; do not renormalize a final-reference amount."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grading_records
+              source_ids:
+                - route-energy-fao
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Accepted other nuts in shell"
+          name: "Other nuts (excluding wild edible nuts and groundnuts), in shell"
+          flow_type: "product"
+          flow_ref:
+            uuid: "85d33932-8c99-4207-8011-1bec84102f55"
+          property_unit: "Mass / kg"
+          description: "Record the measured accepted output of grading_packing only when that operation actually occurs. Preserve species, condition, grade, moisture, lot and its real outgoing gate. This stable row id identifies an actual route output; the sole final reference is reference_product_at_declared_handoff. Retain raw output and link the selected final lot without counting it as another final product. Any UUID shown is usable only for its independently confirmed physical state/gate; an incompatible upstream/intermediate state needs a separately verified or explicit unresolved identity. Preserve the original stage measurement and collection records. Raw output measurement and reconciliation: Weigh the accepted net lot output of the actual operation under cp_grading_records, retain gross/tare, rejects, stocks, moisture and matched onward lot records, and reconcile before final normalization. Raw activity or stage basis: measured actual operation/lot output and throughput, retained before one final-reference normalization."
+          amount:
+            expression: "measured accepted net output from the actual operation under cp_grading_records; retain raw lot quantity and actual stage throughput, then normalize once under the final-handoff normalization in Section 8; never prescribe a fixed intermediate yield"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids: []
+            ranges: []
+        - row_id: downgraded_nuts_output
+          role: "Downgraded usable nuts in shell"
+          name: "Downgraded nuts in shell by declared destination"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every useful lower grade separately and do not count it as accepted reference output. Raw activity or stage basis: per 1,000 kg incoming grading batch."
+          amount:
+            expression: "measured downgraded mass by grade and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "500"
+                unit: "kg/1,000 kg incoming batch"
+                basis: "matched grading batch"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: grading_rejects_output
+          role: "Grading and packing rejects"
+          name: "Grading and packing rejects by declared destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record unusable nuts, shell fragments, foreign matter, and damaged packaging separately by treatment destination. Raw activity or stage basis: per 1,000 kg incoming grading batch."
+          amount:
+            expression: "measured reject mass by class and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg/1,000 kg incoming batch"
+                basis: "matched grading batch"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: declared_reference_handoff
+    label: "Accepted-product measurement at declared handoff"
+    inputs:
+      product:
+        - row_id: actual_route_product_for_handoff
+          role: "Accepted actual-route product at the same handoff"
+          name: "Other nuts (excluding wild edible nuts and groundnuts), in shell"
+          flow_type: "product"
+          flow_ref:
+            uuid: "85d33932-8c99-4207-8011-1bec84102f55"
+          property_unit: "Mass / kg"
+          description: "Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID."
+          amount:
+            expression: "measured accepted net mass at this same handoff, normalized as R/R * 1000 kg; paired input equals accepted output, with raw R retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_declared_reference_handoff
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_at_declared_handoff
+          role: "Reference product at declared handoff"
+          name: "Other nuts (excluding wild edible nuts and groundnuts), in shell"
+          flow_type: "product"
+          flow_ref:
+            uuid: "85d33932-8c99-4207-8011-1bec84102f55"
+          property_unit: "Mass / kg"
+          description: "Measure only accepted product at the existing declared gate. Match one actual terminal source record; internal paired transfer and this reference represent the same event, not two sales. Verify identity for the actual species/state/gate independently; an identifier confirmed only for fresh farm-gate goods cannot represent an incompatible conditioned or independent pack-house state. Missing identity remains explicit and is not resolved by copying an adjacent output UUID."
+          amount:
+            expression: "1000 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_declared_reference_handoff
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_productive_year
+    applies_to: "perennial orchard"
+    rule: "Attribute annual operations directly to the declared productive year; annualize establishment, replanting, and shared perennial infrastructure over documented service life and productive area."
+    source_ids: []
+  - rule_id: allocation_grade_outputs
+    applies_to: "grading"
+    rule: "Use physical subdivision first. When multiple useful grades leave one inseparable batch, report each mass and apply an explicitly justified allocation consistent across the batch; do not classify useful downgraded nuts as waste."
+    source_ids: []
+  - rule_id: allocation_hulls_residues
+    applies_to: "hulls and residues"
+    rule: "Treat as residue without credit when discarded and without economic function; when sold or used as a co-product, disclose destination and apply a reviewed allocation or substitution scenario separately."
+    source_ids: []
+  - rule_id: allocation_shared_assets
+    applies_to: "shared equipment and storage"
+    rule: "Allocate by measured operating time, throughput, occupied area-time, or another causal driver; prevent the same annual or batch burden from entering both orchard and conditioning nodes."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "regraded or redried material"
+    rule: "Return rework to the producing batch, include additional energy and loss once, and count output only when it reaches the accepted grade."
+    source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_orchard_inputs
+      process_id: "orchard_production_harvest"
+      flow_role: "establishment, nutrients, water, crop protection, energy"
+      record_type: "invoices, field logs, meters, contractor records"
+      raw_fields: "species, cultivar, block, productive area, tree age, input identity, formulation, assay, amount, unit, date, carrier, purpose"
+      collection_method: "reconcile purchase and application records to blocks; Raw aggregation and attribution: sum by block and input, annualize establishment, divide by accepted terminal mass Route-specific requirements: field_energy_input_identification: Actual diesel orchard machinery for floor care, spraying, harvest or internal handling; establish nut species and equipment before activation. Raw activity or stage basis: per productive hectare and harvest year. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. agricultural_nutrient_inputs_specific_input: Operation orchard_production_harvest: Record each mineral fertilizer, organic fertilizer and nutrient-bearing amendment in its own concrete product card; preserve product, assay, event, and nutrient basis. Original quantity method: collect every applied product once and calculate declared nutrient quantities Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. crop_protection_input_specific_input: Operation orchard_production_harvest: Record each actual formulation, active ingredient, concentration, and application event; no generic fixed identity is assigned. Original quantity method: measured formulation quantity by product and event Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
+      unit: "native units plus ha"
+      frequency: "each event"
+      temporal_coverage: "complete declared harvest year; establishment annualization period retained"
+      site_scope: "every included orchard block and shared service"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "invoices, calibrated-meter records, application logs, area map, service-life evidence"
+    - protocol_id: cp_harvest_records
+      process_id: "orchard_production_harvest"
+      flow_role: "harvest, accepted product, residues, rejects"
+      record_type: "weigh tickets, harvest logs, sampling"
+      raw_fields: "species, block, date, gross/tare, accepted mass, outer-hull state, moisture, grade, reject/residue class, fate"
+      collection_method: "calibrated weighing and representative moisture sampling; Raw aggregation and attribution: sum accepted and non-product masses by lot; preserve species and state"
+      unit: "kg, %, ha"
+      frequency: "each lot"
+      temporal_coverage: "complete harvest window"
+      site_scope: "every included orchard block and collection point"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibration certificates, lot IDs, moisture records, destination records"
+    - protocol_id: cp_orchard_emissions
+      process_id: "orchard_production_harvest"
+      flow_role: "soil and nutrient emissions"
+      record_type: "calculated foreground record"
+      raw_fields: "N input by form, residues, soil/climate parameters, factor version, monitored loss where available"
+      collection_method: "apply documented applicable method to cp_orchard_inputs; Raw aggregation and attribution: calculate by block then mass-weight to terminal product"
+      unit: "kg substance"
+      frequency: "each reporting year"
+      temporal_coverage: "same harvest year and relevant lag specified by method"
+      site_scope: "every included managed block"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "factor source, calculation workbook, input reconciliation, reviewer check"
+    - protocol_id: cp_conditioning_records
+      process_id: "primary_hulling_drying"
+      flow_role: "hulling, cleaning, drying, outputs, rejects, emissions"
+      record_type: "batch sheets, scales, meters, fuel records, moisture tests"
+      raw_fields: "species, lot, incoming mass/moisture/hull state, method, time, temperature, water, carrier, energy, accepted mass/moisture, hulls, rejects, fate"
+      collection_method: "matched batch measurement and mass balance; Raw aggregation and attribution: reconcile dry matter and losses per batch, then throughput-weight Route-specific requirements: conditioning_energy_input_identification: Actual electric hulling equipment and drying fans, retaining separate operation records; determine any drying heat carrier from the actual heater. Raw activity or stage basis: per 1,000 kg accepted in-shell nuts. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route."
+      unit: "kg, %, m3, kWh, MJ"
+      frequency: "each batch"
+      temporal_coverage: "all batches represented by dataset"
+      site_scope: "every included conditioning line/site"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "scale and meter calibration, moisture method, batch IDs, fuel invoice, balance closure"
+    - protocol_id: cp_grading_records
+      process_id: "grading_packing"
+      flow_role: "grades, rework, packaging, rejects, energy"
+      record_type: "batch sheets, scale records, package specifications"
+      raw_fields: "species, lot, incoming mass, grade criteria, accepted/downgraded/reject mass, rework, package identity/mass/reuse, energy, destination"
+      collection_method: "matched grading-run reconciliation; Raw aggregation and attribution: sum by grade and destination; allocate shared runs by measured throughput Route-specific requirements: grading_energy_input_identification: Actual electric conveying, sorting, weighing and packing inside the gate. Raw activity or stage basis: per 1,000 kg packed nuts. (route-energy-fao) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. packaging_input_specific_input: Operation grading_packing: Record the actual sack, liner, carton, crate, pallet, or other declared packaging; foreground records determine the one applicable packaging group and concrete exchange. Original quantity method: measured packaging placed with accepted product; reusable items use documented trip allocation Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default."
+      unit: "kg, item, kWh"
+      frequency: "each run or lot"
+      temporal_coverage: "all grading and packing runs represented"
+      site_scope: "every included line/site"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "scale calibration, grade inspection, package specification, lot linkage, balance closure"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "orchard_production_harvest"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
+    - protocol_id: cp_declared_reference_handoff
+      process_id: "declared_reference_handoff"
+      flow_role: "actual accepted terminal product and paired transfer"
+      record_type: "scale/lot/acceptance records"
+      raw_fields: "species; state; grade; moisture/basis; gate; actual_terminal_process_id; actual_terminal_output_row_id; lot/transfer_id; gross/tare/net mass R; raw stage totals/throughputs; stocks, rejects and destinations"
+      collection_method: "Weigh accepted net R at the existing gate; match exactly one actual terminal source of the same lot/state and reconcile all earlier losses and stocks. If conditional preparation is absent use the last actual included eligible product output, without inventing that preparation. Preserve original activity records and all required qualifiers."
+      unit: "kg and native activity units"
+      frequency: "each accepted lot"
+      temporal_coverage: "matched production and handoff period"
+      site_scope: "existing declared producer/primary gate"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "calibrated weighing, acceptance/grade records, lot chain, activation/bypass evidence and closed balances"
+  calculation_rules:
+    - id: calc_area_normalization
+      applies_to: "orchard flows"
+      rule: "annual block total / accepted terminal mass from the same harvest year × 1,000"
+      inputs:
+        - "block input or emission"
+        - "accepted terminal mass"
+      output: "amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_establishment_annualization
+      applies_to: "establishment and perennial assets"
+      rule: "attributable quantity / documented productive service years, then allocate by productive area"
+      inputs:
+        - "establishment quantity"
+        - "service life"
+        - area
+      output: "annual burden"
+      source_ids: []
+    - id: calc_batch_mass_balance
+      applies_to: "conditioning and grading"
+      rule: "incoming mass = accepted + downgraded + rejects + removed hulls + measured or calculated moisture loss ± closure error"
+      inputs:
+        - "matched batch masses and moisture"
+      output: "reconciled batch inventory"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_dry_matter
+      applies_to: "moisture conversion"
+      rule: "as-received mass × (1 − moisture fraction on wet basis)"
+      inputs:
+        - mass
+        - "measured moisture and basis"
+      output: "dry matter mass"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_fossil_co2
+      applies_to: "on-site drying combustion"
+      rule: "fuel quantity × net calorific value × carbon factor × oxidation factor × 44/12 where factor is carbon mass"
+      inputs:
+        - "carrier record"
+        - "selected factors"
+      output: "kg fossil CO2"
+      source_ids:
+        - ipcc-2006-stationary-combustion
+    - id: chemical_species_mass_accounting
+      applies_to: "elementary_nutrient_emissions"
+      rule: "Final elementary exchanges use the mass of the identified substance and one actual receiving compartment. Keep nutrient/activity ledgers separate: species-specific N2O-N × 44/28 gives N2O, NH3-N × 17/14 gives NH3, nitrate-N × 62/14 gives nitrate, and phosphate-P × 95/31 gives phosphate. If the selected flow is elemental phosphorus instead, report kg P and convert phosphate mass by 31/95 only when that species basis is evidenced. Apply a conversion exactly once only when the method output is on the elemental basis; measured compound mass is not reconverted. Total nutrient losses cannot be assigned to a single species without a supported split, and residual/retained soil nutrient is not an emission. Keep direct/indirect pathway ledgers and avoid repeating a pathway already included in the chosen method or upstream inventory. Factor uncertainty ranges screen factors on their stated basis, not final compound amounts or admissible site emissions. Normalize the attributable compound mass once using the accepted reference quantity and the matched measured output. Unknown activity, identity or compartment remains an evidence gap and blocks a completeness claim."
+      inputs:
+        - cp_orchard_emissions
+        - "species-specific activity ledger"
+        - "method pathway and factor basis"
+        - "matched accepted output"
+      output: "Identity-specific exchanges and reconciled activity records"
+      source_ids: []
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_final_handoff_normalization
+      applies_to: "all foreground quantities and actual route outputs"
+      rule: "Let R be positive measured accepted final mass in kg for one matched species/state/grade/gate/period, excluding tare, rejects, co-products and held stock. Physical ledger = raw physical quantity/R * 1000 kg, without burden-allocation scaling. Attributable inventory contribution = attributable raw quantity/R * 1000 kg, preserving native numerator units and the existing output/period attribution. A local intensity q_i=Q_i/O_i first reconstructs Q_i=q_i*actual linked O_i; do not divide by R again after final normalization. Both handoff sides are the same measured event R/R*1000 kg, not another physical yield. Include only actual active operations; record and substantiate bypass. Missing/nonpositive R or an unlinked terminal record blocks a normalized complete result, not zero. Preserve original stage data and cancel paired internal transfers once."
+      inputs:
+        - cp_declared_reference_handoff
+        - "original linked collection protocols"
+      output: "native quantities per declared final reference"
+      source_ids:
+        - declared-handoff-measurement-definition
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Botanical/common species, cultivar where material, lot, CPC residual eligibility, hard-shell state, outer-hull state, moisture, grade, and gate shall be explicit."
+      evidence: "product specification, lot record, photographs or inspection record"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Reconcile productive area, harvest, each conditioning/grading batch, energy, water, rejects, and destinations for the declared period."
+      evidence: "completeness checklist and mass-balance closure"
+    - id: dq_temporal
+      applies_to: "perennial route"
+      requirement: "Use one representative harvest year or disclose a justified multi-year average; retain year-specific yield and input records before averaging."
+      evidence: "dated records and averaging worksheet"
+    - id: dq_measurement
+      applies_to: "mass and moisture"
+      requirement: "Use calibrated scales and a documented representative moisture method; disclose wet/dry basis and sampling frequency."
+      evidence: "calibration and sampling records"
+    - id: dq_route
+      applies_to: "conditional operations"
+      requirement: "Include only actual hulling, drying, grading, packing, rework, and storage activities and disclose inactive nodes."
+      evidence: "process map, batch logs, gate statement"
+validation_rules:
+  - rule_id: validate_residual_identity
+    applies_to: "reference product"
+    rule: "Reject a dataset that does not name one cultivated species and demonstrate that it is not a named CPC nut leaf, wild nut, groundnut, shelled kernel, or mixed lot."
+    source_ids: []
+  - rule_id: validate_shell_state
+    applies_to: "reference product"
+    rule: "Reject when hard-shell integrity, outer-hull state, moisture basis, grade, or terminal gate is missing or internally inconsistent."
+    source_ids: []
+  - rule_id: validate_reference_mass
+    applies_to: "terminal output"
+    rule: "Accepted reference output shall equal 1,000 kg and shall exclude downgraded, rejected, and rework material not yet accepted."
+    source_ids: []
+  - rule_id: validate_route_activation
+    applies_to: "conditional nodes"
+    rule: "Hulling, drying, grading, packing, and their inputs/emissions shall be zero or absent when inactive; when active, matched batch records are required."
+    source_ids: []
+  - rule_id: validate_nutrient_binding
+    applies_to: "orchard nutrients"
+    rule: "Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "harvest, conditioning, grading"
+    rule: "Check accepted, downgraded, rejected, hull, residue, and moisture-loss terms against incoming mass and disclose closure error."
+    source_ids: []
+  - rule_id: validate_ranges
+    applies_to: "all inventory cards"
+    rule: "Flag values outside a range for review; provisional ranges are screens and shall not replace foreground evidence or act as production limits."
+    source_ids: []
+  - rule_id: validate_uuid_use
+    applies_to: "fixed bindings"
+    rule: "Confirm UUID, flow type, property, category, state, and gate; resolve parameterized cards to verified concrete UUIDs before process publication."
+    source_ids: []
+  - rule_id: validate_multi_period
+    applies_to: "perennial burdens"
+    rule: "Reject double attribution of establishment, replacement, or shared infrastructure across harvest years."
+    source_ids: []
+  - rule_id: validate_final_handoff_bypass
+    applies_to: "selected actual route and all conditional bypass states"
+    rule: "Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch."
+    source_ids:
+      - declared-handoff-measurement-definition
+published_dataset_profile:
+  dataset_role: "foreground product system for one declared residual cultivated nut species in shell"
+  downstream_use: "secondary_dataset; background_dataset only when species, route, state, geography, and gate fit the receiving study"
+  allowed_use: "comparative and supply-chain modelling within the declared species, state, technology, period, geography, and gate"
+  excluded_use: "species-neutral averages without composition evidence; named CPC nuts; wild nuts; groundnuts; shelled kernels; processed nuts; substitution across wet/dry or farm/conditioning gates"
+  required_metadata: "species, cultivar, origin, orchard system, productive area and age, harvest year, lot/aggregation, hull and shell state, moisture basis, grade, gate, process activation, allocation, packaging, UUID resolution"
+  required_quality_disclosure: "coverage, measurement methods, missing data, range exceptions, batch mass-balance closure, multi-year averaging, shared-asset attribution, allocation choices, unresolved identities"
+  update_trigger: "species/category correction, gate or route change, material technology change, new representative records, revised emission factors, material yield/moisture change, or verified identity change"
+data_sources:
+  - id: "fao-codex-tree-nut-aflatoxin"
+    type: "official_guidance"
+    reference: "Codex Alimentarius / FAO, Code of Practice for the Prevention and Reduction of Aflatoxin Contamination in Tree Nuts, https://www.fao.org/4/j2262e/j2262e22.htm"
+    used_for: "prompt hulling/drying, moisture and storage controls, lot condition, rejects"
+  - id: "ipcc-2019-managed-soils"
+    type: "method_factor"
+    reference: "IPCC, 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol4.html"
+    used_for: "managed-soil N2O calculation"
+  - id: "emep-eea-2023-guidebook"
+    type: "method_factor"
+    reference: "European Environment Agency, EMEP/EEA air pollutant emission inventory guidebook 2023, https://www.eea.europa.eu/publications/emep-eea-guidebook-2023"
+    used_for: "agricultural ammonia calculation"
+  - id: "ipcc-2006-stationary-combustion"
+    type: "method_factor"
+    reference: "IPCC, 2006 Guidelines, Volume 2, Chapter 2, https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html"
+    used_for: "on-site fuel combustion CO2 calculation"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass identity applied to matched foreground records"
+    used_for: "batch reconciliation and exact reference amount"
+  - id: "route-energy-fao"
+    type: "official_guidance"
+    reference: "FAO, Energy-smart food for people and climate (2011), Annex 2; and Energy use in agriculture and industry, Annex IV. https://www.fao.org/4/i2454e/i2454e00.pdf ; https://www.fao.org/4/Q1085e/q1085e0d.htm"
+    used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
+  - id: "declared-handoff-measurement-definition"
+    type: "method_factor"
+    reference: "This PCR Sections 3, 6 and 8: matched accepted handoff mass divided by itself times the declared reference amount; physical transfer pairing and dimensional normalization identity, not an empirical yield or new physical operation."
+    used_for: "single accepted reference and measured route-throughput linkage"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:259ce0de4a87ba54d21cb6cfe25155648d136bb10c2b25087df56b78debbf77a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5645"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5645
+          line: 63
+          column: 1
+        end:
+          offset: 8138
+          line: 87
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | established productive orchard or plantation at reporting-period start; annualized establishment and replacement inputs cross the boundary |\n| starting_condition_role | start of the declared productive harvest year |\n| product_classification_scope | one cultivated residual nut species that belongs to CPC 01379 and remains in hard shell |\n| recursive_input_rule | same-category in-shell nut input is linked to a separate upstream dataset at its actual state and gate and is not re-created through this PCR |\n| upstream_dataset_requirement | compatible datasets for planting material, nutrients, crop protection, irrigation, energy, packaging, and any externally treated waste |\n| disclosure | species; orchard system; age and productive area; geography; harvest year; allocation periods; yield; hull/shell state; moisture; grade; gate; conditioning route; batches; rejects; packaging; shared assets |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_species_lot` | all routes | Include exactly one residual cultivated nut species and declared lot or aggregation rule; exclude named CPC nut leaves, wild nuts, groundnuts, and mixed-species pooling. |  |\n| `boundary_productive_period` | orchard route | Include annual productive operations, harvest, direct field emissions, annualized establishment, and replacement burdens attributable to the declared harvest year. |  |\n| `boundary_postharvest` | conditioned route | Include only actual outer-hull removal, cleaning, drying, grading, and packing before the declared gate; retain matched batch balances and moisture states. | `fao-codex-tree-nut-aflatoxin` |\n| `boundary_food_safety` | drying and storage | Record elapsed time to drying, drying method, moisture endpoint, storage conditions, and rejected mould-damaged material needed to evaluate contamination prevention. | `fao-codex-tree-nut-aflatoxin` |\n| `boundary_downstream_exclusion` | all routes | Stop before hard-shell cracking, kernel separation, roasting, salting, food manufacture, distribution, retail, and consumption. |  |\n| `boundary_direct_emissions` | soil and on-site combustion | Calculate managed-soil and on-site combustion emissions from the same nutrient, residue, and fuel records used in the inventory. | `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook`; `ipcc-2006-stationary-combustion` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 307
+              line: 8
+              column: 67
+          text: "# Other nuts (excluding wild edible nuts and groundnuts), in shell"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5645
+              line: 63
+              column: 1
+            end:
+              offset: 5666
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_34538"
+      family: "allocation"
+      span:
+        start:
+          offset: 34538
+          line: 633
+          column: 1
+        end:
+          offset: 37873
+          line: 647
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_productive_year` | perennial orchard | Attribute annual operations directly to the declared productive year; annualize establishment, replanting, and shared perennial infrastructure over documented service life and productive area. |  |\n| `allocation_grade_outputs` | grading | Use physical subdivision first. When multiple useful grades leave one inseparable batch, report each mass and apply an explicitly justified allocation consistent across the batch; do not classify useful downgraded nuts as waste. |  |\n| `allocation_hulls_residues` | hulls and residues | Treat as residue without credit when discarded and without economic function; when sold or used as a co-product, disclose destination and apply a reviewed allocation or substitution scenario separately. |  |\n| `allocation_shared_assets` | shared equipment and storage | Allocate by measured operating time, throughput, occupied area-time, or another causal driver; prevent the same annual or batch burden from entering both orchard and conditioning nodes. |  |\n| `allocation_rework` | regraded or redried material | Return rework to the producing batch, include additional energy and loss once, and count output only when it reaches the accepted grade. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 307
+              line: 8
+              column: 67
+          text: "# Other nuts (excluding wild edible nuts and groundnuts), in shell"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 34538
+              line: 633
+              column: 1
+            end:
+              offset: 34578
+              line: 633
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_62353"
+      family: "validation"
+      span:
+        start:
+          offset: 62353
+          line: 726
+          column: 1
+        end:
+          offset: 64922
+          line: 745
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | severity |\n| --- | --- | --- | --- |\n| `validate_residual_identity` | reference product | Reject a dataset that does not name one cultivated species and demonstrate that it is not a named CPC nut leaf, wild nut, groundnut, shelled kernel, or mixed lot. | error |\n| `validate_shell_state` | reference product | Reject when hard-shell integrity, outer-hull state, moisture basis, grade, or terminal gate is missing or internally inconsistent. | error |\n| `validate_reference_mass` | terminal output | Accepted reference output shall equal 1,000 kg and shall exclude downgraded, rejected, and rework material not yet accepted. | error |\n| `validate_route_activation` | conditional nodes | Hulling, drying, grading, packing, and their inputs/emissions shall be zero or absent when inactive; when active, matched batch records are required. | error |\n| `validate_nutrient_binding` | orchard nutrients | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | error |\n| `validate_mass_balance` | harvest, conditioning, grading | Check accepted, downgraded, rejected, hull, residue, and moisture-loss terms against incoming mass and disclose closure error. | error |\n| `validate_ranges` | all inventory cards | Flag values outside a range for review; provisional ranges are screens and shall not replace foreground evidence or act as production limits. | warning |\n| `validate_uuid_use` | fixed bindings | Confirm UUID, flow type, property, category, state, and gate; resolve parameterized cards to verified concrete UUIDs before process publication. | error |\n| `validate_multi_period` | perennial burdens | Reject double attribution of establishment, replacement, or shared infrastructure across harvest years. | error |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_final_handoff_bypass` | selected actual route and all conditional bypass states | Check both presence and absence of optional conditioning/packing/storage against actual records: exactly one required handoff reference persists, its source product/state/gate matches Section 3, active physical rows retain measured throughput, and inactive physical activities add no exchange. Require raw accepted mass, upstream closure, unique transfer pairing and single final normalization; an unexplained state or missing identity is not an assumed valid branch. | `declared-handoff-measurement-definition` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 241
+              line: 8
+              column: 1
+            end:
+              offset: 307
+              line: 8
+              column: 67
+          text: "# Other nuts (excluding wild edible nuts and groundnuts), in shell"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 62353
+              line: 726
+              column: 1
+            end:
+              offset: 62375
+              line: 726
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_species_lot"
+      identity_kind: "explicit"
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 6752
+          line: 80
+          column: 1
+        end:
+          offset: 6966
+          line: 80
+          column: 215
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_productive_period"
+      identity_kind: "explicit"
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 6967
+          line: 81
+          column: 1
+        end:
+          offset: 7184
+          line: 81
+          column: 218
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_postharvest"
+      identity_kind: "explicit"
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 7185
+          line: 82
+          column: 1
+        end:
+          offset: 7422
+          line: 82
+          column: 238
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_food_safety"
+      identity_kind: "explicit"
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 7423
+          line: 83
+          column: 1
+        end:
+          offset: 7671
+          line: 83
+          column: 249
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_downstream_exclusion"
+      identity_kind: "explicit"
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 7672
+          line: 84
+          column: 1
+        end:
+          offset: 7853
+          line: 84
+          column: 182
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_direct_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 7854
+          line: 85
+          column: 1
+        end:
+          offset: 8136
+          line: 85
+          column: 283
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_productive_year"
+      identity_kind: "explicit"
+      unit_id: "normative_34538"
+      source_span:
+        start:
+          offset: 34651
+          line: 637
+          column: 1
+        end:
+          offset: 34901
+          line: 637
+          column: 251
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_grade_outputs"
+      identity_kind: "explicit"
+      unit_id: "normative_34538"
+      source_span:
+        start:
+          offset: 34902
+          line: 638
+          column: 1
+        end:
+          offset: 35176
+          line: 638
+          column: 275
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_hulls_residues"
+      identity_kind: "explicit"
+      unit_id: "normative_34538"
+      source_span:
+        start:
+          offset: 35177
+          line: 639
+          column: 1
+        end:
+          offset: 35437
+          line: 639
+          column: 261
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_shared_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_34538"
+      source_span:
+        start:
+          offset: 35438
+          line: 640
+          column: 1
+        end:
+          offset: 35690
+          line: 640
+          column: 253
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_rework"
+      identity_kind: "explicit"
+      unit_id: "normative_34538"
+      source_span:
+        start:
+          offset: 35691
+          line: 641
+          column: 1
+        end:
+          offset: 35887
+          line: 641
+          column: 197
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_34538"
+      source_span:
+        start:
+          offset: 35960
+          line: 645
+          column: 1
+        end:
+          offset: 37871
+          line: 645
+          column: 1912
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_residual_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 62446
+          line: 730
+          column: 1
+        end:
+          offset: 62671
+          line: 730
+          column: 226
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_shell_state"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 62672
+          line: 731
+          column: 1
+        end:
+          offset: 62859
+          line: 731
+          column: 188
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_reference_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 62860
+          line: 732
+          column: 1
+        end:
+          offset: 63042
+          line: 732
+          column: 183
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_route_activation"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 63043
+          line: 733
+          column: 1
+        end:
+          offset: 63254
+          line: 733
+          column: 212
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_nutrient_binding"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 63255
+          line: 734
+          column: 1
+        end:
+          offset: 63485
+          line: 734
+          column: 231
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 63486
+          line: 735
+          column: 1
+        end:
+          offset: 63683
+          line: 735
+          column: 198
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_ranges"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 63684
+          line: 736
+          column: 1
+        end:
+          offset: 63881
+          line: 736
+          column: 198
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_uuid_use"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 63882
+          line: 737
+          column: 1
+        end:
+          offset: 64077
+          line: 737
+          column: 196
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_multi_period"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 64078
+          line: 738
+          column: 1
+        end:
+          offset: 64239
+          line: 738
+          column: 162
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_final_handoff_bypass"
+      identity_kind: "explicit"
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 64313
+          line: 743
+          column: 1
+        end:
+          offset: 64920
+          line: 743
+          column: 608
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 5645
+          line: 63
+          column: 1
+        end:
+          offset: 5666
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5645"
+      source_span:
+        start:
+          offset: 5694
+          line: 67
+          column: 1
+        end:
+          offset: 6659
+          line: 74
+          column: 223
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_34538"
+      source_span:
+        start:
+          offset: 34538
+          line: 633
+          column: 1
+        end:
+          offset: 34578
+          line: 633
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_62353"
+      source_span:
+        start:
+          offset: 62353
+          line: 726
+          column: 1
+        end:
+          offset: 62375
+          line: 726
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:259ce0de4a87ba54d21cb6cfe25155648d136bb10c2b25087df56b78debbf77a"
+  generated_content_sha256: "sha256:5e2bc1e7928c9a7a29eac404699976b520210e54b556a72d6a3f009d39c16f8d"

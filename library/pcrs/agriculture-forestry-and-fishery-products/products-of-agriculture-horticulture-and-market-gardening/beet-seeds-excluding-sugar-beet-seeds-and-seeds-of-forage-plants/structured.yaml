@@ -1,10 +1,1485 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "01940"
-  title: "Beet seeds (excluding sugar beet seeds) and seeds of forage plants"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.beet-seeds-excluding-sugar-beet-seeds-and-seeds-of-forage-plants"
+  classification_refs: "CPC 3.0 01940; mapping relation: exact"
+  covered_products: "Seed-grade non-sugar beet seed and seed of forage grasses, legumes and other declared forage plants"
+  excluded_products: "Sugar-beet seed; feed grain; harvested forage biomass; vegetative propagules; unverified species aggregation"
+  representative_product: "One declared cleaned, viable planting-seed lot"
+  production_route: "Parent-seed establishment → managed field multiplication → harvest/threshing → drying/conditioning → cleaning/grading → packaging/storage hand-off"
+  market_state: "Cleaned seed released for sowing with species/cultivar, purity, germination or viability, moisture, treatment and certification state declared"
+functional_unit:
+  what: "Cleaned, viable beet or forage planting seed at the producer or processor hand-off"
+  how_much: "1 kg"
+  how_well: "Declared species/cultivar, physical purity, germination or viability, moisture, treatment, certification class and accepted-lot status"
+  how_long_or_cycle: "One traceable multiplication and processing lot; perennial establishment burdens allocated across the declared productive period when relevant"
+  reference_flow_link: "accepted_planting_seed"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "all datasets"
+      rule: "Include only evidenced field multiplication, harvest, threshing, conditioning, grading, packaging and storage operations before the declared hand-off."
+      source_ids:
+        - fao-seed-production-1993
+        - fao-ilri-forage-seed-1996
+    - rule_id: boundary_parent_seed
+      applies_to: "parent seed"
+      rule: "Keep the same-category parent seed as a linked upstream input and prevent recursion into the current lot."
+      source_ids: []
+    - rule_id: boundary_rejects
+      applies_to: "off-spec material"
+      rule: "Exclude rejected or downgraded material from accepted output and disclose every destination."
+      source_ids:
+        - fao-ilri-forage-seed-1996
+    - rule_id: boundary_treatment
+      applies_to: "seed treatment"
+      rule: "Include treatment or coating only when performed before hand-off and supported by lot records."
+      source_ids: []
+    - rule_id: boundary_period
+      applies_to: "perennial forage seed stands"
+      rule: "Allocate establishment and termination burdens across the documented productive seed-harvest period without double counting."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Parent seed, field state and any perennial stand age are declared"
+  starting_condition_role: "Foreground starting condition for the multiplication cycle"
+  product_classification_scope: "One declared member product within CPC 3.0 01940"
+  recursive_input_rule: "Parent seed from the same category is an input exchange from a separately identified upstream seed dataset; do not recurse into the current lot"
+  upstream_dataset_requirement: "Species/cultivar, seed class, geography, gate and quality state must match the parent-seed input"
+  disclosure: "Declare annual or perennial route, field and processor locations, crop cycle, lot links, rejected destinations and included treatment/storage"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Beet seeds (excluding sugar beet seeds) and seeds of forage plants"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species and cultivar"
+    - "seed class"
+    - purity
+    - "germination or viability"
+    - moisture
+    - "treatment/coating"
+    - certification
+    - "production geography"
+    - "hand-off gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference and intermediate seed flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net mass on the declared moisture basis; report gross packaging separately."
+  - id: quality_basis
+    applies_to: "accepted seed"
+    required_property_ref:
+      name: "lot test results"
+      uuid: ""
+    required_unit: "declared test units"
+    rule: "Purity, germination/viability and moisture shall refer to the same released lot."
+process_map:
+  - id: field_multiplication
+    name: "Seed-crop establishment and field multiplication"
+    inclusion: "required"
+    inclusion_condition: "Production of a declared beet or forage seed crop through one crop cycle"
+    role: "managed biological production"
+    quantitative_reference: "1 kg harvestable seed crop"
+  - id: harvest_thresh
+    name: "Harvest and threshing"
+    inclusion: "required"
+    inclusion_condition: "Separation of seed-bearing material and threshing from the field crop"
+    role: "harvest and capture"
+    quantitative_reference: "1 kg raw threshed seed"
+  - id: dry_condition
+    name: "Drying and primary conditioning"
+    inclusion: "required"
+    inclusion_condition: "Moisture stabilization plus winnowing or preliminary cleaning before grading"
+    role: "preservation and primary conditioning"
+    quantitative_reference: "1 kg conditioned seed"
+  - id: grade_pack
+    name: "Cleaning, grading, packaging and hand-off"
+    inclusion: "required"
+    inclusion_condition: "Final impurity removal, lot grading, approved treatment when used, packaging, storage and seed-grade hand-off"
+    role: "material treatment and grading"
+    quantitative_reference: "1 kg accepted planting seed"
+process_inventory:
+  - id: field_multiplication
+    label: "Seed-crop establishment and field multiplication"
+    inputs:
+      product:
+        - row_id: parent_seed
+          role: "Parent seed for multiplication"
+          name: "Beet or forage parent planting seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Declared species/cultivar parent, basic or certified seed introduced to the multiplication field. Raw activity or stage basis: per crop cycle producing the reported harvestable seed."
+          amount:
+            expression: "measured mass placed in the field"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_parent_seed
+              source_ids:
+                - fao-seed-production-1993
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.30"
+                unit: "kg"
+                basis: "per kg harvestable seed crop"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: nutrient_supply
+          role: "Fertilizer, urea input"
+          name: "Fertilizer, urea"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Fertilizer, urea is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "Measured quantity of Fertilizer, urea used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+        - row_id: nutrient_supply_monoammonium_phosphate
+          role: "Fertilizer, monoammonium phosphate input"
+          name: "Fertilizer, monoammonium phosphate"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Fertilizer, monoammonium phosphate is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "Measured quantity of Fertilizer, monoammonium phosphate used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+        - row_id: nutrient_supply_potassium_chloride
+          role: "Fertilizer, potassium chloride input"
+          name: "Fertilizer, potassium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Fertilizer, potassium chloride is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "Measured quantity of Fertilizer, potassium chloride used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+        - row_id: nutrient_supply_cattle_manure
+          role: "Cattle manure, as applied input"
+          name: "Cattle manure, as applied"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Cattle manure, as applied is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "Measured quantity of Cattle manure, as applied used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+        - row_id: nutrient_supply_agricultural_limestone
+          role: "Agricultural limestone input"
+          name: "Agricultural limestone"
+          flow_type: "product"
+          property_unit: "Mass / kg product"
+          description: "Include this conditional card only when Agricultural limestone is actually used in the declared process. For every other actual product or carrier, create a separate atomic exchange with its own identity and measured amount; do not infer its use from this example. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "Measured quantity of Agricultural limestone used by this process and period; report zero or not applicable only when the route records establish absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+        - row_id: irrigation_water
+          role: "Irrigation water supply"
+          name: "Irrigation water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Irrigation water supplied to the seed crop is recorded when irrigation occurs. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "metered or calculated irrigation water delivered"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_irrigation
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "m3"
+                basis: "per kg harvestable seed crop"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: field_energy
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: field_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg harvestable seed crop."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: harvestable_seed_crop
+          role: "Harvestable beet or forage seed crop"
+          name: "Harvestable beet or forage seed crop"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Mature seed-bearing crop leaving managed field multiplication for harvest and threshing. Raw activity or stage basis: per crop cycle and field lot."
+          amount:
+            expression: "measured harvested wet mass attributable to the seed lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_mass
+              source_ids:
+                - fao-seed-production-1993
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "8"
+                unit: "kg"
+                basis: "per kg raw threshed seed"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: harvest_thresh
+    label: "Harvest and threshing"
+    inputs:
+      product:
+        - row_id: harvestable_crop_input
+          role: "Harvestable seed crop received"
+          name: "Harvestable beet or forage seed crop"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The declared field lot enters harvesting and threshing without substitution by forage biomass produced for feed. Raw activity or stage basis: per kg raw threshed seed."
+          amount:
+            expression: "linked mass from field multiplication output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "8"
+                unit: "kg"
+                basis: "per kg raw threshed seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: harvest_energy
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg raw threshed seed."
+          amount:
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: harvest_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg raw threshed seed."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: raw_threshed_seed
+          role: "Raw threshed seed"
+          name: "Raw threshed beet or forage seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Seed separated by threshing before drying, winnowing and final cleaning. Raw activity or stage basis: per harvest lot."
+          amount:
+            expression: "measured mass transferred to conditioning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - fao-ilri-forage-seed-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.5"
+                unit: "kg"
+                basis: "per kg conditioned seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: harvest_residue
+          role: "Harvest and threshing residues"
+          name: "Harvest and threshing residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Chaff, straw and unrecovered material leaving the seed-product route are reported by destination. Raw activity or stage basis: per kg raw threshed seed."
+          amount:
+            expression: "mass balance difference supported by measured or estimated destination records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue_route
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per kg raw threshed seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: dry_condition
+    label: "Drying and primary conditioning"
+    inputs:
+      product:
+        - row_id: raw_seed_input
+          role: "Raw threshed seed received"
+          name: "Raw threshed beet or forage seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The traceable raw seed lot enters moisture stabilization and preliminary conditioning. Raw activity or stage basis: per conditioning batch."
+          amount:
+            expression: "linked input mass from threshing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.5"
+                unit: "kg"
+                basis: "per kg conditioned seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_energy
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg conditioned seed."
+          amount:
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg conditioned seed."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_seed
+          role: "Conditioned seed before final grading"
+          name: "Conditioned beet or forage seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Moisture-stable, preliminarily cleaned seed transferred to final cleaning and grading. Raw activity or stage basis: per conditioning batch."
+          amount:
+            expression: "measured batch output at declared moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - fao-ilri-forage-seed-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.3"
+                unit: "kg"
+                basis: "per kg accepted planting seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: grade_pack
+    label: "Cleaning, grading, packaging and hand-off"
+    inputs:
+      product:
+        - row_id: conditioned_seed_input
+          role: "Conditioned seed received"
+          name: "Conditioned beet or forage seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The conditioned lot enters final cleaning, separation, grading and seed-quality release. Raw activity or stage basis: per grading lot."
+          amount:
+            expression: "linked mass from conditioning output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.4"
+                unit: "kg"
+                basis: "per kg accepted planting seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grading_energy
+          role: "Electricity, medium voltage"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include this exchange only when Electricity, medium voltage is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg accepted planting seed."
+          amount:
+            expression: "Measured Electricity, medium voltage supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: grading_energy_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this exchange only when Diesel fuel is actually supplied to this process. Record every other actual carrier separately. For purchased operating services, retain the supplier boundary and do not also count fuel or electricity already included in that service. Raw activity or stage basis: per kg accepted planting seed."
+          amount:
+            expression: "Measured Diesel fuel supplied to this process and period, normalized once to the declared reference output; convert carrier-native units only with documented density, calorific value or meter conventions where needed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: seed_packaging
+          role: "Seed packaging"
+          name: "Flexible packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bags or other flexible packages used to protect the released seed lot are selected from the actual packaging record. Raw activity or stage basis: per kg accepted planting seed."
+          amount:
+            expression: "measured packaging mass consumed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg"
+                basis: "per kg accepted planting seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_planting_seed
+          role: "Accepted beet or forage planting seed"
+          name: "Beet seeds (excluding sugar beet seeds) and seeds of forage plants"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cleaned viable seed released for sowing at the processor or producer hand-off; species-specific rows must not stand in for the whole category. Raw output measurement and reconciliation: measured net released mass Raw activity or stage basis: per released seed lot."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_tests
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "collected_record"
+                source_ids: []
+      waste:
+        - row_id: rejected_seed_material
+          role: "Seed-cleaning rejects"
+          name: "Seed cleaning rejects"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6bfe90ae-a960-45dd-b1fa-89581c562763"
+          property_unit: "Mass / kg"
+          description: "Off-spec seed, screenings and foreign matter that leave as waste are excluded from accepted seed and reported by reuse, recovery or disposal destination. A saleable downgraded product is recorded separately as an intended product in the concrete foreground dataset. Raw activity or stage basis: per kg accepted planting seed."
+          amount:
+            expression: "measured reject mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject_route
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.60"
+                unit: "kg"
+                basis: "per kg accepted planting seed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_mass_balance
+    applies_to: "each process"
+    rule: "Reconcile input, intended output, moisture change, residues and rejects on the declared mass and moisture basis."
+    source_ids: []
+  - rule_id: allocation_rejects
+    applies_to: "cleaning and grading"
+    rule: "Do not count rejected lots or screenings as accepted seed; record the destination before applying any avoided-product treatment."
+    source_ids:
+      - fao-ilri-forage-seed-1996
+  - rule_id: allocation_coproduct
+    applies_to: "saleable secondary outputs"
+    rule: "Prefer subdivision or direct physical attribution; when allocation remains necessary, disclose the outputs, prices, period, formula and sensitivity."
+    source_ids: []
+  - rule_id: allocation_period
+    applies_to: "perennial production"
+    rule: "Annualize establishment and termination over documented productive seed yield, retaining year-specific yield and loss records."
+    source_ids: []
+  - rule_id: allocation_batches
+    applies_to: "shared runs and storage"
+    rule: "Assign cleaning, changeover, testing and storage burdens using measured run time, mass throughput or another documented causal driver; do not count them twice."
+    source_ids: []
+  - rule_id: allocation_residual_precedence
+    applies_to: "remaining common burden with no specified primary branch"
+    rule: "Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_parent_seed
+      process_id: "field_multiplication"
+      flow_role: "parent seed"
+      record_type: "purchase and sowing record"
+      raw_fields: "species, cultivar, class, supplier, mass, field, date"
+      collection_method: "invoice and calibrated scale; Raw aggregation and attribution: sum accepted parent seed by field lot"
+      unit: "kg"
+      frequency: "each sowing event"
+      temporal_coverage: "complete crop cycle"
+      site_scope: "each field lot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "invoice, lot label, scale check"
+    - protocol_id: cp_field_inputs
+      process_id: "field_multiplication"
+      flow_role: "nutrients and amendments"
+      record_type: "application log"
+      raw_fields: "product, nutrient composition, mass, date, field"
+      collection_method: "invoice plus application record; Raw aggregation and attribution: sum by actual product and retain composition"
+      unit: "kg product"
+      frequency: "each application"
+      temporal_coverage: "complete crop cycle"
+      site_scope: "each field lot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "invoice and application log"
+    - protocol_id: cp_irrigation
+      process_id: "field_multiplication"
+      flow_role: "irrigation water"
+      record_type: "meter or pumping record"
+      raw_fields: "volume, source, field, date, runtime"
+      collection_method: "meter preferred; pump calculation documented; Raw aggregation and attribution: sum delivered water"
+      unit: "m3"
+      frequency: "each event"
+      temporal_coverage: "complete crop cycle"
+      site_scope: "each field lot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "meter calibration or pump specification"
+    - protocol_id: cp_energy
+      process_id: "all_processes"
+      flow_role: "energy"
+      record_type: "fuel, meter and equipment log"
+      raw_fields: "carrier, quantity, unit, run, process, lot"
+      collection_method: "invoice, meter and equipment log; Raw aggregation and attribution: convert carriers and allocate causally to lot"
+      unit: "MJ or kWh"
+      frequency: "each run or reporting interval"
+      temporal_coverage: "complete lot route"
+      site_scope: "each field and facility"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "invoice, meter reading, run log"
+    - protocol_id: cp_harvest_mass
+      process_id: "field_multiplication_harvest_thresh"
+      flow_role: "crop and raw seed mass"
+      record_type: "harvest ticket"
+      raw_fields: "field, lot, date, gross mass, tare, moisture"
+      collection_method: "calibrated scale; Raw aggregation and attribution: net mass by linked lot"
+      unit: "kg"
+      frequency: "each load"
+      temporal_coverage: "complete harvest"
+      site_scope: "each field lot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "weigh ticket and scale check"
+    - protocol_id: cp_lot_mass_quality
+      process_id: "harvest_thresh_dry_condition_grade_pack"
+      flow_role: "intermediate seed mass and moisture"
+      record_type: "batch record"
+      raw_fields: "lot, input mass, output mass, moisture, timestamp"
+      collection_method: "calibrated scale and moisture test; Raw aggregation and attribution: retain stage-specific mass; no cross-lot substitution"
+      unit: "kg; %"
+      frequency: "each batch"
+      temporal_coverage: "complete processing route"
+      site_scope: "each lot and process"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "batch sheet, calibration, sample id"
+    - protocol_id: cp_packaging
+      process_id: "grade_pack"
+      flow_role: "packaging"
+      record_type: "packaging issue record"
+      raw_fields: "package type, net package mass, count, lot"
+      collection_method: "stock issue plus weighing; Raw aggregation and attribution: sum packaging consumed net of documented returns"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete released lot"
+      site_scope: "each packaging line and lot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "stock record and package specification"
+    - protocol_id: cp_release_tests
+      process_id: "grade_pack"
+      flow_role: "accepted seed"
+      record_type: "release and laboratory record"
+      raw_fields: "species, cultivar, class, purity, germination or viability, moisture, treatment, certification, net mass"
+      collection_method: "lot sampling and recognized seed test method; Raw aggregation and attribution: accept only mass covered by release decision"
+      unit: "kg; %"
+      frequency: "each released lot"
+      temporal_coverage: "release date"
+      site_scope: "each processing lot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "certificate, laboratory result, sample chain"
+    - protocol_id: cp_residue_route
+      process_id: "harvest_thresh"
+      flow_role: "residues"
+      record_type: "destination record"
+      raw_fields: "type, mass, destination, date, lot"
+      collection_method: "scale or documented mass balance; Raw aggregation and attribution: sum by destination"
+      unit: "kg"
+      frequency: "each removal"
+      temporal_coverage: "complete harvest lot"
+      site_scope: "each field/facility"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "ticket, receiver record or mass balance"
+    - protocol_id: cp_reject_route
+      process_id: "grade_pack"
+      flow_role: "rejects and downgraded material"
+      record_type: "sorting and destination record"
+      raw_fields: "reason, grade, mass, destination, lot"
+      collection_method: "scale and dispatch record; Raw aggregation and attribution: sum by reason and destination"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete grading lot"
+      site_scope: "each line and lot"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "grading report and destination evidence"
+    - protocol_id: cp_phase1_environment_coverage
+      process_id: "field_multiplication"
+      flow_role: "managed environmental coverage by actual node"
+      record_type: "site/activity/method ledger"
+      raw_fields: "actual production nodes; soil/substrate route; climate/soil; nutrient product mass and composition; residue fate/N; relevant mineralisation/organic-soil/excreta activity; method/tier/equation/version; pathway factors and units; lime/urea; actual fuels; substance/compartment; supplier coverage; site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage"
+      collection_method: "Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap."
+      unit: "native activity units; kg N or substance; area/time as applicable"
+      frequency: "event and annual/lot reconciliation"
+      temporal_coverage: "matched production/cohort period"
+      site_scope: "all actual managed-production nodes"
+      aggregation_rule: "apply applicable coverage calculations then final normalization once"
+      quality_evidence: "original records, method worksheets and applicability evidence"
+  calculation_rules:
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "amount per reference kg = lot amount / net accepted seed mass"
+      inputs:
+        - "lot amount"
+        - "accepted net mass"
+      output: "normalized amount per kg"
+      source_ids: []
+    - id: calc_water
+      applies_to: "irrigation"
+      rule: "delivered water = metered volume, or pump rate × verified runtime when no meter exists"
+      inputs:
+        - "meter or pump rate and runtime"
+      output: "m3 delivered water"
+      source_ids: []
+    - id: calc_energy
+      applies_to: "energy inputs"
+      rule: "convert each recorded carrier to declared energy unit, then allocate by causal lot driver"
+      inputs:
+        - "carrier quantity"
+        - conversion
+        - "lot driver"
+      output: "MJ or kWh per kg"
+      source_ids: []
+    - id: calc_loss
+      applies_to: "each process"
+      rule: "loss or residue = opening input + additions − intended output − closing stock, reconciled for moisture"
+      inputs:
+        - "mass and moisture records"
+      output: "loss/residue mass"
+      source_ids: []
+    - id: calc_period
+      applies_to: "perennial field"
+      rule: "annualized establishment burden = total establishment input × current-year seed yield / documented productive-period seed yield"
+      inputs:
+        - "establishment inputs"
+        - "annual yields"
+      output: "current-year attributed burden"
+      source_ids: []
+    - id: calc_managed_environment_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For the actual owned managed-production node(s), require an applicability ledger for direct soil N2O, volatilisation/deposition-derived indirect N2O, leaching/runoff-derived indirect N2O, NH3/NOx and nutrient losses, plus actual liming/urea-use CO2. Primary calculation precedence is a representative pathway measurement, then a validated site/national method applicable to the crop, soil and management; otherwise use the compatible 2006 IPCC/2019-refined managed-soil equations and climate/input-specific factor selection for N2O and lime/urea CO2. Retain the exact edition, equation, tier, activity and factor units, climate and management applicability; no universal dose or emission factor is prescribed. Non-soil/protected routes need a method valid for their actual medium; do not force soil factors onto an inapplicable route. Use the same period/field N ledger for synthetic and organic additions, residues, actual relevant mineralisation/organic-soil and excreta pathways; demonstrate absent pathways rather than infer zero. Calculate direct and each indirect component separately, then assign each once to matching existing or new concrete cards; never add a total to its components. Convert N2O-N to molecular N2O by 44/28 once. NH3, NOx and nutrient/pesticide loss require an applicable measured or documented substance/fate model; total N/P or an unexplained balance residual is not a compound release. Keep actual receiving compartments and molecular versus elemental/reporting bases explicit; indirect formation does not remove the same N from the source ledger twice. Include actual local combustion releases separately using fuel-specific combustion-only methods; purchased electricity/heat/services retain upstream coverage once. Add one identity-specific exchange only for a supported release and reuse an existing matching card, with verified UUID or explicit unresolved identity. Missing applicable method/activity/factor/identity blocks completeness; it is not a justified zero. Attribute raw activity/release totals and normalize once to the matched accepted reference output."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids:
+        - review-ipcc-soils-2019
+    - id: calc_managed_land_coverage
+      applies_to: "actual managed-production nodes"
+      rule: "For each actual owned managed-production site, collect the occupied area and dated occupation intervals, including attributable establishment/immature and production periods. Occupation is area multiplied by actual duration, converted explicitly to the selected area-time unit (1 ha = 10,000 m2; time in years); hectares per crop-cycle alone are not an area-time result without duration. Partition or take the union of overlapping establishment/management intervals so the same area-time is counted once, with shares across actual co-users summing to one. Record evidenced land transformation separately by actual from/to land class, event area and date under the declared land-use method; transformation has area units and is not added to occupation. Planting, continued occupation or missing prior-land data do not establish a transformation or zero transformation. Preserve actual historical-event attribution and carbon-stock/emission method coverage where applicable; no invented land conversion or generic carbon credit. Instantiate separate compatible elementary identities with verified UUIDs or explicit unresolved identities; attribute once and normalize to the matched final reference. Purchased completed biological inputs inherit compatible upstream land coverage once instead of duplicating it locally. Missing applicable land identity, area, duration or prior-state evidence remains a completeness gap; documented no transformation is a valid absence."
+      inputs:
+        - cp_phase1_environment_coverage
+      output: "attributed native environmental quantities per matched final reference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference lot"
+      requirement: "Species, cultivar, seed class and CPC scope must be explicit; a species-specific UUID cannot represent another species or the complete category."
+      evidence: "lot label and identity review"
+    - id: dq_mass_balance
+      applies_to: "each process"
+      requirement: "Mass balance shall reconcile within a disclosed tolerance and moisture basis."
+      evidence: "weighing and moisture records"
+    - id: dq_completeness
+      applies_to: "foreground route"
+      requirement: "Collect at least 95% of recorded operating days and all released/rejected lots; disclose estimated gaps."
+      evidence: "coverage calculation"
+    - id: dq_temporal
+      applies_to: "crop and processing cycle"
+      requirement: "Use data covering one complete multiplication and processing cycle; perennial stands retain age and yearly yield."
+      evidence: "field and batch dates"
+    - id: dq_flow_binding
+      applies_to: "all cards"
+      requirement: "Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable."
+      evidence: "binding review record"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "reference product"
+    rule: "Reject sugar-beet seed, feed biomass, vegetative propagules and lots without a declared species or cultivar."
+    source_ids: []
+  - rule_id: validate_reference
+    applies_to: "reference flow"
+    rule: "Require exactly 1 kg net accepted seed and all required quality qualifiers; keep category UUID blank until a category-compatible row is verified."
+    source_ids: []
+  - rule_id: validate_lot_link
+    applies_to: "all processes"
+    rule: "Require unbroken field, harvest, conditioning and release lot links."
+    source_ids: []
+  - rule_id: validate_rejects
+    applies_to: "grade_pack"
+    rule: "Accepted output plus destination-specific rejects shall reconcile with conditioned input and documented stock change."
+    source_ids: []
+  - rule_id: validate_period
+    applies_to: "perennial route"
+    rule: "Require productive-period evidence and prevent establishment burdens from being charged more than once."
+    source_ids: []
+  - rule_id: validate_coproduct
+    applies_to: "secondary outputs"
+    rule: "Require explicit intended-output status and attribution method before credit or allocation."
+    source_ids: []
+  - rule_id: validate_nutrients
+    applies_to: "field_multiplication"
+    rule: "Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable."
+    source_ids: []
+  - rule_id: validate_ranges
+    applies_to: "all flow cards"
+    rule: "For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening."
+    source_ids: []
+  - rule_id: validate_binding
+    applies_to: "all flows"
+    rule: "Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground product-system data package and process projection"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared species/cultivar, route, geography, seed class and hand-off compatible with the study"
+  excluded_use: "Proxy for sugar-beet seed, feed biomass, another seed species, or an unqualified category average"
+  required_metadata: "species/cultivar; annual/perennial route; parent-seed class; field and processor geography; crop year; purity; germination/viability; moisture; treatment; certification; lot and gate"
+  required_quality_disclosure: "foreground coverage; estimated gaps; range exceedances; unresolved flow identities; allocation and reject destinations"
+  update_trigger: "new reviewed species-route evidence, verified category flow UUID, changed concrete flow identity verification"
+data_sources:
+  - id: "fao-seed-production-1993"
+    type: "official_guidance"
+    reference: "FAO, Quality Declared Seed / seed production guidance, AGRIS record https://agris.fao.org/search/zh/records/672364348aa2fad1ce470e8a"
+    used_for: "field multiplication, harvesting, conditioning and quality-control route"
+  - id: "fao-ilri-forage-seed-1996"
+    type: "handbook"
+    reference: "FAO/ILRI, *Forage Seed Production*, https://www.fao.org/4/x3996e/x3996e41.htm"
+    used_for: "harvest, threshing, drying, cleaning, storage, rejects and lot-quality controls"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
+  - id: "review-ipcc-soils-2019"
+    type: "official_guidance"
+    reference: "IPCC 2019 Refinement, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf"
+    used_for: "Managed-soil direct/indirect N2O and lime/urea CO2 method context; factors require actual applicability and site activity, not a product default."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c66696a6e3152d9aed0cd7b7e9470dd3140bc5c39c962ee344e778078d556d79"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_3826"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 3826
+          line: 56
+          column: 1
+        end:
+          offset: 5627
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Parent seed, field state and any perennial stand age are declared |\n| starting_condition_role | Foreground starting condition for the multiplication cycle |\n| product_classification_scope | One declared member product within CPC 3.0 01940 |\n| recursive_input_rule | Parent seed from the same category is an input exchange from a separately identified upstream seed dataset; do not recurse into the current lot |\n| upstream_dataset_requirement | Species/cultivar, seed class, geography, gate and quality state must match the parent-seed input |\n| disclosure | Declare annual or perennial route, field and processor locations, crop cycle, lot links, rejected destinations and included treatment/storage |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route` | all datasets | Include only evidenced field multiplication, harvest, threshing, conditioning, grading, packaging and storage operations before the declared hand-off. | `fao-seed-production-1993`; `fao-ilri-forage-seed-1996` |\n| `boundary_parent_seed` | parent seed | Keep the same-category parent seed as a linked upstream input and prevent recursion into the current lot. |  |\n| `boundary_rejects` | off-spec material | Exclude rejected or downgraded material from accepted output and disclose every destination. | `fao-ilri-forage-seed-1996` |\n| `boundary_treatment` | seed treatment | Include treatment or coating only when performed before hand-off and supported by lot records. |  |\n| `boundary_period` | perennial forage seed stands | Allocate establishment and termination burdens across the documented productive seed-harvest period without double counting. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 244
+              line: 8
+              column: 1
+            end:
+              offset: 312
+              line: 8
+              column: 69
+          text: "# Beet seeds (excluding sugar beet seeds) and seeds of forage plants"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 3826
+              line: 56
+              column: 1
+            end:
+              offset: 3847
+              line: 56
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_30359"
+      family: "allocation"
+      span:
+        start:
+          offset: 30359
+          line: 696
+          column: 1
+        end:
+          offset: 33434
+          line: 710
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_mass_balance` | each process | Reconcile input, intended output, moisture change, residues and rejects on the declared mass and moisture basis. |  |\n| `allocation_rejects` | cleaning and grading | Do not count rejected lots or screenings as accepted seed; record the destination before applying any avoided-product treatment. | `fao-ilri-forage-seed-1996` |\n| `allocation_coproduct` | saleable secondary outputs | Prefer subdivision or direct physical attribution; when allocation remains necessary, disclose the outputs, prices, period, formula and sensitivity. |  |\n| `allocation_period` | perennial production | Annualize establishment and termination over documented productive seed yield, retaining year-specific yield and loss records. |  |\n| `allocation_batches` | shared runs and storage | Assign cleaning, changeover, testing and storage burdens using measured run time, mass throughput or another documented causal driver; do not count them twice. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 244
+              line: 8
+              column: 1
+            end:
+              offset: 312
+              line: 8
+              column: 69
+          text: "# Beet seeds (excluding sugar beet seeds) and seeds of forage plants"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 30359
+              line: 696
+              column: 1
+            end:
+              offset: 30399
+              line: 696
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_46592"
+      family: "validation"
+      span:
+        start:
+          offset: 46592
+          line: 760
+          column: 1
+        end:
+          offset: 48809
+          line: 774
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference product | Reject sugar-beet seed, feed biomass, vegetative propagules and lots without a declared species or cultivar. |  |\n| `validate_reference` | reference flow | Require exactly 1 kg net accepted seed and all required quality qualifiers; keep category UUID blank until a category-compatible row is verified. |  |\n| `validate_lot_link` | all processes | Require unbroken field, harvest, conditioning and release lot links. |  |\n| `validate_rejects` | grade_pack | Accepted output plus destination-specific rejects shall reconcile with conditioned input and documented stock change. |  |\n| `validate_period` | perennial route | Require productive-period evidence and prevent establishment burdens from being charged more than once. |  |\n| `validate_coproduct` | secondary outputs | Require explicit intended-output status and attribution method before credit or allocation. |  |\n| `validate_nutrients` | field_multiplication | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n| `validate_ranges` | all flow cards | For every supplied quantitative screen, verify the concrete exchange, bounds, compatible unit and denominator, basis, applicability, evidence kind and external sources; keep EN/ZH/projection equivalent. Provisional reasoned estimates are non-enforcing review prompts, not default quantities, allowed losses or proof of completeness. Where no compatible quantitative bound is supported, explicitly report screening unavailable and review measurements, matched component balances and uncertainty; do not invent a range to satisfy this check. Final reference normalization remains exact and is not an empirical yield. Actual exchange quantities, protocols and compatible unit/conversion evidence are required independently of screening. |  |\n| `validate_binding` | all flows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 244
+              line: 8
+              column: 1
+            end:
+              offset: 312
+              line: 8
+              column: 69
+          text: "# Beet seeds (excluding sugar beet seeds) and seeds of forage plants"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 46592
+              line: 760
+              column: 1
+            end:
+              offset: 46614
+              line: 760
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_3826"
+      source_span:
+        start:
+          offset: 4734
+          line: 73
+          column: 1
+        end:
+          offset: 4980
+          line: 73
+          column: 247
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_parent_seed"
+      identity_kind: "explicit"
+      unit_id: "normative_3826"
+      source_span:
+        start:
+          offset: 4981
+          line: 74
+          column: 1
+        end:
+          offset: 5132
+          line: 74
+          column: 152
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_3826"
+      source_span:
+        start:
+          offset: 5133
+          line: 75
+          column: 1
+        end:
+          offset: 5300
+          line: 75
+          column: 168
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_treatment"
+      identity_kind: "explicit"
+      unit_id: "normative_3826"
+      source_span:
+        start:
+          offset: 5301
+          line: 76
+          column: 1
+        end:
+          offset: 5442
+          line: 76
+          column: 142
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_period"
+      identity_kind: "explicit"
+      unit_id: "normative_3826"
+      source_span:
+        start:
+          offset: 5443
+          line: 77
+          column: 1
+        end:
+          offset: 5625
+          line: 77
+          column: 183
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_mass_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_30359"
+      source_span:
+        start:
+          offset: 30472
+          line: 700
+          column: 1
+        end:
+          offset: 30634
+          line: 700
+          column: 163
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_30359"
+      source_span:
+        start:
+          offset: 30635
+          line: 701
+          column: 1
+        end:
+          offset: 30843
+          line: 701
+          column: 209
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_coproduct"
+      identity_kind: "explicit"
+      unit_id: "normative_30359"
+      source_span:
+        start:
+          offset: 30844
+          line: 702
+          column: 1
+        end:
+          offset: 31053
+          line: 702
+          column: 210
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_period"
+      identity_kind: "explicit"
+      unit_id: "normative_30359"
+      source_span:
+        start:
+          offset: 31054
+          line: 703
+          column: 1
+        end:
+          offset: 31232
+          line: 703
+          column: 179
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_batches"
+      identity_kind: "explicit"
+      unit_id: "normative_30359"
+      source_span:
+        start:
+          offset: 31233
+          line: 704
+          column: 1
+        end:
+          offset: 31448
+          line: 704
+          column: 216
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_residual_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_30359"
+      source_span:
+        start:
+          offset: 31521
+          line: 708
+          column: 1
+        end:
+          offset: 33432
+          line: 708
+          column: 1912
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 46687
+          line: 764
+          column: 1
+        end:
+          offset: 46841
+          line: 764
+          column: 155
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 46842
+          line: 765
+          column: 1
+        end:
+          offset: 47034
+          line: 765
+          column: 193
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_lot_link"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 47035
+          line: 766
+          column: 1
+        end:
+          offset: 47148
+          line: 766
+          column: 114
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 47149
+          line: 767
+          column: 1
+        end:
+          offset: 47307
+          line: 767
+          column: 159
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_period"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 47308
+          line: 768
+          column: 1
+        end:
+          offset: 47456
+          line: 768
+          column: 149
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_coproduct"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 47457
+          line: 769
+          column: 1
+        end:
+          offset: 47598
+          line: 769
+          column: 142
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_nutrients"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 47599
+          line: 770
+          column: 1
+        end:
+          offset: 47820
+          line: 770
+          column: 222
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_ranges"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 47821
+          line: 771
+          column: 1
+        end:
+          offset: 48598
+          line: 771
+          column: 778
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_binding"
+      identity_kind: "explicit"
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 48599
+          line: 772
+          column: 1
+        end:
+          offset: 48807
+          line: 772
+          column: 209
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_3826"
+      source_span:
+        start:
+          offset: 3826
+          line: 56
+          column: 1
+        end:
+          offset: 3847
+          line: 56
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_3826"
+      source_span:
+        start:
+          offset: 3875
+          line: 60
+          column: 1
+        end:
+          offset: 4641
+          line: 67
+          column: 159
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_30359"
+      source_span:
+        start:
+          offset: 30359
+          line: 696
+          column: 1
+        end:
+          offset: 30399
+          line: 696
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_46592"
+      source_span:
+        start:
+          offset: 46592
+          line: 760
+          column: 1
+        end:
+          offset: 46614
+          line: 760
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c66696a6e3152d9aed0cd7b7e9470dd3140bc5c39c962ee344e778078d556d79"
+  generated_content_sha256: "sha256:e8f75fe6b8a81121bc08030db11a1ca0652b06f84886514d8bcc42897bf8cca7"

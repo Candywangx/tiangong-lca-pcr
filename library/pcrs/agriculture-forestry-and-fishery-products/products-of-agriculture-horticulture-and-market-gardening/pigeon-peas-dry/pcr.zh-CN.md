@@ -1,8 +1,1095 @@
 ---
 pcr_id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pigeon-peas-dry
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 干木豆
+
+## 1. 范围与适用性
+
+本 PCR 覆盖成熟干燥的完整木豆籽粒（*Cajanus cajan*），从受管理种植直至农场门交付。包括成熟度、整株割收或成熟荚采摘、田间或场地干燥、脱粒、清理、分级、条件性终干燥、重复结荚批次、茎秆与荚壳、损失、降级、拒收与返工。排除绿色蔬菜木豆、作为种子销售的播种用商品、木豆瓣、面粉、熟制或罐藏品及农场外加工。
+
+## 2. 产品类别识别
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.pigeon-peas-dry |
+| classification_refs | CPC 3.0:01707 Pigeon peas, dry; mapping relation: narrower |
+| covered_products | Mature, cleaned and graded dry whole pigeonpea grain at farm gate |
+| excluded_products | Green vegetable pigeonpea; planting seed sold as seed; split dhal; flour; cooked or canned product; downstream milling |
+| representative_product | Mature dry whole grain of *Cajanus cajan* |
+| production_route | Managed cultivation; whole-plant cutting or mature-pod picking; drying; threshing; cleaning; grading; conditional final drying |
+| market_state | Harvested grain, unprocessed; production mix, at farm gate |
+
+受管理种植是生物生产父活动。整株割收与成熟荚采摘属于替代生产路线，因为两者改变过程拓扑、重复收获批次记录和残余物核算。人工或机械脱粒、日晒或加热干燥属于各自父活动下的替代技术。并存路线在汇总前通过批次记录保持分离。
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| 对象 | Mature dry whole pigeonpea grain, cleaned and graded, at farm gate |
+| 数量 | 1,000 kg as delivered |
+| 质量 | Declared commercial grade, measured moisture, damage and foreign-matter basis, with unresolved rejects excluded |
+| 时间或周期 | One declared crop cycle including every contributing harvest flush and conditioning lot |
+| reference_flow_link | reference_product_at_declared_handoff |
+
+| 字段 | 值 |
+| --- | --- |
+| 参考数量 | 1000 |
+| 参考产品流 | Pigeon peas, dry |
+| 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| 参考单位组 | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| 参考单位 | kg |
+| 必需限定信息 | species *Cajanus cajan*; mature dry whole grain; harvest route; crop cycle and flush count; geography; cultivation system; moisture; grade; damage and foreign matter; farm-gate hand-off |
+| 绑定模式 | `fixed` |
+
+每份前景数据包须声明实际路线、终端产品状态和交接门，保留原始称量、质量平衡及批次追溯记录。以该门的唯一交接参考输出归一化，前序工序采用实测转移数量。
+
+唯一参考输出为 `reference_product_at_declared_handoff`，由下列实际路线在声明交接门的产品承接。原路线输出编号用于追溯实际来源和物理状态，不再分别固定为参考数量。
+
+## 4. 计量与单位规则
+| rule_id | 适用对象 | 必需属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| `reference_mass` | Grain-state mass | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 报告交付态质量及湿基含水率；干物质＝湿质量×（1－含水率分数）。 |
+| `area_to_reference` | Field inputs, emissions and output | Stated activity property | source unit and kg reference product | 保留面积和作物周期记录，再按同周期农场门合格籽粒归一化。 |
+| `nutrient_composition` | 每项养分投入 | Product mass and nutrient-element mass | kg product and kg element | 每种实际产品的质量、养分组成和施用日期分别记录为独立交换；产品质量不等于养分质量。 |
+| `lot_reconciliation` | Harvest and conditioning | Mass | kg | 核对进料、产品、共产品、返工转移、拒收物、移出水及物理损失，不将返回物料计数两次。 |
+
+## 5. 系统边界
+
+边界始于建植前已声明的田间状态，止于合格籽粒在农场门的交付。种植过程将田间成熟作物移交至独立收获节点；收获产生整株、枝条或成熟荚批次；干燥、脱粒、清理与分级形成整理后的籽粒；尚未达到声明交付含水率的籽粒通过条件性终干燥实现稳定化。
+
+作物周期模型采用单一期间归属：后续收获批次仍属于同一作物周期。
+
+### 边界概化
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | Field area, prior crop and residue state, soil management condition, establishment material and opening date before the crop cycle |
+| starting_condition_建模角色 | Foreground cultivation starting condition |
+| product_classification_scope | Mature dry whole pigeonpea grain within CPC 3.0:01707 |
+| recursive_input_rule | Returned grain rework remains linked to its originating lot and retains prior burdens; purchased pigeonpea used for sowing or blending is a separate upstream input. |
+| upstream_dataset_requirement | Use supplier-specific datasets for purchased seed, nutrient products, crop-protection products, water, fuels, electricity and services when available; disclose representative substitutes. |
+| disclosure | Geography; period; variety or maturity class; sole/intercrop status; crop duration; harvest route and flushes; drying and threshing technology; moisture and grade; residue destinations; allocation; rework; farm-gate hand-off |
+
+### 边界规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `boundary_crop_cycle` | Cultivation | Include all attributable operations and inputs from the declared starting condition through maturity, including failed establishment and field loss. | `icrisat-pigeonpea-production-1992` |
+| `boundary_harvest_routes` | Harvest | Model whole-plant cutting and mature-pod picking separately; index each repeated flush and do not treat standing crop retained for a later flush as harvested output. | `icrisat-pigeonpea-production-1992` |
+| `boundary_conditioning` | Conditioning | Include field or floor drying, threshing, cleaning, grading and conditional final drying before farm gate; link every loss, reject and rework path to its producing node. | `icrisat-pigeonpea-production-1992` |
+| `boundary_downstream` | Product transformation | Exclude dehulling, splitting, milling, cooking, canning, retail packing and distribution beyond farm gate. |  |
+| `boundary_soil_emissions` | Managed soil | When N inputs or returned residues occur, include direct and relevant indirect managed-soil N2O pathways under the declared applicable method. | `ipcc-managed-soils-2019` |
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
+| --- | --- | --- | --- | --- | --- |
+| `managed_cultivation` | Managed pigeonpea cultivation | required | Always | Managed biological production with an alternative production route delta | one field crop cycle |
+| `harvest_capture` | Whole-plant cutting or mature-pod picking | required | Declare route and flush | Harvest/capture using alternative technology routes | one harvest lot |
+| `field_floor_drying` | Field or floor drying | required | Always before threshing | Primary conditioning by lot | one drying lot |
+| `thresh_clean_grade` | Threshing, cleaning and grading | required | Always | Batch production for primary conditioning and grading | one conditioning batch |
+| `final_drying_rework` | Final drying and rework | conditional | Grain requires further drying or re-cleaning | Batch production for stabilization and rework | one drying/rework batch |
+| declared_reference_handoff | 声明交接门的产品计量 | required |  | foreground | reference_product_at_declared_handoff |
+
+### 过程：木豆种植管理 (`managed_cultivation`)
+
+生产以作物周期为基础。共享田间负荷在每个作物周期仅计一次，每个收获批次都与该周期关联。
+
+#### 输入
+##### 产品流
+
+###### 播种材料 (`sowing_material`)
+
+Record seed actually sown, including resowing.
+
+- 选定流： 木豆播种材料
+- 流属性/单位： Mass / kg
+- 数量规则： measured mass sown by field and crop cycle
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_cultivation`
+- 来源： `icrisat-pigeonpea-production-1992`
+- 数量范围： Sowing-rate QA range
+  - 范围角色： 典型范围 (`typical_range`)
+  - 下限： 4.2
+  - 上限： 70
+  - 单位： kg/ha per crop cycle
+  - 基准： planted hectare in one crop cycle
+  - 基准类型： 作物周期 (`crop_cycle`)
+  - 证据类型： 外部来源 (`external_source`)
+  - 来源： `icrisat-pigeonpea-production-1992`
+
+###### 尿素肥料投入（`agricultural_nutrient_supply`）
+
+仅当声明的过程实际使用尿素肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：尿素肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的尿素肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_cultivation`
+
+###### 磷酸一铵肥料投入（`agricultural_nutrient_supply_monoammonium_phosphate`）
+
+仅当声明的过程实际使用磷酸一铵肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：磷酸一铵肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的磷酸一铵肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_cultivation`
+
+###### 氯化钾肥料投入（`agricultural_nutrient_supply_potassium_chloride`）
+
+仅当声明的过程实际使用氯化钾肥料时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：氯化钾肥料
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的氯化钾肥料数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_cultivation`
+
+###### 施用的牛粪肥投入（`agricultural_nutrient_supply_cattle_manure`）
+
+仅当声明的过程实际使用施用的牛粪肥时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：施用的牛粪肥
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的施用的牛粪肥数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_cultivation`
+
+###### 农业石灰石投入（`agricultural_nutrient_supply_agricultural_limestone`）
+
+仅当声明的过程实际使用农业石灰石时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：农业石灰石
+- 流属性/单位：质量 / kg 产品
+- 数量规则：记录该过程和期间实际使用的农业石灰石数量；只有路线记录证明未使用时，才填零或不适用。
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_cultivation`
+
+###### 灌溉水 (`irrigation_water`)
+
+Record delivered irrigation only when it occurs; rainfall is not a product input.
+
+- 选定流： 灌溉水
+- 流属性/单位： Volume / m3
+- 数量规则： metered or calculated delivered water by event
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_cultivation`
+- 来源： `icrisat-pigeonpea-production-1992`
+- 数量范围： Provisional irrigation screen
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 15000
+  - 单位： m3/ha per crop cycle
+  - 基准： delivered irrigation for one hectare
+  - 基准类型： 作物周期 (`crop_cycle`)
+  - 证据类型： 推理估算 (`reasoned_estimate`)
+
+作物保护必需记录：完成前景数据包前，逐项列明实际施用的每一种制剂，保留商品名、有效成分、盐或化学形态、浓度、必要时的密度、施用量、日期和处理面积。每项交换选用一个物理上明确的产品身份；有效成分释放按物质及接收区室另行计算。缺少配方身份属于完整性缺口，不得用通用农药、虚构示例或假定为零替代。
+
+处理材料必需记录：数据包完成前，按具体组成、产品身份、数量和使用事件逐项列出实际使用的田间处理产品或沤制助剂；不得发布通用处理材料交换，身份缺失时不得假定为零。
+
+###### 中压电力投入（`field_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: Calculated value (`calculated_value`)
+- 适用范围: Site-specific (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Crop cycle (`crop_cycle`)
+- 证据类型: Calculated from collection (`calculated_from_collection`)
+- 采集协议: `cp_cultivation`
+
+###### 柴油投入（`field_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: Calculated value (`calculated_value`)
+- 适用范围: Site-specific (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Crop cycle (`crop_cycle`)
+- 证据类型: Calculated from collection (`calculated_from_collection`)
+- 采集协议: `cp_cultivation`
+
+作业服务必需记录：数据包完成前，按作业任务、供应商、服务范围、原始计量单位及所含负荷逐项明确实际采购的非能源服务；不得建立通用服务交换。供应商服务已包含的燃料、电力和设备保留在该供应商边界内，同一作业仅计入一次。
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 田间成熟作物 (`standing_mature_crop`)
+
+Record the mature crop handed to harvest, identified by field, crop cycle and maturity evidence.
+
+- 选定流： 田间成熟木豆作物
+- 流属性/单位： Mass / kg grain equivalent
+- 数量规则： harvest receipts plus measured field loss and retained mature material
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_cultivation`
+- 来源： `icrisat-pigeonpea-production-1992`
+- 数量范围： Provisional mature-grain-equivalent yield screen
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 100
+  - 上限： 5000
+  - 单位： kg/ha per crop cycle
+  - 基准： standing mature grain equivalent for one hectare
+  - 基准类型： 作物周期 (`crop_cycle`)
+  - 证据类型： 推理估算 (`reasoned_estimate`)
+
+##### 废物流
+
+###### 收获前损失 (`preharvest_loss`)
+
+Record mature pods or grain lost before collection; standing crop retained for another flush is not loss.
+
+- 选定流： 采收前木豆损失
+- 流属性/单位： Mass / kg grain equivalent
+- 数量规则： field sampling and crop-cycle reconciliation
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_cultivation`
+- 来源：
+- 数量范围： Pre-harvest loss fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 0.8
+  - 单位： kg loss/kg standing mature grain equivalent
+  - 基准： mature grain equivalent in one crop cycle
+  - 基准类型： 作物周期 (`crop_cycle`)
+  - 证据类型： 推理估算 (`reasoned_estimate`)
+
+##### 基本流
+
+#### 输出
+
+##### 基本流
+
+###### 管理土壤氧化亚氮 (`managed_soil_n2o`)
+
+Calculate direct and relevant indirect N2O from recorded synthetic N, organic N, returned residue N and other applicable sources.
+
+- 选定流： 管理土壤向空气排放的一氧化二氮
+- 流属性/单位： Mass / kg N2O
+- 数量规则： calculated from foreground N activity and declared factors
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per hectare and crop cycle.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 作物周期 (`crop_cycle`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_cultivation`
+- 来源： `ipcc-managed-soils-2019`
+- 数量范围： Provisional managed-soil N2O screen
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 100
+  - 单位： kg N2O/ha per crop cycle
+  - 基准： included direct and indirect pathways for one hectare
+  - 基准类型： 作物周期 (`crop_cycle`)
+  - 证据类型： 推理估算 (`reasoned_estimate`)
+
+### 过程：整株割收或成熟荚采摘 (`harvest_capture`)
+
+每批声明整株/枝条割收或成熟荚采摘。重复采摘须记录批次标识以及留在田间的作物。
+
+#### 输入
+##### 产品流
+
+###### 田间成熟作物投入 (`harvest_inputs`)
+
+按来源田块、收获批次和采收轮次记录成熟作物。
+
+- 选定流: 田间成熟木豆作物
+- 流属性/单位: Mass / kg
+- 数量规则: lot-linked crop input
+- 数值来源模式: Foreground record (`foreground_record`)
+- 适用范围: Route-specific (`route_specific`)
+原始活动或阶段基准：per harvest lot and flush.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Process output (`process_output`)
+- 证据类型: Collected record (`collected_record`)
+- 采集协议: `cp_harvest`
+- 来源: `icrisat-pigeonpea-production-1992`
+- 数量范围: Harvest-input mass screen
+  - 范围角色: QA guardrail (`qa_guardrail`)
+  - 下限: 1
+  - 上限: 20
+  - 单位: kg standing crop/kg collected dry-grain equivalent
+  - 基准: one harvest lot
+  - 基准类型: Process output (`process_output`)
+  - 证据类型: Reasoned estimate (`reasoned_estimate`)
+
+###### 中压电力投入（`harvest_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: Calculated value (`calculated_value`)
+- 适用范围: Route-specific (`route_specific`)
+原始活动或阶段基准：per harvest lot and flush.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Process output (`process_output`)
+- 证据类型: Calculated from collection (`calculated_from_collection`)
+- 采集协议: `cp_harvest`
+
+###### 柴油投入（`harvest_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: Calculated value (`calculated_value`)
+- 适用范围: Route-specific (`route_specific`)
+原始活动或阶段基准：per harvest lot and flush.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Process output (`process_output`)
+- 证据类型: Calculated from collection (`calculated_from_collection`)
+- 采集协议: `cp_harvest`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 收集的整株、枝条或成熟荚 (`collected_harvest_material`)
+
+Record the physical state handed to drying and keep whole-plant, branch and pod-picked lots separate.
+
+- 选定流： 已收集的木豆收获物
+- 流属性/单位： Mass / kg
+- 数量规则： weighed collected mass by field, route and flush
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per harvest lot.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_harvest`
+- 来源： `icrisat-pigeonpea-production-1992`
+- 数量范围： Collected fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg collected material/kg harvest input
+  - 基准： harvest-lot mass balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+##### 废物流
+
+###### 收获损失与伴生物料 (`harvest_loss`)
+
+Record shattered pods, spilled grain and cut material without intended use; exclude living crop retained for a later flush.
+
+- 选定流： 采收损失及伴生材料
+- 流属性/单位： Mass / kg
+- 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per harvest lot.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_harvest`
+- 来源：
+- 数量范围： Harvest-loss fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg loss/kg harvest input
+  - 基准： harvest-lot mass balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+##### 基本流
+
+### 过程：田间或场地干燥 (`field_floor_drying`)
+
+将收集状态的进料干燥至适合脱粒的状态。按批记录地点、持续时间、翻动物料、天气暴露、含水率和损害。
+
+#### 输入
+##### 产品流
+
+###### 接收的收获物料 (`predrying_input`)
+
+记录从已识别收获批次移交至本干燥批次的称量收获物料。
+
+- 选定流： 已收集的木豆收获物
+- 流属性/单位： Mass / kg
+- 数量规则： weighed material entering the drying lot
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per drying lot.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_predrying`
+- 来源： `icrisat-pigeonpea-production-1992`
+- 数量范围： Pre-threshing drying-input screen
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 1
+  - 上限： 20
+  - 单位： kg wet material/kg dry-grain equivalent
+  - 基准： one drying lot
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 推理估算 (`reasoned_estimate`)
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 待脱粒的干燥植株或荚 (`dried_harvest_material`)
+
+记录移交脱粒的干燥整理批次及其实测产出含水率。
+
+- 选定流： 干燥后的木豆植株或豆荚
+- 流属性/单位： Mass / kg
+- 数量规则： weighed dry material with output moisture by lot
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per drying lot.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_predrying`
+- 来源： `icrisat-pigeonpea-production-1992`
+- 数量范围： Field or floor drying duration
+  - 范围角色： 典型范围 (`typical_range`)
+  - 下限： 1
+  - 上限： 14
+  - 单位： day
+  - 基准： elapsed exposure for one drying lot
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 外部来源 (`external_source`)
+  - 来源： `icrisat-pigeonpea-production-1992`
+
+##### 废物流
+
+###### 天气损害与散落 (`predrying_loss`)
+
+将损坏、污染或散落物料与计算得到的除水量分开记录。
+
+- 选定流： 脱粒前干燥损失
+- 流属性/单位： Mass / kg
+- 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per drying lot.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_predrying`
+- 来源：
+- 数量范围： Physical-loss fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 0.5
+  - 单位： kg physical loss/kg drying input
+  - 基准： drying-lot mass balance excluding removed water
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 推理估算 (`reasoned_estimate`)
+
+##### 基本流
+
+### 过程：脱粒、清理与分级 (`thresh_clean_grade`)
+
+每批记录人工或机械技术、清洁/换线、投入以及全部等级或去向产出。将干燥物料分为合格籽粒、降级籽粒、有明确用途的茎荚产出和拒收物。
+
+#### 输入
+##### 产品流
+
+###### 干燥收获物料投入 (`conditioning_inputs`)
+
+按来源干燥批次记录干燥收获物料。
+
+- 选定流: 干燥后的木豆植株或豆荚
+- 流属性/单位: Mass / kg
+- 数量规则: weighed material by conditioning batch
+- 数值来源模式: Foreground record (`foreground_record`)
+- 适用范围: Technology-specific (`technology_specific`)
+原始活动或阶段基准：per conditioning batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Process output (`process_output`)
+- 证据类型: Collected record (`collected_record`)
+- 采集协议: `cp_conditioning`
+- 来源: `icrisat-pigeonpea-production-1992`
+- 数量范围: Conditioning-input mass screen
+  - 范围角色: QA guardrail (`qa_guardrail`)
+  - 下限: 1
+  - 上限: 20
+  - 单位: kg dried material/kg accepted and downgraded grain
+  - 基准: one conditioning batch
+  - 基准类型: Process output (`process_output`)
+  - 证据类型: Reasoned estimate (`reasoned_estimate`)
+
+###### 中压电力投入（`conditioning_energy`）
+
+仅当声明的过程实际使用中压电力时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：中压电力
+- 数量规则：记录该过程和期间实际使用的中压电力数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：能量 / kWh
+- 数值来源模式: Calculated value (`calculated_value`)
+- 适用范围: Technology-specific (`technology_specific`)
+原始活动或阶段基准：per conditioning batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Process output (`process_output`)
+- 证据类型: Calculated from collection (`calculated_from_collection`)
+- 采集协议: `cp_conditioning`
+
+###### 柴油投入（`conditioning_energy_diesel`）
+
+仅当声明的过程实际使用柴油时纳入此条件卡。其他实际产品或能源须各自建立单一交换，记录独立身份和实测数量；不得从本示例推定其必然使用。
+
+- 选定流：柴油
+- 数量规则：记录该过程和期间实际使用的柴油数量；只有路线记录证明未使用时，才填零或不适用。
+- 流属性/单位：质量 / kg
+- 数值来源模式: Calculated value (`calculated_value`)
+- 适用范围: Technology-specific (`technology_specific`)
+原始活动或阶段基准：per conditioning batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Process output (`process_output`)
+- 证据类型: Calculated from collection (`calculated_from_collection`)
+- 采集协议: `cp_conditioning`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 合格清洁籽粒 (`accepted_clean_grain`)
+
+The hand-off is to final drying when moisture exceeds the declared condition, or to farm-gate release otherwise.
+
+在归属前，应将该预期产出与任何预期的茎秆或荚壳共产品一并声明。
+
+- 选定流： 合格的清理后木豆籽粒
+- 流属性/单位： Mass / kg
+原始产出计量与核对要求：weighed grain by grade, moisture and batch
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per conditioning batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_conditioning`
+- 来源： `icrisat-pigeonpea-production-1992`
+- 数量范围： Accepted-grain fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg accepted grain/kg conditioning input
+  - 基准： conditioning-batch mass balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+###### 降级籽粒 (`downgraded_grain`)
+
+Record usable grain outside the reference grade with its grade, reason, destination and hand-off.
+
+- 选定流： 降级木豆籽粒
+- 流属性/单位： Mass / kg
+- 数量规则： weighed downgrade by reason and destination
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per conditioning batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_conditioning`
+- 来源：
+- 数量范围： Downgraded-grain fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg downgraded grain/kg conditioning input
+  - 基准： conditioning-batch mass balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+###### 有明确用途的茎秆与荚壳 (`stem_pod_coproduct`)
+
+Record stems, branches or pod walls as co-products only with documented production intent, recipient and use; otherwise classify them as residue or waste.
+
+- 选定流： 有预期用途的木豆茎及荚壁
+- 流属性/单位： Mass / kg dry matter
+- 数量规则： weighed or moisture-corrected transfer to recipient
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per conditioning batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_conditioning`
+- 来源：
+- 数量范围： Intended residue-output fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg dry output/kg dry conditioning input
+  - 基准： conditioning-batch dry-matter balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+##### 废物流
+
+###### 拒收物与清理损失 (`conditioning_rejects`)
+
+Record damaged or contaminated grain, foreign matter, dust and physical loss. Assign disposal, recovery or rework; unresolved rejects cannot enter accepted output.
+
+- 选定流： 整备拒收物及清理损失
+- 流属性/单位： Mass / kg
+- 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per conditioning batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_conditioning`
+- 来源：
+- 数量范围： Reject fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg reject/kg conditioning input
+  - 基准： conditioning-batch mass balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+##### 基本流
+
+### 过程：终干燥与返工 (`final_drying_rework`)
+
+可用投入为已清理籽粒。稳定化产出为达到声明含水率和等级的干籽粒。重复干燥或清理须保留来源批次及既有负荷，仅增加增量负荷。
+
+#### 输入
+##### 产品流
+
+###### 进入终干燥或返工的籽粒 (`final_drying_inputs`)
+
+按原因、来源批次和技术分别记录合格或不合格籽粒。
+
+- 选定流: 需要最终干燥或返工的清理后木豆籽粒
+- 流属性/单位: Mass / kg
+- 数量规则: measured batch input with incoming moisture and grade
+- 数值来源模式: Foreground record (`foreground_record`)
+- 适用范围: Technology-specific (`technology_specific`)
+原始活动或阶段基准：per final-drying or rework batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型: Process output (`process_output`)
+- 证据类型: Collected record (`collected_record`)
+- 采集协议: `cp_final_drying`
+- 来源: `icrisat-pigeonpea-production-1992`
+- 数量范围: Final-drying input mass screen
+  - 范围角色: QA guardrail (`qa_guardrail`)
+  - 下限: 1
+  - 上限: 1.5
+  - 单位: kg incoming grain/kg stabilized grain
+  - 基准: one final-drying or rework batch
+  - 基准类型: Process output (`process_output`)
+  - 证据类型: Reasoned estimate (`reasoned_estimate`)
+
+###### 中压电力（`final_drying_energy`）
+
+仅在本过程实际使用中压电力时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per final-drying or rework batch。
+
+- 选定流：中压电力
+- 流属性/单位：能量 / kWh
+- 数量规则：计量本过程和期间实际使用的中压电力，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_final_drying`
+- 来源：`icrisat-pigeonpea-production-1992`
+
+###### 柴油（`final_drying_energy_diesel`）
+
+仅在本过程实际使用柴油时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per final-drying or rework batch。
+
+- 选定流：柴油
+- 流属性/单位：质量 / kg
+- 数量规则：计量本过程和期间实际使用的柴油，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_final_drying`
+- 来源：`icrisat-pigeonpea-production-1992`
+
+###### 购入蒸汽（`final_drying_energy_steam`）
+
+仅在本过程实际使用购入蒸汽时纳入本交换；其他实际载能体各自独立记录。采购作业服务时保留供应商边界，服务中已包含的燃料或电力不得再次计入。
+原始活动或阶段基准：per final-drying or rework batch。
+
+- 选定流：购入蒸汽
+- 流属性/单位：能量 / MJ
+- 数量规则：计量本过程和期间实际使用的购入蒸汽，仅归一到声明参考输出一次；必要时使用有记录的密度、热值或仪表约定换算载能体原始单位。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_final_drying`
+- 来源：`icrisat-pigeonpea-production-1992`
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+##### 产品流
+
+###### 农场门成熟干木豆籽粒 (`pigeonpea_farm_gate_grain`)
+
+该合格参考产出排除所有未解决的拒收物和降级品。
+
+- 选定流： Pigeon peas, dry `6cac6f0d-9d09-4685-86f5-e1cc1ac94511`
+- 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+原始产出计量与核对要求：exactly the accepted as-delivered reference mass with measured moisture
+
+- 数量规则：实测净转移质量，保留批次、实际产品状态和含水率基准；在声明交接门对账至最终参考输出。
+- 数值来源模式： 固定值 (`fixed_value`)
+- 适用范围： 产品特定 (`product_specific`)
+原始活动或阶段基准：per 1,000 kg reference product.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 参考流 (`reference_flow`)
+- 证据类型： 身份引用 (`identity_reference`)
+- 来源：
+- 数量范围： Reference-output identity
+  - 范围角色： 允许范围 (`allowed_range`)
+  - 下限： 1000
+  - 上限： 1000
+  - 单位： kg
+  - 基准： one PCR reference flow
+  - 基准类型： 参考流 (`reference_flow`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+###### 回收的降级籽粒 (`recovered_downgraded_grain`)
+
+Record grain still outside the reference grade after rework only when it leaves for a documented lower-grade use.
+
+- 选定流： 回收的降级木豆籽粒
+- 流属性/单位： Mass / kg
+- 数量规则： weighed outgoing mass by origin and destination
+- 数值来源模式： 前景记录 (`foreground_record`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per rework batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 采集记录 (`collected_record`)
+- 采集协议： `cp_final_drying`
+- 来源：
+- 数量范围： Recovered downgrade fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg downgraded output/kg rework input
+  - 基准： rework-batch mass balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+##### 废物流
+
+###### 终干燥损害与拒收物 (`final_drying_reject`)
+
+Record heat or mould damage, contamination and physical loss; calculated water removal is not waste.
+
+- 选定流： 最终干燥损伤及未回收拒收物
+- 流属性/单位： Mass / kg
+- 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
+- 数值来源模式： 计算值 (`calculated_value`)
+- 适用范围： 场址特定 (`site_specific`)
+原始活动或阶段基准：per final-drying or rework batch.
+
+- 归一化基准：每声明的参考流
+- 基准类型： 过程输出 (`process_output`)
+- 证据类型： 根据采集数据计算 (`calculated_from_collection`)
+- 采集协议： `cp_final_drying`
+- 来源：
+- 数量范围： Final-drying reject fraction
+  - 范围角色： QA 校验 (`qa_guardrail`)
+  - 下限： 0
+  - 上限： 1
+  - 单位： kg reject/kg batch input
+  - 基准： final-drying or rework-batch mass balance
+  - 基准类型： 过程输出 (`process_output`)
+  - 证据类型： 方法公式 (`method_formula`)
+  - 来源： `mass-balance-identity`
+
+##### 基本流
+
+
+### 过程：声明边界的产品交接计量（`declared_reference_handoff`）
+该节点记录既有系统边界上的实际交接数量，用于对账和参考数量归一化。它不代表新增物理工序，不自动引入干燥、冷却、储存、包装或运输。每份数据包须声明一条实际路线、一个终端产品状态、含水率或干物质基准及交接门。仅将该路线在此交接门的合格产品传入本节点；其他路线不得作为额外投入，联产品另行记录并按第 7 节处理。前序工序的投入、损失和排放只计一次。以实际交接净质量作为归一化分母；计量对账节点不改变质量、产率或分配结果。
+#### 输入
+##### 产品流
+###### 实际路线的交接产品（`actual_route_product_for_handoff`）
+记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
+- 选定流：干木豆
+- 流属性 / 单位：质量 / kg
+- 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+该计量节点不产生新的废物投入。
+##### 基本流
+该计量节点不产生新的资源投入。
+#### 输出
+##### 产品流
+###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
+- 选定流：干木豆
+- 流属性 / 单位：质量 / kg
+- 数量规则：1000 kg
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每声明的参考流
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_declared_reference_handoff`
+实际状态的产品 UUID 须独立核实；当前未确认时保持待核实，不继承前序或其他路线的 UUID。
+- 数量范围：交接数量归一化恒等式
+  - 范围角色：QA 校验（`qa_guardrail`）
+  - 下限：1
+  - 上限：1
+  - 单位：kg/kg 同状态交接净质量
+  - 基准：同一交接状态的实测净质量归一化；不表示物理工序的产率
+  - 基准类型：过程输出（`process_output`）
+  - 证据类型：方法公式（`method_formula`）
+  - 来源：`declared-handoff-measurement-definition`
+
+##### 废物流
+实际损失已在发生工序记录；不得在此重复记录。
+##### 基本流
+实际排放已在发生工序记录；不得在此重复记录。
+
+## 7. 分配与共产品处理
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `allocation_subdivision_first` | All nodes | 有独立测量时，分配前细分田块、采收轮次、批次、技术及返工记录。 |  |
+| `allocation_crop_cycle` | Shared cultivation | 除采用经审查因果方法外，按各轮合格及降级干籽粒质量比例将共享栽培负担分配一次，不在每轮重复施加。 |  |
+| `allocation_intended_outputs` | Grain, stems and pods | 仅在有生产意图、质量状态、接收方及交接时将产出作共产品；对完整预期产出集合采用一个声明经济、物理或经审查因果方法并披露敏感性。 |  |
+| `allocation_rework` | Re-drying and re-cleaning | 返回物料承接既有负担，增量负担只加一次；放行前不将返回质量作新投入或合格产出。 |  |
+| `allocation_reject_exit` | Downgrade and waste | 降级产出按完整产出归属规则处理；除非适用已披露下游废物约定，废物处理负担留于产生节点。 |  |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_residual_precedence` | 未规定主方法分支的剩余共同负担 | 本 PCR 要求研究作联产品分配决策但未规定主方法的地方，统一执行以下优先顺序；已明确规定的类别专属主方法保持有效。先直接归属可分开的产出专属作业。剩余共同负担 B 只有在实测作业或生物服务记录证明驱动量 d_i 代表因果消耗时，才采用该物理驱动。产品可称量、有价值或等级较低本身均不构成因果依据，不能在面积、时间、质量和收入间任意切换。可比等级接受相同共同搬运服务时，仅在服务需求、状态及水分基准可比且有据时采用实测处理质量。份额 a_i=d_i/sum(d_j)，B_i=B*a_i。该共同作业没有可辩护的因果物理驱动时，采用同交接点、同期间经济份额 a_i=(q_i*p_i)/sum(q_j*p_j)，纳入全部独立预期产出，匹配数量/价格单位、币种和代表性价格，使用产出专属下游加工之前的价值。缺价格或分母证据使分配结果不完整，不能把产品价格记零或改称单一产出系统。披露合计为一的份额和重要替代方法敏感性；敏感性方法不是可任意替换的主结果。废物、留存残余和内部转移不获得联产品份额，其应归属的生产/处理负担仍保留在产出可售产品的路线中。未分配物理数量和质量平衡另行保留。本分支不自动给予替代信用；单独界定的替代情景须保留总清单及实际被替代功能证据。 | `ghg-protocol-product-standard-2011` |
+
+## 8. 前景数据采集、计算与质量规则
+
+清单完整性：具名条件卡是单项交换示例，不是穷尽配方，也不要求使用这些产品。完成前景数据包前，逐项列出所有实际种植材料、养分产品、作物保护制剂、资产材料、作业服务、载能体、包装材料、废物流及适用的基本物质，使用明确的物理身份、状态、原始属性/单位、来源或接收区室及实测或按方法计算的数量。身份或数量缺失属于完整性缺口，不得假定为零。保留实际批次和阶段基准；不得将中间转移累加为额外最终产出，也不得重复计入采购服务已包含的负荷。
+
+先按各采集协议保留原始场址、批次、周期及阶段数量与分母，并完成库存、损失、含水率和共产品归属核对；随后按实际归属的验收交付产品量归一化：归一化交换量 = 归属原始交换量 × 声明参考数量 / 同一边界和计量基准的验收产品量。多年生建植和共享作业先执行各自分摊规则，不得把内部转移数量设为最终参考数量。每声明的参考流指第 3 节的数量、单位和产品状态；数据包必须声明实际路线和门。
+
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_建模角色 | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `cp_cultivation` | `managed_cultivation` | inputs, mature crop, loss, soil-emission activity | field-cycle record | field; area; dates; variety; crop system; seed; actual nutrient products/composition; irrigation; protection; energy; residue management; yield/loss | invoices, logs, meters, sampling and reconciliation；原始汇总与分配：aggregate by field/cycle then normalize by accepted grain | native units, ha, kg | each event; crop-cycle summary | full crop cycle | every field | 每声明的参考流 | dates, calibration, labels, reconciliation |
+| `cp_harvest` | `harvest_capture` | crop input, services, collected state, loss | harvest-lot/flush record | field; cycle; route; flush; maturity; date; crop estimate; service; collected mass; retained crop; loss ; 实际材料/状态/去向；代表性物流计量；其他全部组分/库存项；未解释差额及不确定性| scale, sampling and operation log；原始汇总与分配：keep routes/flushes separate and reconcile states | kg and service units | every lot/flush | all contributing flushes | every field/route | 每声明的参考流 | lot id, scale check, maturity evidence |
+| `cp_predrying` | `field_floor_drying` | wet input, dry output, moisture and loss | drying-lot record | lot; location; time; protection; input/output mass and moisture; damage; spill ; 实际材料/状态/去向；代表性物流计量；其他全部组分/库存项；未解释差额及不确定性| scale, moisture meter and lot log；原始汇总与分配：report water removal separately from physical loss | kg, %, day | every lot | full interval | every drying place | 每声明的参考流 | calibration, traceability, inspection |
+| `cp_conditioning` | `thresh_clean_grade` | batch input, services, grades, co-product and reject | batch record | batch; source lot; technology; input; moisture; energy; cleaning/changeover; outputs; grade; damage; destination ; 实际材料/状态/去向；代表性物流计量；其他全部组分/库存项；未解释差额及不确定性| scale, meter, service and grade records；原始汇总与分配：reconcile before grade/destination aggregation | kg, %, energy/service | each batch/changeover | all contributing batches | every route/site | 每声明的参考流 | calibration, lineage, destination receipt |
+| `cp_final_drying` | `final_drying_rework` | input, energy, moisture, release, downgrade and reject | drying/rework batch | batch; origin; reason; input/output mass/moisture; route; temperature; duration; energy; grade; destination ; 实际材料/状态/去向；代表性物流计量；其他全部组分/库存项；未解释差额及不确定性| scale, moisture/temperature/time/energy records；原始汇总与分配：retain prior burdens, add incremental burdens once, reconcile outputs | kg, %, °C, hour, energy | every pass | full intervention | every route/site | 每声明的参考流 | calibration, lineage, release record |
+| `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
+| `cp_phase1_environment_coverage` | managed_cultivation | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
+
+### 计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_moisture` | Wet/dry mass | 进入空气的去除水=进入材料水+实际外加水+期初水库存-全部合格/降级/拒收/残余转出物流含水-单独外排液态水-期末水库存；采用匹配实测湿质量和水分比例或相容密度。内部循环相消。纳入实际雨水吸收/返潮，干物质和非水损失分开。实测或有据闭合平衡应确认实际蒸发和接收空气边界；缺少组分或未解释差额不能证明水汽或零。按匹配最终合格产出归一化一次。 | mass and moisture | dry matter and water removed | `mass-balance-identity` |
+| `calc_normalization` | All activities | Sum only linked records, divide by accepted as-delivered grain and multiply by 1,000 kg. | linked quantities and accepted grain | quantity per reference flow | `mass-balance-identity` |
+| `calc_soil_n2o` | N additions and residues | 采用声明且适用的 IPCC 或经审查国家层级方法，包括适用直接、挥发/沉降及淋失/径流路径。 | N composition, residue N, factors | kg N2O by pathway | `ipcc-managed-soils-2019` |
+| `calc_reconciliation` | Every lot/batch | 进料干质量＝合格、预期共产品、降级、拒收及物理损失干质量之和；返工返回是转移。 | linked input/output mass and moisture | variance and completeness flag | `mass-balance-identity` |
+| `chemical_species_mass_accounting` | `elementary_nutrient_emissions` | 最终基本交换使用已识别物质的质量和一个实际接收环境，养分／活动台账另存：该物种的 N2O-N × 44/28 为 N2O，NH3-N × 17/14 为 NH3，硝酸盐氮 × 62/14 为硝酸盐，磷酸盐磷 × 95/31 为磷酸盐。若选定流为元素磷，则报告 kg P，仅在物种口径有据时将磷酸盐质量乘 31/95。只有方法输出按元素计时才换算一次，实测化合物质量不得再换算。总养分损失不得无据归于单一物种，土壤残余／留存养分不是排放。保留直接／间接路径台账，不重复所选方法或上游清单已经包含的路径。因子不确定性范围只按其声明基准检查因子，不是最终化合物数量或场址排放的允许界限。用合格参考数量和匹配实测产出，将可归属化合物质量归一化一次。活动量、身份或接收环境未知时保留证据缺口，不得宣称完整。 | `cp_cultivation`; 物种特定活动量台账、方法路径和因子基准、匹配合格产出 | 按身份区分的交换和对账活动记录 |  |
+
+### 环境覆盖计算规则
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| `calc_managed_land_coverage` | 实际管理生产节点 | 逐实际自主管理生产场址采集占用面积及有日期的占用区间，包括应归属的建植/未产期与生产期。占用量为面积乘实际时长，明确换为所选面积时间单位（1 ha=10,000 m2，时间按年）；只有每作物周期公顷数而无时长不能得到面积时间。建立、管理区间重叠时划分区间或取并集，同一面积时间只计一次，实际共同使用者份额合计为一。土地转化按声明土地利用方法，另记实际前/后土地类别、事件面积和日期；转化使用面积单位，不能与占用量相加。种植、持续占用或前土地资料缺失不能证明发生转化，也不能证明零转化。适用时保留历史事件归属及碳库/排放方法覆盖，不编造转化或通用固碳信用。分别建立兼容基本流身份，采用已核实UUID或明确未决身份，归属一次后按匹配最终参考产出归一化。外购已完成的生物投入承接兼容上游土地覆盖一次，不在本地重复。适用土地身份、面积、时长或前状态证据缺失属于完整性缺口；有据无转化可记录为不适用。 | cp_phase1_environment_coverage | 按匹配最终参考量的应归属原生环境数量 |  |
+
+### 数据质量要求
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| `dq_identity` | Reference output | 确认物种、完整籽粒状态、农场门状态、等级、含水率、损伤及异物。 | release and specification |
+| `dq_temporal` | Route lineage | Cover every input event, flush, drying lot, batch and rework pass. | field-to-gate lineage |
+| `dq_completeness` | Output states | 将每项产出归类为合格、降级、预期共产品、返工、残体、废物或损失。 | reconciled balance |
+| `dq_measurement` | Quantities | 使用校准或已核实设备，并说明估算方法及不确定性。 | calibration and records |
+| `dq_representativeness` | Production mix | 按合格产出加权田块/路线，披露排除、替代及份额。 | contribution table |
+
+## 9. 校验规则
+
+| rule_id | 适用对象 | 规则 | source_ids |
+| --- | --- | --- | --- |
+| `validate_identity` | Reference product | 青态、种子市场用途或加工产品，以及缺少物种、含水率、等级及农场门限定项的籽粒不通过。 |  |
+| `validate_lineage` | Process map | 要求连续的田块—周期—采收轮次—干燥批次—处理批次—返工—农场门追溯链，每项替代路线有唯一母路线。 | `icrisat-pigeonpea-production-1992` |
+| `validate_flushes` | Pod picking | 要求采收轮次 id、留存站立作物及共享栽培负担一次归属。 | `icrisat-pigeonpea-production-1992` |
+| `validate_grades` | Grading | 要求合格及非合格状态、每种状态的交接，区分降级、拒收、废物及返工。 |  |
+| `validate_rework` | Rework | 拒绝返回质量或既有负担双计，将未决不合格籽粒排除于合格产出。 |  |
+| `validate_multi_output` | Intended outputs | 要求完整列举产出及明确归属决定，同一产出不得出现在两个交接点。 |  |
+| `validate_mode_indexing` | Periods/lots/batches | 将投入、产出、清理/换线及得率关联相应期间、采收轮次或批次；重复共享负担不通过。 |  |
+| `validate_nutrient_cardinality` | Cultivation Product inputs | 分别核验每种实际交换的具体流 UUID、物理状态、流属性和单位；未确认时明确保留未解析身份。 |  |
+| `validate_ranges` | 带数量范围的卡片 | 已提供的范围须核对完整上下限及中英文本与结构化输出的一致性；重要流缺少范围须作为候选证据缺口披露，不得编造数值界限。 |  |
+| `validate_final_condition` | Farm-gate grain | 要求实测最终含水率；ICRISAT 的6–8%观察属于来源特定 QA 指引，除非声明规格采用，否则不是通用等级要求。 | `icrisat-pigeonpea-production-1992` |
+
+## 10. 发布数据集画像
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_建模角色 | Foreground farm-gate production dataset for mature dry pigeonpea grain |
+| downstream_use | `secondary_dataset`; `background_dataset` after representativeness and quality review |
+| allowed_use | Processes and lifecycle models requiring mature dry whole pigeonpea grain within the declared geography, period, route mix, grade and moisture basis |
+| excluded_use | Green pigeonpea, planting seed, split dhal, flour, cooked/canned product, unreviewed generic pulse substitution, downstream transport or processing |
+| required_metadata | PCR id/version; geography; period; fields/cycles; variety; crop system; harvest routes/flushes; technologies; grade; moisture; damage/foreign matter; residue destinations; allocation; rework; coverage and uncertainty |
+| required_quality_disclosure | measured/estimated shares; missing records; substitutions; route coverage; balance variance; moisture conversion; emission method/factors; allocation sensitivity; 具体流身份核验 status |
+| update_trigger | Material change in boundary, UUID, grade/moisture basis, topology, technology mix, co-product use, attribution, emission method, geography or QA evidence |
+
+## 11. 数据源
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `icrisat-pigeonpea-production-1992` | handbook | Singh, F. and Oswalt, D. L. (1992), *Pigeonpea Botany and Production Practices*, ICRISAT. https://oar.icrisat.org/2422/1/Pigeonpea-Botany-Production-Practices.pdf | Identity, cultivation, sowing rate, maturity, whole-plant/repeated-picking routes, drying, threshing, cleaning and moisture guidance |
+| `ipcc-managed-soils-2019` | method_factor | IPCC (2019), *2019 Refinement to the 2006 IPCC Guidelines*, Volume 4, Chapter 11. https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf | Managed-soil direct and indirect N2O method |
+| `mass-balance-identity` | method_factor | Conservation of dry matter and physical mass across a declared process node | Moisture conversion, reconciliation and fraction bounds |
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| `declared-handoff-measurement-definition` | `method_factor` | 本 PCR 第 3、6、8 节的净质量归一化定义：同一状态、同一交接门的实测净质量作为自身归一化分母，质量比为 1；交接计量不增加物理工序。 | 同阶段和交接计量恒等式；属于定义，不是实测产率、经验默认值或外部文献。 |
+| `ghg-protocol-product-standard-2011` | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 一般分配优先顺序及可比交接点经济价值基准。适用条件和明确的剩余分支是本 PCR 的方法约定；该来源不规定本产品因果系数、价格或产出数量。 |

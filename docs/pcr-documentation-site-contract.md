@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-23
-lastReviewedNote: "PCR #145 / PR #136: reviewed Fumadocs core/UI 16.17.7 and Zod 4.6.7, literal search-title rendering and semantic listbox-option acceptance with emitted Worker, keyboard selection and navigation checks. All 11 strict projects / 415 authored files and 86 focused tests pass; synthetic browser proof does not replace complete hosted corpus, coverage, sealed-web or release qualification. Runtime and methodology/publication contracts remain in force. PCR #144 / PR #135: reviewed latest compatible @types/node 24.19.2 and npm 12.2.0 lock regeneration against pinned Node 24.19.0. All 11 strict projects / 415 authored files, release-runtime preflight and four runtime tests pass on macOS ARM64; full hosted Linux, corpus, coverage, browser and sealed-product qualification remain required. Canonical methodology, publication and runtime pins retain their existing contracts. These separately reviewed changes are composed for qualification; PR #135 must merge before PR #136. PCR #143 / PR #139: this candidate composes the separately reviewed dependency repairs at exact 6d5b3a3b0fd35c0bb0c158e593be2295b6b5aa38 with PR134 main 641e35e686b3857e31f4f808befa6419707d30c6 and the 57 PR139 candidates. Incoming implementation and lockfiles retain exact reviewed bytes; 228 PR139 and 238 PR134 canonical files retain original bytes, with 1035 accepted edges, 1186 material PCRs and 1906 aliases. PR135 must merge before PR136, then PR139. Prior focused validation is source-specific; complete fresh hosted qualification of this composition, scientific review, translation approval, formal methodology publication, deployment and workspace integration remain separate required boundaries. PCR #142 / PR #137: reviewed 58 additional candidates, the corrected narrower writing-ink relation and the three-label presentation union on the reviewed PR134/135/136/139 source. Canonical contribution bytes and dependency implementation are preserved; normal generators produce 1093 accepted edges, 1244 material PCRs and 1860 aliases. Local runtime, full strict types and derived checks pass. Fresh hosted qualification is required for this composition; merge order is PR135, PR136, PR139, then PR137. Candidate scientific and translation approval remain separate."
-lastReviewedCommit: 351d2b5720ab5005b2d7320865876b9e276ac39f
+lastReviewedNote: "PCR #141: reviewed the bounded site-capacity correction: record-owned PCR downloads, 80 KiB candidate Markdown / 16 KiB manifests, two workers with one page render each, and failed-stage RSS/exit diagnostics preserving prior output. 68 focused tests and all 11 strict projects / 419 authored files pass on macOS ARM64; exact complete 1,457-record source, file/search/RSS, browser/no-JS, sealed-product and hosted qualification remain pending. Search behavior/budgets, canonical methodology, lifecycle/translation approval and ownership are unchanged; this review does not complete the official-name audit or publication. PCR #143 composition: retains all 57 PR139 candidate records and their accepted edges together with reviewed PCR141 canonical and site-capacity repairs. Original contribution bytes are preserved; generated indexes require recomputation. This local candidate still needs the official-name audit, complete fresh hosted qualification, merge of PR138 before PR139, workspace integration and stable publication. PCR #142 composition: retains all 58 PR137 candidates, the corrected narrower writing-ink relation and three category labels together with all 57 PR139 candidates and reviewed PCR141 canonical/site-capacity repairs. Contribution bytes are preserved apart from the separately reviewed lac translation-status correction; normal generators retain the complete union. Official-name audit and complete fresh hosted qualification remain required; PR138 must merge before PR139, then PR137, followed by workspace integration and stable publication."
+lastReviewedCommit: "b148dcee5e57bdfb80f3e1548f57e96691f9b724"
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -74,9 +74,28 @@ exact release metadata bytes. Old snapshots are never rewritten by migration.
 ## Losslessness and generated artifacts
 
 The core document bundle contains the complete manifest, verified structured
-projection, declared languages and original artifact buffers. Raw downloads copy
-those buffers byte for byte. Exact-byte download hashes are distinct from the
+projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
+
+Current candidate PCRs with authored methodology and no release history may use
+native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
+`pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
+each required-language Markdown limit is 81,920 original bytes. Eligibility comes
+from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
+These bounded downloads preserve each original filename and work without
+JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
+byte to the pinned source. Current candidate HTTP URLs for these artifacts may
+change with this transport; use each record's current download links.
+Published/deprecated current artifacts, all release/history/revision artifacts,
+optional-language Markdown, larger files and structured projections retain
+physical downloads. When different source artifacts have identical inline bytes,
+only the first uses that data URL; later artifacts retain physical URLs so source
+identity and download filenames remain unambiguous. Physical responses keep
+attachment/noindex headers; inline bytes create no separately indexable HTTP
+resource. Source-relative links reuse the same source-bound download and filename.
+The exporter verifies rendered download anchors, and sealed-site qualification
+checks the largest available inline artifact per filename without
+JavaScript in Chromium, Firefox and WebKit.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -86,10 +105,16 @@ Unsupported source constructs, missing required files and stale projections
 cannot become empty successful output.
 
 Generated metadata lives in `.generated/site.json`; page HTML and complete
-structured data are separate artifacts read only at build time. Public downloads
+structured data are separate artifacts read only at build time. Physical downloads
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
+
+PCR page metadata, including historical pages and continuations, does not repeat
+the record's download list. The owning current or historical record retains the
+complete list and renders the same native download anchors on each reading page.
+Module and guide page metadata keeps its existing download fields. This removes
+redundant worker input without changing source bytes, reading routes or downloads.
 
 ### Page summaries
 
@@ -153,7 +178,7 @@ Each real document has its own canonical URL. Hreflang lists only verified,
 existing counterparts at the same version. Current complete public candidates
 may be indexed with their status visible. Scaffolds, unavailable translations,
 internal revisions, search/filter permutations and raw downloads are not normal
-indexing targets. Raw download responses carry attachment and noindex headers.
+indexing targets. Physical raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
 ## Reader navigation and presentation
@@ -285,9 +310,19 @@ elapsed-time acceptance budget. CI bounds its instrumented documentation job to
 60 minutes; stage and total durations remain reported. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
-deadline, cleanup and atomic handoff remain enforced. The export uses four workers
-with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
-guard; a heap ceiling is not proof of total resident memory.
+deadline, cleanup and atomic handoff remain enforced. The export uses two workers
+with at most one static page render in flight per worker. Its 4 GiB Node heap
+ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap
+ceiling is not proof of total resident memory.
+
+Each attempted stage emits `build-stage` diagnostics with its command, duration,
+sampled peak process-tree RSS, measurement availability, child exit code and
+passed/failed status. A zero-exit child that exceeds the RSS guard is a failed
+stage. The final `build-result` diagnostic reports failure even when cleanup or
+handoff fails after all stages. Failed runs write
+`.generated/build-failure-metrics.json` after cleanup returns, separately from
+the last successful `.generated/build-metrics.json`; neither failure receipt
+claims a successful export or relaxes the atomic output handoff.
 
 ### Build workspace storage
 
@@ -378,6 +413,34 @@ fails initialization and remains retryable. Export key order, terms, posting IDs
 slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
+
+Search manifest version 4 adds bounded score-slot masks, reversible numeric posting
+ID deltas and optional columnar maps. The generator selects supported encodings
+only when smaller and verifies exact restoration of every original engine export.
+The Worker retains version 1, 2 and 3 readers, validates version-specific metadata
+and rejects malformed masks, columns or posting deltas before import; failed loads
+remain retryable. Complete result records, export and posting order, tokenization,
+ranking, text buckets and the 20 MB raw / 4 MB gzip per-language budgets remain
+unchanged. Build diagnostics report actual raw/gzip bytes, shards and records.
+
+### Inspector data transport
+
+The field inspector groups complete generated records into versioned JSON packs,
+using positional entries `[key, manifest, structured]`. Each record carries its
+exact transport key; current records and historical releases have distinct keys.
+Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
+whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
+array position, object-key order or empty value is removed. Generation requires
+each decoded record to serialize exactly as its original generated data; export
+verification repeats that comparison against the shipped pack for every record.
+The reader retains support for older unkeyed single-record payloads, rejects
+unknown versions, duplicate or missing keys and malformed records, and preserves
+the inspector's visible retry behavior. Browser qualification exercises the actual
+inspector in both languages and for available historical releases.
+
+This is lossless file packing to reduce the number of exported transport files.
+Server-side record data, byte-exact raw downloads, complete static HTML and every
+native Next navigation payload remain intact. No hosting rewrite is required.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
