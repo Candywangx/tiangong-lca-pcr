@@ -10,8 +10,9 @@ const nextConfig: NextConfig = {
   experimental: {
     // TypeScript 7 has no JavaScript compiler API; use the local tsc CLI.
     useTypeScriptCli: true,
-    // Each page worker loads the complete manifest; bound duplicated metadata within 6 GB.
+    // Limit simultaneous full-document/inline-download render state under the aggregate RSS gate.
     cpus: 2,
+    staticGenerationMaxConcurrency: 1,
   },
 };
 

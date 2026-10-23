@@ -215,14 +215,14 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: stand_other_goods
-          role: "Other intended stand goods at actual handoff"
-          name: "Other intended stand goods at actual handoff"
+        - row_id: stand_roundwood_product
+          role: "Roundwood from the declared cork-producing stand"
+          name: "Roundwood from the declared cork-producing stand"
           flow_type: "product"
-          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 (unit group 93a60a57-a4c8-11da-a746-0800200c9a66) / kg"
-          description: "Enumerate actual independent timber, fuelwood or other intended goods and their handoffs at the responsible stand event; do not turn retained biomass or litter into a sold co-product."
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Enumerate actual independent timber, fuelwood or other intended goods and their handoffs at the responsible stand event; do not turn retained biomass or litter into a sold co-product. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "measured actual attributable exchange"
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -232,15 +232,25 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_stand
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: stand_fuelwood_product
+          role: "Fuelwood from the declared cork-producing stand"
+          name: "Fuelwood from the declared cork-producing stand"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Enumerate actual independent timber, fuelwood or other intended goods and their handoffs at the responsible stand event; do not turn retained biomass or litter into a sold co-product. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stand
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -358,14 +368,14 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: stripping_other_goods
-          role: "Other intended goods at removal handoff"
-          name: "Other intended goods at removal handoff"
+        - row_id: stripping_coppice_roundwood
+          role: "Roundwood from cork-tree coppice removal"
+          name: "Roundwood from cork-tree coppice removal"
           flow_type: "product"
-          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 (unit group 93a60a57-a4c8-11da-a746-0800200c9a66) / kg"
-          description: "Actual independently delivered wood from the declared coppice interface or other intended goods only; match source ownership and do not duplicate stand_other_goods at a second handoff."
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Actual independently delivered wood from the declared coppice interface or other intended goods only; match source ownership and do not duplicate stand_other_goods at a second handoff. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "measured actual attributable exchange"
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -375,15 +385,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_stripping
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         - row_id: stripping_waste
           role: "Extraction waste transferred to actual recipient"
@@ -850,7 +852,7 @@ dataset_production:
       flow_role: "stand inputs, attributable bark, land and other goods"
       record_type: "stand/cohort/service records"
       raw_fields: "species; stand/source id; establishment and maintenance phase; area and dates; harvest history; attributable bark quantity; materials; energy carrier; service asset/consumer; independent output; emissions substance/medium"
-      collection_method: "Collect source-owner records, weigh bark at handoff and match phase/event inventories; explicitly classify materials, services, products and retained stock stand_energy_specific_input: Operation stand_management: One conditional umbrella for recorded fuels, electricity or heat. Preserve carriers and original units before documented conversion to MJ; no labour or asset-service hours in this card. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stand_services_specific_input: Operation stand_management: Actual attributable nursery, maintenance, access-road or equipment service hours; enumerate asset consumers and periods. An inclusive purchased service excludes duplicate included fuel, materials and exhaust. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stand_direct_emissions_specific_emission: Conditional reported substance-specific emissions to actual media from included interventions. Require substance, compartment and calculation evidence; no automatic biological carbon uptake, avoided-emission or whole-tree sequestration credit. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
+      collection_method: "Collect source-owner records, weigh bark at handoff and match phase/event inventories; explicitly classify materials, services, products and retained stock stand_energy_specific_input: Operation stand_management: One conditional umbrella for recorded fuels, electricity or heat. Preserve carriers and original units before documented conversion to MJ; no labour or asset-service hours in this card. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stand_services_specific_input: Operation stand_management: Actual attributable nursery, maintenance, access-road or equipment service hours; enumerate asset consumers and periods. An inclusive purchased service excludes duplicate included fuel, materials and exhaust. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stand_direct_emissions_specific_emission: Conditional reported substance-specific emissions to actual media from included interventions. Require substance, compartment and calculation evidence; no automatic biological carbon uptake, avoided-emission or whole-tree sequestration credit. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. stand_other_goods_specific_output: Preserve every actual intended output previously collected under stand_other_goods, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "actual kg, MJ, h and m2a separately"
       frequency: "each phase/event and reporting period"
       temporal_coverage: "actual establishment through covered harvest and relevant replacement/termination"
@@ -862,7 +864,7 @@ dataset_production:
       flow_role: "source feed, raw bark, services, wood, waste and emissions"
       record_type: "extraction campaign records"
       raw_fields: "route recurrent/coppice; source portion; incoming bark/wood quantity; felling owner; virgin/secondary/reproduction; bark/back inclusion; raw wet mass; moisture basis; independent wood handoff; retained material; fuel/service; waste recipient; pollutant/compartment"
-      collection_method: "Weigh the extraction handoffs; record actual tree/wood interfaces, source ownership, incidental and retained materials; independently document direct substances stripping_energy_specific_input: Operation bark_stripping: One actual fuel/electricity/heat umbrella for stripping and the declared extraction interface; manual peeling does not imply powered felling or metabolic inventory. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stripping_services_specific_input: Actual allocated equipment or extraction service hours at the source interface; disclose whether any felling is owned or already embedded in purchased wood. measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stripping_emissions_specific_emission: Conditional actual on-site exhaust or other measured substance emissions with named pollutant and receiving compartment; no generic exhaust UUID or duplicate emissions of an inclusive service. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
+      collection_method: "Weigh the extraction handoffs; record actual tree/wood interfaces, source ownership, incidental and retained materials; independently document direct substances stripping_energy_specific_input: Operation bark_stripping: One actual fuel/electricity/heat umbrella for stripping and the declared extraction interface; manual peeling does not imply powered felling or metabolic inventory. Original quantity method: measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stripping_services_specific_input: Actual allocated equipment or extraction service hours at the source interface; disclose whether any felling is owned or already embedded in purchased wood. measured actual attributable exchange Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. stripping_emissions_specific_emission: Conditional actual on-site exhaust or other measured substance emissions with named pollutant and receiving compartment; no generic exhaust UUID or duplicate emissions of an inclusive service. measured actual attributable exchange This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. stripping_other_goods_specific_output: Preserve every actual intended output previously collected under stripping_other_goods, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "actual kg, MJ and h separately"
       frequency: "each extraction source lot/campaign"
       temporal_coverage: "actual harvest and covered reporting period"
@@ -1008,7 +1010,7 @@ data_sources:
     used_for: "Rest, boiling, stabilization and downstream manufacture distinction; examples of times, moisture and expansion not adopted"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:904f95cc14ee55f73befa85d94d854293497458988b735ed1540c53d7ebbfbb9"
+  source_sha256: "sha256:36c84fcb55753df52d23ae7badd24b43587a8b8d3bce567dd6cf52b9bb2fa261"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6824"
@@ -1059,16 +1061,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36792"
+    - unit_id: "normative_40348"
       family: "allocation"
       span:
         start:
-          offset: 36792
-          line: 720
+          offset: 40348
+          line: 730
           column: 1
         end:
-          offset: 38901
-          line: 731
+          offset: 42457
+          line: 741
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `output_owner` | every source/removal/qualification output | Enumerate all intended outputs and real handoffs, including actual stand goods, coppice wood and other qualified cork grades. Distinguish retained biomass, loss, rejected material and waste; one good cannot be sold at two model handoffs. | |\n| `subdivision_first` | shared product burdens | Subdivide separately metered production and operations first. For residual common stand/extraction or multi-grade burden, document the causal physical allocation basis and actual output data; if no defensible physical relationship exists, use documented economic shares of the same period and market gates with sensitivity disclosure. No default mass allocation across whole-tree and bark stocks or automatic substitution credit. | |\n| `period_share` | stand phases and stock periods | Assign establishment, maintenance, harvest and actual replacement/termination to evidenced cohorts and periods; allocate yard/boiler/storage service by actual use. Carry previous stock burdens forward, not as newly harvested product. Unknown phase attribution blocks final concrete dataset completion. | |\n| `run_share` | batch or continuous campaigns | Attribute common startup, cleanout and changeover to recorded runs and participating lots; ensure shares reconcile to one common run total. Count boiling baths/circulation, rest and packaging once. | |\n| `asset_share` | shared infrastructure | Enumerate actual consuming nodes and periods for every shared asset or service. Use documented service use with denominator, non-cork consumers and residual share; do not duplicate an inclusive upstream service with own asset or utilities. | |\n| `reject_path` | all producing nodes | Link off-spec material to actual rework, downgrade, recovery or waste recipient at its producing node. A returned lot keeps incurred burdens and rework inputs, but no second final output; exclude unresolved rejects from accepted net cork and retain real waste burdens. | |\n\n"
       headings:
@@ -1087,12 +1089,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36792
-              line: 720
+              offset: 40348
+              line: 730
               column: 1
             end:
-              offset: 36832
-              line: 720
+              offset: 40388
+              line: 730
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1107,16 +1109,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_71239"
+    - unit_id: "normative_76309"
       family: "validation"
       span:
         start:
-          offset: 71239
-          line: 787
+          offset: 76309
+          line: 797
           column: 1
         end:
-          offset: 73195
-          line: 799
+          offset: 78265
+          line: 809
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `scope_gate` | final reference | Require one actual allowed raw/simple state and producer gate with complete qualifiers; reject downstream debacked/shaped/granulated/finished reference products. No substitute state chosen merely for its available UUID. | `unsd-cpc3-notes` |\n| `reference_check` | cork_handover and amounts | Confirm final net 1 kg and all inventory per 1 kg reference flow with cp_handover matched denominator; other feeds/transfers remain measured, not fixed to reference. | |\n| `route_check` | source and process map | Verify parent/source-delta evidence, exclusive same-portion source representations and actual operation activation, including any coppice felling/wood owner. Missing source state is not an inactive default. | |\n| `balance_check` | mass, stock and water | Reconcile wet/dry cork, retained stock, additions, liquid/vapour/extractive exits, losses and other goods across owned interfaces; investigate residuals and provisional-range outliers without replacing real records. | |\n| `owner_check` | runs, sites, periods and shared burden | Require complete site/phase/run registers and shares, including cleaning/changeover and replacement/termination where actual. Reconcile common burden to one total with no duplicated source stock, asset, service or upstream emissions. | |\n| `destination_check` | grading, packaging and rejects | Enumerate all actual grade/output recipients, waste treatment and rework/return paths. Exclude unresolved rejects from acceptance and disclose packaging reuse/end-of-use without counting it in net cork mass. | |\n| `identity_check` | concrete dataset exchanges | Verify exact UUID and property/unit support for every actual concrete exchange; specify each direct pollutant and actual compartment. A semantic umbrella, broad VOC/dust or unresolved product UUID is not a verified exchange. | |\n\n"
       headings:
@@ -1135,12 +1137,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 71239
-              line: 787
+              offset: 76309
+              line: 797
               column: 1
             end:
-              offset: 71261
-              line: 787
+              offset: 76331
+              line: 797
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1237,171 +1239,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "output_owner"
       identity_kind: "explicit"
-      unit_id: "normative_36792"
+      unit_id: "normative_40348"
       source_span:
         start:
-          offset: 36905
-          line: 724
+          offset: 40461
+          line: 734
           column: 1
         end:
-          offset: 37209
-          line: 724
+          offset: 40765
+          line: 734
           column: 305
     - pointer: "/allocation_rules/1"
       rule_id: "subdivision_first"
       identity_kind: "explicit"
-      unit_id: "normative_36792"
+      unit_id: "normative_40348"
       source_span:
         start:
-          offset: 37210
-          line: 725
+          offset: 40766
+          line: 735
           column: 1
         end:
-          offset: 37692
-          line: 725
+          offset: 41248
+          line: 735
           column: 483
     - pointer: "/allocation_rules/2"
       rule_id: "period_share"
       identity_kind: "explicit"
-      unit_id: "normative_36792"
+      unit_id: "normative_40348"
       source_span:
         start:
-          offset: 37693
-          line: 726
+          offset: 41249
+          line: 736
           column: 1
         end:
-          offset: 38050
-          line: 726
+          offset: 41606
+          line: 736
           column: 358
     - pointer: "/allocation_rules/3"
       rule_id: "run_share"
       identity_kind: "explicit"
-      unit_id: "normative_36792"
+      unit_id: "normative_40348"
       source_span:
         start:
-          offset: 38051
-          line: 727
+          offset: 41607
+          line: 737
           column: 1
         end:
-          offset: 38300
-          line: 727
+          offset: 41856
+          line: 737
           column: 250
     - pointer: "/allocation_rules/4"
       rule_id: "asset_share"
       identity_kind: "explicit"
-      unit_id: "normative_36792"
+      unit_id: "normative_40348"
       source_span:
         start:
-          offset: 38301
-          line: 728
+          offset: 41857
+          line: 738
           column: 1
         end:
-          offset: 38586
-          line: 728
+          offset: 42142
+          line: 738
           column: 286
     - pointer: "/allocation_rules/5"
       rule_id: "reject_path"
       identity_kind: "explicit"
-      unit_id: "normative_36792"
+      unit_id: "normative_40348"
       source_span:
         start:
-          offset: 38587
-          line: 729
+          offset: 42143
+          line: 739
           column: 1
         end:
-          offset: 38899
-          line: 729
+          offset: 42455
+          line: 739
           column: 313
     - pointer: "/validation_rules/0"
       rule_id: "scope_gate"
       identity_kind: "explicit"
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 71334
-          line: 791
+          offset: 76404
+          line: 801
           column: 1
         end:
-          offset: 71610
-          line: 791
+          offset: 76680
+          line: 801
           column: 277
     - pointer: "/validation_rules/1"
       rule_id: "reference_check"
       identity_kind: "explicit"
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 71611
-          line: 792
+          offset: 76681
+          line: 802
           column: 1
         end:
-          offset: 71830
-          line: 792
+          offset: 76900
+          line: 802
           column: 220
     - pointer: "/validation_rules/2"
       rule_id: "route_check"
       identity_kind: "explicit"
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 71831
-          line: 793
+          offset: 76901
+          line: 803
           column: 1
         end:
-          offset: 72084
-          line: 793
+          offset: 77154
+          line: 803
           column: 254
     - pointer: "/validation_rules/3"
       rule_id: "balance_check"
       identity_kind: "explicit"
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 72085
-          line: 794
+          offset: 77155
+          line: 804
           column: 1
         end:
-          offset: 72348
-          line: 794
+          offset: 77418
+          line: 804
           column: 264
     - pointer: "/validation_rules/4"
       rule_id: "owner_check"
       identity_kind: "explicit"
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 72349
-          line: 795
+          offset: 77419
+          line: 805
           column: 1
         end:
-          offset: 72645
-          line: 795
+          offset: 77715
+          line: 805
           column: 297
     - pointer: "/validation_rules/5"
       rule_id: "destination_check"
       identity_kind: "explicit"
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 72646
-          line: 796
+          offset: 77716
+          line: 806
           column: 1
         end:
-          offset: 72914
-          line: 796
+          offset: 77984
+          line: 806
           column: 269
     - pointer: "/validation_rules/6"
       rule_id: "identity_check"
       identity_kind: "explicit"
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 72915
-          line: 797
+          offset: 77985
+          line: 807
           column: 1
         end:
-          offset: 73193
-          line: 797
+          offset: 78263
+          line: 807
           column: 279
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1430,27 +1432,27 @@ normative_context:
           column: 183
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36792"
+      unit_id: "normative_40348"
       source_span:
         start:
-          offset: 36792
-          line: 720
+          offset: 40348
+          line: 730
           column: 1
         end:
-          offset: 36832
-          line: 720
+          offset: 40388
+          line: 730
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_71239"
+      unit_id: "normative_76309"
       source_span:
         start:
-          offset: 71239
-          line: 787
+          offset: 76309
+          line: 797
           column: 1
         end:
-          offset: 71261
-          line: 787
+          offset: 76331
+          line: 797
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1459,5 +1461,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:904f95cc14ee55f73befa85d94d854293497458988b735ed1540c53d7ebbfbb9"
-  generated_content_sha256: "sha256:faa2f2eace1de794b0062619dede8e59a3d299e7278b650a463f8cc6de58440e"
+    sha256: "sha256:36c84fcb55753df52d23ae7badd24b43587a8b8d3bce567dd6cf52b9bb2fa261"
+  generated_content_sha256: "sha256:b3b7404d655603d3eaae057593399d89ff43edf6c1fca8cd02a98b4c06957a59"

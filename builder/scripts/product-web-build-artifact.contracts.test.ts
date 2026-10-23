@@ -63,7 +63,7 @@ sys.exit(1 if failed else 0)
   for(const p of ['index.txt','__next._tree.txt','__next._full.txt','en/docs/pcr/very-long-'+ 'a'.repeat(130)+'/__next.__PAGE__.txt','generated/search/shard.json','generated/data/records.json','generated/search-worker.mjs','generated/raw/classifications/indexes/cpc-3.0-coverage.json','.well-known/complete.bin'])put(path.join(webDirectory,p),Buffer.from([0,1,2,255,23]));
   const before=inventory(webDirectory),buildLog=path.join(parent,'build.log');
   const verification={pcrs:1,pages:2,sourceDocuments:2,sourceDownloads:4,sourceCommit:head,files:before.files.length,bytes:before.bytes,treeSha256:before.treeSha256};
-  const metrics={buildMs:123,peakResidentBytes:1024,memoryMeasurement:'process-tree-rss',stages:['scripts/generate.ts','node_modules/next/dist/bin/next build','scripts/verify.ts'].map(command=>({command,durationMs:1})),relocation:{sourceCommit:head}};
+  const metrics={status:'passed',buildMs:123,peakResidentBytes:1024,memoryMeasurement:'process-tree-rss',stages:['scripts/generate.ts','node_modules/next/dist/bin/next build','scripts/verify.ts'].map(command=>({command,durationMs:1,status:'passed',exitCode:0,peakResidentBytes:1024,memoryMeasurement:'process-tree-rss'})),relocation:{sourceCommit:head}};
   put(buildLog,'Synthetic successful build evidence, not full corpus qualification\n'+JSON.stringify(verification)+'\n'+JSON.stringify(metrics)+'\n');
   const output=path.join(parent,'artifact'),materialized=path.join(parent,'materialized'),seoReport=path.join(parent,'seo.json');
   return {parent,root,webDirectory,planDirectory,env,buildLog,output,materialized,seoReport,git,before};
@@ -103,6 +103,28 @@ test('build evidence must attest the complete successful source and resource gat
     if(kind==='modified-web')put(path.join(f.webDirectory,'index.txt'),Buffer.from([5,4,3,2,1]));
     if(kind==='symlink')symlinkSync(f.buildLog,path.join(f.webDirectory,'foreign-link'));
     await assert.rejects(m.createWebBuildArtifact(f));assert.equal(existsSync(f.output),false);
+  });
+});
+
+test('handoff rejects failed or incomplete measured stages even when aggregate resources pass',async t=>{
+  const m=await api();
+  for(const kind of ['missing-status','final-failed','final-failure','stage-failed','stage-exit','stage-failure','stage-unmeasured','stage-over-budget','stage-over-total','duration-omitted']as const)await t.test(kind,async t=>{
+    const f=fixture(t),lines=readFileSync(f.buildLog,'utf8').trimEnd().split('\n');
+    const metrics=JSON.parse(lines.at(-1)!)as Record<string,unknown>;
+    const stage=(metrics.stages as Record<string,unknown>[])[0]!;
+    if(kind==='missing-status')delete metrics.status;
+    if(kind==='final-failed')metrics.status='failed';
+    if(kind==='final-failure')metrics.failure='cleanup failed';
+    if(kind==='stage-failed')stage.status='failed';
+    if(kind==='stage-exit')stage.exitCode=1;
+    if(kind==='stage-failure')stage.failure='export failed';
+    if(kind==='stage-unmeasured')stage.memoryMeasurement='unavailable';
+    if(kind==='stage-over-budget')stage.peakResidentBytes=6000000001;
+    if(kind==='stage-over-total')stage.peakResidentBytes=2048;
+    if(kind==='duration-omitted')stage.durationMs=124;
+    lines[lines.length-1]=JSON.stringify(metrics);put(f.buildLog,lines.join('\n')+'\n');
+    await assert.rejects(m.createWebBuildArtifact(f));
+    assert.equal(existsSync(f.output),false);
   });
 });
 

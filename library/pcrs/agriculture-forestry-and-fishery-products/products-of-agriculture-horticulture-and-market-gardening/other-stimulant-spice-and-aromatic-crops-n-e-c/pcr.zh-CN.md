@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Crop-specific spice or aromatic product at declared gate (UUID unresolved) |
+| 参考产品流 | 声明交接门的作物特定香辛或芳香产品（UUID 未解析） |
 | 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -109,7 +109,7 @@ sync_with: pcr.en-US.md
 
 记录用于建立或更新该作物的实际种子、根茎、鳞茎、插条、幼苗或其他种植材料，注明植物来源、形态、数量、期间及采购或自留来源；没有外部或转入材料时省略该交换。
 
-- 选定流: Crop-specific seed or propagation material (identity depends on the declared species and propagation form; UUID unresolved)
+- 选定流: 作物特定种子或繁殖材料（身份依声明物种及繁殖形态确定；UUID 未解析）
 - 流属性/单位: Mass / kg or item count as supported by the verified flow
 - 数量规则: Measured or supplier-recorded planting material, normalized using the crop-period and reference-product records
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -269,7 +269,7 @@ sync_with: pcr.en-US.md
 
 记录申报产品路线占用的作物面积和时间。混合使用田块应测量或说明该作物的面积和期间，并在需要时应用共享设施或共产品规则。
 
-- 选定流: Agricultural land occupation for the declared crop and land-cover state (UUID unresolved until land class is identified)
+- 选定流: 声明作物及土地覆盖状态的农业用地占用（土地类别确认前 UUID 未解析）
 - 流属性/单位: Area-time / ha·year
 - 数量规则: Measured crop area multiplied by the attributed occupation period
 - 数值来源模式: Calculated value (`calculated_value`)
@@ -295,7 +295,7 @@ sync_with: pcr.en-US.md
 
 仅当土地转换发生在研究期间内，或已明确归属于该产品时纳入。识别转换前后土地覆盖、面积、日期和证据；无符合条件的转换时省略，不得把占用报告为转换。
 
-- 选定流: Land transformation from the recorded initial to final land-cover class (UUID unresolved until land class is identified)
+- 选定流: 记录的初始至最终土地覆盖类别转变（土地类别确认前 UUID 未解析）
 - 流属性/单位: Area / ha
 - 数量规则: Measured converted area; calculate zero only when the site history confirms no conversion in scope
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -324,7 +324,7 @@ sync_with: pcr.en-US.md
 
 记录交给独立收获操作的立株或已达收获状态的目标器官。数量和产品身份必须与收获输入采用相同批次基础；除非系统边界在收获处结束，否则它是内部交接。
 
-- 选定流: One declared species and plant organ in its harvest-ready state (UUID unresolved)
+- 选定流: 一种声明物种及植物器官的待采收状态（UUID 未解析）
 - 流属性/单位: Mass / kg at measured moisture, or a declared count unit where mass cannot be measured
 - 数量规则: Crop-specific harvestable target-organ amount linked to the lot and the harvest output record
 - 数值来源模式: Calculated value (`calculated_value`)
@@ -353,7 +353,7 @@ sync_with: pcr.en-US.md
 
 仅当非目标生物量离开作物系统并成为废弃物或残余物时记录。留在田间或还田的生物量按 crop_residue_to_soil_identity_and_fate 保留在内部残体及养分台账，不作为外运废物或集合生物量基本交换；仅核算实际物质特定释放及接收区室；销售或作为共产品使用时，应归入实际预期产品输出。
 
-- 选定流: Crop-specific non-target plant biomass sent to a declared waste destination (UUID unresolved)
+- 选定流: 送往声明废物去向的作物特定非目标植物生物质（UUID 未解析）
 - 流属性/单位: Mass / kg dry matter where measured
 - 数量规则: Measured removed mass and actual destination; distinguish dry matter from water loss
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -380,7 +380,7 @@ sync_with: pcr.en-US.md
 
 仅用于以测量废弃物形式离开生产过程的生物量。应与收获目标作物、可销售产品以及留在或还田的残余物区分。
 
-- 选定流: Crop-specific biomass removed or discarded before harvest (UUID unresolved)
+- 选定流: 采收前移除或废弃的作物特定生物质（UUID 未解析）
 - 流属性/单位: Mass / kg dry matter where measured
 - 数量规则: Measured amount and destination by crop period; omit if no such removal occurs
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -408,7 +408,7 @@ sync_with: pcr.en-US.md
 
 只有在前景数据集具备活动数据并选定管理土壤方法时，才报告直接土壤 N₂O。按申报气候、土壤、氮输入和方法层级选择因子，区分直接排放、间接途径和上游肥料制造，并披露省略的途径。
 
-- 选定流: Nitrous oxide emitted from managed crop soil to air (UUID unresolved)
+- 选定流: 管理作物土壤向空气排放的一氧化二氮（UUID 未解析）
 - 流属性/单位: Mass / kg N2O
 - 数量规则: Calculate from collected nitrogen additions and the selected IPCC managed-soils method; retain factor choice and N-to-N2O conversion
 - 数值来源模式: Calculated value (`calculated_value`)
@@ -441,7 +441,7 @@ sync_with: pcr.en-US.md
 
 接收来自作物生产的待收获批次，将物种、器官、作物期间和批次编号与生产输出匹配；不得将其视为外购上游产品。
 
-- 选定流: Internal transfer of the crop-specific harvest-ready material (same unresolved identity as production output)
+- 选定流: 作物特定待采收材料的内部转移（与生产产出使用相同未解析身份）
 - 流属性/单位: Mass / kg at measured moisture, or the same declared count unit used by production output
 - 数量规则: Reconciled to the harvest-ready output record for the same lot
 - 数值来源模式: Calculated value (`calculated_value`)
@@ -502,7 +502,7 @@ sync_with: pcr.en-US.md
 
 记录实测的目标物种和植物器官的收获状态。只有选择收获交接点时才是参考输出；纳入初级调理时，它是内部中间流。
 
-- 选定流: Declared species and plant organ at harvest, in the measured fresh or other as-harvested state (UUID unresolved)
+- 选定流: 声明物种及植物器官在采收时的实测新鲜或其他采收状态（UUID 未解析）
 - 流属性/单位：质量 / kg
 
 原参考状态单位说明：Mass / kg at measured moisture
@@ -533,7 +533,7 @@ sync_with: pcr.en-US.md
 
 记录仍按申报用途销售或转移的降级目标作物。它是独立的预期输出和交接，不是废物流；注明等级和去向。
 
-- 选定流: Same declared crop species and plant organ at its actual lower-grade saleable state (UUID unresolved)
+- 选定流: 同一声明作物物种及植物器官的实际较低等级可销售状态（UUID 未解析）
 - 流属性/单位: Mass / kg at measured moisture
 - 数量规则: Measured saleable downgraded mass by lot and destination
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -555,39 +555,13 @@ sync_with: pcr.en-US.md
   - 基准类型: Reference flow (`reference_flow`)
   - 证据类型: Reasoned estimate (`reasoned_estimate`)
   - 来源: `mass-balance-identity`
-###### 其他预期作物输出 (`other_intended_crop_outputs`)
-
-对作物路线产生的每个额外预期植物产品或共产品，在前景包中记录其身份、质量、数量和交接。该条件性卡不把不同物种或器官合并为一个交换。
-
-- 选定流: Each actual additional intended crop product, resolved from its own species, organ and handoff (UUID unresolved)
-- 流属性/单位: Product-specific; record mass and moisture where applicable
-- 数量规则: Measured net amount by intended output and destination
-- 数值来源模式: Foreground record (`foreground_record`)
-- 适用范围: Product-specific (`product_specific`)
-原始活动或阶段基准：Per 1 kg of product at the selected gate.
-
-- 归一化基准：每声明的参考流
-- 基准类型: Reference flow (`reference_flow`)
-- 证据类型: Collected record (`collected_record`)
-- 采集协议: `cp_grade_and_disposition`
-- 来源: `unsd-cpc-01699`
-
-- 数量范围: Provisional broad route screening estimate; replace with crop-, site-, technology- and gate-specific records before reviewed or active use
-  - 范围角色: Default estimate (`default_estimate`)
-  - 下限: 0
-  - 上限: 1
-  - 单位: kg other intended output/kg harvested crop
-  - 基准: Broad reasoned estimate for the declared route and selected product gate; it is a screening interval, not a universal permitted value
-  - 基准类型: Reference flow (`reference_flow`)
-  - 证据类型: Reasoned estimate (`reasoned_estimate`)
-  - 来源: `mass-balance-identity`
 ##### 废物流
 
 ###### 收获废弃物料 (`harvest_discard`)
 
 记录收获时被拒收或废弃的物料，并与还田物料、可销售降级产品、返工物料和合格目标输出分开。返工时关联批次与返工过程，合格产品只计一次。
 
-- 选定流: Crop-specific rejected or discarded plant material at harvest (UUID unresolved)
+- 选定流: 采收时的作物特定拒收或废弃植物材料（UUID 未解析）
 - 流属性/单位: Mass / kg at measured moisture
 - 数量规则: Measured amount by reason and destination; omit a zero row only when the lot inspection record supports no discard
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -622,7 +596,7 @@ sync_with: pcr.en-US.md
 
 只有在选定交接点前发生初级调理时纳入本过程。过程从原始收获批次开始，至分选、清理、清洗、干燥或其他稳定化后的申报产品结束；注明处理前后状态和交接。清洗是可选路线，不需要时省略；合格、降级、拒收、回收和废弃状态分开记录，不混合不同香料或收获日。
 
-- 选定流: Declared crop-specific raw harvested batch (same unresolved identity as harvest output)
+- 选定流: 声明作物特定原始采收批次（与采收产出使用相同未解析身份）
 - 流属性/单位: Mass / kg at measured moisture
 - 数量规则: Weighed net incoming lot, matched to the harvest handoff
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -648,7 +622,7 @@ sync_with: pcr.en-US.md
 
 仅在实际清洗或湿法清理时纳入。按实际来源和数量记录新鲜或供应水；不要添加默认清洗交换，因为并非所有香料都需要清洗，非必要清洗还可能扩散污染。
 
-- 选定流: Water supplied for actual crop washing or wet cleaning
+- 选定流: 实际作物清洗或湿法清理所用供应水
 - 流属性/单位: Volume / m3 preferred; use verified selected-flow property and unit
 - 数量规则: Metered or supplier-recorded volume by batch, including any recirculation or reuse record
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -705,7 +679,7 @@ sync_with: pcr.en-US.md
 
 当原始作物由田间运往独立的初级调理场所且使用第三方货运时纳入本服务。自有运输应在责任过程中记录实际车辆燃料或能源，并省略本服务以避免重复计算。
 
-- 选定流: Road freight service for the declared raw crop transfer
+- 选定流: 声明未加工农作物转移所需公路货运服务
 - 流属性/单位: Mass-distance / t·km
 - 数量规则: Net crop mass multiplied by loaded route distance; disclose vehicle, load, route and empty-return allocation
 - 数值来源模式: Calculated value (`calculated_value`)
@@ -730,7 +704,7 @@ sync_with: pcr.en-US.md
 
 仅当调理废水送往外部处理者且处理属于选定产品系统时纳入。记录实际服务和处理去向；同一废水不得同时计入外部服务和场内处理过程。
 
-- 选定流: Wastewater treatment service for conditioning effluent
+- 选定流: 整备出水的废水处理服务
 - 流属性/单位: Mass or volume / native verified service unit
 - 数量规则: Supplier invoice, treatment log or metered effluent amount by batch
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -759,7 +733,7 @@ sync_with: pcr.en-US.md
 
 记录纳入的初级调理操作后的目标作物净产品，申报其物种、植物部分、鲜干状态、含水率和等级。只有选定初级调理交接点时才是参考输出。
 
-- 选定流: One declared crop-specific spice or aromatic product after first primary conditioning (UUID unresolved)
+- 选定流: 一种声明作物特定香辛或芳香产品的初次整备后状态（UUID 未解析）
 - 流属性/单位：质量 / kg
 
 原参考状态单位说明：Mass / kg at measured moisture
@@ -790,7 +764,7 @@ sync_with: pcr.en-US.md
 
 当降级产品按申报用途销售或交接时分别记录。它仍是预期产品输出，不得同时作为废物或合格参考产品。
 
-- 选定流: Same crop-specific material in its actual lower-grade conditioned state (UUID unresolved)
+- 选定流: 同一作物特定材料的实际较低等级整备状态（UUID 未解析）
 - 流属性/单位: Mass / kg at measured moisture
 - 数量规则: Measured net amount by grade and destination
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -812,39 +786,13 @@ sync_with: pcr.en-US.md
   - 基准类型: Reference flow (`reference_flow`)
   - 证据类型: Reasoned estimate (`reasoned_estimate`)
   - 来源: `mass-balance-identity`
-###### 其他预期初级调理作物输出 (`conditioned_coproducts`)
-
-记录初级调理中分离的每个额外预期产品及其身份、等级、数量和交接；实际路线没有额外预期产品时省略。
-
-- 选定流: Each actual additional conditioned crop product (UUID unresolved until identity and handoff are declared)
-- 流属性/单位: Product-specific; record mass and moisture where applicable
-- 数量规则: Measured net amount by product and destination
-- 数值来源模式: Foreground record (`foreground_record`)
-- 适用范围: Product-specific (`product_specific`)
-原始活动或阶段基准：Per 1 kg of product at the selected gate.
-
-- 归一化基准：每声明的参考流
-- 基准类型: Reference flow (`reference_flow`)
-- 证据类型: Collected record (`collected_record`)
-- 采集协议: `cp_grade_and_disposition`
-- 来源: `unsd-cpc-01699`
-
-- 数量范围: Provisional broad route screening estimate; replace with crop-, site-, technology- and gate-specific records before reviewed or active use
-  - 范围角色: Default estimate (`default_estimate`)
-  - 下限: 0
-  - 上限: 1
-  - 单位: kg conditioned co-product/kg raw crop input
-  - 基准: Broad reasoned estimate for the declared route and selected product gate; it is a screening interval, not a universal permitted value
-  - 基准类型: Reference flow (`reference_flow`)
-  - 证据类型: Reasoned estimate (`reasoned_estimate`)
-  - 来源: `mass-balance-identity`
 ##### 废物流
 
 ###### 调理拒收物和废弃残余物 (`conditioning_rejects`)
 
 按去向记录清理拒料、异物、不合格损伤物料和废弃残余物。返工、回收和可销售降级产品保持独立；同一质量不得同时计为拒收废物和产品。
 
-- 选定流: Crop-specific rejected material and conditioning residue sent to a declared waste destination (UUID unresolved)
+- 选定流: 送往声明废物去向的作物特定拒收材料及整备残余物（UUID 未解析）
 - 流属性/单位: Mass / kg at measured moisture or dry matter, as reported
 - 数量规则: Weighed or sampled amount by incoming batch and actual destination
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -870,7 +818,7 @@ sync_with: pcr.en-US.md
 
 记录清洗或湿法清理产生的废水，注明实测体积或质量、必要时的悬浮或去除物、去向以及场内或外部处理。干法过程不产生废水时省略。
 
-- 选定流: Wastewater from the declared crop-conditioning batch (UUID unresolved)
+- 选定流: 声明作物整备批次产生的废水（UUID 未解析）
 - 流属性/单位: Volume / m3 or mass / kg, matching the measured output
 - 数量规则: Metered or measured wastewater amount by batch and destination
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -901,7 +849,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Crop-specific spice or aromatic product at declared gate (UUID unresolved)
+- 选定流：声明交接点的作物特定香辛或芳香产品（UUID 未解析）
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -927,7 +875,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Crop-specific spice or aromatic product at declared gate (UUID unresolved)
+- 选定流：声明交接点的作物特定香辛或芳香产品（UUID 未解析）
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -986,7 +934,7 @@ sync_with: pcr.en-US.md
 | cp_harvest_batch | managed_crop_production; harvest_capture | harvest_ready_crop_material; harvest_ready_batch_input; harvested_target_product | crop lot, harvest ticket and scale record | species, plant organ, field, crop period, harvest date, gross/net/tare mass, moisture, quality state, transfer destination | Weigh or sample each lot using identified calibrated equipment; match inter-process lot id；原始汇总与分配：Reconcile production output, harvest input and harvested output without duplicate final output | kg and moisture basis | Each harvest lot | Each harvest date and crop period | Declared field and receiving process | 每声明的参考流 | Calibrated scale, lot identity, moisture measurement and signed handoff |
 | cp_field_residues | managed_crop_production; harvest_capture | removed_crop_biomass; production_loss_residue; crop_residue_to_soil | field inspection, sample and residue disposition record | plant part, residue type, wet/dry mass, field, crop period, retained/removed/sold/discarded destination | Measure representative residue or disposal lots and document sampling method；原始汇总与分配：Partition the measured biomass among retained soil residue, intended output and discard; no duplicate destinations | kg dry matter preferred | Each crop period and material-disposition event | All included crop periods | Declared field and biomass type | 每声明的参考流 | Sampling records, dry-matter method and destination evidence |
 | cp_harvest_energy | harvest_capture | harvest_energy | machinery meter, fuel receipt and harvest log | carrier, amount, equipment, operation, field, date, lot, shared use | Reconcile equipment and fuel logs to harvest operation；原始汇总与分配：Aggregate actual energy by harvest lot and normalize to selected gate output | Carrier-native unit | Each harvest operation or billing period | Each crop period | Declared harvest equipment and field | 每声明的参考流 | Meter/invoice, equipment log and lot cross-reference |
-| cp_grade_and_disposition | harvest_capture; primary_conditioning | lower_grade_product; other_intended_crop_outputs; harvest_discard; conditioned_lower_grade_product; conditioned_coproducts; conditioning_rejects | grade inspection, packing/scale record, sales or disposal record | material identity, grade, mass, moisture, intended use, sale/transfer/discard/rework destination, lot and handoff | Inspect, weigh and record each declared grade and destination；原始汇总与分配：Mutually exclusive partition into intended product, rework, recovery, discard and waste; reconcile to incoming batch | kg at measured moisture | Each lot and destination event | Each harvest or conditioning lot | Crop species, organ, grade and handoff | 每声明的参考流 | Grade record, calibrated scale, sales/treatment documentation and lot ledger |
+| cp_grade_and_disposition | harvest_capture; primary_conditioning | lower_grade_product; other_intended_crop_outputs; harvest_discard; conditioned_lower_grade_product; conditioned_coproducts; conditioning_rejects | grade inspection, packing/scale record, sales or disposal record | material identity, grade, mass, moisture, intended use, sale/transfer/discard/rework destination, lot and handoff |Inspect, weigh and record each declared grade and destination；原始汇总与分配：Mutually exclusive partition into intended product, rework, recovery, discard and waste; reconcile to incoming batch other_intended_crop_outputs_specific_output：保留原 other_intended_crop_outputs 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 conditioned_coproducts_specific_output：保留原 conditioned_coproducts 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 | kg at measured moisture | Each lot and destination event | Each harvest or conditioning lot | Crop species, organ, grade and handoff | 每声明的参考流 | Grade record, calibrated scale, sales/treatment documentation and lot ledger |
 | cp_conditioning_batch | primary_conditioning | raw_harvest_batch; conditioned_reference_product | receiving, process and output lot records | incoming/output mass, tare, species, organ, crop date, moisture, quality, cleaning/drying route, handoff | Match intake and output lot records and measure moisture at declared points；原始汇总与分配：Reconcile inputs, output grades, rejects, removed water and measured process losses | kg, moisture % wet basis and/or aw | Each incoming and finished lot | Each included first-conditioning operation | Declared first-conditioning site and batch | 每声明的参考流 | Calibrated scales, sampling plan, moisture meter check and lot balance |
 | cp_conditioning_water | primary_conditioning | conditioning_water | water meter, tank or supplier record | source, volume, meter reading, batch, wash operation, recirculation, reuse, date | Read a calibrated meter or reconcile batch tank volume and supplier record；原始汇总与分配：Sum fresh input separately from recirculated/reused water; normalize to output lot | m3 or verified native unit | Each washing batch | Each included washing operation | Declared conditioning site and crop lot | 每声明的参考流 | Meter/tank calibration, invoice and batch log |
 | cp_conditioning_energy | primary_conditioning | conditioning_energy | equipment meter, fuel receipt and dryer log | carrier, amount, unit, dryer/cleaner, operation, batch, input/output moisture, operating time, shared use | Reconcile measured energy and operating records to each batch；原始汇总与分配：Aggregate by carrier and operation; allocate shared utilities by metered use or operating time | Carrier-native unit; kWh-equivalent only with documented conversion | Each batch or billing period | Each included conditioning season | Declared first-conditioning facility and equipment | 每声明的参考流 | Meter/invoice, dryer log, moisture measurements and calibration record |

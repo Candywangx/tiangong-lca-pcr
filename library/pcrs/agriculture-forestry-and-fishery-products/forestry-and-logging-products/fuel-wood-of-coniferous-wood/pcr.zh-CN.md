@@ -395,28 +395,100 @@ sync_with: pcr.en-US.md
   - 基准类型：reference_flow
   - 证据类型：collected_record
 
-###### 实际独立交付的工业木材联产品 (`industrial_wood_coproduct`)
+###### 采伐交接点的针叶树锯材原木（`industrial_saw_logs`）
 
-真实锯材、单板、纸浆、板材或其他用途批料的条件产出登记卡。数据包须逐项列出实际目标产品及边界，与薪材分开，并采用明确分配决定。
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
 
-- 选定流：实际独立交付的工业木材联产品
-- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：实测独立目标联产品数量
-- 数值来源模式：foreground_record
-- 适用范围：site_specific
+采集与交接范围：真实锯材、单板、纸浆、板材或其他用途批料的条件产出登记卡。数据包须逐项列出实际目标产品及边界，与薪材分开，并采用明确分配决定。
+
+- 选定流：采伐交接点的针叶树锯材原木
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
-- 基准类型：reference_flow
-- 证据类型：collected_record
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
 - 采集协议：`cp_source_at_wood_collection`
 - 来源：`fao-fuelwood-harvesting`; `fao-forest-product-definitions`
-- 数量范围：按前景记录条件确定的范围；无统一数值默认值
-  - 范围角色：qa_guardrail
-  - 下限：0
-  - 上限：reference_record_max
-  - 单位：kg
-  - 基准：每 1 kg 参考流；在采集台账保留实际批次或来源分母
-  - 基准类型：reference_flow
-  - 证据类型：collected_record
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 采伐交接点的针叶树单板原木（`industrial_veneer_logs`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：真实锯材、单板、纸浆、板材或其他用途批料的条件产出登记卡。数据包须逐项列出实际目标产品及边界，与薪材分开，并采用明确分配决定。
+
+- 选定流：采伐交接点的针叶树单板原木
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_source_at_wood_collection`
+- 来源：`fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 采伐交接点的针叶树纸浆材原木（`industrial_pulpwood`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：真实锯材、单板、纸浆、板材或其他用途批料的条件产出登记卡。数据包须逐项列出实际目标产品及边界，与薪材分开，并采用明确分配决定。
+
+- 选定流：采伐交接点的针叶树纸浆材原木
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_source_at_wood_collection`
+- 来源：`fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 采伐交接点的针叶树人造板用原木（`industrial_panel_roundwood`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：真实锯材、单板、纸浆、板材或其他用途批料的条件产出登记卡。数据包须逐项列出实际目标产品及边界，与薪材分开，并采用明确分配决定。
+
+- 选定流：采伐交接点的针叶树人造板用原木
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_source_at_wood_collection`
+- 来源：`fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 采伐交接点的未经处理针叶树原木杆材（`industrial_poles`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：真实锯材、单板、纸浆、板材或其他用途批料的条件产出登记卡。数据包须逐项列出实际目标产品及边界，与薪材分开，并采用明确分配决定。
+
+- 选定流：采伐交接点的未经处理针叶树原木杆材
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每 1 kg 参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_source_at_wood_collection`
+- 来源：`fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
 
 ##### 废物流
 
@@ -998,29 +1070,6 @@ sync_with: pcr.en-US.md
   - 基准类型：reference_flow
   - 证据类型：calculated_from_collection
 
-###### 实际转用途的可销售木材产品 (`diverted_wood_products`)
-
-逐项列出真实非参考等级或用途产品及其交接；不得隐藏在薪材产率中，也不得声称统一废物切断。
-
-- 选定流：实际转用途的可销售木材产品
-- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按声明去向实测的转用途产品质量
-- 数值来源模式：foreground_record
-- 适用范围：site_specific
-- 归一化基准：每 1 kg 参考流
-- 基准类型：reference_flow
-- 证据类型：collected_record
-- 采集协议：`cp_handover`
-- 来源：`fao-fuelwood-harvesting`; `fao-forest-product-definitions`
-- 数量范围：按前景记录条件确定的范围；无统一数值默认值
-  - 范围角色：qa_guardrail
-  - 下限：0
-  - 上限：reference_record_max
-  - 单位：kg
-  - 基准：每 1 kg 参考流；在采集台账保留实际批次或来源分母
-  - 基准类型：reference_flow
-  - 证据类型：collected_record
-
 ##### 废物流
 
 ###### 送至声明废物管理的最终拒收木材 (`handover_rejects`)
@@ -1074,7 +1123,7 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_management` | stand_management | management inputs/land | cohort records | 地块；树种；造林或抚育日期；材料及原始单位；面积；占用年数；资产ID；产出群组；分配份额 | 可追溯原始记录与校准测量；匹配批次、期间及范围 `management_materials_specific_input`: 作业 stand_management：实际苗木、配方肥料及其他抚育材料使用一条条件合并卡。数据包内分别识别实际材料；保留配方质量、养分或有效成分换算及供应商范围。非经营自然来源不得继承造林配方。 原数量方法：归属于采收薪材群组的记录材料数量 依据供应商规格、设备及原始记录确认本作业的实际投入。这是必需的采集要求，不是一条交换。完成数据集前，每种实际材料、配方产品、载能体或独立外购服务须分别建立物理身份具体的卡片，并记录原生数量及属性；核验兼容UUID，或明确保留未解析身份且不得宣称数据集已完整链接。不以条件式示例替代未知实际投入，不编造配方，不漏掉必需用量，不由缺失记录推定零消耗。共用投入、复用资产及服务包含项仅归属一次，保留原有阶段、期间及衔接最终参考产出的实测吞吐。原集合范围不作为单项投入上限或用量默认值。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
-| `cp_source_at_wood_collection` | `wood_collection` | source/harvest/removal | lot ledger | 来源地块或群组；自然或经营或剩余物状态；活木或死木；形态；树皮；毛重、皮重和净重；水分；实际产出与去向；保留剩余物；前期负荷关联; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
+| `cp_source_at_wood_collection` | `wood_collection` | source/harvest/removal | lot ledger | 来源地块或群组；自然或经营或剩余物状态；活木或死木；形态；树皮；毛重、皮重和净重；水分；实际产出与去向；保留剩余物；前期负荷关联; event_id; transfer_id; counterparty_process_id |可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 industrial_wood_coproduct_specific_output：保留原 industrial_wood_coproduct 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_source_at_stand_management` | `stand_management` | source/harvest/removal | lot ledger | 来源地块或群组；自然或经营或剩余物状态；活木或死木；形态；树皮；毛重、皮重和净重；水分；实际产出与去向；保留剩余物；前期负荷关联; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_operation_at_stand_management` | `stand_management` | energy/material service | operation records | 过程与批次；实际载体或服务；供应商；原始数量及单位；燃料系数或 kWh 换算；小时或距离；使用者；服务包含项；零值证据; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_operation_at_wood_collection` | `wood_collection` | energy/material service | operation records | 过程与批次；实际载体或服务；供应商；原始数量及单位；燃料系数或 kWh 换算；小时或距离；使用者；服务包含项；零值证据; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
@@ -1083,7 +1132,7 @@ sync_with: pcr.en-US.md
 | `cp_operation_at_handover_sorting` | `handover_sorting` | energy/material service | operation records | 过程与批次；实际载体或服务；供应商；原始数量及单位；燃料系数或 kWh 换算；小时或距离；使用者；服务包含项；零值证据; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_movement` | primary_extraction | extraction/transport balances | movement tickets | 来源与目的批次；起止边界；搬运净质量；趟次或距离；车辆或畜力或服务；装载利用率；损坏或损失去向；库存 | 可追溯原始记录与校准测量；匹配批次、期间及范围 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_preparation` | wood_preparation | conditioning mass/water | paired batch measurements | 关联批次；作业日期；输入与输出净质量；具有基准及方法的配对水分；实体或堆积体积及实测系数；吸水或排水；树皮或干损失；库存；返工 | 可追溯原始记录与校准测量；匹配批次、期间及范围 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
-| `cp_handover` | handover_sorting | reference/destinations | weighing and dispatch records | 批次、来源和过程；校准秤；毛重、皮重和净验收质量；形态、树皮与水分；能源用途；生产者边界；等级；转用途或废物数量；期初与期末库存；排除包装 | 可追溯原始记录与校准测量；匹配批次、期间及范围 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
+| `cp_handover` | handover_sorting | reference/destinations | weighing and dispatch records | 批次、来源和过程；校准秤；毛重、皮重和净验收质量；形态、树皮与水分；能源用途；生产者边界；等级；转用途或废物数量；期初与期末库存；排除包装 |可追溯原始记录与校准测量；匹配批次、期间及范围 diverted_wood_products_specific_output：保留原 diverted_wood_products 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_emissions_at_stand_management` | `stand_management` | direct substance releases | measurement/factor ledger | 过程或批次；实际燃料或材料；命名物质；大气隔室；化石或生物来源；实测释放或文件系数及原始基准；上游服务包含项；不确定性; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_emissions_at_wood_collection` | `wood_collection` | direct substance releases | measurement/factor ledger | 过程或批次；实际燃料或材料；命名物质；大气隔室；化石或生物来源；实测释放或文件系数及原始基准；上游服务包含项；不确定性; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |
 | `cp_emissions_at_primary_extraction` | `primary_extraction` | direct substance releases | measurement/factor ledger | 过程或批次；实际燃料或材料；命名物质；大气隔室；化石或生物来源；实测释放或文件系数及原始基准；上游服务包含项；不确定性; event_id; transfer_id; counterparty_process_id | 可追溯原始记录与校准测量；匹配批次、期间及范围；只采集本节点事件；交接双方按 transfer_id 配对，系统汇总抵销内部转移。共享事件仅归属一个节点，不重复计量。 | 保留原始单位；声明交换单位 | 逐事件或批次及期末结账 | 实际群组及报告期间 | 每个贡献地块或场址及交接点 | 每 1 kg 参考流 | 校准、票据或日志、水分方法、转移ID及核对轨迹 |

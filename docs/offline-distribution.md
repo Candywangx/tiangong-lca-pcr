@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-18"
-lastReviewedCommit: "92e53b455840908bc77c4d660de2367ae783a0e7"
-lastReviewedNote: "Reviewed the same-source CI web-build handoff and separate product sealing: complete source/run/attempt/plan/archive/tree and build/SEO evidence bindings, mandatory full/data jobs, unchanged resource budgets and fresh complete qualification. No methodology, dependency, version, publication or provider authority changes."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: 5f722beb80cf2e0b0bee95fe3966c1bb5b470407
+lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -285,7 +285,7 @@ verified bytes in a source/run/attempt/qualification-bound archive. A separate
 SEO checker and seals the two npm packages and the identical web archive. Build,
 handoff and SEO audit evidence accompanies the immutable product artifact; it
 does not replace its existing release manifest or checksum contract. Both jobs
-retain their 60-minute limits and are required in both qualification lanes.
+retain their 120-minute limits and are required in both qualification lanes.
 The public product artifact output and publication guards remain unchanged. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.

@@ -211,7 +211,9 @@ translation_status: aligned
 - 来源：`fao-crop-evapotranspiration-56`
 ###### 田间机械燃料（`field_machinery_fuel`）
 按作业和作物批次记录田间机械燃料，再进行归一化。
-- 选定流：柴油, 农业机械燃烧 `57e0b1a3-2d05-46b2-b61b-cf7b5b167c6f`
+此卡仍仅表示用于农业田间机械燃烧的柴油投入。
+
+- 选定流：柴油 `57e0b1a3-2d05-46b2-b61b-cf7b5b167c6f`
 - 流属性/单位：Mass / kg
 - 数量规则：按田间作业实测燃料数量，并保留燃料类型和单位
 - 数值来源模式：前景记录（`foreground_record`）

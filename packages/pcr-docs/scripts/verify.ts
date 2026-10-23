@@ -1,3 +1,4 @@
+import {verifySearchAssets} from "./search-assets.ts";
 import {parseSiteManifest} from "../lib/site-contracts.ts";
 import {decodeRecordData} from "../lib/record-data.ts";
 import {parseGenerationReport} from "./generation-report.ts";
@@ -30,6 +31,8 @@ const manifest = parseSiteManifest(
   report = parseGenerationReport(
     fs.readFileSync(path.join(app, ".generated/report.json"), "utf8"),
   );
+if (report.sourceCommit !== manifest.sourceCommit) throw new Error("Search report source identity mismatch");
+await verifySearchAssets(out, manifest.sourceCommit, report.search);
 verifyHostingContract(
   JSON.parse(fs.readFileSync(path.join(root, "edgeone.json"), "utf8")),
   report.downloads,

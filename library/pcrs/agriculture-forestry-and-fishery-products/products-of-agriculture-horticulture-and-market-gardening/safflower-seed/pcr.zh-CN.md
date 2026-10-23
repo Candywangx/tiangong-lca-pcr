@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Safflower seed |
+| Reference product flow | 红花籽 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -564,7 +564,7 @@ sync_with: pcr.en-US.md
 
 完整合格籽粒交农场门销售或实际门前干燥；仅将最终交付质量计为参考产出。
 
-- 选定流：Safflower seed `30eacea6-7a8a-457f-a766-c93480303927`
+- 选定流：红花籽 `30eacea6-7a8a-457f-a766-c93480303927`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：按实测水分称量合格籽粒。
 
@@ -748,7 +748,7 @@ sync_with: pcr.en-US.md
 
 实测最终质量/水分取代干燥前分级质量成为参考产出；不施加全球统一目标水分。
 
-- 选定流：Safflower seed `30eacea6-7a8a-457f-a766-c93480303927`
+- 选定流：红花籽 `30eacea6-7a8a-457f-a766-c93480303927`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：按实际水分称量最终合格籽粒。
 
@@ -832,7 +832,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Safflower seed
+- 选定流：红花籽
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -858,7 +858,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Safflower seed
+- 选定流：红花籽
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）

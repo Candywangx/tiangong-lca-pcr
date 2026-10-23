@@ -276,14 +276,14 @@ process_inventory:
                 evidence_kind: "collected_record"
                 source_ids: []
       waste:
-        - row_id: rear_residue
-          role: "Rearing losses and spent organic material"
-          name: "Rearing residue by material and destination (UUID unresolved)"
+        - row_id: rear_dead_larvae_waste
+          role: "Dead larvae of the declared silkworm species sent to treatment"
+          name: "Dead larvae of the declared silkworm species sent to treatment"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Expand dead larvae, uneaten leaves and litter by material and treatment; this umbrella is not one physical waste identity. Denominator and scope requirements：per kg spun cocoons from identified cohort Raw quantity and calculation requirements: Weigh each residue stream, excluding harvested cocoons and duplicate compost outputs. Original collection denominator kind: process_output."
+          description: "Conditional on this exact waste stream actually being generated and documented inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each waste stream and its treatment responsibility separate; do not count harvested cocoons, a transferred waste and the resulting compost product as duplicate independent outputs. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Expand dead larvae, uneaten leaves and litter by material and treatment; this umbrella is not one physical waste identity. Denominator and scope requirements：per kg spun cocoons from identified cohort Raw quantity and calculation requirements: Weigh each residue stream, excluding harvested cocoons and duplicate compost outputs. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Measure the mass of this specific waste stream at its actual material/treatment handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -293,15 +293,25 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_residues
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10000"
-                unit: "kg/kg"
-                basis: "per kg spun cocoons; investigate outliers"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: rear_uneaten_feed_leaves_waste
+          role: "Uneaten leaves of the declared silkworm feed plant sent to treatment"
+          name: "Uneaten leaves of the declared silkworm feed plant sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact waste stream actually being generated and documented inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each waste stream and its treatment responsibility separate; do not count harvested cocoons, a transferred waste and the resulting compost product as duplicate independent outputs. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Expand dead larvae, uneaten leaves and litter by material and treatment; this umbrella is not one physical waste identity. Denominator and scope requirements：per kg spun cocoons from identified cohort Raw quantity and calculation requirements: Weigh each residue stream, excluding harvested cocoons and duplicate compost outputs. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific waste stream at its actual material/treatment handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids: []
+            ranges: []
       elementary:
         []
   - id: collect
@@ -367,14 +377,14 @@ process_inventory:
                 evidence_kind: "collected_record"
                 source_ids: []
       waste:
-        - row_id: collection_loss
-          role: "Collection debris or crushed cocoons"
-          name: "Collection reject by material and destination (UUID unresolved)"
+        - row_id: collection_damaged_cocoons_waste
+          role: "Damaged unrecoverable silkworm cocoons collected as waste"
+          name: "Damaged unrecoverable silkworm cocoons collected as waste"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Separate mounting debris and damaged cocoon loss by material and destination; recoverable spinning-grade material becomes a Product only on independent sale. Denominator and scope requirements：per kg cocoon mass received by collection Raw quantity and calculation requirements: Weigh material removed during collection by disposal or sale destination. Original collection denominator kind: process_output."
+          description: "Conditional only on this specific waste material actually being separately collected for documented treatment inside the existing process boundary. This card does not prove site segregation. A real mixed stream keeps one composition-defined identity and its actual handover; do not extract hypothetical component exchanges or duplicate mixture and component exports. Retained stock, an in-situ residue or direct environmental return is not this waste export. Collection and handover scope: Separate mounting debris and damaged cocoon loss by material and destination; recoverable spinning-grade material becomes a Product only on independent sale. Denominator and scope requirements：per kg cocoon mass received by collection Raw quantity and calculation requirements: Weigh material removed during collection by disposal or sale destination. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Measure the mass of this specific waste material at its actual collection/treatment handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -384,15 +394,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_residues
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg/kg"
-                basis: "per kg cocoon mass received by collection"
-                basis_kind: "process_output"
-                evidence_kind: "collected_record"
-                source_ids: []
+            ranges: []
       elementary:
         []
   - id: grade
@@ -901,7 +903,7 @@ dataset_production:
       flow_role: "loss and residue"
       record_type: "disposal or sales ticket"
       raw_fields: "cohort; material; wet mass; destination; receipt"
-      collection_method: "weigh by material; Raw aggregation requirements: sum once by fate. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "weigh by material; Raw aggregation requirements: sum once by fate. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. rear_residue_specific_output: Preserve every actual rearing waste/residue stream, including litter or other materials not represented by the conditional larva/leaf cards. This is a mandatory identification requirement, not an exchange. Identify each material and actual receiving treatment separately before dataset completeness; record its state/composition, native property/unit, measured amount, cohort/period, handover and compatible Waste UUID or exact unresolved identity. A real single mixed litter stream may remain one physically defined mixture only with composition and transfer evidence; do not invent segregation or also count components. Keep original throughput linkage and normalization and record an actual stream once, excluding harvested cocoons and duplicate compost outputs. Missing identity or quantity is not zero and no retired class-level range is a component limit. collection_loss_specific_output: Mandatory material, quantity and boundary-role identification, not a selected exchange. Preserved collection scope: Separate mounting debris and damaged cocoon loss by material and destination; recoverable spinning-grade material becomes a Product only on independent sale. Denominator and scope requirements：per kg cocoon mass received by collection Raw quantity and calculation requirements: Weigh material removed during collection by disposal or sale destination. Original collection denominator kind: process_output. Retain every actual material and fate, including materials not represented by the conditional card. Record actual composition/state, native property/unit, measured quantity, cohort/period, recipient, treatment responsibility and unique handover; keep original throughput, normalization and allocation duties. Before completeness, instantiate only actual distinct physical exchanges with compatible UUIDs or exact unresolved identities. A real mixed stream remains one measured composition-defined identity; do not invent segregation or duplicate mixture/component exports. Retained/deferred stock, in-situ residues and soil returned directly to the environment keep their actual balance/stock/return roles, not assumed technosphere waste exports; establish method and boundary responsibility before any elementary exchange. Independently sold recovery needs its actual Product handover and must not also be this waste. Missing records are not zero and the retired class-level numerical screen is not a component limit."
       unit: "kg"
       frequency: "each removal"
       temporal_coverage: "full cohort"
@@ -1108,7 +1110,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:1412cf1996ab701c2c2fd2654ab47c31218a3a1db655f85f7169f79dc5c919de"
+  source_sha256: "sha256:0f595ee834c6487f069cb8b5d3fb0177717d7769dcdb97e7625a3d3e5ac18260"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7670"
@@ -1159,16 +1161,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_49541"
+    - unit_id: "normative_52982"
       family: "allocation"
       span:
         start:
-          offset: 49541
-          line: 790
+          offset: 52982
+          line: 792
           column: 1
         end:
-          offset: 51044
-          line: 800
+          offset: 54485
+          line: 802
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_output | separately marketed outputs | First subdivide cohort, grade and conditioning records by physical lot. If reelable and separately marketed spinning-grade cocoons are joint outputs of an indivisible operation, document and justify physical causal allocation where supported; otherwise disclose economic allocation, price period and uncertainty. Unsold rejects and moisture loss are not co-products. | fao-cocoon-quality;fao-cocoon-drying |\n| a_period | cohorts and host-crop phases | Attribute leaf inputs, rearing operations and cocoon outputs to actual cohort and reporting period; carry opening/closing stock and unfinished cohorts across calendar cut-offs. | fao-cocoon-quality |\n| a_shared | shared infrastructure | Record host plots, rearing rooms, trays, mountages, graders and dryers with actual consuming nodes, cohorts and service periods; allocate manufacture, repair and utilities by observed use or justified disclosed proxy only once. | fao-cocoon-quality;fao-cocoon-drying |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1187,12 +1189,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 49541
-              line: 790
+              offset: 52982
+              line: 792
               column: 1
             end:
-              offset: 49581
-              line: 790
+              offset: 53022
+              line: 792
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1207,16 +1209,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_70163"
+    - unit_id: "normative_76069"
       family: "validation"
       span:
         start:
-          offset: 70163
-          line: 847
+          offset: 76069
+          line: 849
           column: 1
         end:
-          offset: 72442
-          line: 859
+          offset: 78348
+          line: 861
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_identity | reference and final outputs | Reject pierced/unreelable cocoons as reelable or a lot without grade/state/gate evidence; never bind fresh/unprocessed farm-gate UUID to dried, stifled or other-gate lot. | fao-cocoon-quality;fao-cocoon-drying |\n| v_mass | fresh and dried lots | Require measured net mass and moisture per state; reconcile collection, grading, drying and final handover with sample and water-loss terms, not assumed dry yield. | fao-cocoon-characteristics;fao-cocoon-drying |\n| v_routes | route deltas | Accept host, climate or mounting variant only with changed inventory, calculation, quality or validation evidence relative to managed parent; reject label-only route. | fao-cocoon-quality |\n| v_attribution | multi-output and multi-period | Verify separately marketed outputs, waste, unfinished cohorts, shared assets and service periods; one cocoon mass and shared burden may have only one attributed handover. | fao-cocoon-quality |\n| v_binding | flow cards | Resolve unresolved inputs to evidenced concrete UUIDs before TIDAS process exchange; leave other UUIDs unresolved until detail-confirmed. | |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n| `v_feed_supply_intake_separation` | All feed inputs | Reject an upstream feed inventory reduced by in-boundary refusal, spoilage or discarded leftovers without retaining their production burden. Reconcile supply, intake, stock, transfers and loss destinations under calc_feed_supply_and_intake. Do not reuse intake as supplied feed, assume zero-burden on-site feed or grant automatic avoided-product credits. | `fao-feed-loss-accounting-2018` |\n\n"
       headings:
@@ -1235,12 +1237,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 70163
-              line: 847
+              offset: 76069
+              line: 849
               column: 1
             end:
-              offset: 70185
-              line: 847
+              offset: 76091
+              line: 849
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1324,145 +1326,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_output"
       identity_kind: "explicit"
-      unit_id: "normative_49541"
+      unit_id: "normative_52982"
       source_span:
         start:
-          offset: 49654
-          line: 794
+          offset: 53095
+          line: 796
           column: 1
         end:
-          offset: 50104
-          line: 794
+          offset: 53545
+          line: 796
           column: 451
     - pointer: "/allocation_rules/1"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_49541"
+      unit_id: "normative_52982"
       source_span:
         start:
-          offset: 50105
-          line: 795
+          offset: 53546
+          line: 797
           column: 1
         end:
-          offset: 50348
-          line: 795
+          offset: 53789
+          line: 797
           column: 244
     - pointer: "/allocation_rules/2"
       rule_id: "a_shared"
       identity_kind: "explicit"
-      unit_id: "normative_49541"
+      unit_id: "normative_52982"
       source_span:
         start:
-          offset: 50349
-          line: 796
+          offset: 53790
+          line: 798
           column: 1
         end:
-          offset: 50654
-          line: 796
+          offset: 54095
+          line: 798
           column: 306
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_49541"
+      unit_id: "normative_52982"
       source_span:
         start:
-          offset: 50656
-          line: 798
+          offset: 54097
+          line: 800
           column: 1
         end:
-          offset: 51042
-          line: 798
+          offset: 54483
+          line: 800
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 70258
-          line: 851
+          offset: 76164
+          line: 853
           column: 1
         end:
-          offset: 70514
-          line: 851
+          offset: 76420
+          line: 853
           column: 257
     - pointer: "/validation_rules/1"
       rule_id: "v_mass"
       identity_kind: "explicit"
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 70515
-          line: 852
+          offset: 76421
+          line: 854
           column: 1
         end:
-          offset: 70761
-          line: 852
+          offset: 76667
+          line: 854
           column: 247
     - pointer: "/validation_rules/2"
       rule_id: "v_routes"
       identity_kind: "explicit"
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 70762
-          line: 853
+          offset: 76668
+          line: 855
           column: 1
         end:
-          offset: 70979
-          line: 853
+          offset: 76885
+          line: 855
           column: 218
     - pointer: "/validation_rules/3"
       rule_id: "v_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 70980
-          line: 854
+          offset: 76886
+          line: 856
           column: 1
         end:
-          offset: 71223
-          line: 854
+          offset: 77129
+          line: 856
           column: 244
     - pointer: "/validation_rules/4"
       rule_id: "v_binding"
       identity_kind: "explicit"
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 71224
-          line: 855
+          offset: 77130
+          line: 857
           column: 1
         end:
-          offset: 71392
-          line: 855
+          offset: 77298
+          line: 857
           column: 169
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 71393
-          line: 856
+          offset: 77299
+          line: 858
           column: 1
         end:
-          offset: 71993
-          line: 856
+          offset: 77899
+          line: 858
           column: 601
     - pointer: "/validation_rules/6"
       rule_id: "v_feed_supply_intake_separation"
       identity_kind: "explicit"
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 71994
-          line: 857
+          offset: 77900
+          line: 859
           column: 1
         end:
-          offset: 72440
-          line: 857
+          offset: 78346
+          line: 859
           column: 447
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1491,27 +1493,27 @@ normative_context:
           column: 157
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_49541"
+      unit_id: "normative_52982"
       source_span:
         start:
-          offset: 49541
-          line: 790
+          offset: 52982
+          line: 792
           column: 1
         end:
-          offset: 49581
-          line: 790
+          offset: 53022
+          line: 792
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_70163"
+      unit_id: "normative_76069"
       source_span:
         start:
-          offset: 70163
-          line: 847
+          offset: 76069
+          line: 849
           column: 1
         end:
-          offset: 70185
-          line: 847
+          offset: 76091
+          line: 849
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1520,5 +1522,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:1412cf1996ab701c2c2fd2654ab47c31218a3a1db655f85f7169f79dc5c919de"
-  generated_content_sha256: "sha256:459d5e487a1c0e7aa6967d331be96ced036e8ab19a9fb7b1398b2a423b0a3bb0"
+    sha256: "sha256:0f595ee834c6487f069cb8b5d3fb0177717d7769dcdb97e7625a3d3e5ac18260"
+  generated_content_sha256: "sha256:2b5385ab6a1bc681f0e0fd753a964784f9bae5e87d42e8b770f4eef74e6356d2"

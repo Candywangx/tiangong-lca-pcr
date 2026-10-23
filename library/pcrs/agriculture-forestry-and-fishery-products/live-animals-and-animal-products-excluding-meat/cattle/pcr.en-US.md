@@ -260,17 +260,13 @@ Raw quantity and calculation requirements: measured live mass and count entering
   - Evidence kind: Method formula (`method_formula`)
   - Sources: `mass-balance-identity`
 
-###### Independently intended cattle-system co-products (`intended_coproducts`)
+###### Raw cattle milk transferred as an independent product (`raw_cattle_milk_coproduct`)
 
-Record milk, breeding animals, culled animals or other intended outputs only when separately intended and transferred, with a distinct handover, quantity and destination. This collection requirement is expanded into concrete exchanges from foreground records.
+Include only raw cattle milk that is independently intended and transferred at its documented farm handover. Keep its lot, raw state, composition, accepted net mass, recipient and handover separate from live-animal output. This is a conditional milk exchange, not a combined cattle-system output.
 
-Denominator and scope requirements：per herd reporting period and per 1,000 kg reference output after attribution
-
-Raw quantity and calculation requirements: measured amount at each independently documented handover Original collection denominator kind: process_output.
-
-- Selected flow: Independently intended cattle-system co-product
-- Flow property / unit: Product-specific property and unit
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
+- Selected flow: Raw cattle milk at producing farm gate
+- Flow property / unit: Mass / kg
+- Amount rule: Record actual accepted net milk mass separately; calculate its final-package contribution using inventory_reference_normalization and stage_throughput_linkage with the matched herd-period records. Preserve the unallocated physical milk ledger separately from shared-burden attribution.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per reference flow
@@ -278,14 +274,42 @@ Raw quantity and calculation requirements: measured amount at each independently
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_outputs_and_allocation`
 - Sources: `fao-leap-large-ruminants-2016`
-- Range: Provisional intended-output screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100
-  - Unit: kg product-equivalent/kg farm-gate live output
-  - Basis: deliberately broad cross-product screen; do not aggregate unlike products without an attribution worksheet
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+No category-wide numerical range is established. Determine actual mass from milk handover records; missing records or an unresolved compatible UUID block a complete linked dataset rather than establishing zero milk output.
+
+###### Live breeding cattle transferred as an independent product (`live_breeding_cattle_coproduct`)
+
+Include only live domestic cattle of genus Bos independently transferred for breeding as a separately declared product stratum outside the selected live-cattle reference-output denominator. Declare animal identity, class, purpose, count, measured live weight, recipient and farm-gate handover. If these animals already belong to the selected reference-output stratum, count them there only; animal class alone does not create another product or sale.
+
+- Selected flow: Live domestic breeding cattle at producing farm gate
+- Flow property / unit: Mass / kg live weight; head count retained separately
+- Amount rule: Record the measured live mass of the unique transferred breeding animals; calculate its final-package contribution using inventory_reference_normalization and stage_throughput_linkage with the matched herd-period records. Preserve the unallocated animal ledger separately from shared-burden attribution.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_outputs_and_allocation`
+- Sources: `fao-leap-large-ruminants-2016`
+
+No category-wide numerical range is established. Reconcile actual transfers with the animal-event and stock records; a compatible UUID remains unresolved until independently confirmed for this live-animal identity, property and gate.
+
+###### Live culled cattle transferred as an independent product (`live_culled_cattle_coproduct`)
+
+Include only live domestic cattle of genus Bos independently transferred as a separately declared culled-animal product stratum outside the selected live-cattle reference-output denominator. Declare unique animal identity, culling event, count, measured live weight, recipient and farm-gate handover. These are live animals, not mortalities or carcass waste. If they already belong to the selected reference-output stratum, count them there only; a culling event alone does not create another product or sale.
+
+- Selected flow: Live culled domestic cattle at producing farm gate
+- Flow property / unit: Mass / kg live weight; head count retained separately
+- Amount rule: Record the measured live mass of the unique transferred culled animals; calculate its final-package contribution using inventory_reference_normalization and stage_throughput_linkage with the matched herd-period records. Preserve the unallocated animal ledger separately from shared-burden attribution.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_outputs_and_allocation`
+- Sources: `fao-leap-large-ruminants-2016`
+
+No category-wide numerical range is established. Reconcile actual transfers with animal-event, culling and stock records; a compatible UUID remains unresolved until independently confirmed for this live-animal identity, property and gate.
 
 ##### Waste flows
 
@@ -655,6 +679,10 @@ No default elementary output is prescribed. Add direct emissions from gate equip
 | `a_route_separation` | coexisting grazing, mixed, dairy-linked, housed and feedlot variants | Keep route-specific feed, manure, infrastructure and emissions records separate. A portfolio average may be published only with production-weighted route shares and no duplicate animals or periods. | `fao-leap-large-ruminants-2016` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Other independently intended products
+
+Identify every other actual intended cattle-system product and its independent handover under `cp_outputs_and_allocation`. This is a mandatory collection requirement, not a selected exchange. Before dataset completeness, add one physically specific card per actual product with native property/unit, measured quantity, state, recipient and gate; verify a compatible UUID or retain its exact unresolved identity. Keep milk mass and live-animal mass/count separate; no product-equivalent conversion or cross-product numerical screen is supplied. Link unique animals and lots to exactly one physical output, exclude internal transfers from final sales, and do not count an animal in both a co-product card and the selected reference-output denominator. Apply Section 7 allocation to shared burdens separately from the unallocated physical output ledger. Missing identity or output records remain a completeness gap, never zero or permission to omit a product.
 
 ### Specific input identification before dataset completion
 

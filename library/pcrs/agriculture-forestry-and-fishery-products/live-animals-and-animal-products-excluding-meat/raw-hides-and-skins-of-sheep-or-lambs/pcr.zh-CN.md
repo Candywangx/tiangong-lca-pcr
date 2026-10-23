@@ -157,31 +157,61 @@ sync_with: pcr.en-US.md
   - 基准类型: 过程产出 (`process_output`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 实际独立动物产品 (`source_coproduct`)
+###### 独立阶段交接点的生绵羊乳（`source_raw_sheep_milk_product`）
 
-仅在其真实生产阶段和交付点记录；附着羊毛并非已分离羊毛。
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
 
-分母与范围要求：每 kg 节点产出
+采集与交接范围：仅在其真实生产阶段和交付点记录；附着羊毛并非已分离羊毛。 分母与范围要求：每 kg 节点产出 原始数量及计算要求：按真实批次实测并核对节点投入、产出和去向。 原始采集分母类型：process_output。
 
-原始数量及计算要求：按真实批次实测并核对节点投入、产出和去向。 原始采集分母类型：process_output。
-
-- 选定流: 实际可销售的肉、已分离羊毛、乳等产品 (UUID 未解析)
-- 流属性/单位: Mass / kg
-- 数量规则：依 inventory_reference_normalization 与 stage_throughput_linkage，使用已匹配原始记录计算可归属的最终数据包交换量。
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围: 场址特定 (`site_specific`)
+- 选定流：独立阶段交接点的生绵羊乳
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
 - 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集计算（`calculated_from_collection`）
-- 采集协议: `cp_source`
-- 数量范围: 批次完整性校验，非默认用量系数
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 100000
-  - 单位: kg/kg
-  - 基准: 每 kg 节点产出
-  - 基准类型: 过程产出 (`process_output`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_source`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 独立阶段交接点的已分离绵羊毛（`source_detached_sheep_wool_product`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：仅在其真实生产阶段和交付点记录；附着羊毛并非已分离羊毛。 分母与范围要求：每 kg 节点产出 原始数量及计算要求：按真实批次实测并核对节点投入、产出和去向。 原始采集分母类型：process_output。
+
+- 选定流：独立阶段交接点的已分离绵羊毛
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_source`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 实际来源交接点已单独分离的生绵羊肉（`source_separate_sheep_meat_product`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：仅在其真实生产阶段和交付点记录；附着羊毛并非已分离羊毛。 分母与范围要求：每 kg 节点产出 原始数量及计算要求：按真实批次实测并核对节点投入、产出和去向。 原始采集分母类型：process_output。
+
+仅在本来源事件已经物理分离并独立交接的肉才记在此处。仍包含在 source_skinbearing 中的肉属于该转移，不是额外来源产出。如果肉在后续责任节点分离，应通过匹配记录在该节点识别，不得重复报告；死亡动物路线不得编造肉产出。
+
+- 选定流：实际来源交接点已单独分离的生绵羊肉
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`calculated_value`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`calculated_from_collection`
+- 采集协议：`cp_source`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
 
 ##### Waste flows
 
@@ -691,7 +721,7 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_source | source | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase | 批次台账 | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase | 校准称量、仪表及单据；原始汇总要求：按批次和期间仅汇总一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;period | 每批次或期间 | 全部相关事件 | 实际场址 | 每参考流 | 校准、来源及交付记录；可追溯分子、合格参考产出分母及归一化计算表 |
+| cp_source | source | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase | 批次台账 | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase |校准称量、仪表及单据；原始汇总要求：按批次和期间仅汇总一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 source_coproduct_specific_output：保留原 source_coproduct 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 | kg;period | 每批次或期间 | 全部相关事件 | 实际场址 | 每参考流 | 校准、来源及交付记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_remove | remove | source event, intact raw skin, fleece and loss | 批次台账 | source event, intact raw skin, fleece and loss | 校准称量、仪表及单据；原始汇总要求：按批次和期间仅汇总一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;period | 每批次或期间 | 全部相关事件 | 实际场址 | 每参考流 | 校准、来源及交付记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_condition | condition | incoming, water, prepared skin, trim | 批次台账 | incoming, water, prepared skin, trim | 校准称量、仪表及单据；原始汇总要求：按批次和期间仅汇总一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;period | 每批次或期间 | 全部相关事件 | 实际场址 | 每参考流 | 校准、来源及交付记录；可追溯分子、合格参考产出分母及归一化计算表 |
 | cp_grade | grade | accepted, downgraded, rejected grades and destination | 批次台账 | accepted, downgraded, rejected grades and destination | 校准称量、仪表及单据；原始汇总要求：按批次和期间仅汇总一次。执行原有路线、期间、换算及分配规则；保留原始总量及同一范围的实测合格参考产出分母。最终归一化恰执行一次，不得对已归一化数量再次除以分母。 | kg;period | 每批次或期间 | 全部相关事件 | 实际场址 | 每参考流 | 校准、来源及交付记录；可追溯分子、合格参考产出分母及归一化计算表 |

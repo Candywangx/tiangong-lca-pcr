@@ -266,29 +266,23 @@ Raw activity or stage basis: per 1 kg accepted green uncured pods.
 
 ##### Waste flows
 
-###### Prunings, dead vines and field residues (`cultivation_residues`)
+###### Removed vanilla plant biomass sent to treatment (`removed_vanilla_biomass_waste`)
 
-Identity and quantity rule: Measure residues by retained, recovered, treated or discarded destination; in-situ material is not also exported as waste.
+Conditional only on this specific waste material actually being separately collected for documented treatment inside the existing process boundary. This card does not prove site segregation. A real mixed stream keeps one composition-defined identity and its actual handover; do not extract hypothetical component exchanges or duplicate mixture and component exports. Retained stock, an in-situ residue or direct environmental return is not this waste export.
 
-- Selected flow: Internal/deferred crop residues by material and destination
+Collection and handover scope: Identity and quantity rule: Measure residues by retained, recovered, treated or discarded destination; in-situ material is not also exported as waste. Raw activity or stage basis: per 1 kg accepted green uncured pods.
+
+- Selected flow: Removed vanilla plant biomass sent to treatment
 - Flow property / unit: Mass / kg
-- Amount rule: Measure residues by retained, recovered, treated or discarded destination; in-situ material is not also exported as waste.
+- Amount rule: Measure the mass of this specific waste material at its actual collection/treatment handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
-Raw activity or stage basis: per 1 kg accepted green uncured pods.
-
 - Normalization basis: per declared reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_residue_and_emission_records`
-- Range: Quantity QA range
-  - Range role: `default_estimate`
-  - Lower: 0
-  - Upper: 10
-  - Unit: kg/kg reference product
-  - Basis: residues leaving productive use per kg accepted output
-  - Basis kind: `reference_flow`
-  - Evidence kind: `reasoned_estimate`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Elementary flows
 
@@ -640,7 +634,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_perennial_vine_records` | `perennial_vine_management` | propagation, vine phases, support, pollination, standing crop | field register | species; source; mass; vine count/age; establishment/replacement; support/shade; pollination; dates; harvest-ready mass | Reconcile plot, propagation and observation records by route and period; Raw aggregation and attribution: stratify before attribution and aggregation | kg; count; date | each event and season | all burden-bearing years | farm and plot | per declared reference flow | dated records, invoices, species record and sign-off |
 | `cp_management_inputs` | `perennial_vine_management` | nutrients, irrigation, energy | invoice, log, meter | product; composition; mass; water source/volume; pump hours/rate; carrier/quantity; node; date | record each event and calculate only with verified factors; Raw aggregation and attribution: sum by actual product/carrier before normalization | kg; m3; kWh; L; MJ | each application or meter interval | complete reporting period | farm, plot and equipment route | per declared reference flow | invoice, calibration, log and factor record |
-| `cp_residue_and_emission_records` | `perennial_vine_management` | residues and emissions | weighing log and calculation sheet | material; mass; destination; substance; basis; compartment; activity; factor; method | weigh exported residues and calculate identified emissions only; Raw aggregation and attribution: reconcile destinations; aggregate after resolution | kg | each removal and calculation period | complete reporting period | plot and destination | per declared reference flow | scale, receipt, method citation and review |
+| `cp_residue_and_emission_records` | `perennial_vine_management` | residues and emissions | weighing log and calculation sheet | material; mass; destination; substance; basis; compartment; activity; factor; method |weigh exported residues and calculate identified emissions only; Raw aggregation and attribution: reconcile destinations; aggregate after resolution cultivation_residues_specific_output: Mandatory material, quantity and boundary-role identification, not a selected exchange. Preserved collection scope: Identity and quantity rule: Measure residues by retained, recovered, treated or discarded destination; in-situ material is not also exported as waste. Raw activity or stage basis: per 1 kg accepted green uncured pods. Retain every actual material and fate, including materials not represented by the conditional card. Record actual composition/state, native property/unit, measured quantity, cohort/period, recipient, treatment responsibility and unique handover; keep original throughput, normalization and allocation duties. Before completeness, instantiate only actual distinct physical exchanges with compatible UUIDs or exact unresolved identities. A real mixed stream remains one measured composition-defined identity; do not invent segregation or duplicate mixture/component exports. Retained/deferred stock, in-situ residues and soil returned directly to the environment keep their actual balance/stock/return roles, not assumed technosphere waste exports; establish method and boundary responsibility before any elementary exchange. Independently sold recovery needs its actual Product handover and must not also be this waste. Missing records are not zero and the retired class-level numerical screen is not a component limit. | kg | each removal and calculation period | complete reporting period | plot and destination | per declared reference flow | scale, receipt, method citation and review |
 | `cp_selective_harvest_rounds` | `selective_pod_harvest` | harvest, rejects, losses, energy | lot sheet | round/date; plot; species; maturity; masses; retained status; carrier; labour mode | weigh each round and link equipment records; Raw aggregation and attribution: sum linked rounds and keep rejects separate | kg; MJ; date | every round | all contributing rounds | plot, round and lot | per declared reference flow | calibrated scale, signed lot sheet and energy log |
 | `cp_primary_conditioning` | `on_farm_primary_conditioning` | input, handled pods, removed matter | handling sheet | lot; input/output mass; holding time; operations; rejects/destination; no-curing declaration | weigh before/after and document no curing or deliberate drying; Raw aggregation and attribution: reconcile input, output, rejects and loss | kg; hour | every lot | all contributing lots | handling area and lot | per declared reference flow | calibrated scale, time log, checklist and photos/equivalent |
 | `cp_green_pod_grading` | `green_pod_grading_handoff` | accepted grade, off-grade, rework, hand-off | grading/dispatch record | lot; species; maturity; grade; input; accepted; off-grade; rework; destination; date; uncured state | weigh each state and link accepted lots to pre-curing dispatch; Raw aggregation and attribution: reconcile all states and remove rework duplication | kg; date | every lot | all contributing lots | grading site and lot | per declared reference flow | calibrated scale, grade specification, dispatch and no-curing declaration |

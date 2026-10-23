@@ -582,14 +582,34 @@ process_inventory:
                 - fao-local-vegetable-seed-production
                 - fao-tree-seed-handling
             ranges: []
-        - row_id: harvested_fruit_co_product
-          role: "Intended fruit or pulp co-product at harvest"
-          name: "intended fruit or pulp co-product (unmapped; resolve recipient-specific identity)"
+        - row_id: harvested_whole_fruit_coproduct
+          role: "Whole seed-bearing fruit at its documented product handover"
+          name: "Whole seed-bearing fruit at its documented product handover"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "When a seed-bearing fruit is intentionally sold or transferred for food, feed, processing, or another documented function, record that stream as an intended co-product rather than as waste. If the fruit has no documented recipient or function, classify the stream as residue or waste instead. Raw activity or stage basis: per 1 kg net accepted reference seed."
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: When a seed-bearing fruit is intentionally sold or transferred for food, feed, processing, or another documented function, record that stream as an intended co-product rather than as waste. If the fruit has no documented recipient or function, classify the stream as residue or waste instead. Raw activity or stage basis: per 1 kg net accepted reference seed. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "measured mass and documented recipient or downstream hand-off"
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co_product_and_residue_fate
+              source_ids:
+                - fao-local-vegetable-seed-production
+                - iso-14044-2006
+            ranges: []
+        - row_id: harvested_fruit_pulp_coproduct
+          role: "Separated fruit pulp at its documented product handover"
+          name: "Separated fruit pulp at its documented product handover"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: When a seed-bearing fruit is intentionally sold or transferred for food, feed, processing, or another documented function, record that stream as an intended co-product rather than as waste. If the fruit has no documented recipient or function, classify the stream as residue or waste instead. Raw activity or stage basis: per 1 kg net accepted reference seed. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "foreground_record"
             specificity: "product_specific"
             basis:
@@ -1506,7 +1526,7 @@ dataset_production:
       flow_role: "co-product, residue, reject, and waste destination"
       record_type: "sales or transfer record, recipient confirmation, compost or disposal ticket"
       raw_fields: "stream; mass; moisture; intended use; recipient; quality; hand-off; treatment; date"
-      collection_method: "link the output stream to a durable destination record; Raw aggregation and attribution: never aggregate distinct destinations without retaining stream identity"
+      collection_method: "link the output stream to a durable destination record; Raw aggregation and attribution: never aggregate distinct destinations without retaining stream identity harvested_fruit_co_product_specific_output: Preserve every actual intended output previously collected under harvested_fruit_co_product, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "kg; percent; categorical fate"
       frequency: "every output stream"
       temporal_coverage: "full production and processing campaign"
@@ -1893,7 +1913,7 @@ data_sources:
     used_for: "General allocation hierarchy and comparable-gate economic basis. Applicability conditions and the explicit residual branch are this PCR's method convention; no product-specific causal coefficient, price or output quantity is prescribed by this source."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3cddb9371f386899931ce9f126e1e9f111a5b44264f6585b433d26470ebbcb06"
+  source_sha256: "sha256:15913b126ee8302d5461117ef60818a01eb0a61b193abb50410c311d3ba50412"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_10138"
@@ -1944,16 +1964,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_73364"
+    - unit_id: "normative_76536"
       family: "allocation"
       span:
         start:
-          offset: 73364
-          line: 1114
+          offset: 76536
+          line: 1135
           column: 1
         end:
-          offset: 77849
-          line: 1130
+          offset: 81021
+          line: 1151
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_process_subdivision` | shared production, harvest, extraction, conditioning, and storage burdens | Prefer process subdivision and direct lot records. Attribute operation-specific inputs and outputs directly to the seed lot whenever the records allow it. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_fruit_co_product` | edible fruit, pulp, flesh, or another intended co-product | First classify the stream as intended co-product, residue, or waste from recipient, function, quality, and hand-off evidence. If co-product allocation is necessary, use the declared physical or economic relationship selected by the data package, document the basis and sensitivity, and do not credit an undocumented use. | `iso-14044-2006`; `fao-local-vegetable-seed-production` |\n| `allocation_seed_grade_outputs` | accepted and downgraded seed lots | Treat accepted and downgraded seed as separate intended outputs only when both have declared sowing functions and hand-offs. Allocate shared burdens using the declared physical, mass, or economic basis and keep rejected seed outside the accepted reference output. | `iso-14044-2006`; `oecd-seed-schemes` |\n| `allocation_cross_period_mother_plants` | orchards, perennial mother plants, and multi-year seed gardens | Link establishment, productive, replacement, and termination events to reporting periods. Attribute shared perennial inputs to the seed outputs of the same declared period using a documented period basis; do not count establishment or termination burdens in more than one period. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_rejected_and_rework` | rejects, returns, reconditioning, and storage losses | Keep rejects and rework linked to their producing node. Retain burdens on material sent back for rework, add the rework operation once, and do not count reworked material as a second accepted output. Discarded material receives no product credit. | `fao-seed-production-manual`; `mass-balance-identity` |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_residual_precedence` | remaining common burden with no specified primary branch | Resolve any study-specific joint-product instruction in this PCR that has no specified primary branch using this precedence; retain an already explicitly prescribed category-specific primary method. First directly assign separable output-specific activities. For the remaining common burden B, use a physical driver d_i only when measured operation or biological-service records demonstrate the causal consumption represented by that driver. A product being weighable, valuable or lower grade alone is insufficient; do not switch arbitrarily between area, time, mass and revenue. For comparable grades receiving the same common handling, measured processed mass is applicable only with the same service demand, state and moisture basis demonstrated. Share a_i=d_i/sum(d_j); B_i=B*a_i. If no defensible causal physical driver exists for that common operation, use gate- and period-matched economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with the complete independently intended output set, compatible quantity/price units, currency, representative prices and values before output-specific downstream processing. Missing price or denominator evidence makes the allocated result incomplete, not a zero-priced product or a single-output system. Report shares summing to one and sensitivity to a material alternative; an alternative is not an interchangeable primary result. Waste, retained residues and internal transfers receive no co-product share, while their attributable production/handling burdens remain with the producing saleable route. Retain unallocated physical quantities and mass balances separately. This branch gives no automatic substitution credit; any separately scoped substitution analysis retains the gross inventory and its actual displaced-function evidence. | `ghg-protocol-product-standard-2011` |\n\n"
       headings:
@@ -1972,12 +1992,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 73364
-              line: 1114
+              offset: 76536
+              line: 1135
               column: 1
             end:
-              offset: 73404
-              line: 1114
+              offset: 76576
+              line: 1135
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1992,16 +2012,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_110881"
+    - unit_id: "normative_114825"
       family: "validation"
       span:
         start:
-          offset: 110881
-          line: 1212
+          offset: 114825
+          line: 1233
           column: 1
         end:
-          offset: 115232
-          line: 1231
+          offset: 119176
+          line: 1252
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_reference_flow` | reference product | Confirm the final species or plant identity, sowing purpose, lot qualifiers, mass property, unit, moisture or viability basis, and declared gate. A final TIDAS process must replace the unresolved reference identity with a verified UUID. | `fao-seed-systems`; `ista-international-rules` |\n| `validation_scope` | dataset boundary | Confirm the dataset is fruit seed for sowing and does not silently include food fruit, commodity fruit, seedlings, transplants, grafted plants, downstream cultivation, or post-gate distribution. | `fao-seed-production-manual`; `fao-seed-systems` |\n| `validation_route_choice` | process map | Confirm the selected annual/perennial and field/protected/orchard route, and select fleshy or dry extraction only from current lot evidence. A route delta must change topology, inventory, calculation, data, or validation, not only the label. | `fao-local-vegetable-seed-production`; `fao-tree-seed-handling` |\n| `validation_process_map` | all processes | Confirm multiplication, harvest/capture, applicable extraction, conditioning, grading/testing, and included presentation/storage are distinct nodes with explicit product hand-offs. | `fao-seed-production-manual`; `fao-tree-seed-handling` |\n| `validation_flow_binding` | all inventory rows | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `mass-balance-identity` |\n| `validation_nutrient_basis` | nutrient and soil-emission rows | Confirm only actually used products are present, with product mass, nutrient basis, application record, soil context, and one declared emission method. Do not force every fertilizer type. | `ipcc-2019-managed-soils-n2o` |\n| `validation_water_and_land` | water and land rows | Keep irrigation product input, natural water withdrawal, process water, discharge, and land occupation distinct; verify meter or area-time records and prevent double counting. | `ipcc-2019-cropland`; `mass-balance-identity` |\n| `validation_quality_release` | accepted and reference seed | Confirm identity, class, physical purity, germination or viability, moisture or recalcitrant state, health/treatment status, sampling method, test date, grade, and lot release. | `ista-international-rules`; `oecd-seed-schemes` |\n| `validation_co_product_outputs` | fruit, pulp, flesh, and downgraded seed | Enumerate every intended output and hand-off. Apply allocation only when output function and recipient are evidenced; distinguish co-products from residues and waste. | `iso-14044-2006`; `fao-local-vegetable-seed-production` |\n| `validation_period_attribution` | perennial or multi-period routes | Require period/phase boundaries, link inputs and outputs to one period, record establishment/replacement/termination treatment, and prevent double attribution. | `iso-14044-2006`; `mass-balance-identity` |\n| `validation_reject_rework_paths` | rejects, downgraded seed, returns, and losses | Every rejected state must be reworked, downgraded, recovered, treated, or discarded with a declared path. Rework must link to the upstream node and cannot be counted as an accepted output twice. | `fao-seed-production-manual`; `mass-balance-identity` |\n| `validation_mass_balance` | all process outputs | Reconcile production, harvest, extraction, conditioning, grading, packaging, and storage balances on the declared moisture basis and report any unexplained residual. | `mass-balance-identity`; `fao-tree-seed-handling` |\n| `validation_storage_and_gate` | included storage and final gate | Verify opening and closing inventory, storage duration, loss or rework, final moisture/viability state, packaging state, and gate hand-off. | `fao-tree-seed-handling`; `fao-seed-drying-storage-2024` |\n| `validation_dataset_disclosure` | published dataset profile | Verify disclosure of location, period, route, quality attributes, evidence level, estimates, factors and unresolved identities. Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. | `ista-international-rules`; `mass-balance-identity` |\n\n"
       headings:
@@ -2020,12 +2040,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 110881
-              line: 1212
+              offset: 114825
+              line: 1233
               column: 1
             end:
-              offset: 110903
-              line: 1212
+              offset: 114847
+              line: 1233
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -2148,275 +2168,275 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_process_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 73477
-          line: 1118
+          offset: 76649
+          line: 1139
           column: 1
         end:
-          offset: 73790
-          line: 1118
+          offset: 76962
+          line: 1139
           column: 314
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_fruit_co_product"
       identity_kind: "explicit"
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 73791
-          line: 1119
+          offset: 76963
+          line: 1140
           column: 1
         end:
-          offset: 74265
-          line: 1119
+          offset: 77437
+          line: 1140
           column: 475
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_seed_grade_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 74266
-          line: 1120
+          offset: 77438
+          line: 1141
           column: 1
         end:
-          offset: 74643
-          line: 1120
+          offset: 77815
+          line: 1141
           column: 378
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_cross_period_mother_plants"
       identity_kind: "explicit"
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 74644
-          line: 1121
+          offset: 77816
+          line: 1142
           column: 1
         end:
-          offset: 75078
-          line: 1121
+          offset: 78250
+          line: 1142
           column: 435
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rejected_and_rework"
       identity_kind: "explicit"
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 75079
-          line: 1122
+          offset: 78251
+          line: 1143
           column: 1
         end:
-          offset: 75475
-          line: 1122
+          offset: 78647
+          line: 1143
           column: 397
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 75477
-          line: 1124
+          offset: 78649
+          line: 1145
           column: 1
         end:
-          offset: 75863
-          line: 1124
+          offset: 79035
+          line: 1145
           column: 387
     - pointer: "/allocation_rules/6"
       rule_id: "allocation_residual_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 75936
-          line: 1128
+          offset: 79108
+          line: 1149
           column: 1
         end:
-          offset: 77847
-          line: 1128
+          offset: 81019
+          line: 1149
           column: 1912
     - pointer: "/validation_rules/0"
       rule_id: "validation_reference_flow"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 110976
-          line: 1216
+          offset: 114920
+          line: 1237
           column: 1
         end:
-          offset: 111315
-          line: 1216
+          offset: 115259
+          line: 1237
           column: 340
     - pointer: "/validation_rules/1"
       rule_id: "validation_scope"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 111316
-          line: 1217
+          offset: 115260
+          line: 1238
           column: 1
         end:
-          offset: 111605
-          line: 1217
+          offset: 115549
+          line: 1238
           column: 290
     - pointer: "/validation_rules/2"
       rule_id: "validation_route_choice"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 111606
-          line: 1218
+          offset: 115550
+          line: 1239
           column: 1
         end:
-          offset: 111959
-          line: 1218
+          offset: 115903
+          line: 1239
           column: 354
     - pointer: "/validation_rules/3"
       rule_id: "validation_process_map"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 111960
-          line: 1219
+          offset: 115904
+          line: 1240
           column: 1
         end:
-          offset: 112244
-          line: 1219
+          offset: 116188
+          line: 1240
           column: 285
     - pointer: "/validation_rules/4"
       rule_id: "validation_flow_binding"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 112245
-          line: 1220
+          offset: 116189
+          line: 1241
           column: 1
         end:
-          offset: 112492
-          line: 1220
+          offset: 116436
+          line: 1241
           column: 248
     - pointer: "/validation_rules/5"
       rule_id: "validation_nutrient_basis"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 112493
-          line: 1221
+          offset: 116437
+          line: 1242
           column: 1
         end:
-          offset: 112780
-          line: 1221
+          offset: 116724
+          line: 1242
           column: 288
     - pointer: "/validation_rules/6"
       rule_id: "validation_water_and_land"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 112781
-          line: 1222
+          offset: 116725
+          line: 1243
           column: 1
         end:
-          offset: 113060
-          line: 1222
+          offset: 117004
+          line: 1243
           column: 280
     - pointer: "/validation_rules/7"
       rule_id: "validation_quality_release"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 113061
-          line: 1223
+          offset: 117005
+          line: 1244
           column: 1
         end:
-          offset: 113352
-          line: 1223
+          offset: 117296
+          line: 1244
           column: 292
     - pointer: "/validation_rules/8"
       rule_id: "validation_co_product_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 113353
-          line: 1224
+          offset: 117297
+          line: 1245
           column: 1
         end:
-          offset: 113657
-          line: 1224
+          offset: 117601
+          line: 1245
           column: 305
     - pointer: "/validation_rules/9"
       rule_id: "validation_period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 113658
-          line: 1225
+          offset: 117602
+          line: 1246
           column: 1
         end:
-          offset: 113934
-          line: 1225
+          offset: 117878
+          line: 1246
           column: 277
     - pointer: "/validation_rules/10"
       rule_id: "validation_reject_rework_paths"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 113935
-          line: 1226
+          offset: 117879
+          line: 1247
           column: 1
         end:
-          offset: 114272
-          line: 1226
+          offset: 118216
+          line: 1247
           column: 338
     - pointer: "/validation_rules/11"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 114273
-          line: 1227
+          offset: 118217
+          line: 1248
           column: 1
         end:
-          offset: 114544
-          line: 1227
+          offset: 118488
+          line: 1248
           column: 272
     - pointer: "/validation_rules/12"
       rule_id: "validation_storage_and_gate"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 114545
-          line: 1228
+          offset: 118489
+          line: 1249
           column: 1
         end:
-          offset: 114813
-          line: 1228
+          offset: 118757
+          line: 1249
           column: 269
     - pointer: "/validation_rules/13"
       rule_id: "validation_dataset_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 114814
-          line: 1229
+          offset: 118758
+          line: 1250
           column: 1
         end:
-          offset: 115230
-          line: 1229
+          offset: 119174
+          line: 1250
           column: 417
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2445,51 +2465,51 @@ normative_context:
           column: 232
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 73364
-          line: 1114
+          offset: 76536
+          line: 1135
           column: 1
         end:
-          offset: 73404
-          line: 1114
+          offset: 76576
+          line: 1135
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 75477
-          line: 1124
+          offset: 78649
+          line: 1145
           column: 1
         end:
-          offset: 75863
-          line: 1124
+          offset: 79035
+          line: 1145
           column: 387
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_73364"
+      unit_id: "normative_76536"
       source_span:
         start:
-          offset: 75936
-          line: 1128
+          offset: 79108
+          line: 1149
           column: 1
         end:
-          offset: 77847
-          line: 1128
+          offset: 81019
+          line: 1149
           column: 1912
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_110881"
+      unit_id: "normative_114825"
       source_span:
         start:
-          offset: 110881
-          line: 1212
+          offset: 114825
+          line: 1233
           column: 1
         end:
-          offset: 110903
-          line: 1212
+          offset: 114847
+          line: 1233
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2498,5 +2518,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3cddb9371f386899931ce9f126e1e9f111a5b44264f6585b433d26470ebbcb06"
-  generated_content_sha256: "sha256:b025e4e47db32009e01ccac0357d4711a3f817399e2f3e6f8734fe20f685d309"
+    sha256: "sha256:15913b126ee8302d5461117ef60818a01eb0a61b193abb50410c311d3ba50412"
+  generated_content_sha256: "sha256:3610cf50e2c74734148379eabbfa9cb12f3959325668bc262973872124addbcc"

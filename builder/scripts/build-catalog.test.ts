@@ -150,13 +150,19 @@ test("catalog generator emits the current material index and complete CPC covera
   assert.equal(wheatSeed.legacy_reference, null);
 
   const barleyOther = coverage.entries.find((entry) => entry.code === "01152");
-  assert.ok(barleyOther);
+  assert.ok(barleyOther && barleyOther.mapping);
   assert.equal(barleyOther.coverage_status, "mapped");
-  assert.equal(barleyOther.mapping?.mapping_type, "exact");
-  assert.equal(barleyOther.mapping?.acceptance.status, "accepted");
-  assert.equal(barleyOther.mapping?.pcr_id, "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.barley-other");
+  assert.equal(
+    barleyOther.mapping.pcr_id,
+    "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.barley-other",
+  );
+  assert.equal(barleyOther.mapping.mapping_type, "exact");
+  assert.equal(barleyOther.mapping.acceptance.status, "accepted");
+  assert.equal(barleyOther.mapping.acceptance.decision_ref, "docs/adr/cpc-01152.md");
   assert.equal(barleyOther.legacy_reference, null);
 
+  // The retired physical pilot remains known-unmapped; authored coverage elsewhere
+  // must not manufacture methodology or follow its terminal legacy locator.
   const retiredPilot = coverage.entries.find((entry) => entry.code === "99000");
   assert.ok(retiredPilot);
   assert.equal(retiredPilot.coverage_status, "unmapped");

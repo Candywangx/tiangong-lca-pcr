@@ -21,9 +21,9 @@ checkPaths:
   - .docpact/config.yaml
   - builder/**
   - classifications/**
-lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "abd18053c9ea2860e2c1107ac65ae17730b4f4eb"
-lastReviewedNote: "Reconciled Candy main compound-unit, collection and evidence repairs with the CPC 01/02/03 phase-one corrections, fresh cut-flower methodology, accepted mappings and lossless documentation delivery. Preserved candidate and unresolved-identity qualifications; regenerated projections and indexes. Full hosted qualification remains required."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: 74444f16b5cd073a745f0199a76ace383ed79ce9
+lastReviewedNote: "PCR #141: reviewed the complete 213-record content repair and 1191-edge classification union with merged dependency repairs, lossless download/inspector transport, bounded build resources and search v5. The physical dictionary envelopes retain original logical indexes, native entries, full records and all query/legacy-reader semantics under unchanged budgets. Independent content/localization and runtime review are complete; focused, strict and bounded browser checks do not substitute for fresh complete hosted corpus/site/coverage qualification. Final 1457-record combined capacity measurement, PR138-before-PR139-before-PR137 ordering, workspace integration and stable publication remain pending. Scientific and translation lifecycle states are not promoted. PCR #143 retains all 57 additional candidates, 1248 accepted edges, 1399 material records and 1693 aliases with the exact reviewed transport and name repairs. Complete fresh hosted qualification remains pending for this composition."
 ---
 
 # Classification Policy

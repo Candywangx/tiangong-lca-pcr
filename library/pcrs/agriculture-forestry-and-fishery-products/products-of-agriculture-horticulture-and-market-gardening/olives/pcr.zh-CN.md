@@ -33,7 +33,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Olives `b07470dd-3947-4e02-8058-11967225f927` |
+| Reference product flow | 橄榄 `b07470dd-3947-4e02-8058-11967225f927` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |

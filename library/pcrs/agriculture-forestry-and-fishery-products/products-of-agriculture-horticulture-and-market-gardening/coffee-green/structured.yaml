@@ -372,10 +372,8 @@ process_inventory:
       product:
         - row_id: coffee_cherry_crop_output
           role: "Coffee cherries available for harvest"
-          name: "Coffee cherries, harvested (fresh)"
+          name: "Fresh preharvest coffee cherries on plants [unmapped]"
           flow_type: "product"
-          flow_ref:
-            uuid: "d1d6496d-2d4e-4ccc-b529-aa50bc82da44"
           property_unit: "Mass / kg fresh cherries"
           description: "Record coffee cherry production by block, cultivar group, crop year and moisture basis before harvest losses and processing. This is an intermediate output, not the PCR reference flow. Raw activity or stage basis: per 1 kg green coffee at gate."
           amount:
@@ -430,7 +428,7 @@ process_inventory:
           flow_ref:
             uuid: "d1d6496d-2d4e-4ccc-b529-aa50bc82da44"
           property_unit: "Mass / kg fresh cherries"
-          description: "Record the cherry lot received from the declared coffee stand and retain block, crop year, maturity and moisture information. Raw activity or stage basis: per 1 kg green coffee at gate."
+          description: "Record the cherry lot received from the declared coffee stand and retain block, crop year, maturity and moisture information. This UUID applies only to freshly harvested, weighed cherry lots received for collection; it does not identify the gross preharvest cherries on plants. Raw activity or stage basis: per 1 kg green coffee at gate."
           amount:
             expression: "weighed lot input linked to block and harvest date"
             value_mode: "foreground_record"
@@ -1483,7 +1481,7 @@ data_sources:
     used_for: "Managed-soil direct and indirect N2O method selection, activity data and factor applicability; not a species split for all nutrient losses"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:deda7d77dd073a7e5edc9aafd4fbfeed1e1950906c6d43fbe71899c3c30a5986"
+  source_sha256: "sha256:16a58ecde865df784f8571da481b06cc495d686e7ce8df88dc80fad9c89f6305"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7061"
@@ -1534,16 +1532,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_56087"
+    - unit_id: "normative_56220"
       family: "allocation"
       span:
         start:
-          offset: 56087
-          line: 930
+          offset: 56220
+          line: 932
           column: 1
         end:
-          offset: 59574
-          line: 942
+          offset: 59707
+          line: 944
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_01` | perennial coffee production | Apply calc_01 to block/cohort lifecycle quantities before allocating common burdens to actual intended products under allocation_03. Site productive-life/output evidence determines temporal shares; annual operating records stay in their own crop year. Area*time is only the stated common-stand-service driver, never an alternative final-product denominator. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_02` | shared farm, wet mill and dry mill resources | Attribute shared meters, machinery, water, storage, operators, cleaning and changeover burdens once using measured activity, run time, batch throughput, lot mass or documented service. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_03` | green coffee and intended co-products | For grading/handling of comparable green-coffee grades under the same operation, use measured dry-coffee throughput; separately metered grade-specific work is direct-assigned. For drying service, use attributable measured water removal when shared heat duty is evidenced, keeping start/end moisture and heat losses; otherwise directly meter runs before allocation. Cultivation or processing jointly yielding coffee and a separately intended pulp/husk product does not justify wet-mass shares merely from its mass balance. After directly assigning separable activities, allocate only residual common burden B among the complete intended-product set. Use a physical driver only when records establish how it represents consumption of that shared operation; being weighable is insufficient. Share a_i=d_i/sum(d_j), B_i=B*a_i; record native units and reconcile sum(a_i)=1. If no applicable causal driver exists, use first-separation economic shares a_i=(q_i*p_i)/sum(q_j*p_j), with representative same-period quantities, consistent currency, comparable gates and prices before output-specific downstream work. An unavailable price is not zero; unreliable or missing denominator data make allocation incomplete. Test the material alternative as sensitivity, not an interchangeable primary method. Waste and internal transfers are excluded from the product denominator; their attributable handling remains included. No substitution credit follows from this rule. | `ghg-protocol-product-standard-2011` |\n| `allocation_04` | pulp, mucilage, parchment, husk, residues and rejects | Treat a stream as a co-product or recovered material only when function, recipient, quantity, quality, destination and hand-off are documented. Otherwise retain its burden as residue or waste through treatment or disposal. | `iso-14044-2006`; `mass-balance-identity` |\n| `allocation_05` | rework, downgrade and storage loss | Keep burden on off-spec, reworked, downgraded or storage-loss material until its next declared hand-off; never count a lot as both accepted green coffee and reject, co-product or loss. | `mass-balance-identity` |\n\nThe applicable primary allocation branch is fixed by allocation_03. Retain the decision evidence, drivers and fractions for each actual joint-output node; do not substitute another primary method merely because it produces a preferred result. Sequential cherry, parchment and green-coffee states are not co-products, and internal transfers carry inherited burden once. Avoided-production credit is not implied by a recovered-material destination.\n\n"
       headings:
@@ -1562,12 +1560,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 56087
-              line: 930
+              offset: 56220
+              line: 932
               column: 1
             end:
-              offset: 56127
-              line: 930
+              offset: 56260
+              line: 932
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1582,16 +1580,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_79039"
+    - unit_id: "normative_79172"
       family: "validation"
       span:
         start:
-          offset: 79039
-          line: 993
+          offset: 79172
+          line: 995
           column: 1
         end:
-          offset: 81894
-          line: 1006
+          offset: 82027
+          line: 1008
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_01` | reference flow and metadata | Reject missing species or cultivar group, geography, crop year, processing route, moisture basis, grade, gate or mass property; verify the Coffee, green flow identity before final publication. | `fao-arabica-coffee-manual-lao`; `mass-balance-identity` |\n| `validation_02` | process map and route | Require managed production, harvest hand-off, selected wet/honey/dry route, drying or stabilization state, hulling/grading hand-off and explicit gate. | `fao-arabica-coffee-manual-lao`; `fao-green-coffee-processing-africa` |\n| `validation_03` | batch and mass balance | Reconcile every included lot from raw cherry or intermediate through green coffee, intended co-products, residues, wastewater, rejects and loss; reject mixed moisture bases or double counting. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n| `validation_04` | multi-output boundaries | Enumerate every intended output and hand-off; reject co-product or avoided-production credit without function, recipient, quantity, quality, destination and allocation decision. | `iso-14044-2006` |\n| `validation_05` | processing and drying | Check wet, honey or dry route consistency, drying records, moisture measurement, storage condition, re-wetting or mould event and route-specific water use. | `fao-ota-coffee-code`; `fao-green-coffee-processing-africa` |\n| `validation_06` | periods, storage and campaigns | For every cohort, verify E composition, historical/projected Q_y, consistent green-coffee state and Q_L coverage; over the represented full-life projection sum(E_y)=E. Include immature/failed and zero-yield records, keep productive-year operations separate, and prevent both full-event and annualized charging. Then verify allocation_03 and one calc_02 normalization to the actual reference grade. | `iso-14044-2006`; `mass-balance-identity` |\n| `validation_07` | nutrient, water and elementary flows | For soil N2O verify calc_04 equation/pathway selection, factor table row and climate/N-form applicability, complete activity inputs, 44/28 conversion exactly once and non-overlapping Tier replacements. Verify indirect-method N ledgers are not relabelled as NH3 or nitrate; other quantified species require their own supported flux/speciation record. Check product versus nutrient basis, irrigation versus withdrawal and process-water versus wastewater without duplicate paths. | `ipcc-2019-managed-soils-method` |\n| `validation_08` | rejects and residues | Require a declared fate for pulp, mucilage, parchment, husk, defects, broken beans, foreign matter, wastewater solids, storage loss and rejected lots; a destination label alone is insufficient. | `fao-green-coffee-processing-africa`; `mass-balance-identity` |\n\n"
       headings:
@@ -1610,12 +1608,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 79039
-              line: 993
+              offset: 79172
+              line: 995
               column: 1
             end:
-              offset: 79061
-              line: 993
+              offset: 79194
+              line: 995
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1725,184 +1723,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_01"
       identity_kind: "explicit"
-      unit_id: "normative_56087"
+      unit_id: "normative_56220"
       source_span:
         start:
-          offset: 56200
-          line: 934
+          offset: 56333
+          line: 936
           column: 1
         end:
-          offset: 56653
-          line: 934
+          offset: 56786
+          line: 936
           column: 454
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_02"
       identity_kind: "explicit"
-      unit_id: "normative_56087"
+      unit_id: "normative_56220"
       source_span:
         start:
-          offset: 56654
-          line: 935
+          offset: 56787
+          line: 937
           column: 1
         end:
-          offset: 56951
-          line: 935
+          offset: 57084
+          line: 937
           column: 298
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_03"
       identity_kind: "explicit"
-      unit_id: "normative_56087"
+      unit_id: "normative_56220"
       source_span:
         start:
-          offset: 56952
-          line: 936
+          offset: 57085
+          line: 938
           column: 1
         end:
-          offset: 58509
-          line: 936
+          offset: 58642
+          line: 938
           column: 1558
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_04"
       identity_kind: "explicit"
-      unit_id: "normative_56087"
+      unit_id: "normative_56220"
       source_span:
         start:
-          offset: 58510
-          line: 937
+          offset: 58643
+          line: 939
           column: 1
         end:
-          offset: 58854
-          line: 937
+          offset: 58987
+          line: 939
           column: 345
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_05"
       identity_kind: "explicit"
-      unit_id: "normative_56087"
+      unit_id: "normative_56220"
       source_span:
         start:
-          offset: 58855
-          line: 938
+          offset: 58988
+          line: 940
           column: 1
         end:
-          offset: 59124
-          line: 938
+          offset: 59257
+          line: 940
           column: 270
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_56087"
+      unit_id: "normative_56220"
       source_span:
         start:
-          offset: 59126
-          line: 940
+          offset: 59259
+          line: 942
           column: 1
         end:
-          offset: 59572
-          line: 940
+          offset: 59705
+          line: 942
           column: 447
     - pointer: "/validation_rules/0"
       rule_id: "validation_01"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 79134
-          line: 997
+          offset: 79267
+          line: 999
           column: 1
         end:
-          offset: 79437
-          line: 997
+          offset: 79570
+          line: 999
           column: 304
     - pointer: "/validation_rules/1"
       rule_id: "validation_02"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 79438
-          line: 998
+          offset: 79571
+          line: 1000
           column: 1
         end:
-          offset: 79706
-          line: 998
+          offset: 79839
+          line: 1000
           column: 269
     - pointer: "/validation_rules/2"
       rule_id: "validation_03"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 79707
-          line: 999
+          offset: 79840
+          line: 1001
           column: 1
         end:
-          offset: 80010
-          line: 999
+          offset: 80143
+          line: 1001
           column: 304
     - pointer: "/validation_rules/3"
       rule_id: "validation_04"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 80011
-          line: 1000
+          offset: 80144
+          line: 1002
           column: 1
         end:
-          offset: 80255
-          line: 1000
+          offset: 80388
+          line: 1002
           column: 245
     - pointer: "/validation_rules/4"
       rule_id: "validation_05"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 80256
-          line: 1001
+          offset: 80389
+          line: 1003
           column: 1
         end:
-          offset: 80519
-          line: 1001
+          offset: 80652
+          line: 1003
           column: 264
     - pointer: "/validation_rules/5"
       rule_id: "validation_06"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 80520
-          line: 1002
+          offset: 80653
+          line: 1004
           column: 1
         end:
-          offset: 81016
-          line: 1002
+          offset: 81149
+          line: 1004
           column: 497
     - pointer: "/validation_rules/6"
       rule_id: "validation_07"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 81017
-          line: 1003
+          offset: 81150
+          line: 1005
           column: 1
         end:
-          offset: 81589
-          line: 1003
+          offset: 81722
+          line: 1005
           column: 573
     - pointer: "/validation_rules/7"
       rule_id: "validation_08"
       identity_kind: "explicit"
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 81590
-          line: 1004
+          offset: 81723
+          line: 1006
           column: 1
         end:
-          offset: 81892
-          line: 1004
+          offset: 82025
+          line: 1006
           column: 303
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1931,27 +1929,27 @@ normative_context:
           column: 298
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_56087"
+      unit_id: "normative_56220"
       source_span:
         start:
-          offset: 56087
-          line: 930
+          offset: 56220
+          line: 932
           column: 1
         end:
-          offset: 56127
-          line: 930
+          offset: 56260
+          line: 932
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_79039"
+      unit_id: "normative_79172"
       source_span:
         start:
-          offset: 79039
-          line: 993
+          offset: 79172
+          line: 995
           column: 1
         end:
-          offset: 79061
-          line: 993
+          offset: 79194
+          line: 995
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1960,5 +1958,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:deda7d77dd073a7e5edc9aafd4fbfeed1e1950906c6d43fbe71899c3c30a5986"
-  generated_content_sha256: "sha256:fe00d0d338ca9ff88791e430c5cf10e0037957c33d725833c71ba6ea26a5b1c1"
+    sha256: "sha256:16a58ecde865df784f8571da481b06cc495d686e7ce8df88dc80fad9c89f6305"
+  generated_content_sha256: "sha256:19a1f981bf49e899e48d1b71f1318bbc51041c8d78ff3ca11e09574e51983e3e"

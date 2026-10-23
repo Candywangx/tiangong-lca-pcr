@@ -244,7 +244,9 @@ sync_with: pcr.en-US.md
 
 将合格采收青烟叶记录为终端产品，或记录为转入调制的实测中间产品。
 
-- 选定流： 未加工烟草，生产混合，农场门，鲜叶未加工 `e903dd1d-1d82-41e7-9526-2ae250746688`
+此卡绑定流的身份限定仍为“生产混合、农场门、鲜叶未加工”；前景青烟叶的批次、含水率和交接界面按本卡既有说明记录。
+
+- 选定流： 非制成品烟草 `e903dd1d-1d82-41e7-9526-2ae250746688`
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：在声明水分、等级和门点下实测的合格青烟叶质量
 
@@ -298,7 +300,7 @@ sync_with: pcr.en-US.md
 
 将计算的管理土壤一氧化二氮记录到已确认的未指定空气介质。
 
-- 选定流： Nitrous oxide, emissions to air, unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流： 一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位： Mass / kg N2O
 - 数量规则： calculate from collected N inputs and residues with an applicable method
 - 数值来源模式： 计算值（`calculated_value`）
@@ -323,7 +325,7 @@ sync_with: pcr.en-US.md
 
 将计算的肥料相关氨挥发记录到已确认的未指定空气介质。
 
-- 选定流： Ammonia, emissions to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流： 氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位： Mass / kg NH3
 - 数量规则： calculate by nutrient product, method, timing, weather, and factor
 - 数值来源模式： 计算值（`calculated_value`）
@@ -348,7 +350,7 @@ sync_with: pcr.en-US.md
 
 将计算或监测的硝酸盐损失记录到已确认的未指定水体介质。
 
-- 选定流： Nitrate, emissions to water, unspecified `fe0acd60-3ddc-11dd-aa31-0050c2490048`
+- 选定流： 硝酸根 `fe0acd60-3ddc-11dd-aa31-0050c2490048`
 - 流属性/单位： Mass / kg nitrate
 - 数量规则： calculate only with applicable leaching/runoff method or monitored balance
 - 数值来源模式： 计算值（`calculated_value`）
@@ -378,7 +380,9 @@ sync_with: pcr.en-US.md
 
 记录转入所选调制路线的实测采收青烟叶批次。
 
-- 选定流： 未加工烟草，生产混合，农场门，鲜叶未加工 `e903dd1d-1d82-41e7-9526-2ae250746688`
+此卡绑定流的身份限定仍为“生产混合、农场门、鲜叶未加工”；前景青烟叶的批次、含水率和交接界面按本卡既有说明记录。
+
+- 选定流： 非制成品烟草 `e903dd1d-1d82-41e7-9526-2ae250746688`
 - 流属性/单位： Mass / kg
 - 数量规则： 实测青烟叶批次质量和水分
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -506,7 +510,9 @@ sync_with: pcr.en-US.md
 
 仅记录现场调制燃烧产生的化石二氧化碳。
 
-- 选定流： Carbon dioxide (fossil), emissions to air, unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+排放介质仍为空气，环境分区为未指定；化石来源限定不变。
+
+- 选定流： 二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位： Mass / kg CO2
 - 数量规则： fuel quantity × carrier-specific carbon and oxidation factors; zero without on-site fossil combustion
 - 数值来源模式： 计算值（`calculated_value`）
@@ -553,30 +559,6 @@ sync_with: pcr.en-US.md
   - 上限： 1.5
   - 单位： kg incoming/kg accepted packed leaf
   - 基准： 匹配的分级批次
-  - 基准类型： 过程输出（`process_output`）
-  - 证据类型： 推理估算（`reasoned_estimate`）
-
-###### 包装材料 (`cured_leaf_packaging_input`)
-
-分别记录实际包裹物、纸箱、袋、内衬、托盘、板条箱、捆扎带和可重复使用包装。本参数化 set 级卡不带固定 UUID。
-
-- 选定流： 调制烟叶包装功能
-- 流属性/单位： Mass or number of items / kg or item
-- 数量规则： measured packaging by material/reuse status, expanded to verified exchanges
-- 数值来源模式： 前景记录（`foreground_record`）
-- 适用范围： 产品特定（`product_specific`）
-原始活动或阶段基准：per 1,000 kg accepted packed leaf.
-
-- 归一化基准：每声明的参考流
-- 基准类型： 过程输出（`process_output`）
-- 证据类型： 采集记录（`collected_record`）
-- 采集协议： `cp_grading_records`
-- 数量范围： Provisional packaging screen
-  - 范围角色： QA 校验（`qa_guardrail`）
-  - 下限： 0
-  - 上限： 150
-  - 单位： kg packaging/1,000 kg packed leaf
-  - 基准： account for reuse over declared cycles
   - 基准类型： 过程输出（`process_output`）
   - 证据类型： 推理估算（`reasoned_estimate`）
 
@@ -769,7 +751,7 @@ sync_with: pcr.en-US.md
 | `cp_harvest_records` | `tobacco_field_production` | green leaf, residue, reject | harvest ticket, scale, moisture, destination | field; date; mass; moisture; grade; residue; fate | weigh/reconcile each picking；原始汇总与分配：separate accepted leaf and every residue fate | kg; percent; ha | each picking | full cycle | all fields | 每声明的参考流 | calibration; lot trace; moisture test |
 | `cp_field_emissions` | `tobacco_field_production` | emissions | nutrient, soil, weather, residue, model | N; residue N; soil; climate; application; drainage; factors; model | 在同一兼容路线/产品/状态内，先逐田块核算应归属原始总量。汇总最终强度=应归属原始数量之和×声明参考量/匹配最终合格产出之和。来源为每公顷率 e_h、y_h 时，先以 e_h×面积、y_h×面积还原原始总量，不能再对田块总量作面积加权。每产品强度按匹配产出加权，不能按面积或不加权平均。原分配仅执行一次，保留期间/吞吐和全部来源单位换算，不兼容路线分开。 | kg N; kg emission; ha | each event/cycle | full cycle | all fields | 每声明的参考流 | activity and factor provenance; model file |
 | `cp_curing_records` | `tobacco_leaf_curing` | leaf, energy, rejects, emissions | batch, scale, moisture, meter, barn log | batch; method; barn; input mass/moisture; carrier; energy; time; outputs | match each run to inputs/outputs/meters；原始汇总与分配：reconcile mass; allocate shared services by measured driver | kg; percent; kWh; MJ; h | 每批次/周期 | 完整调制期 | 所有调制设施和场址 | 每声明的参考流 | calibrated scale/meter; invoice; barn log |
-| `cp_grading_records` | `cured_leaf_grading_packing` | grades, packaging, rework, rejects | batch, scale, grade, issue, destination | batch; input; moisture; accepted; downgrade; rework; reject; packaging | reconcile grades/destinations；原始汇总与分配：count rework once and close mass balance | kg; item; percent | 每批次 | 完整分级期 | 所有分级和包装场址 | 每声明的参考流 | calibration; grade sheet; package record |
+| `cp_grading_records` | `cured_leaf_grading_packing` | grades, packaging, rework, rejects | batch, scale, grade, issue, destination | batch; input; moisture; accepted; downgrade; rework; reject; packaging |reconcile grades/destinations；原始汇总与分配：count rework once and close mass balance cured_leaf_packaging_input_specific_input：必需的投入身份确认要求，不是选定交换。保留的采集范围：分别记录实际包裹物、纸箱、袋、内衬、托盘、板条箱、捆扎带和可重复使用包装。本参数化 set 级卡不带固定 UUID。 原始活动或阶段基准：per 1,000 kg accepted packed leaf. 每一实际投入分别保留实际材料或物种、物理状态、原生属性和单位、实测数量、期间、去向及唯一交接。完成数据集前，对每一实际身份建立物理上明确的独立交换，并确认兼容 UUID 或保留其确切未解析身份。保留原产量关联、归一化、分配以及复用或存货义务。材料或功能类别不是一条交换；不将已退役类别范围复制到组分，不编造配方，不从缺失记录推定零数量。不得重复计入实际数量或已由其他卡片表示的产品。 | kg; item; percent | 每批次 | 完整分级期 | 所有分级和包装场址 | 每声明的参考流 | calibration; grade sheet; package record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | 交接计量与验收记录 | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | 采用校准衡器或可追溯称重记录，将实际终端工序交接批次与验收净质量、产品状态及含水率对账；剔除包装皮重，不汇总前序阶段数量。 | kg | 每交接批次 | 声明报告期 | 声明交接门 | 每声明的参考流 | 校准或称重凭证、验收和批次追溯 |
 | `cp_phase1_environment_coverage` | tobacco_field_production | 按实际节点的管理环境覆盖 | 场址活动方法台账 | 场址及实际管理节点；面积；有日期占用区间；共同使用者；建植/未产期历史；实际前后土地类别及转化日期/面积；碳核算覆盖；上游土地覆盖 | 按实际负责生产节点及匹配批次/期间采集原始记录，保留来源、方法适用性和不确定性。与现有协议及供应覆盖核对，不新增重复事件；不适用须明示有据，缺少证据属于缺口。 | 适用的原生活动单位、kg N或物质、面积/时间 | 事件及年度/批次核对 | 匹配生产/队列期间 | 全部实际管理生产节点 | 执行适用覆盖核算后最终归一化一次 | 原始记录、方法工作表及适用性证据 |
 

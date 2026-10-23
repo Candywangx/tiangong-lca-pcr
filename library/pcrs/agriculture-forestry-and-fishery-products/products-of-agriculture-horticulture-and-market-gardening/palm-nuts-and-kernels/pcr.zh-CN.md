@@ -185,7 +185,7 @@ sync_with: pcr.en-US.md
 
 记录跨越种植园边界的灌溉用水；降雨不属于本产品流卡。
 
-- 选定流：irrigation water
+- 选定流：灌溉水
 - 流属性/单位：Volume / m3
 - 数量规则：measured delivered irrigation water
 - 数值来源模式：前景记录（`foreground_record`）
@@ -248,7 +248,7 @@ sync_with: pcr.en-US.md
 
 受管理的多年生油棕将成熟 FFB 交接至独立收获节点；这是前景系统内部中间流。
 
-- 选定流：standing FFB ready for harvest
+- 选定流：田间待采收的油棕鲜果串
 - 流属性/单位：Mass / kg
 - 数量规则：measured harvestable FFB mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -274,7 +274,7 @@ sync_with: pcr.en-US.md
 
 按实际去向将修剪物、未成商品果和其他非产品生物质分类为田间保留物、回收物或废物。
 
-- 选定流：plantation residues and losses
+- 选定流：种植园残余物及损失
 - 流属性/单位：Mass / kg
 - 数量规则：measured or estimated dry/wet mass by declared basis
 - 数值来源模式：前景记录（`foreground_record`）
@@ -335,7 +335,7 @@ sync_with: pcr.en-US.md
 
 该内部前景中间流连接受管理生产和收获，不绑定数据库身份。
 
-- 选定流：standing FFB ready for harvest
+- 选定流：田间待采收的油棕鲜果串
 - 流属性/单位：Mass / kg
 - 数量规则：mass accepted for harvesting
 - 数值来源模式：前景记录（`foreground_record`）
@@ -366,7 +366,7 @@ sync_with: pcr.en-US.md
 
 已收获鲜果串及时交接至油厂接收；FFB 是路线内部中间流，不是参考产品。
 
-- 选定流：harvested FFB
+- 选定流：已采收的油棕鲜果串
 - 流属性/单位：Mass / kg
 - 数量规则：weighbridge or calibrated field-scale mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -392,7 +392,7 @@ sync_with: pcr.en-US.md
 
 按实际回收、留田或处置去向区分落果、割下的叶片和拒收果串。
 
-- 选定流：harvest losses and incidental biomass
+- 选定流：采收损失及伴生生物质
 - 流属性/单位：Mass / kg
 - 数量规则：measured or sampled mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -423,7 +423,7 @@ sync_with: pcr.en-US.md
 
 油厂接收内部已收获 FFB 中间流；因 FFB 明确排除为本 PCR 参考产品，所以不绑定其 UUID。
 
-- 选定流：harvested FFB
+- 选定流：已采收的油棕鲜果串
 - 流属性/单位：Mass / kg
 - 数量规则：weighbridge mass accepted at mill
 - 数值来源模式：前景记录（`foreground_record`）
@@ -447,7 +447,7 @@ sync_with: pcr.en-US.md
 
 按实际用量记录湿热、清洗和加工用水。
 
-- 选定流：process water
+- 选定流：过程水
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：metered or balance-derived water use
 - 数值来源模式：前景记录（`foreground_record`）
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 捣碎和压榨产生的粗棕榈油是必须明确归属的预期联产品。
 
-- 选定流：Palm oil, crude `c25748fe-ebcf-4a0e-bcf9-544edb1645b1`
+- 选定流：粗棕榈油 `c25748fe-ebcf-4a0e-bcf9-544edb1645b1`
 - 流属性/单位：Mass / kg
 - 数量规则：measured crude palm oil mass at its hand-off
 - 数值来源模式：前景记录（`foreground_record`）
@@ -534,7 +534,7 @@ sync_with: pcr.en-US.md
 
 该流是油厂处理节点的预期产出，也是交接至纤维—果核分离的内部压榨饼中间物。
 
-- 选定流：fibre-nut mixture
+- 选定流：纤维与果核混合物
 - 流属性/单位：Mass / kg
 - 数量规则：measured or mass-balance-derived mixture mass
 - 数值来源模式：计算值（`calculated_value`）
@@ -560,7 +560,7 @@ sync_with: pcr.en-US.md
 
 按实际利用、回收或处置去向记录空果串和拒收物，不得默认赋予零负荷。
 
-- 选定流：empty bunches and mill rejects
+- 选定流：空果串及油厂拒收物
 - 流属性/单位：Mass / kg
 - 数量规则：measured residue mass by fate
 - 数值来源模式：前景记录（`foreground_record`）
@@ -591,7 +591,7 @@ sync_with: pcr.en-US.md
 
 内部压榨饼混合物由油厂处理节点交接至本节点。
 
-- 选定流：fibre-nut mixture
+- 选定流：纤维与果核混合物
 - 流属性/单位：Mass / kg
 - 数量规则：measured feed mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -652,7 +652,7 @@ sync_with: pcr.en-US.md
 
 分离果核作为内部产品中间流交接至果核干燥或条件性破核路线。
 
-- 选定流：separated palm nuts
+- 选定流：分离后的油棕果核
 - 流属性/单位：Mass / kg
 - 数量规则：measured separated nut mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -676,7 +676,7 @@ sync_with: pcr.en-US.md
 
 按实际预期用途与交接对分离纤维分类；用于外售或内部回收的纤维在归属中保持一致。
 
-- 选定流：Mesocarp fibre `a9b37001-a69f-4d00-bf11-6ce763cac036`
+- 选定流：棕榈果肉纤维 `a9b37001-a69f-4d00-bf11-6ce763cac036`
 - 流属性/单位：Mass / kg
 - 数量规则：measured separated fibre mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -709,7 +709,7 @@ sync_with: pcr.en-US.md
 
 仅当参考状态为棕榈仁时，内部果核中间流才进入破核。
 
-- 选定流：separated palm nuts
+- 选定流：分离后的油棕果核
 - 流属性/单位：Mass / kg
 - 数量规则：measured nut feed mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -733,7 +733,7 @@ sync_with: pcr.en-US.md
 
 采用水力旋流器或黏土浴技术时，纳入其分离用水。
 
-- 选定流：process water
+- 选定流：过程水
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：metered water use
 - 数值来源模式：前景记录（`foreground_record`）
@@ -794,7 +794,7 @@ sync_with: pcr.en-US.md
 
 分离棕榈仁作为内部中间流交接至干燥；棕榈仁榨油位于边界之外。
 
-- 选定流：separated palm kernels
+- 选定流：分离后的棕榈仁
 - 流属性/单位：Mass / kg
 - 数量规则：measured kernel mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -818,7 +818,7 @@ sync_with: pcr.en-US.md
 
 按实际预期用途与交接对破核生成的壳分类，且绝不将其用作参考产品。
 
-- 选定流：Palm kernel shell `ac6ce69c-ddd1-400d-a603-901313253baa`
+- 选定流：棕榈仁壳 `ac6ce69c-ddd1-400d-a603-901313253baa`
 - 流属性/单位：Mass / kg
 - 数量规则：measured shell mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -851,7 +851,7 @@ sync_with: pcr.en-US.md
 
 内部状态须明确选择为分离油棕果核或分离棕榈仁；未经对账不得混合。
 
-- 选定流：wet palm nut or kernel
+- 选定流：湿油棕果核或棕榈仁
 - 流属性/单位：Mass / kg
 - 数量规则：measured wet feed mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -927,7 +927,7 @@ sync_with: pcr.en-US.md
 
 干燥后的果核或棕榈仁交接至分级，并声明产品状态和含水基准。
 
-- 选定流：dried palm nut or kernel
+- 选定流：干燥后的油棕果核或棕榈仁
 - 流属性/单位：Mass / kg
 - 数量规则：measured dry product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -960,7 +960,7 @@ sync_with: pcr.en-US.md
 
 按产品状态和声明含水基准将干燥内部中间流送入分选。
 
-- 选定流：dried palm nut or kernel
+- 选定流：干燥后的油棕果核或棕榈仁
 - 流属性/单位：Mass / kg
 - 数量规则：measured grading feed mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1049,7 +1049,7 @@ sync_with: pcr.en-US.md
 
 将送回再干燥、再分选或声明低等级去向的非合格物料与合格产出分开追踪。
 
-- 选定流：downgraded or rework nut/kernel
+- 选定流：降级或待返工的油棕果核或棕榈仁
 - 流属性/单位：Mass / kg
 - 数量规则：measured downgraded mass by destination
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1075,7 +1075,7 @@ sync_with: pcr.en-US.md
 
 按最终回收或处置去向记录离开产品路线的拒收物。
 
-- 选定流：grading rejects and foreign matter
+- 选定流：分级拒收物及杂质
 - 流属性/单位：Mass / kg
 - 数量规则：measured reject mass by fate
 - 数值来源模式：前景记录（`foreground_record`）

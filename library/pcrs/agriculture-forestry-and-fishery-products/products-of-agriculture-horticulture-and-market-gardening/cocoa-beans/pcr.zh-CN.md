@@ -46,7 +46,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | 带果浆湿可可豆（身份未决） `3c54da37-f1ab-4b4c-8363-5c32b638005c` |
+| Reference product flow | 可可豆 `3c54da37-f1ab-4b4c-8363-5c32b638005c` |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |

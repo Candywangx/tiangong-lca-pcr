@@ -292,29 +292,23 @@ Raw activity or stage basis: as-harvested accepted storage organs.
 
 ##### Waste flows
 
-###### Field residues, damaged organs and adhered soil (`field_residue_output`)
+###### Damaged harvested root or tuber organs of the declared crop sent to treatment (`harvest_damaged_root_organs_waste`)
 
-Collect and reconcile field residues, damaged organs and adhered soil, retaining the identity, state, origin and destination required by this card.
+Conditional only on this specific waste material actually being separately collected for documented treatment inside the existing process boundary. This card does not prove site segregation. A real mixed stream keeps one composition-defined identity and its actual handover; do not extract hypothetical component exchanges or duplicate mixture and component exports. Retained stock, an in-situ residue or direct environmental return is not this waste export.
 
-- Selected flow: Field residues and harvest rejects by material and destination
+Collection and handover scope: Collect and reconcile field residues, damaged organs and adhered soil, retaining the identity, state, origin and destination required by this card. Raw activity or stage basis: all classes retained separately by fate.
+
+- Selected flow: Damaged harvested root or tuber organs of the declared crop sent to treatment
 - Flow property / unit: Mass / kg
-- Amount rule: measure crop biomass, damaged organs and returned soil separately
+- Amount rule: Measure the mass of this specific waste material at its actual collection/treatment handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
 - Value mode: `calculated_value`
 - Specificity: `site_specific`
-Raw activity or stage basis: all classes retained separately by fate.
-
 - Normalization basis: per declared reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
 - Collection protocol: `cp_harvest_lots`
-- Range: Broad QA screening range
-  - Range role: `qa_guardrail`
-  - Lower: 0
-  - Upper: 3000
-  - Unit: kg/1,000 kg accepted harvest
-  - Basis: all classes retained separately by fate
-  - Basis kind: `process_output`
-  - Evidence kind: `reasoned_estimate`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Elementary flows
 
@@ -781,7 +775,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_crop_inputs` | `managed_production_lifting` | planting, nutrients, water, crop protection, energy | invoices, field logs, meters, contractor records | species, cultivar, field, area, dates, input identity, formulation, assay, amount, unit, carrier, operation | reconcile purchases, saved material and applications to fields; Raw aggregation and attribution: sum by field/input, allocate shared use causally, divide by matched terminal output | native units plus ha | each event | complete crop cycle | every included field and shared service | per declared reference flow | invoices, application logs, meters, field map, contractor evidence |
-| `cp_harvest_lots` | `managed_production_lifting` | lifting, accepted harvest, residues and soil | weigh tickets, harvest logs, sampling | species, field, date, gross/tare, accepted mass, moisture, soil, damage, residue/reject class, fate, lot | calibrated weighing and representative inspection/moisture sampling; Raw aggregation and attribution: sum by lot/class; retain state and fate | kg, %, ha | each lot | complete lifting period | every included field and collection point | per declared reference flow | calibration, lot identifiers, photographs/inspection, moisture/destination records |
+| `cp_harvest_lots` | `managed_production_lifting` | lifting, accepted harvest, residues and soil | weigh tickets, harvest logs, sampling | species, field, date, gross/tare, accepted mass, moisture, soil, damage, residue/reject class, fate, lot |calibrated weighing and representative inspection/moisture sampling; Raw aggregation and attribution: sum by lot/class; retain state and fate field_residue_output_specific_output: Mandatory material, quantity and boundary-role identification, not a selected exchange. Preserved collection scope: Collect and reconcile field residues, damaged organs and adhered soil, retaining the identity, state, origin and destination required by this card. Raw activity or stage basis: all classes retained separately by fate. Retain every actual material and fate, including materials not represented by the conditional card. Record actual composition/state, native property/unit, measured quantity, cohort/period, recipient, treatment responsibility and unique handover; keep original throughput, normalization and allocation duties. Before completeness, instantiate only actual distinct physical exchanges with compatible UUIDs or exact unresolved identities. A real mixed stream remains one measured composition-defined identity; do not invent segregation or duplicate mixture/component exports. Retained/deferred stock, in-situ residues and soil returned directly to the environment keep their actual balance/stock/return roles, not assumed technosphere waste exports; establish method and boundary responsibility before any elementary exchange. Independently sold recovery needs its actual Product handover and must not also be this waste. Missing records are not zero and the retired class-level numerical screen is not a component limit. | kg, %, ha | each lot | complete lifting period | every included field and collection point | per declared reference flow | calibration, lot identifiers, photographs/inspection, moisture/destination records |
 | `cp_field_emissions` | `managed_production_lifting` | managed-soil emissions | calculated foreground record | N by form, residue N, soil/climate, factor version, substance, compartment | apply documented method to reconciled field inputs; Raw aggregation and attribution: calculate by field then output-mass-weight | kg substance | each crop cycle | same cycle and stated method lag | every managed field | per declared reference flow | method source, workbook, input reconciliation, review |
 | `cp_storage_lots` | `curing_storage` | curing, storage, losses, energy, water | lot sheets, scales, meters, condition logs | species, lot, opening/closing mass, moisture, damage, method, time, temperature, humidity, ventilation, water, energy, rejects, fate | Use the storage control volume in calc_batch_balance; record accepted and downgraded dispatch separately from closing stock, with measured waste, supported physical releases and unexplained difference. | kg, %, day, m3, kWh, MJ | each lot and condition interval | complete declared interval | every store, curing area and utility meter | per declared reference flow | calibration, condition logger, lot chain, stocktake, destinations |
 | `cp_sorting_runs` | `sorting_packing` | sorting, grades, rework, packing, rejects | run sheets, scales, package records, meters | species, lot, state, incoming mass, grade criteria, accepted/downgraded/reject mass, rework, packaging material/mass/reuse, energy, gate | matched-run mass balance and package-count reconciliation; Raw aggregation and attribution: sum by grade/destination; allocate shared runs by throughput | kg, item, kWh | each run or lot | all represented runs | every included line and shared asset | per declared reference flow | calibration, inspection, package specification, run/lot linkage, closure check |

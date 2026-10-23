@@ -560,32 +560,6 @@ Raw activity or stage basis: Per 1 kg of product at the selected gate.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources: `mass-balance-identity`
-###### Other intended crop outputs (`other_intended_crop_outputs`)
-
-Declare each additional intended botanical product or co-product produced by the selected crop route and record its own identity, quality, amount and handoff in the foreground package. This conditional umbrella does not make unlike species or organs one exchange.
-
-- Selected flow: Each actual additional intended crop product, resolved from its own species, organ and handoff (UUID unresolved)
-- Flow property / unit: Product-specific; record mass and moisture where applicable
-- Amount rule: Measured net amount by intended output and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: Per 1 kg of product at the selected gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_grade_and_disposition`
-- Sources: `unsd-cpc-01699`
-
-- Range: Provisional broad route screening estimate; replace with crop-, site-, technology- and gate-specific records before reviewed or active use
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg other intended output/kg harvested crop
-  - Basis: Broad reasoned estimate for the declared route and selected product gate; it is a screening interval, not a universal permitted value
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources: `mass-balance-identity`
 ##### Waste flows
 
 ###### Discarded harvest material (`harvest_discard`)
@@ -819,32 +793,6 @@ Raw activity or stage basis: Per 1 kg of product at the selected gate.
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
   - Sources: `mass-balance-identity`
-###### Other intended conditioned crop outputs (`conditioned_coproducts`)
-
-Record each additional intended product separated during primary conditioning with its own identity, grade, amount and handoff. Omit when the actual route produces no additional intended output.
-
-- Selected flow: Each actual additional conditioned crop product (UUID unresolved until identity and handoff are declared)
-- Flow property / unit: Product-specific; record mass and moisture where applicable
-- Amount rule: Measured net amount by product and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: Per 1 kg of product at the selected gate.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_grade_and_disposition`
-- Sources: `unsd-cpc-01699`
-
-- Range: Provisional broad route screening estimate; replace with crop-, site-, technology- and gate-specific records before reviewed or active use
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg conditioned co-product/kg raw crop input
-  - Basis: Broad reasoned estimate for the declared route and selected product gate; it is a screening interval, not a universal permitted value
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources: `mass-balance-identity`
 ##### Waste flows
 
 ###### Conditioning rejects and discarded residues (`conditioning_rejects`)
@@ -993,7 +941,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | cp_harvest_batch | managed_crop_production; harvest_capture | harvest_ready_crop_material; harvest_ready_batch_input; harvested_target_product | crop lot, harvest ticket and scale record | species, plant organ, field, crop period, harvest date, gross/net/tare mass, moisture, quality state, transfer destination | Weigh or sample each lot using identified calibrated equipment; match inter-process lot id; Raw aggregation and attribution: Reconcile production output, harvest input and harvested output without duplicate final output | kg and moisture basis | Each harvest lot | Each harvest date and crop period | Declared field and receiving process | per declared reference flow | Calibrated scale, lot identity, moisture measurement and signed handoff |
 | cp_field_residues | managed_crop_production; harvest_capture | removed_crop_biomass; production_loss_residue; crop_residue_to_soil | field inspection, sample and residue disposition record | plant part, residue type, wet/dry mass, field, crop period, retained/removed/sold/discarded destination | Measure representative residue or disposal lots and document sampling method; Raw aggregation and attribution: Partition the measured biomass among retained soil residue, intended output and discard; no duplicate destinations | kg dry matter preferred | Each crop period and material-disposition event | All included crop periods | Declared field and biomass type | per declared reference flow | Sampling records, dry-matter method and destination evidence |
 | cp_harvest_energy | harvest_capture | harvest_energy | machinery meter, fuel receipt and harvest log | carrier, amount, equipment, operation, field, date, lot, shared use | Reconcile equipment and fuel logs to harvest operation; Raw aggregation and attribution: Aggregate actual energy by harvest lot and normalize to selected gate output | Carrier-native unit | Each harvest operation or billing period | Each crop period | Declared harvest equipment and field | per declared reference flow | Meter/invoice, equipment log and lot cross-reference |
-| cp_grade_and_disposition | harvest_capture; primary_conditioning | lower_grade_product; other_intended_crop_outputs; harvest_discard; conditioned_lower_grade_product; conditioned_coproducts; conditioning_rejects | grade inspection, packing/scale record, sales or disposal record | material identity, grade, mass, moisture, intended use, sale/transfer/discard/rework destination, lot and handoff | Inspect, weigh and record each declared grade and destination; Raw aggregation and attribution: Mutually exclusive partition into intended product, rework, recovery, discard and waste; reconcile to incoming batch | kg at measured moisture | Each lot and destination event | Each harvest or conditioning lot | Crop species, organ, grade and handoff | per declared reference flow | Grade record, calibrated scale, sales/treatment documentation and lot ledger |
+| cp_grade_and_disposition | harvest_capture; primary_conditioning | lower_grade_product; other_intended_crop_outputs; harvest_discard; conditioned_lower_grade_product; conditioned_coproducts; conditioning_rejects | grade inspection, packing/scale record, sales or disposal record | material identity, grade, mass, moisture, intended use, sale/transfer/discard/rework destination, lot and handoff |Inspect, weigh and record each declared grade and destination; Raw aggregation and attribution: Mutually exclusive partition into intended product, rework, recovery, discard and waste; reconcile to incoming batch other_intended_crop_outputs_specific_output: Preserve every actual intended output previously collected under other_intended_crop_outputs, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. conditioned_coproducts_specific_output: Preserve every actual intended output previously collected under conditioned_coproducts, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | kg at measured moisture | Each lot and destination event | Each harvest or conditioning lot | Crop species, organ, grade and handoff | per declared reference flow | Grade record, calibrated scale, sales/treatment documentation and lot ledger |
 | cp_conditioning_batch | primary_conditioning | raw_harvest_batch; conditioned_reference_product | receiving, process and output lot records | incoming/output mass, tare, species, organ, crop date, moisture, quality, cleaning/drying route, handoff | Match intake and output lot records and measure moisture at declared points; Raw aggregation and attribution: Reconcile inputs, output grades, rejects, removed water and measured process losses | kg, moisture % wet basis and/or aw | Each incoming and finished lot | Each included first-conditioning operation | Declared first-conditioning site and batch | per declared reference flow | Calibrated scales, sampling plan, moisture meter check and lot balance |
 | cp_conditioning_water | primary_conditioning | conditioning_water | water meter, tank or supplier record | source, volume, meter reading, batch, wash operation, recirculation, reuse, date | Read a calibrated meter or reconcile batch tank volume and supplier record; Raw aggregation and attribution: Sum fresh input separately from recirculated/reused water; normalize to output lot | m3 or verified native unit | Each washing batch | Each included washing operation | Declared conditioning site and crop lot | per declared reference flow | Meter/tank calibration, invoice and batch log |
 | cp_conditioning_energy | primary_conditioning | conditioning_energy | equipment meter, fuel receipt and dryer log | carrier, amount, unit, dryer/cleaner, operation, batch, input/output moisture, operating time, shared use | Reconcile measured energy and operating records to each batch; Raw aggregation and attribution: Aggregate by carrier and operation; allocate shared utilities by metered use or operating time | Carrier-native unit; kWh-equivalent only with documented conversion | Each batch or billing period | Each included conditioning season | Declared first-conditioning facility and equipment | per declared reference flow | Meter/invoice, dryer log, moisture measurements and calibration record |

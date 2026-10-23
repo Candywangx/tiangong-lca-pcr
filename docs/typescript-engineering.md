@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: 1024c5e95110392bc0828967b89a262723328b79
-lastReviewedNote: "PCR #145 / PR #136: reviewed Fumadocs core/UI 16.17.7 and Zod 4.6.7, literal search-title rendering and semantic listbox-option acceptance with emitted Worker, keyboard selection and navigation checks. All 11 strict projects / 415 authored files and 86 focused tests pass; synthetic browser proof does not replace complete hosted corpus, coverage, sealed-web or release qualification. Runtime and methodology/publication contracts remain in force. PCR #144 / PR #135: reviewed latest compatible @types/node 24.19.2 and npm 12.2.0 lock regeneration against pinned Node 24.19.0. All 11 strict projects / 415 authored files, release-runtime preflight and four runtime tests pass on macOS ARM64; full hosted Linux, corpus, coverage, browser and sealed-product qualification remain required. Canonical methodology, publication and runtime pins retain their existing contracts. These separately reviewed changes are composed for qualification; PR #135 must merge before PR #136."
+lastReviewedCommit: 0dcc15efe778b09462e260d53bc260d6b5510ca9
+lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair. PCR #143 composition preserves its 57 candidate contribution and the exact incoming reviewed code. Fresh complete source qualification and PR138-first merge order remain required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -205,7 +205,7 @@ V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 
 PR and formal release qualification run one complete instrumented export in the
 `web-build` job, then create one sealed product bundle in the separate
-`documentation` job. Both jobs retain 60-minute limits and are mandatory in both
+`documentation` job. Both jobs retain 120-minute limits and are mandatory in both
 lanes. A versioned handoff binds the actual checked-out source (including PR merge
 commits), product identity, current run/attempt, CI plan and full-mode qualification
 ID/plan hash to the complete archive/tree and successful build log. The verifier
@@ -305,6 +305,22 @@ real website and sealed tool/SQLite/web product from the current source, run SEO
 verification, install the exact seal on all four platforms and qualify its
 extracted web bytes in the three-browser desktop/mobile matrix. These checks
 retain scientific, translation and immutable-history boundaries.
+
+The aggregate requires the `web-build` producer and `documentation` sealer in both
+lanes, and every sealed consumer and reusable publication output references the
+sealer's sole final artifact ID. The complete-build coverage artifact is forwarded
+unchanged from `web-build` through `documentation`, using the same full command. Intermediate
+export transfer preserves hidden files and checks complete sorted file membership,
+identity and hashes before any existing canonical hosting transformation. Missing,
+extra, changed, stale-attempt or foreign-source files fail the handoff. A fresh
+complete run is required after a failed qualification; partial passing artifacts
+do not replace current-attempt receipts.
+
+The active archive/log handoff also checks the final and individual stage success
+states, zero child exits, absence of failure evidence, measured stage RSS within
+the unchanged guard and aggregate peak, and a total duration covering every stage.
+The incoming standalone complete-export checkpoint utility retains its tests;
+it does not replace this workflow's archive, build-log and SEO evidence bindings.
 
 The data lane omits full code-test/coverage qualification and reports
 `not-measured-data-only-lane`. It does not claim a passing full source coverage
