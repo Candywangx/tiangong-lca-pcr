@@ -10,8 +10,9 @@ const nextConfig: NextConfig = {
   experimental: {
     // TypeScript 7 has no JavaScript compiler API; use the local tsc CLI.
     useTypeScriptCli: true,
-    // The deployment provider allocates 4 cores and 6 GB; keep the builder inside that budget.
-    cpus: 4,
+    // Limit simultaneous full-document/inline-download render state under the aggregate RSS gate.
+    cpus: 2,
+    staticGenerationMaxConcurrency: 1,
   },
 };
 

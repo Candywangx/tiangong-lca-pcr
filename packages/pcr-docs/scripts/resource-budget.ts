@@ -1,6 +1,75 @@
 import {unknownField} from "../../pcr-core/src/types.ts";
 export interface ProcessMeasureOptions {pid?:number;platform?:string;run?:(file:string,args:readonly string[],options:{encoding:"utf8";maxBuffer:number;timeout:number})=>string}
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
+import { errorMessage } from "../../pcr-core/src/types.ts";
+
+export interface BuildStageMetrics {
+  command: string;
+  durationMs: number;
+  peakResidentBytes: number;
+  memoryMeasurement: string;
+  status: "passed" | "failed";
+  exitCode: number | null;
+  failure?: string;
+}
+export class BuildStageFailure extends Error {
+  readonly stage: BuildStageMetrics;
+  constructor(stage: BuildStageMetrics, cause: unknown) {
+    super(errorMessage(cause), { cause });
+    this.stage = stage;
+  }
+}
+
+/** Always report a completed attempt, including a zero-exit child rejected by the RSS gate. */
+export async function runMeasuredBuildStage({
+  args, cwd, env, sample, report,
+}: {
+  args: string[];
+  cwd: string;
+  env: NodeJS.ProcessEnv;
+  sample: () => { residentBytes: number; memoryMeasurement: string };
+  report: (stage: BuildStageMetrics) => void;
+}): Promise<void> {
+  const started = Date.now();
+  const stage: BuildStageMetrics = {
+    command: args.join(" "), durationMs: 0, peakResidentBytes: 0,
+    memoryMeasurement: "process-tree-rss", status: "failed", exitCode: null,
+  };
+  const measure = () => {
+    try {
+      const current = sample();
+      stage.peakResidentBytes = Math.max(stage.peakResidentBytes, current.residentBytes);
+      if (current.memoryMeasurement !== "process-tree-rss") stage.memoryMeasurement = "unavailable";
+    } catch {
+      // Finish observing the child and reject its stage; never turn a failed monitor
+      // into an uncaught timer error that skips the relocated build's cleanup.
+      stage.memoryMeasurement = "unavailable";
+    }
+  };
+  let monitor: ReturnType<typeof setInterval> | undefined;
+  try {
+    const child = spawn(process.execPath, args, { cwd, stdio: "inherit", env });
+    // Install listeners before sampling: even an immediate spawn failure must be observed.
+    const exited = new Promise<number | null>((resolve, reject) => {
+      child.on("error", reject);
+      child.on("exit", resolve);
+    });
+    monitor = setInterval(measure, 2000);
+    measure();
+    stage.exitCode = await exited;
+    measure();
+    if (stage.exitCode !== 0) throw new Error("PCR production build failed at " + stage.command);
+    assertBuildResources(stage);
+    stage.status = "passed";
+  } catch (error) {
+    stage.failure = errorMessage(error);
+    throw new BuildStageFailure(stage, error);
+  } finally {
+    clearInterval(monitor);
+    stage.durationMs = Date.now() - started;
+    report(stage);
+  }
+}
 /** Read-only process statistics; Windows uses its native CIM provider. */
 export function measureProcessTree({
   pid = process.pid,

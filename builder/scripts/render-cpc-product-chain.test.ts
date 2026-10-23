@@ -788,8 +788,8 @@ test("checked-in three-chain pilot derives the exact execution and review plan",
     chain_count: 3,
     node_count: 13,
     edge_count: 9,
-    ready_edge_count: 3,
-    blocked_edge_count: 6,
+    ready_edge_count: 4,
+    blocked_edge_count: 5,
   });
 
   const chains = Object.fromEntries(
@@ -801,15 +801,12 @@ test("checked-in three-chain pilot derives the exact execution and review plan",
     ["bread-and-bakers-wares"],
   ]);
   assert.deepEqual(chains["cotton-textile"]!.executable_waves, [
-    ["cotton-yarn"],
-    ["woven-cotton-fabric"],
+    ["raw-cotton", "cotton-yarn"],
+    ["carded-or-combed-cotton", "woven-cotton-fabric"],
   ]);
   assert.deepEqual(chains["forestry-pulp-paper"]!.executable_waves, []);
   assert.deepEqual(chains["grain-food"]!.review_only_node_ids, []);
-  assert.deepEqual(chains["cotton-textile"]!.review_only_node_ids, [
-    "raw-cotton",
-    "carded-or-combed-cotton",
-  ]);
+  assert.deepEqual(chains["cotton-textile"]!.review_only_node_ids, []);
   assert.deepEqual(chains["forestry-pulp-paper"]!.review_only_node_ids, [
     "coniferous-pulpwood",
     "mechanical-pulp",
@@ -823,7 +820,31 @@ test("checked-in three-chain pilot derives the exact execution and review plan",
       (count, chain) => count + chain.review_only_node_ids.length,
       0,
     ),
-    8,
+    6,
+  );
+
+  assert.deepEqual(
+    result.analysis.chains.flatMap((chain) => chain.edges
+      .filter((edge) => edge.scheduling_status === "ready")
+      .map((edge) => edge.id)),
+    [
+      "wheat-grain-to-wheat-flour",
+      "wheat-flour-to-bread-and-bakers-wares",
+      "raw-cotton-to-carded-or-combed-cotton",
+      "cotton-yarn-to-woven-cotton-fabric",
+    ],
+  );
+
+  const rawCottonEdge = chains["cotton-textile"]!.edges.find(
+    (edge) => edge.id === "raw-cotton-to-carded-or-combed-cotton",
+  );
+  assert.ok(rawCottonEdge);
+  assert.equal(rawCottonEdge.evidence_status, "supported_by_pcr");
+  assert.equal(rawCottonEdge.boundary_assessment, "aligned");
+  assert.deepEqual(rawCottonEdge.blockers, []);
+  assert.match(
+    String(unknownField(rawCottonEdge.interface, "upstream_output_condition")),
+    /Virgin Upland cotton delivered after ginning and baling/u,
   );
 
   const cottonPreparationEdge = chains["cotton-textile"]!.edges.find(
@@ -837,6 +858,25 @@ test("checked-in three-chain pilot derives the exact execution and review plan",
     String(unknownField(cottonPreparationEdge.interface,"fit_summary")),
     /opening, cleaning, carding, drawing and optional combing/u,
   );
+
+  // Accepted material endpoints do not approve these wood interfaces. These two
+  // independent blockers must survive further pulp/PCR mapping additions.
+  assert.deepEqual(
+    chains["forestry-pulp-paper"]!.edges.map((edge) => edge.id),
+    [
+      "coniferous-pulpwood-to-mechanical-pulp",
+      "mechanical-pulp-to-newsprint",
+      "nonconiferous-pulpwood-to-chemical-pulp",
+      "chemical-pulp-to-wood-free-paper",
+    ],
+  );
+  for (const edge of chains["forestry-pulp-paper"]!.edges) {
+    assert.equal(edge.evidence_status, "supported_by_official_source");
+    assert.equal(edge.boundary_assessment, "needs_review");
+    assert.equal(edge.scheduling_status, "blocked");
+    assert.ok(edge.blockers.includes("evidence_not_pcr"));
+    assert.ok(edge.blockers.includes("boundary_not_aligned"));
+  }
 
   assert.match(
     result.report,
