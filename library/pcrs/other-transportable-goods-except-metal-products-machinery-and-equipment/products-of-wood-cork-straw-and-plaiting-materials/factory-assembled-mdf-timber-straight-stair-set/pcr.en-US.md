@@ -67,7 +67,7 @@ All required qualifiers must be declared in dataset metadata or equivalent field
 | --- | --- |
 | declared_starting_condition | Purchased dried timber, MDF, actual assembly and packaging supplies at factory receipt |
 | starting_condition_role | foreground production |
-| product_classification_scope | One configured straight timber/MDF stair-set subset within 31629 |
+| product_classification_scope | One configured straight timber/MDF stair-set subset proposed under 31629 |
 | recursive_input_rule | No purchased finished stair re-labelled as this manufacture. Retain rework internally; purchased replacement components require their own verified upstream state. |
 | upstream_dataset_requirement | Link compatible actual timber/MDF, adhesive, fixings, power, packaging, inbound transport and waste treatment; identity alone is not background qualification |
 | disclosure | Plant/period, set configuration, stage meters, stocks, assembly state, exclusions, waste destinations, upstream gates and unresolved links |

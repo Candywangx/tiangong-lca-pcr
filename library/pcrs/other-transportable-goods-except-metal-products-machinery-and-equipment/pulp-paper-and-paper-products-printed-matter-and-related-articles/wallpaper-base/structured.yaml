@@ -897,7 +897,7 @@ process_inventory:
           flow_ref:
             uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
           property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Measure actual evaporation from web drying and other atmospheric releases using matched water balance or exhaust humidity/flow. Steam supply mass is not automatically evaporated web water; retain combustion water separately in the balance."
+          description: "Measure actual H2O vapour leaving web drying and other atmospheric release points using matched exhaust humidity/flow or an independently constrained water balance; account for incoming atmospheric humidity on the same basis. Steam supply mass is not automatically evaporated web water. Actual emitted vapour already includes any reaction water released at that point: never add combustion, biological or other reaction water again to a measured output. Independently evidence H2O formation/consumption through cp_reaction; never fit reaction water and evaporation simultaneously from one residual."
           amount:
             expression: "Collect actual raw records using cp_water and normalize by accepted net delivered base-paper mass in the same cp_production period. Unproven quantities or incompatible background links remain gaps; non-use requires documented evidence, not assumed zero."
             value_mode: "foreground_record"
@@ -977,10 +977,10 @@ dataset_production:
       quality_evidence: "Calibration, chain of custody, sample/lab QA, supplier basis and balance residual"
     - protocol_id: cp_water
       process_id: "paper_mill"
-      flow_role: "fresh water, vapour and external effluent"
+      flow_role: "fresh water, vapour, external effluent and utility-water boundary crossings"
       record_type: "Measured raw record"
-      raw_fields: "make-up volume; source; complete wet effluent mass and matched density/temperature; H2O component fraction/mass and water density; receiver and external/direct branch; white-water and condensate links; web moisture; evaporation; discharge; boiler blowdown; stocks"
-      collection_method: "Calibrated flowmeters and moisture/exhaust measurements; reconcile fresh input, material-carried water, product water, evaporation, outgoing waste water and stock change."
+      raw_fields: "make-up volume; source; actual imported steam H2O; each actual external condensate/utility-water return and other H2O export, with matched mass or volume, density, H2O fraction, temperature/state, sender/receiver and boundary; incoming/outgoing air humidity; complete wet effluent mass and matched density/temperature; H2O component fraction/mass and water density; receiver and external/direct branch; internal white-water and condensate links; web moisture; actual vapour; boiler blowdown; stocks; independently evidenced reaction H2O formation/consumption via cp_reaction"
+      collection_method: "Calibrated flowmeters/scales and moisture/exhaust measurements; pair actual imported steam and measured external condensate/utility-water returns with cp_energy on the same period and boundary. Reconcile all external H2O inputs and outputs, including other actual exports, separately from internal circulation, with reaction formation/consumption, product water, actual vapour, effluent/waste-carried water and stocks. Internal links cancel only within the boundary and create no new purchase, discharge or emission. No assumed return fraction. Measured outputs already contain emitted reaction water; unknown terms remain gaps, not zero."
       unit: "m3; kg"
       frequency: "Each lot or continuous metering; emissions by representative operating state and actual monitoring plan"
       temporal_coverage: "Same period as delivered product; disclose missing records"
@@ -1015,7 +1015,7 @@ dataset_production:
       process_id: "paper_mill"
       flow_role: "external paper trim and sludge"
       record_type: "Measured raw record"
-      raw_fields: "stream identity; wet/dry mass; solids; ash; contaminants; sender/receiver; treatment; recovered internal broke; captured cutting dust, internal dust return and exported dust; stock change"
+      raw_fields: "stream identity; wet/dry mass; solids; ash; contaminants; primary fibre/filler versus excess biological sludge; organic/mineral fractions and elemental composition; carbon origin; biomass stocks; sender/receiver; treatment; recovered internal broke; captured cutting dust, internal dust return and exported dust; stock change"
       collection_method: "Calibrated weighbridge/scale, solids tests and receiver tickets; separate actual atomic waste types and internal returns."
       unit: "kg"
       frequency: "Each lot or continuous metering; emissions by representative operating state and actual monitoring plan"
@@ -1035,6 +1035,18 @@ dataset_production:
       site_scope: "Same mill and grade, relevant points; retain stage ids"
       aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "Calibration, chain of custody, sample/lab QA, supplier basis and balance residual"
+    - protocol_id: cp_reaction
+      process_id: "paper_mill"
+      flow_role: "actual combustion and biological/material transformations"
+      record_type: "Measured raw record and independently evidenced reaction account"
+      raw_fields: "actual route and reaction extent; consumed/formed materials and species; C/H/O/N and other relevant elemental composition; fossil/biogenic/mineral carbon origins; paired gas inlet/outlet flow and composition including net O2 uptake and humidity; dissolved gases; effluent constituents; biomass formation/decay and stocks; independently constrained H2O formation/consumption; methods and uncertainty"
+      collection_method: "Pair calibrated gas/oxygen and liquid/solid measurements with representative composition/speciation, elemental analyses and evidenced reaction extent; reconcile with cp_air, cp_effluent, cp_materials, cp_residues and cp_water. Retain actual gas generation, capture, oxidation, dissolved/exported and release routes separately. No universal biomass yield, COD-to-water factor, assumed organic formula or residual-fitted reaction/evaporation pair; non-identifiable terms remain gaps."
+      unit: "kg; mass fraction"
+      frequency: "Representative actual operating states and matched period records"
+      temporal_coverage: "Same period as delivered product; disclose missing records"
+      site_scope: "Same mill and actual reaction stages; retain stage ids"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, analytical bases, independent reaction evidence, identifiability and uncertainty"
   calculation_rules:
     - id: period_normalization
       applies_to: "all inventory rows"
@@ -1046,16 +1058,37 @@ dataset_production:
       output: "Q_ref"
       source_ids:
         - jrc-paper-bref-2015
+    - id: physical_mass_elements
+      applies_to: "all inventory rows"
+      rule: "At each actual stage and the whole boundary, total mass input = total mass output + stock change; each element (C/H/O/N and other relevant elements) obeys the same balance without elemental reaction source/sink terms. Include actual O2 uptake, other net atmospheric exchanges, all solid/liquid/gas routes and stocks on matched bases. Constrain reactions from independently evidenced composition and extent, not closure alone. Track fossil, biogenic and mineral carbon separately through product, biomass, sludge, effluent, gas generation/capture/oxidation and actual release. Use whole-stream mass or its non-overlapping components, never both; COD/BOD and overlapping pollutant/element indicators are not additive physical masses. Internal transfers cancel and burden allocation does not scale physical flows."
+      inputs:
+        - cp_materials
+        - cp_production
+        - cp_energy
+        - cp_water
+        - cp_air
+        - cp_effluent
+        - cp_residues
+        - cp_packaging
+        - cp_reaction
+      output: "Whole-mass and elemental ledgers with carbon-origin fates and residuals"
+      source_ids:
+        - jrc-paper-bref-2015
+        - epa-aerobic-treatment-2000
     - id: solids_balance
-      applies_to: "pulp_soft; pulp_hard; gcc; pcc; kaolin; starch_ox; akd; pae; pam; wallpaper_base; broke; sludge; cutting_dust"
-      rule: "m_dry = m_delivered × measured_solids_fraction; D = S × (1-w); reconcile each incoming solid to product retention, dry exported waste, released solids and stock change. Internal returns cancel across matching boundary ends; packaging stays separate."
+      applies_to: "pulp_soft; pulp_hard; gcc; pcc; kaolin; starch_ox; akd; pae; pam; wallpaper_base; broke; sludge; cutting_dust; effluent; co2_fossil; co2_bio; bio_ch4"
+      rule: "m_dry = m_delivered × measured_solids_fraction; D = S × (1-w). Preserve measured dry-material/component accounts, not universal dry-solids conservation. For each actually reactive material/species, input + evidenced formation = output + evidenced consumption + stock change on the same analytical basis. Track organic assimilation, mineralization, biomass formation/decay, gas conversion and dissolved/particulate effluent fates using cp_reaction and elemental closure; gas mass is not an equal-mass substitute for consumed organic solids because O2 and other reactants participate. Only demonstrably inert solids retain input = output + stock change. Internal returns cancel across matching ends; packaging stays separate; no default yield or residual-fitted sludge."
       inputs:
         - cp_materials
         - cp_production
         - cp_residues
-      output: "Physical solids ledger and residual"
+        - cp_reaction
+        - cp_air
+        - cp_effluent
+      output: "Physical dry-material/species fates and residuals"
       source_ids:
         - jrc-paper-bref-2015
+        - epa-aerobic-treatment-2000
     - id: utility_reconciliation
       applies_to: "electricity; gas; steam"
       rule: "Meter kWh × 3.6 = MJ; reconcile same-state stage meters to main meter. Gas volume conversion requires declared T/P, wet/dry and Z. Physical net steam heat = sum(m_in × h_in) - sum(m_return × h_return) - other documented outgoing enthalpy at the declared boundary, with losses separately recorded. Supplier GCV reference demand requires its independently documented conversion; no net/GCV equivalence, default constants or extra internal-steam input."
@@ -1066,15 +1099,19 @@ dataset_production:
         - jrc-paper-bref-2015
     - id: water_balance
       applies_to: "water_input; water_vapor; liquid_water; effluent; wallpaper_base; sludge; cutting_dust"
-      rule: "Fresh input + material-carried water + actual combustion water = product water + evaporation + outgoing effluent/waste-carried water + stock change; use measured density for volumes and match internal white-water/condensate amounts on both ends."
+      rule: "External H2O input (fresh supply, material-carried water, actual imported steam and air humidity) + independently evidenced H2O formation = product water + actual outgoing H2O vapour + actual external condensate/utility-water returns + other actual H2O exports including effluent/waste-carried H2O + independently evidenced H2O consumption + stock change. Include actual combustion, biological and other reaction terms through cp_reaction; unknown terms are not zero. Measured outgoing H2O already contains reaction water and is never augmented again. Do not solve reaction formation and evaporation simultaneously from one residual or use COD as a water-production default. Use measured/documented state-specific density for volumes; match internal white-water/condensate amounts at both ends. Internal cancellation never replaces measured external returns/exports; no new purchase, discharge or emission for internal circulation and no assumed return fraction."
       inputs:
         - cp_water
         - cp_materials
         - cp_production
         - cp_residues
+        - cp_energy
+        - cp_air
+        - cp_reaction
       output: "Physical water ledger and residual"
       source_ids:
         - jrc-paper-bref-2015
+        - epa-aerobic-treatment-2000
     - id: effluent_load
       applies_to: "cod; bod; tss; n_water; p_water"
       rule: "Load_kg = sum(V_i_m3 × c_i_mg_per_L × 0.001) using time-matched flow/concentration and the same analytical definition; divide by S for normalization. Loads sent to external treatment are not duplicate environmental releases."
@@ -1161,8 +1198,8 @@ dataset_production:
       evidence: "Material ledger, operating records, monitoring and explicit gaps"
     - id: balances
       applies_to: "paper_mill"
-      requirement: "Report stage and whole-boundary solids/water/carbon balances; match internal ends and explain residuals/uncertainty. Retained paper biogenic carbon is not an automatic negative-emission credit."
-      evidence: "Physical ledger and separate burden ledger"
+      requirement: "Report stage and whole-boundary total-mass/elemental closure, reactive dry-material fates and species-H2O accounts separately, including actual oxygen uptake, gas/effluent fates, measured external condensate/utility-water returns and other H2O exports, biomass formation/decay and stocks. Preserve analytical bases, calibration, independent reaction constraints and residual uncertainty. Unidentifiable reaction water, evaporation or organic fates keep completeness pending; do not force closure with invented sludge, yields or assumed zero. Measured outputs already include reaction products. Retained paper biogenic carbon is not an automatic negative-emission credit."
+      evidence: "Physical ledger, cp_reaction evidence and separate burden ledger"
     - id: comparability
       applies_to: "wallpaper_base"
       requirement: "Different furnish, filler, sizing, moisture, grammage or surface states cannot claim functional equivalence solely by kg."
@@ -1174,7 +1211,7 @@ dataset_production:
 validation_rules:
   - rule_id: validation_rule_1
     applies_to: "foreground_dataset_conformance"
-    rule: "Require exactly one accepted reference output linked to wallpaper_base; 1 kg and the same net-delivery denominator in both languages, every row and every protocol. Check qualifiers, chemistry/species, reference property, unit group, environmental medium and quantity/background basis separately. All actual inputs and emissions must be atomic and traced to collection; any missing foreground measurement, unsupported NOx convention, unresolved steam delivery basis or incompatible background keeps dataset validation incomplete. Verify absence of decorative/impregnated/nonwoven product claims, no nested PM double counting, no duplicated raw-effluent/final-release burdens, no double counting of captured/reused dry-cutting dust and escaped PM, no dropped biogenic CO2, and separate physical versus allocated ledgers. A method inspection does not establish a factory measurement or scientific approval."
+    rule: "Require exactly one accepted reference output linked to wallpaper_base; 1 kg and the same net-delivery denominator in both languages, every row and every protocol. Check qualifiers, chemistry/species, reference property, unit group, environmental medium and quantity/background basis separately. All actual inputs and emissions must be atomic and traced to collection; any missing foreground measurement, unsupported NOx convention, unresolved steam delivery basis or incompatible background keeps dataset validation incomplete. Verify absence of decorative/impregnated/nonwoven product claims, no nested PM double counting, no duplicated raw-effluent/final-release burdens, no double counting of captured/reused dry-cutting dust and escaped PM, no dropped biogenic CO2, and separate physical versus allocated ledgers. Verify total mass and elemental closure with actual oxygen and gas routes, reactive organic/biomass formation and consumption, and independently constrained H2O reaction terms. Unidentified terms keep validation incomplete, never zero. Reject forced organic dry-solids conservation, COD-to-water defaults, simultaneous reaction-water/evaporation fitting from one residual, and adding reaction water again to measured vapour or liquid outputs. Verify cp_water captures measured external condensate/utility-water returns and other H2O exports; reject their replacement by internal-link cancellation or assumed return fractions. Internal circulation creates no new purchase, discharge or emission. Retain demonstrated inert-solids balances and carbon-origin fates. Sources: jrc-paper-bref-2015, epa-aerobic-treatment-2000. A method inspection does not establish a factory measurement or scientific approval."
     source_ids: []
 published_dataset_profile:
   dataset_role: "Foreground base-paper manufacturing dataset for downstream use after data quality checks"
@@ -1205,9 +1242,13 @@ data_sources:
     type: "official_guidance"
     reference: "European Commission, Recommendation (EU) 2021/2279, Annex I §4.5, pp.63-64; https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf; read 2026-10-12."
     used_for: "Multifunctionality hierarchy and disclosure; no claim of full PEF compliance or default recycling credit."
+  - id: "epa-aerobic-treatment-2000"
+    type: "official_guidance"
+    reference: "US EPA, Decentralized Systems Technology Fact Sheet: Aerobic Treatment, EPA 832-F-00-031, September 2000; https://www.epa.gov/sites/production/files/2015-06/documents/aerobic_treatment_0.pdf; read 2026-10-14; PDF p.1 DESCRIPTION."
+    used_for: "General oxygen-dependent organic conversion to CO2 and H2O only. Household/decentralized examples supply no papermill formula, biomass yield, reaction-water/COD factor, treatment performance or numerical default; actual reaction extent and fates require independent site evidence."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e3d638b5b34687802d9cf29ca0af742571f0c1cb9a39854fc9f0f0666956229e"
+  source_sha256: "sha256:440acb9918a96e086abfeb26703e463db4cd22bbe9e0e98a08f35fc8a030034e"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6094"
@@ -1258,15 +1299,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54260"
+    - unit_id: "normative_54619"
       family: "allocation"
       span:
         start:
-          offset: 54260
+          offset: 54619
           line: 683
           column: 1
         end:
-          offset: 55300
+          offset: 55659
           line: 687
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nKeep the physical process/solids/water/carbon ledger separate from the allocated environmental-burden ledger. Internal sheet/broke/water links have equal amounts at both ends on the same basis, with measured storage changes and losses explicitly reconciled. Do not mechanically multiply a co-product physical output by an allocation share. Attribute grade-specific pulp, chemicals and metered utilities directly; subdivide shared utilities where feasible. If inseparable co-products remain, investigate subdivision/system expansion first, then a demonstrated relevant physical relation, then another justified relation such as economic allocation; disclose method, denominator, coefficients and sensitivity. No automatic waste-paper credit or default mass allocation is prescribed. Internal broke is not a co-product; external trim/sludge status and treatment must be evidenced. Source: `eu-pef-allocation-2021`, with the recycling-specific requirements of the adopted study method kept explicit.\n\n"
@@ -1286,11 +1327,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54260
+              offset: 54619
               line: 683
               column: 1
             end:
-              offset: 54300
+              offset: 54659
               line: 683
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1306,18 +1347,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_69607"
+    - unit_id: "normative_75293"
       family: "validation"
       span:
         start:
-          offset: 69607
-          line: 729
+          offset: 75293
+          line: 731
           column: 1
         end:
-          offset: 70536
-          line: 733
+          offset: 77046
+          line: 735
           column: 1
-      markdown: "## 9. Validation Rules\n\nRequire exactly one accepted reference output linked to wallpaper_base; 1 kg and the same net-delivery denominator in both languages, every row and every protocol. Check qualifiers, chemistry/species, reference property, unit group, environmental medium and quantity/background basis separately. All actual inputs and emissions must be atomic and traced to collection; any missing foreground measurement, unsupported NOx convention, unresolved steam delivery basis or incompatible background keeps dataset validation incomplete. Verify absence of decorative/impregnated/nonwoven product claims, no nested PM double counting, no duplicated raw-effluent/final-release burdens, no double counting of captured/reused dry-cutting dust and escaped PM, no dropped biogenic CO2, and separate physical versus allocated ledgers. A method inspection does not establish a factory measurement or scientific approval.\n\n"
+      markdown: "## 9. Validation Rules\n\nRequire exactly one accepted reference output linked to wallpaper_base; 1 kg and the same net-delivery denominator in both languages, every row and every protocol. Check qualifiers, chemistry/species, reference property, unit group, environmental medium and quantity/background basis separately. All actual inputs and emissions must be atomic and traced to collection; any missing foreground measurement, unsupported NOx convention, unresolved steam delivery basis or incompatible background keeps dataset validation incomplete. Verify absence of decorative/impregnated/nonwoven product claims, no nested PM double counting, no duplicated raw-effluent/final-release burdens, no double counting of captured/reused dry-cutting dust and escaped PM, no dropped biogenic CO2, and separate physical versus allocated ledgers. Verify total mass and elemental closure with actual oxygen and gas routes, reactive organic/biomass formation and consumption, and independently constrained H2O reaction terms. Unidentified terms keep validation incomplete, never zero. Reject forced organic dry-solids conservation, COD-to-water defaults, simultaneous reaction-water/evaporation fitting from one residual, and adding reaction water again to measured vapour or liquid outputs. Verify cp_water captures measured external condensate/utility-water returns and other H2O exports; reject their replacement by internal-link cancellation or assumed return fractions. Internal circulation creates no new purchase, discharge or emission. Retain demonstrated inert-solids balances and carbon-origin fates. Sources: `jrc-paper-bref-2015`, `epa-aerobic-treatment-2000`. A method inspection does not establish a factory measurement or scientific approval.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1334,12 +1375,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 69607
-              line: 729
+              offset: 75293
+              line: 731
               column: 1
             end:
-              offset: 69629
-              line: 729
+              offset: 75315
+              line: 731
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1371,29 +1412,29 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_54260"
+      unit_id: "normative_54619"
       source_span:
         start:
-          offset: 54302
+          offset: 54661
           line: 685
           column: 1
         end:
-          offset: 55298
+          offset: 55657
           line: 685
           column: 997
     - pointer: "/validation_rules/0"
       rule_id: "validation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_69607"
+      unit_id: "normative_75293"
       source_span:
         start:
-          offset: 69631
-          line: 731
+          offset: 75317
+          line: 733
           column: 1
         end:
-          offset: 70534
-          line: 731
-          column: 904
+          offset: 77044
+          line: 733
+          column: 1728
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1421,27 +1462,27 @@ normative_context:
           column: 199
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54260"
+      unit_id: "normative_54619"
       source_span:
         start:
-          offset: 54260
+          offset: 54619
           line: 683
           column: 1
         end:
-          offset: 54300
+          offset: 54659
           line: 683
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_69607"
+      unit_id: "normative_75293"
       source_span:
         start:
-          offset: 69607
-          line: 729
+          offset: 75293
+          line: 731
           column: 1
         end:
-          offset: 69629
-          line: 729
+          offset: 75315
+          line: 731
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1450,5 +1491,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e3d638b5b34687802d9cf29ca0af742571f0c1cb9a39854fc9f0f0666956229e"
-  generated_content_sha256: "sha256:6001e3705b16a743ba2c7518eda726d7bb58437bfb7072506d5e09c95329357a"
+    sha256: "sha256:440acb9918a96e086abfeb26703e463db4cd22bbe9e0e98a08f35fc8a030034e"
+  generated_content_sha256: "sha256:008f7b2059dde32922a152406edfcaae980b7bc72df1f0201f6af50ae7ba7a0c"

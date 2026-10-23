@@ -1,0 +1,1407 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.bagasse-particleboard-uf"
+  classification_refs: "CPC 3.0 31433; narrower"
+  covered_products: "Uncoated pure-bagasse UF-bonded flat particleboard"
+  excluded_products: "Wood particleboard; flax/bamboo boards; bamboo veneer/strip laminates; wood-faced and mixed-furnish boards; MDF; binderless and other binder routes; coated panels"
+  representative_product: "One declared bagasse board grade and thickness with verified site recipe"
+  production_route: "Receipt/storage → depithing/grading → drying → UF blending → mat forming/hot pressing → cooling/conditioning → trimming/sanding → packing"
+  market_state: "Accepted uncoated board at factory gate, packaging excluded from net board quantity"
+functional_unit:
+  what: "Provide uncoated board substrate for the declared non-structural interior application"
+  how_much: "1 m3 net accepted board volume"
+  how_well: "Declared thickness, density at measured moisture, particle grading, UF formulation and verified grade; no inferred P2 conformity"
+  how_long_or_cycle: "One factory-gate delivery; no service lifetime asserted"
+  reference_flow_link: "finished_board"
+system_boundary:
+  rules:
+    - rule_id: boundary_upstream
+      applies_to: "bagasse_input; bagasse_fuel"
+      rule: "Do not default bagasse to zero upstream burden. Determine sale price/revenue, contractual status, useful fuel or other demand and supplier process purpose. Valuable co-products require the supplier allocation model; genuine discarded waste may use a justified cut-off, while collection/preparation/transport still remain. Disclose displaced boiler fuel in an attributional sensitivity, not an automatic substitution credit."
+      source_ids:
+        - epa-bagasse-combustion-1996
+    - rule_id: boundary_stages
+      applies_to: "manufacturing"
+      rule: "Include storage losses, particle preparation, actual drying, all recipe constituents, hot pressing, cooling/conditioning, trimming/sanding, packaging, emission control and wastewater/residue treatment. Identify exact emitting equipment. No wood-panel regional average may replace site bagasse parameters."
+      source_ids:
+        - brito-bagasse-2021
+        - usda-nonwood-review-1994
+    - rule_id: boundary_utilities
+      applies_to: "manufacturing"
+      rule: "On-site heat production belongs to the foreground. Keep gas and bagasse combustion separately metered; match boiler type/control to evidence. Internal steam is measured by supply/return enthalpy and condensate balance, not purchased as a second fuel or represented by an unverified MJ steam UUID. Exclude externally purchased heat and on-site firing of cured UF board until route-specific review."
+      source_ids:
+        - epa-bagasse-combustion-1996
+        - epa-gas-combustion-2026
+    - rule_id: boundary_extension
+      applies_to: "manufacturing"
+      rule: "Additional observed components, consumables, packaging or pollutants require separate specific atomic exchanges and current identity verification. Absence must be demonstrated; neither blank UUID nor missing measurement is a zero."
+      source_ids:
+        - brito-bagasse-2021
+boundary_abstraction:
+  declared_starting_condition: "Bagasse separated by juice extraction at its actual sugar/ethanol supplier, delivered at measured moisture and economic status; supplied chemicals and utilities"
+  starting_condition_role: "Foreground receipt boundary, not an automatic upstream cut-off"
+  product_classification_scope: "CPC 3.0 31433; narrower"
+  recursive_input_rule: "Same-category purchased boards retain their linked upstream dataset; internal rework remains in physical ledger. No infinite expansion and no erased upstream burden."
+  upstream_dataset_requirement: "Verified bagasse supply reflecting sugarcane production/extraction and actual allocation or justified waste cut-off; transport, resin, hardener, emulsion, water, electricity and fuels matched to supply bases"
+  disclosure: "Supplier region/year, competing uses and economic status; allocation rationale; all stage energy/material/emission boundaries and exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "fiberboard particleboard"
+    uuid: "58b62091-9855-4631-9076-823e8ba59238"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - "Sugarcane species/origin and extraction source"
+    - "sole bagasse furnish"
+    - "depithing and particle-size distribution"
+    - "receipt/press/gate moisture and wet/dry convention"
+    - "UF solids/formulation/free formaldehyde"
+    - "hardener and wax formulation"
+    - "dimensions and density"
+    - "verified marketed grade/test edition"
+    - "board facing absent"
+    - "utility delivery/thermal route"
+    - "supplier economic status/allocation"
+    - "reference state/date"
+    - "packaging outside net board"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_volume
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Net solid board volume after trimming at declared gate moisture, not stacked/bulk volume. cp_output measures length × width × thickness for each accepted grade, excludes gaps, rejected boards and packaging."
+  - id: moisture_basis
+    applies_to: "bagasse_input; bagasse_fuel; raw_fines; trim"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record both wet-basis water fraction w and dry-basis ratio u with explicit methods. Dry solids = wet mass × (1 − w); u = w/(1 − w). Never apply literature moisture or density to site lots."
+  - id: gas_volume
+    applies_to: "gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Convert metered gas to supplier reference T/P and wet/dry basis with documented composition/compressibility. Unknown background m3 definition prevents quantitative linking."
+  - id: electricity_energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "The verified electricity property uses MJ; 1 kWh = 3.6 MJ. This is electrical energy, not a combustion heat default."
+process_map:
+  - id: manufacturing
+    name: "Bagasse board manufacturing, conditioning and packing"
+    inclusion: "required"
+    inclusion_condition: "Covered fixed recipe/route"
+    role: "One aggregated physical foreground unit with stage ledgers"
+    quantitative_reference: "finished_board"
+process_inventory:
+  - id: manufacturing
+    label: "Bagasse board manufacturing, conditioning and packing"
+    inputs:
+      product:
+        - row_id: bagasse_input
+          role: "Bagasse"
+          name: "Bagasse"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f13cc16c-a598-48a2-b226-fdd991eac633"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Post-juice-extraction sugarcane bagasse for the furnish only; weigh receipt lots with moisture and origin. Exclude separately purchased boiler fuel; record supplier allocation and competing fuel use."
+          amount:
+            expression: "Collected exchange per reference flow; cp_inputs; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: uf_resin
+          role: "Urea-formaldehyde resin"
+          name: "Urea-formaldehyde resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "23e41b7b-0991-4cf7-8625-7a30d23bbb27"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased UF resin as delivered, not an invented dry-resin equivalent. Record solids fraction, free formaldehyde, supplier formulation and matched background mass basis. Separate contained water in the physical water balance without purchasing it twice."
+          amount:
+            expression: "Collected exchange per reference flow; cp_recipe; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: hardener
+          role: "Ammonium sulphate"
+          name: "Ammonium sulphate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7f128b59-9df7-4b5d-ad0f-00103b916cf7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Crystalline ammonium sulfate bought separately and dissolved on site. Weigh the compound, not nitrogen content; dissolution water belongs to water input. No substitution by ammonium chloride."
+          amount:
+            expression: "Collected exchange per reference flow; cp_recipe; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: wax
+          role: "Paraffin wax aqueous emulsion"
+          name: "Paraffin wax aqueous emulsion"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased aqueous paraffin emulsion, including its formulation, solids and water. UUID unresolved: neat wax and plastic-recycling wax records are not this exchange. Do not duplicate emulsion constituents as external inputs."
+          amount:
+            expression: "Collected exchange per reference flow; cp_recipe; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Supplied treated tap water for on-site hardener dissolution, resin dilution, cleaning and boiler make-up; separate stage meters. Use measured water mass or metered volume with measured temperature-dependent density. Internal recycle is not a new input."
+          amount:
+            expression: "Collected exchange per reference flow; cp_water; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Grid consumption mix at 1–35 kV at the plant delivery meter. Record stage submetering including screening, drying, blending, pressing, trimming and controls; include on-site transformation losses once. Other delivery voltages require separate verified atomic rows."
+          amount:
+            expression: "Collected exchange per reference flow; cp_energy; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional pipeline gaseous natural gas burned on site. Reference property is Volume, not Mass. Match meter T/P, wet/dry composition, compressibility and supplier/background m3 convention; an unresolved volume convention blocks that link. Database secondary mass coefficient is not a density."
+          amount:
+            expression: "Collected exchange per reference flow; cp_energy; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: bagasse_fuel
+          role: "Bagasse"
+          name: "Bagasse"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f13cc16c-a598-48a2-b226-fdd991eac633"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional separately received bagasse burned in the on-site boiler; as-fired mass, moisture, calorific basis and supplier burden are measured independently from furnish. Internal unresinated residue firing is a transfer in the physical ledger, not a second purchase."
+          amount:
+            expression: "Collected exchange per reference flow; cp_energy; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional LDPE wrapping film leaving with finished boards; packaging mass is outside net reference board volume. Record film grade and disposal separately from other packaging components."
+          amount:
+            expression: "Collected exchange per reference flow; cp_inputs; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inputs
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_board
+          role: "fiberboard particleboard"
+          name: "fiberboard particleboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "58b62091-9855-4631-9076-823e8ba59238"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Accepted trimmed, conditioned, uncoated UF-bonded pure-bagasse particleboard at factory gate; all preparation, pressing, finishing and packing belong to this same foreground unit. The database broad particleboard identity is constrained by this PCR; no wood-fibre facing is implied."
+          amount:
+            expression: "1 m3"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_output
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: pith_coproduct
+          role: "Unresinated bagasse pith sold as fuel"
+          name: "Unresinated bagasse pith sold as fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional depithing output only when sold or deliberately supplied as useful fuel. Weigh actual exported mass and moisture; no automatic avoided-fuel credit. UUID unresolved. Do not also count the same material as discarded fines."
+          amount:
+            expression: "Collected exchange per reference flow; cp_residues; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+      waste:
+        - row_id: raw_fines
+          role: "Discarded unresinated bagasse fines"
+          name: "Discarded unresinated bagasse fines"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Raw preparation fines discarded off site; physical moisture and destination matter. Captured dust recycled internally is not an exported waste. Sold fuel is pith_coproduct; internal boiler fuel belongs to transfer ledger."
+          amount:
+            expression: "Collected exchange per reference flow; cp_residues; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: trim
+          role: "UF-bonded bagasse board trimming waste"
+          name: "UF-bonded bagasse board trimming waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Cured resin-bearing solid board offcuts and rejects exported for treatment; distinct from raw bagasse. Record resin content and treatment; on-site combustion of cured board is excluded from this route and requires separate combustion evidence."
+          amount:
+            expression: "Collected exchange per reference flow; cp_residues; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: ash_bottom
+          role: "Bagasse boiler bottom ash"
+          name: "Bagasse boiler bottom ash"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional separately weighed bottom ash from bagasse combustion, excluding separately collected fly ash. Ash moisture, leachability and destination are site records; coal or metallurgy residues are rejected UUID proxies."
+          amount:
+            expression: "Collected exchange per reference flow; cp_residues; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: wastewater
+          role: "Untreated UF blending and cleaning wastewater"
+          name: "Untreated UF blending and cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Wastewater crossing to off-site treatment, with volume, density, COD and formaldehyde concentration recorded. It is a waste flow, not direct release to a river; direct discharge would require actual elementary species rows and verified receiving medium."
+          amount:
+            expression: "Collected exchange per reference flow; cp_water; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: pith_waste
+          role: "Discarded unresinated bagasse pith"
+          name: "Discarded unresinated bagasse pith"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional depithing pith discarded off site; record actual wet mass and moisture. Mutually exclusive with sold pith and internal boiler transfer for the same lot."
+          amount:
+            expression: "Collected exchange per reference flow; cp_residues; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: cured_dust
+          role: "UF-bonded bagasse board sanding dust"
+          name: "UF-bonded bagasse board sanding dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Resin-bearing fine dust captured at cured board sanding, exported for treatment; distinct from solid board offcuts, raw fines and uncaptured elementary PM."
+          amount:
+            expression: "Collected exchange per reference flow; cp_residues; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: ash_fly
+          role: "Bagasse boiler fly ash"
+          name: "Bagasse boiler fly ash"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional captured bagasse boiler fly ash exported for treatment; record moisture and destination separately from bottom ash and stack PM."
+          amount:
+            expression: "Collected exchange per reference flow; cp_residues; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+      elementary:
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Non-overlapping PM2.5 mass escaping capture to outdoor air; stage-tag raw preparation, dryer, press, trim and boiler separately."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: pmcoarse
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only particles above 2.5 and up to 10 micrometres. Calculate from compatible paired cumulative PM10 and PM2.5 observations; never add cumulative PM10 again."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: pmover10
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only particles above 10 micrometres. Compatible total filterable PM minus cumulative PM10; missing size distribution remains a data gap, not a zero. Condensable PM scope must be reconciled."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: formaldehyde
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Formaldehyde species mass to outdoor air from UF blending, hot press, cooling and conditioning, with boiler contributions separately tagged. Chamber content tests are not stack mass factors."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+        - row_id: methanol
+          role: "methanol"
+          name: "methanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Methanol species mass measured at emitting stages; no substitution by total VOC, TOC or methanol-containing product supply."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: co2bio
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Biogenic CO2 from measured bagasse fuel oxidation and verified storage degradation. Keep in LCI independently of GHG characterization conventions; carbon uptake upstream is not booked again at board receipt."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: co2fossil
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Fossil CO2 from natural gas and any verified fossil carbon oxidation, excluding fuel/energy already counted in purchased background systems."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: ch4bio
+          role: "methane (biogenic)"
+          name: "methane (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a8e8-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Biogenic methane from incomplete bagasse combustion or evidenced anaerobic storage; origin and physical stage must be demonstrated."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: ch4fossil
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Fossil methane from incomplete gas combustion and metered/estimated on-site leakage; do not duplicate supplier upstream leakage."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: co_bio
+          role: "carbon monoxide (biogenic)"
+          name: "carbon monoxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "8a313a02-e251-11e6-bf01-fe55135034f3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Biogenic carbon monoxide from bagasse combustion; do not pool with fossil CO."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: co_fossil
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Fossil carbon monoxide from gas combustion; separate from biogenic CO."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: nitric_oxide
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Nitrogen monoxide species mass only. Aggregate NOx reported as NO2 equivalent does not establish actual NO mass; require measured speciation or preserve unresolved data."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: no2
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Nitrogen dioxide species mass only; never enter whole NOx-as-NO2 as this row while also entering NO."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: n2o
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Nitrous oxide species mass from operating and startup boiler records; distinguish from NO and NO2."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion-2026
+            ranges: []
+        - row_id: so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Sulfur dioxide species mass, fuel sulfur and actual control condition; do not use total sulfur oxides as exact SO2."
+          amount:
+            expression: "Collected exchange per reference flow; cp_air; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-bagasse-combustion-1996
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Water vapour released outdoors, stage-tag drying, press, conditioning and boiler. Record moisture evaporation separately from combustion water; do not invent a steam purchase."
+          amount:
+            expression: "Collected exchange per reference flow; cp_water; absent conditional exchange requires evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - brito-bagasse-2021
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_supplier
+    applies_to: "bagasse_input; bagasse_fuel"
+    rule: "Investigate subdivision or system expansion first. This single-board attributional result retains a declared scope without unproven substitution credit. Where allocation remains at sugar/ethanol extraction, use a defensible physical causal relationship before documented economic allocation; justify rejected options and remain consistent with the supplying study. Record all co-product quantities, prices, time window and rationale. Do not derive zero from the word residue or from carbon neutrality."
+    source_ids:
+      - ec-ef-allocation-2021
+      - epa-bagasse-combustion-1996
+  - rule_id: allocation_foreground
+    applies_to: "manufacturing"
+    rule: "Separate useful exported pith fuel from discarded raw fines and cured resin waste. Subdivide meters when possible; remaining shared environmental burdens use documented causal allocation or otherwise economic shares from net delivered quantities × consistent prices. Present sensitivity where residue status/prices change."
+    source_ids:
+      - ec-ef-allocation-2021
+      - epa-bagasse-combustion-1996
+  - rule_id: allocation_physical
+    applies_to: "manufacturing"
+    rule: "Keep unallocated physical process graph and material/water/carbon balances alongside the allocated environmental burden account. Never multiply co-product physical output or internal transfer mass by an allocation fraction; no internal recycle credit or double burden."
+    source_ids:
+      - brito-bagasse-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "manufacturing"
+      flow_role: "finished_board"
+      record_type: "Measured primary records"
+      raw_fields: "Grade; batch; accepted quantity; length; width; thickness; moisture; density; tests; packaging tare"
+      collection_method: "Calibrated dimension and mass measurements after conditioning; lot acceptance and test records. Compute accepted net board volume; separate grades and rejected boards."
+      unit: "m3"
+      frequency: "Every accepted lot"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+    - protocol_id: cp_inputs
+      process_id: "manufacturing"
+      flow_role: "bagasse_input; film"
+      record_type: "Measured primary records"
+      raw_fields: "Receipt and stock quantities; supplier/location/year; moisture; extraction route; transport mode/distance/load; contract/value; film grade/mass"
+      collection_method: "Calibrated weighing and matched invoices, receipts, stock reconciliation and supplier inventory. Include inbound transport in each supplied material background or a separately verified transport exchange, once."
+      unit: "kg"
+      frequency: "Every receipt and stock close"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+    - protocol_id: cp_recipe
+      process_id: "manufacturing"
+      flow_role: "uf_resin; hardener; wax"
+      record_type: "Measured primary records"
+      raw_fields: "Delivered and dosed mass; solids fraction; formulation; purity; free formaldehyde; water fraction; losses; supplier reference basis"
+      collection_method: "Batch dosing records, calibrated scales, formulation/SDS and supplier primary records. Verify solids analytically; reconcile received/dosed/stock/lost mass. Record every additional constituent separately."
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+    - protocol_id: cp_stage
+      process_id: "manufacturing"
+      flow_role: "internal transfers"
+      record_type: "Measured primary records"
+      raw_fields: "Stage id; linked source/destination; wet and dry mass; moisture method; water; carbon fraction; rejects; storage duration; particle grade; press temperature/pressure/time"
+      collection_method: "Weigh and sample at receipt, depithing, dryer inlet/outlet, blending, press exit, conditioning and trim. Record internal recycle/boiler transfers at equal endpoints. Maintain separate raw and resin-bearing residues."
+      unit: "kg"
+      frequency: "Each stage/batch and period stock close"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+    - protocol_id: cp_energy
+      process_id: "manufacturing"
+      flow_role: "electricity; gas; bagasse_fuel"
+      record_type: "Measured primary records"
+      raw_fields: "Delivery voltage; stage meters; kWh; gas m3/T/P/composition/Z; fuel wet mass/moisture/LHV or HHV; boiler type/load/control; steam supply/return mass, T/P/enthalpy; losses"
+      collection_method: "Reconcile plant and stage meters with bills and fuel stocks; measure drying and press cycles independently. Steam heat is mass × supply-minus-return enthalpy with condensate/blowdown/loss reconciliation, not fuel energy or gross steam enthalpy."
+      unit: "MJ; m3; kg"
+      frequency: "Continuous meters and every fuel lot"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+    - protocol_id: cp_residues
+      process_id: "manufacturing"
+      flow_role: "pith_coproduct; pith_waste; raw_fines; trim; cured_dust; ash_bottom; ash_fly"
+      record_type: "Measured primary records"
+      raw_fields: "Stage; actual mass/moisture; resin content; raw/cured state; internal recycle; export destination; treatment; contract/revenue"
+      collection_method: "Calibrated bins/scales and dispatch/treatment receipts. Identify bottom and fly ash streams and sum only compatible ash records. Separate sold pith from discarded fines and on-site transfers."
+      unit: "kg"
+      frequency: "Each discharge/dispatch"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+    - protocol_id: cp_water
+      process_id: "manufacturing"
+      flow_role: "water; wastewater; water_vapour"
+      record_type: "Measured primary records"
+      raw_fields: "Stage water supply; emulsion/resin water; bagasse moisture; product water; wastewater volume/density/composition; evaporation; boiler combustion water; stocks; recycle"
+      collection_method: "Meter external water and effluent; sample densities/concentrations; close stage water balance after measured retained water and stocks. Derive evaporation only with bounded uncertainty; report unexplained residual, do not force closure."
+      unit: "kg"
+      frequency: "Continuous meters; stage/batch sampling"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+    - protocol_id: cp_air
+      process_id: "manufacturing"
+      flow_role: "elementary emissions"
+      record_type: "Measured primary records"
+      raw_fields: "Physical stage/source; species; biogenic/fossil origin; outdoor subcompartment; exhaust flow; temperature/pressure; dry/wet basis; concentration; test duration; production; control; starts/stops; PM fractions"
+      collection_method: "Representative source testing and activity logs after controls, including fugitive emissions. Sum concentration × compatible exhaust volume for each stage/species. Document uncertainty and speciation; chamber grades and aggregate VOC/NOx cannot substitute for species. Carbon balance may estimate origin-specific CO2 only after other carbon outputs/stocks are measured."
+      unit: "kg"
+      frequency: "Representative operating modes plus continuous logs"
+      temporal_coverage: "Same complete declared period"
+      site_scope: "Same site and declared recipe/grade"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; traceability; matched stocks and accepted volume; uncertainty"
+  calculation_rules:
+    - id: volume_normalization
+      applies_to: "all inventory rows"
+      rule: "For each stage-tagged exchange, normalized amount = attributable period quantity / Q_vol; Q_vol = sum of accepted net board dimensions converted to m3 in the same period and grade. Retain gross measured stage totals before environmental allocation. Reference output = 1 m3."
+      inputs:
+        - cp_output
+        - cp_inputs
+        - cp_recipe
+        - cp_energy
+        - cp_residues
+        - cp_water
+        - cp_air
+      output: "Exchange per reference flow"
+      source_ids:
+        - brito-bagasse-2021
+    - id: physical_balance
+      applies_to: "manufacturing"
+      rule: "Before burden allocation, reconcile whole-stream mass and elemental carbon separately: opening stock + inputs = closing stock + outputs + reported residual, using actual composition and all relevant boundary crossings. Chemical reactions do not generate or consume total elemental carbon. Separately reconcile molecular H2O and reactive wood/resin components using opening stock + inputs + evidenced formation = closing stock + outputs + evidenced consumption + reported residual. Quantify only actual cure/thermal/oxidation pathways and extent; phase changes are transfers, not reactions. A zero reaction term requires evidence of absence; unknown extent remains unresolved, with no assumed full cure, generic yield or balancing emission. Track retained binder/additives and wood versus fossil carbon separately. Internal transfers cancel only with matched endpoints; measured outputs containing reaction products are counted once. Keep uncertainty explicit and do not apply burden shares to physical outputs. Keep boiler fuel, combustion air/oxygen and combustion products in a separate stage ledger; fuel oxidation is not unexplained furnish loss."
+      inputs:
+        - cp_stage
+        - cp_recipe
+        - cp_water
+        - cp_residues
+        - cp_air
+      output: "Unallocated stage and whole-site balances with residual uncertainty"
+      source_ids:
+        - brito-bagasse-2021
+    - id: burden_allocation
+      applies_to: "manufacturing"
+      rule: "Environmental burden for board = directly attributable burden + justified share × shared burden. Economic share, when needed, = board revenue / total useful-output revenue on matched net quantities/prices; include pith only when economically useful. Divide the assigned burden by Q_vol, retaining physical exports unchanged."
+      inputs:
+        - cp_inputs
+        - cp_output
+        - cp_residues
+        - "supplier allocation"
+      output: "Allocated burden per reference flow plus sensitivity"
+      source_ids:
+        - ec-ef-allocation-2021
+  data_quality_requirements:
+    - id: quality_route
+      applies_to: "manufacturing"
+      requirement: "Same sole-bagasse furnish, binder/hardener/wax route and declared market grade; test failures remain visible."
+      evidence: "cp_recipe; cp_output"
+    - id: quality_period
+      applies_to: "manufacturing"
+      requirement: "Synchronize production, recipe, meters, emissions and stock periods; segregate grade and season; disclose missing modes."
+      evidence: "cp_stage; cp_energy; cp_air"
+    - id: quality_background
+      applies_to: "all supplied flows"
+      requirement: "UUID identity success is not a complete background match. Confirm supplier geography/time, route, moisture/concentration, quantity and transport boundary before linking."
+      evidence: "cp_inputs; cp_recipe; cp_energy"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "finished_board"
+    rule: "Require one reference output of 1 m3 net board and all qualifiers; reject wood/fibre-faced, flax, bamboo and mixed-furnish substitution or grade conformity inferred from a laboratory study."
+    source_ids:
+      - brito-bagasse-2021
+  - rule_id: validate_atomic
+    applies_to: "all inventory rows"
+    rule: "Every row is one atomic flow with verified property/unit and physical stage. UUID gaps require explicit review; no nearby product, correction flow or wrong medium is acceptable. Additional site exchanges must be declared separately."
+    source_ids:
+      - brito-bagasse-2021
+  - rule_id: validate_balance
+    applies_to: "manufacturing"
+    rule: "Require matched internal transfer endpoints and finite unallocated dry-solids/water/carbon balances with uncertainty, and a separate allocated burden ledger. Internal residues cannot appear as both new fuel purchase and recycled transfer."
+    source_ids:
+      - brito-bagasse-2021
+  - rule_id: validate_emissions
+    applies_to: "elementary emissions"
+    rule: "Use outdoor-air unspecified flows only while finer outdoor location is uncharacterized, disclosed as a limitation; finer known subcompartment requires verified replacement. Keep PM2.5, 2.5–10 and >10 as mutually exclusive intervals; never add nested PM10/TSP again. Require actual NO/NO2 speciation, species mass and carbon origin. Retain biogenic CO2 in LCI; missing measurements or factors remain gaps."
+    source_ids:
+      - epa-bagasse-combustion-1996
+      - epa-gas-combustion-2026
+  - rule_id: validate_supply
+    applies_to: "gas; uf_resin; bagasse_input; wax"
+    rule: "Block quantitative use where gas reference m3, resin/emulsion concentration or bagasse moisture/upstream economic status is unknown. Do not claim zero burden, generic density, net heat from an MJ label, or a species emission from a reporting equivalent."
+    source_ids:
+      - epa-bagasse-combustion-1996
+      - epa-gas-combustion-2026
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Input to an interior product model after applicability review; candidate methodology does not approve a dataset"
+  allowed_use: "Declared pure-bagasse UF board, same factory-gate state and verified quantity/grade"
+  excluded_use: "All 31433 products as one identity; wood/ bamboo plywood proxy; automatic lifetime/end-of-life credit; compliance claims from laboratory tests"
+  required_metadata: "Site/period/grade/route; all reference qualifiers; supplier/status/allocation; verified backgrounds and transport; original unallocated stage ledgers; normalization volume"
+  required_quality_disclosure: "Coverage and exclusions; missing UUIDs/quantities; measurement uncertainty; outdoor compartment limitation; allocation sensitivity; scientific and translation review state"
+  update_trigger: "Feedstock origin/economic status, binder/formulation, pretreatment, fuel/utility/controls, specification or temporal coverage changes"
+data_sources:
+  - id: "ec-ef-allocation-2021"
+    type: "official_guidance"
+    reference: "European Commission, C(2021) 9332 final, Annex I §4.5, printed pp.63–64. [Official annex original](https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf)."
+    used_for: "General multifunctionality hierarchy and relative-market-value allocation basis only; no claim of full PEF conformity, sector factors or circular-footprint defaults."
+  - id: "brito-bagasse-2021"
+    type: "literature"
+    reference: "Brito, Bortoletto Júnior and Surdi (2021), Properties of particleboards made from sugarcane bagasse particles, Rev. Bras. Cienc. Agrar. 16(1), e8783. DOI:10.5039/agraria.v16i1a8783. [Publisher original](https://www.agraria.pro.br/ojs32/index.php/RBCA/article/download/v16i1a8783/158/715), pp.1–3, 6."
+    used_for: "Original pure-bagasse laboratory route with untreated and hot-water-treated arms; UF/ammonium sulfate/paraffin, drying, pressing and measured conditioning. P2 failure preserved; no dose, moisture, density or press defaults."
+  - id: "usda-nonwood-review-1994"
+    type: "official_guidance"
+    reference: "Youngquist et al., July 1994, Literature review on use of nonwood plant fibers for building materials and panels, FPL-GTR-80, printed p.7, entries 31–34. [Forest Service original report](https://research.fs.usda.gov/download/treesearch/9668.pdf)."
+    used_for: "Historical literature-review distinctions and depithing/drying/adhesive/hot-press prompts only. Summarized Hesch trials not acquired; no industrial values or standards adopted."
+  - id: "epa-bagasse-combustion-1996"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 1.8 Bagasse Combustion In Sugar Mills, October 1996, pp.1.8–1–1.8–4, §§1.8.1–1.8.4 and Table 1.8–1 footnotes. [Original](https://gaftp.epa.gov/ap42/ch01/s08/final/c01s08_oct1996.pdf)."
+    used_for: "Actual useful fuel status, boiler/fuel/control and pollutant separation. US sugar-mill scope; fuel/steam factor bases are not transferred to board production."
+  - id: "epa-gas-combustion-2026"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 1.4 Natural Gas Combustion, acquired document header 10/26, pp.1.4–1–1.4–3, §§1.4.1–1.4.3 and factor disclaimer. [Original](https://www.epa.gov/sites/default/files/2020-09/documents/1.4_natural_gas_combustion.pdf)."
+    used_for: "Natural-gas boiler emission species and operating/control dependence; source testing preferred. No factor or heating-value default and no legal compliance threshold adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:74da274a48b60026dfe8716dea16c0ad0a4c5a01fc01d2ac1428ea42c154a882"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5623"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5623
+          line: 59
+          column: 1
+        end:
+          offset: 8402
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Bagasse separated by juice extraction at its actual sugar/ethanol supplier, delivered at measured moisture and economic status; supplied chemicals and utilities |\n| starting_condition_role | Foreground receipt boundary, not an automatic upstream cut-off |\n| product_classification_scope | CPC 3.0 31433; narrower |\n| recursive_input_rule | Same-category purchased boards retain their linked upstream dataset; internal rework remains in physical ledger. No infinite expansion and no erased upstream burden. |\n| upstream_dataset_requirement | Verified bagasse supply reflecting sugarcane production/extraction and actual allocation or justified waste cut-off; transport, resin, hardener, emulsion, water, electricity and fuels matched to supply bases |\n| disclosure | Supplier region/year, competing uses and economic status; allocation rationale; all stage energy/material/emission boundaries and exclusions |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_upstream | bagasse_input; bagasse_fuel | Do not default bagasse to zero upstream burden. Determine sale price/revenue, contractual status, useful fuel or other demand and supplier process purpose. Valuable co-products require the supplier allocation model; genuine discarded waste may use a justified cut-off, while collection/preparation/transport still remain. Disclose displaced boiler fuel in an attributional sensitivity, not an automatic substitution credit. | epa-bagasse-combustion-1996 |\n| boundary_stages | manufacturing | Include storage losses, particle preparation, actual drying, all recipe constituents, hot pressing, cooling/conditioning, trimming/sanding, packaging, emission control and wastewater/residue treatment. Identify exact emitting equipment. No wood-panel regional average may replace site bagasse parameters. | brito-bagasse-2021; usda-nonwood-review-1994 |\n| boundary_utilities | manufacturing | On-site heat production belongs to the foreground. Keep gas and bagasse combustion separately metered; match boiler type/control to evidence. Internal steam is measured by supply/return enthalpy and condensate balance, not purchased as a second fuel or represented by an unverified MJ steam UUID. Exclude externally purchased heat and on-site firing of cured UF board until route-specific review. | epa-bagasse-combustion-1996; epa-gas-combustion-2026 |\n| boundary_extension | manufacturing | Additional observed components, consumables, packaging or pollutants require separate specific atomic exchanges and current identity verification. Absence must be demonstrated; neither blank UUID nor missing measurement is a zero. | brito-bagasse-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 266
+              line: 9
+              column: 1
+            end:
+              offset: 308
+              line: 9
+              column: 43
+          text: "# Uncoated UF-bonded bagasse particleboard"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5623
+              line: 59
+              column: 1
+            end:
+              offset: 5644
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_34127"
+      family: "allocation"
+      span:
+        start:
+          offset: 34127
+          line: 613
+          column: 1
+        end:
+          offset: 35604
+          line: 621
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_supplier | bagasse_input; bagasse_fuel | Investigate subdivision or system expansion first. This single-board attributional result retains a declared scope without unproven substitution credit. Where allocation remains at sugar/ethanol extraction, use a defensible physical causal relationship before documented economic allocation; justify rejected options and remain consistent with the supplying study. Record all co-product quantities, prices, time window and rationale. Do not derive zero from the word residue or from carbon neutrality. | ec-ef-allocation-2021; epa-bagasse-combustion-1996 |\n| allocation_foreground | manufacturing | Separate useful exported pith fuel from discarded raw fines and cured resin waste. Subdivide meters when possible; remaining shared environmental burdens use documented causal allocation or otherwise economic shares from net delivered quantities × consistent prices. Present sensitivity where residue status/prices change. | ec-ef-allocation-2021; epa-bagasse-combustion-1996 |\n| allocation_physical | manufacturing | Keep unallocated physical process graph and material/water/carbon balances alongside the allocated environmental burden account. Never multiply co-product physical output or internal transfer mass by an allocation fraction; no internal recycle credit or double burden. | brito-bagasse-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 266
+              line: 9
+              column: 1
+            end:
+              offset: 308
+              line: 9
+              column: 43
+          text: "# Uncoated UF-bonded bagasse particleboard"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 34127
+              line: 613
+              column: 1
+            end:
+              offset: 34167
+              line: 613
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_44968"
+      family: "validation"
+      span:
+        start:
+          offset: 44968
+          line: 654
+          column: 1
+        end:
+          offset: 46787
+          line: 664
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | finished_board | Require one reference output of 1 m3 net board and all qualifiers; reject wood/fibre-faced, flax, bamboo and mixed-furnish substitution or grade conformity inferred from a laboratory study. | brito-bagasse-2021 |\n| validate_atomic | all inventory rows | Every row is one atomic flow with verified property/unit and physical stage. UUID gaps require explicit review; no nearby product, correction flow or wrong medium is acceptable. Additional site exchanges must be declared separately. | brito-bagasse-2021 |\n| validate_balance | manufacturing | Require matched internal transfer endpoints and finite unallocated dry-solids/water/carbon balances with uncertainty, and a separate allocated burden ledger. Internal residues cannot appear as both new fuel purchase and recycled transfer. | brito-bagasse-2021 |\n| validate_emissions | elementary emissions | Use outdoor-air unspecified flows only while finer outdoor location is uncharacterized, disclosed as a limitation; finer known subcompartment requires verified replacement. Keep PM2.5, 2.5–10 and >10 as mutually exclusive intervals; never add nested PM10/TSP again. Require actual NO/NO2 speciation, species mass and carbon origin. Retain biogenic CO2 in LCI; missing measurements or factors remain gaps. | epa-bagasse-combustion-1996; epa-gas-combustion-2026 |\n| validate_supply | gas; uf_resin; bagasse_input; wax | Block quantitative use where gas reference m3, resin/emulsion concentration or bagasse moisture/upstream economic status is unknown. Do not claim zero burden, generic density, net heat from an MJ label, or a species emission from a reporting equivalent. | epa-bagasse-combustion-1996; epa-gas-combustion-2026 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 266
+              line: 9
+              column: 1
+            end:
+              offset: 308
+              line: 9
+              column: 43
+          text: "# Uncoated UF-bonded bagasse particleboard"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 44968
+              line: 654
+              column: 1
+            end:
+              offset: 44990
+              line: 654
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_5623"
+      source_span:
+        start:
+          offset: 6717
+          line: 74
+          column: 1
+        end:
+          offset: 7224
+          line: 74
+          column: 508
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_5623"
+      source_span:
+        start:
+          offset: 7225
+          line: 75
+          column: 1
+        end:
+          offset: 7614
+          line: 75
+          column: 390
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_5623"
+      source_span:
+        start:
+          offset: 7615
+          line: 76
+          column: 1
+        end:
+          offset: 8107
+          line: 76
+          column: 493
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_5623"
+      source_span:
+        start:
+          offset: 8108
+          line: 77
+          column: 1
+        end:
+          offset: 8400
+          line: 77
+          column: 293
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_supplier"
+      identity_kind: "explicit"
+      unit_id: "normative_34127"
+      source_span:
+        start:
+          offset: 34240
+          line: 617
+          column: 1
+        end:
+          offset: 34850
+          line: 617
+          column: 611
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_34127"
+      source_span:
+        start:
+          offset: 34851
+          line: 618
+          column: 1
+        end:
+          offset: 35270
+          line: 618
+          column: 420
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_34127"
+      source_span:
+        start:
+          offset: 35271
+          line: 619
+          column: 1
+        end:
+          offset: 35602
+          line: 619
+          column: 332
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_44968"
+      source_span:
+        start:
+          offset: 45063
+          line: 658
+          column: 1
+        end:
+          offset: 45314
+          line: 658
+          column: 252
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_44968"
+      source_span:
+        start:
+          offset: 45315
+          line: 659
+          column: 1
+        end:
+          offset: 45611
+          line: 659
+          column: 297
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_44968"
+      source_span:
+        start:
+          offset: 45612
+          line: 660
+          column: 1
+        end:
+          offset: 45910
+          line: 660
+          column: 299
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_44968"
+      source_span:
+        start:
+          offset: 45911
+          line: 661
+          column: 1
+        end:
+          offset: 46418
+          line: 661
+          column: 508
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_44968"
+      source_span:
+        start:
+          offset: 46419
+          line: 662
+          column: 1
+        end:
+          offset: 46785
+          line: 662
+          column: 367
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5623"
+      source_span:
+        start:
+          offset: 5623
+          line: 59
+          column: 1
+        end:
+          offset: 5644
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5623"
+      source_span:
+        start:
+          offset: 5672
+          line: 63
+          column: 1
+        end:
+          offset: 6644
+          line: 70
+          column: 158
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_34127"
+      source_span:
+        start:
+          offset: 34127
+          line: 613
+          column: 1
+        end:
+          offset: 34167
+          line: 613
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_44968"
+      source_span:
+        start:
+          offset: 44968
+          line: 654
+          column: 1
+        end:
+          offset: 44990
+          line: 654
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:74da274a48b60026dfe8716dea16c0ad0a4c5a01fc01d2ac1428ea42c154a882"
+  generated_content_sha256: "sha256:da183116f52c5532458e751768c349bec5c3fe4ca50e64671e5a2c5f0142f2a5"

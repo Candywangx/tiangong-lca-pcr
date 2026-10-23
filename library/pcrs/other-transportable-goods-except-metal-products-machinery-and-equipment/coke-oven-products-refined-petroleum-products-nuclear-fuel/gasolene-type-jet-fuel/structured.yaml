@@ -1,10 +1,1182 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33320"
-  title: "Gasolene-type jet fuel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.gasolene-type-jet-fuel"
+  classification_refs: "CPC 3.0:33320 Gasolene-type jet fuel; narrower; acceptance separate"
+  covered_products: "Petroleum wide-cut Jet B from the terminal route above"
+  excluded_products: "Kerosene-type jet fuel, aviation gasoline, historical JP-4 route and other exclusions above"
+  representative_product: "Homogeneous released batch to the declared Jet B specification edition"
+  production_route: "Qualified refinery component receipt → electric blending and stated additive dosing → testing/release → storage/loading"
+  market_state: "Bulk liquid fuel at dispatch meter; historical grade does not establish current supply"
+functional_unit:
+  what: "Conforming wide-cut aviation turbine fuel dispatched at terminal gate"
+  how_much: "1 kg net complete conforming fuel, including actual retained additives and carriers"
+  how_well: "Declared Jet B edition, quality certificate, actual composition and release conditions"
+  how_long_or_cycle: "One declared reporting period or batch"
+  reference_flow_link: "out_fuel"
+system_boundary:
+  rules:
+    - rule_id: boundary_upstream
+      applies_to: "upstream links"
+      rule: "Refinery intermediates may enter several product pools, and actual unit schemes depend on feed and product slate. Obtain distillation, treatment, hydrogen, heat and sulfur-recovery coverage from real component providers; Jet B properties do not prove all units operate. For a same-site preceding unit, retain an actual handoff with producer/receiver, native flow identity, amount, period, composition/state and both-end reconciliation; an internal component is not a burden-free purchase. Link each provider by exact process identity and retained dataset version, reference exchange, technology/geography/year, native property/unit and unscaled amount. Preserve conversion and scaled model amount and detect omitted or duplicated upstream stages. A finished kerosene-type jet-fuel provider is not a wide-cut finished-fuel provider; only verified component supply may link."
+      source_ids:
+        - ref-bref-2015
+        - ap42-refining-2015
+    - rule_id: boundary_ledgers
+      applies_to: "physical system"
+      rule: "Retain the unallocated physical map: receipt → blending/dosing → testing → storage → dispatch. Internal rework and recovered vapour returns have equal quantities at both ends and are not extra external emissions. Preserve inventories, external liquid/gas/solid outputs, wastewater and water/carbon/sulfur/energy ledgers. Off-site wastewater transfer is not a local water emission."
+      source_ids:
+        - ref-bref-2015
+        - ap42-refining-2015
+    - rule_id: boundary_support
+      applies_to: "supporting physical exchanges"
+      rule: "Preserve a complete ledger of each actual additive drum/bottle/liner/closure, pallet and other packaging, sample container, returnable transport container, cleaning material, maintenance lubricant, replacement seal/cartridge and discarded counterpart. Distinguish contents from whole container tare and dry cartridge construction from retained fuel/water. Track supplier, receiver, external/internal status, reuse cycles, opening/closing stocks, damage, returns and actual quantities. Each external material/waste needs its own physically specific atomic exchange and exact provider/treatment before completeness is claimed; durable equipment and transport assets follow an explicit consistent inclusion policy. Do not invent a packaging material or hide it in additive/fuel mass."
+      source_ids:
+        - pcr-balance-method
+    - rule_id: boundary_route
+      applies_to: "foreground"
+      rule: "This route has no on-site boiler, steam, combustion vapour destruction or wastewater treatment. If actually present, source-supported units and atomic flows must be added before use; electricity cannot stand in for them or justify zero emissions. Any real extension records biogenic CO2, fossil CO2 and each emitted substance separately."
+      source_ids:
+        - ap42-refining-2015
+boundary_abstraction:
+  declared_starting_condition: "Verified refinery components and stated additives at terminal receipt boundary"
+  starting_condition_role: "Foreground record start; earlier production and transport require complete upstream links"
+  product_classification_scope: "Only this route with verified CPC properties supports a narrower 33320 suggestion"
+  recursive_input_rule: "Purchased same-category finished fuel needs its own product-input row and upstream dataset, without recursive expansion; it is not covered automatically by this component-blending inventory"
+  upstream_dataset_requirement: "Components, additives, carriers, cartridges, water, electricity and off-site waste treatment; refinery providers retain technology and co-product allocation evidence"
+  disclosure: "Period/batches, component lineage, site diagram, internal rework, losses, water/carbon/hydrogen/sulfur/energy ledgers, all packaging/containers, maintenance, returns, source/native/scaled amounts, upstream boundaries and gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Fuel"
+    uuid: "7ea177ac-eb74-4551-99ea-d015070bfb50"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Jet B grade and specification edition"
+    - "producer/geography/manufacturing year"
+    - "actual recipe and petroleum origin"
+    - "additive grade/carrier/cumulative dosing"
+    - "batch certificate"
+    - "density temperature and calorific-value bases"
+    - "upstream refinery route/allocation"
+    - voltage
+    - "dispatch boundary"
+    - "actual CPC property assessment"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report all inventory rows per 1 kg reference flow; net dispatch includes all retained components, additives and carriers in the complete conforming fuel; excludes containers, packaging, free separated water and unreleased fuel."
+  - id: density_basis
+    applies_to: "liquid material"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert liquid volume using measured same-batch density rho(T) at the same temperature basis; record sample/state, actual or corrected volume, temperature, pressure where material, correction method and uncertainty. Do not multiply tank volume at one temperature by density at another; no default density."
+  - id: electricity_basis
+    applies_to: "in_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain meter kWh; 1 kWh = 3.6 MJ; the database property is an electricity quantity convention, not fuel calorific value."
+  - id: gas_measurement
+    applies_to: "out_benzene_air,out_hexane_air,out_toluene_air,out_ethylbenzene_air,out_oxylene_air,out_mxylene_air,out_pxylene_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record gas sampling point and period, absolute pressure, temperature, compressibility Z, actual/reference volume, dry/wet basis, humidity, species fraction basis and molecular mass. Convert only consistent measured bases; an ideal-gas Z or a reference temperature/pressure requires documented applicability, never an automatic default."
+  - id: calorific_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep net/gross calorific basis, sample composition/water, temperature and test/calculation method with QA. Specification minima are acceptance limits, not measured fuel calorific values or conversion defaults."
+  - id: substance_basis
+    applies_to: "all elementary outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain species, CAS, compartment and monitoring definition; VOC totals and speciated rows are not summed twice."
+process_map:
+  - id: terminal_manufacture
+    name: "Terminal manufacture"
+    inclusion: "required"
+    inclusion_condition: "Route above"
+    role: "foreground"
+    quantitative_reference: "out_fuel"
+process_inventory:
+  - id: terminal_manufacture
+    label: "Terminal manufacture"
+    inputs:
+      product:
+        - row_id: in_kerosene
+          role: "Kerosene"
+          name: "Petroleum kerosene blending component"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Qualified petroleum kerosene blending component, with actual mixture composition, CAS identity, treatment route, batch certificate and provider. It is not a single molecular substance or finished kerosene-type jet fuel. Hydrotreating and fixed calorific properties require real supplier evidence rather than a default component recipe."
+          amount:
+            expression: "Collect actual quantity under cp_material and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cpc3-2025
+            ranges: []
+        - row_id: in_naphtha
+          role: "naphtha"
+          name: "naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0d-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Qualified petroleum naphtha component, only when the actual recipe uses it. Distillation, sulfur and additive carry-over must be recorded; no fixed naphtha fraction."
+          amount:
+            expression: "Collect actual quantity under cp_material and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cpc3-2025
+            ranges: []
+        - row_id: in_gasoline
+          role: "Gasoline"
+          name: "Gasoline"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e6677cd5-b574-4e00-a3bd-c373ac796135"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the documented gasoline blend component, when used instead of or alongside naphtha. Verify oxygenates, lead and other constituents against the governing turbine-fuel specification; a road-fuel provider cannot be assumed suitable."
+          amount:
+            expression: "Collect actual quantity under cp_material and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cpc3-2025
+            ranges: []
+        - row_id: in_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Metered CN grid-average consumption-mix electricity delivered to the user below 1 kV for pumps, blending, testing, storage and loading. This selected identity is limited to supply in China; a terminal elsewhere requires a matching geography identity and provider before use. Retain supplier, year, voltage, reference quantity and loss boundary; higher-voltage supply requires a different identity and explicit transformation link. This condition does not establish that Jet B is actually produced at any Chinese terminal."
+          amount:
+            expression: "Collect actual quantity under cp_energy and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ref-bref-2015
+            ranges: []
+        - row_id: in_water
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual de-ionised laboratory or cleaning water. Record water quality and mass; this is purchased product water, not abstraction from the environment."
+          amount:
+            expression: "Collect actual quantity under cp_material and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: in_sda
+          role: "Stadis 450 static dissipator additive formulation"
+          name: "Stadis 450 static dissipator additive formulation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One supplied Stadis 450 preparation, with its actual supplier formulation, carrier and dose. Do not treat the whole formulation as neat polymer or infer its confidential composition; include carry-over and cumulative dosing."
+          amount:
+            expression: "Collect actual quantity under cp_additive and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive
+              source_ids:
+                - cgsb-jetb-2022
+            ranges: []
+        - row_id: in_bht
+          role: "2,6-di-tert-butyl-4-methylphenol"
+          name: "2,6-di-tert-butyl-4-methylphenol"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if the selected recipe uses this specific neat antioxidant, CAS 128-37-0. Other approved antioxidants and solvent formulations require their own atomic rows and identity review; no default dose."
+          amount:
+            expression: "Collect actual quantity under cp_additive and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive
+              source_ids:
+                - cgsb-jetb-2022
+                - nist-additive-identity
+            ranges: []
+        - row_id: in_diegme
+          role: "Diethylene glycol monomethyl ether"
+          name: "Diethylene glycol monomethyl ether"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only purchaser-specified Type III icing inhibitor, CAS 111-77-3, with grade and purity certificates. Ethylene glycol dimethyl ether is a different molecule and cannot replace it."
+          amount:
+            expression: "Collect actual quantity under cp_additive and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive
+              source_ids:
+                - cgsb-jetb-2022
+                - nist-additive-identity
+            ranges: []
+        - row_id: in_filter
+          role: "Polypropylene fuel filter cartridge"
+          name: "Polypropylene fuel filter cartridge"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual polypropylene filter cartridge consumed during fuel conditioning. Record model, dry mass of the whole cartridge including media, support/core, housing and seals, and service campaign; avoid re-counting those parts in maintenance rows; if its actual media differ, this row is inapplicable and the true cartridge needs identity review."
+          amount:
+            expression: "Collect actual quantity under cp_material and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_fuel
+          role: "Fuel"
+          name: "Fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ea177ac-eb74-4551-99ea-d015070bfb50"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The sole reference output is finished petroleum wide-cut turbine fuel released to the dispatch meter. The database display is broad; this PCR restricts it to the declared Jet B batch, specification, recipe and petroleum origin. It does not license any generic fuel provider."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_release
+              source_ids:
+                - cpc3-2025
+            ranges: []
+      waste:
+        - row_id: out_offspec
+          role: "Waste oil"
+          name: "Waste oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e620bc79-43f0-41a8-9589-9b5fe50ffef2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only rejected wide-cut petroleum fuel actually leaving for waste treatment, collected at plant before separately linked transport and treatment. Internal rework is an internal loop; off-spec fuel sold as a real product needs a separate product identity and co-product analysis. Record contamination, waste status and receiver."
+          amount:
+            expression: "Collect actual quantity under cp_waste and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_wastewater
+          role: "Petroleum-contaminated tank drainage wastewater"
+          name: "Petroleum-contaminated tank drainage wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual aqueous tank-bottom drainage or cleaning wastewater transferred to off-site treatment. Record wet mass, water/oil fractions, dissolved constituents and receiving plant; manganese-slag wash water and oil sludge are not substitutes."
+          amount:
+            expression: "Collect actual quantity under cp_waste and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_sludge
+          role: "Petroleum tank-bottom sludge"
+          name: "Petroleum tank-bottom sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual solid/semi-solid tank sediment, excluding separately measured aqueous drainage. Record oil, water, dry solids, sulfur, contamination and treatment. A mechanically separated sludge with predefined composition is not assumed equivalent."
+          amount:
+            expression: "Collect actual quantity under cp_waste and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_filter
+          role: "Spent polypropylene fuel filter cartridge with retained petroleum"
+          name: "Spent polypropylene fuel filter cartridge with retained petroleum"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One discarded whole filter cartridge with measured retained fuel/water, captured solids and dry mass of all media, support/core, housing and seals present in that cartridge. It is not loose polypropylene scrap. Account for captured particulate solids here, separately from particles escaping to the environment."
+          amount:
+            expression: "Collect actual quantity under cp_waste and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+      elementary:
+        - row_id: out_benzene_air
+          role: "benzene"
+          name: "benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9202-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured or evidence-based speciated benzene, CAS 71-43-2, emitted beyond the terminal boundary to outdoor air, unspecified subcompartment. Record storage, transfer, loading and leak sources separately; do not add it again as a VOC total."
+          amount:
+            expression: "Collect actual quantity under cp_air and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_hexane_air
+          role: "hexane"
+          name: "hexane"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-947d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured or evidence-based speciated hexane, CAS 110-54-3, emitted beyond the terminal boundary to outdoor air, unspecified subcompartment. Record storage, transfer, loading and leak sources separately; do not add it again as a VOC total."
+          amount:
+            expression: "Collect actual quantity under cp_air and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_toluene_air
+          role: "toluene"
+          name: "toluene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9bb5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured or evidence-based speciated toluene, CAS 108-88-3, emitted beyond the terminal boundary to outdoor air, unspecified subcompartment. Record storage, transfer, loading and leak sources separately; do not add it again as a VOC total."
+          amount:
+            expression: "Collect actual quantity under cp_air and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_ethylbenzene_air
+          role: "ethyl benzene"
+          name: "ethyl benzene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a2eb-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured or evidence-based speciated ethyl benzene, CAS 100-41-4, emitted beyond the terminal boundary to outdoor air, unspecified subcompartment. Record storage, transfer, loading and leak sources separately; do not add it again as a VOC total."
+          amount:
+            expression: "Collect actual quantity under cp_air and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_oxylene_air
+          role: "o-xylene"
+          name: "o-xylene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-974c-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured or evidence-based speciated o-xylene, CAS 95-47-6, emitted beyond the terminal boundary to outdoor air, unspecified subcompartment. Record storage, transfer, loading and leak sources separately; do not add it again as a VOC total."
+          amount:
+            expression: "Collect actual quantity under cp_air and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_mxylene_air
+          role: "m-xylene"
+          name: "m-xylene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96c1-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured or evidence-based speciated m-xylene, CAS 108-38-3, emitted beyond the terminal boundary to outdoor air, unspecified subcompartment. Record storage, transfer, loading and leak sources separately; do not add it again as a VOC total."
+          amount:
+            expression: "Collect actual quantity under cp_air and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+        - row_id: out_pxylene_air
+          role: "p-xylene"
+          name: "p-xylene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ab7b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured or evidence-based speciated p-xylene, CAS 106-42-3, emitted beyond the terminal boundary to outdoor air, unspecified subcompartment. Record storage, transfer, loading and leak sources separately; do not add it again as a VOC total."
+          amount:
+            expression: "Collect actual quantity under cp_air and normalize by net dispatched fuel mass to per 1 kg reference flow; no default amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ap42-refining-2015
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "terminal batches"
+    rule: "Use measured stage/batch records first. Attribute shared electricity, water and consumables through a site-supported driver such as metered pumping energy or equipment operating time; demonstrate the relation and disclose other serviced loads; no default shares."
+    source_ids:
+      - ref-bref-2015
+  - rule_id: allocation_refinery
+    applies_to: "component providers"
+    rule: "Each component provider supplies actual multi-product refinery units, allocation policy, causal evidence, same-period outputs/prices if used and factor reconciliation. Retain all gas/liquid/solid products and water/carbon/sulfur/energy interfaces with the unallocated ledger. An unsupported provider remains a linkage gap; product specifications cannot reconstruct it."
+    source_ids:
+      - ref-bref-2015
+      - ap42-refining-2015
+  - rule_id: allocation_physical
+    applies_to: "all balances"
+    rule: "Keep allocated environmental burdens separate from the physical process diagram. Do not multiply actual co-product output, internal transfer or rework quantities by allocation shares. A waste does not become a co-product merely because it has heating value; actual sale and acceptance conditions must support the change. Economic allocation, if justified after considering subdivision and physical causation, retains same-period net quantities, actual prices, currency, price date/basis, transport/tax treatment and sensitivity. Monetary value is not a mass or energy conversion."
+    source_ids:
+      - ref-bref-2015
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material
+      process_id: "terminal_manufacture"
+      flow_role: "component/water/cartridge"
+      record_type: "foreground_record"
+      raw_fields: "batch_id; supplier; material; grade; mass; volume; temperature; pressure; density; sample_id; composition; H2O; source_document; provider_process_id; provider_version; native_reference_amount; native_property_unit; conversion; scaled_amount; opening_inventory; closing_inventory; returns"
+      collection_method: "Calibrated mass meter/scale; tank-volume and same-batch density reconciliation; qualified certificates"
+      unit: "kg"
+      frequency: "Each batch/transfer and period closure"
+      temporal_coverage: "Complete declared reporting period"
+      site_scope: "All covered terminal stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; invoices; certificates"
+    - protocol_id: cp_additive
+      process_id: "terminal_manufacture"
+      flow_role: "additive dosing"
+      record_type: "foreground_record"
+      raw_fields: "batch_id; additive SKU; composition; carrier; purity; dose; cumulative carry-over; recipe; meter; whole_formulation_mass; active_mass; carrier_mass; container_tare; volume_temperature; supplier_source; native_and_scaled_amounts"
+      collection_method: "Supplier certificate, issue weighing and matched fuel/additive transfer records; whole supplied formulation enters once, including carrier, while active ingredient is an analytical subledger and not a second exchange"
+      unit: "kg"
+      frequency: "Each batch/transfer and period closure"
+      temporal_coverage: "Complete declared reporting period"
+      site_scope: "All covered terminal stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "supplier qualification; batch dose reconciliation"
+    - protocol_id: cp_energy
+      process_id: "terminal_manufacture"
+      flow_role: "electricity"
+      record_type: "foreground_record"
+      raw_fields: "meter_id; kWh; stage; batch; voltage; period; supplier; driver; non-scope use"
+      collection_method: "Calibrated submeter and measured service allocation; retain kWh and 3.6 MJ/kWh conversion"
+      unit: "MJ"
+      frequency: "Each batch/transfer and period closure"
+      temporal_coverage: "Complete declared reporting period"
+      site_scope: "All covered terminal stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; meter map; invoices; driver proof"
+    - protocol_id: cp_release
+      process_id: "terminal_manufacture"
+      flow_role: "reference mass and quality"
+      record_type: "foreground_record"
+      raw_fields: "batch_id; grade; standard edition; release certificate; density; temperature; net dispatch kg; opening/closing stocks; samples; rework; rejected kg; property test results; sample_id; sample_time; preservation; test_method_edition; uncertainty; replicate_and_QA; retained_additive_mass; water; net_gross_calorific_basis; measured_calorific_value"
+      collection_method: "Calibrated dispatch mass meter and certified batch sampling; test methods from governing standard"
+      unit: "kg"
+      frequency: "Each batch/transfer and period closure"
+      temporal_coverage: "Complete declared reporting period"
+      site_scope: "All covered terminal stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling chain; laboratory QA; release signature"
+    - protocol_id: cp_waste
+      process_id: "terminal_manufacture"
+      flow_role: "waste transfers"
+      record_type: "foreground_record"
+      raw_fields: "stream_id; receiver; status; wet mass; water; oil; dry solids; retained fuel; sulfur; contamination; date"
+      collection_method: "Calibrated shipment weighing and representative composition testing; receiver manifests"
+      unit: "kg"
+      frequency: "Each batch/transfer and period closure"
+      temporal_coverage: "Complete declared reporting period"
+      site_scope: "All covered terminal stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale; laboratory QA; receiver acknowledgement"
+    - protocol_id: cp_air
+      process_id: "terminal_manufacture"
+      flow_role: "speciated air emissions"
+      record_type: "foreground_record"
+      raw_fields: "source_id; species; CAS; location; vapour composition; period; gas volume; temperature; absolute pressure; Z; dry_wet_basis; humidity; species_fraction_basis; carrier_inflow; exhaust_outflow; recovery_return; measured load; recovery efficiency; outage; method; sampling_QA; detection_limit; uncertainty"
+      collection_method: "Representative emission/speciation measurement or documented source-specific calculation; reconcile net boundary species release after separately accounting for carrier inflow/background and internal recovery returns; retain total vapour and unidentified species coverage as a subledger, never assign whole fuel evaporation to any one species; record monitoring gaps and non-detect limits, not automatic zero; no automatic AP42 factor"
+      unit: "kg"
+      frequency: "Each batch/transfer and period closure"
+      temporal_coverage: "Complete declared reporting period"
+      site_scope: "All covered terminal stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling plan; calibration; source calculation and uncertainty"
+    - protocol_id: cp_support
+      process_id: "terminal_manufacture"
+      flow_role: "packaging, maintenance and returns ledger"
+      record_type: "foreground_record"
+      raw_fields: "item_id; precise_material_or_whole_article; supplier; receiver; source_record; mass; tare; contents; construction; reuse_cycles; period; opening_closing_stocks; internal_external_link; maintenance_service; return_status; disposal; transport; inclusion_policy; native_reference_amount; native_property_unit; conversion; scaled_amount"
+      collection_method: "Reconcile actual purchase/issue/return/maintenance and receiver records with calibrated quantities; add one atomic external exchange per physical item and treatment; no default item or reusable-container lifetime"
+      unit: "kg"
+      frequency: "Each issue, return, service and period closure"
+      temporal_coverage: "Complete declared reporting period"
+      site_scope: "All covered terminal stages and supporting consumables"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "invoices; calibrated weighing; return and service records; provider reference exchange"
+  calculation_rules:
+    - id: normalize_reference
+      applies_to: "all inventory rows"
+      rule: "Actual period amount of each flow / conforming net dispatched mass; attribute shared burdens with evidenced drivers first; physical exchanges are not multiplied by allocation shares."
+      inputs:
+        - "measured flow"
+        - "net dispatch"
+        - cp_release
+      output: "per 1 kg reference flow"
+      source_ids:
+        - pcr-balance-method
+    - id: volume_mass
+      applies_to: "in_kerosene,in_naphtha,in_gasoline,out_fuel"
+      rule: "Mass = volume × same-batch density rho(T) on matched temperature/state bases; retain sample id, measured volume/density, corrections and uncertainty."
+      inputs:
+        - volume
+        - temperature
+        - density
+      output: "kg"
+      source_ids:
+        - pcr-balance-method
+    - id: electricity_conversion
+      applies_to: "in_electricity"
+      rule: "Electricity MJ = metered kWh × 3.6."
+      inputs:
+        - kWh
+      output: "MJ"
+      source_ids:
+        - pcr-balance-method
+    - id: physical_reconciliation
+      applies_to: "all inventory rows"
+      rule: "Reconcile each physical material ledger: opening stock + external receipts and returns = net dispatch + closing stock + external waste + net external releases + samples and external returns; distinguish sold products and waste, and avoid overlap. Internal rework/recovery cancel at matched ends; maintain stage inventories and storage/loading/transport evaporation at their actual boundaries. Reconcile water, carbon, hydrogen, sulfur and energy using measured composition, H2O, carrier air/humidity, stock changes and actual transfers. Keep chemical energy of stored/dispatched fuel separate from electrical input and heat rejection; no combustion CO2 is created by volatilisation. Packaging/container and maintenance ledgers remain separate from net fuel mass; disclose unexplained residuals without invented balancing flows."
+      inputs:
+        - "physical ledgers"
+        - "batch composition"
+        - cp_material
+        - cp_waste
+        - cp_air
+      output: "unallocated balance; disclosed residual"
+      source_ids:
+        - pcr-balance-method
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all flows"
+      requirement: "Verify actual material, compartment, route, property and supplier quantity basis; UUID identity is not a complete background dataset."
+      evidence: "certificates; provider boundaries; identity records"
+    - id: dq_temporal
+      applies_to: "all rows"
+      requirement: "Use one real reporting period; declare historical production/cessation, gaps and abnormalities."
+      evidence: "dated production and purchase records"
+    - id: dq_completeness
+      applies_to: "all rows"
+      requirement: "Show measured, demonstrated absent or gap for each item; unsupported zero is invalid. Extend each actual additional ingredient, cleaning agent, carrier and species as a separate row."
+      evidence: "site diagram; source ledger; gap register"
+    - id: dq_recipe
+      applies_to: "batch"
+      requirement: "Actual component fractions and additive grade/composition/dose come from production records; specification limits do not establish recipes or emissions."
+      evidence: "batch recipe; certificates"
+    - id: dq_upstream
+      applies_to: "component supply"
+      requirement: "Upstream completeness covers real refinery multi-product, water/carbon/sulfur/energy interfaces and allocation; do not insert an unverified kerosene finished-fuel route."
+      evidence: "provider process inventory and allocation records"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "out_fuel"
+    rule: "Exactly one product output links the reference row; amount 1 kg and declared mass chain agree. Reject missing qualifiers or contrary kerosene/aviation-gasoline routes."
+    source_ids:
+      - pcr-balance-method
+      - cpc3-2025
+  - rule_id: validate_specification
+    applies_to: "batch"
+    rule: "Check all applicable specification, sampling and additive requirements; retain property-specific methods/results. Jet B conformance does not automatically prove 33320 classification."
+    source_ids:
+      - cgsb-jetb-2022
+      - cpc3-2025
+  - rule_id: validate_boundaries
+    applies_to: "site and providers"
+    rule: "Verify actual route against section 1 or extend the method before use. Do not duplicate off-site wastewater transfers as local water emissions or internal recycling as external outputs."
+    source_ids:
+      - ap42-refining-2015
+  - rule_id: validate_accounting
+    applies_to: "all inventory"
+    rule: "Check physical, water/carbon/sulfur/energy balances separately from allocated burdens; allocation fractions cannot alter physical co-product amounts and product loss cannot replace species emissions."
+    source_ids:
+      - ref-bref-2015
+      - pcr-balance-method
+  - rule_id: validate_support
+    applies_to: "supporting ledgers"
+    rule: "Verify complete packaging/containers, maintenance, returns and whole-cartridge balances; each external item has an atomic exchange and exact provider/receiver. Retain source, native reference/property/unit, conversion and scaled amount for every linked process. Missing real SKU/site data is a collection requirement; unsupported physical identity or conversion cannot be waived."
+    source_ids:
+      - pcr-balance-method
+  - rule_id: validate_emissions
+    applies_to: "all emissions"
+    rule: "Use actual species and compartments with monitoring/factor coverage and source years. Avoid total/species and nested-PM double counts; retain CO2 origins; define NOx quantity and exclude N2O. This route authorizes no unsupported general emission factor."
+    source_ids:
+      - ap42-refining-2015
+published_dataset_profile:
+  dataset_role: "Terminal manufacture foreground dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Terminal-gate wide-cut Jet B supply with complete upstream links"
+  excluded_use: "Unsupported whole-refinery recipe, kerosene/avgas substitution, historical JP-4 market extrapolation, certification or aircraft-combustion claims"
+  required_metadata: "Jet B grade and specification edition; producer/geography/manufacturing year; actual recipe and petroleum origin; additive grade/carrier/cumulative dosing; batch certificate; density temperature and calorific-value bases; upstream refinery route/allocation; voltage; dispatch boundary; actual CPC property assessment"
+  required_quality_disclosure: "Measured/calculated/gaps, UUID limitations, provider bases, meter coverage, recipe evidence, balances, allocation and source years"
+  update_trigger: "Changed specification, route, provider, recipe, additives, voltage, contamination, treatment or production period"
+data_sources:
+  - id: "cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, p.155; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification boundary, not recipe"
+  - id: "cgsb-jetb-2022"
+    type: "standard"
+    reference: "CAN/CGSB-3.22-2012, reaffirmed September 2022, sections 1, 3–6, PDF pp.8–14; https://publications.gc.ca/collections/collection_2022/ongc-cgsb/P29-003-022-2022-eng.pdf"
+    used_for: "Jet B scope/additives/sampling; not actual purchase or production evidence"
+  - id: "ref-bref-2015"
+    type: "official_guidance"
+    reference: "JRC, Refining of Mineral Oil and Gas BREF, 2015, section 2.21 printed p.107/PDF p.141; 4.21.14–16 printed pp.461–462/PDF pp.495–496; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/REF_BREF_2015.pdf"
+    used_for: "General handling/multi-product blending interfaces; diesel diagram is not Jet B recipe; no default savings/recovery factors"
+  - id: "ap42-refining-2015"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 section 5.1 Petroleum Refining, April 2015, sections 5.1.1–5.1.2; https://www.epa.gov/sites/default/files/2020-09/documents/5.1_petroleum_refining.pdf"
+    used_for: "General process/emission-source identification; historical US factors are not universal route amounts"
+  - id: "shell-civil-2025"
+    type: "handbook"
+    reference: "Shell, Civil Jet Fuel, page updated 20 November 2025, read 12 October 2026; https://www.shell.com/business-customers/aviation/aviation-fuel/civil-jet-fuel-grades.html"
+    used_for: "Supplier Jet B market context; older standard references not specification authority"
+  - id: "shell-military-2025"
+    type: "handbook"
+    reference: "Shell, Military Jet Fuel, page updated 20 November 2025, read 12 October 2026; https://www.shell.com/business-customers/aviation/aviation-fuel/military-jet-fuel-grades.html"
+    used_for: "JP-4 history/distinction; not a 2026 production survey"
+  - id: "cgsb-catalogue-2026"
+    type: "official_guidance"
+    reference: "Government of Canada, Canadian General Standards Board Catalogue, checked 13 October 2026; https://www.canada.ca/en/public-services-procurement/services/standards-oversight/canadian-general-standards-board/catalogue.html"
+    used_for: "Listed Jet B edition/amendment status and CGSB service status; no production or flight-approval evidence"
+  - id: "nist-additive-identity"
+    type: "official_guidance"
+    reference: "NIST Chemistry WebBook, SRD 69, Butylated Hydroxytoluene (CAS 128-37-0) and Ethanol, 2-(2-methoxyethoxy)- (CAS 111-77-3), checked 13 October 2026; https://webbook.nist.gov/cgi/cbook.cgi?ID=C128370 and https://webbook.nist.gov/cgi/cbook.cgi?ID=111-77-3"
+    used_for: "Molecular/CAS identity only; no additive formulation, dose or fuel approval"
+  - id: "pcr-balance-method"
+    type: "method_factor"
+    reference: "Conservation and unit-conversion rules authored in this PCR; no empirical default amount"
+    used_for: "Normalization and unallocated physical reconciliation"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:94ceeb39d7c9ed15321b0b7f9e89daaae45ba943ddecdb65d17aa3c06efc8dae"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8878"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8878
+          line: 69
+          column: 1
+        end:
+          offset: 12701
+          line: 89
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Verified refinery components and stated additives at terminal receipt boundary |\n| starting_condition_role | Foreground record start; earlier production and transport require complete upstream links |\n| product_classification_scope | Only this route with verified CPC properties supports a narrower 33320 suggestion |\n| recursive_input_rule | Purchased same-category finished fuel needs its own product-input row and upstream dataset, without recursive expansion; it is not covered automatically by this component-blending inventory |\n| upstream_dataset_requirement | Components, additives, carriers, cartridges, water, electricity and off-site waste treatment; refinery providers retain technology and co-product allocation evidence |\n| disclosure | Period/batches, component lineage, site diagram, internal rework, losses, water/carbon/hydrogen/sulfur/energy ledgers, all packaging/containers, maintenance, returns, source/native/scaled amounts, upstream boundaries and gaps |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_upstream | upstream links | Refinery intermediates may enter several product pools, and actual unit schemes depend on feed and product slate. Obtain distillation, treatment, hydrogen, heat and sulfur-recovery coverage from real component providers; Jet B properties do not prove all units operate. For a same-site preceding unit, retain an actual handoff with producer/receiver, native flow identity, amount, period, composition/state and both-end reconciliation; an internal component is not a burden-free purchase. Link each provider by exact process identity and retained dataset version, reference exchange, technology/geography/year, native property/unit and unscaled amount. Preserve conversion and scaled model amount and detect omitted or duplicated upstream stages. A finished kerosene-type jet-fuel provider is not a wide-cut finished-fuel provider; only verified component supply may link. | ref-bref-2015; ap42-refining-2015 |\n| boundary_ledgers | physical system | Retain the unallocated physical map: receipt → blending/dosing → testing → storage → dispatch. Internal rework and recovered vapour returns have equal quantities at both ends and are not extra external emissions. Preserve inventories, external liquid/gas/solid outputs, wastewater and water/carbon/sulfur/energy ledgers. Off-site wastewater transfer is not a local water emission. | ref-bref-2015; ap42-refining-2015 |\n| boundary_support | supporting physical exchanges | Preserve a complete ledger of each actual additive drum/bottle/liner/closure, pallet and other packaging, sample container, returnable transport container, cleaning material, maintenance lubricant, replacement seal/cartridge and discarded counterpart. Distinguish contents from whole container tare and dry cartridge construction from retained fuel/water. Track supplier, receiver, external/internal status, reuse cycles, opening/closing stocks, damage, returns and actual quantities. Each external material/waste needs its own physically specific atomic exchange and exact provider/treatment before completeness is claimed; durable equipment and transport assets follow an explicit consistent inclusion policy. Do not invent a packaging material or hide it in additive/fuel mass. | pcr-balance-method |\n| boundary_route | foreground | This route has no on-site boiler, steam, combustion vapour destruction or wastewater treatment. If actually present, source-supported units and atomic flows must be added before use; electricity cannot stand in for them or justify zero emissions. Any real extension records biogenic CO2, fossil CO2 and each emitted substance separately. | ap42-refining-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 272
+              line: 9
+              column: 1
+            end:
+              offset: 334
+              line: 9
+              column: 63
+          text: "# Terminal-blended gasoline-type aviation turbine fuel (Jet B)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8878
+              line: 69
+              column: 1
+            end:
+              offset: 8899
+              line: 69
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_31447"
+      family: "allocation"
+      span:
+        start:
+          offset: 31447
+          line: 428
+          column: 1
+        end:
+          offset: 32973
+          line: 436
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | terminal batches | Use measured stage/batch records first. Attribute shared electricity, water and consumables through a site-supported driver such as metered pumping energy or equipment operating time; demonstrate the relation and disclose other serviced loads; no default shares. | ref-bref-2015 |\n| allocation_refinery | component providers | Each component provider supplies actual multi-product refinery units, allocation policy, causal evidence, same-period outputs/prices if used and factor reconciliation. Retain all gas/liquid/solid products and water/carbon/sulfur/energy interfaces with the unallocated ledger. An unsupported provider remains a linkage gap; product specifications cannot reconstruct it. | ref-bref-2015; ap42-refining-2015 |\n| allocation_physical | all balances | Keep allocated environmental burdens separate from the physical process diagram. Do not multiply actual co-product output, internal transfer or rework quantities by allocation shares. A waste does not become a co-product merely because it has heating value; actual sale and acceptance conditions must support the change. Economic allocation, if justified after considering subdivision and physical causation, retains same-period net quantities, actual prices, currency, price date/basis, transport/tax treatment and sensitivity. Monetary value is not a mass or energy conversion. | ref-bref-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 272
+              line: 9
+              column: 1
+            end:
+              offset: 334
+              line: 9
+              column: 63
+          text: "# Terminal-blended gasoline-type aviation turbine fuel (Jet B)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 31447
+              line: 428
+              column: 1
+            end:
+              offset: 31487
+              line: 428
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41329"
+      family: "validation"
+      span:
+        start:
+          offset: 41329
+          line: 469
+          column: 1
+        end:
+          offset: 43202
+          line: 480
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | out_fuel | Exactly one product output links the reference row; amount 1 kg and declared mass chain agree. Reject missing qualifiers or contrary kerosene/aviation-gasoline routes. | pcr-balance-method; cpc3-2025 |\n| validate_specification | batch | Check all applicable specification, sampling and additive requirements; retain property-specific methods/results. Jet B conformance does not automatically prove 33320 classification. | cgsb-jetb-2022; cpc3-2025 |\n| validate_boundaries | site and providers | Verify actual route against section 1 or extend the method before use. Do not duplicate off-site wastewater transfers as local water emissions or internal recycling as external outputs. | ap42-refining-2015 |\n| validate_accounting | all inventory | Check physical, water/carbon/sulfur/energy balances separately from allocated burdens; allocation fractions cannot alter physical co-product amounts and product loss cannot replace species emissions. | ref-bref-2015; pcr-balance-method |\n| validate_support | supporting ledgers | Verify complete packaging/containers, maintenance, returns and whole-cartridge balances; each external item has an atomic exchange and exact provider/receiver. Retain source, native reference/property/unit, conversion and scaled amount for every linked process. Missing real SKU/site data is a collection requirement; unsupported physical identity or conversion cannot be waived. | pcr-balance-method |\n| validate_emissions | all emissions | Use actual species and compartments with monitoring/factor coverage and source years. Avoid total/species and nested-PM double counts; retain CO2 origins; define NOx quantity and exclude N2O. This route authorizes no unsupported general emission factor. | ap42-refining-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 272
+              line: 9
+              column: 1
+            end:
+              offset: 334
+              line: 9
+              column: 63
+          text: "# Terminal-blended gasoline-type aviation turbine fuel (Jet B)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41329
+              line: 469
+              column: 1
+            end:
+              offset: 41351
+              line: 469
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_8878"
+      source_span:
+        start:
+          offset: 10042
+          line: 84
+          column: 1
+        end:
+          offset: 10991
+          line: 84
+          column: 950
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_8878"
+      source_span:
+        start:
+          offset: 10992
+          line: 85
+          column: 1
+        end:
+          offset: 11449
+          line: 85
+          column: 458
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_support"
+      identity_kind: "explicit"
+      unit_id: "normative_8878"
+      source_span:
+        start:
+          offset: 11450
+          line: 86
+          column: 1
+        end:
+          offset: 12306
+          line: 86
+          column: 857
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_8878"
+      source_span:
+        start:
+          offset: 12307
+          line: 87
+          column: 1
+        end:
+          offset: 12699
+          line: 87
+          column: 393
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_31447"
+      source_span:
+        start:
+          offset: 31560
+          line: 432
+          column: 1
+        end:
+          offset: 31881
+          line: 432
+          column: 322
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_refinery"
+      identity_kind: "explicit"
+      unit_id: "normative_31447"
+      source_span:
+        start:
+          offset: 31882
+          line: 433
+          column: 1
+        end:
+          offset: 32334
+          line: 433
+          column: 453
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_31447"
+      source_span:
+        start:
+          offset: 32335
+          line: 434
+          column: 1
+        end:
+          offset: 32971
+          line: 434
+          column: 637
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_41329"
+      source_span:
+        start:
+          offset: 41424
+          line: 473
+          column: 1
+        end:
+          offset: 41659
+          line: 473
+          column: 236
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_specification"
+      identity_kind: "explicit"
+      unit_id: "normative_41329"
+      source_span:
+        start:
+          offset: 41660
+          line: 474
+          column: 1
+        end:
+          offset: 41907
+          line: 474
+          column: 248
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_boundaries"
+      identity_kind: "explicit"
+      unit_id: "normative_41329"
+      source_span:
+        start:
+          offset: 41908
+          line: 475
+          column: 1
+        end:
+          offset: 42161
+          line: 475
+          column: 254
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_accounting"
+      identity_kind: "explicit"
+      unit_id: "normative_41329"
+      source_span:
+        start:
+          offset: 42162
+          line: 476
+          column: 1
+        end:
+          offset: 42439
+          line: 476
+          column: 278
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_support"
+      identity_kind: "explicit"
+      unit_id: "normative_41329"
+      source_span:
+        start:
+          offset: 42440
+          line: 477
+          column: 1
+        end:
+          offset: 42884
+          line: 477
+          column: 445
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_41329"
+      source_span:
+        start:
+          offset: 42885
+          line: 478
+          column: 1
+        end:
+          offset: 43200
+          line: 478
+          column: 316
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8878"
+      source_span:
+        start:
+          offset: 8878
+          line: 69
+          column: 1
+        end:
+          offset: 8899
+          line: 69
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8878"
+      source_span:
+        start:
+          offset: 8927
+          line: 73
+          column: 1
+        end:
+          offset: 9969
+          line: 80
+          column: 243
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_31447"
+      source_span:
+        start:
+          offset: 31447
+          line: 428
+          column: 1
+        end:
+          offset: 31487
+          line: 428
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41329"
+      source_span:
+        start:
+          offset: 41329
+          line: 469
+          column: 1
+        end:
+          offset: 41351
+          line: 469
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:94ceeb39d7c9ed15321b0b7f9e89daaae45ba943ddecdb65d17aa3c06efc8dae"
+  generated_content_sha256: "sha256:b0e09cf95446efc32c77a0178cc9550e61e26d42791bba17f4520302c43817b5"
