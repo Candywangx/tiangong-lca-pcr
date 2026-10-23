@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: 624741de9e066c15b7a9577c953c335cf48a246d
-lastReviewedNote: "PCR #133: reviewed immutable Actions revisions and explicit preservation of the eight formerly uncached npm setup steps. Workflow guards, permissions, source/artifact/receipt bindings, product0.4.7, Node/npm/browser pins, accepted dependency graphs and canonical content remain unchanged. Supported macOS local checks are partial; fresh complete hosted Linux/eight-receipt/four-platform qualification remains required. No publication or provider authority is granted."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: e8e90b992f9c4dc4ac092a2a5c24b33b80a1cd42
+lastReviewedNote: "PCR #141: reviewed corpus regression assertions for accepted CPC 01152 barley and the retained unmapped 99000 pilot. Tests check the ginned-cotton interface, blocked fibre-preparation overlap and unreviewed wood interfaces explicitly. Runtime, lifecycle and publication contracts are unchanged by these test repairs; fresh complete source qualification and the official-name audit remain pending."
 ---
 
 # Authoring Guide
