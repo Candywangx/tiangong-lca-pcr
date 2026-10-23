@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-23
-lastReviewedCommit: 155f03b0b7ef4fb850e30b2d3468669d24616c04
-lastReviewedNote: "PCR #141: reviewed bounded filename/content-digest React keys for generated downloads after exact 1457-record export analysis identified avoidable inline-URI key duplication. Existing constructors and 3334 rendered lists have no sibling-key collisions. Native hrefs, filenames, hashes, no-JavaScript downloads, artifact ordering, 16/80 KiB eligibility, complete HTML/RSC/source content and all budgets are unchanged. Eight existing SSR checks and the site TypeScript project pass. Storage savings remain a forecast until a fresh complete build; provider admission, complete hosted qualification, workspace integration and publication remain pending."
+lastReviewedCommit: 5f722beb80cf2e0b0bee95fe3966c1bb5b470407
+lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair."
 ---
 
 # TianGong LCA PCR Library
