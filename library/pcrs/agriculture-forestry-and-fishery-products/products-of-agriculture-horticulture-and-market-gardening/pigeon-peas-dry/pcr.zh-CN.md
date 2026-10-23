@@ -108,7 +108,7 @@ sync_with: pcr.en-US.md
 
 Record seed actually sown, including resowing.
 
-- 选定流： Pigeonpea sowing material
+- 选定流： 木豆播种材料
 - 流属性/单位： Mass / kg
 - 数量规则： measured mass sown by field and crop cycle
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -214,7 +214,7 @@ Record seed actually sown, including resowing.
 
 Record delivered irrigation only when it occurs; rainfall is not a product input.
 
-- 选定流： Irrigation water
+- 选定流： 灌溉水
 - 流属性/单位： Volume / m3
 - 数量规则： metered or calculated delivered water by event
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -284,7 +284,7 @@ Record delivered irrigation only when it occurs; rainfall is not a product input
 
 Record the mature crop handed to harvest, identified by field, crop cycle and maturity evidence.
 
-- 选定流： Standing mature pigeonpea crop
+- 选定流： 田间成熟木豆作物
 - 流属性/单位： Mass / kg grain equivalent
 - 数量规则： harvest receipts plus measured field loss and retained mature material
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -311,7 +311,7 @@ Record the mature crop handed to harvest, identified by field, crop cycle and ma
 
 Record mature pods or grain lost before collection; standing crop retained for another flush is not loss.
 
-- 选定流： Pre-harvest pigeonpea loss
+- 选定流： 采收前木豆损失
 - 流属性/单位： Mass / kg grain equivalent
 - 数量规则： field sampling and crop-cycle reconciliation
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -342,7 +342,7 @@ Record mature pods or grain lost before collection; standing crop retained for a
 
 Calculate direct and relevant indirect N2O from recorded synthetic N, organic N, returned residue N and other applicable sources.
 
-- 选定流： Nitrous oxide to air from managed soil
+- 选定流： 管理土壤向空气排放的一氧化二氮
 - 流属性/单位： Mass / kg N2O
 - 数量规则： calculated from foreground N activity and declared factors
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -374,7 +374,7 @@ Calculate direct and relevant indirect N2O from recorded synthetic N, organic N,
 
 按来源田块、收获批次和采收轮次记录成熟作物。
 
-- 选定流: Standing mature pigeonpea crop
+- 选定流: 田间成熟木豆作物
 - 流属性/单位: Mass / kg
 - 数量规则: lot-linked crop input
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -438,7 +438,7 @@ Calculate direct and relevant indirect N2O from recorded synthetic N, organic N,
 
 Record the physical state handed to drying and keep whole-plant, branch and pod-picked lots separate.
 
-- 选定流： Collected pigeonpea harvest material
+- 选定流： 已收集的木豆收获物
 - 流属性/单位： Mass / kg
 - 数量规则： weighed collected mass by field, route and flush
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -466,7 +466,7 @@ Record the physical state handed to drying and keep whole-plant, branch and pod-
 
 Record shattered pods, spilled grain and cut material without intended use; exclude living crop retained for a later flush.
 
-- 选定流： Harvest loss and incidental material
+- 选定流： 采收损失及伴生材料
 - 流属性/单位： Mass / kg
 - 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -501,7 +501,7 @@ Record shattered pods, spilled grain and cut material without intended use; excl
 
 记录从已识别收获批次移交至本干燥批次的称量收获物料。
 
-- 选定流： Collected pigeonpea harvest material
+- 选定流： 已收集的木豆收获物
 - 流属性/单位： Mass / kg
 - 数量规则： weighed material entering the drying lot
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -533,7 +533,7 @@ Record shattered pods, spilled grain and cut material without intended use; excl
 
 记录移交脱粒的干燥整理批次及其实测产出含水率。
 
-- 选定流： Dried pigeonpea plants or pods
+- 选定流： 干燥后的木豆植株或豆荚
 - 流属性/单位： Mass / kg
 - 数量规则： weighed dry material with output moisture by lot
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -561,7 +561,7 @@ Record shattered pods, spilled grain and cut material without intended use; excl
 
 将损坏、污染或散落物料与计算得到的除水量分开记录。
 
-- 选定流： Pre-threshing drying loss
+- 选定流： 脱粒前干燥损失
 - 流属性/单位： Mass / kg
 - 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -595,7 +595,7 @@ Record shattered pods, spilled grain and cut material without intended use; excl
 
 按来源干燥批次记录干燥收获物料。
 
-- 选定流: Dried pigeonpea plants or pods
+- 选定流: 干燥后的木豆植株或豆荚
 - 流属性/单位: Mass / kg
 - 数量规则: weighed material by conditioning batch
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -661,7 +661,7 @@ The hand-off is to final drying when moisture exceeds the declared condition, or
 
 在归属前，应将该预期产出与任何预期的茎秆或荚壳共产品一并声明。
 
-- 选定流： Accepted cleaned pigeonpea grain
+- 选定流： 合格的清理后木豆籽粒
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：weighed grain by grade, moisture and batch
 
@@ -689,7 +689,7 @@ The hand-off is to final drying when moisture exceeds the declared condition, or
 
 Record usable grain outside the reference grade with its grade, reason, destination and hand-off.
 
-- 选定流： Downgraded pigeonpea grain
+- 选定流： 降级木豆籽粒
 - 流属性/单位： Mass / kg
 - 数量规则： weighed downgrade by reason and destination
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -715,7 +715,7 @@ Record usable grain outside the reference grade with its grade, reason, destinat
 
 Record stems, branches or pod walls as co-products only with documented production intent, recipient and use; otherwise classify them as residue or waste.
 
-- 选定流： Pigeonpea stems and pod walls with intended use
+- 选定流： 有预期用途的木豆茎及荚壁
 - 流属性/单位： Mass / kg dry matter
 - 数量规则： weighed or moisture-corrected transfer to recipient
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -743,7 +743,7 @@ Record stems, branches or pod walls as co-products only with documented producti
 
 Record damaged or contaminated grain, foreign matter, dust and physical loss. Assign disposal, recovery or rework; unresolved rejects cannot enter accepted output.
 
-- 选定流： Conditioning rejects and cleaning loss
+- 选定流： 整备拒收物及清理损失
 - 流属性/单位： Mass / kg
 - 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -778,7 +778,7 @@ Record damaged or contaminated grain, foreign matter, dust and physical loss. As
 
 按原因、来源批次和技术分别记录合格或不合格籽粒。
 
-- 选定流: Cleaned pigeonpea grain requiring final drying or rework
+- 选定流: 需要最终干燥或返工的清理后木豆籽粒
 - 流属性/单位: Mass / kg
 - 数量规则: measured batch input with incoming moisture and grade
 - 数值来源模式: Foreground record (`foreground_record`)
@@ -885,7 +885,7 @@ Record damaged or contaminated grain, foreign matter, dust and physical loss. As
 
 Record grain still outside the reference grade after rework only when it leaves for a documented lower-grade use.
 
-- 选定流： Recovered downgraded pigeonpea grain
+- 选定流： 回收的降级木豆籽粒
 - 流属性/单位： Mass / kg
 - 数量规则： weighed outgoing mass by origin and destination
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -913,7 +913,7 @@ Record grain still outside the reference grade after rework only when it leaves 
 
 Record heat or mould damage, contamination and physical loss; calculated water removal is not waste.
 
-- 选定流： Final-drying damage and unrecovered reject
+- 选定流： 最终干燥损伤及未回收拒收物
 - 流属性/单位： Mass / kg
 - 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -944,7 +944,7 @@ Record heat or mould damage, contamination and physical loss; calculated water r
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Pigeon peas, dry
+- 选定流：干木豆
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -970,7 +970,7 @@ Record heat or mould damage, contamination and physical loss; calculated water r
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Pigeon peas, dry
+- 选定流：干木豆
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）

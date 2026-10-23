@@ -300,14 +300,14 @@ process_inventory:
                 source_ids: []
     outputs:
       product:
-        - row_id: host_other_goods
-          role: "Actual saleable host management goods"
-          name: "Actual saleable host management goods"
+        - row_id: host_wood_product
+          role: "Wood removed from the declared lac host plants"
+          name: "Wood removed from the declared lac host plants"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "When management produces independently transferred host wood or other evidenced goods, expand the actual named product, state and receiver here. Unharvested hosts remain production context; retained residues are not invented saleable outputs. Apply host-period and multi-output attribution. No exchange is invented for an unobserved class; actual applicable exchanges require evidenced identities, destinations and measurement."
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: When management produces independently transferred host wood or other evidenced goods, expand the actual named product, state and receiver here. Unharvested hosts remain production context; retained residues are not invented saleable outputs. Apply host-period and multi-output attribution. No exchange is invented for an unobserved class; actual applicable exchanges require evidenced identities, destinations and measurement. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Attributed measured quantity from cp_host_management; normalize once to matched accepted net dispatch mass"
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -317,15 +317,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_host_management
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "20"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         - row_id: host_management_waste
           role: "Host maintenance wastes"
@@ -501,14 +493,14 @@ process_inventory:
         []
     outputs:
       product:
-        - row_id: lac_other_goods
-          role: "Actual retained broodlac and harvest coproduct goods"
-          name: "Actual retained broodlac and harvest coproduct goods"
+        - row_id: viable_broodlac_transfer
+          role: "Viable broodlac transferred to a documented next cycle"
+          name: "Viable broodlac transferred to a documented next cycle"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Separately enumerate viable broodlac retained/transferred to another cycle and saleable harvested host wood or other evidenced goods with their actual state and handoff. Record stock versus sale versus internal next-cycle use; no generic resin UUID or automatic coproduct credit. Discarded branches remain lac_harvest_waste."
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Separately enumerate viable broodlac retained/transferred to another cycle and saleable harvested host wood or other evidenced goods with their actual state and handoff. Record stock versus sale versus internal next-cycle use; no generic resin UUID or automatic coproduct credit. Discarded branches remain lac_harvest_waste. Retained broodlac is carried in the stock ledger; an internal next-cycle transfer is not a final sale or an independently allocated co-product. Only an actual independent external handover can receive co-product treatment under the existing allocation rule. Preserve the physical transfer and stocks without granting a credit. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Attributed measured quantity from cp_lac_collection; normalize once to matched accepted net dispatch mass"
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -518,15 +510,25 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_lac_collection
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "20"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: lac_harvest_host_wood_product
+          role: "Host-plant wood removed during lac harvest"
+          name: "Host-plant wood removed during lac harvest"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Separately enumerate viable broodlac retained/transferred to another cycle and saleable harvested host wood or other evidenced goods with their actual state and handoff. Record stock versus sale versus internal next-cycle use; no generic resin UUID or automatic coproduct credit. Discarded branches remain lac_harvest_waste. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lac_collection
+              source_ids: []
+            ranges: []
         - row_id: collected_lac
           role: "Collected crude lac before conditioning"
           name: "Collected crude lac before conditioning"
@@ -1001,7 +1003,7 @@ dataset_production:
       flow_role: "management inputs land and shared assets"
       record_type: "host/plot and period ledger"
       raw_fields: "host species; plot; management status; area; land class; establishment and replacement dates; input identities/formulations; native quantity/unit; water source; productive periods; all outputs; shared use; emissions method; attribution evidence; linked dispatch net mass"
-      collection_method: "Trace actual plot/cycle activity records, calibration, invoices and land-use history; retain original area/cycle/service bases and convert their attributed totals exactly once to the net accepted dispatch denominator. Record actual direct abstraction/transformation separately where applicable. host_management_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_host_management; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
+      collection_method: "Trace actual plot/cycle activity records, calibration, invoices and land-use history; retain original area/cycle/service bases and convert their attributed totals exactly once to the net accepted dispatch denominator. Record actual direct abstraction/transformation separately where applicable. host_management_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_host_management; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. host_other_goods_specific_output: Preserve every actual intended output previously collected under host_other_goods, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "actual native units; normalized card units"
       frequency: "each event and reporting period"
       temporal_coverage: "complete establishment and attributable productive periods"
@@ -1025,7 +1027,7 @@ dataset_production:
       flow_role: "inoculation harvest broodlac and residues"
       record_type: "host/cycle and harvest record"
       raw_fields: "lac insect strain; host species/plot; natural or inoculated status; broodlac identity/mass; inoculation and harvest dates; twig/impurity basis; wet/net mass; surviving/retained brood; energy/materials; destination; emissions; dispatch link; source_handoff_key; matched_output_receipt_rows; own_or_purchased; component_basis"
-      collection_method: "Identify actual host/cycle and weigh crude harvest plus broodlac separately; natural collection records zero inoculation only with evidence. Retain raw host/cycle bases and attribute quantities then normalize exactly once to linked net accepted dispatch mass. Retain unallocated source and collected-material physical ledgers under cp_biological_source_lac_collection; burden attribution must not reduce those physical quantities. lac_collection_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_lac_collection; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
+      collection_method: "Identify actual host/cycle and weigh crude harvest plus broodlac separately; natural collection records zero inoculation only with evidence. Retain raw host/cycle bases and attribute quantities then normalize exactly once to linked net accepted dispatch mass. Retain unallocated source and collected-material physical ledgers under cp_biological_source_lac_collection; burden attribution must not reduce those physical quantities. lac_collection_combustion_air_specific_emission: Where recorded fuel is burned inside this node, produce separate air exchanges for measured or method-supported individual substances and carbon origin, using the same fuel accounting. This umbrella has no one compound identity; purchased electricity/heat never creates invented local exhaust. Attributed measured quantity from cp_lac_collection; normalize once to matched accepted net dispatch mass This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. lac_other_goods_specific_output: Preserve every actual intended output previously collected under lac_other_goods, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "actual native units; normalized card units"
       frequency: "each inoculation and harvest lot"
       temporal_coverage: "full recorded inoculation-to-harvest cycle or natural collection period"
@@ -1212,7 +1214,7 @@ data_sources:
     used_for: "conditional concrete identities and method context; does not establish site use or quantities"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:963cc7825c7cd11b5feb4150bbda0626dfbeb0e5a7db13b2660dc8f8aea580d2"
+  source_sha256: "sha256:6774b79bc59981eb46906d3dae8e0bbdfa59cb7c8a914c3d8f268a188311d625"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7177"
@@ -1263,16 +1265,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_58177"
+    - unit_id: "normative_61915"
       family: "allocation"
       span:
         start:
-          offset: 58177
-          line: 870
+          offset: 61915
+          line: 878
           column: 1
         end:
-          offset: 60587
-          line: 882
+          offset: 64325
+          line: 890
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `subdivision_first` | all intended output grades and host coproducts | Prefer measured process/lot subdivision. Enumerate actual primary product grades, saleable host wood and retained/sold broodlac with quantity, quality, boundary and receiver. Grade outputs that leave independently are products; discarded material is waste, not an automatic coproduct credit. | |\n| `common_host_burdens` | shared host production and seasonal outputs | Attribute remaining common host/asset burdens using documented causal service, area-time or use records where defensible. If inseparable products lack a defensible physical relation, use contemporaneous site-gate economic shares with price/quantity evidence and sensitivity; never prescribe one mass split or price for all gums, resins and lac. | |\n| `period_attribution` | establishment; productive seasons; replacement and shared assets | Link establishment and maintenance to actual productive and nonproductive periods, host replacement and termination, and future output expectations with sensitivity. A harvest may not carry both its full establishment cost and a second annualized copy. No universal host lifetime, gum yield or lac cycle is prescribed. | |\n| `rework_retention` | primary_preparation; producer_dispatch | Keep internal rework/returns with their originating burdens and record repeated energy/material use; net final accepted output excludes rejects and stock retained for a later period. Record waste treatment responsibility explicitly; do not assume substitution credits. | |\n| `common_service_once` | shared roads pumps tools stores and changeovers | Register all consuming nodes and periods, meter/subdivide where possible and distribute the one common total using evidenced services. Attribute campaign cleaning and changeovers once to actual lots; compatible output totals reconcile to the denominator before reference normalization. | |\n\nConcrete cards do not inherit numerical ranges from the former aggregate card. Determine quantities from original records, stock/meter reconciliation and the declared reference flow; no default quantity or numeric screen is supplied without evidence matching the identity, unit, period and boundary. Missing range evidence is a quality disclosure, not zero use or proof of completeness.\n\n"
       headings:
@@ -1291,12 +1293,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 58177
-              line: 870
+              offset: 61915
+              line: 878
               column: 1
             end:
-              offset: 58217
-              line: 870
+              offset: 61955
+              line: 878
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1311,16 +1313,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_86581"
+    - unit_id: "normative_91819"
       family: "validation"
       span:
         start:
-          offset: 86581
-          line: 935
+          offset: 91819
+          line: 943
           column: 1
         end:
-          offset: 89609
-          line: 948
+          offset: 94847
+          line: 956
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_final_reference` | primary_product_dispatch | Require one qualified final product output of 1 kg net as-received reference product excluding packaging; its name, link, mass property/unit and qualifiers align with section 3. Intermediate/raw receipts remain measured, not fixed. | |\n| `validate_source_route` | source and host nodes | Verify each lot's actual plant or lac source, management and inoculation activation plus primary-preparation bypass/operation records; do not apply all alternatives or unknown-state defaults. | fao-plant-exudate-production; fao-lac-primary-states |\n| `validate_balance` | all material handoffs | Reconcile wet/net/dry/component quantities, water, natural volatile loss, impurities, other grades, waste, retained brood/rework and stock; disclose residuals and measurement uncertainty. Never label all loss as water or waste as sold product. | |\n| `validate_attribution` | periods grades infrastructure and campaigns | Require complete intended output and service consumers plus period/phase boundaries, replacement/termination, causal subdivision or evidenced residual allocation, and no duplicate host, shared-asset, cleaning, stock or returned-material burdens. | |\n| `validate_normalization` | all amounts and collection protocols | Require a matched accepted dispatch denominator, documented raw bases and conversions, and exactly-once attribution/normalization. All amounts and protocol reporting use per 1 kg reference flow. Range screens are not default values or evidence that the mass balance is satisfied. | |\n| `validate_identity_emissions` | concrete exchanges and direct emissions | Verify actual fixed identities and support units before final dataset publication; expand variable roles into concrete materials/substances and destinations. Species-resolved air emissions and explicit fuel/service combustion scope prevent invented or duplicated exhaust. | |\n| `validate_scope_state` | reference product and downstream use | Reject interchange of primary gum/resin/lac with rubber, industrial rosin/turpentine, extracted shellac or finished formulation; primary-only methodology does not imply exact whole-leaf coverage. No automatic sequestration or storage credit. | unsd-cpc-natural-resins; fao-lac-primary-states |\n| `validate_biological_source_handoff` | `host_management`; `plant_collection`; `lac_collection`; `primary_preparation`; `producer_dispatch` | Each collected output lot requires an explicit source and matched downstream receipt; purchased lots must not be recounted as own-site collection. Reconcile raw collected quantities with physical handoffs, not all biological output against auxiliary inputs. Do not invent formation, resource flows or CO2 uptake from unexplained residuals. Unknown source or handoff blocks a complete data package; absent evidence for total formation or uncollected stock must not be represented as a closed source balance. |  |\n\n"
       headings:
@@ -1339,12 +1341,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 86581
-              line: 935
+              offset: 91819
+              line: 943
               column: 1
             end:
-              offset: 86603
-              line: 935
+              offset: 91841
+              line: 943
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1454,184 +1456,184 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "subdivision_first"
       identity_kind: "explicit"
-      unit_id: "normative_58177"
+      unit_id: "normative_61915"
       source_span:
         start:
-          offset: 58290
-          line: 874
+          offset: 62028
+          line: 882
           column: 1
         end:
-          offset: 58658
-          line: 874
+          offset: 62396
+          line: 882
           column: 369
     - pointer: "/allocation_rules/1"
       rule_id: "common_host_burdens"
       identity_kind: "explicit"
-      unit_id: "normative_58177"
+      unit_id: "normative_61915"
       source_span:
         start:
-          offset: 58659
-          line: 875
+          offset: 62397
+          line: 883
           column: 1
         end:
-          offset: 59079
-          line: 875
+          offset: 62817
+          line: 883
           column: 421
     - pointer: "/allocation_rules/2"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_58177"
+      unit_id: "normative_61915"
       source_span:
         start:
-          offset: 59080
-          line: 876
+          offset: 62818
+          line: 884
           column: 1
         end:
-          offset: 59494
-          line: 876
+          offset: 63232
+          line: 884
           column: 415
     - pointer: "/allocation_rules/3"
       rule_id: "rework_retention"
       identity_kind: "explicit"
-      unit_id: "normative_58177"
+      unit_id: "normative_61915"
       source_span:
         start:
-          offset: 59495
-          line: 877
+          offset: 63233
+          line: 885
           column: 1
         end:
-          offset: 59831
-          line: 877
+          offset: 63569
+          line: 885
           column: 337
     - pointer: "/allocation_rules/4"
       rule_id: "common_service_once"
       identity_kind: "explicit"
-      unit_id: "normative_58177"
+      unit_id: "normative_61915"
       source_span:
         start:
-          offset: 59832
-          line: 878
+          offset: 63570
+          line: 886
           column: 1
         end:
-          offset: 60197
-          line: 878
+          offset: 63935
+          line: 886
           column: 366
     - pointer: "/allocation_rules/5"
       rule_id: "allocation_rule_6"
       identity_kind: "snapshot_local"
-      unit_id: "normative_58177"
+      unit_id: "normative_61915"
       source_span:
         start:
-          offset: 60199
-          line: 880
+          offset: 63937
+          line: 888
           column: 1
         end:
-          offset: 60585
-          line: 880
+          offset: 64323
+          line: 888
           column: 387
     - pointer: "/validation_rules/0"
       rule_id: "validate_final_reference"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 86676
-          line: 939
+          offset: 91914
+          line: 947
           column: 1
         end:
-          offset: 86969
-          line: 939
+          offset: 92207
+          line: 947
           column: 294
     - pointer: "/validation_rules/1"
       rule_id: "validate_source_route"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 86970
-          line: 940
+          offset: 92208
+          line: 948
           column: 1
         end:
-          offset: 87270
-          line: 940
+          offset: 92508
+          line: 948
           column: 301
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 87271
-          line: 941
+          offset: 92509
+          line: 949
           column: 1
         end:
-          offset: 87565
-          line: 941
+          offset: 92803
+          line: 949
           column: 295
     - pointer: "/validation_rules/3"
       rule_id: "validate_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 87566
-          line: 942
+          offset: 92804
+          line: 950
           column: 1
         end:
-          offset: 87888
-          line: 942
+          offset: 93126
+          line: 950
           column: 323
     - pointer: "/validation_rules/4"
       rule_id: "validate_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 87889
-          line: 943
+          offset: 93127
+          line: 951
           column: 1
         end:
-          offset: 88240
-          line: 943
+          offset: 93478
+          line: 951
           column: 352
     - pointer: "/validation_rules/5"
       rule_id: "validate_identity_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 88241
-          line: 944
+          offset: 93479
+          line: 952
           column: 1
         end:
-          offset: 88592
-          line: 944
+          offset: 93830
+          line: 952
           column: 352
     - pointer: "/validation_rules/6"
       rule_id: "validate_scope_state"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 88593
-          line: 945
+          offset: 93831
+          line: 953
           column: 1
         end:
-          offset: 88952
-          line: 945
+          offset: 94190
+          line: 953
           column: 360
     - pointer: "/validation_rules/7"
       rule_id: "validate_biological_source_handoff"
       identity_kind: "explicit"
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 88953
-          line: 946
+          offset: 94191
+          line: 954
           column: 1
         end:
-          offset: 89607
-          line: 946
+          offset: 94845
+          line: 954
           column: 655
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1660,27 +1662,27 @@ normative_context:
           column: 243
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_58177"
+      unit_id: "normative_61915"
       source_span:
         start:
-          offset: 58177
-          line: 870
+          offset: 61915
+          line: 878
           column: 1
         end:
-          offset: 58217
-          line: 870
+          offset: 61955
+          line: 878
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_86581"
+      unit_id: "normative_91819"
       source_span:
         start:
-          offset: 86581
-          line: 935
+          offset: 91819
+          line: 943
           column: 1
         end:
-          offset: 86603
-          line: 935
+          offset: 91841
+          line: 943
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1689,5 +1691,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:963cc7825c7cd11b5feb4150bbda0626dfbeb0e5a7db13b2660dc8f8aea580d2"
-  generated_content_sha256: "sha256:dc77a89dd376c56a8e966d37157ed05e8bf3c0bd3ed532ce35c2c43101d5920b"
+    sha256: "sha256:6774b79bc59981eb46906d3dae8e0bbdfa59cb7c8a914c3d8f268a188311d625"
+  generated_content_sha256: "sha256:27ab8af22158e12fda8b1001e9d5d62fc4b3f32bf42b1481336179b01cd61a43"

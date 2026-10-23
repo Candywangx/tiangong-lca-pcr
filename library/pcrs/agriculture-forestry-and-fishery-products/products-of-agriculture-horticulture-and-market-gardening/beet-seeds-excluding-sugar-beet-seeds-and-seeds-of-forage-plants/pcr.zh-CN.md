@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 
 申报物种/品种的亲本、基础种子或认证种子进入繁殖田。
 
-- 选定流：Beet or forage parent planting seed
+- 选定流：甜菜或饲草亲本播种种子
 - 流属性/单位：Mass / kg
 - 数量规则：measured mass placed in the field
 - 数值来源模式：`foreground_record`
@@ -206,7 +206,7 @@ sync_with: pcr.en-US.md
 
 发生灌溉时记录供应给种子作物的灌溉水。
 
-- 选定流：Irrigation water
+- 选定流：灌溉水
 - 流属性/单位：Mass / kg
 - 数量规则：metered or calculated irrigation water delivered
 - 数值来源模式：`calculated_value`
@@ -272,7 +272,7 @@ sync_with: pcr.en-US.md
 
 成熟的含种子作物离开田间繁殖过程，进入收获与脱粒。
 
-- 选定流：Harvestable beet or forage seed crop
+- 选定流：可采收的甜菜或饲草种子作物
 - 流属性/单位：Mass / kg
 - 数量规则：measured harvested wet mass attributable to the seed lot
 - 数值来源模式：`foreground_record`
@@ -311,7 +311,7 @@ sync_with: pcr.en-US.md
 
 申报田间批次进入收获与脱粒，不得由饲用牧草生物量替代。
 
-- 选定流：Harvestable beet or forage seed crop
+- 选定流：可采收的甜菜或饲草种子作物
 - 流属性/单位：Mass / kg
 - 数量规则：linked mass from field multiplication output
 - 数值来源模式：`foreground_record`
@@ -377,7 +377,7 @@ sync_with: pcr.en-US.md
 
 脱粒分离后、干燥风选和最终清选前的种子。
 
-- 选定流：Raw threshed beet or forage seed
+- 选定流：脱粒后的未整备甜菜或饲草种子
 - 流属性/单位：Mass / kg
 - 数量规则：measured mass transferred to conditioning
 - 数值来源模式：`foreground_record`
@@ -405,7 +405,7 @@ sync_with: pcr.en-US.md
 
 离开种子产品路线的颖壳、秸秆和未回收物料按去向报告。
 
-- 选定流：Harvest and threshing residue
+- 选定流：采收与脱粒残余物
 - 流属性/单位：Mass / kg
 - 数量规则：mass balance difference supported by measured or estimated destination records
 - 数值来源模式：`calculated_value`
@@ -439,7 +439,7 @@ sync_with: pcr.en-US.md
 
 可追溯的原种子批次进入水分稳定和初级调理。
 
-- 选定流：Raw threshed beet or forage seed
+- 选定流：脱粒后的未整备甜菜或饲草种子
 - 流属性/单位：Mass / kg
 - 数量规则：linked input mass from threshing
 - 数值来源模式：`foreground_record`
@@ -505,7 +505,7 @@ sync_with: pcr.en-US.md
 
 水分稳定并完成初级清理的种子转入最终清选和分级。
 
-- 选定流：Conditioned beet or forage seed
+- 选定流：整备后的甜菜或饲草种子
 - 流属性/单位：Mass / kg
 - 数量规则：measured batch output at declared moisture
 - 数值来源模式：`foreground_record`
@@ -544,7 +544,7 @@ sync_with: pcr.en-US.md
 
 调理后的批次进入最终清选、分离、分级和种子质量放行。
 
-- 选定流：Conditioned beet or forage seed
+- 选定流：整备后的甜菜或饲草种子
 - 流属性/单位：Mass / kg
 - 数量规则：linked mass from conditioning output
 - 数值来源模式：`foreground_record`
@@ -599,7 +599,7 @@ sync_with: pcr.en-US.md
 
 按实际包装记录选择用于保护放行种子批次的袋或其他柔性包装。
 
-- 选定流：Flexible packaging
+- 选定流：柔性包装
 - 流属性/单位：Mass / kg
 - 数量规则：measured packaging mass consumed
 - 数值来源模式：`foreground_record`
@@ -635,7 +635,7 @@ sync_with: pcr.en-US.md
 
 在加工者或生产者交付点放行用于播种的清洁、有活力种子；不得用单一物种流代表整个类别。
 
-- 选定流：Beet seeds (excluding sugar beet seeds) and seeds of forage plants
+- 选定流：甜菜种子（糖用甜菜种子除外）及饲草植物种子
 - 流属性/单位：Mass / kg
 原始产出计量与核对要求：measured net released mass
 

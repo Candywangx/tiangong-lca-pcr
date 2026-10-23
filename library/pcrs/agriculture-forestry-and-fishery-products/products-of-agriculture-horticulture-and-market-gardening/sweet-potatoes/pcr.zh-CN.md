@@ -910,7 +910,7 @@ Sweet potatoes `03d4145f-cc49-4e7b-8c45-d6ce90a90057`仅在声明条件下跨越
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Sweet potatoes
+- 选定流：甘薯
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -936,7 +936,7 @@ Sweet potatoes `03d4145f-cc49-4e7b-8c45-d6ce90a90057`仅在声明条件下跨越
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Sweet potatoes
+- 选定流：甘薯
 - 流属性 / 单位：质量 / kg
 - 数量规则：1000 kg
 - 数值来源模式：前景记录（`foreground_record`）

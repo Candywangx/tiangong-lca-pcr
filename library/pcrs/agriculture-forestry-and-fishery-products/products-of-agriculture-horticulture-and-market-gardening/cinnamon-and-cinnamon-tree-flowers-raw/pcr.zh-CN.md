@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 
 记录归属于建园和补缺的实生苗、扦插苗及补植苗。
 
-- 选定流： Cinnamon nursery planting material
+- 选定流： 肉桂苗圃种植材料
 - 流属性/单位： Number / item
 - 数量规则：统计进入园地的种植材料，仅在有证据的生产年间年化建园负荷。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -200,7 +200,7 @@ sync_with: pcr.en-US.md
 
 记录跨越前景边界的灌溉水；降雨不计入该产品流数量。
 
-- 选定流： Irrigation water
+- 选定流： 灌溉水
 - 流属性/单位： Volume / m3
 - 数量规则：计量、泵送记录或其他证据所示的园地供水量。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -263,7 +263,7 @@ sync_with: pcr.en-US.md
 
 记录独立采收节点前归属于园地的树皮或花/花芽干物质当量产出，并保持两条路线分离。
 
-- 选定流： Harvest-ready cinnamon crop
+- 选定流： 待采收的肉桂作物
 - 流属性/单位： Mass / kg dry-matter equivalent
 - 数量规则：用实测路线产出反推并核对整备损失，不重复计算立木生物量。
 - 数值来源模式： 计算值（`calculated_value`）
@@ -297,7 +297,7 @@ sync_with: pcr.en-US.md
 
 按声明的清单方法依据实际氮投入计算土壤直接 N2O 排放。
 
-- 选定流： Dinitrogen monoxide to air
+- 选定流： 排放至空气的一氧化二氮
 - 流属性/单位: Mass / kg N2O
 - 数量规则：将声明的现行管理土壤方法应用于采集的氮投入和场址条件。
 - 数值来源模式： 计算值（`calculated_value`）
@@ -323,7 +323,7 @@ sync_with: pcr.en-US.md
 
 记录按声明的萌蘖更新或选择性采收制度切割的茎秆。
 
-- 选定流： Harvest-ready cinnamon stems
+- 选定流： 待采收的肉桂茎
 - 流属性/单位： Mass / kg dry-matter equivalent
 - 数量规则：将茎秆和回收树皮与种植中间产出核对。
 - 数值来源模式： 计算值（`calculated_value`）
@@ -385,7 +385,7 @@ sync_with: pcr.en-US.md
 
 记录初级整备后、分级前的剥取树皮、桂皮筒、碎筒、碎片或带外皮树皮；产品保持未研磨状态。
 
-- 选定流： Cinnamon and cinnamon-tree flowers, raw
+- 选定流： 未加工肉桂及肉桂树花
 - 流属性/单位： Mass / kg
 - 数量规则：按批次特定水分测量整备树皮预期产出的净质量。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -413,7 +413,7 @@ sync_with: pcr.en-US.md
 
 分别记录每项独立销售的产出。留在场内作覆盖物的材料属于残余物；精油蒸馏不在范围内。
 
-- 选定流： Cinnamon wood, leaves and twigs
+- 选定流： 肉桂木材、叶片及细枝
 - 流属性/单位： Mass / kg
 - 数量规则：测量流向预期去向的预期共产品产出质量，并声明湿基或干基状态。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -440,7 +440,7 @@ sync_with: pcr.en-US.md
 
 将不可用树皮与降级但可销售的树皮分开记录，并声明回收或处置路线。
 
-- 选定流： Cinnamon bark residue
+- 选定流： 肉桂树皮残余物
 - 流属性/单位： Mass / kg
 - 数量规则：测量接收产品平衡之外的拒收质量。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -466,7 +466,7 @@ sync_with: pcr.en-US.md
 
 根据成对质量与水分测量计算去除的水；干燥未启用时记录为零。
 
-- 选定流： Water to air
+- 选定流： 排放至空气的水
 - 流属性/单位： Mass / kg
 - 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式： 计算值（`calculated_value`）
@@ -496,7 +496,7 @@ sync_with: pcr.en-US.md
 
 记录进入本路线的带花材料；不得以成熟果实、树皮或丁香花芽替代。
 
-- 选定流： Harvest-ready cinnamon-tree flowers or immature buds
+- 选定流： 待采收的肉桂树花或未成熟花蕾
 - 流属性/单位： Mass / kg
 - 数量规则：测量清洁和整备前采收的花或花芽质量。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -558,7 +558,7 @@ sync_with: pcr.en-US.md
 
 记录分级前清洁的鲜花/花芽或初级干燥产品；声明交易材料是花、未成熟花芽，还是作为“花芽”销售的未成熟果实。
 
-- 选定流： Cinnamon and cinnamon-tree flowers, raw
+- 选定流： 未加工肉桂及肉桂树花
 - 流属性/单位： Mass / kg
 - 数量规则：按批次特定水分测量整备花/花芽的净质量。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -587,7 +587,7 @@ sync_with: pcr.en-US.md
 
 记录去除的花梗、异物和变质花芽及其回收或处置去向。
 
-- 选定流： Cinnamon flower conditioning residue
+- 选定流： 肉桂花整备残余物
 - 流属性/单位： Mass / kg
 - 数量规则：测量从接收花产品中排除的拒收质量。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -614,7 +614,7 @@ sync_with: pcr.en-US.md
 
 根据成对状态计算去除的水；鲜品交接或未启用干燥时记录为零。
 
-- 选定流： Water to air
+- 选定流： 排放至空气的水
 - 流属性/单位： Mass / kg
 - 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式： 计算值（`calculated_value`）
@@ -644,7 +644,7 @@ sync_with: pcr.en-US.md
 
 只记录一个进入分级的路线产出，并保留树皮或花/花芽身份。
 
-- 选定流： Prepared raw cinnamon product
+- 选定流： 整备后的未加工肉桂产品
 - 流属性/单位： Mass / kg
 - 数量规则：测量来自 `prepared_bark` 或 `prepared_flowers` 的进入质量，一个参考批次不得同时来自两者。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -703,7 +703,7 @@ sync_with: pcr.en-US.md
 
 将单独销售的低等级产品记录为预期产出，不得计为接收的参考产品或废物。
 
-- 选定流： Downgraded raw cinnamon product
+- 选定流： 降级的未加工肉桂产品
 - 流属性/单位： Mass / kg
 - 数量规则：测量降级预期产出质量并记录去向与价格。
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -729,7 +729,7 @@ sync_with: pcr.en-US.md
 
 记录不可销售材料及其返工、回收、还田、堆肥或处置路线。
 
-- 选定流： Cinnamon grading reject
+- 选定流： 肉桂分级拒收物
 - 流属性/单位： Mass / kg
 - 数量规则：测量一次有记录内部返工循环之后的拒收质量。
 - 数值来源模式： 前景记录（`foreground_record`）

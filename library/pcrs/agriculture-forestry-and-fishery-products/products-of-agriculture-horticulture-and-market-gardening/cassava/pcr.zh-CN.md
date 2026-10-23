@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 
 按购入或留存茎材记录实际种植的健康茎段数量.
 
-- 选定流：Cassava stem cuttings
+- 选定流：木薯茎段插条
 - 流属性/单位：pieces
 - 数量规则：按购入或留存茎材记录实际种植的健康茎段数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -202,7 +202,7 @@ sync_with: pcr.en-US.md
 
 记录计量或有据可查的外供灌溉水量；降雨不作为采购产品.
 
-- 选定流：Irrigation water
+- 选定流：灌溉水
 - 流属性/单位：m3
 - 数量规则：记录计量或有据可查的外供灌溉水量；降雨不作为采购产品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -241,7 +241,7 @@ sync_with: pcr.en-US.md
 
 记录灌溉或田间作业的计量用电，排除下游加工.
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：kWh
 - 数量规则：记录灌溉或田间作业的计量用电，排除下游加工
 - 数值来源模式：前景记录（`foreground_record`）
@@ -272,7 +272,7 @@ sync_with: pcr.en-US.md
 
 记录栽培面积及成熟采挖事件；内部移交不另计市场产品.
 
-- 选定流：Standing cassava crop
+- 选定流：田间生长的木薯作物
 - 流属性/单位：ha
 - 数量规则：记录栽培面积及成熟采挖事件；内部移交不另计市场产品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -300,7 +300,7 @@ sync_with: pcr.en-US.md
 
 依据记录的氮投入及作物残体，按明确选定的本地或 IPCC 方法测算土壤直接 N2O.
 
-- 选定流：Nitrous oxide to air
+- 选定流：排放至空气的一氧化二氮
 - 流属性/单位：kg
 - 数量规则：依据记录的氮投入及作物残体，按明确选定的本地或 IPCC 方法测算土壤直接 N2O
 - 数值来源模式：前景记录（`foreground_record`）
@@ -330,7 +330,7 @@ sync_with: pcr.en-US.md
 
 关联田间生产移交的同一面积及采收事件.
 
-- 选定流：Standing cassava crop
+- 选定流：田间生长的木薯作物
 - 流属性/单位：ha
 - 数量规则：关联田间生产移交的同一面积及采收事件
 - 数值来源模式：前景记录（`foreground_record`）
@@ -376,7 +376,7 @@ sync_with: pcr.en-US.md
 
 在农场门分选前称量所有采出鲜根，包括随后剔除的根.
 
-- 选定流：Fresh cassava roots after lifting
+- 选定流：起获后的木薯鲜根
 - 流属性/单位：kg
 - 数量规则：在农场门分选前称量所有采出鲜根，包括随后剔除的根
 - 数值来源模式：前景记录（`foreground_record`）
@@ -400,7 +400,7 @@ sync_with: pcr.en-US.md
 
 记录有意留作下季种植的茎材质量；出售茎材属于独立预期共产品.
 
-- 选定流：Cassava planting stems
+- 选定流：木薯种植用茎段
 - 流属性/单位：kg
 - 数量规则：记录有意留作下季种植的茎材质量；出售茎材属于独立预期共产品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -424,7 +424,7 @@ sync_with: pcr.en-US.md
 
 称量有意作为共产品出售的茎材，并记录独立买家和价格.
 
-- 选定流：Cassava planting stems
+- 选定流：木薯种植用茎段
 - 流属性/单位：kg
 - 数量规则：称量有意作为共产品出售的茎材，并记录独立买家和价格
 - 数值来源模式：前景记录（`foreground_record`）
@@ -450,7 +450,7 @@ sync_with: pcr.en-US.md
 
 估测或称量留田非销售叶和茎秆；不得重复计入留种茎材.
 
-- 选定流：Cassava field residues
+- 选定流：木薯田间残余物
 - 流属性/单位：kg
 - 数量规则：估测或称量留田非销售叶和茎秆；不得重复计入留种茎材
 - 数值来源模式：前景记录（`foreground_record`）
@@ -474,7 +474,7 @@ sync_with: pcr.en-US.md
 
 在样方内估测未采出损失，与已称量采出根分开.
 
-- 选定流：Uncollected cassava root loss
+- 选定流：未收集的木薯根损失
 - 流属性/单位：kg
 - 数量规则：在样方内估测未采出损失，与已称量采出根分开
 - 数值来源模式：前景记录（`foreground_record`）
@@ -505,7 +505,7 @@ sync_with: pcr.en-US.md
 
 把实测质量关联至同批次采出根，并记录采挖与分选时间.
 
-- 选定流：Fresh cassava roots after lifting
+- 选定流：起获后的木薯鲜根
 - 流属性/单位：kg
 - 数量规则：把实测质量关联至同批次采出根，并记录采挖与分选时间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -529,7 +529,7 @@ sync_with: pcr.en-US.md
 
 仅在分选、称量或短暂停放用电时记录计量用电.
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：kWh
 - 数量规则：仅在分选、称量或短暂停放用电时记录计量用电
 - 数值来源模式：前景记录（`foreground_record`）
@@ -586,7 +586,7 @@ sync_with: pcr.en-US.md
 
 仅在降级根作为预期可用鲜根出售或移交时单独称量.
 
-- 选定流：Fresh cassava roots, downgraded
+- 选定流：降级木薯鲜根
 - 流属性/单位：kg
 - 数量规则：仅在降级根作为预期可用鲜根出售或移交时单独称量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -612,7 +612,7 @@ sync_with: pcr.en-US.md
 
 称量断裂、腐败等剔除根并记录去向；不得改标为参考产品.
 
-- 选定流：Rejected cassava roots
+- 选定流：拒收的木薯根
 - 流属性/单位：kg
 - 数量规则：称量断裂、腐败等剔除根并记录去向；不得改标为参考产品
 - 数值来源模式：前景记录（`foreground_record`）

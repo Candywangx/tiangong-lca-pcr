@@ -164,31 +164,6 @@ translation_status: aligned
 #### 输入
 ##### 产品流
 
-###### 茄子作物灌溉水（`crop_irrigation_water`）
-
-记录同一作物周期内送达田间的灌溉及施肥灌溉用水，区分降雨、水源、施用方式和回流水。
-
-- 选定流：供应作物的灌溉用水
-- 流属性/单位：Volume / m3
-- 数量规则：Sum meter readings or a documented application water balance for the represented crop cycle.
-- 数值来源模式：Foreground record (`foreground_record`)
-- 适用范围：Site-specific (`site_specific`)
-原始活动或阶段基准：per 1,000 kg marketable fresh eggplant output.
-
-- 归一化基准：每声明的参考流
-- 基准类型：Process output (`process_output`)
-- 证据类型：Collected record (`collected_record`)
-- 采集协议：`cp_irrigation_records`
-- 来源：`fao-crop-evapotranspiration-56`
-- 数量范围：Crop-cycle irrigation screening interval
-  - 范围角色：QA guardrail (`qa_guardrail`)
-  - 下限：0
-  - 上限：6,000
-  - 单位：m3/ha
-  - 基准：crop-cycle irrigation deliveries excluding rainfall
-  - 基准类型：crop_cycle (`crop_cycle`)
-  - 证据类型：Reasoned estimate (`reasoned_estimate`)
-
 ###### 尿素肥料（`crop_management_agricultural_nutrient_inputs_urea`）
 
 **crop_management_agricultural_nutrient_inputs 的采集范围与适用性。** 下列具体身份分别列卡，仅在原有过程范围内有实际使用或产生记录时启用；不是必用材料清单或默认配方。未发生须有依据，缺少记录不得记为零。其他实际材料必须另建具体身份卡，不能套用以下名称或 UUID。保留原有归属和边界，避免与包含这些投入的外包服务双计。
@@ -287,6 +262,31 @@ translation_status: aligned
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_nutrient_records`
 - 来源：`fao-gap-framework-2003`；`ipcc-2019-managed-soils-n2o`；`fao-organic-nutrients`
+
+###### 茄子作物灌溉水（`crop_irrigation_water`）
+
+记录同一作物周期内送达田间的灌溉及施肥灌溉用水，区分降雨、水源、施用方式和回流水。
+
+- 选定流：供应作物的灌溉用水
+- 流属性/单位：Volume / m3
+- 数量规则：Sum meter readings or a documented application water balance for the represented crop cycle.
+- 数值来源模式：Foreground record (`foreground_record`)
+- 适用范围：Site-specific (`site_specific`)
+原始活动或阶段基准：per 1,000 kg marketable fresh eggplant output.
+
+- 归一化基准：每声明的参考流
+- 基准类型：Process output (`process_output`)
+- 证据类型：Collected record (`collected_record`)
+- 采集协议：`cp_irrigation_records`
+- 来源：`fao-crop-evapotranspiration-56`
+- 数量范围：Crop-cycle irrigation screening interval
+  - 范围角色：QA guardrail (`qa_guardrail`)
+  - 下限：0
+  - 上限：6,000
+  - 单位：m3/ha
+  - 基准：crop-cycle irrigation deliveries excluding rainfall
+  - 基准类型：crop_cycle (`crop_cycle`)
+  - 证据类型：Reasoned estimate (`reasoned_estimate`)
 
 ###### 抽水和田间作业电力（`field_electricity_input`）
 

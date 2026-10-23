@@ -100,7 +100,7 @@ sync_with: pcr.en-US.md
 
 记录转入指定饲草作物的种子、根冠、插条或其他种植材料。
 
-- 选定流: Named-crop propagation material; UUID unresolved until species and form are known
+- 选定流: 具名作物繁殖材料；物种与形态确认前 UUID 未解析
 - 流属性/单位: Mass / kg or verified count unit
 - 数量规则: Measured purchased or internally transferred planting material
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -207,7 +207,7 @@ sync_with: pcr.en-US.md
 
 记录灌溉供应水量；降雨属于背景信息，不作为产品流投入。
 
-- 选定流: Irrigation water selected from the actual source record
+- 选定流: 按实际水源记录确定的灌溉水
 - 流属性/单位: Volume / m3 preferred
 - 数量规则: Metered or supplier-recorded irrigation volume
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -268,7 +268,7 @@ sync_with: pcr.en-US.md
 
 计算声明作物期的占地面积与时间。
 
-- 选定流: Agricultural land occupation elementary flow; UUID unresolved
+- 选定流: 农业用地占用基本流；UUID 未解析
 - 流属性/单位: Area*time / m2·year
 - 数量规则: Field area multiplied by occupation duration
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -293,7 +293,7 @@ sync_with: pcr.en-US.md
 
 仅记录有证据且归属于声明生产系统的土地覆盖转化。
 
-- 选定流: Land transformation elementary flow by prior and new cover; UUID unresolved
+- 选定流: 按原有与新土地覆盖区分的土地转变基本流；UUID 未解析
 - 流属性/单位: Area / m2
 - 数量规则: Mapped transformed area allocated once over the declared attribution period
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -321,7 +321,7 @@ sync_with: pcr.en-US.md
 
 记录交接至收获过程的指定作物及植物部位，不得同时计为最终参考产品。
 
-- 选定流: Named harvest-ready forage biomass; UUID unresolved
+- 选定流: 具名待采收饲草生物质；UUID 未解析
 - 流属性/单位: Mass / kg
 - 数量规则: Measured net harvest-ready mass at recorded moisture
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -348,7 +348,7 @@ sync_with: pcr.en-US.md
 
 记录从田间移除的生物量，并按实际去向分类。
 
-- 选定流: Removed non-target biomass; UUID unresolved
+- 选定流: 已移除的非目标生物质；UUID 未解析
 - 流属性/单位: Mass / kg dry matter preferred
 - 数量规则: Measured or sampled removed biomass by destination
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -375,7 +375,7 @@ sync_with: pcr.en-US.md
 
 仅依据选定清单方法和有记录的氮活动数据计算直接 N2O。
 
-- 选定流: Nitrous oxide to air; UUID unresolved pending exact compartment verification
+- 选定流: 排放至空气的一氧化二氮；具体环境介质确认前 UUID 未解析
 - 流属性/单位: Mass / kg N2O
 - 数量规则: Calculated from collected nitrogen inputs and the declared method
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -408,7 +408,7 @@ sync_with: pcr.en-US.md
 
 以相同物种、地块、作物期和批次标识将生产产出转入收获过程。
 
-- 选定流: Named harvest-ready forage biomass; UUID unresolved
+- 选定流: 具名待采收饲草生物质；UUID 未解析
 - 流属性/单位: Mass / kg
 - 数量规则: Inter-process transferred net mass
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -472,7 +472,7 @@ sync_with: pcr.en-US.md
 
 将此预期产出记录为收获交付点合格的指定饲草；若选择初级调制交付点，则将其作为中间产品。
 
-- 选定流: Named harvested forage product; UUID unresolved
+- 选定流: 具名已采收饲草产品；UUID 未解析
 - 流属性/单位: Mass / kg
 原始产出计量与核对要求：Measured net accepted mass at declared moisture
 
@@ -499,7 +499,7 @@ sync_with: pcr.en-US.md
 
 仅当较低等级产品具有可证实的预定用途和交接点时，将此预期产出单独记录。
 
-- 选定流: Named lower-grade forage product; UUID unresolved
+- 选定流: 具名较低等级饲草产品；UUID 未解析
 - 流属性/单位: Mass / kg
 - 数量规则: Measured mass by grade and destination
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -526,7 +526,7 @@ sync_with: pcr.en-US.md
 
 记录剔除、掉落或腐败材料及其田间保留、回收或丢弃去向。
 
-- 选定流: Harvest reject or loss material; UUID unresolved
+- 选定流: 采收拒收物或损失材料；UUID 未解析
 - 流属性/单位: Mass / kg dry matter preferred
 - 数量规则: Measured or sampled mass by exclusive destination
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -560,7 +560,7 @@ sync_with: pcr.en-US.md
 
 接收收获产品，并保留物种、植物部位、含水率、形态和批次标识。
 
-- 选定流: Named harvested forage product; UUID unresolved
+- 选定流: 具名已采收饲草产品；UUID 未解析
 - 流属性/单位: Mass / kg
 - 数量规则: Measured receiving mass and moisture
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -585,7 +585,7 @@ sync_with: pcr.en-US.md
 
 记录清洗、润湿或其他声明调制作业的新增水；循环水不得重复计入新增投入。
 
-- 选定流: Process water selected from the actual source record
+- 选定流: 按实际水源记录确定的过程水
 - 流属性/单位: Volume / m3 preferred
 - 数量规则: Metered fresh water by conditioning batch
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -642,7 +642,7 @@ sync_with: pcr.en-US.md
 
 仅当田间至调制点运输位于所选边界内时记录购入道路货运服务；避免与自有车辆燃料重复。
 
-- 选定流: Road freight transport service resolved from route records
+- 选定流: 按路线记录确定的公路货运服务
 - 流属性/单位: Transport work / t·km
 - 数量规则: Net transported tonnes multiplied by loaded kilometres
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -667,7 +667,7 @@ sync_with: pcr.en-US.md
 
 仅对转交有记录服务商的废水记录外部处理服务。
 
-- 选定流: Wastewater treatment service resolved from provider and route records
+- 选定流: 按服务方及路线记录确定的废水处理服务
 - 流属性/单位: Volume / m3 or provider-native service unit
 - 数量规则: Treated quantity reconciled to generated wastewater and invoice
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -699,7 +699,7 @@ sync_with: pcr.en-US.md
 
 将此预期产出记录为声明含水率、形态、等级和初级调制交付点下的一种指定饲草产品。
 
-- 选定流: Named first-conditioned forage product; UUID unresolved
+- 选定流: 具名初次整备后饲草产品；UUID 未解析
 - 流属性/单位: Mass / kg
 原始产出计量与核对要求：Measured net accepted mass at declared moisture
 
@@ -726,7 +726,7 @@ sync_with: pcr.en-US.md
 
 将此预期产出作为较低等级产品，与剔除物或废物分开报告。
 
-- 选定流: Named lower-grade conditioned forage; UUID unresolved
+- 选定流: 具名较低等级整备饲草；UUID 未解析
 - 流属性/单位: Mass / kg
 - 数量规则: Measured mass by grade and destination
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -753,7 +753,7 @@ sync_with: pcr.en-US.md
 
 按互斥去向记录杂质、腐败生物量、细料及不合格材料。
 
-- 选定流: Conditioning reject material; UUID unresolved
+- 选定流: 整备拒收材料；UUID 未解析
 - 流属性/单位: Mass / kg
 - 数量规则: Measured reject mass by batch and destination
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -778,7 +778,7 @@ sync_with: pcr.en-US.md
 
 将产生的废水与购入处理服务分开记录，并标明去向。
 
-- 选定流: Forage-conditioning wastewater; UUID unresolved
+- 选定流: 饲草整备废水；UUID 未解析
 - 流属性/单位: Volume / m3 or Mass / kg
 - 数量规则: Metered or calculated generated quantity by batch and route
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -805,7 +805,7 @@ sync_with: pcr.en-US.md
 
 仅记录实测或按方法计算的颗粒物排放，并保留粒径级别和接收环境。
 
-- 选定流: Particulate matter to air by verified size fraction; UUID unresolved
+- 选定流: 按已核实粒径组分区分的空气颗粒物排放；UUID 未解析
 - 流属性/单位: Mass / kg
 - 数量规则: Measured or method-calculated emitted particulate mass
 - 数值来源模式: 计算值 (`calculated_value`)

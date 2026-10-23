@@ -197,7 +197,7 @@ sync_with: pcr.en-US.md
 
 仅对灌溉田块分层记录输送的灌溉水；雨养田块记录为零且不创建交换。
 
-- 选定流: Irrigation water supply
+- 选定流: 灌溉水供应
 - 流属性/单位: Volume / m3
 - 数量规则: 计量或计算的田间供水量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -248,7 +248,7 @@ sync_with: pcr.en-US.md
 
 记录泵、控制设备或其他田间设备在适用时的计量用电；未启用路线不创建交换。
 
-- 选定流: Electricity supply
+- 选定流: 电力供应
 - 流属性/单位: Energy / kWh
 - 数量规则: 归属于田块和作物周期的计量电量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -305,7 +305,7 @@ sync_with: pcr.en-US.md
 
 记录从受管理生产内部转交至独立收获节点的新鲜田间作物生物量，不包括未收获残体和损失。
 
-- 选定流: Standing forage maize biomass
+- 选定流: 田间生长的饲用玉米生物质
 - 流属性/单位: Mass / kg fresh matter
 - 数量规则: 按收获产出、实测收获损失和去向分流计算
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -385,7 +385,7 @@ sync_with: pcr.en-US.md
 
 按受纳水体分区记录或计算硝酸盐淋失或径流，并保留数量是硝酸盐还是硝酸盐氮。
 
-- 选定流: Nitrate to water
+- 选定流: 排放至水体的硝酸根
 - 流属性/单位: Mass / kg NO3-
 - 数量规则: 保留受纳分区和基准的场址模型或测量
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -413,7 +413,7 @@ sync_with: pcr.en-US.md
 
 在可得时分别记录实测或模拟的溶解态和颗粒态磷损失，并注明受纳分区和化学基准。
 
-- 选定流: Phosphorus to water
+- 选定流: 排放至水体的磷
 - 流属性/单位: Mass / kg P or reported phosphate basis
 - 数量规则: 保留形态与受纳分区的场址模型或测量
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -446,7 +446,7 @@ sync_with: pcr.en-US.md
 
 按同一田块和作物周期基准接收田间生产转交的田间作物内部流。
 
-- 选定流: Standing forage maize biomass
+- 选定流: 田间生长的饲用玉米生物质
 - 流属性/单位: Mass / kg fresh matter
 - 数量规则: 等于关联的standing_forage_crop产出
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -538,7 +538,7 @@ sync_with: pcr.en-US.md
 
 记录不符合参考产品规格但送往其他声明用途的收获生物量。其不计入合格参考产出，且必须声明去向。
 
-- 选定流: Downgraded harvested maize biomass
+- 选定流: 降级的已收获玉米生物质
 - 流属性/单位: Mass / kg fresh matter
 - 数量规则: 按去向实测的降级质量
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -566,7 +566,7 @@ sync_with: pcr.en-US.md
 
 记录未被接收或转往其他产品用途的切割或损伤生物量，包括其田间留存、收集或处置去向。
 
-- 选定流: Harvest biomass loss or residue
+- 选定流: 采收生物质损失或残余物
 - 流属性/单位: Mass / kg fresh matter
 - 数量规则: 按去向实测或抽样的互斥损失质量
 - 数值来源模式: 前景记录 (`foreground_record`)

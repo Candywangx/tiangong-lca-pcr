@@ -458,29 +458,59 @@ sync_with: pcr.en-US.md
   - 基准类型: 过程产出 (`process_output`)
   - 证据类型: 推理估算 (`reasoned_estimate`)
 
-###### 其他预期收获产品 (`harvest_coproducts`)
+###### 采收交接点声明纤维作物的种子（`harvest_seed_coproduct`）
 
-仅当种子、木质芯、叶片或其他材料具有预期用途和有凭据的交接时，才作为产品记录。
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
 
-- 选定流: 产品特定预期共产品；UUID 未解析
-- 流属性/单位: Mass / kg
-- 数量规则: 按产品状态和去向计量质量
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 产品特定 (`product_specific`)
-原始活动或阶段基准：每 1 kg 收集的原始纤维材料.
+采集与交接范围：仅当种子、木质芯、叶片或其他材料具有预期用途和有凭据的交接时，才作为产品记录。 原始活动或阶段基准：每 1 kg 收集的原始纤维材料.
 
+- 选定流：采收交接点声明纤维作物的种子
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`product_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: 过程产出 (`process_output`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_output_destinations`
-- 数量范围: 用于首轮筛查的宽泛 QA 范围；须由实际前景记录替换
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 20
-  - 单位: kg/kg raw collected fibre material
-  - 基准: 每 1 kg 收集的原始纤维材料; conditional routes impose zero only when inactive
-  - 基准类型: 过程产出 (`process_output`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_output_destinations`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 采收交接点声明纤维作物的木质芯（`harvest_woody_core_coproduct`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：仅当种子、木质芯、叶片或其他材料具有预期用途和有凭据的交接时，才作为产品记录。 原始活动或阶段基准：每 1 kg 收集的原始纤维材料.
+
+- 选定流：采收交接点声明纤维作物的木质芯
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`product_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_output_destinations`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 采收交接点声明纤维作物的叶片（`harvest_leaves_coproduct`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：仅当种子、木质芯、叶片或其他材料具有预期用途和有凭据的交接时，才作为产品记录。 原始活动或阶段基准：每 1 kg 收集的原始纤维材料.
+
+- 选定流：采收交接点声明纤维作物的叶片
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`product_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_output_destinations`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
 
 ##### 废物流
 
@@ -672,29 +702,59 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_conditioning_mass`
 
-###### 其他预期制备共产品 (`fibre_coproducts`)
+###### 声明纤维作物整备产生的木质碎屑（`preparation_shives_coproduct`）
 
-仅在用途和交接均有记录时，将麻屑、木质芯、短纤、种子或其他产出记录为共产品。
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
 
-- 选定流: 产品特定共产品；UUID 未解析
-- 流属性/单位: Mass / kg
-- 数量规则: 按状态、等级和去向计量产出
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 产品特定 (`product_specific`)
-原始活动或阶段基准：每 1 kg 制备原纤维.
+采集与交接范围：仅在用途和交接均有记录时，将麻屑、木质芯、短纤、种子或其他产出记录为共产品。 原始活动或阶段基准：每 1 kg 制备原纤维.
 
+- 选定流：声明纤维作物整备产生的木质碎屑
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`product_specific`
 - 归一化基准：每声明的参考流
-- 基准类型: 过程产出 (`process_output`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_output_destinations`
-- 数量范围: 用于首轮筛查的宽泛 QA 范围；须由实际前景记录替换
-  - 范围角色: QA 校验 (`qa_guardrail`)
-  - 下限: 0
-  - 上限: 20
-  - 单位: kg/kg prepared raw fibre
-  - 基准: 每 1 kg 制备原纤维; conditional routes impose zero only when inactive
-  - 基准类型: 过程产出 (`process_output`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_output_destinations`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 声明纤维作物整备产生的短纤维束（`preparation_tow_coproduct`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：仅在用途和交接均有记录时，将麻屑、木质芯、短纤、种子或其他产出记录为共产品。 原始活动或阶段基准：每 1 kg 制备原纤维.
+
+- 选定流：声明纤维作物整备产生的短纤维束
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`product_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_output_destinations`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
+
+###### 声明纤维作物整备时分离的种子（`preparation_seed_coproduct`）
+
+仅在本具体材料被独立预期、并确实在原有过程边界内交接时适用。记录实际物种或材料、物理形态、等级、必要时的水分或组成、批次、接收方、数量及交接点。列举名称不证明实际生产，也不是默认配方。每一物理批次及去向分别记录；内部转移或已计入所选参考产出的批次不得再次作为共产品。对于确实混合的筛下物或边角料物流，保留实测物理组成，不编造分离，也不重复计入组分。
+
+采集与交接范围：仅在用途和交接均有记录时，将麻屑、木质芯、短纤、种子或其他产出记录为共产品。 原始活动或阶段基准：每 1 kg 制备原纤维.
+
+- 选定流：声明纤维作物整备时分离的种子
+- 流属性/单位：Mass / kg
+- 数量规则：在唯一实际交接点计量本具体产品质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
+- 数值来源模式：`foreground_record`
+- 适用范围：`product_specific`
+- 归一化基准：每声明的参考流
+- 基准类型：`process_output`
+- 证据类型：`collected_record`
+- 采集协议：`cp_output_destinations`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
 
 ##### 废物流
 
@@ -824,7 +884,7 @@ sync_with: pcr.en-US.md
 | `cp_energy` | `all processes` | energy carriers | records | meters; invoices; equipment and fuel logs | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | native carrier unit | monthly and by operation | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_area_period` | `crop_production` | area and period | records | georeferenced field register; establishment and productive dates | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | ha and days | each crop period | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_harvest_mass` | `harvest_extraction` | harvest mass | records | calibrated scale; lot moisture sample | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg and % wet basis | each harvest lot | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
-| `cp_output_destinations` | `harvest and preparation` | intended outputs | records | dispatch note; buyer or internal transfer record | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg | each output lot | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
+| `cp_output_destinations` | `harvest and preparation` | intended outputs | records | dispatch note; buyer or internal transfer record |direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output harvest_coproducts_specific_output：保留原 harvest_coproducts 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 fibre_coproducts_specific_output：保留原 fibre_coproducts 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 | kg | each output lot | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_residues` | `all processes` | residues and waste | records | scale ticket; destination and fate record | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg | each transfer | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_conditioning_mass` | `primary_fibre_preparation` | received and prepared fibre | records | calibrated scales; moisture and grade sample | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | kg and % wet basis | each lot | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |
 | `cp_conditioning_water` | `primary_fibre_preparation` | process water | records | meter reading and source record | direct record with traceable source；原始汇总与分配：sum by process and normalize through accepted output | m3 | each batch or day | representative declared period | all included sites and lots | 每声明的参考流 | calibration, invoice, log or receipt retained |

@@ -533,28 +533,44 @@ Raw activity or stage basis: reference flow.
   - Basis: declared process or reference-flow basis
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-###### Intended co-product or downgraded seed stream (`intended_seed_coproduct_or_downgrade`)
-Record this product output only when screenings, downgraded seed, or another separated stream is intentionally transferred across the boundary as a documented co-product or independent product. Identify its destination and do not count it as accepted sowing seed.
-- Selected flow: intentionally transferred downgraded or co-product seed stream
-- Flow property / unit: Mass / kg
-- Amount rule: measured output by batch and declared destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-Raw activity or stage basis: per 1 kg accepted seed.
+###### Downgraded soybean seed for a declared non-sowing use (`downgraded_soybean_seed_product`)
 
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record this product output only when screenings, downgraded seed, or another separated stream is intentionally transferred across the boundary as a documented co-product or independent product. Identify its destination and do not count it as accepted sowing seed. Raw activity or stage basis: per 1 kg accepted seed.
+
+- Selected flow: Downgraded soybean seed for a declared non-sowing use
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_reject_mass_records`
 - Sources: `mass-balance-identity`
-- Range: Candidate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1000
-  - Unit: declared flow unit
-  - Basis: declared process or reference-flow basis
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Soybean seed-cleaning screenings with measured composition (`soybean_seed_screenings_product`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record this product output only when screenings, downgraded seed, or another separated stream is intentionally transferred across the boundary as a documented co-product or independent product. Identify its destination and do not count it as accepted sowing seed. Raw activity or stage basis: per 1 kg accepted seed.
+
+- Selected flow: Soybean seed-cleaning screenings with measured composition
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_reject_mass_records`
+- Sources: `mass-balance-identity`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
 ##### Waste flows
 ##### Elementary flows
 ### Process: Seed Storage (`seed_storage`)
@@ -772,7 +788,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_seed_treatment_records` | `seed_conditioning_treatment_and_packaging` | treatment material | treatment record | product; active substance; dose; treated mass; lot | treatment log, label, supplier certificate; Raw aggregation and attribution: sum by product and treated lot `seed_treatment_material_specific_input`: Record treatment products and active substances applied to accepted seed lots, including dose, treated mass, and treatment status. measured treatment product and active-substance mass by lot This is a mandatory specific-input collection requirement, not a selected exchange. Identify every actual formulation, carrier or independently supplied service from primary records, with physical identity, state, native quantity and supplier specifications. Create a separate concrete card for each actual input before dataset completeness; verify a compatible UUID or explicitly retain its unresolved identity. Product mass and contained active-substance mass are different ledgers: convert only using documented composition and never count both as two purchases. Finished feed and separately added ingredients must not duplicate its recipe. Distinguish fuel purchase, purchased electricity/heat and inclusive machinery services; charge only their actual boundaries once. Preserve the original operation, period, attribution and final-output normalization. Missing identity or records do not establish zero use; no universal component range or invented recipe is supplied. `fao-soya-seed-production` | kg product, kg active substance, kg seed | per batch | conditioning campaign | facility | per declared reference flow | log, label |
 | `cp_packaging_input_records` | `seed_conditioning_treatment_and_packaging` | packaging | packaging issue record | type; item count; capacity; mass; batch | inventory record or packing log; Raw aggregation and attribution: convert count only with declared capacity or mass | item and kg | per batch | conditioning campaign | facility | per declared reference flow | packing log, inventory record |
 | `cp_accepted_seed_mass` | `seed_conditioning_treatment_and_packaging` | accepted seed | release record | batch; mass; moisture; purity; germination; treatment; gate | calibrated scale and quality test; Raw aggregation and attribution: sum released lots at declared basis | kg and attributes | per batch | conditioning campaign | facility and gate | per declared reference flow | scale, test, release record |
-| `cp_reject_mass_records` | `seed_conditioning_treatment_and_packaging` | rejects and screenings | reject record | batch; stream; mass; fate | scale or batch mass balance; Raw aggregation and attribution: sum by stream and fate | kg | per batch | conditioning campaign | facility | per declared reference flow | scale, reject log, fate |
+| `cp_reject_mass_records` | `seed_conditioning_treatment_and_packaging` | rejects and screenings | reject record | batch; stream; mass; fate |scale or batch mass balance; Raw aggregation and attribution: sum by stream and fate intended_seed_coproduct_or_downgrade_specific_output: Preserve every actual intended output previously collected under intended_seed_coproduct_or_downgrade, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | kg | per batch | conditioning campaign | facility | per declared reference flow | scale, reject log, fate |
 | `cp_packaging_waste_records` | `seed_conditioning_treatment_and_packaging` | packaging waste | waste record | material; mass; fate; period | scale or contractor record; Raw aggregation and attribution: sum by material and fate `packaging_waste_specific_output`: Record packaging losses and discarded packaging by material and fate. weighed packaging waste or inventory reconciliation by batch This is a mandatory output-identification requirement, not an aggregate exchange. Preserve every actual co-product, reject, packaging waste and treatment stream in this operation. Before dataset completeness create separate cards for physically distinct streams, with actual material/state, quantity, destination and Product/Waste role. A genuinely mixed waste stream may remain one physically defined mixture with measured composition; do not invent separation or count its components again. Keep unlike units separate, retain the original allocation and reference normalization, and reconcile the output balance. Identify actual functions before co-product allocation; waste does not acquire a co-product share merely by having mass. Confirm a compatible UUID or explicitly retain its unresolved identity. Missing records never establish zero or exclusion. `usda-seed-cleaning-handling` | kg | per shipment or campaign | conditioning campaign | facility | per declared reference flow | scale ticket, contractor record |
 | `cp_conditioning_emission_records` | `seed_conditioning_treatment_and_packaging` | conditioning emissions | emission record | substance; compartment; mass or factor; campaign | dust log, maintenance record, calculation; Raw aggregation and attribution: sum by species and compartment `conditioning_dust_and_combustion_emissions_specific_emission`: Record particulate or combustion species emitted from cleaning and drying according to the selected compartment and method. measured, collected, or calculated emission by campaign This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. `fao-soya-drying-handling` | kg | campaign or period | conditioning campaign | facility | per declared reference flow | log, calculation |
 | `cp_storage_lot_records` | `seed_storage` | accepted seed in storage | inventory record | lot; mass; start and end dates; moisture; location | inventory reconciliation and scale; Raw aggregation and attribution: sum stored mass and retain duration | kg and days | per lot | storage period | storage site | per declared reference flow | inventory, scale |

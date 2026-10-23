@@ -99,7 +99,7 @@ sync_with: pcr.en-US.md
 
 记录已定植的母球茎切块、球茎或育苗植株，并记录来源和健康状态。
 
-- 选定流： Yautia planting material
+- 选定流： 牙芋种植材料
 - 流属性/单位： Number of items / plant or piece
 - 数量规则： Count planting units established
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -205,7 +205,7 @@ sync_with: pcr.en-US.md
 
 记录取水量、输送量、水源、扬程和灌溉方式；雨养路线记录为零。
 
-- 选定流： Irrigation water
+- 选定流： 灌溉水
 - 流属性/单位： Volume / m3
 - 数量规则： Metered delivery or pump-flow calculation
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -251,7 +251,7 @@ sync_with: pcr.en-US.md
 
 记录发生起收损失前可收获球茎的总质量。
 
-- 选定流： Harvest-ready yautia corms and cormels
+- 选定流： 待采收的牙芋球茎及子球茎
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Field estimate reconciled to lifted mass and documented loss
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -279,7 +279,7 @@ sync_with: pcr.en-US.md
 
 按去向记录地上部、根、损伤生物量和未收获作物。
 
-- 选定流： Yautia field residues and losses
+- 选定流： 牙芋田间残余物及损失
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Measured or sampled mass by fate
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -305,7 +305,7 @@ sync_with: pcr.en-US.md
 
 使用已声明方法根据所有适用氮源计算直接 N2O。
 
-- 选定流： Dinitrogen monoxide, air
+- 选定流： 排放至空气的一氧化二氮
 - 流属性/单位： Mass / kg N2O
 - 数量规则： Apply the selected factor to recorded 氮投入 and convert N2O-N to N2O by 44/28
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -338,7 +338,7 @@ sync_with: pcr.en-US.md
 
 该卡片将种植环节同一待采收批次链接至起收边界。
 
-- 选定流： Harvest-ready yautia corms and cormels
+- 选定流： 待采收的牙芋球茎及子球茎
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `harvest_ready_crop` for the represented field
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -409,7 +409,7 @@ sync_with: pcr.en-US.md
 
 已收集的原始起收状态含附着土壤，位于修整或清洗之前。
 
-- 选定流： Raw lifted yautia corms and cormels
+- 选定流： 刚起获的牙芋球茎及子球茎
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed collected mass before conditioning
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -435,7 +435,7 @@ sync_with: pcr.en-US.md
 
 记录留在田间或已受损而未进入原始收集状态的作物，并声明去向。
 
-- 选定流： Yautia lifting loss and damaged material
+- 选定流： 牙芋起获损失及受损材料
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Difference between crop entering lifting and collected raw mass after soil adjustment
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -468,7 +468,7 @@ sync_with: pcr.en-US.md
 
 该卡片将同一原始起收批次链接至初级调理边界。
 
-- 选定流： Raw lifted yautia corms and cormels
+- 选定流： 刚起获的牙芋球茎及子球茎
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `raw_lifted_yautia` for the represented lot
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -493,7 +493,7 @@ sync_with: pcr.en-US.md
 
 仅在实际湿法清洗时记录供水；干法调理记为零。
 
-- 选定流： Process water
+- 选定流： 过程水
 - 流属性/单位： Volume / m3
 - 数量规则： Metered water supplied; dry-cleaned lots report zero
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -517,7 +517,7 @@ sync_with: pcr.en-US.md
 
 仅在实际使用泵、清洗机或输送机时记录其用电。
 
-- 选定流： Electricity
+- 选定流： 电力
 - 流属性/单位： Energy / kWh
 - 数量规则： Metered or equipment-rated electricity allocated to the lot
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -548,7 +548,7 @@ sync_with: pcr.en-US.md
 
 准备好的状态为已经修整和清洁、即将按去向分级的材料。
 
-- 选定流： Prepared fresh yautia cormels
+- 选定流： 整备后的新鲜牙芋子球茎
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed prepared mass after included trimming/cleaning
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -574,7 +574,7 @@ sync_with: pcr.en-US.md
 
 记录允许时，将移除土壤与作物修整物分开，并声明各自去向。
 
-- 选定流： Removed soil, trimmings and conditioning rejects
+- 选定流： 移除泥土、修整物及整备拒收物
 - 流属性/单位： Mass / kg
 - 数量规则： Weighed outputs or mass-balance difference, distinguishing soil and crop material
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -598,7 +598,7 @@ sync_with: pcr.en-US.md
 
 仅在湿法清洗时记录排水，并与供水和回用水核对。
 
-- 选定流： Wastewater from yautia washing
+- 选定流： 牙芋清洗废水
 - 流属性/单位： Volume / m3
 - 数量规则： Measured discharge or water balance; zero without washing
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -631,7 +631,7 @@ sync_with: pcr.en-US.md
 
 该卡片将同一准备好的批次链接至按去向分级环节。
 
-- 选定流： Prepared fresh yautia cormels
+- 选定流： 整备后的新鲜牙芋子球茎
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Equal `prepared_yautia` for the represented lot
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -690,7 +690,7 @@ sync_with: pcr.en-US.md
 
 仅在有食用用途及交接证据时记录为产品产出。
 
-- 选定流： Downgraded fresh yautia
+- 选定流： 降级新鲜牙芋
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed downgraded mass by buyer or use
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -714,7 +714,7 @@ sync_with: pcr.en-US.md
 
 将有意留作或出售用于繁殖的球茎或小球茎记为独立的预期产出。
 
-- 选定流： Yautia planting material
+- 选定流： 牙芋种植材料
 - 流属性/单位： Mass and number / kg and item
 - 数量规则： Weighed and counted propagation material by retention or sale destination
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -741,7 +741,7 @@ sync_with: pcr.en-US.md
 
 按饲料、堆肥、还田、处理或处置去向记录拒收材料。
 
-- 选定流： Yautia grading rejects and residues
+- 选定流： 牙芋分级拒收物及残余物
 - 流属性/单位： Mass / kg fresh mass
 - 数量规则： Weighed reject mass or mass-balance residual, with destination stated
 - 数值来源模式： 计算值 (`calculated_value`)

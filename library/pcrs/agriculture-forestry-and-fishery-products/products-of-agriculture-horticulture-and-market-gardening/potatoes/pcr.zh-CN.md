@@ -287,7 +287,7 @@ sync_with: pcr.en-US.md
 
 只有小薯或等外品具有记录的有益去向或销售时，才作为独立产品输出。保留等级、去向和收到状态质量，不得静默并入参考数量。
 
-- 选定流：Potatoes; fresh, unprocessed produce; production mix, at farm gate
+- 选定流：马铃薯；新鲜未加工产品；生产混合，农场门
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按记录的有益去向计量收到状态质量
 - 数值来源模式：前景记录（`foreground_record`）
