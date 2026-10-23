@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: a9604159d0f0ccb36dfa0a6f7829564bffc072ba
-lastReviewedNote: "PCR #130: reviewed the source-map-js 1.2.2 security lock delta and offline mapping/PostCSS regressions on the explicit PCR #129 development dependency. Runtime pins, static export, language/source fidelity, methodology and product 0.4.7 remain unchanged. Source merge requires PCR #129/PR #126 on main first, exact merge-input revalidation, fresh full qualification and independent review; publication remains separately authorized."
+lastReviewedAt: 2026-10-23
+lastReviewedCommit: 1024c5e95110392bc0828967b89a262723328b79
+lastReviewedNote: "PCR #145 / PR #136: reviewed Fumadocs core/UI 16.17.7 and Zod 4.6.7, literal search-title rendering and semantic listbox-option acceptance with emitted Worker, keyboard selection and navigation checks. All 11 strict projects / 415 authored files and 86 focused tests pass; synthetic browser proof does not replace complete hosted corpus, coverage, sealed-web or release qualification. Runtime and methodology/publication contracts remain in force."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
