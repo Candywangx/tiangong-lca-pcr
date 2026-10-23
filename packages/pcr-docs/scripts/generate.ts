@@ -1012,14 +1012,14 @@ async function generate() {
     }
     await flush();
     const termDictionary = createSearchTermDictionary(pending.map(shard => shard.entries));
-    const indexes = pending.map(shard => ({...encodeSearchEntries(shard.entries, 5, termDictionary), records: shard.records}));
+    const indexes = pending.map(shard => ({...encodeSearchEntries(shard.entries, 5, termDictionary, {compactIntegers: true}), records: shard.records}));
     const payload = JSON.stringify({schemaVersion: 5, indexes});
     const restored: unknown = JSON.parse(payload);
     if (!isUnknownRecord(restored) || !Array.isArray(restored.indexes)) throw new Error("Invalid packed search data");
     for (let index = 0; index < pending.length; index++) {
       const data: unknown = restored.indexes[index];
       if (!isUnknownRecord(data)) throw new Error("Invalid packed search index");
-      const entries = decodeSearchEntries(data.entries, data.sparseMaps, 5, data.scoreMasks, data.postingDeltas, data.columnarMaps, data.joinedTerms, termDictionary, data.dictionaryTerms);
+      const entries = decodeSearchEntries(data.entries, data.sparseMaps, 5, data.scoreMasks, data.postingDeltas, data.columnarMaps, data.joinedTerms, termDictionary, data.dictionaryTerms, data.integerColumns);
       if (sha256(JSON.stringify(entries)) !== pending[index]!.nativeSha256 || sha256(JSON.stringify(data.records)) !== pending[index]!.recordsSha256)
         throw new Error("Packed search changed native data: " + language + "/" + index);
     }

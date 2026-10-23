@@ -1,6 +1,45 @@
 /** The pinned FlexSearch index uses nine scoring slots; wire v3/v4/v5 retain every slot and ID. */
 export const SEARCH_SCORE_SLOTS = 9;
 const invalid = () => new Error('Invalid serialized search data.');
+const integerAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+/** Canonical base64 VLQ; arithmetic retains every signed safe integer without 32-bit truncation. */
+export function packSearchIntegers(values: readonly number[]): string {
+  const parts: string[] = [];
+  for (const value of values) {
+    if (!Number.isSafeInteger(value)) throw invalid();
+    let magnitude = Math.abs(value);
+    const first = (magnitude % 16) * 2 + (value < 0 ? 1 : 0);
+    magnitude = Math.floor(magnitude / 16);
+    parts.push(integerAlphabet[first + (magnitude > 0 ? 32 : 0)]!);
+    while (magnitude > 0) {
+      const next = magnitude % 32;
+      magnitude = Math.floor(magnitude / 32);
+      parts.push(integerAlphabet[next + (magnitude > 0 ? 32 : 0)]!);
+    }
+  }
+  return parts.join('');
+}
+export function unpackSearchIntegers(value: unknown): number[] {
+  if (typeof value !== 'string') throw invalid();
+  const result: number[] = [];
+  for (let offset = 0; offset < value.length;) {
+    let byte = integerAlphabet.indexOf(value[offset++]!);
+    if (byte < 0) throw invalid();
+    const negative = (byte & 1) !== 0;
+    let magnitude = Math.floor((byte & 31) / 2), factor = 16, length = 1;
+    while (byte & 32) {
+      if (offset >= value.length || length++ >= 11) throw invalid();
+      byte = integerAlphabet.indexOf(value[offset++]!);
+      if (byte < 0) throw invalid();
+      const digit = byte & 31, next = magnitude + digit * factor;
+      if (!Number.isSafeInteger(next) || (!(byte & 32) && digit === 0)) throw invalid();
+      magnitude = next; factor *= 32;
+    }
+    if (negative && magnitude === 0) throw invalid();
+    result.push(negative ? -magnitude : magnitude);
+  }
+  return result;
+}
 const mapKey = (key: string) => /^[1-9][0-9]*\.map$/u.test(key);
 const object = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -15,6 +54,7 @@ export interface SearchWireEntries {
   columnarMaps?: string[];
   joinedTerms?: true;
   dictionaryTerms?: true;
+  integerColumns?: string[];
 }
 function sparseMap(value: unknown[]): SparseTerm[] | undefined {
   const result: SparseTerm[] = [];
@@ -121,6 +161,10 @@ function restoreColumnar(value: unknown[], joinedTerms = false, dictionary?: rea
   if (offset !== postings.length) throw invalid();
   return result;
 }
+function restoreIntegerColumns(value: unknown[]): unknown[] {
+  if (value.length !== 3 || typeof value[0] !== 'string' || typeof value[1] !== 'string') throw invalid();
+  return [unpackSearchIntegers(value[0]), unpackSearchIntegers(value[1]), value[2]];
+}
 function restoreMasks(value: unknown[]): unknown[] {
   const nested = value.map(term => {
     if (!Array.isArray(term) || term.length < 2 || typeof term[0] !== 'string'
@@ -160,33 +204,40 @@ function restoreMap(value: unknown[], version: 3 | 4): unknown[] {
   });
 }
 /** Compress only supported map shapes when smaller; every export key/value remains recoverable. */
-export function encodeSearchEntries(entries: Record<string, unknown[]>, version: 3 | 4 | 5 = 3, termDictionary?: readonly string[]): SearchWireEntries {
+export function encodeSearchEntries(entries: Record<string, unknown[]>, version: 3 | 4 | 5 = 3, termDictionary?: readonly string[], options: {compactIntegers?: boolean} = {}): SearchWireEntries {
   if (termDictionary !== undefined && version !== 5) throw invalid();
+  if (options.compactIntegers && (version !== 5 || termDictionary === undefined)) throw invalid();
   const dictionary = termDictionary === undefined ? undefined : readSearchTermDictionary(termDictionary);
   const lookup = dictionary && new Map(dictionary.map((term, id) => [term, id]));
   const result: Record<string, unknown[]> = Object.create(null) as Record<string, unknown[]>;
-  const sparseMaps: string[] = [], columnarMaps: string[] = [];
+  const sparseMaps: string[] = [], columnarMaps: string[] = [], integerColumns: string[] = [];
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
     const nested = mapKey(key) ? sparseMap(value) : undefined;
     const sparse = nested && (version >= 4 ? maskMap(nested) : nested);
     const columns = version >= 4 && sparse ? columnarMap(sparse as unknown[][], version === 5, lookup) : undefined;
-    const encoded = columns && new TextEncoder().encode(JSON.stringify(columns)).length
-      < new TextEncoder().encode(JSON.stringify(sparse)).length ? columns : sparse;
+    const compact = options.compactIntegers && lookup && columns
+      ? [packSearchIntegers(columns[0] as number[]), packSearchIntegers(columns[1] as number[]), columns[2]] : undefined;
+    const bestColumns = compact && JSON.stringify(compact).length < JSON.stringify(columns).length ? compact : columns;
+    const encoded = bestColumns && new TextEncoder().encode(JSON.stringify(bestColumns)).length
+      < new TextEncoder().encode(JSON.stringify(sparse)).length ? bestColumns : sparse;
     if (encoded && new TextEncoder().encode(JSON.stringify(encoded)).length
       < new TextEncoder().encode(JSON.stringify(value)).length) {
-      if (JSON.stringify(version >= 4 ? restoreMasks(encoded === columns ? restoreColumnar(encoded, version === 5, dictionary) : encoded) : restoreMap(encoded, 3)) !== JSON.stringify(value)) throw invalid();
+      const restoredColumns = encoded === compact ? restoreIntegerColumns(encoded) : encoded;
+      if (JSON.stringify(version >= 4 ? restoreMasks(encoded === bestColumns ? restoreColumnar(restoredColumns, version === 5, dictionary) : encoded) : restoreMap(encoded, 3)) !== JSON.stringify(value)) throw invalid();
       result[key] = encoded; sparseMaps.push(key);
-      if (encoded === columns) columnarMaps.push(key);
+      if (encoded === bestColumns) columnarMaps.push(key);
+      if (encoded === compact) integerColumns.push(key);
     } else result[key] = value;
   }
   return version >= 4 ? { entries: result, sparseMaps, scoreMasks: true, postingDeltas: true,
     ...(columnarMaps.length ? { columnarMaps } : {}),
     ...(version === 5 ? { joinedTerms: true as const } : {}),
-    ...(dictionary ? { dictionaryTerms: true as const } : {}) } : { entries: result, sparseMaps };
+    ...(dictionary ? { dictionaryTerms: true as const } : {}),
+    ...(integerColumns.length ? { integerColumns } : {}) } : { entries: result, sparseMaps };
 }
 /** Decode the declared bounded v3/v4/v5 format before engine import; unmarked arrays remain native. */
-export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, version: 3 | 4 | 5 = 3, scoreMasks?: unknown, postingDeltas?: unknown, columnarMaps?: unknown, joinedTerms?: unknown, termDictionary?: unknown, dictionaryTerms?: unknown): Record<string, unknown[]> {
+export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, version: 3 | 4 | 5 = 3, scoreMasks?: unknown, postingDeltas?: unknown, columnarMaps?: unknown, joinedTerms?: unknown, termDictionary?: unknown, dictionaryTerms?: unknown, integerColumns?: unknown): Record<string, unknown[]> {
   if (termDictionary === undefined ? dictionaryTerms !== undefined : version !== 5 || dictionaryTerms !== true) throw invalid();
   const dictionary = termDictionary === undefined ? undefined : readSearchTermDictionary(termDictionary);
   if (version === 5 ? joinedTerms !== true || scoreMasks !== true || postingDeltas !== true : joinedTerms !== undefined) throw invalid();
@@ -200,10 +251,15 @@ export function decodeSearchEntries(entries: unknown, sparseMaps: unknown, versi
     || !Array.isArray(columnarMaps) || !columnarMaps.every(key => typeof key === 'string' && selected.has(key))
     || new Set(columnarMaps).size !== columnarMaps.length)) throw invalid();
   const columnar = new Set((columnarMaps ?? []) as string[]);
+  if (integerColumns !== undefined && (version !== 5 || !dictionary || !Array.isArray(integerColumns)
+    || !integerColumns.every(key => typeof key === 'string' && columnar.has(key))
+    || new Set(integerColumns).size !== integerColumns.length)) throw invalid();
+  const compact = new Set((integerColumns ?? []) as string[]);
   const result: Record<string, unknown[]> = Object.create(null) as Record<string, unknown[]>;
   for (const [key, value] of Object.entries(entries)) {
     if (!Array.isArray(value)) throw invalid();
-    result[key] = selected.has(key) ? (scoreMasks === true ? restoreMasks(columnar.has(key) ? restoreColumnar(value, version === 5, dictionary) : value) : restoreMap(value, version === 3 ? 3 : 4)) : value;
+    const columns = compact.has(key) ? restoreIntegerColumns(value) : value;
+    result[key] = selected.has(key) ? (scoreMasks === true ? restoreMasks(columnar.has(key) ? restoreColumnar(columns, version === 5, dictionary) : value) : restoreMap(value, version === 3 ? 3 : 4)) : value;
   }
   return result;
 }

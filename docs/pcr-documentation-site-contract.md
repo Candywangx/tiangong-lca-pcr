@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-21"
+lastReviewedAt: "2026-10-22"
 lastReviewedCommit: "40e87795369c6fdb29e1cf4f0835b5dc4ad82a75"
-lastReviewedNote: "Scoped search-only v5 migration for CPC04 PR #26: shared dictionary and physical packing preserve native logical indexes, full result records and ranking. Download packaging, methodology, classifications, CI and budgets remain unchanged; fresh validation is recorded separately."
+lastReviewedNote: "Added opt-in canonical signed-VLQ dictionary-reference and score-header columns to search v5. Native postings, term order, full records, legacy readers, ranking and existing raw/gzip/file/resource budgets are preserved; changed-source validation is reported separately."
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -118,6 +118,17 @@ score slot, posting, complete result record and logical per-index candidate limi
 Tokenization, the 30-candidate limit per logical index, URL deduplication and final
 ranking are unchanged. The Worker retains v1-v4 and ungrouped v5 compatibility;
 malformed metadata fails closed and allows a clean retry.
+
+Dictionary-bearing v5 indexes may explicitly mark `integerColumns`, a unique subset
+of `columnarMaps`. Only the dictionary-reference deltas and score-header integers
+are then encoded as canonical signed base64 VLQ strings. Numeric postings, their
+array boundaries, full records and the first-encounter dictionary remain unchanged.
+The reader restores both integer arrays before existing dictionary/slot validation;
+it rejects missing/foreign markers, invalid characters, truncation, overlong values,
+negative zero and unsafe-integer overflow before engine import. Arithmetic, rather
+than 32-bit shifts on IDs, preserves signed safe-integer values. Unmarked v5 and
+older supported formats retain their existing readers. No additional browser asset,
+dependency, request, download format or compression-budget exception is introduced.
 
 The generator verifies restored native-index and full-record SHA-256 fingerprints
 against their pre-encoding values. Each language's retained 20,000,000-byte raw and
