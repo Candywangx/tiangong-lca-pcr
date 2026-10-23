@@ -3,7 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.forestry-and-logging-produ
 language: zh-CN
 status: candidate
 content_maturity: authored_methodology
-translation_status: reviewed
+translation_status: aligned
 sync_with: pcr.en-US.md
 ---
 
