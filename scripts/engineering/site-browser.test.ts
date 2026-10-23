@@ -3,7 +3,7 @@ import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync,realpathSync,exi
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import {inspectSiteExport,parseSiteBrowserArguments,prepareSiteBrowserReport,withSiteExportServer,isCancelledSitePrefetch,captureCancelledSiteRequest,emittedLanguageCodes,browserLanguageScenarios,findInlineDownload,findNativeDownloads,isNativeDownloadCancellation,qualifySiteBrowser} from './site-browser.ts';
+import {inspectSiteExport,parseSiteBrowserArguments,prepareSiteBrowserReport,withSiteExportServer,isCancelledSitePrefetch,captureCancelledSiteRequest,emittedLanguageCodes,browserLanguageScenarios,findInlineDownload,findNativeDownloads,isNativeDownloadCancellation,bindNativeScriptPreloads,isExpectedDisabledScriptPreload,qualifySiteBrowser} from './site-browser.ts';
 import type {CancelledRequest,SiteBrowserEngine} from './site-browser.ts';
 import {prepareStaticRouteAliases} from '../../packages/pcr-docs/scripts/static-route-aliases.ts';
 import {preferredRoute} from '../../packages/pcr-docs/lib/language-preference.ts';
@@ -145,6 +145,27 @@ test('native navigation cancellations require completed exact native download ev
   assert.equal(isNativeDownloadCancellation(request,{...expected,transport:'inline'},success,origin),false);
   assert.equal(isNativeDownloadCancellation(request,expected,success,'http://foreign.test'),false);
  }
+});
+test('no-JavaScript preload bindings require same-origin declared regular JavaScript files',()=>{
+ const f=fixture(),origin='http://127.0.0.1:1',url=origin+'/_next/static/chunks/fixture.js';try{
+  f.put('_next/static/chunks/fixture.js','document.documentElement.dataset.executed="yes";');
+  const bound=bindNativeScriptPreloads(f.root,origin,[url,url,origin+'/index.html',url+'?v=1',url+'#fragment']);
+  assert.equal(bound.length,1);assert.equal(bound[0]?.url,url);assert.equal(bound[0]?.path,'_next/static/chunks/fixture.js');assert.equal(bound[0]?.bytes,readFileSync(path.join(f.root,'_next/static/chunks/fixture.js')).length);assert.match(bound[0]!.sha256,/^[a-f0-9]{64}$/u);
+  for(const unsafe of [origin+'/_next%2fstatic/chunks/fixture.js',origin+'/_next/static/chunks/%2e%2e%2ffixture.js',origin+'/_next/static/chunks/%00fixture.js','http://user:password@127.0.0.1:1/_next/static/chunks/fixture.js','https://foreign.test/_next/static/chunks/fixture.js'])assert.throws(()=>bindNativeScriptPreloads(f.root,origin,[unsafe]),{code:'SITE_EXPORT_PATH'},unsafe);
+  assert.throws(()=>bindNativeScriptPreloads(f.root,origin,[origin+'/_next/static/chunks/missing.js']));
+  mkdirSync(path.join(f.root,'_next/static/chunks/directory.js'));assert.throws(()=>bindNativeScriptPreloads(f.root,origin,[origin+'/_next/static/chunks/directory.js']),{code:'SITE_EXPORT_PATH'});
+  symlinkSync(path.join(f.root,'_next/static/chunks/fixture.js'),path.join(f.root,'_next/static/chunks/linked.js'));assert.throws(()=>bindNativeScriptPreloads(f.root,origin,[origin+'/_next/static/chunks/linked.js']),{code:'SITE_EXPORT_PATH'});
+  assert.throws(()=>bindNativeScriptPreloads(f.root,origin,['not-a-url']));
+ }finally{f.close();}
+});
+test('only intentional Chromium no-JavaScript page preloads qualify and every original diagnostic stays available',()=>{
+ const pageUrl='http://127.0.0.1:1/en/docs/pcr/a/b/c/',url='http://127.0.0.1:1/_next/static/chunks/fixture.js';
+ const context={javaScriptEnabled:false,pageUrl,noCspPolicy:true,preloads:[{url,path:'_next/static/chunks/fixture.js',bytes:10,sha256:'a'.repeat(64)}]};
+ const request:CancelledRequest={engine:'chromium',reason:'csp',url,method:'GET',headers:{},resourceType:'script',isNavigationRequest:false,status:undefined,startPhase:'native-download-page',failurePhase:'native-download-page',actualUrl:pageUrl,startedAtMs:100,failedAtMs:101};
+ assert.equal(isExpectedDisabledScriptPreload(request,context),true);assert.equal(isCancelledSitePrefetch(request,[]),false);
+ for(const change of [{engine:'firefox' as const},{engine:'webkit' as const},{reason:'net::ERR_ABORTED'},{reason:'unknown'},{method:'HEAD'},{method:'POST'},{resourceType:'document'},{resourceType:'image'},{resourceType:'stylesheet'},{isNavigationRequest:true},{status:200},{status:404},{status:500},{startPhase:'native-download-click'},{startPhase:null},{failurePhase:'native-download-click'},{actualUrl:pageUrl+'changed/'},{url:url+'?v=1'},{url:'http://foreign.test/_next/static/chunks/fixture.js'},{url:'not-a-url'}])assert.equal(isExpectedDisabledScriptPreload({...request,...change},context),false,JSON.stringify(change));
+ for(const change of [{javaScriptEnabled:true},{noCspPolicy:false},{preloads:[]},{pageUrl:'http://foreign.test/en/docs/pcr/a/b/c/'}])assert.equal(isExpectedDisabledScriptPreload(request,{...context,...change}),false,JSON.stringify(change));
+ const original=structuredClone(request);isExpectedDisabledScriptPreload(request,context);assert.deepEqual(request,original);
 });
 test('new exports require declared aliases but explicit archived product identities retain physical-route compatibility',async()=>{
  const f=fixture();try{

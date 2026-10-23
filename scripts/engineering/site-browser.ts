@@ -135,14 +135,38 @@ export function isNativeDownloadCancellation(request:CancelledRequest,expected:N
   &&request.url===new URL(expected.url,origin).href&&success.failure===null&&success.filename===expected.name
   &&success.bytes===expected.bytes&&success.sha256===expected.sha256;}catch{return false;}
 }
-export async function checkNativeDownload(browser:Browser,engine:SiteBrowserEngine,origin:string,selected:NativeDownload) {
+export interface NativeScriptPreload {url:string;path:string;bytes:number;sha256:string}
+export interface DisabledScriptPreloadContext {javaScriptEnabled:boolean;pageUrl:string;noCspPolicy:boolean;preloads:readonly NativeScriptPreload[]}
+/** Bind actual declarative preload URLs to regular JavaScript assets, never to a route-shaped guess. */
+export function bindNativeScriptPreloads(root:string,origin:string,urls:readonly string[]):NativeScriptPreload[] {
+ const result=new Map<string,NativeScriptPreload>();
+ for(const value of urls){const url=new URL(value);if(url.origin!==new URL(origin).origin||url.username||url.password||/%(?:2f|5c)/iu.test(url.pathname))failure('SITE_EXPORT_PATH','Script preload must name a safe same-origin export asset.');
+  if(url.search||url.hash||!/\.(?:m?js)$/u.test(url.pathname))continue;
+  const decoded=decodeURIComponent(url.pathname);if(decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(part=>part==='.'||part==='..'))failure('SITE_EXPORT_PATH','Script preload path escapes its export binding.');
+  const key=decoded.slice(1),bytes=readRegular(root,key);result.set(url.href,{url:url.href,path:key,bytes:bytes.length,sha256:hash(bytes)});
+ }return [...result.values()];
+}
+/** Chromium reports intentionally disabled declarative script preloads as CSP blocks. */
+export function isExpectedDisabledScriptPreload(request:CancelledRequest,context:DisabledScriptPreloadContext):boolean {
+ try {return context.javaScriptEnabled===false&&context.noCspPolicy===true&&request.engine==='chromium'
+  &&request.reason==='csp'&&request.method==='GET'&&request.resourceType==='script'&&request.isNavigationRequest===false&&request.status===undefined
+  &&request.startPhase==='native-download-page'&&request.failurePhase==='native-download-page'&&request.actualUrl===context.pageUrl
+  &&new URL(request.url).origin===new URL(context.pageUrl).origin&&context.preloads.some(preload=>preload.url===request.url);
+ }catch{return false;}
+}
+export async function checkNativeDownload(browser:Browser,engine:SiteBrowserEngine,origin:string,selected:NativeDownload,root:string) {
  const context=await browser.newContext({javaScriptEnabled:false,acceptDownloads:true});
  try {
-  const page=await context.newPage(),failedRequests:CancelledRequest[]=[],prefetchUrls:string[]=[],errors:string[]=[];
+  const page=await context.newPage(),failedRequests:CancelledRequest[]=[],prefetchUrls:string[]=[],errors:string[]=[],consoleErrors:string[]=[];
   const trace=observeSiteRequests(page,{engine,viewport:'native-download'},failedRequests,prefetchUrls);
   page.on('pageerror',error=>errors.push(error.message));page.on('response',response=>{if(response.status()>=400)errors.push('HTTP '+response.status()+': '+response.url());});
+  page.on('console',message=>{if(message.type()==='error'&&/content[- ]security[- ]policy|\bcsp\b/iu.test(message.text()))consoleErrors.push(message.text());});
   try {
-   trace.setPhase('native-download-page');assert.equal((await page.goto(origin+selected.route))?.status(),200);
+   trace.setPhase('native-download-page');const response=await page.goto(origin+selected.route);assert.equal(response?.status(),200);assert.ok(response);
+   const headers=await response.allHeaders(),metaPolicies=await page.locator('meta[http-equiv]').evaluateAll(elements=>elements.map(element=>element.getAttribute('http-equiv')?.toLowerCase()));
+   const noCspPolicy=headers['content-security-policy']===undefined&&headers['content-security-policy-report-only']===undefined&&!metaPolicies.some(value=>value==='content-security-policy'||value==='content-security-policy-report-only');
+   const scriptPreloads=bindNativeScriptPreloads(root,origin,await page.locator('link[rel~="preload"][as="script"],link[rel~="modulepreload"]').evaluateAll(elements=>elements.map(element=>(element as HTMLLinkElement).href)));
+   const disabledScriptContext:DisabledScriptPreloadContext={javaScriptEnabled:false,pageUrl:origin+selected.route,noCspPolicy,preloads:scriptPreloads};
    const anchor=page.locator('a.pcr-download-name').filter({hasText:selected.name});
    let target=anchor.first();for(let index=0;index<await anchor.count();index++){const candidate=anchor.nth(index);if(await candidate.getAttribute('href')===selected.url){target=candidate;break;}}
    assert.equal(await target.getAttribute('href'),selected.url);assert.equal(await target.getAttribute('download'),selected.name);
@@ -151,8 +175,9 @@ export async function checkNativeDownload(browser:Browser,engine:SiteBrowserEngi
    const downloaded=await download.path();assert.ok(downloaded);const bytes=readFileSync(downloaded);assert.equal(bytes.length,selected.bytes);assert.equal(hash(bytes),selected.sha256);
    const success:NativeDownloadSuccess={url:download.url(),filename:download.suggestedFilename(),bytes:bytes.length,sha256:hash(bytes),failure:null};
    const downloadCancellations=failedRequests.filter(request=>isNativeDownloadCancellation(request,selected,success,origin));
-   assert.deepEqual(failedRequests.filter(request=>!isNativeDownloadCancellation(request,selected,success,origin)),[],'Unclassified request failure during native download');assert.deepEqual(errors,[]);
-   return {route:selected.route,javaScriptEnabled:false,filename:success.filename,bytes:success.bytes,sha256:success.sha256,url:selected.url,actualUrl:success.url,transport:selected.transport,downloadCancellations};
+   const expectedDisabledScriptPreloads=failedRequests.filter(request=>isExpectedDisabledScriptPreload(request,disabledScriptContext));
+   assert.deepEqual(failedRequests.filter(request=>!isNativeDownloadCancellation(request,selected,success,origin)&&!isExpectedDisabledScriptPreload(request,disabledScriptContext)),[],'Unclassified request failure during native download');assert.deepEqual(errors,[]);assert.deepEqual(consoleErrors,[],'Browser reported a native-page CSP violation');
+   return {route:selected.route,javaScriptEnabled:false,filename:success.filename,bytes:success.bytes,sha256:success.sha256,url:selected.url,actualUrl:success.url,transport:selected.transport,downloadCancellations,requestFailures:failedRequests,expectedDisabledScriptPreloads,scriptPreloads,noCspPolicy,consoleErrors};
   }finally{trace.stop();}
  }finally{await context.close();}
 }
@@ -387,7 +412,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
  try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
   for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
-   try {for(const selected of [...nativeSamples,...inlineSamples.filter(item=>!nativeSamples.some(native=>native.name===item.name&&native.url===item.url&&native.route===item.route)).map(item=>({...item,transport:'inline' as const}))]){const evidence={engine:name,...await checkNativeDownload(browser,name,origin,selected)};if(nativeSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route))nativeDownloads.push(evidence);if(inlineSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route)){inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}}
+   try {for(const selected of [...nativeSamples,...inlineSamples.filter(item=>!nativeSamples.some(native=>native.name===item.name&&native.url===item.url&&native.route===item.route)).map(item=>({...item,transport:'inline' as const}))]){const evidence={engine:name,...await checkNativeDownload(browser,name,origin,selected,exported.root)};if(nativeSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route))nativeDownloads.push(evidence);if(inlineSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route)){inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}}
     for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
     try {for(const route of exported.routes){const page=await context.newPage();const evidence:BrowserEvidence={engine:name,engineVersion:browser.version(),viewport,route,assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${name}-${viewport}-${route.locale}-${route.kind}.png`};results.push(evidence);
      const consoleErrors:{text:string;url:string}[]=[],{requestFailures:failedRequests,prefetchUrls}=evidence;

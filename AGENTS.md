@@ -29,8 +29,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-24
-lastReviewedCommit: 6883ac60fba9106de1532c153241fb0076423a07
-lastReviewedNote: "PCR #148: reviewed provider-capacity repair after the immutable 0.4.8 export failed actual destination staging. Product 0.4.9 preserves canonical content, classification, reader compatibility, methodology and translation states, dependency resolutions and runtime pins. New builds store original downloads physically, bind exact Next navigation aliases and enforce destination allocation plus the existing reserve; native/browser and live alias acceptance remain mandatory. Existing ownership, routing, scientific approval and full qualification requirements are unchanged. Focused integrity tests and bounded browser diagnostics are evidence only for their scope; complete new-source qualification, independent review, provider admission, stable publication and exact workspace integration remain required."
+lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
+lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

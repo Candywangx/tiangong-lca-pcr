@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-10-24
-lastReviewedCommit: 6883ac60fba9106de1532c153241fb0076423a07
-lastReviewedNote: "PCR #148: reviewed provider-capacity repair after the immutable 0.4.8 export failed actual destination staging. Product 0.4.9 preserves canonical content, classification, reader compatibility, methodology and translation states, dependency resolutions and runtime pins. New builds store original downloads physically, bind exact Next navigation aliases and enforce destination allocation plus the existing reserve; native/browser and live alias acceptance remain mandatory. Existing ownership, routing, scientific approval and full qualification requirements are unchanged. Focused integrity tests and bounded browser diagnostics are evidence only for their scope; complete new-source qualification, independent review, provider admission, stable publication and exact workspace integration remain required."
+lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
+lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -515,6 +515,26 @@ inline evidence separately and record the representation-neutral native evidence
 The local sealed server validates the complete source-bound RSC alias manifest
 before listening and serves only those declared aliases at HTTP 200; missing or
 altered retained payloads fail rather than fall back to an unrelated route.
+
+In an intentionally JavaScript-disabled native probe, Chromium can report a
+script preload or modulepreload as `csp` even when the document has no CSP policy.
+A separate classification requires that exact engine/reason, a non-navigation GET
+script with no observed HTTP status, the exact initial native-page phase and URL,
+and a declared same-origin preload bound to a regular exported JS/MJS asset.
+Query, fragment, missing, foreign, nonregular and symlinked targets receive no
+exception. Response CSP/report-only headers, CSP meta policies and explicit
+console policy errors prevent this classification. Native filename, completed
+bytes and hash checks remain required; ordinary JavaScript-enabled checks and
+prefetch rules are unchanged. Receipts retain all original request failures,
+separate expected disabled-script events, asset bindings and policy observations.
+A `csp` request reason alone never proves that a server policy is harmless.
+
+The pinned [Chromium page implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crPage.ts#L518-L519)
+disables script execution through the browser protocol; its
+[network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L490)
+can expose the protocol's blocked reason as failure text. Regression evidence must
+include realistic preload/modulepreload markup, positive native downloads,
+JavaScript-enabled controls and actual CSP/HTTP/hash failures in all three engines.
 
 
 Successive Goal runtime overlays compare both the original Goal baseline and the
