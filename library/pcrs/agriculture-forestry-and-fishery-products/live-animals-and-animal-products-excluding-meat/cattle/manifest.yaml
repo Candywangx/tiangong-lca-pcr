@@ -32,6 +32,7 @@ classification_refs:
     mapping_type: exact
 review_metadata:
   inventory_contract:
+    atomic_flows: v1
     localized_flow_names: tiangong_zh_v1
   unresolved_uuid_references:
     - "gate_energy_input: actual flow identity must be confirmed from foreground records before final exchange creation"
@@ -54,8 +55,9 @@ review_metadata:
   mapping_status:
     - CPC 3.0 02111 has an accepted exact edge documented by docs/adr/cpc-02111.md; mapping acceptance does not resolve platform flow identities or publish this candidate methodology.
   binding_summary:
-    fixed: 3
-    unresolved_semantic_cards: 21
+    scope: Inventory card occurrences; counts distinguish UUID-bound cards from unresolved concrete identities.
+    fixed: 6
+    unresolved_semantic_cards: 15
   unresolved_flow_identities:
     - row_id: live_cattle_reference_output
       reason: Reference product UUID is unresolved. This output is the semantic reference role; foreground generation must verify the actual identity, required qualifiers, property, unit and handover before creating a final exchange.
@@ -67,8 +69,12 @@ review_metadata:
       reason: The concrete flow UUID is unresolved. Verify actual substance or product/service, state, receiving compartment where applicable, property and unit against foreground evidence before creating a final exchange.
     - row_id: live_cattle_to_gate
       reason: The concrete flow UUID is unresolved. Verify actual substance or product/service, state, receiving compartment where applicable, property and unit against foreground evidence before creating a final exchange.
-    - row_id: intended_coproducts
-      reason: The concrete flow UUID is unresolved. Verify actual substance or product/service, state, receiving compartment where applicable, property and unit against foreground evidence before creating a final exchange.
+    - row_id: raw_cattle_milk_coproduct
+      reason: Confirm a compatible raw cattle milk Product/Mass identity at producing-farm handover; retain lot state, composition and measured net milk mass. No new UUID verification is claimed.
+    - row_id: live_breeding_cattle_coproduct
+      reason: Confirm a compatible live domestic breeding cattle Product/Mass identity at producing-farm handover; retain unique animal identity and measured live weight, excluding animals already in the selected reference-output stratum.
+    - row_id: live_culled_cattle_coproduct
+      reason: Confirm a compatible live culled domestic cattle Product/Mass identity at producing-farm handover; this is not a carcass or mortality identity, and excludes animals already in the selected reference-output stratum.
     - row_id: cattle_mortalities
       reason: The concrete flow UUID is unresolved. Verify actual substance or product/service, state, receiving compartment where applicable, property and unit against foreground evidence before creating a final exchange.
     - row_id: manure_to_management
@@ -141,6 +147,7 @@ review_metadata:
     scope: Atomic selected identities, compatible UUID receiving compartment, and bilingual identity displays; no scientific status promotion.
     retired_collection_rows:
       - unusable_manure_waste
+      - intended_coproducts
     english_canonical_preserved_except_reviewed_repairs: true
     unresolved_policy: Concrete unresolved identities remain explicitly registered; a selected UUID alone never establishes actual use or full scientific evidence.
   required_emission_identification:
