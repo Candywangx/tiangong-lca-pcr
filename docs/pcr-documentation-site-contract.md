@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-23
-lastReviewedNote: "PCR #146: reviewed product 0.4.8 preparation and all three private package mirrors plus site lock root metadata. The composed 1457-record source and dependency resolutions, Node 24.19.0/npm 12.2.0, minimum reader 0.4.1, candidate methodology and immutable PCR history remain unchanged. Five existing product-identity tests and direct mirror validation pass. All six original source PRs must merge before release preparation merges; fresh release-source hosted qualification, exact workspace inclusion and coordinated stable publication remain pending."
-lastReviewedCommit: 1d8bc3f9
+lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair. PCR #143 composition preserves its 57 candidate contribution and the exact incoming reviewed code. Fresh complete source qualification and PR138-first merge order remain required. PCR #142 composition preserves all 1457 material records, 1306 accepted edges and 1647 aliases with the exact incoming reviewed qualification code. Fresh full hosted qualification remains mandatory. PCR #146 retains product 0.4.8 and its three mirrors with unchanged runtime/dependency/compatibility declarations. All six original source PRs must merge before release preparation; the new exact release source requires complete fresh hosted qualification."
+lastReviewedCommit: fac4cd3991850e2695e82ce7a994dbed7df4cb64
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -103,6 +103,12 @@ context and disclosure controls, but must preserve original content and order.
 Every source block is mapped to a page/anchor or explicit source appendix.
 Unsupported source constructs, missing required files and stale projections
 cannot become empty successful output.
+
+Generation parses each source document once. A private per-call preparation step
+finishes the complete value-only source inventory before the renderer modifies
+its syntax tree. No syntax-tree references or caches are exposed through the
+public inventory API. The complete export verifier independently reads original
+source and compares the rendered blocks, tables, links, rules and ordering.
 
 Generated metadata lives in `.generated/site.json`; page HTML and complete
 structured data are separate artifacts read only at build time. Physical downloads
@@ -307,7 +313,18 @@ complete source artifacts remain subject to the existing fidelity contract.
 
 The complete export runs locally or in GitHub qualification and has no project-owned
 elapsed-time acceptance budget. CI bounds its instrumented documentation job to
-60 minutes; stage and total durations remain reported. The old 18-minute full-build
+60 minutes; stage and total durations remain reported. A separate required product
+job performs SEO and sealing under its own 60-minute limit. The documentation job
+hands off the complete verified export through an explicit current-run artifact ID
+and a checkpoint binding source/product identity, CI plan, run/attempt, successful
+build metrics and every sorted file path, byte count and SHA-256. Full mode binds
+the current qualification and successful unchanged complete-build coverage command.
+The product job verifies the entire export before the existing canonical hosting
+transformation. Hidden files are preserved; missing, extra, changed, symlinked,
+nonregular, stale-attempt or foreign-source inputs fail closed. The handoff uses
+bounded file reads and retains the original export. Its low-compression transport
+does not alter any delivered byte. Only the product job's final sealed bundle may
+feed platform/browser qualification or publication. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
 deadline, cleanup and atomic handoff remain enforced. The export uses two workers
@@ -546,10 +563,11 @@ ownership markers are not submission API credentials. Keep the configured marker
 after verification; registration and actual crawl/index processing are separate
 provider operations.
 
-The documentation CI job validates the existing export with the generated
-shared checker snapshot in `scripts/vendor/workspace-seo/` after its full
-fidelity build, without rebuilding the library. The job checks that snapshot
-against its `manifest.json` before running it, so it fetches no private-repository
+The product CI job validates the authenticated existing export with the generated
+shared checker snapshot in `scripts/vendor/workspace-seo/` after the documentation
+job's full fidelity build, without rebuilding the library. The producer checks
+that snapshot against its `manifest.json`; the consumer binds the same exact source
+before running it, so the pipeline fetches no private-repository
 action and needs no token. PCR supplies hreflang in HTML; the sitemap need not
 duplicate that supported representation. The shared check validates those actual
 language links, canonical URLs, index policy, structured metadata and local
