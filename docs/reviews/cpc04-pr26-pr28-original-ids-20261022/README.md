@@ -22,6 +22,25 @@ lastReviewedNote: "The user's final direction limits delivery to every PCR cover
 
 # Original PCR identities for PR #26 and PR #28
 
+## Delivery amendment, 2026-10-23
+
+After the atomic-flow repair at `709912cfe9c4b1f8e08a8e7dc8046ced6dc259e9`, hosted CI exported 20,009 files
+and failed the unchanged 20,000-file gate. At the user's request, defer one newly introduced method: **04331**,
+wild Homarus lobsters. Restore its original four-file empty scaffold exactly from PR base
+`b4cf43be4b6f9ed52f34dd6ab89f71961ac82946`, remove its positive mapping and regenerate aliases/catalog/coverage.
+The full repaired draft remains in commit `709912cfe`; it has not been irrecoverably deleted.
+
+The effective delivery is now **27 material methods** in this review scope: 14 already merged in PR #26 and
+**13 additions** in PR #28. CPC 04 becomes **41 mapped / 21 unmapped**, and the material catalog contains 1,489 PCRs.
+All four files of the remaining 27 methods remain byte-for-byte unchanged by this deferral. No builder, checker,
+website implementation, provider gate or other repository is modified. A fresh complete build must qualify the
+reduced head; do not infer its final export count from the previous 20,009-file result.
+
+The following identity-restoration receipt and `scope.json` describe the historical 28-method scope at
+`b4c4abd8ba7a7f8aa9d6c0f80682665031288c2b`; they are not current file hashes or a claim that 04331 is still material.
+
+## Historical identity-restoration receipt
+
 The user's final direction on 2026-10-22 is to correct every PCR covered by the merged PR #26 and open PR #28.
 These are 28 distinct PCRs: 14 from each PR. This is not the full 58-method CPC 04 repair batch. Other CPC 04
 methodology repairs, deferred methods and local unaccepted research drafts are excluded.
