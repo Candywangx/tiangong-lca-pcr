@@ -1,10 +1,1006 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34290"
-  title: "Compounds of rare earth metals, of yttrium or of scandium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.compounds-of-rare-earth-metals-of-yttrium-or-of-scandium"
+  classification_refs: "CPC 3.0 34290; proposed narrower, subject to independent mapping acceptance"
+  covered_products: "Undoped CeO2 dry powder made from purchased separated Ce(III) carbonate hydrate by electric-air calcination and dry finishing"
+  excluded_products: "Mixed rare-earth compounds; Y/Sc compounds; Ce2O3; cerium salts as final products; doped or mixed oxides; formulated abrasives, sols and slurries; oxalate/nitrate/hydroxide routes; fuel-fired, humidified or wet-milling routes"
+  representative_product: "Accepted single-species cerium dioxide powder, CAS 1306-38-3; supplier grade and batch acceptance declared"
+  production_route: "Separated carbonate hydrate receipt -> electric calcination in air -> cooling -> dry milling/classification -> dry collection -> powder dispatch"
+  market_state: "Dry powder with measured residual moisture and purity; no intentional organic coating, boron brightener or carrier water"
+functional_unit:
+  what: "Supply CeO2 powder as a chemical material, not a polishing service"
+  how_much: "1 kg accepted net supplied dry powder, excluding packaging"
+  how_well: "Measured declared grade, CeO2 assay, residual moisture, impurity/particle-size/surface-area specification and receiving acceptance"
+  how_long_or_cycle: "One declared factory dispatch; no assumed service lifetime"
+  reference_flow_link: "out_ceria"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "conversion"
+      rule: "Include electricity, furnace auxiliaries, dry finishing, dry gas filtration, internal rework and dispatch packaging. Wet scrubbing, steam humidification, fuel heating, additives or slurry production require a separately evidenced route and atomic exchanges before use."
+      source_ids:
+        - nissan-ceria-2008
+        - jrc-sic-2007
+    - rule_id: boundary_upstream
+      applies_to: "upstream_interface"
+      rule: "Require actual upstream physical species and provider bases; historical mine flow diagrams demonstrate diversity, not a default plant recipe. Acid, alkali, each solvent and each residue remain separate flows in the linked supplier unit."
+      source_ids:
+        - epa-ree-2012
+    - rule_id: boundary_ledger
+      applies_to: "all_processes"
+      rule: "Retain unallocated physical TotalMass and separate elemental C, H, O, Ce and every actual impurity-element ledger, including free/bound water, wet inlet/outlet air, purchased gas carriers, auxiliary water, full packaging/carriers, maintenance consumption, returns and stock changes. Match internal transfers at both ends. Pass-through air is recorded gross in the physical ledger; only net environmental exchanges enter the LCI, without counting the same oxygen or water twice. Shared upstream coproducts retain measured physical quantities. Keep a separate measured electricity/heat balance; allocation acts only on environmental burdens."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased separated Ce(III) carbonate hydrate at receiving gate, with actual producer, grade, hydration, water and Ce assay"
+  starting_condition_role: "foreground_starting_point"
+  product_classification_scope: "One cerium oxide subset of CPC34290, not generic rare-earth chemistry"
+  recursive_input_rule: "No cut-off for same-category intermediates or rework; disclose purchased oxide input if present and reassess route applicability"
+  upstream_dataset_requirement: "Traceable separated-carbonate provider per actual supplied kg, with supplier qualification, phase identity, hydration, free moisture, Ce assay and wet/dry/oxide-equivalent reference compatibility. Link the purchased precursor burden once for the measured quantity. Trace mine/concentrate, actual leaching acid/alkali, each extractant and diluent, solvent recovery, precipitation reagent, mother liquor, tailings, radionuclide-bearing residue and real coproduct destinations. Supplier operations remain background; explicitly expanding them replaces the corresponding linked burdens, never adds them again or treats them as zero. Each expanded upstream exchange is atomic; no generic rare-earth average substitutes for this species/route"
+  disclosure: "Report gate-to-gate inventory separately from linked upstream burdens. Missing producer/mineral/chemistry/provider-basis evidence prevents a complete cradle-to-gate claim; an unknown is never a zero"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Cerium oxide"
+    uuid: "b23ee368-01e2-4fcd-8e8f-e8115ee04555"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CeO2/Ce(III) distinction"
+    - "dry supplied net powder mass"
+    - "residual moisture"
+    - "CeO2 assay and impurity basis"
+    - "carbonate-hydrate speciation and carbon origin"
+    - "actual mineral source and separation supplier"
+    - "furnace/electricity voltage/atmosphere"
+    - lot
+    - "temperature-time history"
+    - "particle size and surface-area acceptance"
+    - "receiving use"
+    - "packaging and dispatch gate"
+    - "upstream provider quantity and allocation basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_powder
+    applies_to: "out_ceria"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reference mass is accepted supplied dry powder net of packaging, with residual moisture measured; it is neither elemental Ce nor contained pure CeO2 mass. The assay and drying bases remain separate records."
+  - id: measure_feed
+    applies_to: "in_carbonate"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep hydrated supplied mass, free-water mass, dry chemical mass and Ce-equivalent separate. Trace-metal/REO purity does not establish total chemical purity, hydration or a per-kg conversion."
+  - id: measure_energy
+    applies_to: "in_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain the database property name and measured electrical energy. Convert kWh by the verified unit-group factor 3.6; do not interpret electricity as combustion fuel or furnace delivered heat."
+  - id: measure_air
+    applies_to: "in_compressed_air"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Provider reference m3, measured pressure/temperature and dry/wet composition must agree; an unidentified volume convention leaves the background link pending."
+process_map:
+  - id: ceria_conversion
+    name: "Electric carbonate calcination and dry powder finishing"
+    inclusion: "required"
+    inclusion_condition: "Declared carbonate-hydrate/electric/dry route"
+    role: "foreground"
+    quantitative_reference: "out_ceria"
+process_inventory:
+  - id: ceria_conversion
+    label: "Electric carbonate calcination and dry powder finishing"
+    inputs:
+      product:
+        - row_id: in_carbonate
+          role: "Cerium carbonate"
+          name: "Cerium carbonate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "773e491f-cd4b-4ae2-9a31-9f116e7f1aaf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Weigh purchased separated Ce(III) carbonate hydrate as supplied, excluding packaging. Declare hydration, free moisture, carbonate carbon origin, cerium assay and other rare earth impurities. CAS 54451-25-1 supports the hydrate; the database anhydrous formula is not a wet-mass conversion. Reject mixed rare-earth carbonate or oxycarbonate substitution."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_feed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - nissan-ceria-2008
+                - thermo-carbonate-spec
+                - epa-ree-2012
+            ranges: []
+        - row_id: in_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "The selected native flow is CN, 1–35 kV, user-side consumption mix with grid-average supply. Use this UUID only for matching geography, voltage, market mix and provider reference; another location, voltage or contractual supply requires its own verified flow. Meter matching purchased alternating current for electric furnace heating, holding, cooling auxiliaries, dry milling, ventilation and dust collection. Record each stage separately and aggregate once. Electricity for any on-site compressor belongs here; do not also charge a purchased-air background for that compressor."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - nissan-ceria-2008
+                - jrc-sic-2007
+            ranges: []
+        - row_id: in_compressed_air
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Conditional purchased compressed air for pneumatic dry finishing or filter cleaning. Measure delivered volume and pressure; reconcile temperature, absolute pressure, moisture and compressibility with the provider cubic-metre reference. This UUID does not establish a normal-volume or useful-energy basis. No air demand is assumed for a mechanical mill."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-sic-2007
+            ranges: []
+        - row_id: in_porcelain
+          role: "Porcelain firing crucible"
+          name: "Porcelain firing crucible"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional porcelain firing crucibles when actually used for this electric-furnace route; measure replacements. Other actual firing-container materials require their own specific exchanges. Preserve composition, service cycles and contamination; charge only campaign consumption or a documented service-life share, not one new crucible per batch by default. Silicon-processing ceramic and quartz crucible records cannot establish this identity."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_solids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids:
+                - nissan-ceria-2008
+            ranges: []
+        - row_id: in_pe_liner
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional single-material PE liner for powder dispatch; weigh net film used and rejects, identify resin grade and supplier. The physical film identity is retained despite a source classification error. Add each actual additional packaging component as a separate measured exchange; never include packaging mass in powder output."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_solids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: in_oxygen
+          role: "oxygen"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "e2fb04b0-6555-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record net oxygen incorporated from ambient air in carbonate oxidation, using measured precursor speciation and oxygen balance. Medium: Resources from air / Renewable element resources from air. Do not count all ventilation air as consumed oxygen, or count purchased-air oxygen a second time."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance
+              source_ids:
+                - nissan-ceria-2008
+            ranges: []
+    outputs:
+      product:
+        - row_id: out_ceria
+          role: "Cerium oxide"
+          name: "Cerium oxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b23ee368-01e2-4fcd-8e8f-e8115ee04555"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Accepted dry, undoped single-species CeO2 powder at factory dispatch, net of all packaging. Assay and residual moisture are measured for the declared grade. Calcination, cooling, dry finishing and packing form one foreground unit; stage meters are retained without a second same-UUID product output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product
+              source_ids:
+                - nissan-ceria-2008
+            ranges: []
+      waste:
+        - row_id: out_collected_dust
+          role: "Dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional externally transferred collected ceria-bearing dust. The broad waste-dust identity is limited here by measured CeO2 content, precursor/ceramic contamination, moisture, hazard classification and actual receiving treatment. Internally returned dust remains in the physical recycle ledger and is not an external waste or air emission."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_solids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids:
+                - jrc-sic-2007
+            ranges: []
+        - row_id: out_offspec
+          role: "Discarded off-specification cerium(IV) oxide powder"
+          name: "Discarded off-specification cerium(IV) oxide powder"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional discarded off-specification CeO2 powder, physically distinct from filter dust and spent crucibles. Weigh and assay the actual lot; identify receiver. Returned material is internal; a genuinely sold recoverable off-grade product must instead be a separately identified product exchange with its own acceptance specification."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_solids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids:
+                - nissan-ceria-2008
+            ranges: []
+        - row_id: out_spent_porcelain
+          role: "Spent porcelain firing crucible"
+          name: "Spent porcelain firing crucible"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional externally transferred spent porcelain firing crucibles. Record ceramic composition, adhering cerium compound mass, moisture and receiving route. Exclude quartz crucible substitution and keep the ceramic and cerium components in the balance without double-counting another waste stream."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_solids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solids
+              source_ids:
+                - nissan-ceria-2008
+            ranges: []
+      elementary:
+        - row_id: out_carbonate_co2
+          role: "Carbon dioxide from mineral-origin carbonate decomposition"
+          name: "Carbon dioxide from mineral-origin carbonate decomposition"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Carbon dioxide from decomposition of verified mineral-origin carbonate, emitted to outdoor air unspecified. Measure outlet CO2 and gas volume with matched dry/wet and temperature/pressure bases; reconcile carbonate carbon, retained carbonate, captured CO2 and stock change. Keep actual CO2 species, mineral/geologic carbon origin, receiving compartment and the selected LCIA channel separate. Fossil or biogenic labels are not inferred from the carbonate name. Fossil-labelled database rows lack explicit geogenic-carbon scope and are not adopted; emission mass remains required even while UUID/channel compatibility is unresolved."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance
+              source_ids:
+                - nissan-ceria-2008
+                - jrc-sic-2007
+            ranges: []
+        - row_id: out_water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Water vapour to outdoor air unspecified from precursor dehydration and free-moisture evaporation. Measure net outlet water, subtract incoming air humidity and reconcile feed water, product moisture, condensate and storage. Vapour is not a freshwater liquid discharge; actual condensate sent to treatment needs its own waste row."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance
+              source_ids:
+                - nissan-ceria-2008
+            ranges: []
+        - row_id: out_pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Emitted particles with aerodynamic diameter at or below 2.5 micrometres, outdoor air unspecified, after collection controls plus separately measured fugitive releases. Retain filterable and condensable PM coverage; use Method 201A only within its dry stationary-source applicability. Unknown particle sizing is unresolved, not zero. PM fractions describe whole emitted particle mass, not captured Ce-bearing solids or dissolved Ce. For any additional chemistry-specific characterization, document actual speciation, compartment and whether the CF denominator is whole compound kg or elemental-Ce kg; retain that conversion separately and avoid duplicate physical mass or overlapping impact characterization."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_pm"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm
+              source_ids:
+                - jrc-sic-2007
+                - epa-pm201a-2020
+            ranges: []
+        - row_id: out_pm2510
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Emitted particles above 2.5 and at or below 10 micrometres, outdoor air unspecified. Derive the exclusive fraction from compatible paired PM10 and PM2.5 measurements; do not also add the inclusive PM10 total. Measure dry milling, classification, filling and calciner outlets and fugitives."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_pm"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm
+              source_ids:
+                - jrc-sic-2007
+                - epa-pm201a-2020
+            ranges: []
+        - row_id: out_pmover10
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Emitted particles above 10 micrometres, outdoor air unspecified. Require a compatible total filterable-PM measurement or validated direct fraction measurement; Method 201A PM10 alone does not quantify this row. Collected dust is excluded from this emitted fraction."
+          amount:
+            expression: "Measured attributable amount per 1 kg reference flow; cp_pm"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm
+              source_ids:
+                - jrc-sic-2007
+                - epa-pm201a-2020
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "environmental_burdens"
+    rule: "Use dedicated stage and campaign meters first. Separate other grades, non-ceria products and shared utilities by measured attributable use under cp_burden. Dedicated ceria conversion has no assumed coproduct."
+    source_ids: []
+  - rule_id: allocation_shared
+    applies_to: "inseparable_burdens"
+    rule: "For genuinely inseparable upstream shared burdens, retain the provider allocation method and collection evidence. Use a demonstrated physical causal relationship where available; if none is defensible, disclose economic shares calculated from actual same-period net revenues and sensitivity, without a universal mass or price factor."
+    source_ids: []
+  - rule_id: allocation_physical
+    applies_to: "physical_ledger"
+    rule: "Allocation shares apply only to shared environmental burdens. Never multiply physical coproduct outputs, internal transfers, tailings, mother liquor or recovered solvent by the target-product share. Waste treatment is linked to actual receiver and status; no automatic avoided-product credit."
+    source_ids:
+      - epa-ree-2012
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "ceria_conversion"
+      flow_role: "out_ceria"
+      record_type: "primary measured records"
+      raw_fields: "accepted net supplied powder mass; residual moisture; measured CeO2 phase/assay and impurity basis; particle-size/surface-area acceptance; opening/closing stock; batch and grade"
+      collection_method: "Calibrated net weighing excluding packaging; representative moisture and chemical assay tests with declared wet/dry denominator; phase identification sufficient to distinguish CeO2 from residual carbonate/oxycarbonate; reconcile dispatch and acceptance records"
+      unit: "kg"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+    - protocol_id: cp_feed
+      process_id: "ceria_conversion"
+      flow_role: "in_carbonate"
+      record_type: "primary measured records"
+      raw_fields: "supplied mass; dry mass; hydration/free water; Ce assay; carbonate carbon and origin; lot; supplier; mineral and separation chain; impurities"
+      collection_method: "Calibrated weighing, supplier primary records, phase/assay/moisture analyses and actual producer upstream data; trace chemical form and quantity basis independently of UUID identity"
+      unit: "kg"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+    - protocol_id: cp_energy
+      process_id: "ceria_conversion"
+      flow_role: "in_electricity"
+      record_type: "primary measured records"
+      raw_fields: "stage meter start/end; furnace heating/hold/cooling; mill; ventilation; dry filters; compressor ownership; idle use; delivery voltage; CN/geographic supply; grid/contract mix; provider reference"
+      collection_method: "Calibrated electricity meters and equipment logs, with campaign and shared-load reconciliation; convert measured kWh to MJ using 3.6 MJ/kWh"
+      unit: "MJ"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+    - protocol_id: cp_air
+      process_id: "ceria_conversion"
+      flow_role: "in_compressed_air"
+      record_type: "primary measured records"
+      raw_fields: "delivered air volume; meter basis; absolute pressure; temperature; dry/wet composition; compressibility; supplier reference m3"
+      collection_method: "Trace calibrated delivery flowmeter and provider definition; transform volumes only with documented matched conditions; separate purchased air from on-site compressor electricity"
+      unit: "m3"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+    - protocol_id: cp_solids
+      process_id: "ceria_conversion"
+      flow_role: "solid_exchange"
+      record_type: "primary measured records"
+      raw_fields: "separate net mass for each row; composition; moisture; recovered/internal/external status; crucible service life; PE grade; receiver and treatment"
+      collection_method: "Calibrated scales, purchasing and waste transfer records; assay ceria-bearing dust and adhesion; record actual stocks and reusable-container service cycles"
+      unit: "kg"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+    - protocol_id: cp_balance
+      process_id: "ceria_conversion"
+      flow_role: "gas_species"
+      record_type: "primary measured records"
+      raw_fields: "full wet inlet/outlet air and gas composition/flow; absolute P/T; dry/wet meter basis; precursor/product/solid/liquid total mass and C/H/O/Ce/impurity assays; oxygen uptake; gas capture/condensate; carrier and auxiliary water; stocks"
+      collection_method: "Calibrated gas monitoring and representative moisture/species analyses; reconcile gross physical TotalMass and all actual elements, then derive net environmental exchanges without double-counting gas carriers. Distinguish precursor mineral carbon from each fuel or other carbon source; no ideal yield, invented density or calorific coefficient replaces measurements"
+      unit: "kg"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+    - protocol_id: cp_pm
+      process_id: "ceria_conversion"
+      flow_role: "size_fraction"
+      record_type: "primary measured records"
+      raw_fields: "filterable PM2.5; inclusive filterable PM10; compatible total filterable PM; condensable PM scope; stack gas volume; time; flow/temperature/moisture; fugitive sources; captured dust"
+      collection_method: "Representative dry-source size-resolved sampling and gravimetric analysis under Method201A applicability; compatible total-PM method for >10 micrometres; assess condensables separately and avoid duplicate classification; include fugitive measurements; retain uncertainty"
+      unit: "kg"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+    - protocol_id: cp_burden
+      process_id: "ceria_conversion"
+      flow_role: "shared_burden"
+      record_type: "primary measured records"
+      raw_fields: "dedicated meters; shared loads; physical causality; full physical coproduct output; same-period sales and net revenue; allocation method and sensitivity"
+      collection_method: "Retain actual supplier allocation records and site submeter evidence, with separate unallocated physical and allocated environmental ledgers"
+      unit: "native units"
+      frequency: "Each lot/campaign and material change"
+      temporal_coverage: "Declared consecutive representative campaign; retain start/end and seasonal or idle limitations"
+      site_scope: "Actual plant, supplier, grade and matched boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw logs, analytical methods, uncertainty and traceable acceptance/provider records"
+  calculation_rules:
+    - id: calc_reference
+      applies_to: "all inventory rows"
+      rule: "For each exchange divide the measured attributable campaign quantity by the accepted net powder output in kg of the same grade and period. Output is the exchange per 1 kg reference flow; retain unallocated totals and stock reconciliation. Retain raw unallocated campaign totals before normalization. Use one matched route, supplied state, grade and representative period, including all attributable startup, shutdown, idle, failed, off-specification, zero-accepted-output and rework operations. Reconcile opening/closing work in progress and finished stocks with their accumulated inventory burdens, using documented carry-in/carry-out attribution without lost or duplicated burdens. Define strictly positive D as final accepted net supplied powder produced for that pool, reconciled with acceptance, dispatch and stocks; exclude final rejects and do not count returned, reworked and reaccepted powder twice. Divide each reconciled raw exchange total by D once under calc_reference. A complete period with D <= 0 requires a justified wider representative period or an incomplete result. Conditional exchanges require evidence of applicability or documented absence; no positive demand or zero emission is supplied by this PCR."
+      inputs:
+        - "campaign exchange"
+        - "accepted powder kg"
+        - cp_product
+      output: "native numerator unit per kg"
+      source_ids: []
+    - id: calc_assay
+      applies_to: "in_carbonate, out_ceria"
+      rule: "Keep accepted supplied powder kg as the reference. For each material, free-moisture-excluded mass = supplied mass × (1 − measured free-moisture fraction); this does not remove structural hydrate water. Apply each assay only to its declared wet/dry or oxide-equivalent denominator. Precursor elemental Ce mass is measured Ce fraction × the matching assayed mass; any reported CeO2 equivalent is a bookkeeping equivalent, not actual oxide in carbonate. For verified product CeO2, Ce mass = contained CeO2 mass × A(Ce)/(A(Ce)+2A(O)), with documented atomic-weight edition; add measured Ce in any other actual species separately. Neither composition conversion defines yield or changes the reference denominator."
+      inputs:
+        - "supplied mass"
+        - "measured moisture/speciation and assay denominator"
+        - "atomic weights"
+        - cp_feed
+        - cp_product
+      output: "free-moisture-excluded mass and separate elemental Ce"
+      source_ids:
+        - thermo-carbonate-spec
+    - id: calc_balances
+      applies_to: "physical_ledger"
+      rule: "Before allocation, reconcile gross physical TotalMass and each actual element C/H/O/Ce/impurity across all inputs, products, gas/particles, liquids, externally transferred solids, packaging/carriers and stock changes. Include wet inlet/outlet air, auxiliary water and maintenance consumption; keep net oxygen/water LCI exchanges distinct from gross carrier balances. Count internal returns at matching endpoints once; keep electricity/heat balance separate. Require measured chemical forms and hydration; ideal stoichiometry alone neither defines actual emissions nor plant yield."
+      inputs:
+        - cp_feed
+        - cp_product
+        - cp_solids
+        - cp_air
+        - cp_energy
+        - cp_balance
+        - cp_pm
+      output: "physical and energy residuals with uncertainty"
+      source_ids: []
+    - id: calc_pm
+      applies_to: "out_pm25, out_pm2510, out_pmover10"
+      rule: "Use exclusive filterable aerodynamic intervals: filterable PM2.5; filterable PM10 − filterable PM2.5; total compatible filterable PM − filterable PM10. Retain method uncertainty and require compatible simultaneous bases; a negative difference requires investigation. Keep separately quantified condensable PM outside these subtraction inputs; when applying Method201A §3.1, add it once to PM2.5 under that explicit convention. Disclose method scope. Do not add inclusive PM10, captured dust or condensable PM a second time."
+      inputs:
+        - cp_pm
+      output: "exclusive emitted particle masses"
+      source_ids:
+        - epa-pm201a-2020
+    - id: calc_allocation
+      applies_to: "shared_burden"
+      rule: "Allocated burden = dedicated measured burden + documented target share × inseparable shared burden. If an economic fallback is justified, target share = target net revenue / total net revenue of all actual coproducts in the same period. Preserve the full physical outputs; require sensitivity and treatment of non-positive revenue before calculation."
+      inputs:
+        - cp_burden
+      output: "allocated environmental burdens only"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_primary
+      applies_to: "all inventory rows"
+      requirement: "Use actual primary measurements, grades and supplier-route data; disclose missing flow UUIDs, volume/provider bases and mineral-carbon identity. Record full-year representativeness limitations rather than claiming a survey not performed."
+      evidence: "cp_product; cp_feed; cp_energy; cp_air; cp_solids; cp_balance; cp_pm"
+    - id: quality_balance
+      applies_to: "physical_ledger"
+      requirement: "Set TotalMass and all actual C/H/O/Ce/impurity-element and energy closure criteria from instrument and assay uncertainty; no invented universal tolerance. Explain discrepancies before completeness claims."
+      evidence: "cp_balance; cp_burden"
+    - id: quality_sources
+      applies_to: "method_rules"
+      requirement: "Retain source-specific applicability: general SIC unit operations, producer patent case route, supplier catalogue basis and dry-stack PM measurement are different evidence roles; none supplies a generic recipe."
+      evidence: "nissan-ceria-2008; jrc-sic-2007; thermo-carbonate-spec; epa-pm201a-2020; epa-ree-2012"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_flow"
+    rule: "Confirm dry single-species CeO2, actual carbonate-hydrate/electric/dry route, grade assays and all qualifiers. A broad flow UUID does not validate supplier dataset quantity or energy basis."
+    source_ids: []
+  - rule_id: validate_measurement
+    applies_to: "all inventory rows"
+    rule: "Require one completed 1 kg product output and a common per-1-kg reference denominator in both languages, protocols and calculations. Keep water, impurity, oxide-contained mass, elemental Ce and packaging distinct."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "inventory"
+    rule: "Reconcile all stages, idle/rework losses, dust controls, stock changes and actual extra exchanges. Each additional chemical, solvent, packaging, waste or emission is a separate row with a collection protocol. Unresolved UUID, provider basis or unmeasured fraction prevents complete dataset validation, not an assumed zero."
+    source_ids: []
+  - rule_id: validate_particles
+    applies_to: "out_pm25, out_pm2510, out_pmover10"
+    rule: "Require non-overlapping fractions and explicit filterable/condensable/fugitive coverage. Water-droplet or unmatched total-PM sampling does not establish Method201A size fractions. Review uncertainty rather than forcing negative differences to zero."
+    source_ids:
+      - epa-pm201a-2020
+  - rule_id: validate_upstream
+    applies_to: "supplier_link"
+    rule: "Verify actual mine and separation chain and provider reference quantity, with separate physical and burden ledgers. Shared rare-earth averages or historical flow-sheet product labels are not evidence of a specific Ce product."
+    source_ids:
+      - epa-ree-2012
+published_dataset_profile:
+  dataset_role: "Site-specific foreground conversion process"
+  downstream_use: "secondary_dataset; background_dataset only after data completeness and applicable review"
+  allowed_use: "Declared carbonate-hydrate/electric/dry CeO2 route and grade; upstream linked only after provider-basis verification"
+  excluded_use: "Generic rare-earth/yttrium/scandium averages, fuel-fired or wet routes, mixed oxides, abrasive performance comparisons and slurry kg equivalence"
+  required_metadata: "CeO2/Ce(III) distinction; dry supplied net powder mass; residual moisture; CeO2 assay and impurity basis; carbonate-hydrate speciation and carbon origin; actual mineral source and separation supplier; furnace/electricity voltage/atmosphere; lot, temperature-time history; particle size and surface-area acceptance; receiving use; packaging and dispatch gate; upstream provider quantity and allocation basis"
+  required_quality_disclosure: "Actual campaign/site/grade, measured yield and assays, supplier and carbon-origin traceability, unresolved identities/provider bases, source limitations, balances, allocation and completeness"
+  update_trigger: "Changed precursor/source, hydration or assay basis, furnace/electricity/atmosphere, product grade, finishing, abatement, packaging, supplier or allocation"
+data_sources:
+  - id: "nissan-ceria-2008"
+    type: "literature"
+    reference: "Nissan Chemical Industries, US7431758B2, 2008-10-07, original PDF page 7, columns 11–12, Examples 1–2; https://patents.google.com/patent/US7431758B2/en"
+    used_for: "Producer original confirms carbonate-hydrate/electric-furnace CeO2 powder route and distinguishes partially converted material. No example recipe, furnace schedule, yield, particle size or energy default is transferred. Slurry preparation is excluded."
+  - id: "jrc-sic-2007"
+    type: "official_guidance"
+    reference: "European Commission, SIC BREF August 2007, §§2.2.4 and 2.2.7.1, printed pp9/11, PDF pp39/41; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/sic_bref_0907.pdf"
+    used_for: "General calcination and dry grinding, energy and dust interfaces only; pigment-specific BAT limits, chemistry and factors are not transferred to ceria."
+  - id: "epa-pm201a-2020"
+    type: "method_factor"
+    reference: "US EPA Method201A, October 7 2020 publication, §§1.1–1.6, 2 and 3, PDF pp1–3; https://www.epa.gov/sites/default/files/2019-08/documents/method_201a_0.pdf"
+    used_for: "Stationary dry-source filterable PM sizing and limitations. Requires compatible total-PM method for >10 micrometres and separate condensable/fugitive coverage; no emission factors. Not a legal compliance declaration."
+  - id: "epa-ree-2012"
+    type: "official_guidance"
+    reference: "US EPA/600/R-12/572, December 2012 Revised, §§4.2–4.3 and Appendix C Figure C-1 continuation; https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100EUBC.TXT"
+    used_for: "Historical evidence of mineral/separation diversity and variable coproduct chemical forms; supports supplier traceability need, not a modern universal recipe, plant inventory or allocation fraction."
+  - id: "thermo-carbonate-spec"
+    type: "literature"
+    reference: "ThermoFisher Scientific product specification, Cerium(III) carbonate hydrate 379402500, print 2026-10-14, PDF p1; https://assets.thermofisher.com/chem-specs-pdf/retrievePdf?countryCode=kr&erp_type=KR_E1_LCD&rootSku=37940&sku=379402500"
+    used_for: "Confirms hydrate name/CAS and that trace-metal purity has a separate denominator. This catalogue grade is not assumed to be a factory input or total dry chemical purity; measure actual lot hydration, assay and water."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:a49538b6a790ad465579ade9f86dbae03f19fab03fa2bc8f79592fbb38a56187"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5230"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5230
+          line: 58
+          column: 1
+        end:
+          offset: 8162
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased separated Ce(III) carbonate hydrate at receiving gate, with actual producer, grade, hydration, water and Ce assay |\n| starting_condition_role | foreground_starting_point |\n| product_classification_scope | One cerium oxide subset of CPC34290, not generic rare-earth chemistry |\n| recursive_input_rule | No cut-off for same-category intermediates or rework; disclose purchased oxide input if present and reassess route applicability |\n| upstream_dataset_requirement | Traceable separated-carbonate provider per actual supplied kg, with supplier qualification, phase identity, hydration, free moisture, Ce assay and wet/dry/oxide-equivalent reference compatibility. Link the purchased precursor burden once for the measured quantity. Trace mine/concentrate, actual leaching acid/alkali, each extractant and diluent, solvent recovery, precipitation reagent, mother liquor, tailings, radionuclide-bearing residue and real coproduct destinations. Supplier operations remain background; explicitly expanding them replaces the corresponding linked burdens, never adds them again or treats them as zero. Each expanded upstream exchange is atomic; no generic rare-earth average substitutes for this species/route |\n| disclosure | Report gate-to-gate inventory separately from linked upstream burdens. Missing producer/mineral/chemistry/provider-basis evidence prevents a complete cradle-to-gate claim; an unknown is never a zero |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | conversion | Include electricity, furnace auxiliaries, dry finishing, dry gas filtration, internal rework and dispatch packaging. Wet scrubbing, steam humidification, fuel heating, additives or slurry production require a separately evidenced route and atomic exchanges before use. | nissan-ceria-2008; jrc-sic-2007 |\n| boundary_upstream | upstream_interface | Require actual upstream physical species and provider bases; historical mine flow diagrams demonstrate diversity, not a default plant recipe. Acid, alkali, each solvent and each residue remain separate flows in the linked supplier unit. | epa-ree-2012 |\n| boundary_ledger | all_processes | Retain unallocated physical TotalMass and separate elemental C, H, O, Ce and every actual impurity-element ledger, including free/bound water, wet inlet/outlet air, purchased gas carriers, auxiliary water, full packaging/carriers, maintenance consumption, returns and stock changes. Match internal transfers at both ends. Pass-through air is recorded gross in the physical ledger; only net environmental exchanges enter the LCI, without counting the same oxygen or water twice. Shared upstream coproducts retain measured physical quantities. Keep a separate measured electricity/heat balance; allocation acts only on environmental burdens. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 293
+              line: 10
+              column: 1
+            end:
+              offset: 382
+              line: 10
+              column: 90
+          text: "# Cerium(IV) oxide powder from electric calcination of separated cerium carbonate hydrate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5230
+              line: 58
+              column: 1
+            end:
+              offset: 5251
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_24260"
+      family: "allocation"
+      span:
+        start:
+          offset: 24260
+          line: 327
+          column: 1
+        end:
+          offset: 25372
+          line: 335
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | environmental_burdens | Use dedicated stage and campaign meters first. Separate other grades, non-ceria products and shared utilities by measured attributable use under cp_burden. Dedicated ceria conversion has no assumed coproduct. |  |\n| allocation_shared | inseparable_burdens | For genuinely inseparable upstream shared burdens, retain the provider allocation method and collection evidence. Use a demonstrated physical causal relationship where available; if none is defensible, disclose economic shares calculated from actual same-period net revenues and sensitivity, without a universal mass or price factor. |  |\n| allocation_physical | physical_ledger | Allocation shares apply only to shared environmental burdens. Never multiply physical coproduct outputs, internal transfers, tailings, mother liquor or recovered solvent by the target-product share. Waste treatment is linked to actual receiver and status; no automatic avoided-product credit. | epa-ree-2012 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 293
+              line: 10
+              column: 1
+            end:
+              offset: 382
+              line: 10
+              column: 90
+          text: "# Cerium(IV) oxide powder from electric calcination of separated cerium carbonate hydrate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 24260
+              line: 327
+              column: 1
+            end:
+              offset: 24300
+              line: 327
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_38297"
+      family: "validation"
+      span:
+        start:
+          offset: 38297
+          line: 370
+          column: 1
+        end:
+          offset: 39868
+          line: 380
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference_flow | Confirm dry single-species CeO2, actual carbonate-hydrate/electric/dry route, grade assays and all qualifiers. A broad flow UUID does not validate supplier dataset quantity or energy basis. |  |\n| validate_measurement | all inventory rows | Require one completed 1 kg product output and a common per-1-kg reference denominator in both languages, protocols and calculations. Keep water, impurity, oxide-contained mass, elemental Ce and packaging distinct. |  |\n| validate_completeness | inventory | Reconcile all stages, idle/rework losses, dust controls, stock changes and actual extra exchanges. Each additional chemical, solvent, packaging, waste or emission is a separate row with a collection protocol. Unresolved UUID, provider basis or unmeasured fraction prevents complete dataset validation, not an assumed zero. |  |\n| validate_particles | out_pm25, out_pm2510, out_pmover10 | Require non-overlapping fractions and explicit filterable/condensable/fugitive coverage. Water-droplet or unmatched total-PM sampling does not establish Method201A size fractions. Review uncertainty rather than forcing negative differences to zero. | epa-pm201a-2020 |\n| validate_upstream | supplier_link | Verify actual mine and separation chain and provider reference quantity, with separate physical and burden ledgers. Shared rare-earth averages or historical flow-sheet product labels are not evidence of a specific Ce product. | epa-ree-2012 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 293
+              line: 10
+              column: 1
+            end:
+              offset: 382
+              line: 10
+              column: 90
+          text: "# Cerium(IV) oxide powder from electric calcination of separated cerium carbonate hydrate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 38297
+              line: 370
+              column: 1
+            end:
+              offset: 38319
+              line: 370
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5230"
+      source_span:
+        start:
+          offset: 6846
+          line: 73
+          column: 1
+        end:
+          offset: 7182
+          line: 73
+          column: 337
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_5230"
+      source_span:
+        start:
+          offset: 7183
+          line: 74
+          column: 1
+        end:
+          offset: 7479
+          line: 74
+          column: 297
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_5230"
+      source_span:
+        start:
+          offset: 7480
+          line: 75
+          column: 1
+        end:
+          offset: 8160
+          line: 75
+          column: 681
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_24260"
+      source_span:
+        start:
+          offset: 24373
+          line: 331
+          column: 1
+        end:
+          offset: 24635
+          line: 331
+          column: 263
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_24260"
+      source_span:
+        start:
+          offset: 24636
+          line: 332
+          column: 1
+        end:
+          offset: 25018
+          line: 332
+          column: 383
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_24260"
+      source_span:
+        start:
+          offset: 25019
+          line: 333
+          column: 1
+        end:
+          offset: 25370
+          line: 333
+          column: 352
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_38297"
+      source_span:
+        start:
+          offset: 38392
+          line: 374
+          column: 1
+        end:
+          offset: 38625
+          line: 374
+          column: 234
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_38297"
+      source_span:
+        start:
+          offset: 38626
+          line: 375
+          column: 1
+        end:
+          offset: 38890
+          line: 375
+          column: 265
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_38297"
+      source_span:
+        start:
+          offset: 38891
+          line: 376
+          column: 1
+        end:
+          offset: 39256
+          line: 376
+          column: 366
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_particles"
+      identity_kind: "explicit"
+      unit_id: "normative_38297"
+      source_span:
+        start:
+          offset: 39257
+          line: 377
+          column: 1
+        end:
+          offset: 39585
+          line: 377
+          column: 329
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_38297"
+      source_span:
+        start:
+          offset: 39586
+          line: 378
+          column: 1
+        end:
+          offset: 39866
+          line: 378
+          column: 281
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5230"
+      source_span:
+        start:
+          offset: 5230
+          line: 58
+          column: 1
+        end:
+          offset: 5251
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5230"
+      source_span:
+        start:
+          offset: 5279
+          line: 62
+          column: 1
+        end:
+          offset: 6773
+          line: 69
+          column: 216
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_24260"
+      source_span:
+        start:
+          offset: 24260
+          line: 327
+          column: 1
+        end:
+          offset: 24300
+          line: 327
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_38297"
+      source_span:
+        start:
+          offset: 38297
+          line: 370
+          column: 1
+        end:
+          offset: 38319
+          line: 370
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a49538b6a790ad465579ade9f86dbae03f19fab03fa2bc8f79592fbb38a56187"
+  generated_content_sha256: "sha256:f48b2d6c9a7cb8c877b64341deb49abab35fed9095111b996af1128a1f968b62"

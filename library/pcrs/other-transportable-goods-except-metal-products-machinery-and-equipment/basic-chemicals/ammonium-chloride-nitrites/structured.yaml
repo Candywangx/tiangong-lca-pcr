@@ -1,10 +1,1239 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34653"
-  title: "Ammonium chloride; nitrites"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.ammonium-chloride-nitrites"
+  classification_refs: "CPC 3.0 34653; narrower"
+  covered_products: "Additive-free crystalline NH4Cl, actual assay and residual moisture"
+  excluded_products: "Nitrites; other ammonium salts; formulated fertilizer; soda/exchange/recovery/sublimation routes; additive-treated crystals"
+  representative_product: "Crystalline ammonium chloride, NH4Cl, CAS12125-02-9"
+  production_route: "Purchased NH3/aqueous HCl direct neutralisation, concentration, cooling crystallisation, filtration, indirect drying and delivery preparation"
+  market_state: "Accepted crystalline solid as supplied, bulk or actual moisture-proof packaging"
+functional_unit:
+  what: "Supply crystalline ammonium chloride as a chemical input"
+  how_much: "1 kg net accepted supplied product, excluding packaging"
+  how_well: "Declare NH4Cl assay, moisture, impurities, acidity, particle form/size and actual acceptance specification; no dry-active or nutrient-only substitution"
+  how_long_or_cycle: "Plant-gate delivery in the complete declared period; no lifetime or agronomic equivalence"
+  reference_flow_link: "nh4cl_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "nh4cl_manufacture"
+      rule: "Include reception/vaporisation, reaction, concentration, cooling, filtration, drying, screening, dust/water scrubbing, storage, packing and loadout with stage meters and failed/zero-output/start-stop operations. Paired internal transfers have identical quantities."
+      source_ids:
+        - unido-nh4cl-study
+        - jrc-cww-2016
+    - rule_id: boundary_interfaces
+      applies_to: "all inventory rows"
+      rule: "Trace all real inputs and outputs. Water-only scrubber solute returned internally stays in the loop; external purge/condensate is whole wet waste, not also an elementary emission. Extend actual treatment/discharges and unrepresented exchanges before completion."
+      source_ids:
+        - jrc-cww-2016
+    - rule_id: boundary_upstream
+      applies_to: "nh4cl_manufacture"
+      rule: "No burden-free feeds, water, energy, transport, packaging or infrastructure is assumed. Retain equipment/service-life evidence, screening and explicit cut-offs; add included transports/assets individually in the data package."
+      source_ids:
+        - jrc-ilcd-2010
+boundary_abstraction:
+  declared_starting_condition: "Purchased liquid anhydrous NH3, aqueous HCl and utilities received at works; include vaporisation and complete downstream preparation"
+  starting_condition_role: "foreground_collection_start"
+  product_classification_scope: "Only direct-route additive-free crystalline NH4Cl subset of CPC3.0 34653"
+  recursive_input_rule: "Own recycled mother liquor, crystals and captured dust stay in balanced internal ledgers, not repeated purchases. Purchased NH4Cl seeds/rework require provenance, inherited burdens and added atomic rows."
+  upstream_dataset_requirement: "Compatible delivered feeds, de-ionised water, actual electricity, steam and packaging, transport and off-site treatment; verify each provider reference basis"
+  disclosure: "Site, period, SKU/route, feeds/state/concentration, stocks/WIP, recycling, controls, utilities, transport, infrastructure, treatment and cut-offs"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Ammonium chloride, nitrites"
+    uuid: "d0574e16-32aa-40cc-a59a-b9aaceab62e7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "NH4Cl CAS12125-02-9"
+    - "direct NH3/aqueous-HCl route"
+    - "additive-free status"
+    - "net as-supplied mass"
+    - "assay and moisture methods"
+    - "impurities/acidity"
+    - "crystal size"
+    - "bulk/pack design"
+    - "site and period"
+    - "acceptance and unique lot IDs"
+    - "feed concentration"
+    - "utilities and treatment interface"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net as-supplied accepted crystal mass; moisture and NH4Cl assay remain separate subledgers. Unique positive Q must reconcile accepted production, stocks, dispatch and returns; never replace Q with dry NH4Cl or N mass."
+  - id: solution_mass
+    applies_to: "feed_hcl"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Whole purchased solution is the procurement exchange; measured fraction times wet mass yields active HCl, with carrier water and impurities as subledgers, not duplicate purchases."
+  - id: electricity_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve native CN 1–35kV consumption mix to user; convert kWh to MJ using verified 3.6 MJ/kWh once. Native NCV label does not mean fuel combustion."
+  - id: steam_basis
+    applies_to: "steam_import"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Steam mass is not delivered heat. Retain absolute/gauge pressure, T, dryness, imported/returned mass, enthalpy method and supplier convention; reconcile net enthalpy without duplicate steam/heat burdens."
+process_map:
+  - id: nh4cl_manufacture
+    name: "Integrated direct-neutralisation crystalline NH4Cl manufacture"
+    inclusion: "required"
+    inclusion_condition: "Actual declared route/state; no intentionally added treatment agent"
+    role: "foreground_manufacture"
+    quantitative_reference: "nh4cl_product"
+process_inventory:
+  - id: nh4cl_manufacture
+    label: "Integrated direct-neutralisation crystalline NH4Cl manufacture"
+    inputs:
+      product:
+        - row_id: feed_ammonia
+          role: "Ammonia, anhydrous, liquid"
+          name: "Ammonia, anhydrous, liquid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6928be4f-282b-4448-8f2a-f8c746621303"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure received/issued anhydrous liquid ammonia, vaporisation and residual liquid; include upstream supply and vaporiser utilities."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: feed_hcl
+          role: "Hydrochloric Acid"
+          name: "Hydrochloric Acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a118a682-1600-4855-b959-c78777b75ee8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure the entire purchased aqueous acid solution; assay HCl and carrier water as composition subledgers, not additional purchases."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: water_makeup
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Meter actual externally supplied de-ionised make-up, washing and water-only scrubbing water; exclude recirculated liquid from purchases."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "CN, 1–35 kV grid-average consumption mix to user only. Use measured whole-unit and stage kWh; different geography, voltage or contractual supply requires a compatible identity and provider."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: steam_import
+          role: "Steam, in chemical industry"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7734613a-3ef2-47ce-aff0-9a1bd67906c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure supplied steam mass and pressure, temperature, dryness and vaporiser/heater/dryer duties; native record sets no pressure or location. Verify supplier enthalpy/reference convention separately; do not assume 11.0 or 0.45 MPaG."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pp_sack
+          role: "Woven polypropylene chemical-product sack"
+          name: "Woven polypropylene chemical-product sack"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh empty woven polypropylene sacks and count actual issues, returns and rejects; use the real closure design as separate atomic additions. No seed-bag consumption default."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: pe_liner
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure polyethylene liner film only, including issued, shipped and rejected film. Name/CAS/comment support PE film; native CPC29220 is inconsistent and needs source clarification."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: nh4cl_product
+          role: "Ammonium chloride, nitrites"
+          name: "Ammonium chloride, nitrites"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0574e16-32aa-40cc-a59a-b9aaceab62e7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "1 kg accepted additive-free crystalline NH4Cl, net as supplied including measured residual moisture and impurities, excluding packaging. Broad native finished-product category is restricted here to this NH4Cl subset; never nitrite or a mixture."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: delivered_pp
+          role: "Woven polypropylene chemical-product sack"
+          name: "Woven polypropylene chemical-product sack"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Retain actual polypropylene sacks leaving with product in the physical ledger; packaging has no co-function allocation or second chemical reference output."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: delivered_pe
+          role: "Polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Retain actual shipped polyethylene liner mass separately from net NH4Cl; it is embodied packaging, not an independently credited co-product."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: condensate_return
+          role: "Returned clean heating-steam condensate"
+          name: "Returned clean heating-steam condensate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure exported clean heating-steam condensate only; document receiving utility and matched heat/mass convention. Internally reused condensate is not external output."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+      waste:
+        - row_id: mother_purge
+          role: "Aqueous ammonium-chloride mother-liquor purge"
+          name: "Aqueous ammonium-chloride mother-liquor purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh total aqueous NH4Cl mother-liquor purge to off-site treatment, with dissolved salt, acidity, ammonia, impurities and receiver; no pure salt identity for the wet mixture."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: cleaning_effluent
+          role: "Aqueous ammonium-chloride cleaning effluent"
+          name: "Aqueous ammonium-chloride cleaning effluent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure contained aqueous NH4Cl cleaning effluent including solids; no direct receiving-water discharge is assumed."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: process_condensate
+          role: "Ammonium-chloride-contaminated process condensate"
+          name: "Ammonium-chloride-contaminated process condensate"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure contaminated condensate from concentration separately from clean heating-steam return; analyse entrained NH4Cl, NH3 and HCl; retain internal reuse and external treatment distinctly."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: rejected_crystals
+          role: "Rejected ammonium-chloride crystals"
+          name: "Rejected ammonium-chloride crystals"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh discarded off-spec NH4Cl crystals and moisture; internal redissolution is rework, not waste or accepted output. Do not adopt a chemical-treatment or soda-byproduct-specific waste identity for untreated direct-route rejects."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: collected_dust
+          role: "Collected ammonium-chloride-rich dust"
+          name: "Collected ammonium-chloride-rich dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure captured NH4Cl-rich dust actually sent off site; internal return stays in the loop ledger and never counts as atmospheric release."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: waste_pp
+          role: "Salt-contaminated polypropylene sack waste"
+          name: "Salt-contaminated polypropylene sack waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure untreated salt-contaminated polypropylene sack waste and actual receiver; no assumed mechanical recycling or avoided-production credit."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: waste_pe
+          role: "Salt-contaminated polyethylene liner waste"
+          name: "Salt-contaminated polyethylene liner waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure untreated salt-contaminated polyethylene liner waste and receiver; cleaned recycling-plant identity is not this waste state."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+      elementary:
+        - row_id: air_nh3
+          role: "ammonia"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure actual unreacted NH3 species released after controls, including start/stop and diffuse sources; ammonia-N results need explicit N-to-NH3 conversion. Air, unspecified."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: air_hcl
+          role: "hydrogen chloride"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure actual gaseous HCl after controls; distinguish salt aerosol and chloride-in-liquid. Air, unspecified; not chlorine gas."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: air_pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dry escaped particles in PM2.5 bin only, after actual dust controls; measure composition for the N/Cl balance. Do not add cumulative PM10 or captured dust."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: air_pm10
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dry escaped particles between PM2.5 and PM10 only; use disjoint measured size cuts, not an assumed size fraction."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: air_pmover10
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dry escaped particles larger than PM10 only; include dryer, screening, storage and filling sources where present."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: air_pm_unsized
+          role: "Particulate matter, particle size unspecified"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Unspecified-size dry particle parcels only when size is unmeasured; never repeat a parcel already represented by the three size bins. Retain size uncertainty."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+        - row_id: air_water
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure net water vapour actually released, excluding water condensed or recycled; separately identify any real liquid drift before dataset completion."
+          amount:
+            expression: "Measured complete matched-period amount after raw unit conversion, divided by unique accepted Q once; retain failed/zero-output operations and opening/closing carried burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - unido-nh4cl-study
+                - jrc-cww-2016
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_single
+    applies_to: "nh4cl_manufacture"
+    rule: "One chemical product is defined; directly assign separable operations/utilities and packing. Internal liquor/dust/rework and rejected crystals are not co-products; shipped packaging has physical mass but no independent co-function."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocation_shared
+    applies_to: "nh4cl_manufacture"
+    rule: "Subdivide measured exclusive activities first; residual shared burdens use demonstrated determining physical causality. If not demonstrable, use process-gate market-value allocation with matched quantities/prices and sensitivity. No default share or waste credit."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocation_ledgers
+    applies_to: "nh4cl_manufacture"
+    rule: "Preserve full unallocated physical mass/element/water/stock ledgers separately from environmental burden allocation. Never multiply physical product, waste, emission or internal transfer by allocation factors."
+    source_ids:
+      - jrc-ilcd-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "nh4cl_manufacture"
+      flow_role: "Product acceptance and Q"
+      record_type: "foreground_record"
+      raw_fields: "lot; SKU; net crystal kg; assay; moisture; acidity; impurities; size; rejection; dispatch; returns; opening/closing accepted stock/WIP; inherited burdens; Q"
+      collection_method: "Calibrated net weighing excluding packaging and representative sampling; reconcile unique accepted lots and all stock/dispatch/rework records."
+      unit: "kg"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+    - protocol_id: cp_materials
+      process_id: "nh4cl_manufacture"
+      flow_role: "Feed and loop chemistry"
+      record_type: "foreground_record"
+      raw_fields: "supplier; whole solution kg; NH3/HCl assays; water; impurities; liquid NH3; stage charges; opening/closing feed/mother liquor; returns; reaction evidence"
+      collection_method: "Calibrated weighing/meters and actual assays; retain whole procurement and component subledgers, density/T and paired internal transfers."
+      unit: "kg"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+    - protocol_id: cp_water
+      process_id: "nh4cl_manufacture"
+      flow_role: "Water and phase balance"
+      record_type: "foreground_record"
+      raw_fields: "source; meter volume; density/T; acid carrier water; wash/scrub loop; condensate; humidity; evaporation; moisture; opening/closing liquid"
+      collection_method: "Independently measure water/condensate/air-moisture routes; convert integrated volume with measured density once; distinguish free, crystal-retained and vapour water."
+      unit: "kg"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+    - protocol_id: cp_energy
+      process_id: "nh4cl_manufacture"
+      flow_role: "Steam, return and electricity"
+      record_type: "foreground_record"
+      raw_fields: "stage/total kWh; vaporiser; fans/pumps; steam kg; pressure absolute/gauge; T; dryness; condensate kg/T; heat losses; supplier reference"
+      collection_method: "Calibrated stage and supply/return meters, common-reference steam enthalpy method and bills; reconcile energy without equating mass to heat."
+      unit: "kg; kWh; MJ"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+    - protocol_id: cp_pack
+      process_id: "nh4cl_manufacture"
+      flow_role: "Packaging ledgers"
+      record_type: "foreground_record"
+      raw_fields: "polymer; empty component kg; count; capacity; closure; reuse cycles; issues; shipped; rejects; opening/closing stocks"
+      collection_method: "Weigh each actual component and count issues/shipped/rejected units; retain full physical mass; reuse service fractions affect burden ledger only."
+      unit: "kg; items"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+    - protocol_id: cp_waste
+      process_id: "nh4cl_manufacture"
+      flow_role: "Waste and receiver"
+      record_type: "foreground_record"
+      raw_fields: "stream ID; wet kg; dry solids; water; NH4/NH3-N; Cl; acidity; impurities; dust; internal return; receiver/treatment; manifests; stocks"
+      collection_method: "Weigh/sample each external stream separately; document actual state, receiver/treatment and stock changes; no residual-derived waste quantity."
+      unit: "kg"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+    - protocol_id: cp_air
+      process_id: "nh4cl_manufacture"
+      flow_role: "Post-control releases"
+      record_type: "foreground_record"
+      raw_fields: "source; species; dry/wet basis; actual/standard volume; T/P; integrated volume or flow rate/duration; NH3; HCl; particle bins/composition; water vapour; abatement; detection limits"
+      collection_method: "Representative stack/fugitive monitoring of normal, failed and transient operation; match concentration/volume T/P/dry-wet basis; independently measure partition, not infer all loss as one species."
+      unit: "kg; mg/m3; m3; m3/h; h"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+    - protocol_id: cp_assets
+      process_id: "nh4cl_manufacture"
+      flow_role: "Transport/capital screening"
+      record_type: "foreground_record"
+      raw_fields: "shipment mass/distance/mode; equipment bill; installed mass; lifetime; throughput; shared service; maintenance; cut-offs"
+      collection_method: "Verify supplier/receiver routes and equipment service records; add each included transport/asset/material atomically with explicit cut-off rationale."
+      unit: "kg; km; t*km; years"
+      frequency: "Each batch and continuous meters; start/stop and stocktake"
+      temporal_coverage: "Complete matched period including failures and downtime"
+      site_scope: "Same site, direct route, state and product pool"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, method uncertainty, samples, batch/stock and transfer records"
+  calculation_rules:
+    - id: calc_period
+      applies_to: "all inventory rows"
+      rule: "Convert raw units first; assemble complete matched-pool quantities and carried burdens, then divide once by unique positive Q. Retain raw totals and inherited/closing-stock burdens traceably; Q=0 has no normalized result."
+      inputs:
+        - cp_product
+        - cp_materials
+        - cp_water
+        - cp_energy
+        - cp_pack
+        - cp_waste
+        - cp_air
+      output: "Atomic exchanges per 1 kg reference flow"
+      source_ids:
+        - jrc-cww-2016
+    - id: calc_chemical
+      applies_to: "feed_ammonia, feed_hcl, nh4cl_product"
+      rule: "NH3 + HCl -> NH4Cl gives no net molecular water. Independent feed/product assays, actual reaction evidence, N/H/Cl balances and measured phase transfers determine conversion/losses. Track carrier/free/crystal-retained water separately; never fit unknown reaction water and unknown outlet to one residual or use COD for mass closure."
+      inputs:
+        - cp_materials
+        - cp_product
+        - cp_water
+        - cp_waste
+        - cp_air
+      output: "Raw physical mass/element/water ledgers"
+      source_ids:
+        - unido-nh4cl-study
+        - jrc-cww-2016
+    - id: calc_load
+      applies_to: "air_nh3, air_hcl, air_pm25, air_pm10, air_pmover10, air_pm_unsized"
+      rule: "At matched gas conditions, emitted kg = sum(C_mg_per_m3 × integrated_V_m3) / 1000000. Integrate flow rate over time for volume; never multiply integrated volume by time again. Resolve NH3 versus N and dry particles versus wet droplets explicitly."
+      inputs:
+        - cp_air
+      output: "Species/particle raw-period kg"
+      source_ids:
+        - jrc-cww-2016
+    - id: calc_utilities
+      applies_to: "electricity, steam_import, condensate_return"
+      rule: "Electricity MJ = metered kWh × 3.6. Net steam enthalpy uses imported mass × supplied specific enthalpy minus matched return/vent enthalpy and declared interface terms; retain losses and verify provider conventions without double charging mass and heat."
+      inputs:
+        - cp_energy
+      output: "Period electricity and separate steam mass/enthalpy ledger"
+      source_ids:
+        - jrc-cww-2016
+    - id: calc_pack
+      applies_to: "pp_sack, pe_liner, delivered_pp, delivered_pe"
+      rule: "Physical packaging kg = measured empty component kg × actual count; reconcile issues, stocks, delivery and waste. Reuse allocation changes service burdens only, never physical output."
+      inputs:
+        - cp_pack
+      output: "Physical packaging and separate service burden"
+      source_ids:
+        - jrc-ilcd-2010
+  data_quality_requirements:
+    - id: quality_closure
+      applies_to: "nh4cl_manufacture"
+      requirement: "Close full unallocated mass and N/H/Cl/O plus actual impurity/packaging C ledgers using independent measurements and chemistry. Separate reaction/phase water and dry matter; no unexplained residual fitting or universal tolerance."
+      evidence: "cp_materials; cp_water; cp_pack; cp_waste; cp_air"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Check complete native names/CAS/form/route/geography/medium and exact property-unit chain; identity is separate from provider quantity compatibility. Disclose broad-reference and source-classification limitations."
+      evidence: "cp_product; cp_materials; cp_energy"
+    - id: quality_completeness
+      applies_to: "nh4cl_manufacture"
+      requirement: "Retain included/not-applicable/unmeasured/cut-off decisions, detection limits and uncertainty for each stage/source. Blank UUID is not zero; add actual extra chemicals, closures, cooling/treatment, liquid drift, transport and assets atomically."
+      evidence: "cp_air; cp_assets; cp_waste"
+    - id: quality_no_defaults
+      applies_to: "nh4cl_manufacture"
+      requirement: "Actual grade, recipe, assay, yield, heat/power and monitoring records are required. Old report economics and producer examples supply no site/quantity defaults."
+      evidence: "unido-nh4cl-study; basf-nh4cl-grades"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "nh4cl_product"
+    rule: "Require one final chemical reference output, 1 kg net supplied crystals, all qualifiers and unique positive Q; reject nitrites, nutrient-only basis and incompatible route/form."
+    source_ids:
+      - unsd-cpc3-2025
+      - unido-nh4cl-study
+  - rule_id: validate_pool
+    applies_to: "nh4cl_manufacture"
+    rule: "Reconcile full inputs/burdens including start/stop, failures, zero-output, returns/rework, stock/WIP and inherited burdens; normalize once after conversion. Q=0 gives no normalized values."
+    source_ids:
+      - jrc-cww-2016
+  - rule_id: validate_physics
+    applies_to: "nh4cl_manufacture"
+    rule: "Require independent physical mass/element/water closure and reaction evidence; no net water from NH3+HCl. Wet procurement differs from constituent assays; physical and allocated ledgers remain separate."
+    source_ids:
+      - unido-nh4cl-study
+      - jrc-ilcd-2010
+      - jrc-cww-2016
+  - rule_id: validate_air
+    applies_to: "air_nh3, air_hcl, air_pm25, air_pm10, air_pmover10, air_pm_unsized, air_water"
+    rule: "Verify species, medium, reference volume and post-control loads. Use disjoint particle bins or non-overlapping unsized remainder; captured/recycled dust is not release. Distinguish vapour, droplets and dry salt."
+    source_ids:
+      - jrc-cww-2016
+  - rule_id: validate_interfaces
+    applies_to: "all inventory rows"
+    rule: "Verify CN/voltage limits, steam mass/enthalpy/provider convention and every receiver/treatment/transport link. Report unmeasured data, blank UUIDs and checks skipped; PCR checks are neither completed site inventory nor scientific approval."
+    source_ids:
+      - jrc-cww-2016
+      - jrc-ilcd-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Delivered crystalline NH4Cl input with compatible composition/state and direct-route scope"
+  allowed_use: "Declared additive-free aqueous direct route with actual site, period, SKU and providers"
+  excluded_use: "Other routes/salts/nitrites, pure-active/nutrient substitutions, default factory quantities, use-phase emissions or regulatory approval"
+  required_metadata: "Qualifiers; stages/flowsheet; complete Q/pool/stock/WIP and physical/burden ledgers; assays; utilities; pack design; providers/receivers/transports; treatment/capital/cut-offs; allocation; version"
+  required_quality_disclosure: "Methods, uncertainty, coverage; broad reference restriction; native location/voltage/source-metadata debts; blank identities/provider/receiver gaps; actual extensions and review scope"
+  update_trigger: "Route/feed/product/grade/additive, utility/abatement, supplier/receiver/packaging/stock/allocation evidence changes"
+data_sources:
+  - id: "unido-nh4cl-study"
+    type: "official_guidance"
+    reference: "UNIDO, Development of a portfolio of industrial opportunity studies for existing industries in Ethiopia, Final Report, scan17160, Ammonium Chloride study, VI.A.1.d, printed P17/PDF1172; undated historical scan. https://downloads.unido.org/ot/48/19/4819516/15001-20000_17160.pdf"
+    used_for: "Historical direct-neutralisation sequence: recycled aqueous liquor, concentration, cooling crystallisation, filtration, drying and moisture-proof packing. The report selects a different sulfate/salt route; none of its selected-route recipes, economics, old market restrictions or performance values becomes a default."
+  - id: "jrc-cww-2016"
+    type: "official_guidance"
+    reference: "European Commission JRC, CWW BREF,2016, BAT2–4, printed543–544/PDF573–574. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/CWW_Bref_2016_published.pdf"
+    used_for: "Chemical-sector reaction/side-product and waste-stream inventories, flow and pollutant-load characterisation and representative monitoring. No NH4Cl recipe, abatement design, emission factor or compliance claim; collect actual controls and samples."
+  - id: "basf-nh4cl-grades"
+    type: "literature"
+    reference: "BASF, Inorganic Chemicals, Ammonium chloride product table, Untreated U Grade; publisher-page snapshot2026-10-16. https://chemicals.basf.com/global/en/Monomers/inorganic-chemicals"
+    used_for: "Producer evidence for marketed additive-free crystalline technical NH4Cl; other grades contain anti-caking additives. Grade assays and packaging sizes are examples only, not universal specifications, actual-site proof or manufacturing-route evidence."
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General guide for LCA, Detailed guidance, first edition March2010, section7.9.3, printed257–258/PDF277–278. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Virtual subdivision and determining physical causality for attributional shared burdens; remaining burdens use process-gate market value with sensitivity. No fixed allocation share, avoided-production credit or default value."
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version3.0 Structure,30June2025, CSV line1493,34653. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Classification boundary only: ammonium chloride and nitrites. Direct-route crystalline NH4Cl is a narrower subset; classification proves neither manufacture nor single-species identity."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:6dedc29fec1a9a92c5510e064abe76278d3b18604bd089fb3199b395210676d9"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5456"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5456
+          line: 61
+          column: 1
+        end:
+          offset: 7484
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased liquid anhydrous NH3, aqueous HCl and utilities received at works; include vaporisation and complete downstream preparation |\n| starting_condition_role | foreground_collection_start |\n| product_classification_scope | Only direct-route additive-free crystalline NH4Cl subset of CPC3.0 34653 |\n| recursive_input_rule | Own recycled mother liquor, crystals and captured dust stay in balanced internal ledgers, not repeated purchases. Purchased NH4Cl seeds/rework require provenance, inherited burdens and added atomic rows. |\n| upstream_dataset_requirement | Compatible delivered feeds, de-ionised water, actual electricity, steam and packaging, transport and off-site treatment; verify each provider reference basis |\n| disclosure | Site, period, SKU/route, feeds/state/concentration, stocks/WIP, recycling, controls, utilities, transport, infrastructure, treatment and cut-offs |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete | nh4cl_manufacture | Include reception/vaporisation, reaction, concentration, cooling, filtration, drying, screening, dust/water scrubbing, storage, packing and loadout with stage meters and failed/zero-output/start-stop operations. Paired internal transfers have identical quantities. | unido-nh4cl-study; jrc-cww-2016 |\n| boundary_interfaces | all inventory rows | Trace all real inputs and outputs. Water-only scrubber solute returned internally stays in the loop; external purge/condensate is whole wet waste, not also an elementary emission. Extend actual treatment/discharges and unrepresented exchanges before completion. | jrc-cww-2016 |\n| boundary_upstream | nh4cl_manufacture | No burden-free feeds, water, energy, transport, packaging or infrastructure is assumed. Retain equipment/service-life evidence, screening and explicit cut-offs; add included transports/assets individually in the data package. | jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 233
+              line: 9
+              column: 1
+            end:
+              offset: 311
+              line: 9
+              column: 79
+          text: "# Additive-free crystalline ammonium chloride by aqueous direct neutralisation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5456
+              line: 61
+              column: 1
+            end:
+              offset: 5477
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27965"
+      family: "allocation"
+      span:
+        start:
+          offset: 27965
+          line: 481
+          column: 1
+        end:
+          offset: 28966
+          line: 489
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_single | nh4cl_manufacture | One chemical product is defined; directly assign separable operations/utilities and packing. Internal liquor/dust/rework and rejected crystals are not co-products; shipped packaging has physical mass but no independent co-function. | jrc-ilcd-2010 |\n| allocation_shared | nh4cl_manufacture | Subdivide measured exclusive activities first; residual shared burdens use demonstrated determining physical causality. If not demonstrable, use process-gate market-value allocation with matched quantities/prices and sensitivity. No default share or waste credit. | jrc-ilcd-2010 |\n| allocation_ledgers | nh4cl_manufacture | Preserve full unallocated physical mass/element/water/stock ledgers separately from environmental burden allocation. Never multiply physical product, waste, emission or internal transfer by allocation factors. | jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 233
+              line: 9
+              column: 1
+            end:
+              offset: 311
+              line: 9
+              column: 79
+          text: "# Additive-free crystalline ammonium chloride by aqueous direct neutralisation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27965
+              line: 481
+              column: 1
+            end:
+              offset: 28005
+              line: 481
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39501"
+      family: "validation"
+      span:
+        start:
+          offset: 39501
+          line: 527
+          column: 1
+        end:
+          offset: 41033
+          line: 537
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | nh4cl_product | Require one final chemical reference output, 1 kg net supplied crystals, all qualifiers and unique positive Q; reject nitrites, nutrient-only basis and incompatible route/form. | unsd-cpc3-2025; unido-nh4cl-study |\n| validate_pool | nh4cl_manufacture | Reconcile full inputs/burdens including start/stop, failures, zero-output, returns/rework, stock/WIP and inherited burdens; normalize once after conversion. Q=0 gives no normalized values. | jrc-cww-2016 |\n| validate_physics | nh4cl_manufacture | Require independent physical mass/element/water closure and reaction evidence; no net water from NH3+HCl. Wet procurement differs from constituent assays; physical and allocated ledgers remain separate. | unido-nh4cl-study; jrc-ilcd-2010; jrc-cww-2016 |\n| validate_air | air_nh3, air_hcl, air_pm25, air_pm10, air_pmover10, air_pm_unsized, air_water | Verify species, medium, reference volume and post-control loads. Use disjoint particle bins or non-overlapping unsized remainder; captured/recycled dust is not release. Distinguish vapour, droplets and dry salt. | jrc-cww-2016 |\n| validate_interfaces | all inventory rows | Verify CN/voltage limits, steam mass/enthalpy/provider convention and every receiver/treatment/transport link. Report unmeasured data, blank UUIDs and checks skipped; PCR checks are neither completed site inventory nor scientific approval. | jrc-cww-2016; jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 233
+              line: 9
+              column: 1
+            end:
+              offset: 311
+              line: 9
+              column: 79
+          text: "# Additive-free crystalline ammonium chloride by aqueous direct neutralisation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39501
+              line: 527
+              column: 1
+            end:
+              offset: 39523
+              line: 527
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5456"
+      source_span:
+        start:
+          offset: 6530
+          line: 76
+          column: 1
+        end:
+          offset: 6872
+          line: 76
+          column: 343
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_5456"
+      source_span:
+        start:
+          offset: 6873
+          line: 77
+          column: 1
+        end:
+          offset: 7196
+          line: 77
+          column: 324
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_5456"
+      source_span:
+        start:
+          offset: 7197
+          line: 78
+          column: 1
+        end:
+          offset: 7482
+          line: 78
+          column: 286
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_single"
+      identity_kind: "explicit"
+      unit_id: "normative_27965"
+      source_span:
+        start:
+          offset: 28078
+          line: 485
+          column: 1
+        end:
+          offset: 28369
+          line: 485
+          column: 292
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_27965"
+      source_span:
+        start:
+          offset: 28370
+          line: 486
+          column: 1
+        end:
+          offset: 28693
+          line: 486
+          column: 324
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_27965"
+      source_span:
+        start:
+          offset: 28694
+          line: 487
+          column: 1
+        end:
+          offset: 28964
+          line: 487
+          column: 271
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_39501"
+      source_span:
+        start:
+          offset: 39596
+          line: 531
+          column: 1
+        end:
+          offset: 39849
+          line: 531
+          column: 254
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_pool"
+      identity_kind: "explicit"
+      unit_id: "normative_39501"
+      source_span:
+        start:
+          offset: 39850
+          line: 532
+          column: 1
+        end:
+          offset: 40093
+          line: 532
+          column: 244
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physics"
+      identity_kind: "explicit"
+      unit_id: "normative_39501"
+      source_span:
+        start:
+          offset: 40094
+          line: 533
+          column: 1
+        end:
+          offset: 40388
+          line: 533
+          column: 295
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_air"
+      identity_kind: "explicit"
+      unit_id: "normative_39501"
+      source_span:
+        start:
+          offset: 40389
+          line: 534
+          column: 1
+        end:
+          offset: 40714
+          line: 534
+          column: 326
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_39501"
+      source_span:
+        start:
+          offset: 40715
+          line: 535
+          column: 1
+        end:
+          offset: 41031
+          line: 535
+          column: 317
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5456"
+      source_span:
+        start:
+          offset: 5456
+          line: 61
+          column: 1
+        end:
+          offset: 5477
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5456"
+      source_span:
+        start:
+          offset: 5505
+          line: 65
+          column: 1
+        end:
+          offset: 6457
+          line: 72
+          column: 163
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27965"
+      source_span:
+        start:
+          offset: 27965
+          line: 481
+          column: 1
+        end:
+          offset: 28005
+          line: 481
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39501"
+      source_span:
+        start:
+          offset: 39501
+          line: 527
+          column: 1
+        end:
+          offset: 39523
+          line: 527
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6dedc29fec1a9a92c5510e064abe76278d3b18604bd089fb3199b395210676d9"
+  generated_content_sha256: "sha256:c5e254f4e0430f1e9a3200fd6bef1b094e9d3b6231870c96045e1159e4dababc"

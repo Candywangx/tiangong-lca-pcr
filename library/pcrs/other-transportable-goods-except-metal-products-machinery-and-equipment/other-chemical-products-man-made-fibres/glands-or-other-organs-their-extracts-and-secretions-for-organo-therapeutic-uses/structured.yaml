@@ -1,10 +1,708 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "35271"
-  title: "Glands or other organs, their extracts and secretions, for organo-therapeutic uses"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.glands-or-other-organs-their-extracts-and-secretions-for-organo-therapeutic-uses"
+  classification_refs: "CPC 3.0 35271; narrower"
+  covered_products: "Whole desiccated porcine thyroid extract API of one declared composition and supply state"
+  excluded_products: "Other species/tissues; wet organs; purified or synthetic hormones; tablets; mixed preparations"
+  representative_product: "Desiccated porcine thyroid extract API at net delivery gate"
+  production_route: "Animal-origin manufacture to desiccated whole API, or explicitly separate purchase/packing of that already manufactured API; actual route must be evidenced"
+  market_state: "Bulk desiccated API, net product mass excluding packaging, at manufacturer loading gate"
+functional_unit:
+  what: "Supply the declared whole desiccated porcine thyroid extract API"
+  how_much: "1 kg actual net delivered API, not new quality-release output"
+  how_well: "Accepted against the actual API specification and batch identity; no inferred potency, clinical dose or equivalence"
+  how_long_or_cycle: "One declared delivery/accounting period and matched product-route-state cohort; no clinical service duration"
+  reference_flow_link: "delivered_api"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual receipt, animal-origin manufacture when foreground, quality testing, refrigeration, cleaning, finishing, packaging, finished storage and dispatch through the stated loading gate. Record each real extra material, fuel, refrigerant, packaging component, waste and emission as a separate atomic exchange with a protocol. No processing sequence or operating setting is prescribed. Beyond-gate transport is a separately disclosed extension, never silently imposed by the at-plant flow."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Maintain separate production-release and finished-warehouse/dispatch subledgers. Cancel equal internal transfers when combining them. Closing finished stock is neither another production output nor part of delivered Q. Carry opening and closing WIP/finished-product burdens by the actual matched cohort; retain burdens associated with failed/zero-output runs, rework, losses and returned goods. A returned item reaccepted later is not a second new product or duplicate delivery."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Receipt of segregated porcine thyroid tissue with upstream burdens, or receipt of traceable already manufactured whole desiccated API with its complete upstream chain"
+  starting_condition_role: "foreground_starting_condition"
+  product_classification_scope: "Physical porcine thyroid desiccated API subset; classification does not select tissue or grade"
+  recursive_input_rule: "Book purchased whole API once as upstream input and only incremental foreground work thereafter; do not recursively rebuild its already included organs or utilities"
+  upstream_dataset_requirement: "Animal species/tissue, supplied state, farming/slaughter allocation, route, site and geography, transport/cold-chain and losses must be evidenced; no automatic zero-burden organ"
+  disclosure: "Declare actual start, plant loading acceptance gate, all stages and treatment interfaces, real included storage/packing/handling/dispatch and rework, any omitted stage with reason"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Glands or other organs, their extracts and secretions, for organo-therapeutic uses"
+    uuid: "78482d47-aacf-4a25-9229-23e12b5c4b18"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "animal species and thyroid tissue"
+    - "whole-extract identity"
+    - "desiccated as-supplied composition and moisture"
+    - "actual route"
+    - "quality specification"
+    - "batch cohort and period"
+    - "net delivery gate and returns"
+    - "opening/closing WIP and finished stocks with carried burdens"
+    - "supplier and site geography"
+    - "cold-chain and losses"
+    - "upstream allocation"
+    - "packaging and shipment scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "delivered_api"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated gross-minus-tare net extract mass in the declared as-supplied dry state. Q is actual net accepted delivery after returned mass, counted once by lot; unreleased and undelivered stocks are excluded. Moisture and assayed constituents are subledgers, not reference-mass substitutes."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Recorded physical property"
+      uuid: ""
+    required_unit: "declared unit"
+    rule: "Retain unnormalised period records. Convert mass, integrated energy and volumes using independently supported factors and actual state; rate times duration only for a rate, never multiply an integrated volume by time. No secondary native-property factor is a density."
+process_map:
+  - id: api_supply
+    name: "Porcine thyroid API supply environmental ledger"
+    inclusion: "required"
+    inclusion_condition: "All actual stages within declared route and loading gate; upstream purchased API and organ-origin manufacturing are alternatives, not duplicate procurement"
+    role: "foreground"
+    quantitative_reference: "1 kg net delivered API"
+process_inventory:
+  - id: api_supply
+    label: "Porcine thyroid API supply environmental ledger"
+    inputs:
+      product:
+        - row_id: thyroid_glands
+          role: "Segregated porcine thyroid gland feedstock"
+          name: "Porcine thyroid glands"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the organ-origin manufacturing route uses this input. Record actual tissue, animal origin, supplied wet state and cold-chain losses. Tissue identity and upstream burden cannot be inferred from a food-offal label."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - bioiberica-thyroid-api
+                - dailymed-armour-thyroid
+            ranges: []
+        - row_id: purchased_api
+          role: "Purchased whole desiccated API"
+          name: "Desiccated porcine thyroid extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only receipt/packing of an already manufactured whole API uses this alternative input. Its supplier dataset must include the animal-origin manufacturing chain; do not also book its embodied glands as another purchase."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - bioiberica-thyroid-api
+                - dailymed-armour-thyroid
+            ranges: []
+        - row_id: electricity
+          role: "Metered electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Use actual site electricity for manufacture, refrigeration, storage, handling and dispatch in the declared boundary. No voltage, national mix or supplier is assumed. The inspected CN 1–35 kV consumption-mix identity is not a default for European or unspecified sites."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: purchased_heat
+          role: "Purchased process heat"
+          name: "Purchased thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on actual purchased heat. Reconcile the thermal meter and upstream heat supply; onsite fuels and their actual combustion emissions require separate atomic rows, not another count of the same purchased heat."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Purchased process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separately acquired water, including documented cleaning use. Water already in purchased tissue, API or a formulation is a composition subledger, not a second water purchase."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: cleaner
+          role: "Sodium hydroxide cleaning solution"
+          name: "Sodium hydroxide aqueous solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional example only when this exact cleaner is acquired. Measure the whole supplied solution and retain its declared composition as a subledger. This card specifies no concentration, sanitation procedure or processing setting. Other actual cleaners require their own cards."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: hdpe_container
+          role: "HDPE supply container"
+          name: "High-density polyethylene container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual container. Record the physical article and reuse life if applicable. Do not assume the supplier uses HDPE; each other real packaging component has its own material row and burden. Packaging mass is outside API Q."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_api
+          role: "Net delivered whole desiccated porcine thyroid API"
+          name: "Glands or other organs, their extracts and secretions, for organo-therapeutic uses"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78482d47-aacf-4a25-9229-23e12b5c4b18"
+          property_unit: "Mass / kg"
+          description: "This single row is exclusively the declared porcine thyroid whole desiccated extract, not other glands, wet tissue, concentrated solution or purified hormone. The broad native basename is retained without treating the covered articles as interchangeable."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - bioiberica-thyroid-api
+                - dailymed-armour-thyroid
+            ranges: []
+      waste:
+        - row_id: tissue_residue
+          role: "Discarded porcine thyroid tissue residue"
+          name: "Porcine thyroid tissue residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh the actual segregated discarded residue and document its treatment interface. Do not infer yield or reuse suitability. Internal rework remains internal; it is not both this disposal and another purchased organ."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: discarded_api
+          role: "Discarded desiccated API"
+          name: "Discarded desiccated porcine thyroid extract"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Track failed, expired and returned discarded API separately from successful delivery. Include its actual production, holding and treatment burdens according to the matched cohort ledger; no positive Q is created."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: effluent
+          role: "Aqueous process effluent"
+          name: "Aqueous thyroid-processing effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Use measured effluent mass and independently analysed constituents with destination and treatment boundary. COD is a quality indicator, not a species, elemental closure or reaction-water surrogate."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Water evaporated to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When evaporation crosses the boundary, determine actual removed water from independent measurements. Phase change is not reaction-water formation. Do not fit this amount and unknown reaction water to the same balance residual."
+          amount:
+            expression: "Report the matched raw-period numerator on the per reference flow basis, using the single reporting calculation in section 8; do not divide during collection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "Do not assign zero upstream burdens to thyroid merely because it is a small slaughter output. Obtain animal-origin and output-class evidence and the actual upstream dataset allocation method. Attribute organ-specific collection, cold-chain, losses and transport directly; document joint-output quantities and allocation drivers without inferring value or yield. The EC method distinguishes farming and slaughterhouse allocations and has binding pig defaults in its own scope; they are not thyroid-specific coefficients and are not imported here. Preserve that distinction when a study chooses a full PEF method. Source: ec-pef-2021."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "For shared foreground services first separate attributable operations/meters; justify any remaining allocation by a measured causal relationship, or a disclosed alternative if no causal basis is supported. Keep the unallocated physical ledger and all co-products visible. No clinical-dose, activity or hormone-equivalent allocation is allowed by this mass-based method. Source: ec-pef-2021."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_delivery
+      process_id: "api_supply"
+      flow_role: "Net delivery and inventory"
+      record_type: "weighing_and_stock_ledger"
+      raw_fields: "lot; species; tissue; route; state; period; gross; tare; accepted_dispatch; returns; opening_WIP; closing_WIP; opening_finished; closing_finished; carried_burdens; internal_transfer; failed_runs"
+      collection_method: "Owner: site quality and warehouse custodians jointly. Preserve raw unnormalised weights, lot acceptance and return identifiers, quality-release and delivery records, and both stock/burden ledgers. Reconcile unique delivered lots against opening stocks, current receipts/releases, losses and closing stocks. No A/Q during collection."
+      unit: "kg"
+      frequency: "Every lot and period close"
+      temporal_coverage: "Complete actual period and carried cohorts"
+      site_scope: "Named site and loading acceptance gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, stock reconciliation, signed acceptance/returns, composition and supplier origin"
+    - protocol_id: cp_environment
+      process_id: "api_supply"
+      flow_role: "Atomic environmental exchanges and carried burdens"
+      record_type: "meter_invoice_and_waste_ledger"
+      raw_fields: "row_id; lot; period; raw_amount; original_unit; conversions; starting_condition; incoming_composition; opening_WIP_burden; closing_WIP_burden; opening_finished_burden; closing_finished_burden; failed_zero_output; rework; shared_service; allocation_driver; destination"
+      collection_method: "Owner: site environmental data custodian, with meter, production and waste owners. Retain full undivided period numerators, conversion evidence and complete WIP/finished-stock burden carry. Include zero-output/failed runs, real cold-chain/storage/packing/handling/dispatch and rework. Separate each acquired whole formulation from its component subledger; preserve each actual elementary species and receiving medium. No division by delivery or release during collection."
+      unit: "kg; kWh; MJ by atomic row"
+      frequency: "Each batch/meter interval and period close"
+      temporal_coverage: "Full matched period, including opening carry and failed runs"
+      site_scope: "Declared site, actual upstream interface and destination"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Invoices, meters, assays, treatment manifests, loss and burden reconciliation; explicit missing versus zero"
+  calculation_rules:
+    - id: net_delivery_basis
+      applies_to: "all inventory rows"
+      rule: "Q = sum of unique accepted gross-minus-tare dispatched API mass minus returned mass in the declared cohort; require Q > 0. For each exchange j, assemble the attributable numerator A_j from unnormalised full-period records and opening carried burdens, less supported closing WIP and finished-stock carry, with actual allocation and internal-transfer cancellation. Report A_j / Q once per 1 kg net delivered reference. The card instruction and aggregation basis describe this same reporting operation, never sequential divisions. Retain excluded closing burdens for the next period, and retain failed/zero-output/rework burdens in their documented cohorts; zero-output periods carry burdens and do not yield a normalized product dataset."
+      inputs:
+        - cp_delivery
+        - cp_environment
+      output: "Exchange amount per 1 kg net delivered API"
+      source_ids: []
+  data_quality_requirements:
+    - id: origin_state
+      applies_to: "all inventory rows"
+      requirement: "Keep animal/tissue, actual route, whole formulation, moisture and supplied state distinct. Supplier example European origin cannot establish every producer geography or batch origin; the medicinal label is not a supply-chain identity link."
+      evidence: "bioiberica-thyroid-api; dailymed-armour-thyroid; cp_delivery"
+    - id: physical_balance
+      applies_to: "all inventory rows"
+      requirement: "Reconcile full unallocated physical mass and relevant elements over opening inventory + external inputs = actual outputs + closing inventory; internal transfers cancel. Establish actual species, water formation/consumption and phase/structural/free-water changes independently. Neither COD nor a closure residual supplies unknown species or reaction water. Disclose residual uncertainty rather than invent a missing outlet."
+      evidence: "cp_delivery; cp_environment"
+    - id: identity_limits
+      applies_to: "delivered_api"
+      requirement: "Broad native reference is not a species, organ, desiccated-state or grade specification. Use it only with the full porcine thyroid qualifiers and one finished physical row. Other actual exchanges require compatible local identities and providers; auxiliary UUID gaps do not erase measured burdens."
+      evidence: "cp_delivery; cp_environment"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject interchange of tissues, animal species, purified actives and whole extracts, or omission of the native flow limitations. The explicit reference link must select the unique terminal Product output with the same UUID in both languages; real co-products or intermediates cannot be hidden or renamed to bypass that check."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require positive unique net delivered Q, complete raw numerators and carried WIP/finished-stock burdens. Reject inventory counted in delivery Q, duplicate reacceptance, omission of failed/zero-output burdens, repeated A/Q, integrated-volume times time, and duplicate component purchases. Unknown values remain gaps, never zero."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check all actually included storage, packing, handling, dispatch, cold-chain, rework, waste destinations and actual elementary media. Require independent physical/element balances and species/water evidence. Missing site measurements or provider matches require explicit uncertainty and completion before a concrete dataset is accepted; this method establishes no scientific approval, clinical claim or publication permission."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Traceable environmental modelling of this declared whole API supply"
+  allowed_use: "Only matched animal/tissue, whole extract, dry supply state, route, geography and net delivery gate"
+  excluded_use: "Clinical efficacy, dosing, hormone equivalence, other organs/species, unspecified mixtures and unverified biotechnology operation"
+  required_metadata: "All reference qualifiers, protocol owners, period/cohort, allocation, upstream datasets, stock and carried-burden reconciliation, supplier geography and actual boundary"
+  required_quality_disclosure: "Native broad-identity limits, auxiliary UUID/provider gaps, missing measurements, balance uncertainty and unreviewed scope"
+  update_trigger: "Change of species/tissue, whole-extract composition, state, route, gate, supplier/upstream allocation or inventory carry method"
+data_sources:
+  - id: "bioiberica-thyroid-api"
+    type: "handbook"
+    reference: "Bioiberica, Thyroid API; https://www.bioiberica.com/en/products/human-health/thyroid-api"
+    used_for: "Manufacturer identity example: porcine thyroid origin and desiccated API; its European-origin claim is supplier-specific. No inventory, universal process route or yield is supplied."
+  - id: "dailymed-armour-thyroid"
+    type: "official_guidance"
+    reference: "DailyMed, Armour Thyroid label, setid 56b41079-60db-4256-9695-202b3a65d13d; https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=56b41079-60db-4256-9695-202b3a65d13d"
+    used_for: "Label evidence of actual medicinal use and porcine thyroid from food-chain pigs; tablet excipients are outside the bulk API identity. Label states unapproved drug and is not FDA efficacy approval; no dose, potency, API mass fraction or plant performance is inferred."
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission C(2021) 9332 final, Annex I, pp. 63–64, 68, 70; https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "General multifunctionality and animal/slaughterhouse scope. Pig table is not a thyroid-specific coefficient; no numerical factors are transplanted. A study claiming full PEF must retain its binding defaults and classify its actual output correctly; this PCR alone does not establish full PEF conformity."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:3f37b6d23e7013d59b8f47714f9f61a056ba1587fb5ea6ca9349c6473335b701"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5125"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5125
+          line: 57
+          column: 1
+        end:
+          offset: 7221
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of segregated porcine thyroid tissue with upstream burdens, or receipt of traceable already manufactured whole desiccated API with its complete upstream chain |\n| starting_condition_role | foreground_starting_condition |\n| product_classification_scope | Physical porcine thyroid desiccated API subset; classification does not select tissue or grade |\n| recursive_input_rule | Book purchased whole API once as upstream input and only incremental foreground work thereafter; do not recursively rebuild its already included organs or utilities |\n| upstream_dataset_requirement | Animal species/tissue, supplied state, farming/slaughter allocation, route, site and geography, transport/cold-chain and losses must be evidenced; no automatic zero-burden organ |\n| disclosure | Declare actual start, plant loading acceptance gate, all stages and treatment interfaces, real included storage/packing/handling/dispatch and rework, any omitted stage with reason |\n\n### boundary_complete\n\nInclude actual receipt, animal-origin manufacture when foreground, quality testing, refrigeration, cleaning, finishing, packaging, finished storage and dispatch through the stated loading gate. Record each real extra material, fuel, refrigerant, packaging component, waste and emission as a separate atomic exchange with a protocol. No processing sequence or operating setting is prescribed. Beyond-gate transport is a separately disclosed extension, never silently imposed by the at-plant flow.\n\n### inventory_carry\n\nMaintain separate production-release and finished-warehouse/dispatch subledgers. Cancel equal internal transfers when combining them. Closing finished stock is neither another production output nor part of delivered Q. Carry opening and closing WIP/finished-product burdens by the actual matched cohort; retain burdens associated with failed/zero-output runs, rework, losses and returned goods. A returned item reaccepted later is not a second new product or duplicate delivery.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 311
+              line: 9
+              column: 1
+            end:
+              offset: 372
+              line: 9
+              column: 62
+          text: "# Desiccated porcine thyroid extract API at net delivery gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5125
+              line: 57
+              column: 1
+            end:
+              offset: 5146
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_17043"
+      family: "allocation"
+      span:
+        start:
+          offset: 17043
+          line: 284
+          column: 1
+        end:
+          offset: 18170
+          line: 294
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n### animal_upstream_allocation\n\nDo not assign zero upstream burdens to thyroid merely because it is a small slaughter output. Obtain animal-origin and output-class evidence and the actual upstream dataset allocation method. Attribute organ-specific collection, cold-chain, losses and transport directly; document joint-output quantities and allocation drivers without inferring value or yield. The EC method distinguishes farming and slaughterhouse allocations and has binding pig defaults in its own scope; they are not thyroid-specific coefficients and are not imported here. Preserve that distinction when a study chooses a full PEF method. Source: ec-pef-2021.\n\n### foreground_allocation\n\nFor shared foreground services first separate attributable operations/meters; justify any remaining allocation by a measured causal relationship, or a disclosed alternative if no causal basis is supported. Keep the unallocated physical ledger and all co-products visible. No clinical-dose, activity or hormone-equivalent allocation is allowed by this mass-based method. Source: ec-pef-2021.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 311
+              line: 9
+              column: 1
+            end:
+              offset: 372
+              line: 9
+              column: 62
+          text: "# Desiccated porcine thyroid extract API at net delivery gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 17043
+              line: 284
+              column: 1
+            end:
+              offset: 17083
+              line: 284
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_23088"
+      family: "validation"
+      span:
+        start:
+          offset: 23088
+          line: 319
+          column: 1
+        end:
+          offset: 24262
+          line: 333
+          column: 1
+      markdown: "## 9. Validation Rules\n\n### validate_identity\n\nReject interchange of tissues, animal species, purified actives and whole extracts, or omission of the native flow limitations. The explicit reference link must select the unique terminal Product output with the same UUID in both languages; real co-products or intermediates cannot be hidden or renamed to bypass that check.\n\n### validate_ledger\n\nRequire positive unique net delivered Q, complete raw numerators and carried WIP/finished-stock burdens. Reject inventory counted in delivery Q, duplicate reacceptance, omission of failed/zero-output burdens, repeated A/Q, integrated-volume times time, and duplicate component purchases. Unknown values remain gaps, never zero.\n\n### validate_boundary\n\nCheck all actually included storage, packing, handling, dispatch, cold-chain, rework, waste destinations and actual elementary media. Require independent physical/element balances and species/water evidence. Missing site measurements or provider matches require explicit uncertainty and completion before a concrete dataset is accepted; this method establishes no scientific approval, clinical claim or publication permission.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 311
+              line: 9
+              column: 1
+            end:
+              offset: 372
+              line: 9
+              column: 62
+          text: "# Desiccated porcine thyroid extract API at net delivery gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 23088
+              line: 319
+              column: 1
+            end:
+              offset: 23110
+              line: 319
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5125"
+      source_span:
+        start:
+          offset: 6223
+          line: 72
+          column: 1
+        end:
+          offset: 6718
+          line: 72
+          column: 496
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5125"
+      source_span:
+        start:
+          offset: 6741
+          line: 76
+          column: 1
+        end:
+          offset: 7219
+          line: 76
+          column: 479
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_17043"
+      source_span:
+        start:
+          offset: 17117
+          line: 288
+          column: 1
+        end:
+          offset: 17749
+          line: 288
+          column: 633
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_17043"
+      source_span:
+        start:
+          offset: 17778
+          line: 292
+          column: 1
+        end:
+          offset: 18168
+          line: 292
+          column: 391
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_23088"
+      source_span:
+        start:
+          offset: 23135
+          line: 323
+          column: 1
+        end:
+          offset: 23459
+          line: 323
+          column: 325
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_23088"
+      source_span:
+        start:
+          offset: 23482
+          line: 327
+          column: 1
+        end:
+          offset: 23809
+          line: 327
+          column: 328
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_23088"
+      source_span:
+        start:
+          offset: 23834
+          line: 331
+          column: 1
+        end:
+          offset: 24260
+          line: 331
+          column: 427
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5125"
+      source_span:
+        start:
+          offset: 5125
+          line: 57
+          column: 1
+        end:
+          offset: 5146
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5125"
+      source_span:
+        start:
+          offset: 5174
+          line: 61
+          column: 1
+        end:
+          offset: 6198
+          line: 68
+          column: 197
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_17043"
+      source_span:
+        start:
+          offset: 17043
+          line: 284
+          column: 1
+        end:
+          offset: 17083
+          line: 284
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_23088"
+      source_span:
+        start:
+          offset: 23088
+          line: 319
+          column: 1
+        end:
+          offset: 23110
+          line: 319
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3f37b6d23e7013d59b8f47714f9f61a056ba1587fb5ea6ca9349c6473335b701"
+  generated_content_sha256: "sha256:731ce7947fee774d3916ca0dc7f0a565590f63bc9a58b74b2d6b62aa21ba7a1c"

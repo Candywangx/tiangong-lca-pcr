@@ -1,10 +1,1096 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34570"
-  title: "Glycerol"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.glycerol"
+  classification_refs: "CPC 3.0:34570; narrower"
+  covered_products: "Accepted bulk refined glycerol from fat-splitting crude feed"
+  excluded_products: "Other feed routes, ion exchange, residue recovery, formulations, retail packs and marketed technical co-products"
+  representative_product: "One actual measured refined-glycerine SKU; KLK refined-glycerin family is commercial existence evidence, not a mandatory SKU or site claim"
+  production_route: "Crude receipt → optional NaOH conditioning → vacuum/foots distillation and internal recovery → stripping → carbon bleaching → filtration/cooling → bulk loading"
+  market_state: "Liquid at measured loading conditions; net commercial mass with actual residual water and impurities"
+functional_unit:
+  what: "Supply a qualified refined glycerol chemical feedstock"
+  how_much: "1 kg accepted net bulk product"
+  how_well: "Actual SKU acceptance: glycerol assay and its wet/dry basis, water, MONG, ash/salts, acidity, colour and relevant contaminants"
+  how_long_or_cycle: "One declared representative production and dispatch period, including startup, shutdown, rework and stock changes; no service life"
+  reference_flow_link: "refined_glycerol"
+system_boundary:
+  rules:
+    - rule_id: b_gate
+      applies_to: "refining"
+      rule: "Include receipt, conditioning if used, distillation/foots recovery, stripping, bleaching, polishing, cooling, storage/loading, recovery/scrubbing, startup/shutdown, cleaning and maintenance consumption attributable to this product. Segregate stage meters and keep internal transfers equal at both ends."
+      source_ids:
+        - cpm-glycerin-refining-2024
+        - ifc-oleochemicals-2007
+    - rule_id: b_upstream
+      applies_to: "crude_glycerine"
+      rule: "Crude glycerine is not burden-free waste by name or biological origin. Preserve the upstream joint-production allocation and concentration/pretreatment inventory once; a fatty-acid sweet-water dataset alone does not establish the received concentrated feed."
+      source_ids:
+        - efisc-oilseed-refining-v3-1
+        - eu-pef-multifunctionality-2021
+    - rule_id: b_emissions
+      applies_to: "refining"
+      rule: "Establish an actual stream map and species inventory for condenser/vacuum/vent, cleaning and waste outlets. Exported effluent is a waste transfer; treatment emissions belong to the linked treatment boundary. If any direct outfall or on-site combustion/treatment exists, extend the inventory with exact receiving media, each actual species and unambiguous quantities."
+      source_ids:
+        - jrc-cww-bref-2016
+        - ifc-oleochemicals-2007
+    - rule_id: b_carbon
+      applies_to: "all inventory rows"
+      rule: "Keep measured biological/fossil carbon in feed, carbon medium, product, residues and actual emissions with origin evidence. Do not remove any actual biogenic CO2 from LCI because a GHG reporting convention gives it different treatment. Captured carbon, organic carbon and CO2 mass are distinct; no assumed conversion or neutrality."
+      source_ids:
+        - jrc-cww-bref-2016
+boundary_abstraction:
+  declared_starting_condition: "Received pretreated concentrated fat-splitting crude glycerine and external utilities"
+  starting_condition_role: "foreground_gate_input"
+  product_classification_scope: "CPC 34570 fat-splitting vacuum-refined subset; no whole-leaf claim"
+  recursive_input_rule: "Same-category rework is internal if inside this gate; externally purchased glycerol remains one input with its own compatible upstream dataset and actual state; do not substitute it for crude feed"
+  upstream_dataset_requirement: "Compatible feed dataset includes natural oil/fat supply, joint hydrolysis allocation, sweet-water concentration and pretreatment, with supplier geography/period and wet-mixture reference basis; utilities and exported wastes need compatible provider/receiver datasets"
+  disclosure: "Starting state, omitted upstream stages, supplier links, stage meters, internal transfers, treatment gate, actual atmosphere/water destinations, energy/stock reconciliations and exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "glycerol"
+    uuid: "32d6a3cd-fb89-4a48-9594-bb240083042e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Fat-splitting origin and upstream pretreatment/concentration"
+    - "actual supplier/SKU/lot"
+    - "vacuum/bleaching route"
+    - "net loading mass"
+    - "measured glycerol/water/impurity composition and analytical bases"
+    - "grade/acceptance"
+    - "carbon origin"
+    - "site/period"
+    - "utility state/provider"
+    - "waste receivers"
+    - "rework/stocks"
+    - "allocation boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reference quantity is 1 kg accepted net bulk material from calibrated weighing/tank mass records, excluding containers. cp_release provides the denominator for every row."
+  - id: composition_basis
+    applies_to: "refined_glycerol; crude_glycerine; caustic_solution"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep whole supplied mixture mass separate from glycerol or NaOH active mass, water and dry matter. Convert a reported dry-basis glycerol fraction using the same measured water fraction; components are analytical ledgers, not extra exchanges."
+  - id: electricity_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the verified reference property and supplier consumption boundary. Convert metered kWh to MJ using 3.6 MJ/kWh; do not calculate electrical energy from a fuel calorific value."
+  - id: steam_basis
+    applies_to: "heating_steam; stripping_steam; returned_condensate"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep indirect supply, direct injection and external condensate-return mass separate; reconcile measured state, enthalpy datum and provider amount definition before a heat link. Neither kg nor MJ alone proves usable delivered heat."
+process_map:
+  - id: refining
+    name: "Glycerol refining through bulk loading"
+    inclusion: "required"
+    inclusion_condition: "Every site in the declared route"
+    role: "foreground"
+    quantitative_reference: "refined_glycerol"
+process_inventory:
+  - id: refining
+    label: "Glycerol refining through bulk loading"
+    inputs:
+      product:
+        - row_id: crude_glycerine
+          role: "Pretreated concentrated crude glycerine from fat splitting"
+          name: "Pretreated concentrated crude glycerine from fat splitting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive the whole aqueous crude mixture after upstream sweet-water concentration and pretreatment. Record glycerol, water, salts, soaps, fatty acids, residual glycerides and matter organic non-glycerol separately as analyses, not duplicate exchanges. Pure glycerol does not identify the whole feed. Upstream concentration/pretreatment burdens must accompany this actual starting state."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_feed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - ifc-oleochemicals-2007
+                - efisc-oilseed-refining-v3-1
+            ranges: []
+        - row_id: caustic_solution
+          role: "Aqueous sodium hydroxide solution for feed neutralisation"
+          name: "Aqueous sodium hydroxide solution for feed neutralisation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual neutralisation or cleaning addition. Weigh the complete supplied solution and measure its NaOH mass fraction and carrier water. No 30%, 50%, pharmaceutical distilled-water route or solid-caustic default is prescribed; none of those restricted records establishes the unspecified actual solution."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - cpm-glycerin-refining-2024
+            ranges: []
+        - row_id: activated_carbon
+          role: "Activated carbon"
+          name: "Activated carbon"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5cad53b5-252a-4e2f-8197-8be465707405"
+          property_unit: "Mass / kg"
+          description: "Carbon supplied for liquid glycerol bleaching. Record bed charge/replacement, grade, feedstock origin, moisture, regeneration history and actual provider; do not assume a coal or biological feedstock. Source route metadata says absorption while the material comment describes adsorption: retain only the broad material identity and require source/provider clarification."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - cpm-glycerin-refining-2024
+                - ifc-oleochemicals-2007
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "CN grid-average consumption supply at 1–35 kV only; the selected native locationOfSupply is CN. Other geographies require a separately verified compatible flow/provider. Meter pumps, vacuum equipment, heaters if electrical, cooling and loading; supplier geography and loss boundary must match the background. Another voltage, direct generator or contractual supply requires its own verified flow, not reuse of this qualified identity. Preserve the database reference property Net calorific value; electrical energy is not a combustion heating value."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ifc-oleochemicals-2007
+            ranges: []
+        - row_id: heating_steam
+          role: "Steam delivered to indirect glycerol-refining heaters"
+          name: "Steam delivered to indirect glycerol-refining heaters"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual delivered steam mass, absolute pressure, temperature, phase/dryness and supplier state definition. Fixed 11.0 MPaG or 0.45 MPaG flows cannot establish the unmeasured supply; generic MJ heat cannot establish net delivered heat. Separate this indirectly condensed steam from direct stripping steam."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_steam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - cpm-glycerin-refining-2024
+                - ifc-oleochemicals-2007
+            ranges: []
+        - row_id: stripping_steam
+          role: "Process steam"
+          name: "Process steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "41a70607-cc98-4ae8-8556-e33cdf13157e"
+          property_unit: "Mass / kg"
+          description: "Actual steam injected for glycerol stripping/deodorisation, within this flow’s chemical-industry stripping identity. Record mass, pressure, temperature, dryness and direct-injection destination. Its water enters the process water balance; it is not a second indirect-heating exchange or an automatic MJ conversion. Pressure/provider quantity compatibility remains a concrete dataset requirement."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_steam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - cpm-glycerin-refining-2024
+            ranges: []
+        - row_id: makeup_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Treated water entering the gate for scrubbing, washing and cooling-system makeup where present. Record treatment, quality and destination submeter totals; internal recirculation is excluded from fresh supply. For a volume meter use measured temperature/composition-dependent density, not a database secondary mass coefficient. Direct resource withdrawal requires a separately verified resource flow and treatment inventory."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ifc-oleochemicals-2007
+            ranges: []
+        - row_id: filter_medium
+          role: "Polypropylene liquid-polishing filter medium"
+          name: "Polypropylene liquid-polishing filter medium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional only where the actual polishing bag/filter is confirmed polypropylene. Weigh replacement media excluding housings; retain SKU, polymer and service records. A woven packaging sack is not a liquid filter. Other actual polymers are separate reviewed atomic rows, not silently covered here."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - cpm-glycerin-refining-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refined_glycerol
+          role: "glycerol"
+          name: "glycerol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "32d6a3cd-fb89-4a48-9594-bb240083042e"
+          property_unit: "Mass / kg"
+          description: "Accepted refined bulk product after distillation, carbon bleaching, filtration and loading. The broad CAS 56-81-5 identity has no contrary feedstock/route restriction and is qualified here to the declared fat-splitting route. The commercial net mass includes measured residual water and impurities; it is not 1 kg of pure active glycerol."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - cpm-glycerin-refining-2024
+                - klk-personal-care-2025
+            ranges: []
+        - row_id: returned_condensate
+          role: "Condensate returned to the external steam supplier"
+          name: "Condensate returned to the external steam supplier"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual external return from indirect heating; record mass and return enthalpy/state, destination and supplier contract. Internal condensate reuse remains internal. Do not use evaporated-milk water, purchased water or a different steam identity to represent the return, and do not count it as wastewater simultaneously."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_steam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - ifc-oleochemicals-2007
+            ranges: []
+      waste:
+        - row_id: still_residue
+          role: "Waste heavy residue from glycerol foots distillation"
+          name: "Waste heavy residue from glycerol foots distillation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Final discarded residue after actual glycerol recovery; measure wet mass, retained glycerol/water, salts, soaps, fatty material and receiving treatment. Internal foots recycling is excluded. An isobutyl-acetate distillation residue has a contrary composition and is rejected."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_wastes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - cpm-glycerin-refining-2024
+            ranges: []
+        - row_id: spent_carbon
+          role: "spent activated carbon"
+          name: "spent activated carbon"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aff33890-3f08-40f9-9310-a7f77213de05"
+          property_unit: "Mass / kg"
+          description: "Carbon exported after glycerol bleaching, including actual moisture and adsorbed material. Record glycerol washing/recovery if performed, carbon origin, hazardous properties and receiver/regeneration route. Recovered wash liquid returned inside the gate is not an additional product output."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_wastes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-oleochemicals-2007
+            ranges: []
+        - row_id: offsite_effluent
+          role: "Glycerol-refining wastewater exported for treatment"
+          name: "Glycerol-refining wastewater exported for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual combined exported effluent from condensers, scrubbers, vacuum systems and cleaning, after documented internal recovery. Substreams retain separate measurements and treatment needs even when mixed before export. Measure water, glycerol, fatty substances, salts, pH, temperature, COD/TOC and receiver acceptance. This is a waste transfer, not a freshwater emission or pure-water flow; manganese-slag and silicon-wafer wastewater identities are incompatible."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_effluent."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: discarded_glycerine
+          role: "Discarded off-specification glycerine mixture"
+          name: "Discarded off-specification glycerine mixture"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional final discarded off-spec material, measured by lot and actual disposition. Reprocessed off-spec inventory stays inside the aggregated unit and closing stocks are recorded. Selling a technical glycerine co-product is outside this single-product profile and requires a reviewed multi-output extension, not hiding a second known glycerol output."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_wastes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - cpm-glycerin-refining-2024
+            ranges: []
+        - row_id: spent_filter
+          role: "Spent polypropylene liquid-polishing filter medium"
+          name: "Spent polypropylene liquid-polishing filter medium"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional exported filter medium from filter_medium, with measured retained glycerol/carbon fines and moisture. Keep it distinct from loose carbon and still residue. Record polymer, receiving facility and disposal/regeneration conditions; packaging waste or unrelated filtration residue does not prove this identity."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_wastes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - cpm-glycerin-refining-2024
+            ranges: []
+      elementary:
+        - row_id: glycerol_air
+          role: "glycerin"
+          name: "glycerin"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9510-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual glycerol vapour/mist released after capture to outdoor air, unspecified subcompartment only. Measure compound-specific net discharge at vacuum exhaust and relevant vents, including operating variability. Captured glycerol and indoor occupational exposure are different quantities. Glycerol mass within measured particulate matter must not also be added as the same PM mass."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-oleochemicals-2007
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: acrolein_air
+          role: "acrolein"
+          name: "acrolein"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-91a4-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional only if site-specific VOC speciation identifies acrolein CAS 107-02-8 in actual outdoor discharges. No positive emission, yield or formation temperature is assumed. Quantify after control, preserve detection limits and distinguish other aldehydes and captured fractions; no correction flow, indoor or water-compartment substitution."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-cww-bref-2016
+            ranges: []
+        - row_id: water_vapour_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual uncaptured water vapour reaching outdoor air, unspecified subcompartment. Determine from the matched water balance or measured gas moisture and flow on stated wet/dry temperature-pressure bases. Condensed water exported in wastewater, returned supplier condensate and internally recovered water are not this emission."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow; cp_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - cpm-glycerin-refining-2024
+                - jrc-cww-bref-2016
+            ranges: []
+allocation_rules:
+  - rule_id: a_single
+    applies_to: "refining"
+    rule: "The base profile has one saleable refined product; attribute refining burdens to it. Rework, captured light fractions, recycled foots and closing inventory are not fictional saleable co-products; count their processing and stock changes. Externally returned steam condensate is a utility return with a reconciled provider boundary, not an automatic credit."
+    source_ids:
+      - cpm-glycerin-refining-2024
+      - eu-pef-multifunctionality-2021
+  - rule_id: a_joint
+    applies_to: "crude_glycerine"
+    rule: "For upstream hydrolysis and any reviewed multi-output extension, investigate subdivision/system expansion, then justified physical relationships, then another justified relationship such as actual gate economic value. Document the chosen goal/method, reasons, measured output bases, prices and sensitivity; no generic glycerol share or free by-product assumption."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+  - rule_id: a_ledgers
+    applies_to: "all inventory rows"
+    rule: "Keep each full measured physical output and equal internal transfers in the unallocated process map/mass/water/carbon ledger. Allocate only the attributable environmental burden pools in a separately linked ledger; do not multiply co-product physical mass by an allocation share. Waste treatment is linked once to actual composition/disposition; no assumed substitution credit."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "refining"
+      flow_role: "refined_glycerol"
+      record_type: "dispatch and laboratory records"
+      raw_fields: "SKU; lot; net loading mass; assay wet/dry basis; water; MONG; salts/ash; acceptance; returns/reacceptance; opening/closing finished-product and work-in-progress stocks; carried inventory burdens and production history"
+      collection_method: "Calibrated scale/tank mass with dispatch reconciliation; representative sampling and validated assay/water methods documented with uncertainty; retain certificate and grade criteria"
+      unit: "kg"
+      frequency: "Each lot and dispatch"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+    - protocol_id: cp_feed
+      process_id: "refining"
+      flow_role: "crude_glycerine"
+      record_type: "receipt and analytical records"
+      raw_fields: "Supplier; fat-splitting route; upstream concentration/pretreatment; wet mass; glycerol/water/MONG/salts/soaps/fatty profile; lots; stocks"
+      collection_method: "Weigh received feed, sample each lot and retain validated analytical definitions; reconcile receipts, tanks and upstream burden dataset on the same supplied-mixture basis"
+      unit: "kg"
+      frequency: "Each receipt/lot"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+    - protocol_id: cp_materials
+      process_id: "refining"
+      flow_role: "caustic_solution; activated_carbon; filter_medium"
+      record_type: "procurement and service records"
+      raw_fields: "SKU; quantity; concentration/water; polymer/grade; carbon feedstock; bed charge; replacement; returns; stocks; actual destination; actual reaction pathways and independently measured reactant/product quantities for neutralisation or other observed conversion"
+      collection_method: "Weigh or reconcile stock/invoice records by one material; solution active mass is calculated separately; assign replacement life across the actual monitored production, not an assumed lifetime"
+      unit: "kg"
+      frequency: "Each batch or replacement"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+    - protocol_id: cp_utilities
+      process_id: "refining"
+      flow_role: "electricity; makeup_water"
+      record_type: "stage meter records"
+      raw_fields: "Meter ID; voltage; provider geography/losses; kWh/MJ; water kg/volume/density/temperature; destination; clock; operating state"
+      collection_method: "Calibrated synchronized meter totals for vacuum, pumps, cooling, cleaning and loading; separate fresh water from recirculation; reconcile facility and stage totals without double counting"
+      unit: "MJ; kg"
+      frequency: "Continuous and period close"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+    - protocol_id: cp_steam
+      process_id: "refining"
+      flow_role: "heating_steam; stripping_steam; returned_condensate"
+      record_type: "supplier and stage metering records"
+      raw_fields: "Separate supply/injection/return masses; absolute pressure; temperature; phase/dryness; supplier enthalpy and datum; state method; flash/losses; contract reference basis"
+      collection_method: "Calibrated mass meters and traced supplier state/enthalpy records; reconcile indirect heater return versus direct stripping destination. Withhold heat-based provider link if state or net delivered-heat definition is unknown"
+      unit: "kg; kJ/kg"
+      frequency: "Continuous and supplier settlement"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+    - protocol_id: cp_wastes
+      process_id: "refining"
+      flow_role: "still_residue; spent_carbon; discarded_glycerine; spent_filter"
+      record_type: "weighing, composition and receiver records"
+      raw_fields: "Stream ID; wet/dry mass; glycerol/water/salts/carbon/polymer composition; lot; origin; receiver; treatment; waste status; rework; stocks"
+      collection_method: "Weigh separate waste outlets, sample composition and reconcile transfer notes with internal recovery. Track no-export intervals and actual routing; absence needs evidence"
+      unit: "kg"
+      frequency: "Each export and representative sampling"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+    - protocol_id: cp_effluent
+      process_id: "refining"
+      flow_role: "offsite_effluent"
+      record_type: "flow-proportional sample and export records"
+      raw_fields: "Substream ID; mass/volume/density; flow; pH; temperature; glycerol/fatty profile; salts; COD/TOC and analytical bases; receiver; recovery; sampling interval"
+      collection_method: "Matched flow/representative concentration samples for condensers, vacuum/scrubbers and cleaning; convert volume to mass with measured density; pollutant analytical loads explain this waste, not a second direct discharge"
+      unit: "kg; m3; mg/L"
+      frequency: "Continuous flow and representative operation/cleaning samples"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+    - protocol_id: cp_air
+      process_id: "refining"
+      flow_role: "glycerol_air; acrolein_air; water_vapour_air"
+      record_type: "compound-specific exhaust monitoring"
+      raw_fields: "Outlet; outdoor subcompartment; gas flow; T/P; wet/dry basis; compound concentration; mist/vapour capture; moisture; runtime; detection limits; control performance"
+      collection_method: "Measure each relevant post-control vent and fugitive release with validated species-specific sampling; match flow/concentration/time bases; retained indoor exposure or captured liquid is not outdoor emission; water balance verifies vapour"
+      unit: "kg; m3; mg/m3"
+      frequency: "Representative steady, startup/shutdown and cleaning periods"
+      temporal_coverage: "Full declared period including startup/shutdown, cleaning, rework and stocks"
+      site_scope: "Same site, route and meter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; sample chain; provider evidence; balance reconciliation; uncertainty"
+  calculation_rules:
+    - id: calc_normalized
+      applies_to: "all inventory rows"
+      rule: "N = sum(Q) / B; sum raw physical exchange quantities over the same complete declared route/state/SKU period, including attributable failed or zero-output intervals, startup/shutdown, cleaning and rework, then divide once. Do not average successful-interval ratios or renormalize per-kg values. B must be positive and is accepted net bulk glycerol kg from cp_release, credited once after reconciling returns, reacceptance, finished stocks and work in progress. Internal rework passes are not new accepted output. Retain raw physical totals and separately reconcile carried inventory burdens to the same accepted output; do not drop physical exchanges when adjusting burden attribution. If B is zero, preserve totals and disclose no unit result rather than divide or omit burdens."
+      inputs:
+        - Q
+        - B
+        - cp_release
+      output: "exchange quantity per 1 kg reference flow"
+      source_ids:
+        - jrc-cww-bref-2016
+    - id: calc_composition
+      applies_to: "crude_glycerine; caustic_solution; refined_glycerol"
+      rule: "component_mass = supplied_mass × measured_wet_fraction; dry_glycerol_fraction × (1 − measured_water_fraction) gives wet glycerol fraction only when both analyses share the same representative sample basis. Water, MONG, salt and active ledgers do not add extra exchanges to the parent mass."
+      inputs:
+        - supplied_mass
+        - measured_wet_fraction
+        - dry_glycerol_fraction
+        - measured_water_fraction
+      output: "component and water ledgers"
+      source_ids:
+        - efisc-oilseed-refining-v3-1
+    - id: calc_air_load
+      applies_to: "glycerol_air; acrolein_air"
+      rule: "load_kg = sum(C_mg_per_m3 × gas_volume_m3 × 0.000001) for matched species and wet/dry T/P measurement conditions. Gas_volume is time-integrated flow over the same operating interval; no capture efficiency or missing pollutant is assumed."
+      inputs:
+        - concentration
+        - gas_volume
+        - conditions
+        - cp_air
+      output: "actual post-control species load"
+      source_ids:
+        - jrc-cww-bref-2016
+    - id: calc_ledgers
+      applies_to: "all inventory rows"
+      rule: "For each complete matched period conserve whole mass and actual elements: physical input + opening stock = physical output + closing stock + disclosed residual. Count actual external losses among outputs and do not count stock accumulation twice. Use measured composition to reconcile C/H/O and relevant alkali/salt elements; preserve biological/fossil carbon origins. Water, glycerol and dry components are species/material ledgers, not automatically conserved quantities: add actual reaction formation to inputs and actual consumption to outputs, including neutralisation or any evidenced conversion. Bound reaction terms using actual equations and independently measured reactant/product quantities with uncertainty; do not fit unknown reaction water or dry matter to a residual, use COD as carbon mass, or assume a transesterification/hydrolysis recipe inside this refining gate. A water-balance estimate of vapour is available only when the other water terms are independently bounded. Internal transfers cancel only at the aggregate gate and remain equal in stage logs; retain uncertainty rather than forcing a zero residual."
+      inputs:
+        - "stage records"
+        - composition
+        - stocks
+        - "actual reaction evidence"
+        - "actual emissions"
+        - cp_feed
+        - cp_materials
+        - cp_release
+      output: "unallocated physical balances"
+      source_ids:
+        - jrc-cww-bref-2016
+        - cpm-glycerin-refining-2024
+    - id: calc_steam
+      applies_to: "heating_steam; returned_condensate"
+      rule: "For matched steady indirect heating only, with complete measured return and negligible documented work/storage/other losses: heat_MJ = steam_mass × (h_supply − h_return) / 1000, using supplier-traced h in kJ/kg with one datum and validated state method. Otherwise require the full measured energy balance including flash, leaks, return, accumulation and losses. Never apply this shortcut to direct stripping; preserve the physical mass rows and reconcile provider net/gross/return convention before linking."
+      inputs:
+        - steam_mass
+        - "traced enthalpies"
+        - "same datum"
+        - state_method
+        - complete_boundary
+        - cp_steam
+      output: "conditional heat supplement ledger"
+      source_ids:
+        - ifc-oleochemicals-2007
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Recheck actual species/CAS, mixture state, route, grade, source carbon, receiving medium and reference property/unit; a valid UUID is not a provider dataset or a recipe. Blank UUIDs remain explicit linkage gaps."
+      evidence: "Supplier documents and identity records"
+    - id: dq_complete
+      applies_to: "refining"
+      requirement: "Use complete representative operating/cleaning periods and reconcile plant/stage totals. Missing amounts, unknown receiver, unsupported unit or unexplained balance residual remains unresolved; not_applicable requires actual absence evidence."
+      evidence: "Meter, stock and sample records"
+    - id: dq_extend
+      applies_to: "refining"
+      requirement: "Species survey must add each additional actual VOC, carbon emission, particle fraction, refrigerant, cleaning chemical and treatment flow separately. PM size bins must be disjoint; chemical components inside a measured total cannot be summed twice. No correction-flow substitution."
+      evidence: "jrc-cww-bref-2016"
+    - id: dq_language
+      applies_to: "all inventory rows"
+      requirement: "Bilingual row identities, sources, formula definitions, reference amount and normalized basis must agree; use official Chinese database baseName where available."
+      evidence: "Bilingual alignment"
+validation_rules:
+  - rule_id: v_scope
+    applies_to: "refining"
+    rule: "Check declared fat-splitting feed history, concentration/pretreatment upstream coverage, vacuum/bleaching route and actual grade. Other routes or externally marketed technical glycerine do not conform without a reviewed extension."
+    source_ids:
+      - ifc-oleochemicals-2007
+      - efisc-oilseed-refining-v3-1
+  - rule_id: v_reference
+    applies_to: "refined_glycerol"
+    rule: "Require one reference output of 1 kg accepted net bulk commercial material and all qualifiers. Inventory denominator, aggregation and conversion must refer to the same accepted period/basis; dry assay or pure active mass cannot replace whole supplied mass."
+    source_ids:
+      - efisc-oilseed-refining-v3-1
+  - rule_id: v_balances
+    applies_to: "all inventory rows"
+    rule: "Verify full unallocated mass/water/carbon and energy balances, equal internal transfers, separate indirect/direct steam, no duplicated reference product, species or particulate bins, and distinct physical versus burden ledgers."
+    source_ids:
+      - cpm-glycerin-refining-2024
+      - jrc-cww-bref-2016
+      - eu-pef-multifunctionality-2021
+  - rule_id: v_evidence
+    applies_to: "all inventory rows"
+    rule: "Every actual exchange needs traceable measurement and compatible provider/receiver definition. Unknown UUIDs, assay/density, steam state/heat basis, pollution speciation or incomplete sampling remain explicit data-package gaps. Passing a finite measurement/projection check does not approve scientific methodology or resolve these gaps."
+    source_ids:
+      - jrc-cww-bref-2016
+published_dataset_profile:
+  dataset_role: "foreground process dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified bulk refined glycerol procurement for this route and composition after real collection, upstream linkage, receiver/provider checks and scientific review"
+  excluded_use: "Other routes, unspecified mixture/pure active substitution, zero-burden crude, universal purity/yield defaults, full CPC coverage or methodology approval from tool checks"
+  required_metadata: "All reference qualifiers; process/stage map; raw/normalized physical ledger; provider/receiver pins; sampling/calibration; balance and allocation boundaries"
+  required_quality_disclosure: "Unknown identities/quantities, steam and background compatibility, source-carbon uncertainty, assay basis, residual balances, excluded operations, coverage and review status"
+  update_trigger: "Feed origin/pretreatment, supplier/SKU/assay, process/utility state, waste destination, monitoring coverage, source data identity or allocation change"
+data_sources:
+  - id: "un-cpc-glycerol-3-0"
+    type: "official_guidance"
+    reference: "[UNSD CPC 3.0, subclass 34570 Glycerol](https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/34570)"
+    used_for: "Classification identity only; no manufacturing or purity rule"
+  - id: "ifc-oleochemicals-2007"
+    type: "official_guidance"
+    reference: "[IFC/WBG EHS Guidelines for Oleochemicals Manufacturing, 30 April 2007, pp. 1–4 and 15](https://www.ifc.org/content/dam/ifc/doc/2000/2007-oleochemicals-manufacturing-ehs-guidelines-en.pdf)"
+    used_for: "Natural glycerine refining; utility, condenser/vacuum effluent and VOC inventory; exclude other routes and numerical performance examples"
+  - id: "jrc-cww-bref-2016"
+    type: "official_guidance"
+    reference: "[JRC103096 CWW BREF 2016, BAT 2–3, printed pp. 543–544 / PDF pp. 573–574](https://publications.jrc.ec.europa.eu/repository/bitstream/JRC103096/jrc103096_cww_bref_10_2016.pdf)"
+    used_for: "Chemical-sector stream inventory, relevant species and flow/concentration monitoring; BAT limits are not LCI factors"
+  - id: "efisc-oilseed-refining-v3-1"
+    type: "official_guidance"
+    reference: "[EFISC sector reference document for oilseed crushing/vegetable oil refining v3.1, p. 8 entries 13.8.1–13.8.2](https://food.ec.europa.eu/system/files/2020-08/animal-feed_fh_good-practice_eu-guide_oilseed-crushing_veg-oil-refining_v3-1.pdf)"
+    used_for: "Distinguish whole crude glycerine from refined glycerin; oil splitting/sweet-water concentration route; catalogue dry-matter criterion is not a wet chemical default"
+  - id: "cpm-glycerin-refining-2024"
+    type: "handbook"
+    reference: "[CPM Crown Glycerin Refining, July 2024 brochure, pp. 1–2](https://e1.nmcdn.io/assets/cpm/wp-content/uploads/2024/07/Liquids_Processing_Glycerin_Refining_2_pager_July_2024-1.pdf)"
+    used_for: "Vacuum crude/foots stills, internal return, steam stripping, condensation, bleaching/filtering and residues; no equipment-specific yield or schedule defaults"
+  - id: "klk-personal-care-2025"
+    type: "handbook"
+    reference: "[KLK OLEO Personal Care Ingredients, May 2025 URL edition, PDF p. 1 Refined Glycerine table](https://www.klkoleo.com/wp-content/uploads/2025/05/English-KLK-OLEO-Personal-Care-Ingredients.pdf)"
+    used_for: "Commercial refined-glycerin product family and CAS; not proof of any current site SKU, process or assay"
+  - id: "eu-pef-multifunctionality-2021"
+    type: "official_guidance"
+    reference: "[Commission Recommendation C(2021) 9332 final, Annex I §4.5, PDF pp. 63–64](https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf)"
+    used_for: "General subdivision/system expansion, physical and other justified allocation hierarchy; exclude animal-specific factors and automated credits"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:eee04d871f4405f25015db104a46ff69570f30cda9d37c6413eb5c80d92935f8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5803"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5803
+          line: 61
+          column: 1
+        end:
+          offset: 8540
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received pretreated concentrated fat-splitting crude glycerine and external utilities |\n| starting_condition_role | foreground_gate_input |\n| product_classification_scope | CPC 34570 fat-splitting vacuum-refined subset; no whole-leaf claim |\n| recursive_input_rule | Same-category rework is internal if inside this gate; externally purchased glycerol remains one input with its own compatible upstream dataset and actual state; do not substitute it for crude feed |\n| upstream_dataset_requirement | Compatible feed dataset includes natural oil/fat supply, joint hydrolysis allocation, sweet-water concentration and pretreatment, with supplier geography/period and wet-mixture reference basis; utilities and exported wastes need compatible provider/receiver datasets |\n| disclosure | Starting state, omitted upstream stages, supplier links, stage meters, internal transfers, treatment gate, actual atmosphere/water destinations, energy/stock reconciliations and exclusions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_gate | refining | Include receipt, conditioning if used, distillation/foots recovery, stripping, bleaching, polishing, cooling, storage/loading, recovery/scrubbing, startup/shutdown, cleaning and maintenance consumption attributable to this product. Segregate stage meters and keep internal transfers equal at both ends. | `cpm-glycerin-refining-2024`; `ifc-oleochemicals-2007` |\n| b_upstream | crude_glycerine | Crude glycerine is not burden-free waste by name or biological origin. Preserve the upstream joint-production allocation and concentration/pretreatment inventory once; a fatty-acid sweet-water dataset alone does not establish the received concentrated feed. | `efisc-oilseed-refining-v3-1`; `eu-pef-multifunctionality-2021` |\n| b_emissions | refining | Establish an actual stream map and species inventory for condenser/vacuum/vent, cleaning and waste outlets. Exported effluent is a waste transfer; treatment emissions belong to the linked treatment boundary. If any direct outfall or on-site combustion/treatment exists, extend the inventory with exact receiving media, each actual species and unambiguous quantities. | `jrc-cww-bref-2016`; `ifc-oleochemicals-2007` |\n| b_carbon | all inventory rows | Keep measured biological/fossil carbon in feed, carbon medium, product, residues and actual emissions with origin evidence. Do not remove any actual biogenic CO2 from LCI because a GHG reporting convention gives it different treatment. Captured carbon, organic carbon and CO2 mass are distinct; no assumed conversion or neutrality. | `jrc-cww-bref-2016` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 215
+              line: 9
+              column: 1
+            end:
+              offset: 273
+              line: 9
+              column: 59
+          text: "# Bulk refined glycerol from fat-splitting crude glycerine"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5803
+              line: 61
+              column: 1
+            end:
+              offset: 5824
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26400"
+      family: "allocation"
+      span:
+        start:
+          offset: 26400
+          line: 375
+          column: 1
+        end:
+          offset: 27843
+          line: 383
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_single | refining | The base profile has one saleable refined product; attribute refining burdens to it. Rework, captured light fractions, recycled foots and closing inventory are not fictional saleable co-products; count their processing and stock changes. Externally returned steam condensate is a utility return with a reconciled provider boundary, not an automatic credit. | `cpm-glycerin-refining-2024`; `eu-pef-multifunctionality-2021` |\n| a_joint | crude_glycerine | For upstream hydrolysis and any reviewed multi-output extension, investigate subdivision/system expansion, then justified physical relationships, then another justified relationship such as actual gate economic value. Document the chosen goal/method, reasons, measured output bases, prices and sensitivity; no generic glycerol share or free by-product assumption. | `eu-pef-multifunctionality-2021` |\n| a_ledgers | all inventory rows | Keep each full measured physical output and equal internal transfers in the unallocated process map/mass/water/carbon ledger. Allocate only the attributable environmental burden pools in a separately linked ledger; do not multiply co-product physical mass by an allocation share. Waste treatment is linked once to actual composition/disposition; no assumed substitution credit. | `eu-pef-multifunctionality-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 215
+              line: 9
+              column: 1
+            end:
+              offset: 273
+              line: 9
+              column: 59
+          text: "# Bulk refined glycerol from fat-splitting crude glycerine"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26400
+              line: 375
+              column: 1
+            end:
+              offset: 26440
+              line: 375
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40018"
+      family: "validation"
+      span:
+        start:
+          offset: 40018
+          line: 419
+          column: 1
+        end:
+          offset: 41503
+          line: 428
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | refining | Check declared fat-splitting feed history, concentration/pretreatment upstream coverage, vacuum/bleaching route and actual grade. Other routes or externally marketed technical glycerine do not conform without a reviewed extension. | `ifc-oleochemicals-2007`; `efisc-oilseed-refining-v3-1` |\n| v_reference | refined_glycerol | Require one reference output of 1 kg accepted net bulk commercial material and all qualifiers. Inventory denominator, aggregation and conversion must refer to the same accepted period/basis; dry assay or pure active mass cannot replace whole supplied mass. | `efisc-oilseed-refining-v3-1` |\n| v_balances | all inventory rows | Verify full unallocated mass/water/carbon and energy balances, equal internal transfers, separate indirect/direct steam, no duplicated reference product, species or particulate bins, and distinct physical versus burden ledgers. | `cpm-glycerin-refining-2024`; `jrc-cww-bref-2016`; `eu-pef-multifunctionality-2021` |\n| v_evidence | all inventory rows | Every actual exchange needs traceable measurement and compatible provider/receiver definition. Unknown UUIDs, assay/density, steam state/heat basis, pollution speciation or incomplete sampling remain explicit data-package gaps. Passing a finite measurement/projection check does not approve scientific methodology or resolve these gaps. | `jrc-cww-bref-2016` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 215
+              line: 9
+              column: 1
+            end:
+              offset: 273
+              line: 9
+              column: 59
+          text: "# Bulk refined glycerol from fat-splitting crude glycerine"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40018
+              line: 419
+              column: 1
+            end:
+              offset: 40040
+              line: 419
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5803"
+      source_span:
+        start:
+          offset: 6962
+          line: 76
+          column: 1
+        end:
+          offset: 7345
+          line: 76
+          column: 384
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_5803"
+      source_span:
+        start:
+          offset: 7346
+          line: 77
+          column: 1
+        end:
+          offset: 7704
+          line: 77
+          column: 359
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_5803"
+      source_span:
+        start:
+          offset: 7705
+          line: 78
+          column: 1
+        end:
+          offset: 8148
+          line: 78
+          column: 444
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_carbon"
+      identity_kind: "explicit"
+      unit_id: "normative_5803"
+      source_span:
+        start:
+          offset: 8149
+          line: 79
+          column: 1
+        end:
+          offset: 8538
+          line: 79
+          column: 390
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_single"
+      identity_kind: "explicit"
+      unit_id: "normative_26400"
+      source_span:
+        start:
+          offset: 26513
+          line: 379
+          column: 1
+        end:
+          offset: 26960
+          line: 379
+          column: 448
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_joint"
+      identity_kind: "explicit"
+      unit_id: "normative_26400"
+      source_span:
+        start:
+          offset: 26961
+          line: 380
+          column: 1
+        end:
+          offset: 27391
+          line: 380
+          column: 431
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_26400"
+      source_span:
+        start:
+          offset: 27392
+          line: 381
+          column: 1
+        end:
+          offset: 27841
+          line: 381
+          column: 450
+    - pointer: "/validation_rules/0"
+      rule_id: "v_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_40018"
+      source_span:
+        start:
+          offset: 40113
+          line: 423
+          column: 1
+        end:
+          offset: 40426
+          line: 423
+          column: 314
+    - pointer: "/validation_rules/1"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_40018"
+      source_span:
+        start:
+          offset: 40427
+          line: 424
+          column: 1
+        end:
+          offset: 40752
+          line: 424
+          column: 326
+    - pointer: "/validation_rules/2"
+      rule_id: "v_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_40018"
+      source_span:
+        start:
+          offset: 40753
+          line: 425
+          column: 1
+        end:
+          offset: 41104
+          line: 425
+          column: 352
+    - pointer: "/validation_rules/3"
+      rule_id: "v_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_40018"
+      source_span:
+        start:
+          offset: 41105
+          line: 426
+          column: 1
+        end:
+          offset: 41501
+          line: 426
+          column: 397
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5803"
+      source_span:
+        start:
+          offset: 5803
+          line: 61
+          column: 1
+        end:
+          offset: 5824
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5803"
+      source_span:
+        start:
+          offset: 5852
+          line: 65
+          column: 1
+        end:
+          offset: 6889
+          line: 72
+          column: 206
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26400"
+      source_span:
+        start:
+          offset: 26400
+          line: 375
+          column: 1
+        end:
+          offset: 26440
+          line: 375
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40018"
+      source_span:
+        start:
+          offset: 40018
+          line: 419
+          column: 1
+        end:
+          offset: 40040
+          line: 419
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:eee04d871f4405f25015db104a46ff69570f30cda9d37c6413eb5c80d92935f8"
+  generated_content_sha256: "sha256:00957d4ceaa1aedce7f674d0be33bf5038216c7253bde1a88506d4b5bebf433f"
