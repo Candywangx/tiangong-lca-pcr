@@ -127,6 +127,7 @@ const LEGACY_TESTS: Readonly<Partial<Record<SuiteName, readonly string[]>>> = {
     "packages/pcr-docs/scripts/markdown.test",
     "packages/pcr-docs/scripts/resource-budget.test",
     "packages/pcr-docs/scripts/source-history.test",
+    "packages/pcr-docs/scripts/static-route-aliases.test",
     "packages/pcr-docs/scripts/summaries.test",
   ],
   offline: ["packages/pcr-core/offline-library.test", "packages/pcr-core/full-corpus.offline.test"],

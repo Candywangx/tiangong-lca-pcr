@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-23
-lastReviewedNote: "PCR #141: reviewed the exact complete-export handoff and required product job after authenticated 60-minute documentation timeouts. Full build/coverage command, all eight fresh receipts, full/data gates and existing resource/time limits remain; the consumer authenticates every file and current source/plan/run/attempt before SEO and one final seal. Empty directories are not Actions payload; original output files and hidden files remain intact. Private per-document AST reuse completes value-only inventory before rendering, with unchanged API and fidelity checks. 152 targeted tests, 11 strict projects/427 authored files, migration checks and P0-P2 independent review pass. Representative renderer and local IO timings are not hosted qualification; fresh complete CI, integration, provider admission and stable publication remain pending. Canonical content, version and dependency resolutions are unchanged by this repair. PCR #143 composition preserves its 57 candidate contribution and the exact incoming reviewed code. Fresh complete source qualification and PR138-first merge order remain required. PCR #142 composition preserves all 1457 material records, 1306 accepted edges and 1647 aliases with the exact incoming reviewed qualification code. Fresh full hosted qualification remains mandatory. PCR #146 retains product 0.4.8 and its three mirrors with unchanged runtime/dependency/compatibility declarations. All six original source PRs must merge before release preparation; the new exact release source requires complete fresh hosted qualification."
-lastReviewedCommit: fac4cd3991850e2695e82ce7a994dbed7df4cb64
+lastReviewedAt: 2026-10-24
+lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -77,25 +77,51 @@ The core document bundle contains the complete manifest, verified structured
 projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
 
-Current candidate PCRs with authored methodology and no release history may use
-native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
-`pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
-each required-language Markdown limit is 81,920 original bytes. Eligibility comes
-from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
-These bounded downloads preserve each original filename and work without
-JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
-byte to the pinned source. Current candidate HTTP URLs for these artifacts may
-change with this transport; use each record's current download links.
-Published/deprecated current artifacts, all release/history/revision artifacts,
-optional-language Markdown, larger files and structured projections retain
-physical downloads. When different source artifacts have identical inline bytes,
-only the first uses that data URL; later artifacts retain physical URLs so source
-identity and download filenames remain unambiguous. Physical responses keep
-attachment/noindex headers; inline bytes create no separately indexable HTTP
-resource. Source-relative links reuse the same source-bound download and filename.
-The exporter verifies rendered download anchors, and sealed-site qualification
-checks the largest available inline artifact per filename without
-JavaScript in Chromium, Firefox and WebKit.
+New exports store every original source download as a physical file under
+`/generated/raw/<sourcePath>`, including candidate manifests and required-language
+Markdown. One source path owns one exact byte sequence and original filename;
+reading pages, split chapters and source-relative links reuse that URL with a
+native `download` attribute. Physical responses retain attachment/noindex headers.
+The exporter compares every download against its pinned Git source and checks the
+rendered anchors. No source file is removed or shortened to reduce storage.
+
+Immutable product exports through 0.4.8 may contain bounded native
+`data:application/octet-stream;base64,` downloads. Their original decoder and
+receipt fields remain available for verification; they are not rewritten. Current
+sealed-site qualification always checks all three representative filenames
+(`manifest.yaml`, `pcr.en-US.md`, `pcr.zh-CN.md`) without JavaScript in Chromium,
+Firefox and WebKit, with observed native filenames and exact downloaded bytes.
+An empty inline set cannot silently remove those nine download checks.
+
+Intentional JavaScript disablement can reject Chromium script preloads. The native
+probe distinguishes only source-bound declared script assets under the strict
+[engineering classification](typescript-engineering.md), with no document CSP
+header/meta or explicit policy error. It retains the original failures and still
+requires exact native downloads. This does not waive normal JavaScript-enabled
+script, policy, navigation, search or asset failures.
+
+### Exact Next navigation aliases
+
+After Next export, a measured preparation stage validates every emitted
+`__next._full.txt` against its regular same-directory `index.txt`. Only complete,
+byte-identical pairs may share physical storage. Preparation validates all pairs
+before removing any duplicate file from the new owned export; it publishes a
+source-bound `generated/static-route-aliases.json` with each original URL, retained
+target, byte count and SHA-256. Verification requires the complete current route
+inventory and exact target bytes. Missing, malformed, foreign-source or unequal
+pairs fail the build. Other Next navigation payloads remain physical and unchanged.
+
+EdgeOne internal rewrites retain HTTP 200 access to `/__next._full.txt` and every
+nested `/*/__next._full.txt`, serving `/index.txt` and `/:splat/index.txt`
+respectively, following the provider's [URL path matching contract](https://pages.edgeone.ai/document/edgeone-json).
+These are internal rewrites rather than browser redirects. The
+sealed local server honors only verified declared aliases. Product 0.4.9 and
+later require the alias profile; older immutable products remain readable without
+it. Live acceptance binds the alias manifest and root/English/Chinese catalog
+representatives, checks both original and target URLs with and without queries,
+and requires exact decoded bytes, MIME, revalidation and nosniff behavior. Existing
+HTML, raw-download, search and browser-navigation checks remain required. Static
+configuration alone does not establish actual provider rewrite behavior.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -364,7 +390,9 @@ When a provider checkout uses that constrained shared-memory filesystem, the bui
 adapter must use a unique disk-backed scratch workspace, preserve the exact Git
 source identity and pinned dependencies, and run the same generation, Next export
 and verification stages there. Check storage capacity before work and before
-artifact handoff. An unavailable or unsuitable scratch filesystem is a build
+artifact handoff. Destination staging accounts for each file rounded up to the
+actual destination filesystem block size, plus the existing 512 MiB reserve;
+logical bytes alone do not prove that many small files fit. An unavailable or unsuitable scratch filesystem is a build
 failure with diagnostics, not permission to trim source text or remove supported
 Next navigation payloads. Publish output only after all existing fidelity, SEO,
 size, memory and time checks pass, and preserve a previous output on failure.
@@ -524,8 +552,9 @@ the inspector's visible retry behavior. Browser qualification exercises the actu
 inspector in both languages and for available historical releases.
 
 This is lossless file packing to reduce the number of exported transport files.
-Server-side record data, byte-exact raw downloads, complete static HTML and every
-native Next navigation payload remain intact. No hosting rewrite is required.
+Server-side record data, byte-exact raw downloads and complete static HTML remain
+intact. Inspector packing itself requires no rewrite; the separate exact Next
+navigation alias profile above preserves every supported navigation URL and byte.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading

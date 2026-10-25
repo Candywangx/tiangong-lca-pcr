@@ -22,7 +22,7 @@ function sampleMemory() {
 }
 const stages: BuildStageMetrics[] = [];
 /**
- * Run the complete build pipeline — generation, the Next static export, then verification — in
+ * Run generation, Next export, exact static-route alias preparation, then verification in
  * `cwd`. The stages, their environment and every resource gate are identical
  * wherever this runs; relocation only moves where that is.
  */
@@ -30,6 +30,7 @@ async function runPipeline({ cwd, env }: {cwd:string;env:NodeJS.ProcessEnv}) {
   for (const args of [
     ["scripts/generate.ts"],
     ["node_modules/next/dist/bin/next", "build"],
+    ["scripts/static-route-aliases.ts"],
     ["scripts/verify.ts"],
   ]) {
     await runMeasuredBuildStage({

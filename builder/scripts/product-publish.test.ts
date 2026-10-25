@@ -518,3 +518,37 @@ test("appending an accepted attempt journal preserves extension audit metadata",
   await assert.rejects(save(directory, receipt), {code: "PCR_PRODUCT_LOCAL_JOURNAL_INVALID"});
   assert.equal(readFileSync(filename, "utf8"), before);
 });
+
+
+test("web acceptance receipts preserve observed alias MIME and freshness evidence without changing publication operations", async () => {
+  const f = fixture(), original = f.io.verifyWeb;
+  const checks = [{ path: "/__next._full.txt?_rsc=qualified", status: 200, bytes: 12, sha256: "sha256:" + "a".repeat(64),
+    contentType: "text/plain", cacheControl: "public, max-age=0, must-revalidate", nosniff: true }];
+  f.io.verifyWeb = async (manifest, options) => ({ ...await original(manifest, options), checks });
+  assert.equal((await f.publish()).status, "complete");
+  const acceptance = f.receipts().filter(item => item.target === "web" && item.operation === "acceptance" && item.state === "verified");
+  assert.ok(acceptance.length > 0);
+  for (const item of acceptance) assert.deepEqual(field(item, "details", "checks"), checks);
+  assert.equal(f.state.mutations.filter(call => call.startsWith("publish:")).length, 2);
+  assert.equal(f.state.mutations.includes("hook"), false);
+});
+
+
+test("observed alias cutover failures retain bounded convergence without extra uploads or triggers", async () => {
+  for (const code of ["PCR_WEB_ALIAS_HEADERS", "PCR_WEB_ALIAS_HASH_MISMATCH"]) {
+    const f = fixture(), verify = f.io.verifyWeb; let samples = 0;
+    f.io.verifyWeb = async (manifest, options) => {
+      if (++samples === 1) throw Object.assign(new Error("Observed mixed live alias response"), { code });
+      return verify(manifest, options);
+    };
+    assert.equal((await f.publish()).status, "complete");
+    assert.deepEqual(f.state.waits, [5000]);
+    assert.equal(f.state.mutations.filter(call => call === "advance-ref").length, 1);
+    assert.equal(f.state.mutations.filter(call => call.startsWith("publish:")).length, 2);
+    assert.equal(f.state.mutations.includes("hook"), false);
+  }
+  const invalid = fixture(); invalid.io.verifyWeb = async () => { throw Object.assign(new Error("Malformed sealed proof"), { code: "PCR_WEB_ALIAS_PROOF_INVALID" }); };
+  assert.equal((await invalid.publish()).status, "pending");
+  assert.deepEqual(invalid.state.waits, [], "Malformed sealed proof is not a live convergence condition");
+  assert.equal(invalid.state.mutations.some(call => call.startsWith("latest:") || call === "github-complete" || call === "hook"), false);
+});

@@ -146,12 +146,15 @@ export async function coordinateProductPublication({ bundleDir, manifest: manife
   };
   const recordWebProof = async (proof: WebAcceptance) => {
     await record("web", "acceptance", "verified", { projectId: context.projectId ?? null, ref: "release/production", sourceCommit: identity.sourceCommit,
-      origin: manifest.web.origin, checks: (proof.checks ?? []).map(check => ({ path: check.path, status: check.status, ...(check.bytes === undefined ? {} : { bytes: check.bytes, sha256: check.sha256 }) })) });
+      origin: manifest.web.origin, checks: (proof.checks ?? []).map(check => ({ path: check.path, status: check.status, ...(check.bytes === undefined ? {} : { bytes: check.bytes, sha256: check.sha256 }),
+        ...(check.contentType === undefined ? {} : { contentType: check.contentType }),
+        ...(check.cacheControl === undefined ? {} : { cacheControl: check.cacheControl }),
+        ...(check.nosniff === undefined ? {} : { nosniff: check.nosniff }) })) });
   };
   const webConvergenceCodes = new Set(["PCR_PRODUCT_WEB_UNVERIFIED", "PCR_PRODUCT_LIVE_UNCERTAIN", "PCR_PRODUCT_LIVE_CHANGED",
     "PCR_PRODUCT_GITHUB_UNCERTAIN", "PCR_PRODUCT_REGISTRY_UNCERTAIN", "PCR_WEB_TIMEOUT", "PCR_WEB_FETCH_FAILED", "PCR_WEB_STATUS",
     "PCR_WEB_REDIRECT", "PCR_WEB_CONTENT_TYPE", "PCR_WEB_BODY_INVALID", "PCR_WEB_IDENTITY_MISMATCH", "PCR_WEB_COUNTS_MISMATCH",
-    "PCR_WEB_HASH_MISMATCH", "PCR_WEB_HEADERS", "PCR_WEB_RESPONSE_TOO_LARGE"]);
+    "PCR_WEB_HASH_MISMATCH", "PCR_WEB_HEADERS", "PCR_WEB_RESPONSE_TOO_LARGE", "PCR_WEB_ALIAS_HEADERS", "PCR_WEB_ALIAS_HASH_MISMATCH"]);
   const sampleWeb = async (timeoutMs: number) => {
     await guard({ requireRef: true });
     const proof = await verifyWeb({ timeoutMs });

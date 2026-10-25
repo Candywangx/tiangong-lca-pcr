@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {readProductArchive,validateProductManifest,verifyProductArtifacts,verifyProductWebTree} from '../../builder/scripts/product-release.ts';
 import type {ProductIdentity} from '../../builder/scripts/product-identity.ts';
 import type {ArtifactProof,ProductManifest} from '../../builder/scripts/release-types.ts';
-import {prepareSiteBrowserReport,qualifySiteBrowser} from './site-browser.ts';
+import {prepareSiteBrowserReport,qualifySiteBrowser,verifySiteExportAliases} from './site-browser.ts';
 
 export class SealedWebError extends Error {
   readonly code:string;
@@ -77,6 +77,7 @@ async function extractSealedWeb<T>(options:SealedWebInput,read:(web:ExtractedSea
     });
     if(archive.treeSha256!==manifest.web.treeSha256||archive.files.length!==manifest.web.files||archive.files.reduce((sum,file)=>sum+file.bytes,0)!==manifest.web.uncompressedBytes)fail('SEALED_WEB_EXTRACT','Extracted archive differs from sealed web identity.');
     const tree=await verifyProductWebTree(directory,manifest);
+    verifySiteExportAliases(directory);
     let operation:{ok:true;value:T}|{ok:false;error:unknown};
     try{operation={ok:true,value:await read({directory,manifest:structuredClone(manifest),inputFiles:structuredClone(before),tree})};}catch(error){operation={ok:false,error};}
     const after=await bindBundle(root,manifest);
@@ -93,9 +94,9 @@ export function parseSealedWebArguments(args:readonly string[]):SealedWebOptions
 }
 export async function qualifySealedWeb(options:SealedWebOptions){
   expectedSource(options.expectedSource);const root=bundleRoot(options.root),report=prepareSiteBrowserReport(options.report,root);
-  const receipt:{schemaVersion:number;operation:string;expectedSource:string;bundle:string;startedAt:string;completedAt:string;status:string;identity?:ProductIdentity;archive?:ProductManifest['web'];inputFiles?:readonly BundleFileBinding[];tree?:ExtractedSealedWeb['tree'];browserReport?:string;browserCases?:number;extractionDirectory?:string;extractionRemoved:boolean;immutableInputVerified:boolean;failure?:string}={schemaVersion:1,operation:'sealed-product-web-browser-qualification',expectedSource:options.expectedSource,bundle:root,startedAt:new Date().toISOString(),completedAt:'',status:'running',extractionRemoved:true,immutableInputVerified:false};
+  const receipt:{schemaVersion:number;operation:string;expectedSource:string;bundle:string;startedAt:string;completedAt:string;status:string;identity?:ProductIdentity;archive?:ProductManifest['web'];inputFiles?:readonly BundleFileBinding[];tree?:ExtractedSealedWeb['tree'];browserReport?:string;browserCases?:number;nativeDownloadCases?:number;staticRouteAliasPairs?:number;extractionDirectory?:string;extractionRemoved:boolean;immutableInputVerified:boolean;failure?:string}={schemaVersion:1,operation:'sealed-product-web-browser-qualification',expectedSource:options.expectedSource,bundle:root,startedAt:new Date().toISOString(),completedAt:'',status:'running',extractionRemoved:true,immutableInputVerified:false};
   try{
-    await extractSealedWeb(options,async web=>{receipt.identity=web.manifest.identity;receipt.archive=web.manifest.web;receipt.inputFiles=web.inputFiles;receipt.tree=web.tree;const browser=await qualifySiteBrowser({root:web.directory,report:path.join(report,'browser')});receipt.browserCases=browser.results.length;},{directory(directory){receipt.extractionDirectory=directory;receipt.extractionRemoved=false;},inputUnchanged(){receipt.immutableInputVerified=true;}});
+    await extractSealedWeb(options,async web=>{receipt.identity=web.manifest.identity;receipt.archive=web.manifest.web;receipt.inputFiles=web.inputFiles;receipt.tree=web.tree;const browser=await qualifySiteBrowser({root:web.directory,report:path.join(report,'browser')});receipt.browserCases=browser.results.length;receipt.nativeDownloadCases=browser.nativeDownloads.length;receipt.staticRouteAliasPairs=browser.staticRouteAliases?.pairs.length??0;if(receipt.nativeDownloadCases!==9)fail('SEALED_WEB_DOWNLOADS','Every engine must verify all three native download filenames.');},{directory(directory){receipt.extractionDirectory=directory;receipt.extractionRemoved=false;},inputUnchanged(){receipt.immutableInputVerified=true;}});
     receipt.status='passed';return receipt;
   }catch(error){receipt.status='failed';receipt.failure=errorMessage(error);throw error;}
   finally{if(existsSync(path.join(report,'browser/report.json')))receipt.browserReport='browser/report.json';receipt.extractionRemoved=receipt.extractionDirectory===undefined||!existsSync(path.dirname(receipt.extractionDirectory));receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'qualification.json'),JSON.stringify(receipt,null,2)+'\n');}

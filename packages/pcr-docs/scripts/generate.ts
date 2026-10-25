@@ -4,7 +4,6 @@ import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResu
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
 import {compileDocsBrowserAssets} from "./browser-assets.ts";
 import {writeRecordDataPacks} from "./record-data-packs.ts";
-import {INLINE_MARKDOWN_LIMIT, inlineDownloadManifestPath, inlineDownloadUrl} from "./raw-download.ts";
 type ClassificationRef={system:string;version:string;code:string;title?:string;mapping_type?:string};
 interface SiteAuthoringManifest extends BuilderManifest {classification_refs?:ClassificationRef[];modules?:Record<string,string[]>}
 type GeneratedRecord=Omit<SitePcrRecord,"slug"> & {slug:[string,string,string]};
@@ -218,17 +217,10 @@ function download(relative: string, bytes: Uint8Array) {
   bindSource(relative, bytes);
   const cached = downloadsBySource.get(relative);
   if (cached) return cached;
-  const manifestPath = inlineDownloadManifestPath(relative);
-  let inline: string | undefined;
-  if (manifestPath && bytes.length <= INLINE_MARKDOWN_LIMIT) {
-    const manifestBytes = manifestPath === relative ? bytes : fs.readFileSync(path.join(root, manifestPath));
-    bindSource(manifestPath, manifestBytes);
-    inline = inlineDownloadUrl(relative, bytes,
-      fs.existsSync(path.join(root, path.posix.dirname(relative), 'release-history.yaml')),
-      {path: manifestPath, bytes: manifestBytes}, downloadUrls);
-  }
-  const url = inline ?? "/generated/raw/" + relative;
-  if (!inline) write("public/raw/" + relative, bytes);
+  // A physical original is stored once instead of repeating base64 in each
+  // reading page and its Next navigation payloads. Every source remains bound.
+  const url = "/generated/raw/" + relative;
+  write("public/raw/" + relative, bytes);
   const item = {
     name: path.posix.basename(relative),
     url,
@@ -980,7 +972,7 @@ async function generate() {
         const bytes = fs.readFileSync(path.join(root, relative));
         const artifact = download(relative, bytes);
         target = artifact.url + (fragment ? "#" + fragment : "");
-        if (attr === 'href' && artifact.url.startsWith('data:')) node.setAttribute('download', artifact.name);
+        if (attr === 'href') node.setAttribute('download', artifact.name);
       }
       node.setAttribute(attr, target);
       report.links.push({ source: page.sourcePath!, original: value, target });

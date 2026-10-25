@@ -26,6 +26,7 @@ import {
   scratchEnvironment,
   selectScratchWorkspace,
   summarizeTree,
+  allocatedExportBytes,
 } from "./build-storage.ts";
 
 function object(value: unknown): Record<string, unknown> { assert.ok(value !== null && typeof value === "object" && !Array.isArray(value)); return value as Record<string, unknown>; }
@@ -401,6 +402,45 @@ test("publishing replaces the export and removes its own staging directories", (
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("destination preflight includes each file's target allocation unit without weakening the logical guard", () => {
+  const fixture = providerFixture({ "index.html": "A", "nested/one.txt": "B", "nested/two.txt": "C", "empty.bin": "" });
+  try {
+    const out = path.join(fixture.scratchApp, "out"), unit = 8192;
+    assert.equal(summarizeTree(out).bytes, 3);
+    assert.equal(allocatedExportBytes(out, unit), 3 * unit);
+    assert.throws(() => allocatedExportBytes(out, 0), /allocation block/u);
+    assert.throws(() => allocatedExportBytes(out, Number.NaN), /allocation block/u);
+    let copied = false;
+    assert.throws(() => publishOutput({
+      app: fixture.app, scratchApp: fixture.scratchApp, providerRoot: fixture.providerRoot,
+      freeBytes: 3 + HEADROOM_BYTES,
+      facts: target => ({ ...filesystemFacts(target), blockSizeBytes: unit }),
+      cp: () => { copied = true; },
+    }), /allocated estimate/u);
+    assert.equal(copied, false, "allocation failure must precede any staging copy");
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.equal(fs.existsSync(path.join(fixture.providerRoot, ".edgeone")), false);
+    assert.deepEqual(fs.readdirSync(fixture.app), ["out"]);
+  } finally { fs.rmSync(fixture.root, { recursive: true, force: true }); }
+});
+
+test("actual remaining destination headroom is rechecked after export and provider asset staging", () => {
+  const fixture = providerFixture({ "index.html": "NEW", "nested/file.txt": "BYTES" });
+  try {
+    let reads = 0, swapped = false;
+    assert.throws(() => publishOutput({
+      app: fixture.app, scratchApp: fixture.scratchApp, providerRoot: fixture.providerRoot, token: "headroom",
+      facts: target => ({ ...filesystemFacts(target), availableBytes: ++reads === 1 ? 10 * 1024 ** 3 : HEADROOM_BYTES - 1 }),
+      beforeSwap: () => { swapped = true; },
+    }), /headroom after staging/u);
+    assert.equal(reads, 2); assert.equal(swapped, false);
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.equal(fs.existsSync(path.join(fixture.providerRoot, ".edgeone/assets")), false);
+    assert.deepEqual(fs.readdirSync(path.join(fixture.providerRoot, ".edgeone")), []);
+    assert.deepEqual(fs.readdirSync(fixture.app), ["out"]);
+  } finally { fs.rmSync(fixture.root, { recursive: true, force: true }); }
 });
 
 test("publishing refuses symlinked exports and insufficient destination space", () => {
@@ -913,7 +953,7 @@ test("an export above 1.5 GB publishes when real staging capacity is available",
 
     const published = publishOutput({
       app: fixture.app, scratchApp: fixture.scratchApp, token: "large-supported",
-      freeBytes: measured.bytes + HEADROOM_BYTES,
+      freeBytes: allocatedExportBytes(scratchOut, filesystemFacts(fixture.app).blockSizeBytes!) + HEADROOM_BYTES,
       providerRoot: fixture.providerRoot,
       // Exercise measurement, fidelity checks, atomic swap and the real provider handoff,
       // without copying 1.5 GB. Production still uses fs.cpSync by default.
