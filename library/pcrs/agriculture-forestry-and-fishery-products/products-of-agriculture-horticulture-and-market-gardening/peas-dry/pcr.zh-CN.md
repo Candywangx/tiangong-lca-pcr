@@ -600,7 +600,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 除非随后进行条件性稳定化，否则这是参考输出。
 
-- 选定流： 干豌豆 `e64a5cdb-c922-45d9-90ab-c9dd573032f7`
+- 选定流： 豌豆（干） `e64a5cdb-c922-45d9-90ab-c9dd573032f7`
 - 流属性/单位： 质量 / kg
 原始产出计量与核对要求：Net accepted mass after excluding foreign matter, rejects, downgrades and rework
 
@@ -772,7 +772,7 @@ Record gross delivered water, source and conveyance; zero requires a documented 
 
 该输出为转移至农场门的稳定化验收合格批次。
 
-- 选定流： 干豌豆 `e64a5cdb-c922-45d9-90ab-c9dd573032f7`
+- 选定流： 豌豆（干） `e64a5cdb-c922-45d9-90ab-c9dd573032f7`
 - 流属性/单位： 质量 / kg
 原始产出计量与核对要求：Net accepted output at measured final moisture, excluding damage and rejects
 

@@ -86,7 +86,7 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3 | 4 | 5): Promise
       });
       return {...native, entries, sparseMaps: nested.sparseMaps};
     }
-    return schemaVersion === 2 ? native : { ...native, ...encodeSearchEntries(native.entries, schemaVersion, termDictionary, {compactIntegers: behavior === 'compact-roundtrip-retry'}) };
+    return schemaVersion === 2 ? native : { ...native, ...encodeSearchEntries(native.entries, schemaVersion, termDictionary) };
   };
   const install = async (documents: Document[][]) => {
     const originals = await Promise.all(documents.map(entries => serialize(entries, language)));
@@ -110,36 +110,6 @@ async function main(scenario: string, schemaVersion: 1 | 2 | 3 | 4 | 5): Promise
     await install([documents]);
     assert.deepEqual(valid(await query('wheat')), documents.map(entry => entry.record));
     assert.deepEqual(imported, Object.entries(original.entries), 'Worker must pass the original strings and key order into the real engine');
-  } else if (behavior === 'compact-roundtrip-retry') {
-    const documents=Array.from({length:100},(_,id)=>document(id*31,`Wheat ${id}`,`Wheat 小麦 珊瑚 scope_token_${id}`,`/fixture/compact-${id}/`,'Complete Unicode context 珊瑚'));
-    const original=await serialize(documents,language);
-    await install([documents]);
-    const target=root+(scenario.startsWith('packed-')?'pack-0.json':'shard-0.json'),response=responses.get(target)!;
-    for(const invalid of [null,true,{},['missing.map'],'truncated','noncanonical']){
-      const broken=structuredClone(response.body);assert.ok(object(broken));
-      const shard=scenario.startsWith('packed-')?(assert.ok(Array.isArray(broken.indexes)),broken.indexes[0]):broken;
-      assert.ok(object(shard)&&object(shard.entries)&&Array.isArray(shard.integerColumns)&&typeof shard.integerColumns[0]==='string');
-      if(invalid==='truncated'||invalid==='noncanonical'){
-        const columns=shard.entries[shard.integerColumns[0]];assert.ok(Array.isArray(columns));
-        columns[0]=invalid==='truncated'?'g':'gA';
-      }else shard.integerColumns=invalid;
-      responses.set(target,{status:200,body:broken});
-      assert.equal((await query('wheat')).error,'Invalid serialized search data.');
-      assert.deepEqual(imported,[],'Malformed compact columns fail before engine import');
-    }
-    responses.set(target,response);
-    const matches=valid(await query('wheat'));assert.equal(matches.length,30);
-    assert.ok(matches.every(record=>record.description==='Complete Unicode context 珊瑚'&&record.breadcrumbs?.[0]==='PCR library'));
-    assert.deepEqual(imported,Object.entries(original.entries),'Compact transport passes exact native strings and key order to the engine');
-    assert.equal(valid(await query('小麦')).length,30);
-  } else if (behavior === 'integer-metadata') {
-    const target=root+'shard-0.json',original=responses.get(target)!;
-    const shard=original.body;assert.ok(object(shard));
-    for(const integerColumns of [null,true,{},['missing.map']]){
-      responses.set(target,{status:200,body:{...shard,integerColumns}});
-      assert.equal((await query('wheat')).error,'Invalid serialized search data.');
-    }
-    responses.set(target,original);assert.equal(valid(await query('wheat')).length,4);
   } else if (behavior === 'dictionary-roundtrip-retry') {
     const documents = Array.from({length: 100}, (_, id) => document(id * 31, `Wheat ${id}`, 'Wheat 小麦 珊瑚'));
     const original = await serialize(documents, language);

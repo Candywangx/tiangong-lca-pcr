@@ -20,7 +20,7 @@ export interface AttemptReceipt {
 }
 export interface WebAcceptance {
   verified: boolean; origin: string; identity: unknown; counts: unknown;
-  checks?: { path: string; status: number; bytes?: number; sha256?: string }[];
+  checks?: { path: string; status: number; bytes?: number; sha256?: string; contentType?: string; cacheControl?: string; nosniff?: boolean }[];
 }
 export interface PublisherIO {
   assertBudget?(): Promise<void>;

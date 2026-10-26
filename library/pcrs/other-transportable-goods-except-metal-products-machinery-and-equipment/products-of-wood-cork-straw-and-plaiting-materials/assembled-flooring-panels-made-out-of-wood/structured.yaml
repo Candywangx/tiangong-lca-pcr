@@ -180,7 +180,7 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "This is a separate uf glue exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions."
           amount:
-            expression: "Record net UF resin delivered to glue mixing/application, receipt formulation, solids and water mass; the purchased preparation is one exchange. Background wet-resin versus dry-resin basis must agree; no default solids. Water already in supplied resin is not a second water input. Retain actual supplied precondensation state, recipe and cure-extent evidence under cp_recipe; supplied solids do not automatically equal cured retained resin mass."
+            expression: "Use this generic UF-resin row only for a real independently supplied resin state and mass reference supported by its native identity and actual provider; record supplied resin mass, measured solids/moisture and actual onsite mixing/application. A bought complete prepared aqueous or compounded UF adhesive requires one specific compatible complete-formulation supply row and provider retaining supplier resin manufacture, formulation preparation and delivery before use; the generic resin UUID alone does not establish that complete supply. Its included resin, catalyst, carrier water and additives are analytical composition, not new external purchases. Actual independently purchased additions and onsite dilution/mixing water, utilities and losses remain separate. Preserve supplier wet/active reference correspondence; never equate whole wet preparation kg to dry-resin kg or count included water twice. No default solids fraction. Retain actual supplied precondensation state, recipe and cure-extent evidence under cp_recipe; supplied solids do not automatically equal cured retained resin mass."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -795,7 +795,7 @@ dataset_production:
       flow_role: "Glue and each coating/cleaner chemical"
       record_type: "primary measurement and records"
       raw_fields: "SKU; SDS; supplier formulation and supplied precondensation state; wet mass; nonvolatile-solids test basis; water/solvent fractions; dose; issue; return; retained cured glue/coating; residual reactive species; catalyst/additive; cleaning recovery; stage opening/closing stocks and paired handoffs; cure schedule; measured cure extent and method; formation/consumption evidence; sampling and uncertainty; QC"
-      collection_method: "Calibrated weighing and issue/return/stock balances for each actual SKU; pair stage endpoints with moisture/composition measured on compatible bases. Retain press temperature/time/pressure and UV lamp dose/speed; establish actual cure extent and retained composition by validated representative analysis or supplier/site evidence, not acceptance alone. Quantify reaction terms only from actual recipe/extent with uncertainty; unavailable terms remain pending, never zero or default yield."
+      collection_method: "Calibrated weighing and issue/return/stock balances for each actual SKU; pair stage endpoints with moisture/composition measured on compatible bases. Retain press temperature/time/pressure and UV lamp dose/speed; establish actual cure extent and retained composition by validated representative analysis or supplier/site evidence, not acceptance alone. Quantify reaction terms only from actual recipe/extent with uncertainty; unavailable terms remain pending, never zero or default yield. Verify each actual independent UF-resin supply versus a bought whole prepared adhesive: complete formulations require specific compatible complete-product identities/providers and supplier manufacture/preparation/delivery once; included ingredients/carrier water remain analytical. Record true separately purchased additions and actual onsite dilution/mixing water/utilities/losses separately, with matched provider wet/active reference basis; unresolved whole identities remain pending, never recaption a constituent UUID."
       unit: "kg"
       frequency: "Each lot/shift; continuous meters; representative emission campaign"
       temporal_coverage: "One matched full production period covering route/product variability"
@@ -1005,7 +1005,7 @@ data_sources:
     used_for: "Qualitative UF condensation and reaction-water formation distinct from initial water; cure depends on actual formulation/conditions. Laboratory recipes, conversion, mass losses and emissions are not factory defaults."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:879590719961e869a914842fd8fa37dcb32abbc80798a27c4448f443dbcd3ba4"
+  source_sha256: "sha256:6b718c27db87b28efc115e165206a0e096e670d62bf5f725fc5ae07c38127a45"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6723"
@@ -1056,15 +1056,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_38816"
+    - unit_id: "normative_39471"
       family: "allocation"
       span:
         start:
-          offset: 38816
+          offset: 39471
           line: 573
           column: 1
         end:
-          offset: 40079
+          offset: 40734
           line: 581
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_physical | Keep the physical wood/water/carbon ledger and the allocated environmental burden ledger separately. Accepted floor panels, WIP changes, offcuts, captured dust and external wastes keep their full measured quantities. Never multiply co-product physical output by an allocation share. | corrim-flooring-2011 |\n| allocation_subdivide | First use stage metering/subdivision for avoidable joint burdens. External waste disposal with no saleable product is not a co-product allocation denominator. Internal recovered solvent, heat and rework stay internal and receive no external substitution credit. | corrim-flooring-2011 |\n| allocation_joint | For demonstrated saleable wood co-products with similar wood material, disclose a dry-wood-mass allocation of remaining inseparable wood-conversion burdens using measured moisture-corrected masses; report sensitivity where prices or contamination invalidate that physical relation. UF/coating/finishing-specific burdens follow their measured consumption and destinations, not all wood outputs automatically. Document shares summing to one and a separate allocated dataset view. | corrim-flooring-2011 |\n\n"
@@ -1084,11 +1084,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 38816
+              offset: 39471
               line: 573
               column: 1
             end:
-              offset: 38856
+              offset: 39511
               line: 573
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1104,15 +1104,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52866"
+    - unit_id: "normative_54045"
       family: "validation"
       span:
         start:
-          offset: 52866
+          offset: 54045
           line: 617
           column: 1
         end:
-          offset: 54793
+          offset: 55972
           line: 626
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Confirm real wood in every structural ply, individual species/source and thickness, UF bond and clear factory UV finish; reject excluded solid, HDF, strip and alternate-route products. | unsd-cpc-31626; nwfa-wood-definition; corrim-flooring-2011 |\n| validate_denominator | Exactly one reference_output of 1 kg accepted net finished flooring. All inventories and collection aggregation use per 1 kg reference flow. Reconcile same-lot effective joined area, measured thickness, net mass and wood moisture; no assumed life or installation waste. | usda-wood-handbook-2021 |\n| validate_atomic | Every row is one material/species/formulation/waste/emission. Split physical variants; confirm exact Chinese names and original UUID route/property. Chemical/product tests cannot replace manufacturing emission records. Unknown thermal basis or UUID remains incomplete, not zero. | corrim-flooring-2011 |\n| validate_ledgers | Retain complete unallocated total-mass/elemental balances and separately test species ledgers with evidenced formation/consumption under layer_balance. UF cure is a chemical transformation; actual recipe, supplied precondensation state, cure extent, retained composition and uncertainty are required for dependent balances. Do not force H2O or dry-resin closure, equate generated water with discharge, or fill missing evidence with zero/default yields. Preserve matched WIP handoffs, non-overlapping PM bins and all combustion LCI including biogenic CO2 in linked heat datasets; those separately bounded combustion records require actual fuel/air composition and reaction/measurement evidence for their own water-species balances. Background and foreground emissions must not duplicate. Unknown terms leave dependent dataset checks incomplete. | corrim-flooring-2011; usda-wood-handbook-2021; ding-uf-curing-2020 |\n\n"
@@ -1132,11 +1132,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52866
+              offset: 54045
               line: 617
               column: 1
             end:
-              offset: 52888
+              offset: 54067
               line: 617
               column: 23
           text: "## 9. Validation Rules"
@@ -1195,92 +1195,92 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_38816"
+      unit_id: "normative_39471"
       source_span:
         start:
-          offset: 38910
+          offset: 39565
           line: 577
           column: 1
         end:
-          offset: 39241
+          offset: 39896
           line: 577
           column: 332
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_38816"
+      unit_id: "normative_39471"
       source_span:
         start:
-          offset: 39242
+          offset: 39897
           line: 578
           column: 1
         end:
-          offset: 39553
+          offset: 40208
           line: 578
           column: 312
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_joint"
       identity_kind: "explicit"
-      unit_id: "normative_38816"
+      unit_id: "normative_39471"
       source_span:
         start:
-          offset: 39554
+          offset: 40209
           line: 579
           column: 1
         end:
-          offset: 40077
+          offset: 40732
           line: 579
           column: 524
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_52866"
+      unit_id: "normative_54045"
       source_span:
         start:
-          offset: 52942
+          offset: 54121
           line: 621
           column: 1
         end:
-          offset: 53208
+          offset: 54387
           line: 621
           column: 267
     - pointer: "/validation_rules/1"
       rule_id: "validate_denominator"
       identity_kind: "explicit"
-      unit_id: "normative_52866"
+      unit_id: "normative_54045"
       source_span:
         start:
-          offset: 53209
+          offset: 54388
           line: 622
           column: 1
         end:
-          offset: 53531
+          offset: 54710
           line: 622
           column: 323
     - pointer: "/validation_rules/2"
       rule_id: "validate_atomic"
       identity_kind: "explicit"
-      unit_id: "normative_52866"
+      unit_id: "normative_54045"
       source_span:
         start:
-          offset: 53532
+          offset: 54711
           line: 623
           column: 1
         end:
-          offset: 53855
+          offset: 55034
           line: 623
           column: 324
     - pointer: "/validation_rules/3"
       rule_id: "validate_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_52866"
+      unit_id: "normative_54045"
       source_span:
         start:
-          offset: 53856
+          offset: 55035
           line: 624
           column: 1
         end:
-          offset: 54791
+          offset: 55970
           line: 624
           column: 936
   diagnostics:
@@ -1310,26 +1310,26 @@ normative_context:
           column: 177
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_38816"
+      unit_id: "normative_39471"
       source_span:
         start:
-          offset: 38816
+          offset: 39471
           line: 573
           column: 1
         end:
-          offset: 38856
+          offset: 39511
           line: 573
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52866"
+      unit_id: "normative_54045"
       source_span:
         start:
-          offset: 52866
+          offset: 54045
           line: 617
           column: 1
         end:
-          offset: 52888
+          offset: 54067
           line: 617
           column: 23
 projection_metadata:
@@ -1339,5 +1339,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:879590719961e869a914842fd8fa37dcb32abbc80798a27c4448f443dbcd3ba4"
-  generated_content_sha256: "sha256:2f16fef198b4a5ad5754c3267793b1286c5d060e52a1923c8b2137f76ce7f71a"
+    sha256: "sha256:6b718c27db87b28efc115e165206a0e096e670d62bf5f725fc5ae07c38127a45"
+  generated_content_sha256: "sha256:7d06cdebbab71be3c26e8a24ad0f54dba60fecaaab9d6b1d7d1051eba4362817"

@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: "2026-10-20"
-lastReviewedCommit: "623239f3b89f335ee5461b422378cf709a8228f3"
-lastReviewedNote: "Reconciled Candy main PCR additions and same-source web-build handoff with the CPC 01/02/03 content repairs and 120-minute job limits. Preserved both sides of the methodology and CI contracts; regenerated combined catalog/coverage artifacts. Local PCR and focused checks pass; full hosted Linux qualification remains required."
+lastReviewedAt: 2026-10-24
+lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
+lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -205,7 +205,7 @@ V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 
 PR and formal release qualification run one complete instrumented export in the
 `web-build` job, then create one sealed product bundle in the separate
-`documentation` job. Both jobs retain 60-minute limits and are mandatory in both
+`documentation` job. Both jobs retain 120-minute limits and are mandatory in both
 lanes. A versioned handoff binds the actual checked-out source (including PR merge
 commits), product identity, current run/attempt, CI plan and full-mode qualification
 ID/plan hash to the complete archive/tree and successful build log. The verifier
@@ -305,6 +305,22 @@ real website and sealed tool/SQLite/web product from the current source, run SEO
 verification, install the exact seal on all four platforms and qualify its
 extracted web bytes in the three-browser desktop/mobile matrix. These checks
 retain scientific, translation and immutable-history boundaries.
+
+The aggregate requires the `web-build` producer and `documentation` sealer in both
+lanes, and every sealed consumer and reusable publication output references the
+sealer's sole final artifact ID. The complete-build coverage artifact is forwarded
+unchanged from `web-build` through `documentation`, using the same full command. Intermediate
+export transfer preserves hidden files and checks complete sorted file membership,
+identity and hashes before any existing canonical hosting transformation. Missing,
+extra, changed, stale-attempt or foreign-source files fail the handoff. A fresh
+complete run is required after a failed qualification; partial passing artifacts
+do not replace current-attempt receipts.
+
+The active archive/log handoff also checks the final and individual stage success
+states, zero child exits, absence of failure evidence, measured stage RSS within
+the unchanged guard and aggregate peak, and a total duration covering every stage.
+The incoming standalone complete-export checkpoint utility retains its tests;
+it does not replace this workflow's archive, build-log and SEO evidence bindings.
 
 The data lane omits full code-test/coverage qualification and reports
 `not-measured-data-only-lane`. It does not claim a passing full source coverage
@@ -504,6 +520,38 @@ provide request identity and engine cancellation semantics. Exact WebKit strings
 and prefetch evidence were also reproduced against the pinned browser runtime in
 [PCR #106](https://github.com/tiangong-lca/pcr/issues/106#issuecomment-6064168510).
 Historical failed receipts lacking those fields are not retroactively qualified.
+
+Physical native-download acceptance uses a separate cancellation classification.
+It requires the successful native download event, exact source URL, original
+filename and verified byte length/hash before accepting an engine's known
+navigation-cancel reason. It does not broaden prefetch classification or hide
+unrelated failed navigation/assets. New exports require three filenames across
+all three engines even when no inline downloads exist. Receipts preserve legacy
+inline evidence separately and record the representation-neutral native evidence.
+The local sealed server validates the complete source-bound RSC alias manifest
+before listening and serves only those declared aliases at HTTP 200; missing or
+altered retained payloads fail rather than fall back to an unrelated route.
+
+In an intentionally JavaScript-disabled native probe, Chromium can report a
+script preload or modulepreload as `csp` even when the document has no CSP policy.
+A separate classification requires that exact engine/reason, a non-navigation GET
+script with no observed HTTP status, the exact initial native-page phase and URL,
+and a declared same-origin preload bound to a regular exported JS/MJS asset.
+Query, fragment, missing, foreign, nonregular and symlinked targets receive no
+exception. Response CSP/report-only headers, CSP meta policies and explicit
+console policy errors prevent this classification. Native filename, completed
+bytes and hash checks remain required; ordinary JavaScript-enabled checks and
+prefetch rules are unchanged. Receipts retain all original request failures,
+separate expected disabled-script events, asset bindings and policy observations.
+A `csp` request reason alone never proves that a server policy is harmless.
+
+The pinned [Chromium page implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crPage.ts#L518-L519)
+disables script execution through the browser protocol; its
+[network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L490)
+can expose the protocol's blocked reason as failure text. Regression evidence must
+include realistic preload/modulepreload markup, positive native downloads,
+JavaScript-enabled controls and actual CSP/HTTP/hash failures in all three engines.
+
 
 Successive Goal runtime overlays compare both the original Goal baseline and the
 actual receiving runtime tree. They retain the original receipt behavior while

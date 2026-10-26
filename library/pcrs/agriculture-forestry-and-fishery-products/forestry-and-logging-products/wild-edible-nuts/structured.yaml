@@ -465,14 +465,14 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: conditioning_other_goods
-          role: "Other actually intended goods from conditioning"
-          name: "Other actually intended goods from conditioning"
+        - row_id: conditioning_lower_grade_nuts
+          role: "Lower-grade whole raw in-shell nuts of the declared wild species"
+          name: "Lower-grade whole raw in-shell nuts of the declared wild species"
           flow_type: "product"
-          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Conditional downgrade edible nut grades, outer pod/husk goods or non-food saleable materials require actual intended use and buyer handoff. Not automatic coproducts, accepted reference nuts or disposal-credit substitutes. Kernels produced by excluded shelling are outside this method."
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Conditional downgrade edible nut grades, outer pod/husk goods or non-food saleable materials require actual intended use and buyer handoff. Not automatic coproducts, accepted reference nuts or disposal-credit substitutes. Kernels produced by excluded shelling are outside this method. A retained lower-grade lot sent to a later producer handover is an internal transfer, not an independent sale here. Link the matching existing handover_other_grades record and expose the physical product handover once. Outer pod and husk labels may describe the same actual covering; identify the actual anatomy/stream and count it once, without inventing separate components. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Measured attributable amount from cp_conditioning"
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -482,15 +482,43 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_conditioning
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "20"
-                unit: "kg"
-                basis: "per 1 kg reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: conditioning_outer_pod_product
+          role: "Outer fruit pods of the declared wild nut species"
+          name: "Outer fruit pods of the declared wild nut species"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Conditional downgrade edible nut grades, outer pod/husk goods or non-food saleable materials require actual intended use and buyer handoff. Not automatic coproducts, accepted reference nuts or disposal-credit substitutes. Kernels produced by excluded shelling are outside this method. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_outer_husk_product
+          role: "Outer husks of the declared wild nut species"
+          name: "Outer husks of the declared wild nut species"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Conditional downgrade edible nut grades, outer pod/husk goods or non-food saleable materials require actual intended use and buyer handoff. Not automatic coproducts, accepted reference nuts or disposal-credit substitutes. Kernels produced by excluded shelling are outside this method. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning
+              source_ids: []
+            ranges: []
       waste:
         - row_id: conditioning_rejects
           role: "Conditioning rejects and unwanted outer material"
@@ -808,7 +836,7 @@ dataset_production:
       flow_role: "feed, supplies/energy/water, usable grades, other goods, residue and wastewater; direct operational emissions"
       record_type: "operation/grade ledger"
       raw_fields: "lot; incoming form/moisture; outer pod/husk removal; cleaning method; supplies; meters; water source/provider; usable grades/mass; reject/retained material; re-sort; wastewater receiver/pollutants; named pollutant/substance; particle size/speciation; receiving medium/compartment; actual equipment activity; measurement or justified activity-factor evidence; inclusive service exclusions"
-      collection_method: "Measure each actual incoming and outgoing state, supply/meter quantities and destinations; paired same-lot mass/water records distinguish hard shell from outer pod; sample wastewater when discharged; record actual direct emissions by named substance/medium, measured amounts or actual activity with justified factors; separate evaporated water and inclusive-service emissions conditioning_energy_specific_input: Operation conditioning: Single conditional umbrella for actual equipment fuel, electricity and heat, not service hours or nutritive energy. Record carrier properties and recorded conversions; avoid repeated inclusive supplier-service burdens. Original quantity method: Measured attributable amount from cp_conditioning Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. conditioning_supplies_specific_input: Operation conditioning: Conditional actual cleaning and maintenance materials by formulated product mass; declare substances and use, no default sanitizing recipe. Actual zero or multiple exchanges follow records, not one invented generic product UUID. Original quantity method: Measured attributable amount from cp_conditioning Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. conditioning_direct_emissions_specific_emission: Conditional actual on-site equipment combustion or handling emissions require each named substance, particle size/speciation where relevant, receiving medium/compartment and measured amount or an explicitly justified activity factor. Inclusive services and upstream fuel emissions are not duplicated. No generic pollutant UUID or assumed emission merely because fuel is possible. Measured attributable amount from cp_conditioning This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability."
+      collection_method: "Measure each actual incoming and outgoing state, supply/meter quantities and destinations; paired same-lot mass/water records distinguish hard shell from outer pod; sample wastewater when discharged; record actual direct emissions by named substance/medium, measured amounts or actual activity with justified factors; separate evaporated water and inclusive-service emissions conditioning_energy_specific_input: Operation conditioning: Single conditional umbrella for actual equipment fuel, electricity and heat, not service hours or nutritive energy. Record carrier properties and recorded conversions; avoid repeated inclusive supplier-service burdens. Original quantity method: Measured attributable amount from cp_conditioning Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. conditioning_supplies_specific_input: Operation conditioning: Conditional actual cleaning and maintenance materials by formulated product mass; declare substances and use, no default sanitizing recipe. Actual zero or multiple exchanges follow records, not one invented generic product UUID. Original quantity method: Measured attributable amount from cp_conditioning Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. conditioning_direct_emissions_specific_emission: Conditional actual on-site equipment combustion or handling emissions require each named substance, particle size/speciation where relevant, receiving medium/compartment and measured amount or an explicitly justified activity factor. Inclusive services and upstream fuel emissions are not duplicated. No generic pollutant UUID or assumed emission merely because fuel is possible. Measured attributable amount from cp_conditioning This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. conditioning_other_goods_specific_output: Preserve every actual intended output previously collected under conditioning_other_goods, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "kg; MJ"
       frequency: "each actual handling/grade lot"
       temporal_coverage: "actual operation dates"
@@ -946,7 +974,7 @@ data_sources:
     used_for: "Natural nut collection, pod/cone handling, cleaning and distinct raw in-shell/shelled markets; historical quantities/prices/seasons not adopted"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:993223248f21ba1d3043f5540b775bfad3d62b022c8ec8818ae87b37b2c92df3"
+  source_sha256: "sha256:e0fe93682d93b4925a85a9d16031e839064985f61e60808f9b45a6c36a99d7b0"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6063"
@@ -997,16 +1025,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33636"
+    - unit_id: "normative_38705"
       family: "allocation"
       span:
         start:
-          offset: 33636
-          line: 630
+          offset: 38705
+          line: 664
           column: 1
         end:
-          offset: 35546
-          line: 640
+          offset: 40615
+          line: 674
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `output_ownership` | all outputs | Enumerate every intended accepted grade and actual other good with mass, quality, use and recipient handoff. Discards, retained residue and saleable goods are not interchangeable; no automatic coproduct or avoided-treatment credit. | |\n| `allocation_precedence` | multiple intended goods | Subdivide separately measured operations first. Where inseparable shared burdens remain, use an evidenced physical causal driver; otherwise document a reviewed period-specific economic share with actual prices and sensitivity. One burden receives one method and shares sum to the allocated total; no universal nut/husk ratio. | |\n| `period_site_attribution` | campaigns, stocks and shared assets | Reconcile each site's matching campaign inputs/accepted output, opening/closing stocks and transfers before mass-weighted aggregation of compatible species/state/gate. Do not average unrelated sites or seasons. Enumerate tool/access/store consumers and use measured hours/payload/activity as causal driver; asset service/renewal/termination burden goes to actual recorded periods once, no assumed lifetime. | |\n| `reject_loop_burden` | conditioning, preservation, handover | Keep rejection/spoilage burden with its actual originating lot; measured returns to conditioning receive only additional operation burdens. Count an accepted lot once at handover, not at intermediate transfers or every re-sort pass. Downgraded goods and waste each retain their explicit burden decision. | |\n| `inclusive_service` | transport and shared services | Inclusive contracted service and foreground energy/emission/asset inventories are alternative representations of the same responsibility; document one choice and exclusions. Human labour is not an inferred material/energy flow. | |\n\n"
       headings:
@@ -1025,12 +1053,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 33636
-              line: 630
+              offset: 38705
+              line: 664
               column: 1
             end:
-              offset: 33676
-              line: 630
+              offset: 38745
+              line: 664
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1045,16 +1073,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_65751"
+    - unit_id: "normative_71587"
       family: "validation"
       span:
         start:
-          offset: 65751
-          line: 687
+          offset: 71587
+          line: 721
           column: 1
         end:
-          offset: 67478
-          line: 698
+          offset: 73314
+          line: 732
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | reference product | Check real accepted output at declared gate, net in-shell kg, species/grade/source/moisture and matching reference link/name; upstream/intermediate mass must not be fixed to 1 kg. | |\n| `validate_route` | source and operations | Validate untended gathered source, actual active/bypassed nodes and their handoffs; exclude cultivated inputs and kernel processing. One source portion has one resource/upstream owner. | unsd-cpc3-wild-nuts |\n| `validate_mass_destinations` | all material records | Reconcile actual shell/pod/water/stock states and every usable grade, other good, waste or retained residue; prevent unknown mass loss from becoming water vapour and rejects from becoming accepted reference. | |\n| `validate_campaign_allocation` | campaigns/sites/periods/shared assets | Check contributor completeness, compatible weighted aggregation, actual campaign/changeover records and allocation precedence/shares. Replacement/termination and return/re-sort events have one owner; repeated service/energy/stock burdens fail. | |\n| `validate_identities` | concrete exchanges | Confirm exact flow type, state/gate, wild origin where relevant, property/unit and elementary compartment. Resolve each umbrella from actual records; verification and quantity evidence remain separate. Missing identity or unsupported conversion stays a gap. | |\n| `validate_ranges` | every card | Check Range basis/unit/evidence alignment and measured zero/positive occurrence; provisional screens trigger evidence review, not a default quantity. Record performed/skipped checks and remaining uncertainty. | |\n\n"
       headings:
@@ -1073,12 +1101,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 65751
-              line: 687
+              offset: 71587
+              line: 721
               column: 1
             end:
-              offset: 65773
-              line: 687
+              offset: 71609
+              line: 721
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1162,145 +1190,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "output_ownership"
       identity_kind: "explicit"
-      unit_id: "normative_33636"
+      unit_id: "normative_38705"
       source_span:
         start:
-          offset: 33749
-          line: 634
+          offset: 38818
+          line: 668
           column: 1
         end:
-          offset: 34021
-          line: 634
+          offset: 39090
+          line: 668
           column: 273
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_precedence"
       identity_kind: "explicit"
-      unit_id: "normative_33636"
+      unit_id: "normative_38705"
       source_span:
         start:
-          offset: 34022
-          line: 635
+          offset: 39091
+          line: 669
           column: 1
         end:
-          offset: 34405
-          line: 635
+          offset: 39474
+          line: 669
           column: 384
     - pointer: "/allocation_rules/2"
       rule_id: "period_site_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_33636"
+      unit_id: "normative_38705"
       source_span:
         start:
-          offset: 34406
-          line: 636
+          offset: 39475
+          line: 670
           column: 1
         end:
-          offset: 34884
-          line: 636
+          offset: 39953
+          line: 670
           column: 479
     - pointer: "/allocation_rules/3"
       rule_id: "reject_loop_burden"
       identity_kind: "explicit"
-      unit_id: "normative_33636"
+      unit_id: "normative_38705"
       source_span:
         start:
-          offset: 34885
-          line: 637
+          offset: 39954
+          line: 671
           column: 1
         end:
-          offset: 35256
-          line: 637
+          offset: 40325
+          line: 671
           column: 372
     - pointer: "/allocation_rules/4"
       rule_id: "inclusive_service"
       identity_kind: "explicit"
-      unit_id: "normative_33636"
+      unit_id: "normative_38705"
       source_span:
         start:
-          offset: 35257
-          line: 638
+          offset: 40326
+          line: 672
           column: 1
         end:
-          offset: 35544
-          line: 638
+          offset: 40613
+          line: 672
           column: 288
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_65751"
+      unit_id: "normative_71587"
       source_span:
         start:
-          offset: 65846
-          line: 691
+          offset: 71682
+          line: 725
           column: 1
         end:
-          offset: 66074
-          line: 691
+          offset: 71910
+          line: 725
           column: 229
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_65751"
+      unit_id: "normative_71587"
       source_span:
         start:
-          offset: 66075
-          line: 692
+          offset: 71911
+          line: 726
           column: 1
         end:
-          offset: 66328
-          line: 692
+          offset: 72164
+          line: 726
           column: 254
     - pointer: "/validation_rules/2"
       rule_id: "validate_mass_destinations"
       identity_kind: "explicit"
-      unit_id: "normative_65751"
+      unit_id: "normative_71587"
       source_span:
         start:
-          offset: 66329
-          line: 693
+          offset: 72165
+          line: 727
           column: 1
         end:
-          offset: 66596
-          line: 693
+          offset: 72432
+          line: 727
           column: 268
     - pointer: "/validation_rules/3"
       rule_id: "validate_campaign_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_65751"
+      unit_id: "normative_71587"
       source_span:
         start:
-          offset: 66597
-          line: 694
+          offset: 72433
+          line: 728
           column: 1
         end:
-          offset: 66919
-          line: 694
+          offset: 72755
+          line: 728
           column: 323
     - pointer: "/validation_rules/4"
       rule_id: "validate_identities"
       identity_kind: "explicit"
-      unit_id: "normative_65751"
+      unit_id: "normative_71587"
       source_span:
         start:
-          offset: 66920
-          line: 695
+          offset: 72756
+          line: 729
           column: 1
         end:
-          offset: 67228
-          line: 695
+          offset: 73064
+          line: 729
           column: 309
     - pointer: "/validation_rules/5"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_65751"
+      unit_id: "normative_71587"
       source_span:
         start:
-          offset: 67229
-          line: 696
+          offset: 73065
+          line: 730
           column: 1
         end:
-          offset: 67476
-          line: 696
+          offset: 73312
+          line: 730
           column: 248
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1329,27 +1357,27 @@ normative_context:
           column: 175
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33636"
+      unit_id: "normative_38705"
       source_span:
         start:
-          offset: 33636
-          line: 630
+          offset: 38705
+          line: 664
           column: 1
         end:
-          offset: 33676
-          line: 630
+          offset: 38745
+          line: 664
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_65751"
+      unit_id: "normative_71587"
       source_span:
         start:
-          offset: 65751
-          line: 687
+          offset: 71587
+          line: 721
           column: 1
         end:
-          offset: 65773
-          line: 687
+          offset: 71609
+          line: 721
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1358,5 +1386,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:993223248f21ba1d3043f5540b775bfad3d62b022c8ec8818ae87b37b2c92df3"
-  generated_content_sha256: "sha256:a275c80081ebdfe7c5add59f07dfb20541b9cac8ffee1a68ecd78b4e0d913aa6"
+    sha256: "sha256:e0fe93682d93b4925a85a9d16031e839064985f61e60808f9b45a6c36a99d7b0"
+  generated_content_sha256: "sha256:06175f9d52246ce8197dff2dae6114446ed937a4c01999dc131e327adb032096"

@@ -395,28 +395,100 @@ Intended internal transfer from actual harvest/removal responsibility, independe
   - Basis kind: reference_flow
   - Evidence kind: collected_record
 
-###### Actual separately dispatched industrial wood co-products (`industrial_wood_coproduct`)
+###### Coniferous sawlogs at harvest handover (`industrial_saw_logs`)
 
-Conditional output register for real saw/veneer/pulp/panel/other-use lots. Enumerate every actual intended product and gate in the dataset, separate from fuelwood, and apply the explicit allocation decision.
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
 
-- Selected flow: Actual separately dispatched industrial wood co-products
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Measured independent intended co-product quantities
-- Value mode: foreground_record
-- Specificity: site_specific
+Collection and handover scope: Conditional output register for real saw/veneer/pulp/panel/other-use lots. Enumerate every actual intended product and gate in the dataset, separate from fuelwood, and apply the explicit allocation decision.
+
+- Selected flow: Coniferous sawlogs at harvest handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
 - Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_source_at_wood_collection`
 - Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`
-- Range: Foreground-conditioned record envelope; no universal numeric default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: reference_record_max
-  - Unit: kg
-  - Basis: per 1 kg reference flow; actual lot/source denominator preserved in the collection ledger
-  - Basis kind: reference_flow
-  - Evidence kind: collected_record
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Coniferous veneer logs at harvest handover (`industrial_veneer_logs`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Conditional output register for real saw/veneer/pulp/panel/other-use lots. Enumerate every actual intended product and gate in the dataset, separate from fuelwood, and apply the explicit allocation decision.
+
+- Selected flow: Coniferous veneer logs at harvest handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_source_at_wood_collection`
+- Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Coniferous pulpwood at harvest handover (`industrial_pulpwood`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Conditional output register for real saw/veneer/pulp/panel/other-use lots. Enumerate every actual intended product and gate in the dataset, separate from fuelwood, and apply the explicit allocation decision.
+
+- Selected flow: Coniferous pulpwood at harvest handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_source_at_wood_collection`
+- Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Coniferous panel-manufacturing roundwood at harvest handover (`industrial_panel_roundwood`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Conditional output register for real saw/veneer/pulp/panel/other-use lots. Enumerate every actual intended product and gate in the dataset, separate from fuelwood, and apply the explicit allocation decision.
+
+- Selected flow: Coniferous panel-manufacturing roundwood at harvest handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_source_at_wood_collection`
+- Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Untreated coniferous roundwood poles at harvest handover (`industrial_poles`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Conditional output register for real saw/veneer/pulp/panel/other-use lots. Enumerate every actual intended product and gate in the dataset, separate from fuelwood, and apply the explicit allocation decision.
+
+- Selected flow: Untreated coniferous roundwood poles at harvest handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per 1 kg reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_source_at_wood_collection`
+- Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Waste flows
 
@@ -998,29 +1070,6 @@ The sole final reference: net qualified raw wood, excluding packaging and soil/f
   - Basis kind: reference_flow
   - Evidence kind: calculated_from_collection
 
-###### Actual diverted saleable wood products (`diverted_wood_products`)
-
-Enumerate real non-reference grade/destination products and their handovers; do not hide them inside fuelwood yield or use a universal waste-cutoff claim.
-
-- Selected flow: Actual diverted saleable wood products
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Measured diverted product mass by declared destination
-- Value mode: foreground_record
-- Specificity: site_specific
-- Normalization basis: per 1 kg reference flow
-- Basis kind: reference_flow
-- Evidence kind: collected_record
-- Collection protocol: `cp_handover`
-- Sources: `fao-fuelwood-harvesting`; `fao-forest-product-definitions`
-- Range: Foreground-conditioned record envelope; no universal numeric default
-  - Range role: qa_guardrail
-  - Lower: 0
-  - Upper: reference_record_max
-  - Unit: kg
-  - Basis: per 1 kg reference flow; actual lot/source denominator preserved in the collection ledger
-  - Basis kind: reference_flow
-  - Evidence kind: collected_record
-
 ##### Waste flows
 
 ###### Final rejected wood sent to declared waste management (`handover_rejects`)
@@ -1074,7 +1123,7 @@ All protocols retain original lot, source-area/time and campaign totals with the
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_management` | stand_management | management inputs/land | cohort records | parcel; species; establishment/tending dates; materials and original units; area; occupation years; asset IDs; output cohorts; allocation shares | Traceable original records and calibrated measurements; match lot, campaign and scope `management_materials_specific_input`: Operation stand_management: One conditional umbrella for actual seedlings, formulated fertilizers and other tending materials. Each actual material is distinct in the dataset; keep formulated mass, nutrient/active-content bridge and supplier scope. Natural unmanaged sources do not inherit a planting recipe. Original quantity method: Recorded material quantities attributable to the harvested fuelwood cohort Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
-| `cp_source_at_wood_collection` | `wood_collection` | source/harvest/removal | lot ledger | source parcel/cohort; natural/managed/residue status; live/dead state; form; bark; gross/tare/net; moisture; actual outputs and destinations; retained residues; prior burden link; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
+| `cp_source_at_wood_collection` | `wood_collection` | source/harvest/removal | lot ledger | source parcel/cohort; natural/managed/residue status; live/dead state; form; bark; gross/tare/net; moisture; actual outputs and destinations; retained residues; prior burden link; event_id; transfer_id; counterparty_process_id |Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. industrial_wood_coproduct_specific_output: Preserve every actual intended output previously collected under industrial_wood_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_source_at_stand_management` | `stand_management` | source/harvest/removal | lot ledger | source parcel/cohort; natural/managed/residue status; live/dead state; form; bark; gross/tare/net; moisture; actual outputs and destinations; retained residues; prior burden link; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_operation_at_stand_management` | `stand_management` | energy/material service | operation records | process and campaign; actual carrier/service; supplier; original quantity/unit; fuel factor or kWh bridge; hours/distance; consumers; service inclusions; zero evidence; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_operation_at_wood_collection` | `wood_collection` | energy/material service | operation records | process and campaign; actual carrier/service; supplier; original quantity/unit; fuel factor or kWh bridge; hours/distance; consumers; service inclusions; zero evidence; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
@@ -1083,7 +1132,7 @@ All protocols retain original lot, source-area/time and campaign totals with the
 | `cp_operation_at_handover_sorting` | `handover_sorting` | energy/material service | operation records | process and campaign; actual carrier/service; supplier; original quantity/unit; fuel factor or kWh bridge; hours/distance; consumers; service inclusions; zero evidence; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_movement` | primary_extraction | extraction/transport balances | movement tickets | source/destination lot; start/end gate; carried net mass; trip/distance; vehicle/animal/service; load utilization; damage/loss destination; stock | Traceable original records and calibrated measurements; match lot, campaign and scope | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_preparation` | wood_preparation | conditioning mass/water | paired batch measurements | linked batch; operation dates; incoming/outgoing net masses; paired moisture with basis/method; solid/stacked volumes and measured factors; water uptake/drainage; bark/dry losses; stock; rework | Traceable original records and calibrated measurements; match lot, campaign and scope | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
-| `cp_handover` | handover_sorting | reference/destinations | weighing and dispatch records | lot/source/process; calibrated scale; gross/tare/net accepted mass; form/bark/moisture; energy destination; producer gate; grades; diverted/waste quantities; opening/closing stock; packaging excluded | Traceable original records and calibrated measurements; match lot, campaign and scope | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
+| `cp_handover` | handover_sorting | reference/destinations | weighing and dispatch records | lot/source/process; calibrated scale; gross/tare/net accepted mass; form/bark/moisture; energy destination; producer gate; grades; diverted/waste quantities; opening/closing stock; packaging excluded |Traceable original records and calibrated measurements; match lot, campaign and scope diverted_wood_products_specific_output: Preserve every actual intended output previously collected under diverted_wood_products, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_emissions_at_stand_management` | `stand_management` | direct substance releases | measurement/factor ledger | process/campaign; actual fuel/material; named substance; air compartment; fossil/biogenic origin; measured release or documented factor and original basis; upstream-service inclusion; uncertainty; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_emissions_at_wood_collection` | `wood_collection` | direct substance releases | measurement/factor ledger | process/campaign; actual fuel/material; named substance; air compartment; fossil/biogenic origin; measured release or documented factor and original basis; upstream-service inclusion; uncertainty; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |
 | `cp_emissions_at_primary_extraction` | `primary_extraction` | direct substance releases | measurement/factor ledger | process/campaign; actual fuel/material; named substance; air compartment; fossil/biogenic origin; measured release or documented factor and original basis; upstream-service inclusion; uncertainty; event_id; transfer_id; counterparty_process_id | Traceable original records and calibrated measurements; match lot, campaign and scope; Collect this node's events only; pair counterpart transfers by transfer_id and cancel internal transfers at system aggregation. Assign each shared event to one node without duplicate measurement. | Original units retained; declared exchange unit | Each event/lot and period closure | Actual cohort and reporting period | Every contributing parcel/site and handover point | per 1 kg reference flow | Calibration, invoices/logs, moisture method, transfer IDs and reconciliation trail |

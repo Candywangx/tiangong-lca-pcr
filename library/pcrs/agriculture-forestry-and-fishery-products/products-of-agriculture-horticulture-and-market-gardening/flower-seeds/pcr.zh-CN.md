@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Flower seed for sowing; UUID unresolved |
+| 参考产品流 | 播种用花卉种子；UUID 未解析 |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 
 Declared parent seed enters the managed multiplication lot.
 
-- 选定流： Parent flower seed for sowing; UUID unresolved
+- 选定流： 播种用花卉亲本种子；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured mass assigned to the production lot
 - 数值来源模式： `foreground_record`
@@ -205,7 +205,7 @@ Declared parent seed enters the managed multiplication lot.
 
 Water delivered for irrigation is recorded when that route is active.
 
-- 选定流： Irrigation water
+- 选定流： 灌溉水
 - 流属性/单位： Volume / m3
 - 数量规则： metered delivery or verified pump-flow calculation
 - 数值来源模式： `calculated_value`
@@ -273,7 +273,7 @@ Route-specific field emissions are calculated in the concrete package from recor
 
 Mature heads, capsules, pods, fruit or other declared material transferred to extraction.
 
-- 选定流： Harvested flower seed-bearing material; UUID unresolved
+- 选定流： 已采收的花卉含籽材料；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured net mass with material form and moisture
 - 数值来源模式： `foreground_record`
@@ -311,7 +311,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 可追溯采收批次进入分离过程，不得替换为另一作物。
 
-- 选定流： Harvested flower seed-bearing material; UUID unresolved
+- 选定流： 已采收的花卉含籽材料；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： linked measured mass from production
 - 数值来源模式： `foreground_record`
@@ -377,7 +377,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 分离后尚未调理的种子转入干燥和清选。
 
-- 选定流： Raw extracted flower seed; UUID unresolved
+- 选定流： 提取后的未整备花卉种子；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured output mass and moisture by lot
 - 数值来源模式： `foreground_record`
@@ -404,7 +404,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 非种子作物材料及未回收部分按有记录的去向离开。
 
-- 选定流： Flower-seed extraction residue; UUID unresolved
+- 选定流： 花卉种子提取残余物；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured residue mass or moisture-corrected mass balance
 - 数值来源模式： `calculated_value`
@@ -438,7 +438,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 相连的原始种子批次进入水分稳定和清选。
 
-- 选定流： Raw extracted flower seed; UUID unresolved
+- 选定流： 提取后的未整备花卉种子；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： linked measured input mass and moisture
 - 数值来源模式： `foreground_record`
@@ -504,7 +504,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 含水率稳定且已清选的种子转入放行检验。
 
-- 选定流： Conditioned flower seed for sowing; UUID unresolved
+- 选定流： 整备后的播种用花卉种子；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured conditioned mass at declared moisture
 - 数值来源模式： `foreground_record`
@@ -531,7 +531,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 不合格种子、颖壳及惰性杂质不计入合格种子。
 
-- 选定流： Flower-seed cleaning rejects; UUID unresolved
+- 选定流： 花卉种子清理拒收物；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured reject mass by reason and destination
 - 数值来源模式： `foreground_record`
@@ -565,7 +565,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 相连的调理后批次进入取样、检验及最终准备。
 
-- 选定流： Conditioned flower seed for sowing; UUID unresolved
+- 选定流： 整备后的播种用花卉种子；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： linked measured mass from conditioning
 - 数值来源模式： `foreground_record`
@@ -590,7 +590,7 @@ Mature heads, capsules, pods, fruit or other declared material transferred to ex
 
 Treatment, coating or pelleting material is recorded only when applied before hand-off.
 
-- 选定流： Seed treatment material; UUID unresolved
+- 选定流： 种子处理材料；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured material applied net of returned stock
 - 数值来源模式： `foreground_record`
@@ -615,7 +615,7 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 记录放行批次实际使用的包装组件。
 
-- 选定流： Flexible packaging for flower seed
+- 选定流： 花卉种子柔性包装
 - 流属性/单位： Mass / kg
 - 数量规则： measured packaging mass by component; use another permitted group when the actual package is not flexible
 - 数值来源模式： `foreground_record`
@@ -681,7 +681,7 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 只有放行决定所覆盖的种子净质量才能成为参考产出。
 
-- 选定流： Flower seed for sowing; UUID unresolved
+- 选定流： 播种用花卉种子；UUID 未解析
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：measured net mass covered by the release decision
 
@@ -710,7 +710,7 @@ Treatment, coating or pelleting material is recorded only when applied before ha
 
 未通过放行或处理控制的材料不计入参考产出。
 
-- 选定流： Rejected flower seed; UUID unresolved
+- 选定流： 拒收的花卉种子；UUID 未解析
 - 流属性/单位： Mass / kg
 - 数量规则： measured rejected mass by failure reason and destination
 - 数值来源模式： `foreground_record`

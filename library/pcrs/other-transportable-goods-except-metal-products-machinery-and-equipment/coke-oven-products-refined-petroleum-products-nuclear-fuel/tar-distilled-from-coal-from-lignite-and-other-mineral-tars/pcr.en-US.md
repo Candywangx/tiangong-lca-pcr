@@ -14,7 +14,7 @@ This PCR defines recovery, any applicable dewatering, acceptance, storage and bu
 
 The independent finished reference is tar, rather than coke or gas; this PCR does not repeat coal carbonisation, wet quenching or complete gas cleaning. Coking and gas methodologies can supply upstream joint inventories, physical coproduct records and allocation evidence but their fixed gas reference cannot stand in for tar. The delivered product remains crude tar without fraction grading. Independent distillation oils, wash oil, anthracene oil, pitch and pitch coke are outside this method; using it after silently omitting such outputs is invalid. The WCO separation of headings 2706 and 2707/2708 and CPC 34540 provide classification context, not a tar production recipe. `wco-hs-2022-ch27`; `un-cpc-3-2025`
 
-Peat tar, unassessed lignite/other mineral-tar routes, reconstituted tar, wood tar, tar-sand extraction, petroleum coking gas oil, downstream chemical refining and combustion are excluded. Only the coal-carbonisation crude-tar subset of CPC 33210 is supported: recommend narrower, with mapping acceptance left to independent controller review.
+Peat tar, unassessed lignite/other mineral-tar routes, reconstituted tar, wood tar, tar-sand extraction, petroleum coking gas oil, downstream chemical refining and combustion are excluded. Only the coal-carbonisation crude-tar subset of CPC 33210 is supported: the narrower relation describes scope, while mapping acceptance is maintained separately in classifications/mappings/.
 
 ## 2. Product Category Identity
 

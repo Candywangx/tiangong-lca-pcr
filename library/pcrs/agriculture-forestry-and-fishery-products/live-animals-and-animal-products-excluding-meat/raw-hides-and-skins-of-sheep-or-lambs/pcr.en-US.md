@@ -157,31 +157,61 @@ Raw quantity and calculation requirements: Measure actual lot and reconcile node
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual separate animal products (`source_coproduct`)
+###### Raw sheep milk at its independent phase handover (`source_raw_sheep_milk_product`)
 
-Record only existing outputs at their own phase and gate; attached fleece is not detached wool.
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
 
-Denominator and scope requirements：per kg node output
+Collection and handover scope: Record only existing outputs at their own phase and gate; attached fleece is not detached wool. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output.
 
-Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output.
-
-- Selected flow: Actually marketable meat, detached wool, milk and other goods (UUID unresolved)
+- Selected flow: Raw sheep milk at its independent phase handover
 - Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_source`
-- Range: Lot completeness screen, not a default factor
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/kg
-  - Basis: per kg node output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Detached sheep wool at its independent phase handover (`source_detached_sheep_wool_product`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record only existing outputs at their own phase and gate; attached fleece is not detached wool. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output.
+
+- Selected flow: Detached sheep wool at its independent phase handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_source`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Separately removed raw sheep meat at its actual source handover (`source_separate_sheep_meat_product`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record only existing outputs at their own phase and gate; attached fleece is not detached wool. Denominator and scope requirements：per kg node output Raw quantity and calculation requirements: Measure actual lot and reconcile node inputs, outputs and destinations. Original collection denominator kind: process_output.
+
+Only meat already physically separated and independently handed over at this source event belongs here. Meat still contained in source_skinbearing is part of that transfer, not an additional source output. If meat separates at a later responsible node, identify it there through matched records instead of reporting it twice; never invent meat on the fallen-animal route.
+
+- Selected flow: Separately removed raw sheep meat at its actual source handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_source`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Waste flows
 
@@ -691,7 +721,7 @@ Identify the actual input for this operation from supplier specifications, equip
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_source | source | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase | lot ledger | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase | calibrated scale, meter and tickets; Raw aggregation requirements: sum once by lot and period. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;period | each lot/period | all relevant events | actual site | per reference flow | calibration, source and dispatch record; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| cp_source | source | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase | lot ledger | cohort, actual slaughter or lawful recovery, independently marketable outputs by phase |calibrated scale, meter and tickets; Raw aggregation requirements: sum once by lot and period. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. source_coproduct_specific_output: Preserve every actual intended output previously collected under source_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | kg;period | each lot/period | all relevant events | actual site | per reference flow | calibration, source and dispatch record; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_remove | remove | source event, intact raw skin, fleece and loss | lot ledger | source event, intact raw skin, fleece and loss | calibrated scale, meter and tickets; Raw aggregation requirements: sum once by lot and period. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;period | each lot/period | all relevant events | actual site | per reference flow | calibration, source and dispatch record; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_condition | condition | incoming, water, prepared skin, trim | lot ledger | incoming, water, prepared skin, trim | calibrated scale, meter and tickets; Raw aggregation requirements: sum once by lot and period. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;period | each lot/period | all relevant events | actual site | per reference flow | calibration, source and dispatch record; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_grade | grade | accepted, downgraded, rejected grades and destination | lot ledger | accepted, downgraded, rejected grades and destination | calibrated scale, meter and tickets; Raw aggregation requirements: sum once by lot and period. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg;period | each lot/period | all relevant events | actual site | per reference flow | calibration, source and dispatch record; traceable numerator, accepted reference-output denominator and normalization worksheet |

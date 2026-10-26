@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.fuel-elements-cartridges-non-irradiated-for-nuclear-reactors |
-| classification_refs | CPC 3.0 33710; narrower; 仅作为待独立接受的范围建议 |
+| classification_refs | CPC 3.0:33710；narrower范围限于本件定义的产品和路线；映射接受决策由classifications/mappings/另行维护。 |
 | covered_products | 完整非辐照民用 UO2 压水堆组件 |
 | excluded_products | 范围第1节列出的燃料与路线 |
 | representative_product | 按实际供方及验收状态限定的压水堆组件，不设通用型号 |

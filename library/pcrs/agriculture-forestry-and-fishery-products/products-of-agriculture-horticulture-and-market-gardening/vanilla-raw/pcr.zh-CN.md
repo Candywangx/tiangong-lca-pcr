@@ -263,29 +263,23 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 修剪物、枯死藤本和田间残余物（`cultivation_residues`）
+###### 送往处理的移除香荚兰植物生物质（`removed_vanilla_biomass_waste`）
 
-该流卡：按原地保留、回收、处理或丢弃去向计量；原地物料不得同时作为外排废物流。
+仅在本具体废物材料确实于原有过程边界内单独收集并送往有记录的处理时适用。本卡片不证明场址实际分选。真实混合流保留一条有明确组成的身份及其实际交接；不编造组分交换，也不重复计入混合物及其组分外运。留存存货、原位残余物或直接环境返回不属于本废物外运。
 
-- 选定流：按材料与去向记录的内部/延后解析作物残余物
-- 流属性/单位：质量 / kg
-- 数量规则：按原地保留、回收、处理或丢弃去向计量；原地物料不得同时作为外排废物流。
+采集与交接范围：该流卡：按原地保留、回收、处理或丢弃去向计量；原地物料不得同时作为外排废物流。 原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
+
+- 选定流：送往处理的移除香荚兰植物生物质
+- 流属性/单位：Mass / kg
+- 数量规则：在实际收集或处理交接点计量本具体废物材料质量；保留原过程、批次和期间基准，恰好一次执行原有产量关联与归一化规则。未分配的物理数量台账与第 7 节共享负担分配分开。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
-原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚.
-
 - 归一化基准：每声明的参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
 - 采集协议：`cp_residue_and_emission_records`
-- 数量范围：数量 QA 范围
-  - 范围角色：`default_estimate`
-  - 下限：0
-  - 上限：10
-  - 单位：kg/kg reference product
-  - 基准：每 kg 已接收产出的退出生产用途残余物
-  - 基准类型：`reference_flow`
-  - 证据类型：`reasoned_estimate`
+
+不继承已退役集合卡片的数值范围。使用相容的实测数量及本身份专属证据；证据缺失仍是完整性缺口，不代表零数量。在确认兼容确切身份前，UUID 保持未解析。
 
 ##### 基本流
 
@@ -631,7 +625,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_perennial_vine_records` | `perennial_vine_management` | propagation, vine phases, support, pollination, standing crop | field register | species; source; mass; vine count/age; establishment/replacement; support/shade; pollination; dates; harvest-ready mass | 按路线和期间核对地块、繁殖与观察记录；原始汇总与分配：先分层再归属汇总 | kg; count; date | 每次事件和每季 | 全部承载负荷年份 | 农场和地块 | 每声明的参考流 | 带日期记录、发票、物种记录和签字 |
 | `cp_management_inputs` | `perennial_vine_management` | nutrients, irrigation, energy | invoice, log, meter | product; composition; mass; water source/volume; pump hours/rate; carrier/quantity; node; date | 逐次记录并仅用核实因子计算；原始汇总与分配：按实际产品/载体汇总后归一化 | kg; m3; kWh; L; MJ | 每次施用或仪表间隔 | 完整报告期 | 农场、地块、设备路线 | 每声明的参考流 | 发票、校准、日志、因子记录 |
-| `cp_residue_and_emission_records` | `perennial_vine_management` | residues and emissions | weighing log and calculation sheet | material; mass; destination; substance; basis; compartment; activity; factor; method | 计量外排残余物，仅计算已识别排放；原始汇总与分配：按去向核算，解析后汇总 | kg | 每次移除和计算期 | 完整报告期 | 地块和去向 | 每声明的参考流 | 秤、去向凭证、方法引用和复核 |
+| `cp_residue_and_emission_records` | `perennial_vine_management` | residues and emissions | weighing log and calculation sheet | material; mass; destination; substance; basis; compartment; activity; factor; method |计量外排残余物，仅计算已识别排放；原始汇总与分配：按去向核算，解析后汇总 cultivation_residues_specific_output：必需的材料、数量及边界角色确认要求，不是选定交换。保留的采集范围：该流卡：按原地保留、回收、处理或丢弃去向计量；原地物料不得同时作为外排废物流。 原始活动或阶段基准：每 1 kg 已接收绿色未熟化香草荚. 保留每一实际材料及其去向，包括条件卡片尚未表示的材料。记录实际组成及状态、原生属性和单位、实测数量、群组和期间、接收方、处理责任及唯一交接；保留原产量关联、归一化及分配义务。完整性确认前，只对实际物理上不同的交换建立卡片，并使用兼容 UUID 或确切未解析身份。真实混合流保留一条有实测组成的明确身份；不编造分选，不重复计入混合物及其组分外运。留存或递延存货、原位残余物及直接返回环境的土壤保留实际平衡、存货或返回角色，不假定为技术圈废物外运；建立基本交换前须确认方法及边界责任。独立销售回收物须有实际 Product 交接，不得同时作为本废物。缺失记录不等于零数量，已退役类别数值筛选不是组分限值。 | kg | 每次移除和计算期 | 完整报告期 | 地块和去向 | 每声明的参考流 | 秤、去向凭证、方法引用和复核 |
 | `cp_selective_harvest_rounds` | `selective_pod_harvest` | harvest, rejects, losses, energy | lot sheet | round/date; plot; species; maturity; masses; retained status; carrier; labour mode | 逐轮计量并关联设备记录；原始汇总与分配：仅汇总已关联轮次并分开拒收 | kg; MJ; date | 每个轮次 | 全部贡献轮次 | 地块、轮次、批次 | 每声明的参考流 | 校准秤、签字批次表、能源日志 |
 | `cp_primary_conditioning` | `on_farm_primary_conditioning` | input, handled pods, removed matter | handling sheet | lot; input/output mass; holding time; operations; rejects/destination; no-curing declaration | 处理前后称量并核证无熟化/刻意干燥；原始汇总与分配：核算输入、产出、拒收和损失 | kg; hour | 每批 | 全部贡献批次 | 处理区和批次 | 每声明的参考流 | 校准秤、时间日志、检查表和照片/等效证据 |
 | `cp_green_pod_grading` | `green_pod_grading_handoff` | accepted grade, off-grade, rework, hand-off | grading/dispatch record | lot; species; maturity; grade; input; accepted; off-grade; rework; destination; date; uncured state | 逐状态称量并关联熟化前发运；原始汇总与分配：核算全部状态并去除返工重复 | kg; date | 每批 | 全部贡献批次 | 分级点和批次 | 每声明的参考流 | 校准秤、等级规范、发运和未熟化声明 |

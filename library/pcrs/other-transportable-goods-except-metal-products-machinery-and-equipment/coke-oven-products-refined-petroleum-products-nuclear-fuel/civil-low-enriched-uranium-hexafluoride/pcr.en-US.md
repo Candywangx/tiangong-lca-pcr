@@ -25,7 +25,7 @@ Only aggregate environmental inputs, outputs and supporting measurements are aut
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.civil-low-enriched-uranium-hexafluoride |
-| classification_refs | CPC3.0:33620; proposed narrower subset, subject to independent mapping acceptance |
+| classification_refs | CPC 3.0:33620; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
 | covered_products | One segregated conventional civil low-enriched solid UF6 compound at the producer delivery gate |
 | excluded_products | Plutonium; reprocessed uranium; advanced/high-enriched grades; metal, oxide, ceramic, alloy, dispersion or formulated mixture; fuel assemblies; enrichment services measured only as work units |
 | representative_product | Actual accepted civil UF6 lot with independently verified net compound mass and supplier certificate |

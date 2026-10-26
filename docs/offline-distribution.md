@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-18"
-lastReviewedCommit: "92e53b455840908bc77c4d660de2367ae783a0e7"
-lastReviewedNote: "Reviewed the same-source CI web-build handoff and separate product sealing: complete source/run/attempt/plan/archive/tree and build/SEO evidence bindings, mandatory full/data jobs, unchanged resource budgets and fresh complete qualification. No methodology, dependency, version, publication or provider authority changes."
+lastReviewedAt: 2026-10-24
+lastReviewedCommit: 6883ac60fba9106de1532c153241fb0076423a07
+lastReviewedNote: "PCR #148: reviewed provider-capacity repair after the immutable 0.4.8 export failed actual destination staging. Product 0.4.9 preserves canonical content, classification, reader compatibility, methodology and translation states, dependency resolutions and runtime pins. New builds store original downloads physically, bind exact Next navigation aliases and enforce destination allocation plus the existing reserve; native/browser and live alias acceptance remain mandatory. Existing ownership, routing, scientific approval and full qualification requirements are unchanged. Focused integrity tests and bounded browser diagnostics are evidence only for their scope; complete new-source qualification, independent review, provider admission, stable publication and exact workspace integration remain required."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -64,18 +64,31 @@ Installed content packages do not require Git. Prepare Node separately
 on a connected machine if the destination has no runtime. No install hooks, runtime
 network calls or implicit content downloads are used.
 
-## Combined candidate preparation for 0.4.7
+## Combined batch and provider repair
 
-Product 0.4.7 combines PR #110's 21 new and seven revised candidate PCRs with
-PR #111's 51 wood/paper candidates and classification decisions. The regenerated
-material index contains 1,085 records. Search retains complete records and exact
-engine imports through wire v3; methodology and translation states remain unchanged.
+On upstream main, the six original PRs #134–#139 and preparation #147 merged at product
+0.4.8, preserving 1,457 material PCRs, 1,306 accepted classification edges and
+1,647 legacy aliases. The exact 0.4.8 source qualified fully and its npm pair was
+accepted, but provider staging failed because the complete 4.31 GB web export
+exceeded the destination filesystem's available capacity plus required reserve.
+That release remains incomplete; its tag, sealed assets, packages and attempt
+journals are immutable evidence and must not be replaced.
 
-Version mirrors are preparation inputs. Publication requires fresh complete
-qualification of the combined commit, immutable sealed artifacts and the existing
-coordinated npm/website verification. The verified stable predecessor is 0.4.6;
-never move its tag or replace its published artifacts. Reader compatibility stays
-at the reviewed minimum 0.4.1, with no runtime or dependency upgrade.
+Product 0.4.9 prepares the necessary repair under #148. It stores original native
+downloads physically and uses source-bound, byte-exact Next navigation aliases
+under the [site contract](pcr-documentation-site-contract.md). The new product
+requires fresh complete qualification, actual provider admission and coordinated
+GitHub/npm/latest/live acceptance before stable completion. Exact workspace
+inclusion remains separately required. All prior source contributions, individual
+methodology, translations and immutable PCR release bytes remain unchanged.
+Reader compatibility stays at minimum 0.4.1; Node 24.19.0/npm 12.2.0 remain pinned,
+and the dependency-free provider importer retains Node 24.18.0. This patch makes
+no dependency or runtime upgrade, raises no resource limit and permits no retry
+of unchanged failed artifacts.
+
+These counts describe the upstream batch. A fork retaining additional records
+reads its current inventory from the catalog and classification coverage; the
+upstream batch counts do not replace those source-derived totals.
 
 ## Build and transport
 
@@ -285,7 +298,7 @@ verified bytes in a source/run/attempt/qualification-bound archive. A separate
 SEO checker and seals the two npm packages and the identical web archive. Build,
 handoff and SEO audit evidence accompanies the immutable product artifact; it
 does not replace its existing release manifest or checksum contract. Both jobs
-retain their 60-minute limits and are required in both qualification lanes.
+retain their 120-minute limits and are required in both qualification lanes.
 The public product artifact output and publication guards remain unchanged. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.

@@ -19,7 +19,7 @@ Exclude nuclear-material processing or preparation, recipes, enrichment, convers
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.fuel-elements-cartridges-non-irradiated-for-nuclear-reactors |
-| classification_refs | CPC 3.0 33710; narrower; scope recommendation requiring independent acceptance |
+| classification_refs | CPC 3.0:33710; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
 | covered_products | Complete non-irradiated civilian UO2 PWR assemblies |
 | excluded_products | Fuel and routes excluded in section 1 |
 | representative_product | PWR assembly qualified by actual supplier and acceptance state; no default model |

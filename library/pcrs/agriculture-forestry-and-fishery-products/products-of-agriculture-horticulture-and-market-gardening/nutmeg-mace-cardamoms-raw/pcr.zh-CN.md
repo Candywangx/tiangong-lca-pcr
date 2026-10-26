@@ -104,7 +104,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Crop-specific planting material
+- 选定流： 作物特定种植材料
 - 流属性/单位：质量 / kg
 - 数量规则： measured type, count and mass; separate replants
 - 数值来源模式：前景记录（`foreground_record`）
@@ -211,7 +211,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Established nutmeg or cardamom stand capacity
+- 选定流： 已建成的肉豆蔻或豆蔻林分生产能力
 - 流属性/单位：面积 / ha
 - 数量规则： successfully established area after mortality/replant reconciliation
 - 数值来源模式：计算值（`calculated_value`）
@@ -382,7 +382,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Harvestable nutmeg fruit or cardamom capsules
+- 选定流： 可采收的肉豆蔻果实或豆蔻蒴果
 - 流属性/单位：质量 / kg
 - 数量规则： measured by crop and picking round; only the selected route is active
 - 数值来源模式：前景记录（`foreground_record`）
@@ -408,7 +408,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Nitrous oxide to air
+- 选定流： 排放至空气的一氧化二氮
 - 流属性/单位：质量 / kg N2O
 - 数量规则：将所选 IPCC 层级用于所采合成、有机及残体氮；按 44/28 将 N2O-N 换算为 N2O，仅一次。
 - 数值来源模式：计算值（`calculated_value`）
@@ -440,7 +440,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Harvestable nutmeg fruit or cardamom capsules
+- 选定流： 可采收的肉豆蔻果实或豆蔻蒴果
 - 流属性/单位：质量 / kg
 - 数量规则： measured mass entering the lot
 - 数值来源模式：前景记录（`foreground_record`）
@@ -547,7 +547,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Route-specific harvest residues
+- 选定流： 路线特定采收残余物
 - 流属性/单位：质量 / kg
 - 数量规则： input minus intended outputs and measured losses; reclassify deliberately sold/used material as product
 - 数值来源模式：计算值（`calculated_value`）
@@ -660,7 +660,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Conditioned nutmeg seed, mace aril or cardamom capsules
+- 选定流： 整备后的肉豆蔻种子、肉豆蔻衣或豆蔻蒴果
 - 流属性/单位：质量 / kg
 - 数量规则： measured final mass with moisture, time/temperature, method and rejected fraction
 - 数值来源模式：前景记录（`foreground_record`）
@@ -688,7 +688,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Water to air
+- 选定流： 排放至空气的水
 - 流属性/单位：质量 / kg
 - 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式：计算值（`calculated_value`）
@@ -720,7 +720,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Route-specific fresh or conditioned raw spice
+- 选定流： 路线特定的新鲜或整备未加工香辛料
 - 流属性/单位：质量 / kg
 - 数量规则： measured lot mass with crop, organ and moisture identity
 - 数值来源模式：前景记录（`foreground_record`）
@@ -775,7 +775,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Downgraded route-specific raw spice
+- 选定流： 降级的路线特定未加工香辛料
 - 流属性/单位：质量 / kg
 - 数量规则： measured lower-grade mass with destination and revenue; never count as accepted mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -801,7 +801,7 @@ sync_with: pcr.en-US.md
 
 本卡记录该过程边界上的声明流及其数量。
 
-- 选定流： Route-specific spice rejects
+- 选定流： 路线特定香辛料拒收物
 - 流属性/单位：质量 / kg
 - 数量规则： measured final reject mass; retain re-drying loops under the producing lot until disposition
 - 数值来源模式：前景记录（`foreground_record`）

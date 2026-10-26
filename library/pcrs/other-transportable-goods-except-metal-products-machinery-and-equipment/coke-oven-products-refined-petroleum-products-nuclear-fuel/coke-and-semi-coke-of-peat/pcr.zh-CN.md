@@ -568,8 +568,8 @@ OSTI1980原件区分惰性热解、湿法转化和加氢气化；仅用其氧留
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
 | allocation_physical | retort | 环境负荷分配前保留气液固总实物账及水碳硫能量平衡，不将共产品实际输出机械乘分配比例。内部回用和外部交付为互斥数量。 | usgs-peat-retort-1910 |
-| allocation_order | retort | 优先以实测拆分可分离操作；剩余共享负荷采用已证明的物理因果关系，否则明确经济情景，使用实际牌号产品数量、同期净价格并分析不确定性和敏感性。历史盈利说法不确立分配份额或避免负荷。 | usgs-peat-retort-1910 |
-| allocation_status | peat_tar; peat_gas; heat_export; captured_dust | 用接收合同及质量证据区分真实可售共产品与废物，保留废水残渣处理负荷，不任意给副产品零负荷。每项共享负荷池分配比例之和为一，未分配实物账保留。 | usgs-peat-retort-1910 |
+| allocation_order | retort | PCR作者制定的分配规则：将GHG产品标准层级有限适配于本LCI，不宣称完整符合该GHG标准。优先以实测拆分可分离操作；剩余共享负荷采用已证明的物理因果关系，否则明确经济情景，使用实际牌号产品数量、同期净价格并分析不确定性和敏感性。历史盈利说法不确立分配份额或避免负荷。 | ghg-product-allocation-2011 |
+| allocation_status | peat_tar; peat_gas; heat_export; captured_dust | 用接收合同及质量证据区分真实可售共产品与废物，保留废水残渣处理负荷，不任意给副产品零负荷。每项共享负荷池分配比例之和为一，未分配实物账保留。 | ghg-product-allocation-2011 |
 | allocation_support | retort | 真实可直接归属的包装、搬运、维护及处理负荷先归其操作或产品，再分配共享负荷。经济情景使用扣折扣退回后同期净收入、数量状态、币种日期、运费税费边界及处理费；历史资本运行成本不是现行售价。共享份额合计一，实物输出库存返回链接不乘份额。 | |
 
 ## 8. 前景数据采集、计算与质量规则
@@ -642,6 +642,7 @@ OSTI1980原件区分惰性热解、湿法转化和加氢气化；仅用其氧留
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| ghg-product-allocation-2011 | standard | WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), Chapter 9, printed p.63, Tables 9.1–9.2. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | 拆分及物理/经济关系支持声明的有限LCI分配适配；不给泥炭工厂分配份额、避免负荷或完整符合声明。实物输出不分配；USGS1910仅支持历史工艺及市场背景。 |
 | usgs-peat-retort-1910 | official_guidance | C. A. Davis，The preparation and use of peat as fuel，USGS Bulletin 442-B（1910），印刷121–123页，PDF21–23页。https://pubs.usgs.gov/bul/442-B/report.pdf | 欧洲传统密闭泥炭干馏焦半焦、气体回用、有机水相冷凝回收及密闭冷却。数量成本盈利说法不作默认，不覆盖现代工厂。 |
 | vtt-peat-coke-1986-abstract | literature | Brandt、Sipilä、Thun，Production and use of peat coke，VTT Tiedotteita542（1986），仅出版方摘要。https://cris.vtt.fi/en/publications/production-and-use-of-peat-coke/ | 仅历史产品原料预处理牌号区别，未取得报告全文，无默认数量或现行工厂状态声明。 |
 | ipcc-peat-classification | official_guidance | IPCC TFI FAQ Q2-7。https://www.ipcc-nggip.iges.or.jp/faq/faq.html | 泥炭身份与国家温室气体报告口径区别，不是泥炭焦制造因子或LCI来源赋值。 |

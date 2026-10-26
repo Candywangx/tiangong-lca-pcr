@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-22"
-lastReviewedCommit: "40e87795369c6fdb29e1cf4f0835b5dc4ad82a75"
-lastReviewedNote: "Added opt-in canonical signed-VLQ dictionary-reference and score-header columns to search v5. Native postings, term order, full records, legacy readers, ranking and existing raw/gzip/file/resource budgets are preserved; changed-source validation is reported separately."
+lastReviewedAt: 2026-10-24
+lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -77,25 +77,51 @@ The core document bundle contains the complete manifest, verified structured
 projection, declared languages and original artifact buffers. Downloads preserve those buffers byte for byte. Exact-byte download hashes are distinct from the
 existing normalized-text projection fingerprint.
 
-Current candidate PCRs with authored methodology and no release history may use
-native `data:application/octet-stream;base64,` download links for `manifest.yaml`,
-`pcr.en-US.md` and `pcr.zh-CN.md`. The manifest limit is 16,384 original bytes;
-each required-language Markdown limit is 49,152 original bytes. Eligibility comes
-from the canonical same-directory manifest, bound to the exact pinned Git source; Markdown never supplies lifecycle or maturity policy.
-These bounded downloads preserve each original filename and work without
-JavaScript. Decode canonical base64, check the size and SHA-256, and compare every
-byte to the pinned source. Current candidate HTTP URLs for these artifacts may
-change with this transport; use each record's current download links.
-Published/deprecated current artifacts, all release/history/revision artifacts,
-optional-language Markdown, larger files and structured projections retain
-physical downloads. When different source artifacts have identical inline bytes,
-only the first uses that data URL; later artifacts retain physical URLs so source
-identity and download filenames remain unambiguous. Physical responses keep
-attachment/noindex headers; inline bytes create no separately indexable HTTP
-resource. Source-relative links reuse the same source-bound download and filename.
-The exporter verifies rendered download anchors, and sealed-site qualification
-checks the largest available inline artifact per filename without
-JavaScript in Chromium, Firefox and WebKit.
+New exports store every original source download as a physical file under
+`/generated/raw/<sourcePath>`, including candidate manifests and required-language
+Markdown. One source path owns one exact byte sequence and original filename;
+reading pages, split chapters and source-relative links reuse that URL with a
+native `download` attribute. Physical responses retain attachment/noindex headers.
+The exporter compares every download against its pinned Git source and checks the
+rendered anchors. No source file is removed or shortened to reduce storage.
+
+Immutable product exports through 0.4.8 may contain bounded native
+`data:application/octet-stream;base64,` downloads. Their original decoder and
+receipt fields remain available for verification; they are not rewritten. Current
+sealed-site qualification always checks all three representative filenames
+(`manifest.yaml`, `pcr.en-US.md`, `pcr.zh-CN.md`) without JavaScript in Chromium,
+Firefox and WebKit, with observed native filenames and exact downloaded bytes.
+An empty inline set cannot silently remove those nine download checks.
+
+Intentional JavaScript disablement can reject Chromium script preloads. The native
+probe distinguishes only source-bound declared script assets under the strict
+[engineering classification](typescript-engineering.md), with no document CSP
+header/meta or explicit policy error. It retains the original failures and still
+requires exact native downloads. This does not waive normal JavaScript-enabled
+script, policy, navigation, search or asset failures.
+
+### Exact Next navigation aliases
+
+After Next export, a measured preparation stage validates every emitted
+`__next._full.txt` against its regular same-directory `index.txt`. Only complete,
+byte-identical pairs may share physical storage. Preparation validates all pairs
+before removing any duplicate file from the new owned export; it publishes a
+source-bound `generated/static-route-aliases.json` with each original URL, retained
+target, byte count and SHA-256. Verification requires the complete current route
+inventory and exact target bytes. Missing, malformed, foreign-source or unequal
+pairs fail the build. Other Next navigation payloads remain physical and unchanged.
+
+EdgeOne internal rewrites retain HTTP 200 access to `/__next._full.txt` and every
+nested `/*/__next._full.txt`, serving `/index.txt` and `/:splat/index.txt`
+respectively, following the provider's [URL path matching contract](https://pages.edgeone.ai/document/edgeone-json).
+These are internal rewrites rather than browser redirects. The
+sealed local server honors only verified declared aliases. Product 0.4.9 and
+later require the alias profile; older immutable products remain readable without
+it. Live acceptance binds the alias manifest and root/English/Chinese catalog
+representatives, checks both original and target URLs with and without queries,
+and requires exact decoded bytes, MIME, revalidation and nosniff behavior. Existing
+HTML, raw-download, search and browser-navigation checks remain required. Static
+configuration alone does not establish actual provider rewrite behavior.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -104,38 +130,23 @@ Every source block is mapped to a page/anchor or explicit source appendix.
 Unsupported source constructs, missing required files and stale projections
 cannot become empty successful output.
 
+Generation parses each source document once. A private per-call preparation step
+finishes the complete value-only source inventory before the renderer modifies
+its syntax tree. No syntax-tree references or caches are exposed through the
+public inventory API. The complete export verifier independently reads original
+source and compares the rendered blocks, tables, links, rules and ordering.
+
 Generated metadata lives in `.generated/site.json`; page HTML and complete
 structured data are separate artifacts read only at build time. Physical downloads
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
 
-### Lossless search transport
-
-Search wire v5 uses one first-encounter term dictionary and one physical index pack per
-language. Physical packing must preserve every original logical index, term order,
-score slot, posting, complete result record and logical per-index candidate limit.
-Tokenization, the 30-candidate limit per logical index, URL deduplication and final
-ranking are unchanged. The Worker retains v1-v4 and ungrouped v5 compatibility;
-malformed metadata fails closed and allows a clean retry.
-
-Dictionary-bearing v5 indexes may explicitly mark `integerColumns`, a unique subset
-of `columnarMaps`. Only the dictionary-reference deltas and score-header integers
-are then encoded as canonical signed base64 VLQ strings. Numeric postings, their
-array boundaries, full records and the first-encounter dictionary remain unchanged.
-The reader restores both integer arrays before existing dictionary/slot validation;
-it rejects missing/foreign markers, invalid characters, truncation, overlong values,
-negative zero and unsafe-integer overflow before engine import. Arithmetic, rather
-than 32-bit shifts on IDs, preserves signed safe-integer values. Unmarked v5 and
-older supported formats retain their existing readers. No additional browser asset,
-dependency, request, download format or compression-budget exception is introduced.
-
-The generator verifies restored native-index and full-record SHA-256 fingerprints
-against their pre-encoding values. Each language's retained 20,000,000-byte raw and
-4,000,000-byte gzip search budgets charge each physical pack once plus its complete
-dictionary-bearing manifest. Provider file, memory and source-fidelity gates remain
-independent and unchanged. This search-only transport does not alter download
-eligibility, inline size bounds, inspector packing, source content or page layout.
+PCR page metadata, including historical pages and continuations, does not repeat
+the record's download list. The owning current or historical record retains the
+complete list and renders the same native download anchors on each reading page.
+Module and guide page metadata keeps its existing download fields. This removes
+redundant worker input without changing source bytes, reading routes or downloads.
 
 After a complete export, `node packages/pcr-docs/scripts/search-v5-corpus-audit.ts`
 checks shipped bytes, exact native/record restoration, same-corpus v4/v5 sizes and
@@ -332,21 +343,34 @@ complete source artifacts remain subject to the existing fidelity contract.
 
 The complete export runs locally or in GitHub qualification and has no project-owned
 elapsed-time acceptance budget. CI gives the instrumented `web-build` job and the
-separate `documentation` product-sealing job 60 minutes each; stage and total
+separate `documentation` product-sealing job 120 minutes each; stage and total
 durations remain reported. The first freezes every successful exported byte in a
 complete tree hash and source/run/attempt/qualification-bound archive, with its
 full build log. The second verifies and safely materializes that exact artifact,
-runs vendored SEO and seals the same web bytes. All HTML, Next navigation payloads,
-raw downloads, languages, search and inspector files remain intact. Artifact
-transfer and extraction count against those unchanged job limits. A verified
+runs vendored SEO and seals the same web bytes. Its authenticated build-evidence
+handoff rejects explicit final or stage failures, nonzero exits, unmeasured or
+over-budget stage RSS, and missing or inconsistent stage/total durations; those
+checks retain the exact archive and source/run/attempt-bound log proof. All HTML,
+Next navigation payloads, raw downloads, languages, search and inspector files
+remain intact. Artifact transfer and extraction count against those unchanged
+job limits. A verified
 routing-only `edgeone.json` is the sole post-verification addition; it is included
 in the transported tree. Final audit files bind that tree and the complete build
 and SEO evidence to the product artifact. The old 18-minute full-build
 cap incorrectly applied the provider deadline to this offline work. EdgeOne runs
 only the sealed-product importer, whose separate 15-minute download/materialization
 deadline, cleanup and atomic handoff remain enforced. The export uses two static workers
-with a 4 GB Node heap ceiling per process and retains the 6 GB process-tree memory
-guard; a heap ceiling is not proof of total resident memory.
+with at most one static page render in flight per worker. Its 4 GB Node heap
+ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap ceiling is not proof of total resident memory.
+
+Each attempted stage emits `build-stage` diagnostics with its command, duration,
+sampled peak process-tree RSS, measurement availability, child exit code and
+passed/failed status. A zero-exit child that exceeds the RSS guard is a failed
+stage. The final `build-result` diagnostic reports failure even when cleanup or
+handoff fails after all stages. Failed runs write
+`.generated/build-failure-metrics.json` after cleanup returns, separately from
+the last successful `.generated/build-metrics.json`; neither failure receipt
+claims a successful export or relaxes the atomic output handoff.
 
 ### Build workspace storage
 
@@ -366,7 +390,9 @@ When a provider checkout uses that constrained shared-memory filesystem, the bui
 adapter must use a unique disk-backed scratch workspace, preserve the exact Git
 source identity and pinned dependencies, and run the same generation, Next export
 and verification stages there. Check storage capacity before work and before
-artifact handoff. An unavailable or unsuitable scratch filesystem is a build
+artifact handoff. Destination staging accounts for each file rounded up to the
+actual destination filesystem block size, plus the existing 512 MiB reserve;
+logical bytes alone do not prove that many small files fit. An unavailable or unsuitable scratch filesystem is a build
 failure with diagnostics, not permission to trim source text or remove supported
 Next navigation payloads. Publish output only after all existing fidelity, SEO,
 size, memory and time checks pass, and preserve a previous output on failure.
@@ -438,30 +464,59 @@ slot positions, complete records, tokenization, text buckets, ranking and both
 browser budgets remain unchanged. The shared codec is an emitted TypeScript
 browser module with the same executable MIME/noindex checks as the Worker.
 
-Search manifest version 4 retains `sparseMaps` markers and reads its initial flat
-`[term, scoreVectorLength, position, postingList, ...]` representation. New v4
-exports set both `scoreMasks: true` and `postingDeltas: true`. Each marked term is
-`[term, header, postingList, ...]`: `header = scoreVectorLength * 512 + slotMask`,
-with at most nine slots. Posting lists follow occupied slot order. Numeric-only
-lists store the first ID and then signed differences from the preceding ID;
-mixed/string lists stay verbatim. Decoding restores the original ID order,
-duplicates, slot positions, trailing nulls and complete engine export strings.
-Non-safe or negative restored IDs, impossible masks, incorrect posting counts,
-unpaired or foreign encoding flags fail initialization and remain retryable.
+Search manifest version 4 adds bounded score-slot masks, reversible numeric posting
+ID deltas and optional columnar maps. The generator selects supported encodings
+only when smaller and verifies exact restoration of every original engine export.
+The Worker retains version 1, 2 and 3 readers, validates version-specific metadata
+and rejects malformed masks, columns or posting deltas before import; failed loads
+remain retryable. Complete result records, export and posting order, tokenization,
+ranking, text buckets and the 20 MB raw / 4 MB gzip per-language budgets remain
+unchanged. Build diagnostics report actual raw/gzip bytes, shards and records.
 
-The Worker continues to read v1/v2, the existing nested v3 and original flat v4;
-it decodes marked maps strictly by declared version and encoding flags. Generation
-verifies exact original engine export strings before publishing every shard and
-logs actual raw/gzip language totals at the unchanged budget gate. Native fallback,
-full records, tokenization, scores, ranking, 2 MB text buckets and 20 MB raw/4 MB
-gzip budgets are unchanged. No dependency or remote service is added, and wire
-compression does not claim to reduce the restored engine's resident memory.
+Search manifest version 5 packs at most sixteen consecutive **logical v4 shards**
+into one physical file. The manifest binds the source commit and language, a unique
+URL and actual UTF-8 byte length / SHA-256 / gzip length for each physical file,
+and the contiguous logical range with every original v4 wire length, SHA-256 and
+record count. Each physical envelope uses `schemaVersion: 1` and
+`encoding: "v4-columnar-term-dictionary-delta"`; its source commit, language and
+first logical position must match the manifest. Its first-appearance dictionary
+replaces only explicitly marked columnar term strings with signed dictionary-ID
+deltas, reset to zero for each map. Unsupported/native map entries and all record
+fields remain unchanged. Dictionaries use explicit arrays and maps, including for
+Unicode and strings resembling object property names.
+
+Generation and export verification restore each original v4 JSON string exactly.
+The Worker verifies actual decoded response bytes with WebCrypto SHA-256, validates
+bounded dictionary references and restored lengths before expansion, then verifies
+each restored logical hash and record count before engine import. Physical files
+and their manifest count once toward the unchanged 20 MB raw / 4 MB gzip language
+budgets; declared logical wire sizes are verification evidence, not additional
+assets. Physical and total restored wire bytes per pack are bounded by 20 MB, and
+the existing 25 MB hosting file limit remains in force. Gzip accounting uses level
+9. Build diagnostics distinguish logical shard count from physical file count.
+
+Each logical shard still owns an independent engine and record map, even when IDs
+repeat in different shards. Original logical order, the strict 2 MB source-text
+bucket boundary, per-logical-shard thirty-hit cutoff, first-record URL deduplication
+before global title ranking, final thirty-result limit and dialog's twenty-four
+visible results remain unchanged. Initialization publishes no partial indexes;
+failed fetches, physical identities, late logical members or imports discard the
+private load and permit a fresh retry. Concurrent requests share one successful
+initialization and fetch each physical file once. The Worker retains literal v1–4
+readers; older Workers reject the new manifest version. The shared codec is emitted
+with the pinned compiler alongside the existing Worker modules. Synthetic and
+captured-input checks do not replace complete final-source and sealed-web browser
+qualification.
+
+The Worker also retains the legacy fork v5 `shards` manifest and its optional
+global term dictionary. Physical `files` manifests and legacy `shards` manifests
+are distinct formats; mixed manifests fail closed.
 
 ### Bounded native downloads
 
 Current unpublished `candidate/authored_methodology` records without release
 history may embed their required-language Markdown originals as native downloads
-through 96 KiB per file; manifest downloads retain their separate 16 KiB limit.
+through 80 KiB per file; manifest downloads retain their separate 16 KiB limit.
 This bounded transport preserves original filenames, bytes and hashes. Larger,
 published, optional-language and release artifacts remain physical downloads.
 Both languages, original content and search coverage remain complete. Increasing
@@ -497,8 +552,9 @@ the inspector's visible retry behavior. Browser qualification exercises the actu
 inspector in both languages and for available historical releases.
 
 This is lossless file packing to reduce the number of exported transport files.
-Server-side record data, byte-exact raw downloads, complete static HTML and every
-native Next navigation payload remain intact. No hosting rewrite is required.
+Server-side record data, byte-exact raw downloads and complete static HTML remain
+intact. Inspector packing itself requires no rewrite; the separate exact Next
+navigation alias profile above preserves every supported navigation URL and byte.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
 continuations retain their chapter context. Chapter URLs use source heading
@@ -569,10 +625,11 @@ ownership markers are not submission API credentials. Keep the configured marker
 after verification; registration and actual crawl/index processing are separate
 provider operations.
 
-The documentation CI job validates the existing export with the generated
-shared checker snapshot in `scripts/vendor/workspace-seo/` after its full
-fidelity build, without rebuilding the library. The job checks that snapshot
-against its `manifest.json` before running it, so it fetches no private-repository
+The `documentation` CI job validates the authenticated existing export with the generated
+shared checker snapshot in `scripts/vendor/workspace-seo/` after the `web-build`
+job's full fidelity build, without rebuilding the library. The producer checks
+that snapshot against its `manifest.json`; the consumer binds the same exact source
+before running it, so the pipeline fetches no private-repository
 action and needs no token. PCR supplies hreflang in HTML; the sitemap need not
 duplicate that supported representation. The shared check validates those actual
 language links, canonical URLs, index policy, structured metadata and local

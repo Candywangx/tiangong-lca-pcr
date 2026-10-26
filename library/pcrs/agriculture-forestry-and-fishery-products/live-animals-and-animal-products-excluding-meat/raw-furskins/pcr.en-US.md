@@ -158,31 +158,41 @@ Raw quantity and calculation requirements: Record actual slaughter or lawful wil
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Other actual marketable animal output (`source_coproduct`)
+###### Raw milk of the declared farmed species before its terminal event (`earlier_period_raw_milk_product`)
 
-This source-interface card covers only independently marketed earlier farm products, such as actual milk or detached fibre. Meat and other outputs from the same terminal body are recorded after skin removal, never here.
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
 
-Denominator and scope requirements：per kg Farm or lawful wild source output
+Collection and handover scope: This source-interface card covers only independently marketed earlier farm products, such as actual milk or detached fibre. Meat and other outputs from the same terminal body are recorded after skin removal, never here. Denominator and scope requirements：per kg Farm or lawful wild source output Raw quantity and calculation requirements: Measure only earlier-period farm outputs independently sold before the terminal event; exclude all meat and products derived from that terminal body. Original collection denominator kind: process_output.
 
-Raw quantity and calculation requirements: Measure only earlier-period farm outputs independently sold before the terminal event; exclude all meat and products derived from that terminal body. Original collection denominator kind: process_output.
-
-- Selected flow: Actual earlier-period farm product independently sold (UUID unresolved)
+- Selected flow: Raw milk of the declared farmed species before its terminal event
 - Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_source`
-- Range: Node output or mass-share check
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg
-  - Basis: per kg Farm or lawful wild source output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Detached animal hair of the declared farmed species before its terminal event (`earlier_period_detached_fibre_product`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: This source-interface card covers only independently marketed earlier farm products, such as actual milk or detached fibre. Meat and other outputs from the same terminal body are recorded after skin removal, never here. Denominator and scope requirements：per kg Farm or lawful wild source output Raw quantity and calculation requirements: Measure only earlier-period farm outputs independently sold before the terminal event; exclude all meat and products derived from that terminal body. Original collection denominator kind: process_output.
+
+- Selected flow: Detached animal hair of the declared farmed species before its terminal event
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_source`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Waste flows
 
@@ -254,31 +264,23 @@ Raw quantity and calculation requirements: Weigh raw skin separately; retain spe
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Actual terminal-event saleable products (`terminal_coproduct`)
+###### Raw meat of the declared furskin-source species after skin removal (`terminal_raw_meat_product`)
 
-Only if the same slaughter or lawful wild-capture body yields independently marketed meat or other goods, record those here after skin removal. The source node must not also output them.
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
 
-Denominator and scope requirements：per kg Independent skin removal output
+Collection and handover scope: Only if the same slaughter or lawful wild-capture body yields independently marketed meat or other goods, record those here after skin removal. The source node must not also output them. Denominator and scope requirements：per kg Independent skin removal output Raw quantity and calculation requirements: Weigh each actual saleable output separately and document its own market handover. Original collection denominator kind: process_output.
 
-Raw quantity and calculation requirements: Weigh each actual saleable output separately and document its own market handover. Original collection denominator kind: process_output.
-
-- Selected flow: Actual species-qualified saleable terminal product (UUID unresolved)
+- Selected flow: Raw meat of the declared furskin-source species after skin removal
 - Flow property / unit: Mass / kg
-- Amount rule: Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
 - Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_remove`
-- Range: Terminal co-product mass plausibility screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 100000
-  - Unit: kg/kg
-  - Basis: per kg Independent skin removal output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Waste flows
 
@@ -729,8 +731,8 @@ Separate purchased supply from on-site conversion. Link self-generated electrici
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_source | source | source and actual co-products | event ledger | species; farm_or_wild; legal_id; cohort_or_capture; mass; products; price; period | supplier/capture and sale records; Raw aggregation requirements: link each event and product once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; currency; period | each event | actual cohort or season | actual source | per reference flow | authorization; sales; traceable numerator, accepted reference-output denominator and normalization worksheet |
-| cp_remove | remove | skin, terminal products and loss | removal ledger | event; input; raw_skin; actual_terminal_products; residue; each_destination | scale, sale and treatment tickets; Raw aggregation requirements: reconcile all products and waste once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each lot | period | removal site | per reference flow | scale; sale; treatment ticket; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| cp_source | source | source and actual co-products | event ledger | species; farm_or_wild; legal_id; cohort_or_capture; mass; products; price; period |supplier/capture and sale records; Raw aggregation requirements: link each event and product once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. source_coproduct_specific_output: Preserve every actual intended output previously collected under source_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | kg; currency; period | each event | actual cohort or season | actual source | per reference flow | authorization; sales; traceable numerator, accepted reference-output denominator and normalization worksheet |
+| cp_remove | remove | skin, terminal products and loss | removal ledger | event; input; raw_skin; actual_terminal_products; residue; each_destination |scale, sale and treatment tickets; Raw aggregation requirements: reconcile all products and waste once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. terminal_coproduct_specific_output: Preserve every actual intended output previously collected under terminal_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | kg | each lot | period | removal site | per reference flow | scale; sale; treatment ticket; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_condition | condition | first-prepared skin and water | preparation log | input; water; output; trim; method | scale and meter; Raw aggregation requirements: actual intervention only. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg | each lot | period | preparation site | per reference flow | meter; scale; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_grade | grade | accepted/downgrade/reject | grade ledger | species; fur_quality; configuration; accepted; downgrade; reject; item_count; destinations | grading and scale; Raw aggregation requirements: separate grade destinations. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. | kg; item | each lot | period | grading site | per reference flow | grade; sale records; traceable numerator, accepted reference-output denominator and normalization worksheet |
 | cp_preserve | preserve | treated skin and service | treatment log | before; after; state; moisture; salt; energy; room_time; reject | scale and meter; Raw aggregation requirements: reconcile state and use. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. Route-specific requirements: `preserve_energy_identification`: Actual raw-furskin preservation and holding: identify cold storage, drying or unpowered preservation from lot records, retaining shared-room attribution. No preservation route is mandatory. Denominator and scope requirements：per kg Optional raw preservation output Raw quantity and calculation requirements: Meter actual carrier and period; prevent shared-room double counting. Original collection denominator kind: process_output. (`route-energy-fao`) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. | kg; kWh; h | treated lot | period | curing site | per reference flow | meter; treatment log; traceable numerator, accepted reference-output denominator and normalization worksheet |

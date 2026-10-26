@@ -36,12 +36,14 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Taro `e510909a-6352-44e7-b616-336d7fd10549` |
+| 参考产品流 | 芋头 `e510909a-6352-44e7-b616-336d7fd10549` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
 | 必需限定信息 | *Colocasia esculenta* 身份；品种/类型；主球茎/子球茎类别；旱作/水作路线；鲜重基准；等级；清洗状态；农场门地点；作物周期和批次标识 |
 | 绑定模式 | `fixed` |
+
+本卡官方中文显示名“芋头”对应既有英文“Taro”与本卡 UUID；它与英文“Yautia”流虽同名，身份与现有产品边界不同，不得互换 UUID。
 
 ## 4. 计量与单位规则
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
@@ -95,7 +97,7 @@ sync_with: pcr.en-US.md
 
 健康营养繁殖材料在定植时进入受管理田块。
 
-- 选定流：Taro planting material
+- 选定流：芋头种植材料
 - 流属性/单位：Mass / kg
 - 数量规则：计量种植鲜质量，并分别记录繁殖材料形态与数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -201,7 +203,7 @@ sync_with: pcr.en-US.md
 
 仅在经营者供水时，管理灌溉水才跨越田间边界。
 
-- 选定流：Irrigation water
+- 选定流：灌溉水
 - 流属性/单位：Volume / m3
 - 数量规则：计量或计算管理供水量，不含降雨
 - 数值来源模式：前景记录（`foreground_record`）
@@ -242,7 +244,7 @@ sync_with: pcr.en-US.md
 
 受管理生产节点将可收获田间作物交给挖收节点。
 
-- 选定流：Mature standing taro crop
+- 选定流：田间成熟芋头作物
 - 流属性/单位：Mass / kg
 - 数量规则：收获量加归属该田块的抽样未挖收与损伤质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -272,7 +274,7 @@ sync_with: pcr.en-US.md
 
 按氮投入记录和声明方法计算受管理土壤直接 N2O。
 
-- 选定流：Nitrous oxide to air
+- 选定流：排放至空气的一氧化二氮
 - 流属性/单位: Mass / kg N2O
 - 数量规则：适用氮投入量乘以选定直接排放因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -305,7 +307,7 @@ sync_with: pcr.en-US.md
 
 挖收节点按相同计量基准接收田块特定成熟作物。
 
-- 选定流：Mature standing taro crop
+- 选定流：田间成熟芋头作物
 - 流属性/单位：Mass / kg
 - 数量规则：等于关联 `standing_crop` 输出
 - 数值来源模式：计算值（`calculated_value`）
@@ -337,7 +339,7 @@ sync_with: pcr.en-US.md
 
 挖收鲜球茎和子球茎离开收获节点进入农场门整理。
 
-- 选定流：Lifted fresh taro corms and cormels
+- 选定流：起获的芋头鲜球茎及子球茎
 - 流属性/单位：Mass / kg
 - 数量规则：修整或清洗前校准计量质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -365,7 +367,7 @@ sync_with: pcr.en-US.md
 
 附带植物材料以及未挖收或损伤球茎组织与有意输出分开记录。
 
-- 选定流：Taro residues and harvest loss
+- 选定流：芋头残余物及采收损失
 - 流属性/单位：Mass / kg
 - 数量规则：按去向计量或抽样叶、叶柄、根和不可销售/未挖收球茎组织
 - 数值来源模式：前景记录（`foreground_record`）
@@ -397,7 +399,7 @@ sync_with: pcr.en-US.md
 
 整理节点在修整或分级前接收并称量每个关联收获批。
 
-- 选定流：Lifted fresh taro corms and cormels
+- 选定流：起获的芋头鲜球茎及子球茎
 - 流属性/单位：Mass / kg
 - 数量规则：与收获批关联的校准接收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -421,7 +423,7 @@ sync_with: pcr.en-US.md
 
 仅在声明整理路线包含清洗时纳入清洗水。
 
-- 选定流：Process water
+- 选定流：过程水
 - 流属性/单位：Mass / kg
 - 数量规则：计量清洗水；干刷或未清洗路线为零
 - 数值来源模式：前景记录（`foreground_record`）
@@ -452,7 +454,9 @@ sync_with: pcr.en-US.md
 
 分级分离后的验收完整鲜芋为有意输出和参考产品。
 
-- 选定流：Taro `e510909a-6352-44e7-b616-336d7fd10549`
+本卡官方中文显示名“芋头”对应既有英文“Taro”与本卡 UUID；它与英文“Yautia”流虽同名，身份与现有产品边界不同，不得互换 UUID。
+
+- 选定流：芋头 `e510909a-6352-44e7-b616-336d7fd10549`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：验收芋头净鲜重固定参考数量
 
@@ -479,7 +483,7 @@ sync_with: pcr.en-US.md
 
 可食低等级芋头作为单独有意输出，通过声明的非参考市场去向离开。
 
-- 选定流：Downgraded fresh taro
+- 选定流：降级鲜芋头
 - 流属性/单位：Mass / kg
 - 数量规则：按去向计量降级鲜质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -505,7 +509,7 @@ sync_with: pcr.en-US.md
 
 拒收球茎、附土和修整杂物通过声明的退回、回收或处置路径离开。
 
-- 选定流：Rejected taro, removed soil and trimming debris
+- 选定流：拒收芋头、移除泥土及修整碎料
 - 流属性/单位：Mass / kg
 - 数量规则：按原因和去向计量分离质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -530,7 +534,7 @@ sync_with: pcr.en-US.md
 
 仅在清洗发生时产生废水，并与供应水核对。
 
-- 选定流：Taro washing wastewater
+- 选定流：芋头清洗废水
 - 流属性/单位：Mass / kg
 - 数量规则：计量排放量或水量平衡；未清洗时为零
 - 数值来源模式：计算值（`calculated_value`）

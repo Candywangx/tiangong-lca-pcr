@@ -500,14 +500,14 @@ process_inventory:
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: landing_recovered_bark
-          role: "Recovered bark and woody preparation co-products at roadside"
-          name: "Recovered bark and woody preparation co-products at roadside"
+        - row_id: landing_recovered_bark_product
+          role: "Recovered non-coniferous bark at roadside handover"
+          name: "Recovered non-coniferous bark at roadside handover"
           flow_type: "product"
-          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Conditional class for deliberately recovered products with a documented buyer/use and actual mass. Retain bark versus other woody identity in the dataset; exclude discarded waste and material left on site. No automatic energy-substitution credit."
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Conditional class for deliberately recovered products with a documented buyer/use and actual mass. Retain bark versus other woody identity in the dataset; exclude discarded waste and material left on site. No automatic energy-substitution credit. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Measured actual quantity by lot/process, normalized to 1 kg reference output; record evidenced conditional absence explicitly; missing records are not zero"
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -518,15 +518,26 @@ process_inventory:
               collection_protocol_id: cp_extraction_preparation
               source_ids:
                 - fao-wood-harvesting
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100"
-                unit: "kg"
-                basis: "per 1 kg reference output; apply separately to each actual compatible exchange"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: landing_wood_offcuts_product
+          role: "Non-coniferous roundwood preparation offcuts at roadside handover"
+          name: "Non-coniferous roundwood preparation offcuts at roadside handover"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Conditional class for deliberately recovered products with a documented buyer/use and actual mass. Retain bark versus other woody identity in the dataset; exclude discarded waste and material left on site. No automatic energy-substitution credit. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_preparation
+              source_ids:
+                - fao-wood-harvesting
+            ranges: []
       waste:
         - row_id: landing_preparation_waste
           role: "Actual dispatched preparation waste"
@@ -814,7 +825,7 @@ dataset_production:
       flow_role: "All actual cards and source/stock reconciliation"
       record_type: "foreground_log"
       raw_fields: "lot; site; species; origin; dates/cohort; state/gate; wet/dry wood and bark; mass/volume bridge; retained slash/stock; actual inputs; carrier kg/kWh; fertilizer/N; equipment hours; distances/terrain; service scope; substance/medium/factor; asset/period/output linkage"
-      collection_method: "Calibrated weighing/sampling; inventory/event and contractor logs; invoices/meters; GPS area and duration; documented applicable calculation factors; Raw aggregation operation: Normalize all actual amounts to measured reference kg after state reconciliation and allocation; each carrier/substance/unit separately; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. Route-specific requirements: landing_energy_identification: Actual diesel-powered extraction/landing handling in this node, with haul distance and boundary recorded. Do not duplicate fuel already assigned to harvest or roadside loading. (forest-operation-energy) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. landing_supporting_services_specific_input: Operation extraction_preparation: Conditional class covering actual machinery, lubricant/maintenance, contractor and shared-road services. Expand real material/service exchanges and record their native quantities plus service hours; a billed bundled service excludes its already embodied own-operation inputs. Original quantity method: Measured actual quantity by lot/process, normalized to 1 kg reference output; record evidenced conditional absence explicitly; missing records are not zero Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. landing_direct_emissions_specific_emission: Conditional class: record actual pollutant substance/species or particle-size definition and air/water/soil medium for each emission. Combustion, field applications and spills are calculated only from retained activity records and a declared applicable factor; never bind a broad pollutant family or infer zero from missing evidence. Calculate each actual exchange from activity records, compatible conversion/factor and the protocol; retain raw amount and uncertainty This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. fao-wood-harvesting"
+      collection_method: "Calibrated weighing/sampling; inventory/event and contractor logs; invoices/meters; GPS area and duration; documented applicable calculation factors; Raw aggregation operation: Normalize all actual amounts to measured reference kg after state reconciliation and allocation; each carrier/substance/unit separately; Execute final-reference division once only: for a raw lot total, divide the corresponding physical or attributed amount by the positive final reference-product quantity of the same boundary and period; for a local per-process-output quantity, multiply by the measured process-output/final-reference-quantity ratio and any still-required reviewed burden attribution; if already reported per final reference quantity, retain it without another division. Keep unallocated physical transfer, balance and co-product ledgers; burden allocation must not shrink the physical mass balance. Route-specific requirements: landing_energy_identification: Actual diesel-powered extraction/landing handling in this node, with haul distance and boundary recorded. Do not duplicate fuel already assigned to harvest or roadside loading. (forest-operation-energy) Verify actual use, equipment and supply for each applicable input; create one specific exchange per actual carrier before dataset completeness. Missing identity or quantity evidence remains unresolved, never zero. Distinguish purchased supply, internal generation and inclusive contractor services; count their energy once. Do not substitute the conditional examples for an unverified route. landing_supporting_services_specific_input: Operation extraction_preparation: Conditional class covering actual machinery, lubricant/maintenance, contractor and shared-road services. Expand real material/service exchanges and record their native quantities plus service hours; a billed bundled service excludes its already embodied own-operation inputs. Original quantity method: Measured actual quantity by lot/process, normalized to 1 kg reference output; record evidenced conditional absence explicitly; missing records are not zero Identify the actual input for this operation from supplier specifications, equipment and primary records. This is a mandatory collection requirement, not an exchange. Before dataset completeness, represent each used material, formulated product, carrier or independently purchased service by one physically specific card with its native quantity/property; confirm a compatible UUID, or retain an explicit unresolved identity and do not claim a fully linked dataset. Do not substitute a conditional example for an unknown actual input, invent a recipe, omit required use or infer zero from missing records. Attribute shared use, reusable assets and inclusive services once; preserve the original stage/period and measured throughput link to final reference output. The former aggregate range is not a component limit or consumption default. landing_direct_emissions_specific_emission: Conditional class: record actual pollutant substance/species or particle-size definition and air/water/soil medium for each emission. Combustion, field applications and spills are calculated only from retained activity records and a declared applicable factor; never bind a broad pollutant family or infer zero from missing evidence. Calculate each actual exchange from activity records, compatible conversion/factor and the protocol; retain raw amount and uncertainty This is a mandatory emission-identification requirement, not an aggregate elementary exchange. Identify every applicable substance and actual receiving compartment separately, with compatible units, measured activity or justified calculation method, parameter applicability and uncertainty. Preserve the original operation, period, allocation and final-reference normalization. Reconcile direct and indirect pathways and upstream coverage once; do not substitute total nitrogen, total combustion emissions or a generic pollutant for a named compound. Separately document actual environmental returns, with their material and destination, if relevant. Before dataset completeness create each required specific exchange, confirm a compatible UUID or explicitly retain its unresolved identity. Missing records do not establish zero or inapplicability. fao-wood-harvesting landing_recovered_bark_specific_output: Preserve every actual intended output previously collected under landing_recovered_bark, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "kg; item; kWh; h; m2; a"
       frequency: "Each lot and actual event; meter/service-period reconciliation"
       temporal_coverage: "Actual full cohort/service horizon and representative harvest period"
@@ -1020,7 +1031,7 @@ data_sources:
     used_for: "Distinguishes gasoline and mixing oil for an actual compatible saw; no universal mix ratio is prescribed."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:d000c5dc788e91a6b04ca06970457a3f23653e8747cdb7fe899d59767cf23fa5"
+  source_sha256: "sha256:403e42b4ddceb6d91c8c3abffb338bac57963afc2fe65decf42b0e43b3b02f93"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5265"
@@ -1071,16 +1082,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43822"
+    - unit_id: "normative_46472"
       family: "allocation"
       span:
         start:
-          offset: 43822
-          line: 653
+          offset: 46472
+          line: 668
           column: 1
         end:
-          offset: 46062
-          line: 663
+          offset: 48712
+          line: 678
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `a_direct` | Separable operations | First assign traceable preparation, haul and grading activities to their actual lot/output. Separate product-dedicated operations before splitting a shared burden; no default coproduct or substitution credit. | `fao-wood-harvesting` |\n| `a_outputs` | Shared harvest/sorting burdens | Enumerate pulp/panel roundwood, saw/veneer logs, other-use roundwood, fuelwood and recovered bark/wood products with actual handoffs and quantities. For physically common wood handling use measured consistent-basis dry-wood mass fractions only when the causal rationale and moisture conversion are documented. If that relation is inappropriate, require an explicitly justified economic or other allocation with lot-matched prices/quantities and sensitivity; do not silently switch methods or allocate wet wood and water as if comparable. | `fao-wood-harvesting` |\n| `a_period` | Stand and event attribution | Retain all actual establishment, growth, thinning, final-harvest and regeneration periods. Apply the selected output-allocation rule to all cohort harvests in the supported service horizon; reconcile opening/closing biomass and establishment/replacement/termination events. Do not put all establishment burdens on the latest harvest or count past thinning again. | `fao-wood-harvesting` |\n| `a_assets` | Shared infrastructure | Identify each road, machine or contracted service once with all consuming nodes/cohorts and actual service period. Allocate using a supported physical driver such as measured equipment hours or road use/payload; document denominator, unused capacity, replacements and sensitivity. Apply its burden once across consumers, not in every service and energy row. | `fao-wood-harvesting` |\n| `a_residues` | Residues and waste | Record retained slash/stumps in the biomass balance without automatically treating them as products, exported waste or avoided fuel. An actual sold material needs product identity and handoff; an actual discard needs waste identity and recipient. Prevent simultaneous product/waste classification of the same quantity. | `fao-wood-harvesting` |\n\n"
       headings:
@@ -1099,12 +1110,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43822
-              line: 653
+              offset: 46472
+              line: 668
               column: 1
             end:
-              offset: 43862
-              line: 653
+              offset: 46512
+              line: 668
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1119,16 +1130,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_83443"
+    - unit_id: "normative_86857"
       family: "validation"
       span:
         start:
-          offset: 83443
-          line: 724
+          offset: 86857
+          line: 739
           column: 1
         end:
-          offset: 86987
-          line: 738
+          offset: 90401
+          line: 753
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_reference` | Reference output | Require exactly one reference card pulp_panel_roundwood_handover matching the reference table by state, intended use, roadside gate, kg basis and all required qualifiers. Concrete dataset exchanges require verified product/property/unit support; alternative outputs are not substitutes for this reference. | `fao-wood-harvesting` |\n| `v_links` | Process handoffs | Check stand-to-harvest, harvest_felled_wood-to-landing_felled_wood and landing_prepared_roundwood-to-grading_prepared_roundwood lot/state/quantity links. Internal transfers are not additional final products or additional upstream burdens. Use managed stock or evidenced natural-resource/upstream sourcing exclusively for the same source lot. | `fao-wood-harvesting` |\n| `v_balance` | Wood and bark reconciliation | Reconcile incoming wood, stock changes, retained residues, all intended products, dispatched waste and documented moisture changes using compatible wet/dry/bark bases. Retained forest residues are recorded in the source ledger, not invented offsite exchanges. Investigate any provisional Range breach; it is not permission to replace measurements. | `fao-wood-harvesting` |\n| `v_energy_nutrients` | Input classes | Separate each fuel kg and electricity kWh; never sum them. Use declared conversion factors and actual density for litre-to-kg. Preserve fertilizer product mass, N fraction and direct emission pathway separately. Match concrete material/service identities and remove overlaps with bundled services. | `fao-wood-harvesting` |\n| `v_route_period` | Route, periods and shared assets | Verify actual origin and each parent/route delta, mutually exclusive establishment and equipment implementations, complete event periods and shared-asset denominators. Missing replacement/termination, opening/closing stocks or consuming nodes prevents a complete final foreground package. | `fao-wood-harvesting` |\n| `v_emissions` | Direct emissions | For every reported elementary release retain specific substance/species/particle basis, receiving medium, activity and applicable factor/source. Distinguish biogenic versus fossil carbon and observed spill from combustion. Missing factor evidence is an explicit gap, not zero or an invented generic UUID. | `fao-wood-harvesting` |\n| `validate_direct_release_coverage` | `managed-stand`; `harvest-removal`; `extraction-preparation`; `roadside-grading` | For every activated node, reconcile its activity list against cp_direct_release_managed_stand; cp_direct_release_harvest_removal; cp_direct_release_extraction_preparation; cp_direct_release_roadside_grading: each relevant event must have quantified concrete elementary exchanges, evidenced upstream-service coverage, or evidenced absence of the activity. Missing/unknown is not zero and blocks data-package completeness. Check each actual substance/medium amount, method/factor units, concrete UUID and existing-card/service coverage for omissions or duplication; empty groups, purchased-electricity upstream emissions or another node's single CO2 card do not replace this node's on-site reconciliation. Shared-asset services must not create duplicate physical release events. |  |\n\n- Reconcile required/conditional activation and upstream coverage against incoming state at each node; purchased completed-state feed must not duplicate growth, harvest or preparation. Equal classification does not replace state and gate matching.\n\n"
       headings:
@@ -1147,12 +1158,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 83443
-              line: 724
+              offset: 86857
+              line: 739
               column: 1
             end:
-              offset: 83465
-              line: 724
+              offset: 86879
+              line: 739
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1275,171 +1286,171 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_direct"
       identity_kind: "explicit"
-      unit_id: "normative_43822"
+      unit_id: "normative_46472"
       source_span:
         start:
-          offset: 43935
-          line: 657
+          offset: 46585
+          line: 672
           column: 1
         end:
-          offset: 44207
-          line: 657
+          offset: 46857
+          line: 672
           column: 273
     - pointer: "/allocation_rules/1"
       rule_id: "a_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_43822"
+      unit_id: "normative_46472"
       source_span:
         start:
-          offset: 44208
-          line: 658
+          offset: 46858
+          line: 673
           column: 1
         end:
-          offset: 44820
-          line: 658
+          offset: 47470
+          line: 673
           column: 613
     - pointer: "/allocation_rules/2"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_43822"
+      unit_id: "normative_46472"
       source_span:
         start:
-          offset: 44821
-          line: 659
+          offset: 47471
+          line: 674
           column: 1
         end:
-          offset: 45254
-          line: 659
+          offset: 47904
+          line: 674
           column: 434
     - pointer: "/allocation_rules/3"
       rule_id: "a_assets"
       identity_kind: "explicit"
-      unit_id: "normative_43822"
+      unit_id: "normative_46472"
       source_span:
         start:
-          offset: 45255
-          line: 660
+          offset: 47905
+          line: 675
           column: 1
         end:
-          offset: 45677
-          line: 660
+          offset: 48327
+          line: 675
           column: 423
     - pointer: "/allocation_rules/4"
       rule_id: "a_residues"
       identity_kind: "explicit"
-      unit_id: "normative_43822"
+      unit_id: "normative_46472"
       source_span:
         start:
-          offset: 45678
-          line: 661
+          offset: 48328
+          line: 676
           column: 1
         end:
-          offset: 46060
-          line: 661
+          offset: 48710
+          line: 676
           column: 383
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 83538
-          line: 728
+          offset: 86952
+          line: 743
           column: 1
         end:
-          offset: 83906
-          line: 728
+          offset: 87320
+          line: 743
           column: 369
     - pointer: "/validation_rules/1"
       rule_id: "v_links"
       identity_kind: "explicit"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 83907
-          line: 729
+          offset: 87321
+          line: 744
           column: 1
         end:
-          offset: 84307
-          line: 729
+          offset: 87721
+          line: 744
           column: 401
     - pointer: "/validation_rules/2"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 84308
-          line: 730
+          offset: 87722
+          line: 745
           column: 1
         end:
-          offset: 84728
-          line: 730
+          offset: 88142
+          line: 745
           column: 421
     - pointer: "/validation_rules/3"
       rule_id: "v_energy_nutrients"
       identity_kind: "explicit"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 84729
-          line: 731
+          offset: 88143
+          line: 746
           column: 1
         end:
-          offset: 85093
-          line: 731
+          offset: 88507
+          line: 746
           column: 365
     - pointer: "/validation_rules/4"
       rule_id: "v_route_period"
       identity_kind: "explicit"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 85094
-          line: 732
+          offset: 88508
+          line: 747
           column: 1
         end:
-          offset: 85464
-          line: 732
+          offset: 88878
+          line: 747
           column: 371
     - pointer: "/validation_rules/5"
       rule_id: "v_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 85465
-          line: 733
+          offset: 88879
+          line: 748
           column: 1
         end:
-          offset: 85832
-          line: 733
+          offset: 89246
+          line: 748
           column: 368
     - pointer: "/validation_rules/6"
       rule_id: "validate_direct_release_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 85833
-          line: 734
+          offset: 89247
+          line: 749
           column: 1
         end:
-          offset: 86736
-          line: 734
+          offset: 90150
+          line: 749
           column: 904
     - pointer: "/validation_rules/7"
       rule_id: "validation_rule_8"
       identity_kind: "snapshot_local"
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 86738
-          line: 736
+          offset: 90152
+          line: 751
           column: 1
         end:
-          offset: 86985
-          line: 736
+          offset: 90399
+          line: 751
           column: 248
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1468,27 +1479,27 @@ normative_context:
           column: 146
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43822"
+      unit_id: "normative_46472"
       source_span:
         start:
-          offset: 43822
-          line: 653
+          offset: 46472
+          line: 668
           column: 1
         end:
-          offset: 43862
-          line: 653
+          offset: 46512
+          line: 668
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_83443"
+      unit_id: "normative_86857"
       source_span:
         start:
-          offset: 83443
-          line: 724
+          offset: 86857
+          line: 739
           column: 1
         end:
-          offset: 83465
-          line: 724
+          offset: 86879
+          line: 739
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1497,5 +1508,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:d000c5dc788e91a6b04ca06970457a3f23653e8747cdb7fe899d59767cf23fa5"
-  generated_content_sha256: "sha256:b9a023669252925a97d7ed9cc06c4a91c5eef423c98160d6b7175f007f243831"
+    sha256: "sha256:403e42b4ddceb6d91c8c3abffb338bac57963afc2fe65decf42b0e43b3b02f93"
+  generated_content_sha256: "sha256:98e8223f1c328e967731e12585f3b5b29037b9a36f8eb5e6e9eed49699f0af67"

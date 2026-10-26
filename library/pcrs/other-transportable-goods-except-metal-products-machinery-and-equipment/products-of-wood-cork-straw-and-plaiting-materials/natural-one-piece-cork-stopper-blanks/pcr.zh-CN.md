@@ -361,5 +361,5 @@ translation_status: aligned
 
 | 来源标识 | 类型 | 参考文献 | 用途 |
 | --- | --- | --- | --- |
-| jrc-cork-chain-2017 | official_guidance | 欧盟 JRC：Non-harmonised food contact materials in the EU，JRC104198（2017），纸页 172–173；https://publications.jrc.ec.europa.eu/repository/handle/JRC104198 | 制造与洗涤/填孔/涂覆阶段分界，板坯制备与造粒的区分；较早行业守则的官方摘要，不是当代认证或定量因子 |
+| jrc-cork-chain-2017 | official_guidance | 欧盟 JRC：Non-harmonised food contact materials in the EU，JRC104198 / EUR 28357 EN（文档推荐引用年2016；官方库发布日2017年1月17日），纸页172–173；https://publications.jrc.ec.europa.eu/repository/handle/JRC104198 | 制造与洗涤/填孔/涂覆阶段分界，板坯制备与造粒的区分；较早行业守则的官方摘要，不是当代认证或定量因子 |
 | spanish-natural-stopper-2022 | literature | Environmental Impact Analysis of Natural Cork Stopper Manufacturing（2022），2.1–2.5.3、3.1；DOI 10.3390/agriculture12050636；https://www.mdpi.com/2077-0472/12/5/636 | 西班牙场址冲切与车削工艺、修整分选与后续处理、边角料及经济分配案例。仅定性过程与分配论证；不移用其尺寸、数值、物料配方或包装气氛 |

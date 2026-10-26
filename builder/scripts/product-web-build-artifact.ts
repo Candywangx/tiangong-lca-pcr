@@ -60,9 +60,17 @@ function buildEvidence(filename:string,expected:Binding) {
   if(v.sourceCommit!==expected.identity.sourceCommit||relocation.sourceCommit!==expected.identity.sourceCommit||!positive(v.pcrs)||!positive(v.pages)||!positive(v.files)||v.files>=20000||!positive(v.bytes)||typeof v.treeSha256!=='string'||!/^sha256:[a-f0-9]{64}$/u.test(v.treeSha256))throw new Error('Build verification source, inventory or tree hash differs.');
   if(typeof m.peakResidentBytes!=='number'||typeof m.memoryMeasurement!=='string')throw new Error('Missing measured build resources.');
   assertBuildResources({peakResidentBytes:m.peakResidentBytes,memoryMeasurement:m.memoryMeasurement});
-  if(!positive(m.buildMs)||!Array.isArray(m.stages)||m.stages.length!==3)throw new Error('Incomplete successful build stages.');
+  if(m.status!=='passed'||Object.hasOwn(m,'failure')||!positive(m.buildMs)||!Array.isArray(m.stages)||m.stages.length!==3)throw new Error('Incomplete successful build stages.');
   const commands=['scripts/generate.ts','node_modules/next/dist/bin/next build','scripts/verify.ts'];
-  for(const [i,value]of m.stages.entries()){const s=record(value,'build stage');if(s.command!==commands[i]||!positive(s.durationMs))throw new Error('Complete web build stages differ.');}
+  let duration=0;
+  for(const [i,value]of m.stages.entries()){
+    const s=record(value,'build stage');
+    if(s.command!==commands[i]||!positive(s.durationMs)||s.status!=='passed'||s.exitCode!==0||Object.hasOwn(s,'failure')||typeof s.peakResidentBytes!=='number'||typeof s.memoryMeasurement!=='string')throw new Error('Failed or incomplete measured web build stage.');
+    assertBuildResources({peakResidentBytes:s.peakResidentBytes,memoryMeasurement:s.memoryMeasurement});
+    if(s.peakResidentBytes>m.peakResidentBytes)throw new Error('Stage RSS exceeds reported complete-build peak.');
+    duration+=s.durationMs;
+  }
+  if(m.buildMs<duration)throw new Error('Complete build duration omits a required stage.');
   return {verification:v,metrics:m};
 }
 function checkFiles(files:readonly ArchiveFile[],expected:TreeProof) {

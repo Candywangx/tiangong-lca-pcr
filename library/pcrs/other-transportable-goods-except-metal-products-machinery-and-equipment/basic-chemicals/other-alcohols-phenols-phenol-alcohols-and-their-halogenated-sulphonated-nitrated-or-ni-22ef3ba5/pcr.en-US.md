@@ -14,14 +14,14 @@ sync_with: pcr.zh-CN.md
 
 This method applies only to separated, undiluted bulk industrial phenol produced from fossil cumene by dry air oxidation, sulfuric-acid cleavage, sodium-hydroxide neutralisation, fractionation and aqueous phenol recovery. Actual residual water and impurities must be measured and declared; pure phenol is not assumed. Purification and heated storage/loading are included; declare the actual molten or solid gate state. Route evidence is jrc-lvoc-2017 Chapter 8. Producer grades in ineos-phenol-product distinguish undiluted product from aqueous solutions; they are not universal purity requirements.
 
-CPC 3.0:34139 contains incompatible products: only a narrower mapping is proposed. Excluded are denatured ethanol (34131), other alcohols, industrial fatty alcohols, substituted phenols/phenol-alcohols, coal-tar recovery, direct benzene oxidation, toluene/benzoic-acid routes, sulphonation or chlorobenzene hydrolysis, wet oxidation, other catalysts/neutralisers, AMS hydrogenation and deliberate phenol-water solution formulation. Uncovered subclasses remain uncovered; formulated solutions cannot reuse this net supply-mass denominator.
+CPC 3.0:34139 contains incompatible products: this methodology covers only the defined narrower subset; mapping decisions are maintained separately in classifications/mappings/. Excluded are denatured ethanol (34131), other alcohols, industrial fatty alcohols, substituted phenols/phenol-alcohols, coal-tar recovery, direct benzene oxidation, toluene/benzoic-acid routes, sulphonation or chlorobenzene hydrolysis, wet oxidation, other catalysts/neutralisers, AMS hydrogenation and deliberate phenol-water solution formulation. Uncovered subclasses remain uncovered; formulated solutions cannot reuse this net supply-mass denominator.
 
 ## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.other-alcohols-phenols-phenol-alcohols-and-their-halogenated-sulphonated-nitrated-or-ni-22ef3ba5 |
-| classification_refs | CPC 3.0:34139; narrower; proposed semantic relation, not an accepted mapping |
+| classification_refs | CPC 3.0:34139; narrower scope limited to the product and route defined here; mapping acceptance is maintained separately in classifications/mappings/. |
 | covered_products | Undiluted separated industrial phenol, CAS 108-95-2, with declared actual residual water/impurities |
 | excluded_products | Other alcohol/phenol families, deliberately aqueous solutions, crude cleavage mixtures and Section 1 excluded routes |
 | representative_product | Bulk cumene-route industrial phenol; no universal purity default |

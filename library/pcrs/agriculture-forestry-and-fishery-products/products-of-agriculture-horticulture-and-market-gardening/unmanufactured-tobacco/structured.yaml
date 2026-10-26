@@ -638,32 +638,6 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: cured_leaf_packaging_input
-          role: "Packaging materials"
-          name: "Packaging functions for cured tobacco leaf"
-          flow_type: "product"
-          property_unit: "Mass or number of items / kg or item"
-          description: "Record actual wrap, carton, sack, liner, pallet, crate, strap, and reusable packaging separately. This parameterized set-level card has no fixed UUID. Raw activity or stage basis: per 1,000 kg accepted packed leaf."
-          amount:
-            expression: "measured packaging by material/reuse status, expanded to verified exchanges"
-            value_mode: "foreground_record"
-            specificity: "product_specific"
-            basis:
-              text: "per declared reference flow"
-              kind: "process_output"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_grading_records
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "150"
-                unit: "kg packaging/1,000 kg packed leaf"
-                basis: "account for reuse over declared cycles"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
       waste:
         []
       elementary:
@@ -923,7 +897,7 @@ dataset_production:
       flow_role: "grades, packaging, rework, rejects"
       record_type: "batch, scale, grade, issue, destination"
       raw_fields: "batch; input; moisture; accepted; downgrade; rework; reject; packaging"
-      collection_method: "reconcile grades/destinations; Raw aggregation and attribution: count rework once and close mass balance"
+      collection_method: "reconcile grades/destinations; Raw aggregation and attribution: count rework once and close mass balance cured_leaf_packaging_input_specific_input: Mandatory input identification, not a selected exchange. Preserved collection scope: Record actual wrap, carton, sack, liner, pallet, crate, strap, and reusable packaging separately.  Raw activity or stage basis: per 1,000 kg accepted packed leaf. Preserve each actual input separately, including its actual material/species, physical state, native property/unit, measured quantity, period, destination and unique handover. Before dataset completeness, instantiate a physically specific exchange per actual identity and confirm a compatible UUID or retain its exact unresolved identity. Keep original throughput/normalization, allocation and reuse/stock obligations. A material/function class is not one exchange; do not copy the retired class-level range to components, invent a recipe or infer zero from missing records. Do not duplicate actual quantities or products already represented by another card."
       unit: "kg; item; percent"
       frequency: "each batch"
       temporal_coverage: "full grading period"
@@ -1144,7 +1118,7 @@ data_sources:
     used_for: "Same-stage and handoff measurement identities; a definition, not an observed yield, empirical default or external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:08e619e21deef5f2f1a6b1fe27f5909dbc6f0554962e5cb5d58c1c8bab2528a8"
+  source_sha256: "sha256:34928d2470d255b7221483416a16ddc487cee2315fdd70e73a5f375491d95240"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4579"
@@ -1195,16 +1169,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40244"
+    - unit_id: "normative_39135"
       family: "allocation"
       span:
         start:
-          offset: 40244
-          line: 755
+          offset: 39135
+          line: 731
           column: 1
         end:
-          offset: 41156
-          line: 764
+          offset: 40047
+          line: 740
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_avoid_by_subdivision` | all nodes | Separate field, curing, grading, and batch records; attribute shared meters/equipment by operating time, throughput, or occupied capacity before allocation. | `iso-14044-2006` |\n| `allocation_leaf_grades` | useful grades | Preserve grades and direct burdens; if subdivision is infeasible, use contemporaneous hand-off economic allocation and disclose mass sensitivity. | `iso-14044-2006` |\n| `allocation_residue_reject` | residues, rework, rejects | Do not allocate to internal rework or waste; prevent reworked leaf from becoming a second output. |  |\n| `allocation_shared_infrastructure` | shared barns/assets | Attribute each shared asset once across batches/periods with documented use; prevent cross-node double counting. | `iso-14044-2006` |\n\n"
       headings:
@@ -1223,12 +1197,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40244
-              line: 755
+              offset: 39135
+              line: 731
               column: 1
             end:
-              offset: 40284
-              line: 755
+              offset: 39175
+              line: 731
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1243,16 +1217,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_54821"
+    - unit_id: "normative_54661"
       family: "validation"
       span:
         start:
-          offset: 54821
-          line: 813
+          offset: 54661
+          line: 789
           column: 1
         end:
-          offset: 56150
-          line: 825
+          offset: 55990
+          line: 801
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_terminal_route` | reference | Select exactly one terminal route: 1,000 kg green or 1,000 kg cured graded leaf; forbid fresh UUID for cured leaf. |  |\n| `validation_curing_method` | cured route | Declare one primary curing method per batch and include its energy, barn service, emissions, rejects, and hand-off. | `who-tobacco-environment-2017` |\n| `validation_mass_balance` | harvest/curing/grading | Reconcile mass, moisture, grades, rework, rejects, and losses within documented uncertainty. | `mass-balance-identity` |\n| `validation_nutrient_emissions` | field | Reconcile nutrient/residue N with N2O, NH3, and nitrate methods without duplicate pathways. | `ipcc-2019-managed-soils`; `emep-eea-2023-guidebook` |\n| `validation_rework` | curing/grading | Link rework to origin and count once; rejected material cannot be accepted reference product. |  |\n| `validation_shared_assets` | barns/meters/equipment | Apply one attribution driver per period and prevent double counting. | `iso-14044-2006` |\n| `validation_flow_identity` | every flow | Verify each actual exchange against its concrete flow UUID, physical state, property and unit; preserve explicit unresolved identities when confirmation is unavailable. |  |\n\n"
       headings:
@@ -1271,12 +1245,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 54821
-              line: 813
+              offset: 54661
+              line: 789
               column: 1
             end:
-              offset: 54843
-              line: 813
+              offset: 54683
+              line: 789
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1360,145 +1334,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_avoid_by_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_40244"
+      unit_id: "normative_39135"
       source_span:
         start:
-          offset: 40357
-          line: 759
+          offset: 39248
+          line: 735
           column: 1
         end:
-          offset: 40584
-          line: 759
+          offset: 39475
+          line: 735
           column: 228
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_leaf_grades"
       identity_kind: "explicit"
-      unit_id: "normative_40244"
+      unit_id: "normative_39135"
       source_span:
         start:
-          offset: 40585
-          line: 760
+          offset: 39476
+          line: 736
           column: 1
         end:
-          offset: 40796
-          line: 760
+          offset: 39687
+          line: 736
           column: 212
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residue_reject"
       identity_kind: "explicit"
-      unit_id: "normative_40244"
+      unit_id: "normative_39135"
       source_span:
         start:
-          offset: 40797
-          line: 761
+          offset: 39688
+          line: 737
           column: 1
         end:
-          offset: 40959
-          line: 761
+          offset: 39850
+          line: 737
           column: 163
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_shared_infrastructure"
       identity_kind: "explicit"
-      unit_id: "normative_40244"
+      unit_id: "normative_39135"
       source_span:
         start:
-          offset: 40960
-          line: 762
+          offset: 39851
+          line: 738
           column: 1
         end:
-          offset: 41154
-          line: 762
+          offset: 40045
+          line: 738
           column: 195
     - pointer: "/validation_rules/0"
       rule_id: "validation_terminal_route"
       identity_kind: "explicit"
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 54916
-          line: 817
+          offset: 54756
+          line: 793
           column: 1
         end:
-          offset: 55079
-          line: 817
+          offset: 54919
+          line: 793
           column: 164
     - pointer: "/validation_rules/1"
       rule_id: "validation_curing_method"
       identity_kind: "explicit"
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 55080
-          line: 818
+          offset: 54920
+          line: 794
           column: 1
         end:
-          offset: 55275
-          line: 818
+          offset: 55115
+          line: 794
           column: 196
     - pointer: "/validation_rules/2"
       rule_id: "validation_mass_balance"
       identity_kind: "explicit"
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 55276
-          line: 819
+          offset: 55116
+          line: 795
           column: 1
         end:
-          offset: 55451
-          line: 819
+          offset: 55291
+          line: 795
           column: 176
     - pointer: "/validation_rules/3"
       rule_id: "validation_nutrient_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 55452
-          line: 820
+          offset: 55292
+          line: 796
           column: 1
         end:
-          offset: 55644
-          line: 820
+          offset: 55484
+          line: 796
           column: 193
     - pointer: "/validation_rules/4"
       rule_id: "validation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 55645
-          line: 821
+          offset: 55485
+          line: 797
           column: 1
         end:
-          offset: 55784
-          line: 821
+          offset: 55624
+          line: 797
           column: 140
     - pointer: "/validation_rules/5"
       rule_id: "validation_shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 55785
-          line: 822
+          offset: 55625
+          line: 798
           column: 1
         end:
-          offset: 55930
-          line: 822
+          offset: 55770
+          line: 798
           column: 146
     - pointer: "/validation_rules/6"
       rule_id: "validation_flow_identity"
       identity_kind: "explicit"
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 55931
-          line: 823
+          offset: 55771
+          line: 799
           column: 1
         end:
-          offset: 56148
-          line: 823
+          offset: 55988
+          line: 799
           column: 218
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1527,27 +1501,27 @@ normative_context:
           column: 210
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40244"
+      unit_id: "normative_39135"
       source_span:
         start:
-          offset: 40244
-          line: 755
+          offset: 39135
+          line: 731
           column: 1
         end:
-          offset: 40284
-          line: 755
+          offset: 39175
+          line: 731
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_54821"
+      unit_id: "normative_54661"
       source_span:
         start:
-          offset: 54821
-          line: 813
+          offset: 54661
+          line: 789
           column: 1
         end:
-          offset: 54843
-          line: 813
+          offset: 54683
+          line: 789
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1556,5 +1530,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:08e619e21deef5f2f1a6b1fe27f5909dbc6f0554962e5cb5d58c1c8bab2528a8"
-  generated_content_sha256: "sha256:f0a85bad95be9eab1f7a559a981f67c1259593c51cfc626e1284f0a23f442eef"
+    sha256: "sha256:34928d2470d255b7221483416a16ddc487cee2315fdd70e73a5f375491d95240"
+  generated_content_sha256: "sha256:cf88fb60f915db3d6196bb02dcfad6ddb6e7054a66109790acb73b5334cccf4b"

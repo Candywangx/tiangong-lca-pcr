@@ -7,12 +7,12 @@ import { randomBytes } from "node:crypto";
 import type { ExecFileSyncOptionsWithStringEncoding } from "node:child_process";
 export interface TreeSummary { files: number; bytes: number; links: string[] }
 export interface MountEntry { source?: string | undefined; mountPoint: string; fileSystemType: string | null }
-export interface FilesystemFacts { path: string; device: string | number; mountPoint?: string | null; fileSystemType?: string | null; availableBytes: number; totalBytes?: number }
+export interface FilesystemFacts { path: string; device: string | number; mountPoint?: string | null; fileSystemType?: string | null; availableBytes: number; totalBytes?: number; blockSizeBytes?: number }
 export type FactsReader = (target: string) => FilesystemFacts;
 export type CopyTree = (source: string, destination: string, options: fs.CopySyncOptions) => void;
 export type Log = (message: string) => unknown;
 export interface ScratchOptions { repoRoot: string; constraint: FilesystemFacts; requiredBytes: number; env?: NodeJS.ProcessEnv; scratchParent?: string | null; candidates?: string[]; facts?: FactsReader; log?: Log }
-export interface PublishOptions { app: string; scratchApp: string; token?: string | null; freeBytes?: number | null; beforeSwap?: () => unknown; providerRoot?: string | null; rename?: (from: string, to: string) => void; cp?: CopyTree }
+export interface PublishOptions { app: string; scratchApp: string; token?: string | null; freeBytes?: number | null; beforeSwap?: () => unknown; providerRoot?: string | null; rename?: (from: string, to: string) => void; cp?: CopyTree; facts?: FactsReader }
 export interface PublishResult { files: number; bytes: number; staged: boolean; providerAssets?: { mode: "hardlink"; files: number; bytes: number } }
 export interface RelocatedBuildOptions {
   app: string; repoRoot: string; env?: NodeJS.ProcessEnv;
@@ -185,6 +185,9 @@ export function filesystemFacts(target: string, { mounts = mountEntries() }: { m
     fileSystemType: mount?.fileSystemType ?? null,
     availableBytes: Number(statistics.bavail) * Number(statistics.bsize),
     totalBytes: Number(statistics.blocks) * Number(statistics.bsize),
+    // frsize is the fundamental allocation unit; bsize can be a larger transfer unit.
+    // Rounding to the larger observed unit keeps the destination estimate conservative.
+    blockSizeBytes: Math.max(Number(statistics.frsize), Number(statistics.bsize)),
   };
 }
 
@@ -423,6 +426,26 @@ function assertNoSymlinks(root: string): void {
   walk(root);
 }
 
+/** Destination allocation estimate: a separate full allocation for each ordinary file. */
+export function allocatedExportBytes(root: string, blockSizeBytes: number): number {
+  if (!Number.isSafeInteger(blockSizeBytes) || blockSizeBytes <= 0)
+    throw new Error("Destination filesystem has no valid allocation block size.");
+  let allocated = 0;
+  const walk = (directory: string): void => {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const filename = path.join(directory, entry.name), stat = fs.lstatSync(filename);
+      if (stat.isSymbolicLink()) throw new Error("Published export contains a symlink: " + filename);
+      if (stat.isDirectory()) walk(filename);
+      else {
+        if (!stat.isFile()) throw new Error("Published export requires regular files: " + filename);
+        allocated += Math.ceil(stat.size / blockSizeBytes) * blockSizeBytes;
+        if (!Number.isSafeInteger(allocated)) throw new Error("Destination allocation estimate is not a safe byte count.");
+      }
+    }
+  };
+  walk(root); return allocated;
+}
+
 /**
  * Stage the provider's pre-built assets.
  *
@@ -486,6 +509,7 @@ export function publishOutput({
   providerRoot = null,
   rename = fs.renameSync,
   cp = fs.cpSync,
+  facts = filesystemFacts,
 }: PublishOptions): PublishResult {
   const scratchOut = path.join(scratchApp, "out");
   if (!fs.existsSync(scratchOut)) throw new Error("Relocated build produced no export directory.");
@@ -502,11 +526,14 @@ export function publishOutput({
   const measured = summarizeTree(scratchOut);
   if (measured.files > MAX_OUTPUT_FILES)
     throw new Error(`Export exceeds the declared file budget: ${measured.files} files.`);
-  const available = freeBytes ?? filesystemFacts(app).availableBytes;
-  if (available < measured.bytes + HEADROOM_BYTES)
+  const destination = facts(app);
+  const allocatedBytes = allocatedExportBytes(scratchOut, destination.blockSizeBytes ?? Number.NaN);
+  const requiredBytes = Math.max(measured.bytes, allocatedBytes) + HEADROOM_BYTES;
+  const available = freeBytes ?? destination.availableBytes;
+  if (!Number.isSafeInteger(requiredBytes) || !Number.isSafeInteger(available) || available < requiredBytes)
     throw new Error(
-      `Destination filesystem cannot stage the export: needs ${measured.bytes + HEADROOM_BYTES} ` +
-        `bytes free, has ${available}. The previous export is left untouched.`,
+      `Destination filesystem cannot stage the export: needs ${requiredBytes} ` +
+        `bytes free (${measured.bytes} logical / ${allocatedBytes} allocated estimate), has ${available}. The previous export is left untouched.`,
     );
 
   const suffix = uniqueSuffix(token);
@@ -532,6 +559,9 @@ export function publishOutput({
     assets = providerRoot
       ? stageProviderAssets({ providerRoot, outStage: stage, token: suffix })
       : null;
+    const remaining = facts(app).availableBytes;
+    if (!Number.isSafeInteger(remaining) || remaining < HEADROOM_BYTES)
+      throw new Error(`Destination filesystem no longer retains ${HEADROOM_BYTES} bytes of headroom after staging; has ${remaining}. The previous export is left untouched.`);
     beforeSwap();
     const hadPrevious = fs.existsSync(target);
     if (hadPrevious) rename(target, previous);

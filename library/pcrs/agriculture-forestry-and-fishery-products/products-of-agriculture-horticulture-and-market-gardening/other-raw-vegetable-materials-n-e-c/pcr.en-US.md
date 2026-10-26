@@ -461,31 +461,6 @@ Raw activity or stage basis: Reference flow.
 
   - Sources: `declared-handoff-measurement-definition`
 
-###### Other intended recovered fungal product (`fungal_coproduct`)
-
-Instantiate this card only when the selected concrete route and records require it; retain its run, lot or site linkage.
-
-- Selected flow: Declared co-product from the recovery run
-- Flow property / unit: kg
-- Amount rule: Measure each intended product separately with its handoff
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: Per recovery run.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_fungal_recovery`
-
-- Range: Provisional screening and QA range; replace with product-, site-, technology- and gate-specific evidence before review
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 5
-  - Unit: kg/kg mycoprotein
-  - Basis: Per kg reference output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ###### Recovery rejects and off-spec biomass (`fungal_rejects`)
@@ -1503,7 +1478,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_fermentation_run | fungal_fermentation | fermentation_feedstock; fermentation_medium; fermentation_water; fermentation_energy; wet_fungal_biomass; spent_fermentation_broth; fermentation_biogenic_co2 | meter, ledger, run/lot or site record | identity, run/lot/site, time, quantity, unit, state, destination, meter | collect each raw record and retain traceability; Raw aggregation and attribution: reconcile mass by run/site before reference-flow normalization | native unit with conversion recorded | each run, collection lot or crop cycle; annual summary minimum | complete representative period producing the reference product | single site or site-separated records | per declared reference flow | meter/weighbridge/invoice/batch record, calibration and missing-data note |
-| cp_fungal_recovery | fungal_recovery | wet_biomass_input; recovery_water; recovery_energy; wastewater_treatment_fungal; mycoprotein_product; fungal_coproduct; fungal_rejects; fungal_wastewater | meter, ledger, run/lot or site record | identity, run/lot/site, time, quantity, unit, state, destination, meter | collect each raw record and retain traceability; Raw aggregation and attribution: reconcile mass by run/site before reference-flow normalization | native unit with conversion recorded | each run, collection lot or crop cycle; annual summary minimum | complete representative period producing the reference product | single site or site-separated records | per declared reference flow | meter/weighbridge/invoice/batch record, calibration and missing-data note |
+| cp_fungal_recovery | fungal_recovery | wet_biomass_input; recovery_water; recovery_energy; wastewater_treatment_fungal; mycoprotein_product; fungal_coproduct; fungal_rejects; fungal_wastewater | meter, ledger, run/lot or site record | identity, run/lot/site, time, quantity, unit, state, destination, meter |collect each raw record and retain traceability; Raw aggregation and attribution: reconcile mass by run/site before reference-flow normalization fungal_coproduct_specific_output: Preserve every actual intended output previously collected under fungal_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | native unit with conversion recorded | each run, collection lot or crop cycle; annual summary minimum | complete representative period producing the reference product | single site or site-separated records | per declared reference flow | meter/weighbridge/invoice/batch record, calibration and missing-data note |
 | cp_konjac_field | konjac_cultivation | konjac_propagules; konjac_nutrients; konjac_irrigation; konjac_energy; harvest_ready_konjac; konjac_field_residue; konjac_soil_n2o | meter, ledger, run/lot or site record | identity, run/lot/site, time, quantity, unit, state, destination, meter ; actual supply boundary and meter location; product delivery; direct-abstraction owner; source-to-delivery losses, returns and storage; provider coverage| collect each raw record and retain traceability; Raw aggregation and attribution: reconcile mass by run/site before reference-flow normalization | native unit with conversion recorded | each run, collection lot or crop cycle; annual summary minimum | complete representative period producing the reference product | single site or site-separated records | per declared reference flow | meter/weighbridge/invoice/batch record, calibration and missing-data note |
 | cp_konjac_harvest | konjac_harvest_conditioning | konjac_field_batch; konjac_conditioning_water; konjac_conditioning_energy; konjac_tuber_product; konjac_lower_grade; konjac_rejects | meter, ledger, run/lot or site record | identity, run/lot/site, time, quantity, unit, state, destination, meter | collect each raw record and retain traceability; Raw aggregation and attribution: reconcile mass by run/site before reference-flow normalization | native unit with conversion recorded | each run, collection lot or crop cycle; annual summary minimum | complete representative period producing the reference product | single site or site-separated records | per declared reference flow | meter/weighbridge/invoice/batch record, calibration and missing-data note |
 | cp_tree_seed_source | tree_seed_source_management | seed_source_energy; collectable_seed_crop | meter, ledger, run/lot or site record | identity, run/lot/site, time, quantity, unit, state, destination, meter | collect each raw record and retain traceability; Raw aggregation and attribution: reconcile mass by run/site before reference-flow normalization | native unit with conversion recorded | each run, collection lot or crop cycle; annual summary minimum | complete representative period producing the reference product | single site or site-separated records | per declared reference flow | meter/weighbridge/invoice/batch record, calibration and missing-data note |

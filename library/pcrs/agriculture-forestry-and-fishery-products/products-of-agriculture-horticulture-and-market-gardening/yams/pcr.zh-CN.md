@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Yams `227a29cc-a11c-4357-9188-2ee8ead339bd` |
+| 参考产品流 | 山药 `227a29cc-a11c-4357-9188-2ee8ead339bd` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -97,7 +97,7 @@ sync_with: pcr.en-US.md
 
 记录贡献地块中种植的经病害筛查完整种薯或切块。
 
-- 选定流：Yam planting material
+- 选定流：山药种植材料
 - 流属性/单位：Mass / kg
 - 数量规则：实测种植鲜质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -202,7 +202,7 @@ sync_with: pcr.en-US.md
 
 仅在灌溉生产中记录送达田地的水；雨养生产记录为零。
 
-- 选定流：Irrigation water
+- 选定流：灌溉水
 - 流属性/单位：Volume / m3
 - 数量规则：计量或校准的田间供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -226,7 +226,7 @@ sync_with: pcr.en-US.md
 
 记录田间设备使用的柴油；其他能源载体分别记录。
 
-- 选定流：Mobile machinery fuel, diesel carrier
+- 选定流：移动机械燃料，柴油载体
 - 流属性/单位：Volume / L
 - 数量规则：实测分配到种植活动的燃料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -256,7 +256,7 @@ sync_with: pcr.en-US.md
 
 将田地面积和作物周期日期与相同地块的收获量匹配。
 
-- 选定流：Agricultural land occupation
+- 选定流：农业用地占用
 - 流属性/单位：Area-time / ha·crop_cycle
 - 数量规则：原始占用量=实际管理面积乘有日期的应归属占用时长（年），按不重叠阶段及全部共同使用者归属一次。仅当所选面积时间身份要求 m2*year 时将 ha 乘10,000换为m2。面积直接除以产品质量不能得到面积时间。按原分配规则归属面积时间分子，再按匹配最终合格参考质量归一化一次；适用时保留实际湿干阶段吞吐关联，已为最终强度时不再除产出。
 - 数值来源模式：计算值（`calculated_value`）
@@ -285,7 +285,7 @@ sync_with: pcr.en-US.md
 
 该中间块茎状态交给 `yam_harvest`，不是参考产品。
 
-- 选定流：Harvest-ready yam tubers
+- 选定流：待采收山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：挖收前实测或按地块估算的块茎质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -315,7 +315,7 @@ sync_with: pcr.en-US.md
 
 采用选定 IPCC 层级或更优区域方法，将直接 N2O 与间接途径分开计算。
 
-- 选定流：Nitrous oxide, to air
+- 选定流：排放至空气的一氧化二氮
 - 流属性/单位：Mass / kg N2O
 - 数量规则：氮投入乘以直接 N2O-N 因子，再乘以 44/28
 - 数值来源模式：计算值（`calculated_value`）
@@ -345,7 +345,7 @@ sync_with: pcr.en-US.md
 
 按相同批次和作物周期基准接收种植产出。
 
-- 选定流：Harvest-ready yam tubers
+- 选定流：待采收山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：等于转移的 `harvest_ready_yams`
 - 数值来源模式：计算值（`calculated_value`）
@@ -369,7 +369,7 @@ sync_with: pcr.en-US.md
 
 记录挖收和收集设备使用的柴油；人工收获记零。
 
-- 选定流：Mobile harvest machinery fuel, diesel carrier
+- 选定流：移动收获机械燃料，柴油载体
 - 流属性/单位：Volume / L
 - 数量规则：实测分配到收获的燃料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -404,7 +404,7 @@ sync_with: pcr.en-US.md
 
 记录实际挖起并送往整理的全部块茎，包括随后被拒收的块茎。
 
-- 选定流：Collected fresh yam tubers
+- 选定流：已收集的新鲜山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：实测转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -431,7 +431,7 @@ sync_with: pcr.en-US.md
 
 记录挖收中损伤至不可用或单独量化为未收集损失的块茎；可售降级块茎不属于废物。
 
-- 选定流：Damaged yam tubers
+- 选定流：受损山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：实测损伤或未回收块茎质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -465,7 +465,7 @@ sync_with: pcr.en-US.md
 
 在清洁或修整前接收完整的已收集块茎状态。
 
-- 选定流：Collected fresh yam tubers
+- 选定流：已收集的新鲜山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：等于转移的 `collected_yams`
 - 数值来源模式：计算值（`calculated_value`）
@@ -489,7 +489,7 @@ sync_with: pcr.en-US.md
 
 仅在因污染或买方要求而清洗时记录用水；干式清洁路线记零。
 
-- 选定流：Process water
+- 选定流：过程水
 - 流属性/单位：Mass / kg
 - 数量规则：实测山药清洗供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -514,7 +514,7 @@ sync_with: pcr.en-US.md
 
 记录清洗机、输送机或风机用电；无动力整理记零。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：实测分配到整理过程的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -549,7 +549,7 @@ sync_with: pcr.en-US.md
 
 记录去除松散泥土、修整并在需要时清洗和沥水后准备分级的完整块茎。
 
-- 选定流：Conditioned fresh yam tubers
+- 选定流：整备后的新鲜山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：游离水沥除后转入分级的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -576,7 +576,7 @@ sync_with: pcr.en-US.md
 
 记录整理中去除的固体；若去向不同，具体数据集中应分开泥土和植株杂物。
 
-- 选定流：Conditioning solid residue
+- 选定流：整备固体残余物
 - 流属性/单位：Mass / kg
 - 数量规则：离开整理节点的实测残余物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -600,7 +600,7 @@ sync_with: pcr.en-US.md
 
 仅在清洗启用时记录废水，并声明排放、回用或处理去向。
 
-- 选定流：Wastewater from produce washing
+- 选定流：农产品清洗废水
 - 流属性/单位：Mass / kg
 - 数量规则：实测或水量平衡计算的排出量
 - 数值来源模式：计算值（`calculated_value`）
@@ -633,7 +633,7 @@ sync_with: pcr.en-US.md
 
 在分级前接收完整的整理后状态。
 
-- 选定流：Conditioned fresh yam tubers
+- 选定流：整备后的新鲜山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：等于转移的 `conditioned_yams`
 - 数值来源模式：计算值（`calculated_value`）
@@ -668,7 +668,7 @@ sync_with: pcr.en-US.md
 
 这是应用声明等级或买方规格后的参考产品。
 
-- 选定流：Yams `227a29cc-a11c-4357-9188-2ee8ead339bd`
+- 选定流：山药 `227a29cc-a11c-4357-9188-2ee8ead339bd`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：净合格块茎恰为 1,000 kg
 
@@ -695,7 +695,7 @@ sync_with: pcr.en-US.md
 
 将销售到不同去向的完好低等级块茎记录为独立预期产品流。
 
-- 选定流：Downgraded fresh yam tubers
+- 选定流：降级新鲜山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：实测低等级可销售质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -722,7 +722,7 @@ sync_with: pcr.en-US.md
 
 按去向记录不可销售的切伤、压伤、穿刺、病害或腐烂块茎。
 
-- 选定流：Rejected yam tubers
+- 选定流：拒收山药块茎
 - 流属性/单位：Mass / kg
 - 数量规则：实测拒收质量
 - 数值来源模式：前景记录（`foreground_record`）

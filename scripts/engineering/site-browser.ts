@@ -11,6 +11,7 @@ import type {Page, Browser, BrowserType, Request, Response} from 'playwright';
 import { gettingStartedGuide } from '../../packages/pcr-docs/lib/getting-started.ts';
 import { decodeRecordData } from '../../packages/pcr-docs/lib/record-data.ts';
 import { INLINE_DOWNLOAD_NAMES, INLINE_MANIFEST_LIMIT, decodeInlineDownloadUrl } from '../../packages/pcr-docs/scripts/raw-download.ts';
+import { STATIC_ROUTE_ALIASES_FILE, verifyStaticRouteAliases } from '../../packages/pcr-docs/scripts/static-route-aliases.ts';
 import { LANGUAGE_PREFERENCE_KEY, preferredRoute } from '../../packages/pcr-docs/lib/language-preference.ts';
 
 export class SiteBrowserError extends Error {
@@ -20,7 +21,7 @@ export class SiteBrowserError extends Error {
 export interface SiteBrowserOptions {root:string;report:string}
 export interface ExportFile {path:string;bytes:number;sha256:string}
 export interface SiteRoute {kind:'home'|'catalog'|'pcr'|'module'|'history'|'guide';locale:'en'|'zh'|'default';path:string}
-export interface SiteExport {root:string;files:ExportFile[];treeSha256:string;bytes:number;source:Record<string,unknown>;routes:SiteRoute[];availability:{locale:string;kind:string;present:boolean}[]}
+export interface SiteExport {root:string;files:ExportFile[];treeSha256:string;bytes:number;source:Record<string,unknown>;routes:SiteRoute[];availability:{locale:string;kind:string;present:boolean}[];staticRouteAliases?:ReturnType<typeof verifyStaticRouteAliases>|undefined}
 function object(value:unknown):value is Record<string,unknown>{return typeof value==='object'&&value!==null&&!Array.isArray(value);}
 function failure(code:string,message:string):never {throw new SiteBrowserError(code,message);}
 function contained(root:string,file:string){const rel=path.relative(root,file);return rel!==''&&!rel.startsWith('..'+path.sep)&&rel!=='..'&&!path.isAbsolute(rel);}
@@ -57,7 +58,8 @@ export function inspectSiteExport(input:string):SiteExport {
   for(const kind of ['module','history'] as const){const candidate=files.filter(file=>file.path.startsWith(`${locale}/docs/`)&&file.path.endsWith('/index.html')&&(kind==='module'?file.path.includes('/modules/'):file.path.includes('/versions/'))).sort((a,b)=>b.bytes-a.bytes||a.path.localeCompare(b.path,'en'))[0];availability.push({locale,kind,present:!!candidate});if(candidate)routes.push({kind,locale,path:'/'+candidate.path.slice(0,-10)});}
  }
  if(!availability.some(item=>item.kind==='module'&&item.present))failure('SITE_EXPORT_INPUT','No exported module page.');
- return {root:canonical,files,treeSha256:hash(files.map(file=>`${file.path}\0${file.bytes}\0${file.sha256}\n`).join('')),bytes:files.reduce((sum,file)=>sum+file.bytes,0),source,routes,availability};
+ const staticRouteAliases=verifySiteExportAliases(canonical);
+ return {staticRouteAliases,root:canonical,files,treeSha256:hash(files.map(file=>`${file.path}\0${file.bytes}\0${file.sha256}\n`).join('')),bytes:files.reduce((sum,file)=>sum+file.bytes,0),source,routes,availability};
 }
 export function prepareSiteBrowserReport(report:string,root:string):string {
  const output=path.resolve(report),canonicalRoot=realpathSync(root);
@@ -68,51 +70,115 @@ export function prepareSiteBrowserReport(report:string,root:string):string {
  mkdirSync(output,{recursive:true});return realpathSync(output);
 }
 const mime:Record<string,string>={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.ico':'image/x-icon','.xml':'application/xml'};
+/** New exports declare aliases explicitly; archived pre-capacity products retain physical RSC files. */
+export function verifySiteExportAliases(root:string):ReturnType<typeof verifyStaticRouteAliases>|undefined {
+ const source=readIdentityJson(root,'generated/version.json'),release=readIdentityJson(root,'generated/product-release.json');
+ if(!object(source)||typeof source.sourceCommit!=='string')failure('SITE_EXPORT_IDENTITY','Aliases require a source identity.');
+ if(existsSync(path.join(root,STATIC_ROUTE_ALIASES_FILE)))return verifyStaticRouteAliases(root,source.sourceCommit);
+ if(object(release)&&typeof release.version==='string'&&/^(?:0\.[0-3]\.\d+|0\.4\.[0-8])$/u.test(release.version))return undefined;
+ return failure('SITE_EXPORT_ALIASES','New exports require the source-bound static route alias manifest.');
+}
 export async function withSiteExportServer<T>(root:string,callback:(origin:string)=>Promise<T>):Promise<T> {
- const canonical=realpathSync(root);
+ const canonical=realpathSync(root),aliases=new Map(verifySiteExportAliases(canonical)?.pairs.map(pair=>[pair.source,pair])??[]);
  const server=createServer((request,response)=>{try{
   const raw=(request.url??'/').split('?')[0]!;const decoded=decodeURIComponent(raw);
   if(!decoded.startsWith('/')||decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(segment=>segment==='.'||segment==='..')||/%(?:2f|5c)/iu.test(raw)){response.writeHead(403);response.end('Forbidden');return;}
-  let relative=decoded.slice(1);if(relative===''||decoded.endsWith('/'))relative+='index.html';else if(existsSync(path.join(canonical,relative))&&lstatSync(path.join(canonical,relative)).isDirectory())relative+='/index.html';
-  const bytes=readRegular(canonical,relative);response.writeHead(200,{'content-type':mime[path.extname(relative)]??'application/octet-stream','cache-control':'no-store','content-length':bytes.length});response.end(request.method==='HEAD'?undefined:bytes);
+  const alias=aliases.get(raw);
+  let relative=(alias?decodeURIComponent(alias.target):decoded).slice(1);if(relative===''||decoded.endsWith('/'))relative+='index.html';else if(existsSync(path.join(canonical,relative))&&lstatSync(path.join(canonical,relative)).isDirectory())relative+='/index.html';
+  const bytes=readRegular(canonical,relative);if(alias&&(bytes.length!==alias.bytes||hash(bytes)!==alias.sha256))failure('SITE_EXPORT_ALIASES','Alias target changed.');response.writeHead(200,{'content-type':mime[path.extname(relative)]??'application/octet-stream','cache-control':'no-store','content-length':bytes.length});response.end(request.method==='HEAD'?undefined:bytes);
  }catch(error){response.writeHead(error instanceof SiteBrowserError?403:404);response.end('Not found');}});
  await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
  try {const address=server.address();assert.ok(address&&typeof address==='object');return await callback(`http://127.0.0.1:${address.port}`);}finally{await closeServer(server);}
 }
 async function closeServer(server:Server){server.closeAllConnections();await new Promise<void>((resolve,reject)=>server.close(error=>error?reject(error):resolve()));}
 export interface InlineDownload {route:string;url:string;name:string;bytes:number;sha256:string}
-/** Sample the largest emitted native download for each filename in one bounded scan. */
-export function findInlineDownloads(exported:SiteExport):InlineDownload[] {
- const selected=new Map<string,InlineDownload>();
+export interface NativeDownload extends InlineDownload {transport:'inline'|'physical'}
+/** One bounded HTML scan keeps independent legacy-inline and representation-neutral maxima. */
+function scanDownloads(exported:SiteExport,includePhysical:boolean):{inline:InlineDownload[];native:NativeDownload[]} {
+ const inline=new Map<string,InlineDownload>(),native=new Map<string,NativeDownload>(),files=new Map(exported.files.map(file=>[file.path,file])),checked=new Map<string,ExportFile>();
  for(const file of exported.files.filter(item=>item.path.startsWith('en/docs/pcr/')&&item.path.endsWith('/index.html'))){
-  const html=readRegular(exported.root,file.path).toString('utf8');
-  for(const [tag] of html.matchAll(/<a\b[^>]*>/gu)){
+  for(const [tag] of readRegular(exported.root,file.path).toString('utf8').matchAll(/<a\b[^>]*>/gu)){
    const attributes=Object.fromEntries(Array.from(tag.matchAll(/\b(href|class|download)=(["'])(.*?)\2/gu),match=>[match[1],match[3]]));
-   if(!attributes.class?.split(/\s+/u).includes('pcr-download-name')||!attributes.href?.startsWith('data:'))continue;
-   assert.ok(INLINE_DOWNLOAD_NAMES.some(value=>value===attributes.download),'Inline download requires manifest.yaml or a required-language filename');
-   const name=attributes.download!;
-   const bytes=decodeInlineDownloadUrl(attributes.href);assert.ok(bytes);
-   if(name==='manifest.yaml')assert.ok(bytes.length<=INLINE_MANIFEST_LIMIT,'Inline manifest exceeds its bound');
-   if(bytes.length>(selected.get(name)?.bytes??-1))selected.set(name,{route:'/'+file.path.slice(0,-'index.html'.length),url:attributes.href,name,bytes:bytes.length,sha256:hash(bytes)});
+   if(!attributes.class?.split(/\s+/u).includes('pcr-download-name'))continue;
+   const url=attributes.href,name=attributes.download,route='/'+file.path.slice(0,-'index.html'.length);
+   let candidate:NativeDownload;
+   if(url?.startsWith('data:')){
+    assert.ok(INLINE_DOWNLOAD_NAMES.some(value=>value===name),'Inline download requires manifest.yaml or a required-language filename');
+    const bytes=decodeInlineDownloadUrl(url);assert.ok(bytes);if(name==='manifest.yaml')assert.ok(bytes.length<=INLINE_MANIFEST_LIMIT,'Inline manifest exceeds its bound');
+    candidate={route,url,name:name!,bytes:bytes.length,sha256:hash(bytes),transport:'inline'};
+    if(bytes.length>(inline.get(name!)?.bytes??-1))inline.set(name!,candidate);
+   }else{
+    if(!includePhysical||!INLINE_DOWNLOAD_NAMES.some(value=>value===name))continue;
+    assert.ok(url,'Native download requires an href');
+    assert.ok(url.startsWith('/generated/raw/library/pcrs/')&&!/[?#\\\0]/u.test(url)&&!/%(?:2f|5c)/iu.test(url),'Native download must name a physical original PCR file');
+    const decoded=decodeURIComponent(url),parts=decoded.split('/');assert.ok(parts.length>=9&&parts.slice(1).every(part=>part!==''&&part!=='.'&&part!=='..'),'Unsafe original download path');
+    assert.equal(path.posix.basename(decoded),name,'Native download filename differs from its physical file');
+    const key=decoded.slice(1);let emitted=checked.get(key);
+    if(!emitted){emitted=files.get(key);assert.ok(emitted,'Native download target is absent from export');const bytes=readRegular(exported.root,key);assert.equal(bytes.length,emitted.bytes);assert.equal(hash(bytes),emitted.sha256);checked.set(key,emitted);}
+    candidate={route,url,name:name!,bytes:emitted.bytes,sha256:emitted.sha256,transport:'physical'};
+   }
+   if(candidate.bytes>(native.get(candidate.name)?.bytes??-1))native.set(candidate.name,candidate);
   }
  }
- return INLINE_DOWNLOAD_NAMES.flatMap(name=>{const item=selected.get(name);return item?[item]:[];});
+ return {inline:INLINE_DOWNLOAD_NAMES.flatMap(name=>{const item=inline.get(name);return item?[item]:[];}),native:INLINE_DOWNLOAD_NAMES.flatMap(name=>{const item=native.get(name);return item?[item]:[];})};
 }
-export function findInlineDownload(exported:SiteExport,name = 'manifest.yaml'):InlineDownload|undefined {
- return findInlineDownloads(exported).find(item=>item.name===name);
+export function findInlineDownloads(exported:SiteExport):InlineDownload[]{return scanDownloads(exported,false).inline;}
+export function findInlineDownload(exported:SiteExport,name = 'manifest.yaml'):InlineDownload|undefined {return findInlineDownloads(exported).find(item=>item.name===name);}
+function requireNativeSamples(samples:NativeDownload[]):NativeDownload[]{for(const name of INLINE_DOWNLOAD_NAMES)assert.ok(samples.some(item=>item.name===name),'Missing native no-JavaScript sample: '+name);return samples;}
+export function findNativeDownloads(exported:SiteExport):NativeDownload[]{return requireNativeSamples(scanDownloads(exported,true).native);}
+export interface NativeDownloadSuccess {url:string;filename:string;bytes:number;sha256:string;failure:null}
+/** A browser's download conversion is distinct from prefetch cancellation and needs completed exact bytes. */
+export function isNativeDownloadCancellation(request:CancelledRequest,expected:NativeDownload,success:NativeDownloadSuccess,origin:string):boolean {
+ try {return expected.transport==='physical'&&cancellationReasons[request.engine]?.includes(request.reason)===true
+  &&request.method==='GET'&&request.isNavigationRequest===true&&request.resourceType==='document'
+  &&(request.status===undefined||(request.status>=200&&request.status<300))&&request.url===success.url
+  &&request.url===new URL(expected.url,origin).href&&success.failure===null&&success.filename===expected.name
+  &&success.bytes===expected.bytes&&success.sha256===expected.sha256;}catch{return false;}
 }
-async function checkInlineDownload(browser:Browser,origin:string,selected:InlineDownload) {
+export interface NativeScriptPreload {url:string;path:string;bytes:number;sha256:string}
+export interface DisabledScriptPreloadContext {javaScriptEnabled:boolean;pageUrl:string;noCspPolicy:boolean;preloads:readonly NativeScriptPreload[]}
+/** Bind actual declarative preload URLs to regular JavaScript assets, never to a route-shaped guess. */
+export function bindNativeScriptPreloads(root:string,origin:string,urls:readonly string[]):NativeScriptPreload[] {
+ const result=new Map<string,NativeScriptPreload>();
+ for(const value of urls){const url=new URL(value);if(url.origin!==new URL(origin).origin||url.username||url.password||/%(?:2f|5c)/iu.test(url.pathname))failure('SITE_EXPORT_PATH','Script preload must name a safe same-origin export asset.');
+  if(url.search||url.hash||!/\.(?:m?js)$/u.test(url.pathname))continue;
+  const decoded=decodeURIComponent(url.pathname);if(decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(part=>part==='.'||part==='..'))failure('SITE_EXPORT_PATH','Script preload path escapes its export binding.');
+  const key=decoded.slice(1),bytes=readRegular(root,key);result.set(url.href,{url:url.href,path:key,bytes:bytes.length,sha256:hash(bytes)});
+ }return [...result.values()];
+}
+/** Chromium reports intentionally disabled declarative script preloads as CSP blocks. */
+export function isExpectedDisabledScriptPreload(request:CancelledRequest,context:DisabledScriptPreloadContext):boolean {
+ try {return context.javaScriptEnabled===false&&context.noCspPolicy===true&&request.engine==='chromium'
+  &&request.reason==='csp'&&request.method==='GET'&&request.resourceType==='script'&&request.isNavigationRequest===false&&request.status===undefined
+  &&request.startPhase==='native-download-page'&&request.failurePhase==='native-download-page'&&request.actualUrl===context.pageUrl
+  &&new URL(request.url).origin===new URL(context.pageUrl).origin&&context.preloads.some(preload=>preload.url===request.url);
+ }catch{return false;}
+}
+export async function checkNativeDownload(browser:Browser,engine:SiteBrowserEngine,origin:string,selected:NativeDownload,root:string) {
  const context=await browser.newContext({javaScriptEnabled:false,acceptDownloads:true});
  try {
-  const page=await context.newPage();assert.equal((await page.goto(origin+selected.route))?.status(),200);
-  const link=page.locator('a.pcr-download-name').filter({hasText:selected.name});
-  const anchor=link.first();
-  assert.equal(await anchor.getAttribute('href'),selected.url);assert.equal(await anchor.getAttribute('download'),selected.name);
-  const pending=page.waitForEvent('download');await anchor.click();const download=await pending;
-  assert.equal(download.suggestedFilename(),selected.name);assert.equal(await download.failure(),null);
-  const downloaded=await download.path();assert.ok(downloaded);const bytes=readFileSync(downloaded);
-  assert.equal(bytes.length,selected.bytes);assert.equal(hash(bytes),selected.sha256);
-  return {route:selected.route,javaScriptEnabled:false,filename:download.suggestedFilename(),bytes:bytes.length,sha256:hash(bytes)};
+  const page=await context.newPage(),failedRequests:CancelledRequest[]=[],prefetchUrls:string[]=[],errors:string[]=[],consoleErrors:string[]=[];
+  const trace=observeSiteRequests(page,{engine,viewport:'native-download'},failedRequests,prefetchUrls);
+  page.on('pageerror',error=>errors.push(error.message));page.on('response',response=>{if(response.status()>=400)errors.push('HTTP '+response.status()+': '+response.url());});
+  page.on('console',message=>{if(message.type()==='error'&&/content[- ]security[- ]policy|\bcsp\b/iu.test(message.text()))consoleErrors.push(message.text());});
+  try {
+   trace.setPhase('native-download-page');const response=await page.goto(origin+selected.route);assert.equal(response?.status(),200);assert.ok(response);
+   const headers=await response.allHeaders(),metaPolicies=await page.locator('meta[http-equiv]').evaluateAll(elements=>elements.map(element=>element.getAttribute('http-equiv')?.toLowerCase()));
+   const noCspPolicy=headers['content-security-policy']===undefined&&headers['content-security-policy-report-only']===undefined&&!metaPolicies.some(value=>value==='content-security-policy'||value==='content-security-policy-report-only');
+   const scriptPreloads=bindNativeScriptPreloads(root,origin,await page.locator('link[rel~="preload"][as="script"],link[rel~="modulepreload"]').evaluateAll(elements=>elements.map(element=>(element as HTMLLinkElement).href)));
+   const disabledScriptContext:DisabledScriptPreloadContext={javaScriptEnabled:false,pageUrl:origin+selected.route,noCspPolicy,preloads:scriptPreloads};
+   const anchor=page.locator('a.pcr-download-name').filter({hasText:selected.name});
+   let target=anchor.first();for(let index=0;index<await anchor.count();index++){const candidate=anchor.nth(index);if(await candidate.getAttribute('href')===selected.url){target=candidate;break;}}
+   assert.equal(await target.getAttribute('href'),selected.url);assert.equal(await target.getAttribute('download'),selected.name);
+   trace.setPhase('native-download-click');const pending=page.waitForEvent('download');await target.click();const download=await pending;
+   assert.equal(download.url(),selected.transport==='physical'?new URL(selected.url,origin).href:selected.url);assert.equal(download.suggestedFilename(),selected.name);assert.equal(await download.failure(),null);
+   const downloaded=await download.path();assert.ok(downloaded);const bytes=readFileSync(downloaded);assert.equal(bytes.length,selected.bytes);assert.equal(hash(bytes),selected.sha256);
+   const success:NativeDownloadSuccess={url:download.url(),filename:download.suggestedFilename(),bytes:bytes.length,sha256:hash(bytes),failure:null};
+   const downloadCancellations=failedRequests.filter(request=>isNativeDownloadCancellation(request,selected,success,origin));
+   const expectedDisabledScriptPreloads=failedRequests.filter(request=>isExpectedDisabledScriptPreload(request,disabledScriptContext));
+   assert.deepEqual(failedRequests.filter(request=>!isNativeDownloadCancellation(request,selected,success,origin)&&!isExpectedDisabledScriptPreload(request,disabledScriptContext)),[],'Unclassified request failure during native download');assert.deepEqual(errors,[]);assert.deepEqual(consoleErrors,[],'Browser reported a native-page CSP violation');
+   return {route:selected.route,javaScriptEnabled:false,filename:success.filename,bytes:success.bytes,sha256:success.sha256,url:selected.url,actualUrl:success.url,transport:selected.transport,downloadCancellations,requestFailures:failedRequests,expectedDisabledScriptPreloads,scriptPreloads,noCspPolicy,consoleErrors};
+  }finally{trace.stop();}
  }finally{await context.close();}
 }
 export type SiteBrowserEngine = 'chromium'|'firefox'|'webkit';
@@ -201,8 +267,10 @@ async function checkSearch(page:Page,route:SiteRoute,evidence:BrowserEvidence){
  const workers:string[]=[];evidence.search={query,hits:0,workerUrls:workers};page.on('worker',worker=>workers.push(worker.url()));
  const triggers=page.locator('button[data-search], button[data-search-full]');let clicked=false;for(let i=0;i<await triggers.count();i++){const trigger=triggers.nth(i);if(await trigger.evaluate(button=>{const rect=button.getBoundingClientRect();const hit=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);return rect.width>0&&rect.height>0&&hit!==null&&button.contains(hit);})){await trigger.click();clicked=true;break;}}assert.ok(clicked,'No unobstructed search trigger');
  const dialog=page.locator('[data-pcr-search]');await dialog.waitFor({state:'visible'});await page.getByLabel(locale==='zh'?'搜索 PCR、领域或关键词…':'Search PCRs, domains, or keywords…',{exact:true}).fill(query);
- await page.waitForFunction(()=>{const dialog=document.querySelector('[data-pcr-search]');return !!dialog?.querySelector('.pcr-search-footer, .pcr-search-error')||/^(没有匹配的 PCR|No PCR matches)/u.test(dialog?.querySelector('[role="status"]')?.textContent??'');},{},{timeout:45_000});assert.ok(await dialog.locator('.pcr-search-footer').count(),`Search returned no results for ${query}: ${await dialog.innerText()}`);const links=dialog.locator('button[aria-selected]');const hits=await links.count();assert.ok(hits>0,'Search must return actual result buttons');assert.ok(workers.some(url=>new URL(url,page.url()).href===new URL('/generated/search-worker.mjs',page.url()).href),'Search must use the emitted Worker');
- evidence.search={query,hits,workerUrls:workers};evidence.assertions.push('emitted Worker returns search results');const origin=new URL(page.url()).origin;await links.first().click();await page.waitForLoadState('networkidle');assert.equal(new URL(page.url()).origin,origin);assert.ok(new URL(page.url()).pathname.startsWith(`/${locale}/docs/`));await page.locator('h1').first().waitFor();evidence.assertions.push('search result navigation');
+ await page.waitForFunction(()=>{const dialog=document.querySelector('[data-pcr-search]');return !!dialog?.querySelector('.pcr-search-footer, .pcr-search-error')||/^(没有匹配的 PCR|No PCR matches)/u.test(dialog?.querySelector('[role="status"]')?.textContent??'');},{},{timeout:45_000});assert.ok(await dialog.locator('.pcr-search-footer').count(),`Search returned no results for ${query}: ${await dialog.innerText()}`);const options=dialog.getByRole('listbox').getByRole('option');const hits=await options.count();assert.ok(hits>0,'Search must return actual result options');assert.ok(workers.some(url=>new URL(url,page.url()).href===new URL('/generated/search-worker.mjs',page.url()).href),'Search must use the emitted Worker');
+ assert.doesNotMatch((await options.allTextContents()).join('\n'),/<\/?mark>/u,'Search titles must not display injected highlight markup');
+ const input=dialog.getByRole('combobox');await input.press('ArrowDown');const active=await input.getAttribute('aria-activedescendant');assert.ok(active,'Keyboard search must identify an active result');assert.equal(await options.evaluateAll((items,id)=>items.filter(item=>item.id===id&&item.getAttribute('aria-selected')==='true').length,active),1,'Active search result must be a selected option');
+ evidence.search={query,hits,workerUrls:workers};evidence.assertions.push('emitted Worker returns semantic search options without injected markup','keyboard search selects an accessible option');const origin=new URL(page.url()).origin;await options.first().click();await page.waitForLoadState('networkidle');assert.equal(new URL(page.url()).origin,origin);assert.ok(new URL(page.url()).pathname.startsWith(`/${locale}/docs/`));await page.locator('h1').first().waitFor();evidence.assertions.push('search result navigation');
 }
 /** Exercise the shipped selector and neutral entry rather than a second implementation. */
 async function openLanguageSelector(page:Page):Promise<void> {
@@ -338,12 +406,13 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.64.1')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.64.1.');
  const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
- const languagePreferences:LanguagePreferenceEvidence[]=[],inlineSamples=findInlineDownloads(exported);
- const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkInlineDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',results,languagePreferences,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
- try {await withSiteExportServer(exported.root,async origin=>{
+ const languagePreferences:LanguagePreferenceEvidence[]=[];let nativeSamples:NativeDownload[]=[],inlineSamples:InlineDownload[]=[];
+ const nativeDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[];
+ const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+ try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
   for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
-   try {for(const selected of inlineSamples){const evidence={engine:name,...await checkInlineDownload(browser,origin,selected)};inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}
+   try {for(const selected of [...nativeSamples,...inlineSamples.filter(item=>!nativeSamples.some(native=>native.name===item.name&&native.url===item.url&&native.route===item.route)).map(item=>({...item,transport:'inline' as const}))]){const evidence={engine:name,...await checkNativeDownload(browser,name,origin,selected,exported.root)};if(nativeSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route))nativeDownloads.push(evidence);if(inlineSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route)){inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}}
     for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
     try {for(const route of exported.routes){const page=await context.newPage();const evidence:BrowserEvidence={engine:name,engineVersion:browser.version(),viewport,route,assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${name}-${viewport}-${route.locale}-${route.kind}.png`};results.push(evidence);
      const consoleErrors:{text:string;url:string}[]=[],{requestFailures:failedRequests,prefetchUrls}=evidence;
@@ -360,7 +429,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
     await checkLanguagePreferences(browser,origin,size,documentPath,languageCodes,evidence);
    }}finally{await browser.close();}
   }
- });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
+ });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;assert.equal(nativeDownloads.length,9,'Three engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
  }catch(error){receipt.status='failed';receipt.failure=message(error);throw error;}finally{receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'report.json'),JSON.stringify(receipt,null,2)+'\n');}
 }
 export async function siteBrowserMain(args:readonly string[]){const options=parseSiteBrowserArguments(args);if(options==='help'){process.stdout.write('Usage: node scripts/engineering/site-browser.ts --root <existing export> --report <new evidence directory>\n');return;}const receipt=await qualifySiteBrowser(options);process.stdout.write(JSON.stringify({status:receipt.status,sourceCommit:receipt.source.sourceCommit,report:path.join(options.report,'report.json'),cases:receipt.results.length})+'\n');}

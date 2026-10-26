@@ -466,29 +466,59 @@ Raw activity or stage basis: Per harvest process output.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Other intended harvest products (`harvest_coproducts`)
+###### Seed of the declared fibre crop at harvest handover (`harvest_seed_coproduct`)
 
-Record seed, woody core, leaves or other material as a product only when it has an intended use and documented handoff.
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
 
-- Selected flow: Product-specific intended co-product; UUID unresolved
+Collection and handover scope: Record seed, woody core, leaves or other material as a product only when it has an intended use and documented handoff. Raw activity or stage basis: Per 1 kg raw collected fibre material.
+
+- Selected flow: Seed of the declared fibre crop at harvest handover
 - Flow property / unit: Mass / kg
-- Amount rule: Measured mass by product state and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: Per 1 kg raw collected fibre material.
-
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_output_destinations`
-- Range: Broad first-pass QA range; replace with actual foreground records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg/kg raw collected fibre material
-  - Basis: Per 1 kg raw collected fibre material; conditional routes impose zero only when inactive
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Woody core of the declared fibre crop at harvest handover (`harvest_woody_core_coproduct`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record seed, woody core, leaves or other material as a product only when it has an intended use and documented handoff. Raw activity or stage basis: Per 1 kg raw collected fibre material.
+
+- Selected flow: Woody core of the declared fibre crop at harvest handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_output_destinations`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Leaves of the declared fibre crop at harvest handover (`harvest_leaves_coproduct`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record seed, woody core, leaves or other material as a product only when it has an intended use and documented handoff. Raw activity or stage basis: Per 1 kg raw collected fibre material.
+
+- Selected flow: Leaves of the declared fibre crop at harvest handover
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_output_destinations`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Waste flows
 
@@ -684,29 +714,59 @@ Raw activity or stage basis: measured actual operation/lot output and throughput
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_conditioning_mass`
 
-###### Other intended preparation co-products (`fibre_coproducts`)
+###### Woody shives from preparation of the declared fibre crop (`preparation_shives_coproduct`)
 
-Record shives, woody core, tow, seed or other outputs as co-products only when intended use and handoff are documented.
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
 
-- Selected flow: Product-specific co-product; UUID unresolved
+Collection and handover scope: Record shives, woody core, tow, seed or other outputs as co-products only when intended use and handoff are documented. Raw activity or stage basis: Per 1 kg prepared raw fibre.
+
+- Selected flow: Woody shives from preparation of the declared fibre crop
 - Flow property / unit: Mass / kg
-- Amount rule: Measured output by state, grade and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: Per 1 kg prepared raw fibre.
-
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
 - Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
 - Collection protocol: `cp_output_destinations`
-- Range: Broad first-pass QA range; replace with actual foreground records
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg/kg prepared raw fibre
-  - Basis: Per 1 kg prepared raw fibre; conditional routes impose zero only when inactive
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Tow from preparation of the declared fibre crop (`preparation_tow_coproduct`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record shives, woody core, tow, seed or other outputs as co-products only when intended use and handoff are documented. Raw activity or stage basis: Per 1 kg prepared raw fibre.
+
+- Selected flow: Tow from preparation of the declared fibre crop
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_output_destinations`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
+
+###### Seed separated during preparation of the declared fibre crop (`preparation_seed_coproduct`)
+
+Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components.
+
+Collection and handover scope: Record shives, woody core, tow, seed or other outputs as co-products only when intended use and handoff are documented. Raw activity or stage basis: Per 1 kg prepared raw fibre.
+
+- Selected flow: Seed separated during preparation of the declared fibre crop
+- Flow property / unit: Mass / kg
+- Amount rule: Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation.
+- Value mode: `foreground_record`
+- Specificity: `product_specific`
+- Normalization basis: per declared reference flow
+- Basis kind: `process_output`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_output_destinations`
+
+No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed.
 
 ##### Waste flows
 
@@ -837,7 +897,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_energy` | `all processes` | energy carriers | records | meters; invoices; equipment and fuel logs | direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output | native carrier unit | monthly and by operation | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |
 | `cp_area_period` | `crop_production` | area and period | records | georeferenced field register; establishment and productive dates | direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output | ha and days | each crop period | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |
 | `cp_harvest_mass` | `harvest_extraction` | harvest mass | records | calibrated scale; lot moisture sample | direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output | kg and % wet basis | each harvest lot | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |
-| `cp_output_destinations` | `harvest and preparation` | intended outputs | records | dispatch note; buyer or internal transfer record | direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output | kg | each output lot | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |
+| `cp_output_destinations` | `harvest and preparation` | intended outputs | records | dispatch note; buyer or internal transfer record |direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output harvest_coproducts_specific_output: Preserve every actual intended output previously collected under harvest_coproducts, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. fibre_coproducts_specific_output: Preserve every actual intended output previously collected under fibre_coproducts, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records. | kg | each output lot | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |
 | `cp_residues` | `all processes` | residues and waste | records | scale ticket; destination and fate record | direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output | kg | each transfer | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |
 | `cp_conditioning_mass` | `primary_fibre_preparation` | received and prepared fibre | records | calibrated scales; moisture and grade sample | direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output | kg and % wet basis | each lot | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |
 | `cp_conditioning_water` | `primary_fibre_preparation` | process water | records | meter reading and source record | direct record with traceable source; Raw aggregation and attribution: sum by process and normalize through accepted output | m3 | each batch or day | representative declared period | all included sites and lots | per declared reference flow | calibration, invoice, log or receipt retained |

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1000 |
-| 参考产品流 | Broad beans and horse beans, dry `b9ccab43-8330-44f4-b125-456e97ec6e87` |
+| 参考产品流 | 蚕豆和马豆（干） `b9ccab43-8330-44f4-b125-456e97ec6e87` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -100,7 +100,7 @@ sync_with: pcr.en-US.md
 
 记录实际播种的外购种子或留用成熟籽粒。
 
-- 选定流： *Vicia faba* planting material
+- 选定流： 蚕豆（*Vicia faba*）种植材料
 - 流属性/单位： Mass / kg
 - 数量规则： measured mass sown, net of unused material
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -204,7 +204,7 @@ sync_with: pcr.en-US.md
 
 仅对灌溉批次记录取水量或到田水量，并保留水源及输送边界。
 
-- 选定流： irrigation water
+- 选定流： 灌溉水
 - 流属性/单位： Volume / m3
 - 数量规则：按事件/用途和匹配期间，计量实际跨此产品供水边界的供水量并保留声明原生单位。水源取水表不能自动当交付产品量，须核对两测点间输配损失、外部回水和存水变化。前景负责直接天然取水时，另设分水源基本流输入及本地供水作业，内部交付在聚合边界抵销，不能另加一笔外购水。外购水承接兼容供应商取水及供水负担一次。雨养/无供水须有据，缺少交付量或责任证据属于不完整而非零；归属后按合格最终产出归一化一次。
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -271,7 +271,7 @@ sync_with: pcr.en-US.md
 
 成熟植株在此交付收获节点，尚不构成合格干籽粒。
 
-- 选定流： standing mature *Vicia faba* crop
+- 选定流： 田间成熟蚕豆（*Vicia faba*）作物
 - 流属性/单位： Mass / kg above-ground harvested fraction
 - 数量规则： harvested material plus measured field/shattering losses, moisture state declared
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -417,7 +417,7 @@ sync_with: pcr.en-US.md
 
 将收集的豆荚/植株或联合收获物记作预期产出，并记录其在调理交接点的预干状态。
 
-- 选定流： collected mature faba bean harvest material
+- 选定流： 已收集的成熟蚕豆收获物
 - 流属性/单位： Mass / kg
 - 数量规则： measured wet mass with moisture and included plant fractions
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -442,7 +442,7 @@ sync_with: pcr.en-US.md
 
 仅当移出的秸秆/茎秆有有益去向且具正价值时记作共产品；返田部分留在残余物管理中。
 
-- 选定流： faba bean field residues with beneficial destination
+- 选定流： 具有明确利用去向的蚕豆田间残余物
 - 流属性/单位： Mass / kg dry matter
 - 数量规则： measured/calculated removed dry matter by destination
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -469,7 +469,7 @@ sync_with: pcr.en-US.md
 
 记录裂荚、捡拾或收获作业造成的籽粒损失，绝不计入合格或降级产出。
 
-- 选定流： faba bean grain lost during harvest
+- 选定流： 采收过程中损失的蚕豆籽粒
 - 流属性/单位： Mass / kg
 - 数量规则： measured loss sample or lot mass-balance estimate
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -540,7 +540,7 @@ sync_with: pcr.en-US.md
 
 将脱粒清理后的籽粒记作预期产出并记录进料水分；高于目标时送干燥，否则直接送分级。
 
-- 选定流： cleaned mature faba bean grain
+- 选定流： 清理后的成熟蚕豆籽粒
 - 流属性/单位： Mass / kg
 - 数量规则： measured lot mass after foreign matter removal
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -565,7 +565,7 @@ sync_with: pcr.en-US.md
 
 仅当分离秸秆/荚壳有有益去向且具正价值时记作共产品。
 
-- 选定流： faba bean straw and pod hulls with beneficial destination
+- 选定流： 具有明确利用去向的蚕豆秸秆和荚壳
 - 流属性/单位： Mass / kg dry matter
 - 数量规则： measured/moisture-corrected mass by destination
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -591,7 +591,7 @@ sync_with: pcr.en-US.md
 
 按类别和去向记录受污染秸秆/荚壳、土、石块、杂物和未回收籽粒。
 
-- 选定流： discarded threshing and cleaning residues
+- 选定流： 废弃的脱粒与清理残余物
 - 流属性/单位： Mass / kg
 - 数量规则： measured reject mass
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -661,7 +661,7 @@ sync_with: pcr.en-US.md
 
 记录自然或机械干燥后交付分级的籽粒，并保留成对的质量和水分测量。
 
-- 选定流： moisture-stabilized mature faba bean grain
+- 选定流： 水分稳定后的成熟蚕豆籽粒
 - 流属性/单位： Mass / kg
 - 数量规则： measured outgoing mass verified by dry-matter balance
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -689,7 +689,7 @@ sync_with: pcr.en-US.md
 
 记录洒落、霉变、热损伤或虫害籽粒，不含计算所得的除水量。
 
-- 选定流： grain rejected during drying
+- 选定流： 干燥过程中拒收的籽粒
 - 流属性/单位： Mass / kg
 - 数量规则：计量或代表性抽样估算实际已识别拒收、洒落或其他损失材料及有据去向。仅在其他产品、残余、水、库存和转移项均有据、相容且互斥时，方可用组分平衡估算该物流，并披露不确定性。未解释平衡差保留为调查/证据缺口，不能自动作为废物产出、干物质损失、水汽或排放。各实际材料/状态/去向分开，留存或返工材料作为配对转移或库存；有据转出量按最终合格产出归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -715,7 +715,7 @@ sync_with: pcr.en-US.md
 
 根据成对质量/水分测量计算除水量，并与干物质损失分开。
 
-- 选定流： water to air from grain drying
+- 选定流： 籽粒干燥排放至空气的水
 - 流属性/单位： Mass / kg
 - 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式： 计算值 (`calculated_value`)
@@ -784,7 +784,7 @@ sync_with: pcr.en-US.md
 
 预期参考产出是在声明等级、水分和农场门口交接条件下的合格籽粒。
 
-- 选定流： Broad beans and horse beans, dry `b9ccab43-8330-44f4-b125-456e97ec6e87`
+- 选定流： 蚕豆和马豆（干） `b9ccab43-8330-44f4-b125-456e97ec6e87`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 原始产出计量与核对要求：1,000 kg net accepted grain
 
@@ -809,7 +809,7 @@ sync_with: pcr.en-US.md
 
 仅在有销售或有益去向时将破损、裂粒、过小或不合格籽粒记作共产品，并从合格产出中排除。
 
-- 选定流： downgraded mature faba bean grain by grade and destination
+- 选定流： 按等级与去向区分的降级成熟蚕豆籽粒
 - 流属性/单位： Mass / kg
 - 数量规则： measured net mass at each beneficial hand-off
 - 数值来源模式： 前景记录 (`foreground_record`)
@@ -835,7 +835,7 @@ sync_with: pcr.en-US.md
 
 无有益去向的不合格籽粒和杂物记作废物；返工回到清理或分级，仅在最终交接点计数。
 
-- 选定流： grading rejects and discarded off-spec grain
+- 选定流： 分级拒收物与废弃不合格籽粒
 - 流属性/单位： Mass / kg
 - 数量规则： measured reject mass net of documented rework return
 - 数值来源模式： 前景记录 (`foreground_record`)

@@ -7,6 +7,7 @@ import path from 'node:path';
 import test,{type TestContext} from 'node:test';
 import {gzipSync} from 'node:zlib';
 import {sealedProductFixture} from '../../scripts/engineering/fixtures/sealed-product-fixture.ts';
+import {STATIC_ROUTE_ALIASES_FILE} from '../../packages/pcr-docs/scripts/static-route-aliases.ts';
 import {record,type ProductManifest} from './release-types.ts';
 import {detectProductRelease,productReleaseSpec,tagAndDispatchProduct,readProductArchive,validateProductManifest,verifyProductArtifacts,writeProductWebArchive,productTreeSha256} from './product-release.ts';
 
@@ -29,6 +30,7 @@ test('manifest gates retain exact transport, source and toolchain bindings for m
  ['compatibility-null',['compatibility'],null],['compatibility-undefined',['compatibility'],undefined],['compatibility-extra-key',['compatibility'],{schema:1,libraryFormat:1,projectionContracts:['1','2'],minimumReaderVersion:'0.4.1',commandProtocol:1,extra:true}],['compatibility-duplicates',['compatibility','projectionContracts'],['1','1']],['unknown-schema',['schema'],2],['wrong-kind',['kind'],'unrelated'],['pins-absent',['toolchain'],null],['bad-node',['toolchain','node'],'24'],['bad-npm',['toolchain','npm'],null],
  ['packages-absent',['packages'],null],['unsafe-tool-filename',['packages','tool','filename'],'../tool.tgz'],['empty-artifact-set',['artifacts'],[]],
  ['web-zero-bytes',['web','bytes'],0],['web-zero-files',['web','files'],0],['web-fraction-files',['web','files'],1.5],['web-zero-total',['web','uncompressedBytes'],0],['web-bad-tree-hash',['web','treeSha256'],'sha256:invalid'],['web-foreign-origin',['web','origin'],'https://other.example'],
+ ['aliases-absent',['web','probes','staticRouteAliases'],undefined],['aliases-null',['web','probes','staticRouteAliases'],null],['alias-foreign-source',['web','probes','staticRouteAliases','sourceCommit'],'a'.repeat(40)],['alias-missing-pairs',['web','probes','staticRouteAliases','pairs'],[]],
  ['probes-absent',['web','probes'],null],['counts-absent',['web','probes','counts'],null],['counts-negative',['web','probes','counts','pcrs'],-1],['counts-missing',['web','probes','counts'],{pcrs:1,pages:2,languages:2}],
  ['routes-absent',['web','probes','routes'],null],['routes-empty',['web','probes','routes'],[]],['raw-absent',['web','probes','rawDownload'],null],['raw-wrong-url',['web','probes','rawDownload','path'],'/other.json'],['raw-zero-size',['web','probes','rawDownload','bytes'],0],['raw-boundary-size',['web','probes','rawDownload','bytes'],25_000_000],['raw-malformed-hash',['web','probes','rawDownload','sha256'],'unbound'],
  ['tool-name',['packages','tool','name'],'@other/package'],['tool-version',['packages','tool','version'],'99.0.0'],['tool-tag',['packages','tool','tag'],'v99.0.0'],['tool-source',['packages','tool','sourceCommit'],'a'.repeat(40)],['tool-integrity',['packages','tool','integrity'],'invalid'],
@@ -58,7 +60,7 @@ test('resealed real tarballs cannot disguise mismatched inner source, package, w
  await run('false-reader-capabilities',(root,m)=>rewriteArchive(root,m,'tool',tree=>{const file=path.join(tree,'package/reader-capabilities.json'),data=json(file);data.libraryFormats=[1,2];writeJson(file,data);}),/implemented PCR reader/u);
  await run('malformed-reader-capabilities',(root,m)=>rewriteArchive(root,m,'tool',tree=>put(path.join(tree,'package/reader-capabilities.json'),'null')),/reader capabilities/u);
  await run('unsupported-required-contract',(root,m)=>{assert.ok(m.compatibility);m.compatibility.projectionContracts=['3'];persistManifest(root,m);},/do not satisfy/u);
- await run('minimum-reader-too-new',(root,m)=>{assert.ok(m.compatibility);m.compatibility.minimumReaderVersion='0.4.2';persistManifest(root,m);},/minimumReaderVersion/u);
+ await run('minimum-reader-too-new',(root,m)=>{assert.ok(m.compatibility);m.compatibility.minimumReaderVersion='99.0.0';persistManifest(root,m);},/minimumReaderVersion/u);
  await run('consistent-wrong-sqlite-format',async(root,m)=>{const file=path.join(root,'library.sqlite.json'),data=json(file);data.format_version=2;writeJson(file,data);updateProof(root,m,'library.sqlite.json');await rewriteArchive(root,m,'library',tree=>writeJson(path.join(tree,'package/library.sqlite.json'),data));},/sidecar format/u);
  await run('foreign-npm-tree-entry',(root,m)=>rewriteArchive(root,m,'tool',tree=>put(path.join(tree,'outside.txt'),'not part of the npm package')),/non-package file/u);
  await run('archive-only-sqlite-replaced',(root,m)=>rewriteArchive(root,m,'library',tree=>put(path.join(tree,'package/library.sqlite'),'replacement database bytes')),/Portable SQLite assets differ/u);
@@ -67,6 +69,13 @@ test('resealed real tarballs cannot disguise mismatched inner source, package, w
  for(const key of ['sourceCommit','releaseVersion','releaseTag','sourceFingerprint','counts'])await run('archived-web-'+key,(root,m)=>rewriteArchive(root,m,'web',tree=>{const file=path.join(tree,'generated/version.json'),data=json(file);data[key]=key==='counts'?{pcrs:900,pages:999,languages:2,sourceBytes:20}:'unrelated';writeJson(file,data);}),/Archived web version|Archived web counts/u);
  await run('archived-hosting-build-settings',(root,m)=>rewriteArchive(root,m,'web',tree=>writeJson(path.join(tree,'edgeone.json'),{buildCommand:'replace verified bytes',headers:[]})),/routing-only/u);
  await run('changed-web-probe-with-recomputed-tree',(root,m)=>rewriteArchive(root,m,'web',tree=>put(path.join(tree,'zh/docs/pcr/index.html'),'modified directory HTML')),/Archived web probe differs/u);
+ await run('alias-rewrites-missing-with-recomputed-tree',(root,m)=>rewriteArchive(root,m,'web',tree=>writeJson(path.join(tree,'edgeone.json'),{headers:[],redirects:[],rewrites:[]})),/internal rewrites/u);
+ await run('omitted-alias-with-recomputed-transport-and-proof',(root,m)=>rewriteArchive(root,m,'web',tree=>{
+  const file=path.join(tree,STATIC_ROUTE_ALIASES_FILE),data=json(file);assert.ok(Array.isArray(data.pairs));data.pairs.pop();
+  const bytes=Buffer.from(JSON.stringify(data)+'\n');put(file,bytes);assert.ok(m.web.probes.staticRouteAliases);
+  Object.assign(m.web.probes.staticRouteAliases.manifest,{bytes:bytes.length,sha256:'sha256:'+createHash('sha256').update(bytes).digest('hex')});
+ }),/manifest is incomplete/u);
+ await run('retained-rsc-target-changed-with-recomputed-tree',(root,m)=>rewriteArchive(root,m,'web',tree=>put(path.join(tree,'index.txt'),'coherently repacked but different navigation bytes')),/alias target bytes or hash differ/u);
  await run('regular-artifact-required',root=>{rmSync(path.join(root,'library.sqlite'));mkdirSync(path.join(root,'library.sqlite'));},/regular files/u);
 });
 

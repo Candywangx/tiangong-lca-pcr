@@ -65,7 +65,7 @@ content_maturity: authored_methodology
 | --- | --- |
 | declared_starting_condition | 加工厂接收的未处理窑干单块糖枫木坯 |
 | starting_condition_role | foreground_input |
-| product_classification_scope | 木制厨具中的具体砧板子集；仅为 CPC 31912 narrower 候选 |
+| product_classification_scope | 木制厨具中的本砧板子集；CPC 3.0:31912的narrower范围；映射接受决策由classifications/mappings/另行维护。 |
 | recursive_input_rule | 成品砧板不是正常外购投入。内部返工留在本单元内；任何外购同类别砧板均须另审起点，不得无披露复用本初次制造结果。 |
 | upstream_dataset_requirement | 木料须匹配林业、锯切及真实窑干直至接收交付；电力、整条砂带、实际适用油品及纸盒供货均须匹配。经核实的到厂投入背景若未含入厂运输，应另列实际路线、方式、载重及距离。不得重复计入运输或干燥。 |
 | disclosure | 供方/场址/年份/树种/含水率、真实配方及起点状态、前景过程图、上游交付范围、废物接收方、遗漏及不确定性 |

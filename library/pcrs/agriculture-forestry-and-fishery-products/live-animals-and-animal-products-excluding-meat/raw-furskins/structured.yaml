@@ -221,14 +221,14 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: source_coproduct
-          role: "Other actual marketable animal output"
-          name: "Actual earlier-period farm product independently sold (UUID unresolved)"
+        - row_id: earlier_period_raw_milk_product
+          role: "Raw milk of the declared farmed species before its terminal event"
+          name: "Raw milk of the declared farmed species before its terminal event"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This source-interface card covers only independently marketed earlier farm products, such as actual milk or detached fibre. Meat and other outputs from the same terminal body are recorded after skin removal, never here. Denominator and scope requirements：per kg Farm or lawful wild source output Raw quantity and calculation requirements: Measure only earlier-period farm outputs independently sold before the terminal event; exclude all meat and products derived from that terminal body. Original collection denominator kind: process_output."
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: This source-interface card covers only independently marketed earlier farm products, such as actual milk or detached fibre. Meat and other outputs from the same terminal body are recorded after skin removal, never here. Denominator and scope requirements：per kg Farm or lawful wild source output Raw quantity and calculation requirements: Measure only earlier-period farm outputs independently sold before the terminal event; exclude all meat and products derived from that terminal body. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -238,15 +238,25 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_source
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg/kg"
-                basis: "per kg Farm or lawful wild source output"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: earlier_period_detached_fibre_product
+          role: "Detached animal hair of the declared farmed species before its terminal event"
+          name: "Detached animal hair of the declared farmed species before its terminal event"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: This source-interface card covers only independently marketed earlier farm products, such as actual milk or detached fibre. Meat and other outputs from the same terminal body are recorded after skin removal, never here. Denominator and scope requirements：per kg Farm or lawful wild source output Raw quantity and calculation requirements: Measure only earlier-period farm outputs independently sold before the terminal event; exclude all meat and products derived from that terminal body. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
+          amount:
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_source
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -313,14 +323,14 @@ process_inventory:
                 basis_kind: "process_output"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
-        - row_id: terminal_coproduct
-          role: "Actual terminal-event saleable products"
-          name: "Actual species-qualified saleable terminal product (UUID unresolved)"
+        - row_id: terminal_raw_meat_product
+          role: "Raw meat of the declared furskin-source species after skin removal"
+          name: "Raw meat of the declared furskin-source species after skin removal"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Only if the same slaughter or lawful wild-capture body yields independently marketed meat or other goods, record those here after skin removal. The source node must not also output them. Denominator and scope requirements：per kg Independent skin removal output Raw quantity and calculation requirements: Weigh each actual saleable output separately and document its own market handover. Original collection denominator kind: process_output."
+          description: "Conditional on this exact material being independently intended and actually handed over inside the existing process boundary. Record actual species/material, physical form, grade, moisture/composition where relevant, lot, recipient, quantity and gate. A named example does not establish actual production or a default recipe. Keep each physical lot and destination separate; do not count an internal transfer or a selected reference-output lot again as a co-product. For a genuinely mixed screenings/offcut stream, retain measured physical composition rather than inventing separation or also counting its components. Collection and handover scope: Only if the same slaughter or lawful wild-capture body yields independently marketed meat or other goods, record those here after skin removal. The source node must not also output them. Denominator and scope requirements：per kg Independent skin removal output Raw quantity and calculation requirements: Weigh each actual saleable output separately and document its own market handover. Original collection denominator kind: process_output. No numerical range is transferred from the retired collection card. Use compatible measured quantities and identity-specific evidence; missing evidence remains a completeness gap, not zero. The UUID remains unresolved until a compatible exact identity is confirmed."
           amount:
-            expression: "Calculate the attributable final-package exchange under inventory_reference_normalization and stage_throughput_linkage using the matched raw records."
+            expression: "Measure the mass of this specific product at its unique actual handover; retain the original process/lot/period basis and use the existing throughput-linkage and normalization rules exactly once. Keep the unallocated physical quantity ledger separate from Section 7 shared-burden allocation."
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -330,15 +340,7 @@ process_inventory:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_remove
               source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "100000"
-                unit: "kg/kg"
-                basis: "per kg Independent skin removal output"
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         - row_id: remove_residue
           role: "Nonmarketable removal residue"
@@ -762,7 +764,7 @@ dataset_production:
       flow_role: "source and actual co-products"
       record_type: "event ledger"
       raw_fields: "species; farm_or_wild; legal_id; cohort_or_capture; mass; products; price; period"
-      collection_method: "supplier/capture and sale records; Raw aggregation requirements: link each event and product once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "supplier/capture and sale records; Raw aggregation requirements: link each event and product once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. source_coproduct_specific_output: Preserve every actual intended output previously collected under source_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "kg; currency; period"
       frequency: "each event"
       temporal_coverage: "actual cohort or season"
@@ -774,7 +776,7 @@ dataset_production:
       flow_role: "skin, terminal products and loss"
       record_type: "removal ledger"
       raw_fields: "event; input; raw_skin; actual_terminal_products; residue; each_destination"
-      collection_method: "scale, sale and treatment tickets; Raw aggregation requirements: reconcile all products and waste once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again."
+      collection_method: "scale, sale and treatment tickets; Raw aggregation requirements: reconcile all products and waste once. Apply the existing route, period, conversion and allocation rules; retain raw totals and the measured accepted reference-output denominator for the same scope. Perform final normalization exactly once; do not divide an already normalized amount again. terminal_coproduct_specific_output: Preserve every actual intended output previously collected under terminal_coproduct, including products not represented by the conditional examples. This is a mandatory identification requirement, not an exchange. Before dataset completeness, instantiate a separate physically specific card for each actual product with material/species, physical state, native property/unit, measured quantity, recipient, gate and compatible UUID or exact unresolved identity. Keep original lot/period/throughput and Section 7 allocation duties; count a physical sale once and exclude products already in the selected reference-output denominator. Do not infer a product recipe, separation, numerical range or zero from missing records."
       unit: "kg"
       frequency: "each lot"
       temporal_coverage: "period"
@@ -969,7 +971,7 @@ data_sources:
     used_for: "Equipment/carrier possibilities only; site records govern applicability. No intensity, fuel share or default recipe is adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:25a28f9a93b2fb48170d1edcd0309dda475cd56039a4cfcc297be6f6a5fb6e4a"
+  source_sha256: "sha256:9306c41329560acf35d2ff24cef321a6c0124544a789e6dcfbad779b0718ea25"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6198"
@@ -1020,16 +1022,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35366"
+    - unit_id: "normative_39038"
       family: "allocation"
       span:
         start:
-          offset: 35366
-          line: 697
+          offset: 39038
+          line: 699
           column: 1
         end:
-          offset: 36680
-          line: 706
+          offset: 40352
+          line: 708
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_source | source and remove | Enumerate earlier farm products at source, then skin and actual saleable terminal products at removal; each has a distinct handover and is counted once. Subdivide independently measured services; for inseparable source burdens use documented physical causality where defensible, otherwise contemporaneous net economic values of actual products with price sensitivity. Neither zero nor whole-animal burden is automatic. | fao-hides-skins |\n| a_period | farm or wild route | Link breeding/growth, capture/slaughter, removal, replacement and termination to actual periods. Wild capture has no invented managed husbandry. Each input and output is attributed once. | un-cpc-3-notes |\n| a_shared | shared traps, removal tools, cleaning and cold/drying rooms | Identify all consuming nodes and service periods. Prefer measured use; otherwise documented service hours or throughput, assigned once without upstream/foreground duplication. | fao-hides-skins |\n| a_state | fresh/preserved; whole/piece | One lot has one marketed state and configuration at its gate. Do not count a pelt and its cuttings twice; allocate treatment only to treated lots. | eu-raw-furskin-heading |\n\n"
       headings:
@@ -1048,12 +1050,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35366
-              line: 697
+              offset: 39038
+              line: 699
               column: 1
             end:
-              offset: 35406
-              line: 697
+              offset: 39078
+              line: 699
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1068,16 +1070,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_52631"
+    - unit_id: "normative_57811"
       family: "validation"
       span:
         start:
-          offset: 52631
-          line: 761
+          offset: 57811
+          line: 763
           column: 1
         end:
-          offset: 54238
-          line: 772
+          offset: 59418
+          line: 774
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | sold lot | Reject tanned, dressed, manufactured or hair-bearing non-furrier goods; verify lawful source and actual furrier-use whole/piece identity. | un-cpc-3-notes;eu-raw-furskin-heading |\n| v_balance | each lot | Reconcile source, removed, prepared, accepted, downgrade, waste, treated and sold mass at their measured states. | fao-hides-skins |\n| v_route | farm/wild | No farm animal input on wild route; actual co-products and source burden once; no upstream capture/slaughter duplication. | un-cpc-3-notes |\n| v_period | shared service | Source event and each shared trap, removal, cleaning or cold/dry service have one period and one attributed consumer share. | fao-hides-skins |\n| v_binding | all cards | conditional product inputs require actual concrete selection; uncovered UUIDs need detail confirmation. Mixed raw/dressed count-based candidates cannot bind a raw Mass reference. |  |\n| `v_foreground_emission_responsibility` | Actual operated nodes and linked services | Record responsibility for on-site fuel combustion and refrigerant leakage when applicable: either quantified foreground emissions or a named linked process explicitly covering them, never merely a fuel-supply or electricity-production input. Assess special-taxon biological and residue emissions using species/route evidence, without a generic livestock factor. Identify any unresolved pathway and withhold a completeness claim; document supported absence and prevent duplicate upstream/downstream accounting. | |\n\n"
       headings:
@@ -1096,12 +1098,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 52631
-              line: 761
+              offset: 57811
+              line: 763
               column: 1
             end:
-              offset: 52653
-              line: 761
+              offset: 57833
+              line: 763
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1198,132 +1200,132 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "a_source"
       identity_kind: "explicit"
-      unit_id: "normative_35366"
+      unit_id: "normative_39038"
       source_span:
         start:
-          offset: 35479
-          line: 701
+          offset: 39151
+          line: 703
           column: 1
         end:
-          offset: 35950
-          line: 701
+          offset: 39622
+          line: 703
           column: 472
     - pointer: "/allocation_rules/1"
       rule_id: "a_period"
       identity_kind: "explicit"
-      unit_id: "normative_35366"
+      unit_id: "normative_39038"
       source_span:
         start:
-          offset: 35951
-          line: 702
+          offset: 39623
+          line: 704
           column: 1
         end:
-          offset: 36190
-          line: 702
+          offset: 39862
+          line: 704
           column: 240
     - pointer: "/allocation_rules/2"
       rule_id: "a_shared"
       identity_kind: "explicit"
-      unit_id: "normative_35366"
+      unit_id: "normative_39038"
       source_span:
         start:
-          offset: 36191
-          line: 703
+          offset: 39863
+          line: 705
           column: 1
         end:
-          offset: 36461
-          line: 703
+          offset: 40133
+          line: 705
           column: 271
     - pointer: "/allocation_rules/3"
       rule_id: "a_state"
       identity_kind: "explicit"
-      unit_id: "normative_35366"
+      unit_id: "normative_39038"
       source_span:
         start:
-          offset: 36462
-          line: 704
+          offset: 40134
+          line: 706
           column: 1
         end:
-          offset: 36678
-          line: 704
+          offset: 40350
+          line: 706
           column: 217
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_52631"
+      unit_id: "normative_57811"
       source_span:
         start:
-          offset: 52726
-          line: 765
+          offset: 57906
+          line: 767
           column: 1
         end:
-          offset: 52928
-          line: 765
+          offset: 58108
+          line: 767
           column: 203
     - pointer: "/validation_rules/1"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_52631"
+      unit_id: "normative_57811"
       source_span:
         start:
-          offset: 52929
-          line: 766
+          offset: 58109
+          line: 768
           column: 1
         end:
-          offset: 53086
-          line: 766
+          offset: 58266
+          line: 768
           column: 158
     - pointer: "/validation_rules/2"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_52631"
+      unit_id: "normative_57811"
       source_span:
         start:
-          offset: 53087
-          line: 767
+          offset: 58267
+          line: 769
           column: 1
         end:
-          offset: 53251
-          line: 767
+          offset: 58431
+          line: 769
           column: 165
     - pointer: "/validation_rules/3"
       rule_id: "v_period"
       identity_kind: "explicit"
-      unit_id: "normative_52631"
+      unit_id: "normative_57811"
       source_span:
         start:
-          offset: 53252
-          line: 768
+          offset: 58432
+          line: 770
           column: 1
         end:
-          offset: 53425
-          line: 768
+          offset: 58605
+          line: 770
           column: 174
     - pointer: "/validation_rules/4"
       rule_id: "v_binding"
       identity_kind: "explicit"
-      unit_id: "normative_52631"
+      unit_id: "normative_57811"
       source_span:
         start:
-          offset: 53426
-          line: 769
+          offset: 58606
+          line: 771
           column: 1
         end:
-          offset: 53635
-          line: 769
+          offset: 58815
+          line: 771
           column: 210
     - pointer: "/validation_rules/5"
       rule_id: "v_foreground_emission_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_52631"
+      unit_id: "normative_57811"
       source_span:
         start:
-          offset: 53636
-          line: 770
+          offset: 58816
+          line: 772
           column: 1
         end:
-          offset: 54236
-          line: 770
+          offset: 59416
+          line: 772
           column: 601
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1352,27 +1354,27 @@ normative_context:
           column: 123
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35366"
+      unit_id: "normative_39038"
       source_span:
         start:
-          offset: 35366
-          line: 697
+          offset: 39038
+          line: 699
           column: 1
         end:
-          offset: 35406
-          line: 697
+          offset: 39078
+          line: 699
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_52631"
+      unit_id: "normative_57811"
       source_span:
         start:
-          offset: 52631
-          line: 761
+          offset: 57811
+          line: 763
           column: 1
         end:
-          offset: 52653
-          line: 761
+          offset: 57833
+          line: 763
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1381,5 +1383,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:25a28f9a93b2fb48170d1edcd0309dda475cd56039a4cfcc297be6f6a5fb6e4a"
-  generated_content_sha256: "sha256:b09309aa7e5d4e714e3247f1ea30e2286d05a2a490246b9d647e031b88de86c6"
+    sha256: "sha256:9306c41329560acf35d2ff24cef321a6c0124544a789e6dcfbad779b0718ea25"
+  generated_content_sha256: "sha256:e5c87c42169ed9ebebc71f8774f1876b10a320a24bab8937d417652296cc5930"

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Cloves (whole stems), raw |
+| Reference product flow | 丁香（整梗），未加工 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -200,7 +200,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Irrigation water
+- 选定流： 灌溉水
 - 流属性/单位： Volume / m3
 - 数量规则： Metered or validated supplemental water, annualized over lifetime accepted output
 - 数值来源模式： 计算值（`calculated_value`）
@@ -384,7 +384,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Mature unopened clove bud clusters on managed trees
+- 选定流： 管理树木上成熟未开放的丁香花蕾簇
 - 流属性/单位： Mass / kg
 - 数量规则： Measured cluster mass handed to the harvest node by stand and harvest batch
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -412,7 +412,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Pruned, fallen, damaged, or otherwise removed clove-tree biomass
+- 选定流： 修剪、脱落、受损或以其他方式移除的丁香树生物质
 - 流属性/单位： Mass / kg dry matter
 - 数量规则： Measure or sample dry mass and distinguish retained mulch, composting, burning, disposal, and recovery destinations
 - 数值来源模式： 计算值（`calculated_value`）
@@ -438,7 +438,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Dinitrogen monoxide to air
+- 选定流： 排放至空气的一氧化二氮
 - 流属性/单位： Mass / kg N2O
 - 数量规则： Calculate direct and indirect N2O from collected mineral-N, organic-N, residue-N, volatilization, and leaching data using the selected geographically appropriate IPCC tier; convert N2O-N to N2O
 - 数值来源模式： 计算值（`calculated_value`）
@@ -507,7 +507,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Cloves (whole stems), raw `53a5a137-db87-42e1-a85d-4b187eb5281a`
+- 选定流： 丁香（全茎），生的 `53a5a137-db87-42e1-a85d-4b187eb5281a`
 - 流属性/单位： Mass / kg
 原始产出计量与核对要求：Net accepted fresh output equals 1 kg for fresh hand-off; for a dried route it is measured input to drying and is not also counted as reference output
 
@@ -534,7 +534,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Downgraded whole cloves with declared destination
+- 选定流： 声明去向的降级完整丁香
 - 流属性/单位： Mass / kg
 - 数量规则： Weighed separately and treated as product only when destination and economic function are documented
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -561,7 +561,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Detached stems, opened flowers, mother cloves, damaged or spoiled buds, foreign matter, and incidental plant material
+- 选定流： 脱落花梗、开放花、母丁香、受损或腐败花蕾、杂质及伴生植物材料
 - 流属性/单位： Mass / kg
 - 数量规则： Weigh each physical state and destination separately; a sold stem or recovered output is separately modelled, while composting, disposal, or field return remains a destination-specific residue/waste route
 - 数值来源模式： 计算值（`calculated_value`）
@@ -596,7 +596,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Accepted fresh raw whole clove buds
+- 选定流： 合格的新鲜未加工完整丁香花蕾
 - 流属性/单位： Mass / kg
 - 数量规则： Weighed fresh accepted mass entering the same drying batch
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -709,7 +709,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Mouldy, fermented, scorched, broken, or otherwise rejected buds
+- 选定流： 发霉、发酵、焦损、破碎或其他拒收花蕾
 - 流属性/单位： Mass / kg
 - 数量规则： Weigh by recovery, composting, disposal, or other destination; no reject returns to accepted output
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -737,7 +737,7 @@ sync_with: pcr.en-US.md
 
 该流跨越所述过程边界，并按下述数量规则定量。
 
-- 选定流： Water to air
+- 选定流： 排放至空气的水
 - 流属性/单位： Mass / kg
 - 数量规则： 实际水蒸气按匹配入场花蕾含水 + 实际加水 + 期初存水，减去全部合格/降级/拒收固体、液体出口及期末库存含水计算。采用实测湿基含水率和兼容质量记录，归属并归一化一次，干固体另行平衡。鲜干质量差、脱落固体和其他挥发物不能全部当水；文献鲜干产品比不能建立水排放数值范围。缺少含水或去向时保留未解析水释放，不能填平衡排放。
 - 数值来源模式： 计算值（`calculated_value`）
@@ -756,7 +756,7 @@ sync_with: pcr.en-US.md
 ##### 产品流
 ###### 实际路线的交接产品（`actual_route_product_for_handoff`）
 记录实际终端路线交付的合格产品；与交接门称重和批次记录对账。
-- 选定流：Cloves (whole stems), raw
+- 选定流：丁香（整梗），未加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：实际交接门的实测合格产品净质量，按参考数量归一化；不得汇总前序各阶段数量，不得计入其他路线或联产品。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -782,7 +782,7 @@ sync_with: pcr.en-US.md
 #### 输出
 ##### 产品流
 ###### 声明交接门的参考产品（`reference_product_at_declared_handoff`）
-- 选定流：Cloves (whole stems), raw
+- 选定流：丁香（整梗），未加工
 - 流属性 / 单位：质量 / kg
 - 数量规则：1 kg
 - 数值来源模式：前景记录（`foreground_record`）

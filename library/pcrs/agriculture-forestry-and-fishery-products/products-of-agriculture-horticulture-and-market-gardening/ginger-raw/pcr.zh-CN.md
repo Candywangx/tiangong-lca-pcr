@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Ginger, raw `e30e5bf0-243f-4388-a2a0-8fdee391b4a9` |
+| 参考产品流 | 生姜 `e30e5bf0-243f-4388-a2a0-8fdee391b4a9` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |

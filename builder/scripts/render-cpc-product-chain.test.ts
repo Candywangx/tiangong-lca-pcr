@@ -823,6 +823,30 @@ test("checked-in three-chain pilot derives the exact execution and review plan",
     6,
   );
 
+  assert.deepEqual(
+    result.analysis.chains.flatMap((chain) => chain.edges
+      .filter((edge) => edge.scheduling_status === "ready")
+      .map((edge) => edge.id)),
+    [
+      "wheat-grain-to-wheat-flour",
+      "wheat-flour-to-bread-and-bakers-wares",
+      "raw-cotton-to-carded-or-combed-cotton",
+      "cotton-yarn-to-woven-cotton-fabric",
+    ],
+  );
+
+  const rawCottonEdge = chains["cotton-textile"]!.edges.find(
+    (edge) => edge.id === "raw-cotton-to-carded-or-combed-cotton",
+  );
+  assert.ok(rawCottonEdge);
+  assert.equal(rawCottonEdge.evidence_status, "supported_by_pcr");
+  assert.equal(rawCottonEdge.boundary_assessment, "aligned");
+  assert.deepEqual(rawCottonEdge.blockers, []);
+  assert.match(
+    String(unknownField(rawCottonEdge.interface, "upstream_output_condition")),
+    /Virgin Upland cotton delivered after ginning and baling/u,
+  );
+
   const restoredCottonEdge = chains["cotton-textile"]!.edges.find(edge => edge.id === "raw-cotton-to-carded-or-combed-cotton");
   assert.ok(restoredCottonEdge);
   assert.equal(restoredCottonEdge.scheduling_status, "ready");
@@ -840,6 +864,25 @@ test("checked-in three-chain pilot derives the exact execution and review plan",
     String(unknownField(cottonPreparationEdge.interface,"fit_summary")),
     /opening, cleaning, carding, drawing and optional combing/u,
   );
+
+  // Accepted material endpoints do not approve these wood interfaces. These two
+  // independent blockers must survive further pulp/PCR mapping additions.
+  assert.deepEqual(
+    chains["forestry-pulp-paper"]!.edges.map((edge) => edge.id),
+    [
+      "coniferous-pulpwood-to-mechanical-pulp",
+      "mechanical-pulp-to-newsprint",
+      "nonconiferous-pulpwood-to-chemical-pulp",
+      "chemical-pulp-to-wood-free-paper",
+    ],
+  );
+  for (const edge of chains["forestry-pulp-paper"]!.edges) {
+    assert.equal(edge.evidence_status, "supported_by_official_source");
+    assert.equal(edge.boundary_assessment, "needs_review");
+    assert.equal(edge.scheduling_status, "blocked");
+    assert.ok(edge.blockers.includes("evidence_not_pcr"));
+    assert.ok(edge.blockers.includes("boundary_not_aligned"));
+  }
 
   assert.match(
     result.report,

@@ -1,6 +1,5 @@
 import {errorMessage} from "../../pcr-core/src/types.ts";
-import { spawn } from "node:child_process";
-import { measureProcessTree, assertBuildResources } from "./resource-budget.ts";
+import { measureProcessTree, assertBuildResources, runMeasuredBuildStage, BuildStageFailure, type BuildStageMetrics } from "./resource-budget.ts";
 import { relocationRequested, runRelocatedBuild, buildNodeOptions } from "./build-storage.ts";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -11,21 +10,19 @@ const started = Date.now();
 let peakResidentBytes = 0,
   memoryMeasurement = "process-tree-rss";
 function sampleMemory() {
+  let residentBytes = 0;
   try {
-    peakResidentBytes = Math.max(peakResidentBytes, measureProcessTree());
+    residentBytes = measureProcessTree();
+    peakResidentBytes = Math.max(peakResidentBytes, residentBytes);
   } catch (error) {
     memoryMeasurement = "unavailable";
     console.error("Memory measurement failed: " + errorMessage(error));
   }
+  return { residentBytes, memoryMeasurement };
 }
-sampleMemory();
-assertBuildResources({
-  peakResidentBytes,
-  memoryMeasurement,
-});
-const stages: {command:string;durationMs:number}[] = [];
+const stages: BuildStageMetrics[] = [];
 /**
- * Run the complete build pipeline — generation, the Next static export, then verification — in
+ * Run generation, Next export, exact static-route alias preparation, then verification in
  * `cwd`. The stages, their environment and every resource gate are identical
  * wherever this runs; relocation only moves where that is.
  */
@@ -33,40 +30,26 @@ async function runPipeline({ cwd, env }: {cwd:string;env:NodeJS.ProcessEnv}) {
   for (const args of [
     ["scripts/generate.ts"],
     ["node_modules/next/dist/bin/next", "build"],
+    ["scripts/static-route-aliases.ts"],
     ["scripts/verify.ts"],
   ]) {
-    const stageStart = Date.now();
-    const child = spawn(process.execPath, args, {
-      cwd,
-      stdio: "inherit",
-      env,
-    });
-    const monitor = setInterval(sampleMemory, 2000);
-    sampleMemory();
-    const status = await new Promise<number|null>((resolve, reject) => {
-      child.on("error", reject);
-      child.on("exit", resolve);
-    }).finally(() => {
-      clearInterval(monitor);
-    });
-    stages.push({ command: args.join(" "), durationMs: Date.now() - stageStart });
-    if (status !== 0) {
-      console.error("PCR production build failed at " + args.join(" "));
-      // Set the failing status without exiting: the pipeline may be running inside a relocated
-      // build, whose cleanup and staging removal must still run before the process ends.
-      process.exitCode = typeof status === "number" ? status : 1;
-      throw new Error("PCR production build failed at " + args.join(" "));
-    }
-    assertBuildResources({
-      peakResidentBytes,
-      memoryMeasurement,
+    await runMeasuredBuildStage({
+      args, cwd, env, sample: sampleMemory,
+      report(stage) {
+        stages.push(stage);
+        console.log(JSON.stringify({ event: "build-stage", ...stage }));
+      },
     });
   }
 }
-const relocation = relocationRequested({ repoRoot, env: process.env });
+let relocation: ReturnType<typeof relocationRequested> | undefined;
 let relocated: Awaited<ReturnType<typeof runRelocatedBuild>> | null = null;
 let failed = false;
+let failure: string | undefined;
 try {
+  sampleMemory();
+  assertBuildResources({ peakResidentBytes, memoryMeasurement });
+  relocation = relocationRequested({ repoRoot, env: process.env });
   if (relocation.relocate) {
     // The checkout sits on a memory-backed mount (or an operator asked for this path): build on a
     // disk-backed scratch copy and publish only the export it verifies.
@@ -98,11 +81,15 @@ try {
   // Reported here rather than by an unhandled rejection, so every cleanup this run owns has
   // already completed. A failed stage has set the exit status; anything else fails as 1.
   failed = true;
-  process.exitCode = process.exitCode || 1;
-  console.error(error instanceof Error ? errorMessage(error) : String(error));
+  failure = errorMessage(error);
+  process.exitCode = error instanceof BuildStageFailure && error.stage.exitCode
+    ? error.stage.exitCode : process.exitCode || 1;
+  console.error(failure);
 }
-if (!failed) {
+{
   const metrics = {
+    status: failed ? "failed" : "passed",
+    ...(failure ? { failure } : {}),
     buildMs: Date.now() - started,
     peakResidentBytes,
     memoryMeasurement,
@@ -110,19 +97,26 @@ if (!failed) {
     ...(relocated
       ? {
           relocation: {
-            reason: relocation.reason,
+            reason: relocation?.reason ?? "not-started",
             sourceCommit: relocated.sourceCommit,
             copiedFiles: relocated.copied.files,
             copiedBytes: relocated.copied.bytes,
             export: relocated.published,
           },
         }
-      : { relocation: { reason: relocation.reason } }),
+      : { relocation: { reason: relocation?.reason ?? "not-started" } }),
   };
-  fs.mkdirSync(path.join(app, ".generated"), { recursive: true });
-  fs.writeFileSync(
-    path.join(app, ".generated/build-metrics.json"),
-    JSON.stringify(metrics),
-  );
-  console.log(JSON.stringify(metrics));
+  // Report only after relocated-build cleanup/atomic handoff has returned. A failure receipt
+  // must never replace the last successful build metrics or claim its export was published.
+  try {
+    fs.mkdirSync(path.join(app, ".generated"), { recursive: true });
+    fs.writeFileSync(path.join(app, failed ? ".generated/build-failure-metrics.json" : ".generated/build-metrics.json"), JSON.stringify(metrics));
+  } catch (error) {
+    const message = "Could not write build metrics: " + errorMessage(error);
+    console.error(message);
+    metrics.status = "failed";
+    metrics.failure ??= message;
+    process.exitCode = process.exitCode || 1;
+  }
+  console.log(JSON.stringify({ event: "build-result", ...metrics }));
 }

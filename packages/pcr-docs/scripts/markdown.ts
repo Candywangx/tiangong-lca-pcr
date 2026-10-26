@@ -207,8 +207,8 @@ function collectLists(node: AstNode) {
   return lists;
 }
 
-/** Independently inventory original source blocks before any rendering/splitting. */
-export function inventoryMarkdown(source: unknown, fileKey: string) {
+/** Finish the value-only source inventory before any rendering can mutate the tree. */
+function prepareMarkdown(source: unknown, fileKey: string) {
   const parsed = envelope(source);
   const tree = parser.parse(parsed.body);
   const definitions = Object.fromEntries(
@@ -260,7 +260,15 @@ export function inventoryMarkdown(source: unknown, fileKey: string) {
   }
   if (new Set(nodes.map((node) => node.id)).size !== nodes.length)
     throw new Error("Duplicate source node identity.");
-  return { frontmatter: parsed.frontmatter, nodes, body: parsed.body };
+  return {
+    original: { frontmatter: parsed.frontmatter, nodes, body: parsed.body },
+    tree,
+  };
+}
+
+/** Independently inventory original source blocks before any rendering/splitting. */
+export function inventoryMarkdown(source: unknown, fileKey: string) {
+  return prepareMarkdown(source, fileKey).original;
 }
 
 /** Render once, then partition the HAST. Definitions/footnotes retain their global identities. */
@@ -269,8 +277,7 @@ export function renderMarkdown(
   fileKey: string,
   { maxHtmlBytes = 180_000 } = {},
 ) {
-  const original = inventoryMarkdown(source, fileKey);
-  const tree = parser.parse(original.body);
+  const { original, tree } = prepareMarkdown(source, fileKey);
   const inventory = new Map(original.nodes.map((node) => [node.id, node]));
   const slugger = new GithubSlugger();
   const anchorAliases: Record<string,string> = {};

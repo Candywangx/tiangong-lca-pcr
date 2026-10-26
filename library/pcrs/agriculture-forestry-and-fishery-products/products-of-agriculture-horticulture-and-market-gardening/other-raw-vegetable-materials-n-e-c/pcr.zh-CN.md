@@ -456,31 +456,6 @@ sync_with: pcr.en-US.md
 
   - 来源：`declared-handoff-measurement-definition`
 
-###### 其他预期回收的真菌产品 (`fungal_coproduct`)
-
-本卡仅在所选具体路线和记录条件满足时实例化，并保持批次或场址关联。
-
-- 选定流: 回收批次中声明的共产品
-- 流属性/单位: kg
-- 数量规则: 按交付点分别计量每种预期产品
-- 数值来源模式: 前景记录 (`foreground_record`)
-- 适用范围: 产品特定 (`product_specific`)
-原始活动或阶段基准：每个回收生产批次.
-
-- 归一化基准：每声明的参考流
-- 基准类型: 过程产出 (`process_output`)
-- 证据类型: 采集记录 (`collected_record`)
-- 采集协议: `cp_fungal_recovery`
-
-- 数量范围: 暂定筛选与核查范围；在评审前用具体产品、场址、技术和交付点证据替换
-  - 范围角色: 默认估计 (`default_estimate`)
-  - 下限: 0
-  - 上限: 5
-  - 单位: kg/kg mycoprotein
-  - 基准: Per kg reference output
-  - 基准类型: 过程产出 (`process_output`)
-  - 证据类型: 推理估算 (`reasoned_estimate`)
-
 ##### 废物流
 
 ###### 回收残次物及不合格生物量 (`fungal_rejects`)
@@ -1488,7 +1463,7 @@ sync_with: pcr.en-US.md
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_fermentation_run | fungal_fermentation | fermentation_feedstock; fermentation_medium; fermentation_water; fermentation_energy; wet_fungal_biomass; spent_fermentation_broth; fermentation_biogenic_co2 | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
-| cp_fungal_recovery | fungal_recovery | wet_biomass_input; recovery_water; recovery_energy; wastewater_treatment_fungal; mycoprotein_product; fungal_coproduct; fungal_rejects; fungal_wastewater | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
+| cp_fungal_recovery | fungal_recovery | wet_biomass_input; recovery_water; recovery_energy; wastewater_treatment_fungal; mycoprotein_product; fungal_coproduct; fungal_rejects; fungal_wastewater | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 |从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 fungal_coproduct_specific_output：保留原 fungal_coproduct 所采集的每一实际预期产出，包括条件示例尚未表示的产品。这是必需的身份确认要求，不是交换。完成数据集前，每一实际产品须分别建立物理身份明确的卡片，记录材料或物种、物理状态、原生属性和单位、实测数量、接收方、交接点，以及兼容 UUID 或确切未解析身份。保留原批次、期间、产量关联及第 7 节分配义务；物理销售恰计一次，已计入所选参考产出分母的产品不得重复计入。不得从缺失记录推定产品配方、材料分离、数值范围或零数量。 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_konjac_field | konjac_cultivation | konjac_propagules; konjac_nutrients; konjac_irrigation; konjac_energy; harvest_ready_konjac; konjac_field_residue; konjac_soil_n2o | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 ；实际供水边界及测点；产品交付量；直接取水责任方；水源至交付的损失回水及存水；供应商覆盖| 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_konjac_harvest | konjac_harvest_conditioning | konjac_field_batch; konjac_conditioning_water; konjac_conditioning_energy; konjac_tuber_product; konjac_lower_grade; konjac_rejects | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |
 | cp_tree_seed_source | tree_seed_source_management | seed_source_energy; collectable_seed_crop | 计量、台账、批次或场址记录 | 产品/物料标识、批次/场址、时间、数量、单位、状态、去向、计量装置 | 从原始记录逐条采集并保留可追溯链接；原始汇总与分配：先按批次/场址核对质量平衡，再归一到参考流 | 原始单位并记录换算 | 每批次、每批采集或每作物期；至少年度汇总 | 覆盖形成参考产品的完整代表期 | 单一场址或按场址分别记录 | 每声明的参考流 | 仪表/磅单/发票/批记录、校准状态、缺失数据说明 |

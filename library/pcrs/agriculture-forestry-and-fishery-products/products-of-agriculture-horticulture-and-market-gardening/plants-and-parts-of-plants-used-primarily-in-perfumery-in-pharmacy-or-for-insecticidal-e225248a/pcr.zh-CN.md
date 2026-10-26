@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | Field | Value |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Plants or plant parts for declared perfumery, pharmacy, insecticidal, fungicidal or similar use |
+| Reference product flow | 用于声明香料、药用、杀虫、杀菌或类似用途的植物或植物部分 |
 | 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
@@ -90,7 +90,7 @@ sync_with: pcr.en-US.md
 
 记录所声明栽培类群实际使用的种子、苗木、插条、根茎或其他繁殖材料；不同繁殖状态不得在无质量或数量换算时合并。
 
-- 选定流: Species-specific propagation material
+- 选定流: 物种特定繁殖材料
 - 流属性/单位: Mass or count / kg or item
 - 数量规则: measured quantity established or planted
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -197,7 +197,7 @@ sync_with: pcr.en-US.md
 
 仅对灌溉分层记录输送到田间的水；雨养分层不创建交换。
 
-- 选定流: Irrigation water supply
+- 选定流: 灌溉水供应
 - 流属性/单位: Volume / m3
 - 数量规则: metered or calculated water delivered to the cultivated area
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -256,7 +256,7 @@ sync_with: pcr.en-US.md
 
 记录实际作物周期的栽培面积乘以占用时长；区分实质不同的土地利用分层。
 
-- 选定流: agriculture `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
+- 选定流: 农业用地占用 `e1d56d4e-afe3-4b92-bd51-0a21f75e50a8`
 - 流属性/单位: Area*time / ha*a
 - 数量规则: cultivated area multiplied by occupation duration
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -284,7 +284,7 @@ sync_with: pcr.en-US.md
 
 将所声明可采收物种和植物部位转移到共同采收与调制节点；排除留田残余和未采集损失。
 
-- 选定流: Cultivated target plant material (internal)
+- 选定流: 栽培目标植物材料（内部）
 - 流属性/单位: Mass / kg fresh matter
 - 数量规则: measured or mass-balanced harvestable material transferred
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -313,7 +313,7 @@ sync_with: pcr.en-US.md
 
 使用声明的 IPCC 层级和因子，根据采集的氮活动数据计算管理土壤直接 N2O。
 
-- 选定流: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流: 一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位: Mass / kg N2O
 - 数量规则: calculated direct N2O emitted to air
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -338,7 +338,7 @@ sync_with: pcr.en-US.md
 
 按氮源和施用事件记录或计算 NH3 挥发，并保留所用氮基准或物质基准。
 
-- 选定流: ammonia `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流: 氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位: Mass / kg NH3
 - 数量规则: measured or calculated NH3 emitted to air
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -363,7 +363,7 @@ sync_with: pcr.en-US.md
 
 按实际受纳水体子环境记录硝酸根淋失或径流，并保留报告基准为硝酸根还是硝态氮。
 
-- 选定流: Nitrate to reported water compartment
+- 选定流: 排放至所报告水介质的硝酸根
 - 流属性/单位: Mass / kg NO3-
 - 数量规则: measured or modelled nitrate loss by compartment
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -450,7 +450,7 @@ sync_with: pcr.en-US.md
 
 按类群、植物部位、来源生态系统和采集面积记录从所声明野生种群中的移除；不得绑定属性不兼容的通用生物量行。
 
-- 选定流: Declared wild plant resource withdrawal
+- 选定流: 声明的野生植物资源取用
 - 流属性/单位: Mass or count / kg or item
 - 数量规则: measured removed biomass or count from the wild source
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -478,7 +478,7 @@ sync_with: pcr.en-US.md
 
 仅将预期采集的物种和植物部位转移到调制节点；将伴生物料、来源地残余和未采集生物量分开。
 
-- 选定流: Wild-collected target plant material (internal)
+- 选定流: 野生采集的目标植物材料（内部）
 - 流属性/单位: Mass / kg fresh matter
 - 数量规则: measured collected target material transferred
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -505,7 +505,7 @@ sync_with: pcr.en-US.md
 
 记录从来源地移除并在来源生态系统之外处置的非产品植物物或杂物；留在原地的物料不是废物流。
 
-- 选定流: Incidental collection material
+- 选定流: 伴生采集材料
 - 流属性/单位: Mass / kg
 - 数量规则: measured incidental material crossing the node boundary as waste
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -537,7 +537,7 @@ sync_with: pcr.en-US.md
 
 每一份物料仅接收一个声明的内部路线状态，并保留物种、植物部位、来源路线、批次和鲜质量基准。
 
-- 选定流: Cultivated or wild-collected target material (internal)
+- 选定流: 栽培或野生采集的目标材料（内部）
 - 流属性/单位: Mass / kg fresh matter
 - 数量规则: measured internal transfer into conditioning
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -562,7 +562,7 @@ sync_with: pcr.en-US.md
 
 记录用于洗涤或湿法清洁的供水；纯干法路线不创建交换。
 
-- 选定流: Process water
+- 选定流: 过程水
 - 流属性/单位: Volume / m3
 - 数量规则: metered or calculated process water supplied
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -642,7 +642,7 @@ sync_with: pcr.en-US.md
 
 在生产者或采集交付口将合格物料记录为预期产出，并声明一个具体物种或类群、植物部位、预期用途以及鲜品或初级干燥状态。
 
-- 选定流: Plants or plant parts for declared perfumery, pharmacy, insecticidal, fungicidal or similar use
+- 选定流: 用于声明香料、药用、杀虫、杀菌或类似用途的植物及植物部分
 - 流属性/单位：质量 / kg
 
 原参考状态单位说明：Mass / kg at declared moisture basis
@@ -672,7 +672,7 @@ sync_with: pcr.en-US.md
 
 仅当存在有记录的接收方和有益用途时，才将不合格物料记录为预期产出；否则归类为废物。
 
-- 选定流: Downgraded plant material with declared destination
+- 选定流: 声明去向的降级植物材料
 - 流属性/单位: Mass / kg
 - 数量规则: measured mass transferred to documented alternate use
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -699,7 +699,7 @@ sync_with: pcr.en-US.md
 
 按废物去向记录丢弃的植物部分、杂物和拒收目标物料；不包括具有记录产品用途的降级物料。
 
-- 选定流: Plant residues and rejected material
+- 选定流: 植物残余物及拒收材料
 - 流属性/单位: Mass / kg
 - 数量规则: measured discarded solid mass by destination
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -724,7 +724,7 @@ sync_with: pcr.en-US.md
 
 发生洗涤或湿法处理时，按测量数量、组成和去向记录废水；纯干法路线不创建交换。
 
-- 选定流: Wastewater from plant-material washing or wet conditioning
+- 选定流: 植物材料清洗或湿法整备废水
 - 流属性/单位: Mass or volume / kg or m3
 - 数量规则: measured wastewater sent to the declared destination
 - 数值来源模式: 前景记录 (`foreground_record`)
@@ -751,7 +751,7 @@ sync_with: pcr.en-US.md
 
 根据进出物料质量和含水率测量计算初级干燥去除的水分；鲜品交付路线记录为零。
 
-- 选定流: water vapour `fe0acd60-3ddc-11dd-ac04-0050c2490048`
+- 选定流: 水蒸气 `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位: Mass / kg water
 - 数量规则：在闭合水质量控制体上确定有据蒸发量：进入材料的水 + 实际加水 + 期初水库存 - 全部合格品/联产品/拒收物/残体出口带水 - 单独液体排出/转出水 - 期末水库存。逐材料流采用实测湿质量乘湿基含水率，液体体积采用兼容密度；内部循环抵销。适用时保留实际降雨/复湿，总鲜干质量差并非全为水。各项和蒸发路径须独立有据；未解释或负平衡需调查，不能强记为水蒸气释放或截为零。水量与干物质损失及其他挥发物分开，按原匹配最终参考量归属并归一化一次。
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -776,7 +776,7 @@ sync_with: pcr.en-US.md
 
 按报告的粒径分级和受纳空气子环境记录测量或模型化植物粉尘；有粒径分级时不得绑定未指定粒径流。
 
-- 选定流: Plant particulate matter by reported particle-size fraction
+- 选定流: 按报告粒径组分区分的植物颗粒物
 - 流属性/单位: Mass / kg particulate matter
 - 数量规则: measured or modelled dust release after control
 - 数值来源模式: 计算值 (`calculated_value`)

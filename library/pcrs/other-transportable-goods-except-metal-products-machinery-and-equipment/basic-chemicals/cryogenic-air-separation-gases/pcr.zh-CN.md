@@ -24,7 +24,7 @@ O2/N2/Ar商品可含实测微量杂质，但不是人为混配的多气体混合
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.cryogenic-air-separation-gases |
-| classification_refs | CPC 3.0 34210；仅建议narrower范围，无已接受映射 |
+| classification_refs | CPC 3.0:34210；narrower范围限于本件定义的产品和路线；映射接受决策由classifications/mappings/另行维护。 |
 | covered_products | 同一低温空分装置在参考配置下分别规定的GOX、GAN、GAR、LOX、LIN和LAR |
 | excluded_products | 氢；回收CO2；PSA或膜法气体；其他稀有气体；混合气和溶液；非金属含氧化合物 |
 | representative_product | 厂门验收气态氧（GOX），同时保留同一空分装置完整联产品实物账 |

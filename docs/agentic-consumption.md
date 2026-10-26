@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: "2026-10-19"
-lastReviewedCommit: "abd18053c9ea2860e2c1107ac65ae17730b4f4eb"
-lastReviewedNote: "Reconciled Candy main compound-unit, collection and evidence repairs with the CPC 01/02/03 phase-one corrections, fresh cut-flower methodology, accepted mappings and lossless documentation delivery. Preserved candidate and unresolved-identity qualifications; regenerated projections and indexes. Full hosted qualification remains required."
+lastReviewedAt: 2026-10-24
+lastReviewedCommit: 6883ac60fba9106de1532c153241fb0076423a07
+lastReviewedNote: "PCR #148: reviewed provider-capacity repair after the immutable 0.4.8 export failed actual destination staging. Product 0.4.9 preserves canonical content, classification, reader compatibility, methodology and translation states, dependency resolutions and runtime pins. New builds store original downloads physically, bind exact Next navigation aliases and enforce destination allocation plus the existing reserve; native/browser and live alias acceptance remain mandatory. Existing ownership, routing, scientific approval and full qualification requirements are unchanged. Focused integrity tests and bounded browser diagnostics are evidence only for their scope; complete new-source qualification, independent review, provider admission, stable publication and exact workspace integration remain required."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

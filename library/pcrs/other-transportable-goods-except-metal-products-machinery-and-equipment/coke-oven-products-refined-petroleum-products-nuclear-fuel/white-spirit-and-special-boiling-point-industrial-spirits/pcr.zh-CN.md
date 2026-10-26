@@ -22,7 +22,7 @@ WHO/IPCS EHC 187 的 §2.1.1 与 §3.2 区分仅精馏、加氢脱硫、加氢�
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.white-spirit-and-special-boiling-point-industrial-spirits |
-| classification_refs | CPC 3.0 33350；建议 narrower 关系，待独立接受裁定。 |
+| classification_refs | CPC 3.0:33350；narrower范围限于本件定义的产品和路线；映射接受决策由classifications/mappings/另行维护。 |
 | covered_products | 精馏制造的散装 white spirit 和 SBP 石油溶剂混合物，声明实际运行的脱硫或加氢。 |
 | excluded_products | 白矿油；分离化学溶剂；合成异构烷烃；type 2 溶剂萃取；配制品；零售包装；通用原料或燃料牌号。 |
 | representative_product | 交付时经分析验收的单一散装石油溶剂 SKU。 |

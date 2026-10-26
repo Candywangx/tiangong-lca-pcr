@@ -562,30 +562,6 @@ Raw activity or stage basis: per batch and converted to 1,000 kg packed leaf.
   - Basis kind: Process output (`process_output`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Packaging materials (`cured_leaf_packaging_input`)
-
-Record actual wrap, carton, sack, liner, pallet, crate, strap, and reusable packaging separately. This parameterized set-level card has no fixed UUID.
-
-- Selected flow: Packaging functions for cured tobacco leaf
-- Flow property / unit: Mass or number of items / kg or item
-- Amount rule: measured packaging by material/reuse status, expanded to verified exchanges
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-Raw activity or stage basis: per 1,000 kg accepted packed leaf.
-
-- Normalization basis: per declared reference flow
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_grading_records`
-- Range: Provisional packaging screen
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 150
-  - Unit: kg packaging/1,000 kg packed leaf
-  - Basis: account for reuse over declared cycles
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
 ##### Waste flows
 
 ##### Elementary flows
@@ -776,7 +752,7 @@ Retain raw site, lot, cycle and stage quantities and denominators in each collec
 | `cp_harvest_records` | `tobacco_field_production` | green leaf, residue, reject | harvest ticket, scale, moisture, destination | field; date; mass; moisture; grade; residue; fate | weigh/reconcile each picking; Raw aggregation and attribution: separate accepted leaf and every residue fate | kg; percent; ha | each picking | full cycle | all fields | per declared reference flow | calibration; lot trace; moisture test |
 | `cp_field_emissions` | `tobacco_field_production` | emissions | nutrient, soil, weather, residue, model | N; residue N; soil; climate; application; drainage; factors; model | Within each compatible route/product/state, calculate attributable raw totals by field first. Aggregate final intensity = sum(attributable raw quantities) * declared reference quantity / sum(matched accepted final outputs). When source quantities are per-ha rates e_h and y_h, first recover raw totals as e_h*area and y_h*area; do not area-weight field totals again. A per-product intensity is weighted by its matched output, not area or an unweighted mean. Apply existing allocation once, preserve period/throughput and all source-unit conversions, and keep incompatible routes separate. | kg N; kg emission; ha | each event/cycle | full cycle | all fields | per declared reference flow | activity and factor provenance; model file |
 | `cp_curing_records` | `tobacco_leaf_curing` | leaf, energy, rejects, emissions | batch, scale, moisture, meter, barn log | batch; method; barn; input mass/moisture; carrier; energy; time; outputs | match each run to inputs/outputs/meters; Raw aggregation and attribution: reconcile mass; allocate shared services by measured driver | kg; percent; kWh; MJ; h | each batch/period | full curing period | all barns and curing sites | per declared reference flow | calibrated scale/meter; invoice; barn log |
-| `cp_grading_records` | `cured_leaf_grading_packing` | grades, packaging, rework, rejects | batch, scale, grade, issue, destination | batch; input; moisture; accepted; downgrade; rework; reject; packaging | reconcile grades/destinations; Raw aggregation and attribution: count rework once and close mass balance | kg; item; percent | each batch | full grading period | all grading and packing sites | per declared reference flow | calibration; grade sheet; package record |
+| `cp_grading_records` | `cured_leaf_grading_packing` | grades, packaging, rework, rejects | batch, scale, grade, issue, destination | batch; input; moisture; accepted; downgrade; rework; reject; packaging |reconcile grades/destinations; Raw aggregation and attribution: count rework once and close mass balance cured_leaf_packaging_input_specific_input: Mandatory input identification, not a selected exchange. Preserved collection scope: Record actual wrap, carton, sack, liner, pallet, crate, strap, and reusable packaging separately.  Raw activity or stage basis: per 1,000 kg accepted packed leaf. Preserve each actual input separately, including its actual material/species, physical state, native property/unit, measured quantity, period, destination and unique handover. Before dataset completeness, instantiate a physically specific exchange per actual identity and confirm a compatible UUID or retain its exact unresolved identity. Keep original throughput/normalization, allocation and reuse/stock obligations. A material/function class is not one exchange; do not copy the retired class-level range to components, invent a recipe or infer zero from missing records. Do not duplicate actual quantities or products already represented by another card. | kg; item; percent | each batch | full grading period | all grading and packing sites | per declared reference flow | calibration; grade sheet; package record |
 | `cp_declared_reference_handoff` | declared_reference_handoff | reference_product_at_declared_handoff | handoff weighing and acceptance records | route, terminal_output_row_id, product_state, gate, lot, net_mass_kg, moisture_basis, acceptance, tare | Use calibrated scales or traceable weighing records; reconcile the actual terminal-operation handoff lot, accepted net mass, product state and moisture; exclude packaging tare and do not sum preceding-stage quantities. | kg | each handoff lot | declared reporting period | declared handoff gate | per declared reference flow | calibration or weighing tickets, acceptance and lot traceability |
 | `cp_phase1_environment_coverage` | tobacco_field_production | managed environmental coverage by actual node | site/activity/method ledger | site and actual managed nodes; area; dated occupation intervals; co-users; establishment/immature history; actual prior/current land classes and transformation dates/areas; carbon-method coverage; upstream land coverage | Collect original records by the actual responsible production node and matched lot/period; retain provenance, method applicability and uncertainty. Reconcile with existing protocols and provider coverage, do not add duplicate events. Explicitly document inapplicability; absent evidence is a gap. | native activity units; kg N or substance; area/time as applicable | event and annual/lot reconciliation | matched production/cohort period | all actual managed-production nodes | apply applicable coverage calculations then final normalization once | original records, method worksheets and applicability evidence |
 

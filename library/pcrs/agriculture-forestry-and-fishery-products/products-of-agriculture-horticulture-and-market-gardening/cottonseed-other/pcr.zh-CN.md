@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | Reference amount | 1000 |
-| Reference product flow | Cottonseed, other, production mix at farm gate, fresh unprocessed |
+| Reference product flow | 其他棉籽，生产混合，农场门，新鲜未加工 |
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |

@@ -640,7 +640,7 @@ Tiangong 广义参考描述木材或其他木质纤维颗粒施胶压制，本 P
 | rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | volume_normalization | 所有清单行 | 各阶段标记交换的归一化量 = 归属时段数量 / Q_vol；Q_vol = 同时段同等级验收净板尺寸换算至 m3 后总和。环境分配前保留实测阶段总量。参考输出 = 1 m3。 | cp_output; cp_inputs; cp_recipe; cp_energy; cp_residues; cp_water; cp_air | 每参考流交换量 | brito-bagasse-2021 |
-| physical_balance | manufacturing | 配料账：干配料/树脂/添加剂输入 + 期初库存 = 干板 + 实际外运残余 + 转移锅炉的未施胶物料 + 固体/有机物损失 + 期末库存，并保留量化反应项。锅炉燃料及燃烧产物有独立元素碳账。转移两端同量且聚合时抵消；燃料氧化不当作无法解释的固体损失。水与碳平衡保留反应项。实物输出不得乘分配份额。 | cp_stage; cp_recipe; cp_water; cp_residues; cp_air | 未分配阶段及全厂平衡与残差不确定性 | brito-bagasse-2021 |
+| physical_balance | manufacturing | 负荷分配前分别核对完整物料质量及元素碳：期初存量+投入=期末存量+输出+报告残差，采用实际组成及全部相关边界穿越。化学反应不生成或消耗总元素碳。另对分子H2O和反应性木材/树脂组分采用期初存量+投入+有证据生成=期末存量+输出+有证据消耗+报告残差。仅量化实际固化/热变化/氧化路径及程度；相变属于转移而非反应。反应项为零须有无该反应的证据；程度未知保持未决，不假定完全固化、通用收率或平衡用排放。分开留存胶/添加剂、木碳和化石碳。内部转移仅在端点匹配时抵消；已包含反应产物的实测输出只计一次。保留不确定性，实物输出不得乘负荷份额。锅炉燃料、燃烧空气/氧气及燃烧产物另有工序账；燃料氧化不是无法解释的配料损失。 | cp_stage; cp_recipe; cp_water; cp_residues; cp_air | 未分配阶段及全厂平衡与残差不确定性 | brito-bagasse-2021 |
 | burden_allocation | manufacturing | 板材环境负荷 = 直接归属负荷 + 有依据份额 × 共享负荷。需要时的经济份额 = 板材收入 / 以匹配净数量/价格计算的全部有用产出收入；仅经济有用髓部纳入。分配后负荷除以 Q_vol，实物外运量保持不变。 | cp_inputs; cp_output; cp_residues; supplier allocation | 每参考流分配负荷及敏感性 | ec-ef-allocation-2021 |
 
 ### 数据质量要求
