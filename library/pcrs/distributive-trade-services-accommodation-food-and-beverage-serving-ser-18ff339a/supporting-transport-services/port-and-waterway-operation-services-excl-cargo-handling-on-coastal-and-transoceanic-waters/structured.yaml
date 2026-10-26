@@ -27,6 +27,10 @@ system_boundary:
       rule: "Separate customer vessel engines, cargo equipment, rail/road and port-owned maintenance/light vessels by actual activity and ownership. EPA source-sector guidance supports separating sources; it does not assign all harbor emissions to a port service. Meter shore supply and water/fuel delivery separately from port overhead."
       source_ids:
         - epa-port-sources
+    - rule_id: boundary_electricity
+      applies_to: "foreground_system_boundary"
+      rule: "Electricity input cards cover only actual external supply at the declared foreground boundary, with current form, voltage and delivery losses specified. For onsite generation represented within port_operation, keep generated electricity, conversion and storage transfers in an internal ledger; include actual fuel, direct emissions, generating/conversion/storage assets, maintenance and wastes once. If generation is represented by a separate foreground subprocess, link its measured electricity output internally once and retain those burdens in that subprocess; do not also add a complete external-electricity dataset for the same energy. Check whether complete facility/aid or supplier inventories already include solar modules, batteries, converters or generators before adding separate component cards; add only actual uncovered components. Solar generation is not assumed burden-free."
+      source_ids: []
     - rule_id: boundary_dredging
       applies_to: "foreground_system_boundary"
       rule: "Distinguish initial capital works and actual navigation maintenance. Characterize each dredged stream and actual transport, containment, treatment/reuse/placement destination before modelling its fate. EPA testing guidance supports characterization and route scrutiny, not assumed clean status or universal legal approval."
@@ -111,9 +115,9 @@ process_inventory:
           name: "Electricity, alternating current, marine-facility supply"
           flow_type: "product"
           property_unit: "Energy / kWh"
-          description: "Meter actual berth/terminal lighting, controls, passenger facilities, pumps and operator support. Separate electricity supplied to customer vessels and excluded cargo-handling equipment."
+          description: "Conditional on externally supplied alternating-current electricity crossing the declared foreground boundary for actual berth/terminal lighting, controls, passenger facilities, pumps and operator support. Record the delivery meter, supply voltage and supplier coverage. Separate customer shore supply, excluded cargo-handling equipment and internally generated electricity; equipment consumption alone is not an external input."
           amount:
-            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            expression: "Attributable measured external AC supply at the declared delivery interface per reference flow; cp_energy."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -129,9 +133,9 @@ process_inventory:
           name: "Electricity, alternating current, marine-facility supply"
           flow_type: "product"
           property_unit: "Energy / kWh"
-          description: "Conditional on actual lock gates, navigation weirs/sluices, boat lifts or water-recovery pumps; measure specific cycles/head/duty and avoid overlap with terminal_power."
+          description: "Conditional on externally supplied alternating-current electricity crossing the declared foreground boundary for actual lock gates, navigation weirs/sluices, boat lifts or water-recovery pumps. Record the delivery interface and voltage, measure specific cycles/head/duty and avoid overlap with terminal_power. Internally generated electricity is reconciled in the electrical ledger, not added as purchased supply."
           amount:
-            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            expression: "Attributable measured external AC supply at the declared delivery interface per reference flow; cp_energy."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -147,9 +151,9 @@ process_inventory:
           name: "Electricity, alternating current, marine-facility supply"
           flow_type: "product"
           property_unit: "Energy / kWh"
-          description: "Conditional on actual lighthouse, buoy or light-vessel electrical operation; identify power source, duty, battery losses and coverage interval. Onsite solar equipment burdens are not assumed zero."
+          description: "Conditional only on externally supplied alternating-current electricity crossing the declared foreground boundary for actual lighthouse, buoy or light-vessel operation. Record equipment model, AC/DC configuration, delivery voltage/meter, duty and coverage interval. External DC delivery uses aid_dc_power; onsite solar/generator electricity and battery discharge remain internal flows. Record actual conversion/storage losses at their measured boundary without duplicating them."
           amount:
-            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            expression: "Attributable measured external AC supply at the declared delivery interface per reference flow; cp_energy."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -158,7 +162,27 @@ process_inventory:
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_energy
-              source_ids: []
+              source_ids:
+                - ito-aid-power
+            ranges: []
+        - row_id: aid_dc_power
+          role: "Marine navigation-aid external direct-current electricity"
+          name: "Electricity, direct current, marine-navigation-aid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional only on externally supplied direct-current electricity crossing the declared foreground boundary at the identified navigation-aid delivery interface. Record equipment model, source, DC voltage, delivery meter, duty and actual conversion/storage boundary. This row excludes onsite photovoltaic generation, internal AC-to-DC conversion and battery discharge; retain their actual assets, maintenance and losses once under boundary_electricity. Different delivery voltages or incompatible supplier scopes require separate specific exchanges."
+          amount:
+            expression: "Attributable measured external DC supply at the declared delivery interface per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ito-aid-power
             ranges: []
         - row_id: diesel
           role: "Port-owned operation diesel"
@@ -650,16 +674,16 @@ dataset_production:
       quality_evidence: "berth/lock/aid logs; timing; coverage; acceptance; population reconciliation"
     - protocol_id: cp_energy
       process_id: "port_operation"
-      flow_role: "terminal_power; lock_power; aid_power"
-      record_type: "End-use electrical ledger"
-      raw_fields: "meter; kWh; supply/voltage; terminal loads; gate/lift/pump cycles/head; aid duty; standby; charging/battery loss; shore delivery; provider coverage"
-      collection_method: "Submeter actual activities or reconcile measured equipment duty with total meters. Separate customer shore supply, cargo equipment and actual provider-covered energy; do not estimate lock energy from ship count alone."
+      flow_role: "terminal_power; lock_power; aid_power; aid_dc_power"
+      record_type: "External supply and internal electricity balance ledger"
+      raw_fields: "meter/interface ID; source/supplier; equipment model; AC/DC form and voltage; external delivered kWh; onsite generator/PV output; terminal/lock/aid end-use kWh; cycles/head/duty and standby; conversion/charging/discharging losses; opening/closing stored energy; customer/cargo/export kWh; supplier/asset coverage; stored-energy source and charge-period IDs; attributed upstream supply inventory"
+      collection_method: "Meter external delivery separately from onsite generation and end uses. Reconcile all terms at documented consistent interfaces and periods under electricity_balance; distinguish AC and DC and retain actual conversion/storage losses without recounting metered losses. Use equipment load/cycle evidence to check meters, not to turn internal generation into purchased supply. Separate customer shore supply, cargo equipment and supplier-covered energy; do not estimate lock energy from ship count alone."
       unit: "kWh"
       frequency: "each operation/meter interval"
       temporal_coverage: "all included operation and standby"
       site_scope: "actual marine facilities/aid sites"
       aggregation_rule: "per reference flow"
-      quality_evidence: "calibrated meters; duty/cycle logs; shore/provider reconciliation"
+      quality_evidence: "calibrated meters; delivery/single-line diagram; equipment and voltage records; duty/cycle logs; storage and loss balance; supplier coverage reconciliation"
     - protocol_id: cp_fuel
       process_id: "port_operation"
       flow_role: "diesel"
@@ -688,8 +712,8 @@ dataset_production:
       process_id: "port_operation"
       flow_role: "quay_share; terminal_share; lock_share; lift_share; weir_share; sluice_share; lighthouse_share; buoy_share; lightship_share"
       record_type: "Persistent marine asset ledger"
-      raw_fields: "actual asset ID/type/geometry; m/m2/items; construction/manufacture; initial capital dredging; supported whole-life utilization; actual navigation/other-purpose share; cumulative prior fraction; period fraction; renewals"
-      collection_method: "Match real assets to upstream inventories and supported whole-life service denominators. Keep initial and maintenance boundaries distinct, allocate only actual navigation service share and conserve cumulative fractions across all periods/users. Unknown life/denominator remains under review."
+      raw_fields: "actual asset ID/type/geometry; m/m2/items; construction/manufacture; initial capital dredging; supported whole-life utilization; actual navigation/other-purpose share; cumulative prior fraction; period fraction; renewals; included generation/storage/conversion components and replacement scope"
+      collection_method: "Match real assets to upstream inventories and supported whole-life service denominators. Keep initial and maintenance boundaries distinct, allocate only actual navigation service share and conserve cumulative fractions across all periods/users. Unknown life/denominator remains under review. Identify whether complete assets already include PV modules, batteries, converters or generators; add actual uncovered components separately with supported life/use shares, without duplicating included manufacture or replacements."
       unit: "m; m2; Item(s)"
       frequency: "each allocation and asset/maintenance update"
       temporal_coverage: "supported whole life and declared observation interval"
@@ -753,6 +777,16 @@ dataset_production:
         - "attributable measured totals"
       output: "exchange amount per reference flow"
       source_ids: []
+    - id: electricity_balance
+      applies_to: "terminal_power; lock_power; aid_power; aid_dc_power; diesel"
+      rule: "For the same declared interval and metering boundary, reconcile external electrical deliveries + onsite generation output = included end-use electricity + customer/excluded/export deliveries + conversion/distribution/storage losses + closing stored energy - opening stored energy. Loss terms contain only losses not already included in another measured term. Retain signed storage change, meter uncertainty and unexplained differences; do not invent loss factors. Allocate actual external supply and generation burdens to the supported service share, then normalize once through block_attribution. Generated electricity and storage discharge are internal transfers, not extra external inputs. Carry documented energy-source identity and upstream burdens of opening and closing stored electricity through the same service/period allocation; do not discard opening-stock burdens or assign all closing-stock burdens to the current service."
+      inputs:
+        - cp_energy
+        - cp_fuel
+        - cp_assets
+        - cp_activity
+      output: "Reconciled external exchanges and internal energy ledger"
+      source_ids: []
     - id: maintenance_attribution
       applies_to: "dredging; dredged_sand; copper_silt"
       rule: "Allocate actual campaign quantities to the documented channel/berth service interval/population benefited. Preserve material identity, actual volume/dry-wet mass conversion and destination; do not repeat initial capital work each period."
@@ -783,6 +817,10 @@ dataset_production:
       applies_to: "port_block"
       requirement: "Require one exact function, geography, extent, duration/cycle and completed population; unlike berth/passenger/lock/aid blocks cannot be pooled by count."
       evidence: "cp_activity"
+    - id: quality_electricity
+      applies_to: "terminal_power; lock_power; aid_power; aid_dc_power; diesel"
+      requirement: "Require actual external delivery interface, AC/DC form, voltage and source, reconciled internal generation/storage and explicit supplier/whole-asset component coverage. Unknown conversion losses or generation assets are evidence gaps, not zero burdens."
+      evidence: "cp_energy; cp_fuel; cp_assets"
     - id: quality_sediment
       applies_to: "dredging; dredged_sand; copper_silt"
       requirement: "Characterize actual sediment by source, grain size, contamination, wet/dry basis and destination. Uncharacterized sediment is not assumed clean, reusable or automatically harmless."
@@ -814,6 +852,10 @@ validation_rules:
     applies_to: "foreground_dataset_conformance"
     rule: "Separate port-owned fuel, customer vessel exhaust, shore-energy delivery and upstream grid/provider emissions. Check hydraulic sources/returns, atomic flows, life denominators and cumulative shares at most one; retain identity/evidence/ecological coverage gaps explicitly."
     source_ids: []
+  - rule_id: validate_electricity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require AC and DC exchanges to match actual external delivery, and reconcile generation, storage, losses and end uses under electricity_balance. Reject internal generation or battery discharge recorded as an additional purchased-electricity input, repeated supplier/generation fuel or emissions, and repeated whole-asset/component burdens. Keep unsupported identity, loss or asset evidence explicit."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "coastal_port_waterway_service"
   downstream_use: "secondary_dataset; background_dataset"
@@ -835,9 +877,13 @@ data_sources:
     type: "official_guidance"
     reference: "US EPA Dredged Material Testing and Evaluation, current web page read 2026-10-23. https://www.epa.gov/marine-protection-permitting/dredged-material-testing-and-evaluation-permitting-under-marine"
     used_for: "Sediment contamination characterization and destination-specific evaluation rationale; US permitting context is not global approval or an emission/reuse factor"
+  - id: "ito-aid-power"
+    type: "literature"
+    reference: "ITO Navaids, IML 85 AL LED Three mile LED beacon, manufacturer technical specifications, read 2026-10-26. https://www.itonavaids.com/products/aton/marine-lanterns/three-mile-led-beacon/iml-85-al-led"
+    used_for: "Example showing that navigation aids have distinct DC and optional AC configurations; supports recording the actual interface. No catalogue voltage, power, lifetime, equipment mass or loss factor is adopted as a PCR default. Electricity boundary and allocation rules are authored requirements, not manufacturer LCA rules."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:fac21fc80be6641ed0e18b1da860977248ee94ab966a4a0d3ce32140e9e07ca5"
+  source_sha256: "sha256:43d3834c3fa6a2cdf9dc2097249aa51dc2a825f29ac726d45da1044c57a06311"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6715"
@@ -848,10 +894,10 @@ normative_context:
           line: 65
           column: 1
         end:
-          offset: 9220
-          line: 85
+          offset: 10141
+          line: 86
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Existing coastal/oceanic facility and customer vessel/passengers at the declared interface; actual port assets/utility upstream burdens are retained |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Declared coastal/transoceanic port/waterway operation function excluding handling/storage/pilotage/tug berthing |\n| recursive_input_rule | Same-function subcontracted support enters once with exact extent and supplier coverage; remove overlapping port-owned operations/assets |\n| upstream_dataset_requirement | Actual energy/materials, marine facility/aid construction, maintenance/dredging, sediment transport/treatment/placement and waste inventories |\n| disclosure | Actual function/extent, owners/providers, customer vessel and shore-energy split, capital/maintenance dredging, sediment status/destination, hydraulic balance and missing evidence |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_port | Include actual facility power, hydraulic operations, lighting, navigation aids, passenger support, drainage, standby and attributable cleaning/maintenance. Select actual routes; a buoy does not inherit a whole passenger terminal. | un-cpc-coastal-port |\n| boundary_vessel | Separate customer vessel engines, cargo equipment, rail/road and port-owned maintenance/light vessels by actual activity and ownership. EPA source-sector guidance supports separating sources; it does not assign all harbor emissions to a port service. Meter shore supply and water/fuel delivery separately from port overhead. | epa-port-sources |\n| boundary_dredging | Distinguish initial capital works and actual navigation maintenance. Characterize each dredged stream and actual transport, containment, treatment/reuse/placement destination before modelling its fate. EPA testing guidance supports characterization and route scrutiny, not assumed clean status or universal legal approval. | epa-sediment |\n| boundary_releases | Screen actual dredging disturbance, contaminant mobilization, oil leaks, air emissions and water returns. Transferred sediment/waste is not automatically an elementary emission; sediment total contaminant content is not released mass. Habitat/seabed changes, turbidity and underwater noise require explicit site evidence and an appropriate impact method; chemical-flow cards alone cannot establish complete ecological coverage. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Existing coastal/oceanic facility and customer vessel/passengers at the declared interface; actual port assets/utility upstream burdens are retained |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Declared coastal/transoceanic port/waterway operation function excluding handling/storage/pilotage/tug berthing |\n| recursive_input_rule | Same-function subcontracted support enters once with exact extent and supplier coverage; remove overlapping port-owned operations/assets |\n| upstream_dataset_requirement | Actual energy/materials, marine facility/aid construction, maintenance/dredging, sediment transport/treatment/placement and waste inventories |\n| disclosure | Actual function/extent, owners/providers, customer vessel and shore-energy split, capital/maintenance dredging, sediment status/destination, hydraulic balance and missing evidence |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_port | Include actual facility power, hydraulic operations, lighting, navigation aids, passenger support, drainage, standby and attributable cleaning/maintenance. Select actual routes; a buoy does not inherit a whole passenger terminal. | un-cpc-coastal-port |\n| boundary_vessel | Separate customer vessel engines, cargo equipment, rail/road and port-owned maintenance/light vessels by actual activity and ownership. EPA source-sector guidance supports separating sources; it does not assign all harbor emissions to a port service. Meter shore supply and water/fuel delivery separately from port overhead. | epa-port-sources |\n| boundary_electricity | Electricity input cards cover only actual external supply at the declared foreground boundary, with current form, voltage and delivery losses specified. For onsite generation represented within port_operation, keep generated electricity, conversion and storage transfers in an internal ledger; include actual fuel, direct emissions, generating/conversion/storage assets, maintenance and wastes once. If generation is represented by a separate foreground subprocess, link its measured electricity output internally once and retain those burdens in that subprocess; do not also add a complete external-electricity dataset for the same energy. Check whether complete facility/aid or supplier inventories already include solar modules, batteries, converters or generators before adding separate component cards; add only actual uncovered components. Solar generation is not assumed burden-free. |  |\n| boundary_dredging | Distinguish initial capital works and actual navigation maintenance. Characterize each dredged stream and actual transport, containment, treatment/reuse/placement destination before modelling its fate. EPA testing guidance supports characterization and route scrutiny, not assumed clean status or universal legal approval. | epa-sediment |\n| boundary_releases | Screen actual dredging disturbance, contaminant mobilization, oil leaks, air emissions and water returns. Transferred sediment/waste is not automatically an elementary emission; sediment total contaminant content is not released mass. Habitat/seabed changes, turbidity and underwater noise require explicit site evidence and an appropriate impact method; chemical-flow cards alone cannot establish complete ecological coverage. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -888,16 +934,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_28572"
+    - unit_id: "normative_31496"
       family: "allocation"
       span:
         start:
-          offset: 28572
-          line: 531
+          offset: 31496
+          line: 547
           column: 1
         end:
-          offset: 30236
-          line: 540
+          offset: 33160
+          line: 556
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_function | Subdivide berth, terminal, hydraulic and aid functions before attribution. Use actual berth length-time/vessel dimensions, passenger-facility use, lock head/cycle/water activity or aid coverage/availability as causal drivers; retain failed cycles and standby. Unlike functions/counts are not pooled by fees or ship calls. |  |\n| allocate_assets | Maintain persistent quay/terminal/lock/lift/weir/sluice/aid asset ledgers with supported whole-life service denominators. Allocate only actual navigation shares of multipurpose structures; no whole dam or whole aid fleet per vessel. Observed-period accounting distributes only the attributed period share; lifetime fractions across all users/periods cannot exceed one or reset annually. Unknown life/denominator requires review and sensitivity. |  |\n| allocate_dredging | Attribute actual maintenance campaign by the supported channel/berth service population and interval benefited, with actual volume/material/destination. Initial capital dredging belongs to construction and cannot be repeated each maintenance period. Multipurpose dredging and reusable sediment require traced shares and actual routes; no automatic avoided-disposal or virgin-material credit. |  |\n| allocate_scope | A supplier inventory replaces covered operations/assets once. Customer fuel, shore electricity sold as energy, cargo/passengers and navigation fees are not co-products of this support count. Split handling/storage/pilot/tug services and other water-management uses with transparent boundary reconciliation. |  |\n\n"
       headings:
@@ -916,12 +962,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 28572
-              line: 531
+              offset: 31496
+              line: 547
               column: 1
             end:
-              offset: 28612
-              line: 531
+              offset: 31536
+              line: 547
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -936,18 +982,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39940"
+    - unit_id: "normative_45338"
       family: "validation"
       span:
         start:
-          offset: 39940
-          line: 574
+          offset: 45338
+          line: 592
           column: 1
         end:
-          offset: 40980
-          line: 583
+          offset: 46808
+          line: 602
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_block | Require unique port_block output equal to 1 Item(s) with one physically defined function and actual extent; reject generic port-call or fee equivalence across service families. |  |\n| validate_scope | Verify coastal/transoceanic function, customer/provider/owner interface and exclusions for cargo, storage, pilotage/tug berthing and inland-waterway services. | un-cpc-coastal-port |\n| validate_sediment | Reconcile dredging campaign volumes/masses, tests, transport and actual destinations once; reject assumed clean material, omitted placement/treatment and conversion of total contaminant content directly to release. | epa-sediment |\n| validate_sources_assets | Separate port-owned fuel, customer vessel exhaust, shore-energy delivery and upstream grid/provider emissions. Check hydraulic sources/returns, atomic flows, life denominators and cumulative shares at most one; retain identity/evidence/ecological coverage gaps explicitly. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_block | Require unique port_block output equal to 1 Item(s) with one physically defined function and actual extent; reject generic port-call or fee equivalence across service families. |  |\n| validate_scope | Verify coastal/transoceanic function, customer/provider/owner interface and exclusions for cargo, storage, pilotage/tug berthing and inland-waterway services. | un-cpc-coastal-port |\n| validate_sediment | Reconcile dredging campaign volumes/masses, tests, transport and actual destinations once; reject assumed clean material, omitted placement/treatment and conversion of total contaminant content directly to release. | epa-sediment |\n| validate_sources_assets | Separate port-owned fuel, customer vessel exhaust, shore-energy delivery and upstream grid/provider emissions. Check hydraulic sources/returns, atomic flows, life denominators and cumulative shares at most one; retain identity/evidence/ecological coverage gaps explicitly. |  |\n| validate_electricity | Require AC and DC exchanges to match actual external delivery, and reconcile generation, storage, losses and end uses under electricity_balance. Reject internal generation or battery discharge recorded as an additional purchased-electricity input, repeated supplier/generation fuel or emissions, and repeated whole-asset/component burdens. Keep unsupported identity, loss or asset evidence explicit. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -964,12 +1010,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39940
-              line: 574
+              offset: 45338
+              line: 592
               column: 1
             end:
-              offset: 39962
-              line: 574
+              offset: 45360
+              line: 592
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1012,7 +1058,7 @@ normative_context:
           line: 81
           column: 366
     - pointer: "/system_boundary/rules/2"
-      rule_id: "boundary_dredging"
+      rule_id: "boundary_electricity"
       identity_kind: "explicit"
       unit_id: "normative_6715"
       source_span:
@@ -1021,126 +1067,152 @@ normative_context:
           line: 82
           column: 1
         end:
-          offset: 8763
+          offset: 9322
           line: 82
-          column: 362
+          column: 921
     - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_dredging"
+      identity_kind: "explicit"
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 9323
+          line: 83
+          column: 1
+        end:
+          offset: 9684
+          line: 83
+          column: 362
+    - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_releases"
       identity_kind: "explicit"
       unit_id: "normative_6715"
       source_span:
         start:
-          offset: 8764
-          line: 83
+          offset: 9685
+          line: 84
           column: 1
         end:
-          offset: 9218
-          line: 83
+          offset: 10139
+          line: 84
           column: 455
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_function"
       identity_kind: "explicit"
-      unit_id: "normative_28572"
+      unit_id: "normative_31496"
       source_span:
         start:
-          offset: 28666
-          line: 535
+          offset: 31590
+          line: 551
           column: 1
         end:
-          offset: 29014
-          line: 535
+          offset: 31938
+          line: 551
           column: 349
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_assets"
       identity_kind: "explicit"
-      unit_id: "normative_28572"
+      unit_id: "normative_31496"
       source_span:
         start:
-          offset: 29015
-          line: 536
+          offset: 31939
+          line: 552
           column: 1
         end:
-          offset: 29484
-          line: 536
+          offset: 32408
+          line: 552
           column: 470
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_dredging"
       identity_kind: "explicit"
-      unit_id: "normative_28572"
+      unit_id: "normative_31496"
       source_span:
         start:
-          offset: 29485
-          line: 537
+          offset: 32409
+          line: 553
           column: 1
         end:
-          offset: 29903
-          line: 537
+          offset: 32827
+          line: 553
           column: 419
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_28572"
+      unit_id: "normative_31496"
       source_span:
         start:
-          offset: 29904
-          line: 538
+          offset: 32828
+          line: 554
           column: 1
         end:
-          offset: 30234
-          line: 538
+          offset: 33158
+          line: 554
           column: 331
     - pointer: "/validation_rules/0"
       rule_id: "validate_block"
       identity_kind: "explicit"
-      unit_id: "normative_39940"
+      unit_id: "normative_45338"
       source_span:
         start:
-          offset: 40016
-          line: 578
+          offset: 45414
+          line: 596
           column: 1
         end:
-          offset: 40216
-          line: 578
+          offset: 45614
+          line: 596
           column: 201
     - pointer: "/validation_rules/1"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_39940"
+      unit_id: "normative_45338"
       source_span:
         start:
-          offset: 40217
-          line: 579
+          offset: 45615
+          line: 597
           column: 1
         end:
-          offset: 40418
-          line: 579
+          offset: 45816
+          line: 597
           column: 202
     - pointer: "/validation_rules/2"
       rule_id: "validate_sediment"
       identity_kind: "explicit"
-      unit_id: "normative_39940"
+      unit_id: "normative_45338"
       source_span:
         start:
-          offset: 40419
-          line: 580
+          offset: 45817
+          line: 598
           column: 1
         end:
-          offset: 40672
-          line: 580
+          offset: 46070
+          line: 598
           column: 254
     - pointer: "/validation_rules/3"
       rule_id: "validate_sources_assets"
       identity_kind: "explicit"
-      unit_id: "normative_39940"
+      unit_id: "normative_45338"
       source_span:
         start:
-          offset: 40673
-          line: 581
+          offset: 46071
+          line: 599
           column: 1
         end:
-          offset: 40978
-          line: 581
+          offset: 46376
+          line: 599
           column: 306
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_electricity"
+      identity_kind: "explicit"
+      unit_id: "normative_45338"
+      source_span:
+        start:
+          offset: 46377
+          line: 600
+          column: 1
+        end:
+          offset: 46806
+          line: 600
+          column: 430
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1168,27 +1240,27 @@ normative_context:
           column: 197
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_28572"
+      unit_id: "normative_31496"
       source_span:
         start:
-          offset: 28572
-          line: 531
+          offset: 31496
+          line: 547
           column: 1
         end:
-          offset: 28612
-          line: 531
+          offset: 31536
+          line: 547
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39940"
+      unit_id: "normative_45338"
       source_span:
         start:
-          offset: 39940
-          line: 574
+          offset: 45338
+          line: 592
           column: 1
         end:
-          offset: 39962
-          line: 574
+          offset: 45360
+          line: 592
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1197,5 +1269,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:fac21fc80be6641ed0e18b1da860977248ee94ab966a4a0d3ce32140e9e07ca5"
-  generated_content_sha256: "sha256:4e03599308c412dd54e6a73a57b55f528d02720c846e2f723f64d066f067a452"
+    sha256: "sha256:43d3834c3fa6a2cdf9dc2097249aa51dc2a825f29ac726d45da1044c57a06311"
+  generated_content_sha256: "sha256:8fdd6fc4981bed7c98c67f8546c36941ffca2ac132bd21b5b613a8762ac2ddcc"

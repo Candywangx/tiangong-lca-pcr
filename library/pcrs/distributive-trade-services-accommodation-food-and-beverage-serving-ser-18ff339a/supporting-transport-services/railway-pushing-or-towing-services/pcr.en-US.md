@@ -461,6 +461,7 @@ Collect size-resolved combustion particulate mass; distinguish brake/rail wear a
 | `validate_energy` | Require fuel/electricity balances, route-specific conditions and approach/return/idle inclusion with shares matching fleet totals; reject grid energy invented for diesel-electric transmission. |  |
 | `validate_species` | Require atomic inputs, wastes and elementary species; reject NOx total substituted as NO/NO2 or total PM duplicated with fine fractions; preserve actual data gaps. |  |
 | `validate_boundary` | Disclose locomotive/track/maintenance/waste-treatment and provider coverage; partial foreground metering cannot claim complete upstream coverage or methodology approval. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

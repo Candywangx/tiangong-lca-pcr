@@ -112,7 +112,7 @@ Conditional on actual grid/external electricity for the declared liquefaction ro
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_liquefaction`
 
 ###### Natural gas, purchased liquefaction fuel (`liq_fuelgas`)
 
@@ -126,7 +126,7 @@ Conditional on actual externally purchased gas burned by the service operator. I
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_liquefaction`
 
 ###### Steam, purchased liquefaction-process heat (`liq_steam`)
 
@@ -140,7 +140,7 @@ Conditional on actual external steam for feed conditioning/regeneration or proce
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_liquefaction`
 
 ###### Methane, refrigerant makeup (`ref_methane`)
 
@@ -224,7 +224,7 @@ Conditional on actual MDEA sweetening necessary within the agreed liquefaction-s
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_chemical`
+- Collection protocol: `cp_chemical_liquefaction`
 
 ###### Zeolite molecular sieve 3A (`sieve`)
 
@@ -238,7 +238,7 @@ Conditional on actual specified dehydration medium; measure actual supply/replac
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_chemical`
+- Collection protocol: `cp_chemical_liquefaction`
 
 ###### Sulfur-impregnated activated carbon, mercury removal (`mercury_carbon`)
 
@@ -252,7 +252,7 @@ Conditional on actual feed contaminant evidence and this identified removal medi
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_chemical`
+- Collection protocol: `cp_chemical_liquefaction`
 
 ###### Configured natural-gas liquefaction train (`liq_train`)
 
@@ -266,7 +266,7 @@ Identify actual compression/refrigeration/conditioning configuration, constructi
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_liquefaction`
 
 ### Process: Natural-gas regasification (`regasification`)
 
@@ -286,7 +286,7 @@ Conditional on actual pumping, compression, recondenser, vaporizer auxiliaries a
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_regasification`
 
 ###### Natural gas, purchased regasification fuel (`regas_fuelgas`)
 
@@ -300,7 +300,7 @@ Conditional on actual external fuel-gas combustion, including the real SCV or au
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_regasification`
 
 ###### Steam, purchased regasification heat (`regas_steam`)
 
@@ -314,7 +314,7 @@ Conditional on actual purchased steam heat; retain supply/return enthalpy and co
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_regasification`
 
 ###### Heat, purchased hot-water regasification supply (`regas_heat`)
 
@@ -328,7 +328,7 @@ Conditional on actual external hot-water heat delivery; measure inlet/outlet tem
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_regasification`
 
 ###### Configured natural-gas regasification train (`regas_train`)
 
@@ -342,7 +342,7 @@ Identify actual ORV/SCV/air/shell-and-tube or intermediate-fluid configuration, 
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_regasification`
 
 ##### Elementary flows
 
@@ -358,7 +358,7 @@ Conditional on actual direct ORV/coastal seawater withdrawal. Meter exact intake
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_water`
+- Collection protocol: `cp_water_regasification`
 
 ###### Water, river, regasification intake (`regas_riverwater`)
 
@@ -372,7 +372,7 @@ Conditional on actual direct freshwater river withdrawal; retain source-specific
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_water`
+- Collection protocol: `cp_water_regasification`
 
 #### Outputs
 
@@ -390,7 +390,7 @@ Conditional on actual return to the ocean; measure actual quantity, source/recei
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_water`
+- Collection protocol: `cp_water_regasification`
 
 ###### Water, river, regasification return (`regas_river_return`)
 
@@ -404,7 +404,7 @@ Conditional on actual return to the identified freshwater river; preserve receiv
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_water`
+- Collection protocol: `cp_water_regasification`
 
 ### Process: Actual utilities, BOG, maintenance and release management (`management`)
 
@@ -424,7 +424,7 @@ Conditional on actual purchased process/boiler make-up/wash/sanitary water, spec
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_water`
+- Collection protocol: `cp_water_management`
 
 ###### Sodium hypochlorite, water-treatment active chemical (`hypochlorite`)
 
@@ -438,7 +438,7 @@ Conditional on this actual water-treatment chemical. Measure active substance, s
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_chemical`
+- Collection protocol: `cp_chemical_management`
 
 ###### Nitrogen, compressed, process purge (`nitrogen_purge`)
 
@@ -452,7 +452,7 @@ Conditional on actual process/inerting gas use, with pressure and delivered mass
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_chemical`
+- Collection protocol: `cp_chemical_management`
 
 ###### Mineral compressor lubricating oil (`lubricant`)
 
@@ -466,7 +466,7 @@ Conditional on actual compressor oil grade and service; measure consumption/repl
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_chemical`
+- Collection protocol: `cp_chemical_management`
 
 ###### Configured process-buffer LNG tank (`buffer_tank`)
 
@@ -480,7 +480,7 @@ Conditional on buffer/turnover genuinely necessary for the declared phase-conver
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_management`
 
 #### Outputs
 
@@ -735,12 +735,17 @@ One kg of qualified actual net gas mass delivered in the declared converted stat
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_mass | completion; management | service_output | Composition-resolved custody and conversion ledger | transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty | Use calibrated inlet/outlet mass metering or traceable volume conversion with actual composition, temperature, pressure and density/equation-of-state evidence. Reconcile customer feed plus actual external gas and opening inventory against qualified delivered mass, ending inventory, fuel diversion, separately exported gas/co-output and individual vent/flare/fugitive losses. Internal BOG return/recondensation and refrigerant loops cancel as internal transfers, not additional purchases/production. Measure actual qualifying net outlet only, correcting off-spec/rework/returned material and avoiding repeated throughput count. Retain component and carbon balances, actual buffer custody time and uncertainties. | kg | continuous/batch meters and each custody period | whole actual conversion/delivery period including startups and stock changes | actual selected inlet/outlet and buffer gates | per reference flow | calibrated mass/quality meters; gas analyses; stock/fuel/BOG records; component balance |
-| cp_energy | liquefaction; regasification | liq_power; liq_fuelgas; liq_steam; regas_power; regas_fuelgas; regas_steam; regas_heat | Actual source/end-use utility ledger | route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; charging/provider scope; actual qualified outlet mass | Meter actual external electricity, each external fuel, steam and heat separately. Reconcile source-specific internal-fuel combustion against cp_mass without duplicate purchase; include actual generation efficiency/losses once. Measure real thermal supply/return enthalpy, actual throughput and all attributable operating phases; no specific-energy or SCV/ORV default. | kg; kWh; MJ | each meter/phase and reconciled observation period | all actual route utilities and attributable downtime | actual compression/refrigeration/vaporizer and supplies | per reference flow | meters; actual fuel/BOG/stock balance; state data; provider overlap; allocation |
+| cp_mass | completion | service_output | Composition-resolved custody and conversion ledger | transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty; common source-record and custody-transfer IDs | Use calibrated inlet/outlet mass metering or traceable volume conversion with actual composition, temperature, pressure and density/equation-of-state evidence. Reconcile customer feed plus actual external gas and opening inventory against qualified delivered mass, ending inventory, fuel diversion, separately exported gas/co-output and individual vent/flare/fugitive losses. Internal BOG return/recondensation and refrigerant loops cancel as internal transfers, not additional purchases/production. Measure actual qualifying net outlet only, correcting off-spec/rework/returned material and avoiding repeated throughput count. Retain component and carbon balances, actual buffer custody time and uncertainties. Owned by completion as the single route-wide custody/component reconciliation ledger. Source records from the selected route and management use common record/transfer IDs and reconcile once against cp_mass; this ledger creates neither a management output nor another service denominator. | kg | continuous/batch meters and each custody period | whole actual conversion/delivery period including startups and stock changes | actual selected inlet/outlet and buffer gates | per reference flow | calibrated mass/quality meters; gas analyses; stock/fuel/BOG records; component balance |
+| cp_energy_liquefaction | liquefaction | liq_power; liq_fuelgas; liq_steam | Actual source/end-use utility ledger | route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; charging/provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter actual external electricity, each external fuel, steam and heat separately. Reconcile source-specific internal-fuel combustion against cp_mass without duplicate purchase; include actual generation efficiency/losses once. Measure real thermal supply/return enthalpy, actual throughput and all attributable operating phases; no specific-energy or SCV/ORV default. Apply this protocol only to its listed liquefaction exchanges. Reconcile shared records under validate_protocol_partition. | kWh; kg; MJ | each meter/phase and reconciled observation period | all actual route utilities and attributable downtime | actual compression/refrigeration/vaporizer and supplies | per reference flow | meters; actual fuel/BOG/stock balance; state data; provider overlap; allocation |
+| cp_energy_regasification | regasification | regas_power; regas_fuelgas; regas_steam; regas_heat | Actual source/end-use utility ledger | route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; charging/provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter actual external electricity, each external fuel, steam and heat separately. Reconcile source-specific internal-fuel combustion against cp_mass without duplicate purchase; include actual generation efficiency/losses once. Measure real thermal supply/return enthalpy, actual throughput and all attributable operating phases; no specific-energy or SCV/ORV default. Apply this protocol only to its listed regasification exchanges. Reconcile shared records under validate_protocol_partition. | kWh; kg; MJ | each meter/phase and reconciled observation period | all actual route utilities and attributable downtime | actual compression/refrigeration/vaporizer and supplies | per reference flow | meters; actual fuel/BOG/stock balance; state data; provider overlap; allocation |
 | cp_refrigerant | liquefaction | ref_methane; ref_ethane; ref_propane; ref_ethylene; ref_nitrogen | Loop/component refrigerant ledger | actual cycle/loop; each chemical composition; initial charge/life share; additions/recovery/opening/closing stock kg; leak/vent source and receiver; actual route output | Resolve actual mixed/cascade refrigerants into specific chemical components and measure net externally supplied makeup with stock/recovery balance. Circulating mass is not consumption. Attribute initial charge and replacement to supported actual life/use without duplicating supplier stock; quantify each actual chemical loss/receiver, and add a separate route-specific row for another refrigerant. | kg | each refill/recovery and reconciled period | whole actual loop operating/maintenance interval | actual chemical loops and suppliers | per reference flow | component certificates; charge/recovery records; stocks; leak evidence |
-| cp_chemical | liquefaction; management | amine; sieve; mercury_carbon; hypochlorite; nitrogen_purge; lubricant | Specific chemical/medium ledger | route/end use; exact chemical/formulation/grade; measured actual kg and active fraction; separate water; replacement/regeneration; impurities captured; purge pressure; supplier scope | Measure each actual chemical or medium; distinguish active substance, solution carrier and mixed product components without duplicate supply. Link to real contaminant/task evidence and actual replacement interval, not a compulsory recipe. Track regeneration energy, contaminants removed and resulting waste/release separately. | kg | each actual issue/replacement/regeneration interval | actual period and supported replacement share | actual process/supplier gates | per reference flow | purchase/stock/formulation records; actual mass balance; maintenance |
-| cp_water | regasification; management | regas_seawater; regas_riverwater; regas_sea_return; regas_river_return; process_water | Source/receiver-specific water and thermal ledger | source waterbody/product; actual volume/flow; inlet/outlet temperature/pressure/salinity; season/location; cooling/heating duty; evaporation/retention/return; biocide residuals and reaction products; actual receiver/treatment | Meter actual source/product separately from recirculation and match actual returns/consumption. Record measured thermal change/heat flux and local receiving conditions without universal temperature limits. Chemical residues require their own species/compartment rows and actual treatment, not a volume-only proxy. Actual seawater, river, groundwater or another source is not interchangeable. | m3; temperature; thermal state | continuous/representative actual intake and return periods | whole applicable route and actual season/receiving context | actual sources and receivers | per reference flow | flow meters; temperature/chemistry samples; seasonal receiving evidence; water balance |
-| cp_assets | liquefaction; regasification; management | liq_train; regas_train; buffer_tank | Whole-life process asset ledger | configuration/BOM/construction; plant/buffer scope; ownership/provider; manufacture/maintenance/renewals; supported years and actual throughput/utilization/yield/downtime; life qualifying outlet kg; cumulative allocation | Identify actual process assets and supported whole-life qualifying output, distinguishing one route/state and independent storage/transport assets. Apply attributable share of construction/manufacture plus distinct maintenance/renewals; conserve cumulative user/period shares. Nameplate throughput times arbitrary lifetime is not evidence; unknown denominators require explicit review. | Item(s) | each allocation and configuration/renewal update | supported whole life and actual observed service period | actual conversion train/buffer and providers | per reference flow | construction/BOM; actual utilization and yield; life evidence; cumulative shares |
+| cp_chemical_liquefaction | liquefaction | amine; sieve; mercury_carbon | Specific chemical/medium ledger | route/end use; exact chemical/formulation/grade; measured actual kg and active fraction; separate water; replacement/regeneration; impurities captured; purge pressure; supplier scope; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure each actual chemical or medium; distinguish active substance, solution carrier and mixed product components without duplicate supply. Link to real contaminant/task evidence and actual replacement interval, not a compulsory recipe. Track regeneration energy, contaminants removed and resulting waste/release separately. Apply this protocol only to its listed liquefaction exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual issue/replacement/regeneration interval | actual period and supported replacement share | actual process/supplier gates | per reference flow | purchase/stock/formulation records; actual mass balance; maintenance |
+| cp_chemical_management | management | hypochlorite; nitrogen_purge; lubricant | Specific chemical/medium ledger | route/end use; exact chemical/formulation/grade; measured actual kg and active fraction; separate water; replacement/regeneration; impurities captured; purge pressure; supplier scope; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure each actual chemical or medium; distinguish active substance, solution carrier and mixed product components without duplicate supply. Link to real contaminant/task evidence and actual replacement interval, not a compulsory recipe. Track regeneration energy, contaminants removed and resulting waste/release separately. Apply this protocol only to its listed management exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual issue/replacement/regeneration interval | actual period and supported replacement share | actual process/supplier gates | per reference flow | purchase/stock/formulation records; actual mass balance; maintenance |
+| cp_water_regasification | regasification | regas_seawater; regas_riverwater; regas_sea_return; regas_river_return | Source/receiver-specific water and thermal ledger | source waterbody/product; actual volume/flow; inlet/outlet temperature/pressure/salinity; season/location; cooling/heating duty; evaporation/retention/return; biocide residuals and reaction products; actual receiver/treatment; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter actual source/product separately from recirculation and match actual returns/consumption. Record measured thermal change/heat flux and local receiving conditions without universal temperature limits. Chemical residues require their own species/compartment rows and actual treatment, not a volume-only proxy. Actual seawater, river, groundwater or another source is not interchangeable. Apply this protocol only to its listed regasification exchanges. Reconcile shared records under validate_protocol_partition. | m3 | continuous/representative actual intake and return periods | whole applicable route and actual season/receiving context | actual sources and receivers | per reference flow | flow meters; temperature/chemistry samples; seasonal receiving evidence; water balance |
+| cp_water_management | management | process_water | Source/receiver-specific water and thermal ledger | source waterbody/product; actual volume/flow; inlet/outlet temperature/pressure/salinity; season/location; cooling/heating duty; evaporation/retention/return; biocide residuals and reaction products; actual receiver/treatment; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter actual source/product separately from recirculation and match actual returns/consumption. Record measured thermal change/heat flux and local receiving conditions without universal temperature limits. Chemical residues require their own species/compartment rows and actual treatment, not a volume-only proxy. Actual seawater, river, groundwater or another source is not interchangeable. Apply this protocol only to its listed management exchanges. Reconcile shared records under validate_protocol_partition. | m3 | continuous/representative actual intake and return periods | whole applicable route and actual season/receiving context | actual sources and receivers | per reference flow | flow meters; temperature/chemistry samples; seasonal receiving evidence; water balance |
+| cp_assets_liquefaction | liquefaction | liq_train | Whole-life process asset ledger | configuration/BOM/construction; plant/buffer scope; ownership/provider; manufacture/maintenance/renewals; supported years and actual throughput/utilization/yield/downtime; life qualifying outlet kg; cumulative allocation; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Identify actual process assets and supported whole-life qualifying output, distinguishing one route/state and independent storage/transport assets. Apply attributable share of construction/manufacture plus distinct maintenance/renewals; conserve cumulative user/period shares. Nameplate throughput times arbitrary lifetime is not evidence; unknown denominators require explicit review. Apply this protocol only to its listed liquefaction exchanges. Reconcile shared records under validate_protocol_partition. | Item(s) | each allocation and configuration/renewal update | supported whole life and actual observed service period | actual conversion train/buffer and providers | per reference flow | construction/BOM; actual utilization and yield; life evidence; cumulative shares |
+| cp_assets_regasification | regasification | regas_train | Whole-life process asset ledger | configuration/BOM/construction; plant/buffer scope; ownership/provider; manufacture/maintenance/renewals; supported years and actual throughput/utilization/yield/downtime; life qualifying outlet kg; cumulative allocation; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Identify actual process assets and supported whole-life qualifying output, distinguishing one route/state and independent storage/transport assets. Apply attributable share of construction/manufacture plus distinct maintenance/renewals; conserve cumulative user/period shares. Nameplate throughput times arbitrary lifetime is not evidence; unknown denominators require explicit review. Apply this protocol only to its listed regasification exchanges. Reconcile shared records under validate_protocol_partition. | Item(s) | each allocation and configuration/renewal update | supported whole life and actual observed service period | actual conversion train/buffer and providers | per reference flow | construction/BOM; actual utilization and yield; life evidence; cumulative shares |
+| cp_assets_management | management | buffer_tank | Whole-life process asset ledger | configuration/BOM/construction; plant/buffer scope; ownership/provider; manufacture/maintenance/renewals; supported years and actual throughput/utilization/yield/downtime; life qualifying outlet kg; cumulative allocation; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Identify actual process assets and supported whole-life qualifying output, distinguishing one route/state and independent storage/transport assets. Apply attributable share of construction/manufacture plus distinct maintenance/renewals; conserve cumulative user/period shares. Nameplate throughput times arbitrary lifetime is not evidence; unknown denominators require explicit review. Apply this protocol only to its listed management exchanges. Reconcile shared records under validate_protocol_partition. | Item(s) | each allocation and configuration/renewal update | supported whole life and actual observed service period | actual conversion train/buffer and providers | per reference flow | construction/BOM; actual utilization and yield; life evidence; cumulative shares |
 | cp_waste | management | spent_amine; spent_sieve; spent_carbon; used_oil; oily_water | Specific waste/receiver ledger | single stream; actual kg/m3; solution/adsorbate/mercury/oil composition; originating route; actual transfer/treatment/reclamation/disposal; provider coverage | Weigh/meter each real stream and trace real final receiver/treatment with actual constituent basis and no presumed harmlessness, destruction, recycling or avoided burden. Keep spent medium distinct from removed contaminant releases; add other actual specific streams separately. | kg; m3 | each actual waste transfer/period | all attributable actual waste | actual origin and receiving treatment gates | per reference flow | transfer tickets; actual analyses; regeneration/disposal scope; balance |
 | cp_release | management | methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s | Source/component-resolved gas fate ledger | route/source; actual gas composition and mass; combustion/fuel/flare efficiency and oxidation; vent/fugitive/refrigerant leak; named species kg and receiver; removed acid gas route; actual monitoring/factors/speciation; carbon/sulfur balance | Measure/speciate actual source streams and reconcile with cp_mass and refrigerant/chemical balances. Calculate actual source-specific combustion and flare emissions using independently verified composition/efficiency methods; report unburned methane and other species rather than assuming complete destruction. Keep CO2 already in feed distinct from oxidation CO2; NO/NO2 from a NOx-equivalent total require documented speciation, never duplicate total. Add every actual other chemical and receiver separately; missing emission evidence is not zero. | kg | each source operation/upset and representative monitoring | all represented normal/upset sources in actual period | actual source/compartment | per reference flow | metering/leak measurements; actual composition; verified methods; gas/carbon/sulfur balance |
 
@@ -750,8 +755,8 @@ One kg of qualified actual net gas mass delivered in the declared converted stat
 | --- | --- | --- | --- | --- | --- |
 | service_attribution | all inventory rows | Divide actual attributable exchange by actual qualified net outlet kg of the same route/state/quality and period, with stock/loss/rework reconciliation. Unique service output is exactly 1 kg. | cp_mass; actual exchange protocols | individual exchange per reference flow |  |
 | gas_fate_balance | service_output; methane; ethane; propane; co2; co; so2; h2s | Close actual component mass and carbon/sulfur balances across custody, fuel, BOG, losses and stock; cancel internal returns and count qualified delivery once. Document measured conversion/composition and any unresolved residual, not forced zero. | cp_mass; cp_release; cp_refrigerant | component fate and reconciled net delivery |  |
-| asset_attribution | liq_train; regas_train; buffer_tank | Apply supported attributable route-output share of actual asset whole-life utilization to actual manufacture/construction and distinct renewals; retain cumulative conservation across all periods/providers. | cp_assets; cp_mass | asset amount per reference flow |  |
-| species_fate | methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s | Use actual species measurement or verified source composition, combustion/flare efficiency and speciation with explicit dataset units and uncertainty. No numerical fuel, leak, flare destruction or recovery factor is supplied. | cp_release; cp_mass; cp_energy | individual species per reference flow |  |
+| asset_attribution | liq_train; regas_train; buffer_tank | Apply supported attributable route-output share of actual asset whole-life utilization to actual manufacture/construction and distinct renewals; retain cumulative conservation across all periods/providers. | cp_assets_liquefaction; cp_assets_regasification; cp_assets_management; cp_mass | asset amount per reference flow |  |
+| species_fate | methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s | Use actual species measurement or verified source composition, combustion/flare efficiency and speciation with explicit dataset units and uncertainty. No numerical fuel, leak, flare destruction or recovery factor is supplied. | cp_release; cp_mass; cp_energy_liquefaction; cp_energy_regasification | individual species per reference flow |  |
 
 ### Data Quality Requirements
 
@@ -759,8 +764,8 @@ One kg of qualified actual net gas mass delivered in the declared converted stat
 | --- | --- | --- | --- |
 | quality_route | service_output | Actual transport purpose, route, net qualified mass, inlet/outlet state/composition and acceptance are mandatory; no pooling two phase-conversion routes. | cp_mass |
 | quality_bog | management | Require actual BOG/fuel/vent/flare/fugitive and stock records and component balance; internal recovery does not become fresh purchase or default credit. | cp_mass; cp_release |
-| quality_thermal | regasification; liquefaction | Keep actual technology, heat source, refrigerant components, water source/return thermal state and chemistry; absent applicable thermal/ecological characterization is disclosed, not zero impact. | cp_energy; cp_refrigerant; cp_water |
-| quality_life | all asset rows | Support actual inventory and life-output denominator with capacity/utilization/downtime/yield/life evidence and supplier overlap review. Unknown life prevents a complete lifecycle claim. | cp_assets |
+| quality_thermal | regasification; liquefaction | Keep actual technology, heat source, refrigerant components, water source/return thermal state and chemistry; absent applicable thermal/ecological characterization is disclosed, not zero impact. | cp_energy_liquefaction; cp_energy_regasification; cp_refrigerant; cp_water_regasification; cp_water_management |
+| quality_life | all asset rows | Support actual inventory and life-output denominator with capacity/utilization/downtime/yield/life evidence and supplier overlap review. Unknown life prevents a complete lifecycle claim. | cp_assets_liquefaction; cp_assets_regasification; cp_assets_management |
 | quality_gaps | all inventory rows | Disclose missing identities, component/flare/receiver evidence, upstream gas-chain links, co-output allocation and actual site noise/water/ecological method gaps; missing is not zero. | cp_waste; cp_release; cp_mass |
 
 ## 9. Validation Rules
@@ -771,6 +776,7 @@ One kg of qualified actual net gas mass delivered in the declared converted stat
 | validate_reference | Unique service_output must equal 1 kg and match measured net qualified outlet mass with mandatory route/state/composition/T/P/quality and actual period. Internal recycle, off-spec stock, fuel and losses are not qualified delivered output. |  |
 | validate_balance | Reconcile custody, external fuel, internal BOG, stock and each species destination; no duplicate gas purchase, double qualified output, complete-flare assumption or implicit cold/heat/BOG credit. Service-only boundary does not assert zero upstream commodity burden in the complete gas chain. |  |
 | validate_atomic_life | Every row must be one actual exchange with its own correct property/unit and compartment, including source/return water thermal evidence. Verify life fractions and provider coverage; leave unknown identities/method gaps explicit rather than declare publication readiness. |  |
+| `validate_protocol_partition` | Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods. |  |
 
 ## 10. Published Dataset Profile
 

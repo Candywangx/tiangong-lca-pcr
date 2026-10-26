@@ -414,6 +414,7 @@ Conditional on actual R134a losses from station equipment; derive from documente
 | `validate_event` | Require unique terminal_output of 1 item with complete event subtype, functional extent, service quality and start/end; reject passenger-km, bus trips, prices or unexplained transaction averages as substitutes. |  |
 | `validate_boundary` | Verify all terminal-office functions in scope, distinct luggage custody versus 67190 loading, and carrier/contractor/tenant interfaces. A full visit and its included office actions cannot both count as full terminal outputs. | un-cpc3-67410 |
 | `validate_atomicity` | Check each actual utility, material, asset, waste and emitted species independently; reconcile refrigerant supply/recovery/charge changes. Disclose identity and upstream gaps; parser pass alone does not establish full lifecycle completeness or methodology approval. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

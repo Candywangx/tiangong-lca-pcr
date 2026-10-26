@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 任务对象编号；船型尺寸排水量及货物身份质量；遇险沉没倾覆搁浅初始状态；深度流速水位能见度；淡水或实际盐度；底床污染基线；桥闸通达约束；阶段计划实际路线；船起重泵潜水切割设备；实际功率载荷时间；待命失败尝试；成功终点保管交接；支持拖移供应商边界 |
+| 必需限定信息 | 任务对象编号；船型尺寸排水量及货物身份质量；遇险沉没倾覆搁浅初始状态；深度流速水位能见度；实际受纳水体/类型/位置及适用时实测盐度；底床污染基线；桥闸通达约束；阶段计划实际路线；船起重泵潜水切割设备；实际功率载荷时间；待命失败尝试；成功终点保管交接；支持拖移供应商边界 |
 
 item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务不是通用一艘一吨一拖带或一次起吊。仅货物整船扶正复浮任务须分别保留范围状态情景。合同整任务完成只计一次，不按每次吊升抽水小时回收组件重试另算。部分失败工作保留负荷并披露终点，不虚构成功完整产出。
 
@@ -74,7 +74,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 | `boundary_recovery` | 纳入实际调查调动稳定卸载减重吊升扶正复浮排水必要支持拖移保管交接清场返回；按真实阶段方案选择，不作为通用作业配方。 | usace-mcalpine-salvage |
 | `boundary_diving` | 仅实际使用时纳入专业潜水资源，记录真实项目设备气体能源时间条件；本清单不规定潜水切割操作程序。 | hse-inland-diving |
 | `boundary_casualty` | 初始船货油以独立身份保管污染台账记录，不是新制造共产品。分别记录回收量残留状态接收方及实际新增环境释放。 |  |
-| `boundary_actual` | 筛查全部实际能源起吊潜水切割气材支持拖移索具、围油栏及资产份额水土扰动各废物物种释放；每个实际交换原子增加，不得以海洋海水接收环境替代内河淡水。 |  |
+| `boundary_actual` | 筛查全部实际能源、起吊/潜水/切割气体和材料、支持拖移、索具/围油栏及资产份额、水土扰动、各废物及物种释放，每个实际交换分别增加原子行。对排入水体的释放，识别真实受纳水体。依据实际受纳环境、有记录的流库定义及LCIA适用性选择各排放区室。内河服务分类不意味着淡水，盐度本身也不足以将内陆湖认定为海洋区室。区室映射或表征未解决时保留物理受纳环境及实测释放量，不强制归入淡水/海水，也不把未知影响当零。 | fao-water-areas |
 
 ## 6. 过程清单结构
 
@@ -571,7 +571,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 
 ###### 苯，排入淡水 (`benzene_water`)
 
-在区分背景事故后，实际测得且归属打捞的新增苯释放时适用。不推定每船含苯或全部回收油为苯。
+仅在区分背景/事故污染后，实际测得且归属打捞的新增苯释放进入真实受纳水体，并有流/区室映射依据支持该水体为淡水时适用。实际受纳介质不同须另设苯/区室流行，保留独立受纳环境证据及必要的未解决绑定，不得沿用本淡水卡。不推定每船含苯或全部回收油为苯。
 
 - 选定流：苯，排入淡水
 - 流属性/单位：质量 / kg
@@ -599,12 +599,12 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_task | recovery | recovery_service | 前景记录 | 任务对象货物编号；初始状态质量；深度流速水位；桥闸限制；方案阶段；设备；实际活动；尝试；验收移交 | 核对调查实际方案设备阶段日志及签认回收状态保管移交；明确保留未完成失败范围。 | item | 每阶段任务 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 调查；照片；阶段记录；签认移交 |
+| cp_task | recovery | recovery_service | 前景记录 | 任务对象货物编号；初始状态质量；深度流速水位；桥闸限制；方案阶段；设备；实际活动；尝试；验收移交；实际水体编号/类型/位置；适用时水文连通性及带单位的盐度 | 核对调查实际方案设备阶段日志及签认回收状态保管移交；明确保留未完成失败范围。 | item | 每阶段任务 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 调查；照片；阶段记录；签认移交；受纳水体表征 |
 | cp_energy | recovery | diesel; petrol; electricity | 前景记录 | 发动机工具编号；燃料库存；领用退回；岸电；实际功率载荷时间；待命重试行驶；份额 | 逐来源计量运营方实际燃料外购电；核对完整周期，不把事故原燃料当采购供应。 | kg; kWh | 工况区间任务 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 仪表校准；燃料衡算；工况日志 |
 | cp_material | recovery | water; hydraulic_oil; sorbent; steel_sling; breathing_air; oxygen; acetylene | 前景记录 | 具体物质产品；组成；气瓶库存质量；领用退回；消耗退役；任务阶段来源 | 采用实际库存气瓶称量或可追溯供应量；区分呼吸切割气及内部生成供应；记录材料寿命份额。 | kg; m3 | 领用事件及期间 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 库存气瓶记录；组成；供应商边界 |
 | cp_asset | recovery | boom; workboat; lift_bag; floating_crane; pump; diving_system; cutting_rig | 前景记录 | 资产编号配置；上游边界；实际使用；维护退役；寿命证据；任务份额 | 工作设备关联上游制造退役；记录物理寿命实际阶段利用，已含组件不重复。 | item; m | 资产事件期间 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 资产维护台账；利用寿命证据 |
 | cp_waste | recovery | oily_water; sediment; spent_oil; oily_sorbent; waste_sling; cut_offcut | 前景记录 | 具体废物；原有新增来源；数量；水油固体组成；干湿基；接收处理；份额 | 逐收集流及保管计量；区分回收客户财产原污染物运营废物处理排水。 | kg; m3 | 每次收集转移 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 废物联单；采样；接收记录 |
-| cp_release | recovery | co2_air; co_air; no_air; no2_air; so2_air; pm25_air; benzene_water | 前景记录 | 来源阶段；基线；实际物种/粒径组分；燃料尾气或浓度流量；接收环境；滞留移除污染物；证据系数单位 | 测量实际运营方排放或相对基线的新增释放，或使用明确且有依据的来源/活动系数；区分既有污染和淡水接收环境；未解决差值保留缺口。 | kg | 事件工况任务 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 基线排放测试；质量衡算；系数适用性 |
+| cp_release | recovery | co2_air; co_air; no_air; no2_air; so2_air; pm25_air; benzene_water | 前景记录 | 来源阶段；基线；实际物种/粒径组分；燃料尾气或浓度流量；实际接收介质/水体/类型/位置；相关盐度/水文证据；流库区室定义及LCIA映射/适用性；滞留移除污染物；证据系数单位 | 测量实际运营方排放或相对基线的新增释放，或使用明确且有依据的来源/活动系数；区分既有污染。按boundary_actual将各释放匹配实际受纳环境及有依据的流库区室，记录映射和LCIA适用性或未解决缺口。benzene_water仅用于有依据的淡水接收，其他接收介质须另设具体行。未解决质量衡算差值仍保留为缺口。 | kg | 事件工况任务 | 同一声明任务报告期 | 实际内河回收场址及指定设备 | 每参考流 | 基线/排放测试；质量衡算；系数适用性；受纳环境表征；有记录的区室/LCIA映射及局限 |
 
 ### 计算规则
 
@@ -621,7 +621,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 | --- | --- | --- | --- |
 | dq_object | recovery_service | 初始船货身份状态内河地理验收回收终点保管完整；不得静默选择独立拖带。 | cp_task |
 | dq_route | 所有清单行 | 实际吊升排水潜水切割路线及能源气体设备日志，不采用通用打捞物料清单或寿命。 | cp_energy; cp_material; cp_asset |
-| dq_pollution | oily_water; sediment; benzene_water | 作业前基线及实际收集释放污染物物种淡水接收环境；区分未知与零。 | cp_waste; cp_release |
+| dq_pollution | oily_water; sediment; benzene_water | 作业前基线、实际收集/释放污染物及物种具有受纳水体/区室证据。记录流库及LCIA映射适用性，包括未解决的内陆半咸水/咸水情景；区分未知与零。 | cp_waste; cp_release |
 | dq_identity | 所有清单行 | 关联数据生产前核定流属性单位支持；归档计数支持不是新流确认。 | 身份直读核验 |
 
 ## 9. 校验规则
@@ -630,8 +630,9 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 | --- | --- | --- |
 | `validate_scope` | 要求明确内河船货回收起浮扶正复浮终点；拒绝沿海独立运输拖带公共救生警务消防独立拆船清污。 | un-cpc-67532 |
 | `validate_reference` | 要求唯一recovery_service为1 item及正值N，实际初始状态阶段设备签认移交完整；不重复阶段整任务或回收财产制造产出。 |  |
-| `validate_release` | 要求原污染新增释放证据分开，明确淡水物种接收环境及实际废物去向；拒绝预设避免污染废钢替代及把整油视为单物种捷径。 |  |
+| `validate_release` | 要求原污染与新增释放证据分开，明确各具体物质及实际受纳环境、有依据的流库区室映射与实际废物去向。淡水苯卡仅用于有依据的淡水接收，其他介质须独立具体行。拒绝从内河分类推定淡水或仅凭盐度归入海洋，拒绝预设避免污染、废钢替代及把整油视为单物种捷径。未解决的区室/LCIA覆盖须披露。 |  |
 | `validate_coverage` | 要求实际来源关联燃料气体资产及完整周期分配；基线阶段处理覆盖未知须披露。目标检查通过不是安全打捞潜水切割批准。 |  |
+| `validate_unit_export` | item仅为数量属性正式单位Item(s)的本地单数别名。导出时使用Item(s)，保留同一数值计数及完整限定的服务定义；更换显示符号不得改变流属性、服务范围或归一化分母。不得通过改写单位将服务项转换成时间、质量、距离或另一服务族，也不得对已按参考流归一化的数量再次归一化。 |  |
 
 ## 10. 发布数据集画像
 
@@ -641,7 +642,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 | downstream_use | secondary_dataset; background_dataset |
 | allowed_use | 同一实际回收子型初始状态内河场址条件设备验收终点保管边界 |
 | excluded_use | 独立拖带；沿海公共救援；通用每艘每吨回收系数；避免污染钢材抵扣；未限定回收再生 |
-| required_metadata | 全部任务限定信息；N；阶段工况气体能源；资产寿命；原船货保管；污染基线；废物接收；淡水释放证据 |
+| required_metadata | 全部任务限定信息；N；阶段工况气体能源；资产寿命；原船货保管；污染基线；废物接收；实际受纳水体/类型/位置及相关盐度/水文证据；释放测量及有记录的流区室/LCIA映射或未解决缺口 |
 | required_quality_disclosure | 较窄范围独立拖带排除；UUID缺口；实际路线范围；基线新增释放不确定性；处理上游缺失 |
 | update_trigger | 初始事故河流状态回收成功终点方法设备污染基线供应商边界或重要数据质量变化 |
 
@@ -652,3 +653,4 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 | un-cpc-67532 | official_guidance | UNSD CPC3.0 67532. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67532 | 明确内河回收起浮扶正复浮范围及公共救援排除；不选择独立拖带。 |
 | usace-mcalpine-salvage | official_guidance | USACE Louisville District, Salvage efforts to retrieve sunken barges continue at McAlpine Dam (2019). https://www.lrd.usace.army.mil/Media/News/Article/3637047/salvage-efforts-to-retrieve-sunken-barges-continue-at-mcalpine-dam/ | 观测内河分阶段回收减载起重切割及水位变化；仅案例证据，不采用通用设备数燃料得率工期。 |
 | hse-inland-diving | official_guidance | HSE, Commercial diving projects inland/inshore, L104 second edition2014, official scope description. https://www.hse.gov.uk/pubns/books/l104.htm | 仅内河商用潜水适用性筛查；不推定完整规程程序法律合规或数值气体深度要求。 |
+| fao-water-areas | official_guidance | FAO CWP渔业统计手册，Main water areas，Marine and inland waters，读取于2026-10-26。https://www.fao.org/cwp-on-fishery-statistics/handbook/general-concepts/main-water-areas/en/ | 仅支持内陆/海洋地理分类与淡水/咸水条件并非同一维度。该渔业统计指导不规定CPC适用范围、LCI/LCIA区室、盐度阈值或表征系数；真实受纳环境映射仍须具有所声明流库与影响方法证据。 |

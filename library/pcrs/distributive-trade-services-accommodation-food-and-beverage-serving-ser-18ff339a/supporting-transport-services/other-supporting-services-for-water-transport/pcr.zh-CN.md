@@ -135,13 +135,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：矿物液压油
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数量规则：每参考流的可归属实测交换量；cp_material_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_material`
+- 采集协议：`cp_material_icebreaking`
 - 来源：
 
 ###### 已确定配置的破冰服务船（`ice_ship_share`）
@@ -150,13 +150,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：已确定配置的破冰服务船
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
-- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数量规则：每参考流的可归属实测交换量；cp_assets_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_icebreaking`
 - 来源：
 
 #### 输出
@@ -169,13 +169,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：废矿物液压油
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数量规则：每参考流的可归属实测交换量；cp_waste_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_icebreaking`
 - 来源：
 
 ###### 含油破冰船舱底水（`ice_bilge`）
@@ -184,13 +184,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：含油破冰船舱底水
 - 流属性/单位：体积 / m3
-- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数量规则：每参考流的可归属实测交换量；cp_waste_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_icebreaking`
 - 来源：
 
 ##### 基本流
@@ -201,13 +201,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：化石二氧化碳，排入空气
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数量规则：每参考流的可归属实测交换量；cp_release_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_icebreaking`
 - 来源：
 
 ###### 一氧化碳，排入空气（`ice_co`）
@@ -216,13 +216,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：一氧化碳，排入空气
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数量规则：每参考流的可归属实测交换量；cp_release_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_icebreaking`
 - 来源：
 
 ###### 一氧化氮，排入空气（`ice_no`）
@@ -231,13 +231,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：一氧化氮，排入空气
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数量规则：每参考流的可归属实测交换量；cp_release_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_icebreaking`
 - 来源：
 
 ###### 二氧化氮，排入空气（`ice_no2`）
@@ -246,13 +246,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：二氧化氮，排入空气
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数量规则：每参考流的可归属实测交换量；cp_release_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_icebreaking`
 - 来源：
 
 ###### 二氧化硫，排入空气（`ice_so2`）
@@ -261,13 +261,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：二氧化硫，排入空气
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数量规则：每参考流的可归属实测交换量；cp_release_icebreaking。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_icebreaking`
 - 来源：
 
 ### 过程：办理明确船舶登记案例（`registration`）
@@ -312,13 +312,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：已确定配置的登记办理工作站
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
-- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数量规则：每参考流的可归属实测交换量；cp_assets_registration。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_registration`
 - 来源：
 
 ###### 船舶登记案例托管服务（`registry_hosting`）
@@ -342,13 +342,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：已确定配置的船舶登记办公建筑
 - 流属性/单位：面积 / m2
-- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数量规则：每参考流的可归属实测交换量；cp_assets_registration。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_registration`
 - 来源：
 
 #### 输出
@@ -361,13 +361,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：废办公打印纸
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数量规则：每参考流的可归属实测交换量；cp_waste_registration。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_registration`
 - 来源：
 
 ### 过程：提供实际船舶搁置保管/保养（`layup`）
@@ -378,11 +378,11 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 ###### 船舶搁置保养供电（`layup_power`）
 
-实际所存船通风、除湿、加热、监测、电池维护或存储设施保障时纳入；逐项计量真实终端并保留热/冷/状态要求，不设通用保养负荷。
+仅在外部供给电力跨越所声明前景边界、用于实际所存船通风、除湿、加热、监测、电池维护或存储设施保障时适用。明确交付表计、交直流形式、电压及供应商覆盖；不兼容供应须另设具体流行。实测终端用电用于对账并保留实际热/冷/状态要求。现场或船上发电及电池放电属于内部转移，不是额外外部电力输入；不设通用保养负荷。
 
 - 选定流：船舶搁置保养供电
 - 流属性/单位：能量 / kWh
-- 数量规则：每参考流的可归属实测交换量；cp_layup。
+- 数量规则：每参考流可归属的实测外部交付电量；cp_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
@@ -393,11 +393,11 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 ###### 搁置保养用未掺混柴油（`layup_diesel`）
 
-实际发电机/设备用该燃料维持声明存储状态时纳入；记录责任所有者/运营方并仅计约定保养份额一次，不因所有权省略；排除客户推进及无关活动。
+仅在实际发电机/设备于声明前景边界内用该燃料维持规定存储状态时适用。记录责任所有者/运营方，约定保养份额仅计一次，不因所有权省略；排除客户推进及无关活动。相关发电量保留在内部电量账中。外部供电数据集或独立发电子过程已含该燃料时，不得在layup重复加入同一燃料。
 
 - 选定流：搁置保养用未掺混柴油
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_layup。
+- 数量规则：每参考流在声明前景边界内可归属的实测燃料消耗量，排除供电或独立发电子过程已代表的燃料；cp_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
@@ -412,13 +412,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：矿物防锈保护油
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数量规则：每参考流的可归属实测交换量；cp_material_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_material`
+- 采集协议：`cp_material_layup`
 - 来源：
 
 ###### 硅胶干燥剂（`silica_gel`）
@@ -427,13 +427,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：硅胶干燥剂
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数量规则：每参考流的可归属实测交换量；cp_material_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_material`
+- 采集协议：`cp_material_layup`
 - 来源：
 
 ###### 聚丙烯系泊缆（`mooring_rope`）
@@ -442,13 +442,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：聚丙烯系泊缆
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数量规则：每参考流的可归属实测交换量；cp_material_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_material`
+- 采集协议：`cp_material_layup`
 - 来源：
 
 ###### 已确定配置的船舶搁置泊位（`layup_berth`）
@@ -457,13 +457,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：已确定配置的船舶搁置泊位
 - 流属性/单位：长度 / m
-- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数量规则：每参考流的可归属实测交换量；cp_assets_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_layup`
 - 来源：
 
 ###### 已确定配置的船舶储存硬化场地（`hardstanding`）
@@ -472,13 +472,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：已确定配置的船舶储存硬化场地
 - 流属性/单位：面积 / m2
-- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数量规则：每参考流的可归属实测交换量；cp_assets_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_layup`
 - 来源：
 
 ###### 已确定配置的船舶储存托架（`cradle`）
@@ -487,13 +487,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：已确定配置的船舶储存托架
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
-- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数量规则：每参考流的可归属实测交换量；cp_assets_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_layup`
 - 来源：
 
 #### 输出
@@ -506,13 +506,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：废矿物防锈保护油
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数量规则：每参考流的可归属实测交换量；cp_waste_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_layup`
 - 来源：
 
 ###### 废硅胶干燥剂（`spent_desiccant`）
@@ -521,13 +521,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：废硅胶干燥剂
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数量规则：每参考流的可归属实测交换量；cp_waste_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_layup`
 - 来源：
 
 ###### 搁置服务生活污水（`layup_sewage`）
@@ -536,13 +536,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：搁置服务生活污水
 - 流属性/单位：体积 / m3
-- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数量规则：每参考流的可归属实测交换量；cp_waste_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_layup`
 - 来源：
 
 ##### 基本流
@@ -553,13 +553,13 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 
 - 选定流：化石二氧化碳，排入空气
 - 流属性/单位：质量 / kg
-- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数量规则：每参考流的可归属实测交换量；cp_release_layup。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每参考流
 - 基准类型：`reference_flow`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_layup`
 - 来源：
 
 ### 过程：核验所选服务族完成/输出（`completion`）
@@ -602,11 +602,17 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 | cp_completion | completion | support_output | 服务族特定完成账 | 所选服务族；准确块；任务/案例/船舶编号；物理范围；实际起止；验收输出/结果；运营方/供应商组件；实际保管小时 | 核验恰一个完成任务或完成明确登记案例，或用实际保管小时除24形成船舶保管块；服务族、类型、结果及范围分开，不用费用或名义容量作数量。 | Item(s) | 每完成/保管时段 | 完整所选服务边界 | 实际所选服务族供应商 | 每参考流 | 任务日志；正式案例决定/交付；保管时间；总体核对 |
 | cp_ice_energy | icebreaking | ice_diesel; ice_shore_power | 任务冰况/负荷/能源账 | 任务路线/清理区；实际冰型/厚度/密集度/冰脊；天气；船队/船舶；船艇/发动机/功率；燃料kg/等级/密度；充电kWh；助航/航行/怠速/等候/返航/待机时段；实际完成 | 实测发动机燃料及电力供应，核对任务/船队/共用及非航运任务；采用实际冰况和作业日志，不按默认单位路线公里或受助船数推油耗。 | kg; kWh | 每任务阶段/计量时段 | 完整实际任务及归属保障 | 实际破冰运营方/船艇 | 每参考流 | 燃料/充电计量；冰况/路线日志；发动机负荷；共用任务核对 |
 | cp_registry | registration | registry_power; registry_paper; registry_hosting | 案例办理及初始交付账 | 管辖；案例/交易类型；船舶；提交证据；实际检查/返工；决定/结果/日期；实际人员/信息活动；kWh；纸kg；供应商服务小时/容量/地区；首次交付；档案截止 | 匹配实际流程及完成决定/交付，分表/核对实际信息办公活动和纸；托管须实际范围及清单，不由案例数推电量；未完工作明确保留，持续登记/档案另定界。 | kWh; kg; h | 每案例步骤及完成 | 实际案例至首次交付 | 实际登记机构及供应商 | 每参考流 | 案例日志；决定/文件记录；计量；信息/供应商范围；交付证据 |
-| cp_layup | layup | layup_power; layup_diesel | 保管/状态及保养能源账 | 船舶尺寸/占位；浮存/干存场址；保管起止/小时；实际热冷/状态计划；活动系统；值守；实测通风/除湿/加热/监测/电池负荷；实际发电机燃料；责任所有者/供应商 | 核验真实保管及在实际适用背景下已获认可的保养计划，实测维持系统能源并区分无关推进/清洗；保留不足整日、实际设备循环及供应商/客户责任，不设通用冷/热能耗假设。 | kWh; kg | 每保管/工况/计量时段 | 实际存储期及归属转换 | 实际船舶/场址及供应商 | 每参考流 | 保管/状态日志；计量/燃料记录；保养执行；范围核对 |
-| cp_material | icebreaking; layup | ice_hydraulic; preservation_oil; silica_gel; mooring_rope | 具体保障材料平衡 | 单一化学品/材料等级；实测kg；领退；替换/再生；实际利用/寿命份额；库存；回收；实际泄漏 | 逐项称量具体材料，并按有证据服务利用量归属实际维护/保养；区分船舶清洗消毒及范围内状态保养，不每块分整条缆或整次换油。 | kg | 每实际材料/维护事件 | 归属实际保障/保养 | 实际所选族资产 | 每参考流 | 称重；兼容/等级；库存材料平衡；利用记录 |
-| cp_assets | icebreaking; registration; layup | ice_ship_share; registry_workstation; registry_building; layup_berth; hardstanding; cradle | 持续服务族特定资产账 | 资产编号/配置；建设制造；实际件数/m2/m；实际服务族利用；有证据寿命服务分母；多用途份额；先前累计比例；期间比例；更新/敏感性 | 匹配实际服务族资产及有证据全寿命利用，守恒跨任务/用户/期间份额并避免重复上游更新；所存客户船制造不属于保管服务资产分子；未知寿命/分母明确待审。 | Item(s); m2; m | 每分配及资产/更新变化 | 有证据全寿命及实际观测期 | 已识别船艇/信息/办公/储存资产 | 每参考流 | 资产/建设记录；实际利用；寿命证据；累计份额 |
-| cp_waste | icebreaking; registration; layup | ice_used_oil; ice_bilge; registry_waste_paper; used_preservation_oil; spent_desiccant; layup_sewage | 具体废物/接收账 | 单一流；实际kg/m3；组成污染；服务族/事件来源；复用再生；船上/岸上接收；实际处理处置 | 分别称量/计量并追踪真实接收/处理，不预设危险性、直接排水体、接收、回收或避免负荷；其他实际废物须另设具体行。 | kg; m3 | 每实际转移/排水期 | 全部可归属实际废物 | 实际服务族供应商及处理端点 | 每参考流 | 接收/转移单；组成；质量/水平衡；实际处理 |
-| cp_release | icebreaking; layup | ice_co2; ice_co; ice_no; ice_no2; ice_so2; layup_co2 | 来源/物种特定排放账 | 服务族/源；实际燃料/发动机/负荷；碳/硫/氧化；实测物种kg；NO/NO2分物种/当量基准；空气介质；方法适用性；不确定性 | 实测物种或用独立核验来源/负荷/燃料特定方法；区分客户航行、排除公共任务及上游供电；其他实际排放/泄漏及介质逐项记录，不把总氮氧化物复制进两个物种。 | kg | 每排放作业及代表监测 | 全部代表范围内排放 | 实际来源及空气介质 | 每参考流 | 测量；燃料发动机记录；核验方法；碳硫及任务核对 |
+| cp_layup | layup | layup_power; layup_diesel | 保管/状态及保养能源账 | 船舶尺寸/占位；浮存/干存场址；保管起止/小时；实际热冷/状态计划；活动系统；值守；实测通风/除湿/加热/监测/电池负荷；实际发电机燃料；责任所有者/供应商；外部交付表计/交直流/电压/来源；现场/船上发电kWh；期初期末储能；变换/充放电损耗；排除/外送kWh；发电/供应商边界及资产覆盖；储存电量的能源来源与充电期间编号；已归属上游供给清单 | 核验真实保管及在实际适用背景下已获认可的保养计划，实测维持系统能源并区分无关推进/清洗；保留不足整日、实际设备循环及供应商/客户责任，不设通用冷/热能耗假设。 分别计量外部交付、发电输出及终端用电，核对layup_electricity_balance。内部发电及储能放电不进入layup_power。实际发电机燃料、直接排放、维护及额外专用保养发电/储能资产仅计一次；识别供应商清单已含或属于所排除客户船制造的部分，不重复计入。 | kWh; kg | 每保管/工况/计量时段 | 实际存储期及归属转换 | 实际船舶/场址及供应商 | 每参考流 | 保管/状态日志；计量/燃料记录；保养执行；范围核对；交付示意图；电量/储能平衡；发电及供应商覆盖证据 |
+| cp_material_icebreaking | icebreaking | ice_hydraulic | 具体保障材料平衡 | 单一化学品/材料等级；实测kg；领退；替换/再生；实际利用/寿命份额；库存；回收；实际泄漏；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 逐项称量具体材料，并按有证据服务利用量归属实际维护/保养；区分船舶清洗消毒及范围内状态保养，不每块分整条缆或整次换油。 本协议仅适用于所列icebreaking过程交换；共享记录按validate_protocol_partition核对。 | kg | 每实际材料/维护事件 | 归属实际保障/保养 | 实际所选族资产 | 每参考流 | 称重；兼容/等级；库存材料平衡；利用记录 |
+| cp_material_layup | layup | preservation_oil; silica_gel; mooring_rope | 具体保障材料平衡 | 单一化学品/材料等级；实测kg；领退；替换/再生；实际利用/寿命份额；库存；回收；实际泄漏；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 逐项称量具体材料，并按有证据服务利用量归属实际维护/保养；区分船舶清洗消毒及范围内状态保养，不每块分整条缆或整次换油。 本协议仅适用于所列layup过程交换；共享记录按validate_protocol_partition核对。 | kg | 每实际材料/维护事件 | 归属实际保障/保养 | 实际所选族资产 | 每参考流 | 称重；兼容/等级；库存材料平衡；利用记录 |
+| cp_assets_icebreaking | icebreaking | ice_ship_share | 持续服务族特定资产账 | 资产编号/配置；建设制造；实际件数/m2/m；实际服务族利用；有证据寿命服务分母；多用途份额；先前累计比例；期间比例；更新/敏感性；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 匹配实际服务族资产及有证据全寿命利用，守恒跨任务/用户/期间份额并避免重复上游更新；所存客户船制造不属于保管服务资产分子；未知寿命/分母明确待审。 本协议仅适用于所列icebreaking过程交换；共享记录按validate_protocol_partition核对。 | Item(s) | 每分配及资产/更新变化 | 有证据全寿命及实际观测期 | 已识别船艇/信息/办公/储存资产 | 每参考流 | 资产/建设记录；实际利用；寿命证据；累计份额 |
+| cp_assets_registration | registration | registry_workstation; registry_building | 持续服务族特定资产账 | 资产编号/配置；建设制造；实际件数/m2/m；实际服务族利用；有证据寿命服务分母；多用途份额；先前累计比例；期间比例；更新/敏感性；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 匹配实际服务族资产及有证据全寿命利用，守恒跨任务/用户/期间份额并避免重复上游更新；所存客户船制造不属于保管服务资产分子；未知寿命/分母明确待审。 本协议仅适用于所列registration过程交换；共享记录按validate_protocol_partition核对。 | Item(s); m2 | 每分配及资产/更新变化 | 有证据全寿命及实际观测期 | 已识别船艇/信息/办公/储存资产 | 每参考流 | 资产/建设记录；实际利用；寿命证据；累计份额 |
+| cp_assets_layup | layup | layup_berth; hardstanding; cradle | 持续服务族特定资产账 | 资产编号/配置；建设制造；实际件数/m2/m；实际服务族利用；有证据寿命服务分母；多用途份额；先前累计比例；期间比例；更新/敏感性；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 匹配实际服务族资产及有证据全寿命利用，守恒跨任务/用户/期间份额并避免重复上游更新；所存客户船制造不属于保管服务资产分子；未知寿命/分母明确待审。 本协议仅适用于所列layup过程交换；共享记录按validate_protocol_partition核对。 | m; m2; Item(s) | 每分配及资产/更新变化 | 有证据全寿命及实际观测期 | 已识别船艇/信息/办公/储存资产 | 每参考流 | 资产/建设记录；实际利用；寿命证据；累计份额 |
+| cp_waste_icebreaking | icebreaking | ice_used_oil; ice_bilge | 具体废物/接收账 | 单一流；实际kg/m3；组成污染；服务族/事件来源；复用再生；船上/岸上接收；实际处理处置；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 分别称量/计量并追踪真实接收/处理，不预设危险性、直接排水体、接收、回收或避免负荷；其他实际废物须另设具体行。 本协议仅适用于所列icebreaking过程交换；共享记录按validate_protocol_partition核对。 | kg; m3 | 每实际转移/排水期 | 全部可归属实际废物 | 实际服务族供应商及处理端点 | 每参考流 | 接收/转移单；组成；质量/水平衡；实际处理 |
+| cp_waste_registration | registration | registry_waste_paper | 具体废物/接收账 | 单一流；实际kg/m3；组成污染；服务族/事件来源；复用再生；船上/岸上接收；实际处理处置；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 分别称量/计量并追踪真实接收/处理，不预设危险性、直接排水体、接收、回收或避免负荷；其他实际废物须另设具体行。 本协议仅适用于所列registration过程交换；共享记录按validate_protocol_partition核对。 | kg | 每实际转移/排水期 | 全部可归属实际废物 | 实际服务族供应商及处理端点 | 每参考流 | 接收/转移单；组成；质量/水平衡；实际处理 |
+| cp_waste_layup | layup | used_preservation_oil; spent_desiccant; layup_sewage | 具体废物/接收账 | 单一流；实际kg/m3；组成污染；服务族/事件来源；复用再生；船上/岸上接收；实际处理处置；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 分别称量/计量并追踪真实接收/处理，不预设危险性、直接排水体、接收、回收或避免负荷；其他实际废物须另设具体行。 本协议仅适用于所列layup过程交换；共享记录按validate_protocol_partition核对。 | kg; m3 | 每实际转移/排水期 | 全部可归属实际废物 | 实际服务族供应商及处理端点 | 每参考流 | 接收/转移单；组成；质量/水平衡；实际处理 |
+| cp_release_icebreaking | icebreaking | ice_co2; ice_co; ice_no; ice_no2; ice_so2 | 来源/物种特定排放账 | 服务族/源；实际燃料/发动机/负荷；碳/硫/氧化；实测物种kg；NO/NO2分物种/当量基准；空气介质；方法适用性；不确定性；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 实测物种或用独立核验来源/负荷/燃料特定方法；区分客户航行、排除公共任务及上游供电；其他实际排放/泄漏及介质逐项记录，不把总氮氧化物复制进两个物种。 本协议仅适用于所列icebreaking过程交换；共享记录按validate_protocol_partition核对。 | kg | 每排放作业及代表监测 | 全部代表范围内排放 | 实际来源及空气介质 | 每参考流 | 测量；燃料发动机记录；核验方法；碳硫及任务核对 |
+| cp_release_layup | layup | layup_co2 | 来源/物种特定排放账 | 服务族/源；实际燃料/发动机/负荷；碳/硫/氧化；实测物种kg；NO/NO2分物种/当量基准；空气介质；方法适用性；不确定性；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 实测物种或用独立核验来源/负荷/燃料特定方法；区分客户航行、排除公共任务及上游供电；其他实际排放/泄漏及介质逐项记录，不把总氮氧化物复制进两个物种。 本协议仅适用于所列layup过程交换；共享记录按validate_protocol_partition核对。 | kg | 每排放作业及代表监测 | 全部代表范围内排放 | 实际来源及空气介质 | 每参考流 | 测量；燃料发动机记录；核验方法；碳硫及任务核对 |
 
 ### 计算规则
 
@@ -614,8 +620,9 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 | --- | --- | --- | --- | --- | --- |
 | family_attribution | 所有清单行 | 将实际资源/维护/保障归属一个明确服务族/范围，除以实际完成块数，不跨族计数平均；参考输出准确为1 Item(s)。 | cp_completion; 实际服务族记录 | 每参考流交换量 |  |
 | layup_blocks | support_output | 仅搁置情景，将实测船舶保管小时除24形成实际块，保留不足整日及船舶状态/占位，不按费用或假定年占用推时间。 | cp_layup; cp_completion | 实际搁置块量 |  |
-| asset_attribution | ice_ship_share; registry_workstation; registry_building; layup_berth; hardstanding; cradle | 按有证据全寿命利用的服务族/块份额分实际制造建设，守恒累计比例，区分已含更新及其他用途工作。 | cp_assets; cp_completion | 每参考流资产量 |  |
-| species_accounting | ice_co2; ice_co; ice_no; ice_no2; ice_so2; layup_co2 | 采用实际物种质量或核验发动机/燃料/负荷证据，在数据集中明确因子/单位及总氮氧化物当量换算；不提供数值负荷、燃料或排放默认值。 | cp_release; cp_ice_energy; cp_layup | 每参考流单一物种量 |  |
+| layup_electricity_balance | layup_power; layup_diesel; layup_co2 | 在一致接口及同一保管期间核对：外部交付电量 + 现场/船上发电输出 = 纳入的保养终端用电 + 排除/外送电量 + 变换/配电/储能损耗 + 期末储能 - 期初储能。仅计尚未包含于其他表计项的损耗；保留储能变化正负号、不确定性及未解释差值。内部发电/储能转移不形成外购电输入。实际发电燃料、直接排放、维护及范围内专用资产，在layup内或明确关联的发电子过程中仅计一次，同一电量不得再叠加完整外部供电数据集。归属实际保养范围，再通过family_attribution仅归一化一次。 将期初/期末储存电量有记录的能源来源身份及上游负荷一并纳入同一服务/期间分配；不得遗漏期初库存负荷，也不得把期末库存负荷全部归给当前服务。 | cp_layup; cp_completion | 已核对外部供应及内部保养电量账 |  |
+| asset_attribution | ice_ship_share; registry_workstation; registry_building; layup_berth; hardstanding; cradle | 按有证据全寿命利用的服务族/块份额分实际制造建设，守恒累计比例，区分已含更新及其他用途工作。 | cp_assets_icebreaking; cp_assets_registration; cp_assets_layup; cp_completion | 每参考流资产量 |  |
+| species_accounting | ice_co2; ice_co; ice_no; ice_no2; ice_so2; layup_co2 | 采用实际物种质量或核验发动机/燃料/负荷证据，在数据集中明确因子/单位及总氮氧化物当量换算；不提供数值负荷、燃料或排放默认值。 | cp_release_icebreaking; cp_release_layup; cp_ice_energy; cp_layup | 每参考流单一物种量 |  |
 
 ### 数据质量要求
 
@@ -624,8 +631,8 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 | quality_family | support_output | 声明单一功能/范围及完成类型，不用通用其他服务发票、不跨族计数等效、不声称法律安全批准。 | cp_completion |
 | quality_physical | icebreaking; layup | 要求实际冰况/船艇负荷或船舶存储状态/时间/活动系统记录，不用纯办公替代或每船默认能耗。 | cp_ice_energy; cp_layup |
 | quality_registry | registration | 保持案例交易/结果、实际处理证据、首次交付端点及档案边界，提交/费用不证明完成登记。 | cp_registry |
-| quality_lifecycle | 所有资产行 | 支持全寿命服务分母、多用途归属、初始更新边界及累计守恒；未知寿命/上游范围时不得声称完整生命周期。 | cp_assets |
-| quality_gaps | 所有清单行 | 披露身份/物种/介质/处理、冰区/栖息地/噪声及材料保养证据缺口和不确定性，缺失不等于零。 | cp_waste; cp_release; 场址记录 |
+| quality_lifecycle | 所有资产行 | 支持全寿命服务分母、多用途归属、初始更新边界及累计守恒；未知寿命/上游范围时不得声称完整生命周期。 | cp_assets_icebreaking; cp_assets_registration; cp_assets_layup |
+| quality_gaps | 所有清单行 | 披露身份/物种/介质/处理、冰区/栖息地/噪声及材料保养证据缺口和不确定性，缺失不等于零。 | cp_waste_icebreaking; cp_waste_registration; cp_waste_layup; cp_release_icebreaking; cp_release_layup; 场址记录 |
 
 ## 9. 校验规则
 
@@ -635,6 +642,8 @@ Item(s)计数明确案例/任务/时间块，不把物品数量属性套给燃�
 | validate_scope | 排除船舶清洗消毒/中介/公共搜救消防安全/溢油处置，按实际日志拆分公共或多用途破冰船任务。 | un-cpc-other-water |
 | validate_process | 选择实际服务族特定过程并补全物理/行政证据；破冰不产生假定客货运输输出，登记不意味机关批准，搁置须实际保管小时及状态/保养范围。 |  |
 | validate_atomic_lifecycle | 要求具体交换具有各自正确属性/单位和实际适用性、资产份额守恒、供应商重叠控制及真实废物接收；未知身份/方法证据须明确，不推定发布条件或生态完整。 |  |
+| validate_layup_energy | 搁置须核验外部供应与船上/现场发电、实际交直流交付身份、储能/损耗平衡及责任运营方。内部发电/储能放电不得作为外购电额外计入；燃料、直接排放、范围内发电资产及供应商已含负荷仅计一次。保留无关推进及客户船制造的原有排除；未解决电力/资产证据须披露。 |  |
+| `validate_protocol_partition` | 每项采集协议须指向一个已存在的process_id且仅覆盖其所列流行；每张清单卡须关联其实际过程的对应协议。每次物理读数、交付、转移、排放或资产分配保留唯一source_record_id和exchange_id。源记录服务多个过程或数据集时，在同一期间共用总账中记录分配驱动因素、原始总量、各归属份额及边界外剩余量；各归属数量与剩余量之和须与原始总量一致。拆分协议不得复制完整读数、新增服务产出或重新开始资产寿命分配。每个声明情景保留同一匹配的产出分母，过程数量仅为归属证据，不形成额外归一化。内部转移仅核对一次，并保留跨全部使用方和期间的资产累计份额。 |  |
 
 ## 10. 发布数据集画像
 

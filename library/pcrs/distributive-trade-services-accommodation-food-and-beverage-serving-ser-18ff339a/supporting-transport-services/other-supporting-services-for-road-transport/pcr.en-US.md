@@ -477,6 +477,7 @@ Actual size-resolved escort combustion release; total PM and overlapping fractio
 | `validate_task` | Require unique escort_service output, 1 item and positive N with role/team, route, vehicle/load conditions and completion handoff. Do not equate single lead-car duty and whole escort team. |  |
 | `validate_inventory` | Require individual energy, materials, equipment, wastes and emissions, with complete assigned cycle and no carrier/infrastructure/supplier double count. Office electricity alone cannot represent a physical escort task. |  |
 | `validate_limits` | Report unresolved identities, wear/exhaust gaps, classification limitation and lifetime uncertainty. A candidate check pass neither approves all residual activities nor establishes permits or legal compliance. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

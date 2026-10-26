@@ -115,7 +115,7 @@ Conditional on actual ARFF vehicle or pump consumption of this fuel; identify st
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_fire`
 
 ###### Electricity, aircraft-fire station supply (`fire_power`)
 
@@ -129,7 +129,7 @@ Meter actual station lighting, communications, charging and support in the decla
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_fire`
 
 ###### Water, supplied for aircraft firefighting (`fire_water`)
 
@@ -171,7 +171,7 @@ Conditional on actual use of this specific absorbent in the declared response; m
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_fire`
 
 ###### Configured aircraft firefighting vehicle (`fire_vehicle`)
 
@@ -185,7 +185,7 @@ Attribute actual vehicle/pump/tank configuration manufacture, maintenance and re
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_fire`
 
 ###### Configured aircraft-fire station building (`fire_station`)
 
@@ -199,7 +199,7 @@ Conditional on actual station use; identify floor area and construction scope an
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_fire`
 
 #### Outputs
 
@@ -217,7 +217,7 @@ Conditional on actual captured foam runoff with measured composition and source.
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_fire`
 
 ###### Spent polypropylene oil-absorbent pad (`fire_absorbent`)
 
@@ -231,7 +231,7 @@ Conditional on this actual spill-control material used during the declared aircr
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_fire`
 
 ##### Elementary flows
 
@@ -247,7 +247,7 @@ Conditional on ARFF engine/pump combustion; use actual measured species or verif
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_fire`
 
 ###### Nitrogen monoxide, to air (`fire_no`)
 
@@ -261,7 +261,7 @@ Conditional on actual engine species release. Measure or apply independently ver
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_fire`
 
 ###### Nitrogen dioxide, to air (`fire_no2`)
 
@@ -275,7 +275,7 @@ Conditional on actual engine species release. Measure or apply independently ver
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_fire`
 
 ### Process: Non-repair aircraft upkeep (`upkeep`)
 
@@ -295,7 +295,7 @@ Meter actual inspection, lubrication/servicing equipment, ground power and attri
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_upkeep`
 
 ###### Polyol ester aircraft-turbine lubricating oil (`upkeep_oil`)
 
@@ -351,7 +351,7 @@ Conditional on actual documented functional checks integral to the permitted non
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_upkeep`
 
 ###### Configured aircraft-upkeep test instrument (`upkeep_testset`)
 
@@ -365,7 +365,7 @@ Conditional on actual identified inspection/test instrument; use supported task 
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_upkeep`
 
 #### Outputs
 
@@ -383,7 +383,7 @@ Conditional on actual segregated removed oil; weigh and track actual receiver/tr
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_upkeep`
 
 ##### Elementary flows
 
@@ -399,7 +399,7 @@ Conditional on documented non-repair functional-check combustion; use actual mea
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_upkeep`
 
 ### Process: Specified hangar custody (`hangar`)
 
@@ -419,7 +419,7 @@ Measure actual lighting, ventilation, door drives, monitoring and attributable c
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_hangar`
 
 ###### Natural gas, hangar heating (`hangar_gas`)
 
@@ -433,7 +433,7 @@ Conditional on actual natural-gas heating; preserve metered gas composition/calo
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_hangar`
 
 ###### Water, aircraft-hangar facility supply (`hangar_water`)
 
@@ -447,7 +447,7 @@ Conditional on actual facility sanitary or in-scope maintenance water; distingui
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_hangar`
 
 ###### Configured aircraft hangar building (`hangar_building`)
 
@@ -461,7 +461,7 @@ Identify building/door/floor configuration and actual covered footprint, support
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_hangar`
 
 #### Outputs
 
@@ -479,7 +479,7 @@ Conditional on actual sanitary sewage attributable to this facility service; tra
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_hangar`
 
 ##### Elementary flows
 
@@ -495,7 +495,7 @@ Conditional on actual natural-gas boiler combustion; use actual measured species
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_hangar`
 
 ### Process: Specified aircraft towing (`towing`)
 
@@ -515,7 +515,7 @@ Conditional on actual combustion tug using this fuel; record loaded/empty positi
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_towing`
 
 ###### Electricity, aircraft-tug charging (`tow_power`)
 
@@ -529,7 +529,7 @@ Conditional on actual electric tug or charger; measure charger-side supply and l
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
+- Collection protocol: `cp_energy_towing`
 
 ###### Mineral hydraulic oil, aircraft tug (`tow_hydraulic`)
 
@@ -543,7 +543,7 @@ Conditional on actual hydraulic-system service; measure grade and actual consume
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_towing`
 
 ###### Configured aircraft towing tractor (`tow_tug`)
 
@@ -557,7 +557,7 @@ Use actual towing mode, aircraft-mass capacity, powertrain and whole-life loaded
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_towing`
 
 ###### Configured aircraft towbar (`tow_bar`)
 
@@ -571,7 +571,7 @@ Conditional on actual towbar configuration/use; retain actual supported life and
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_towing`
 
 #### Outputs
 
@@ -589,7 +589,7 @@ Conditional on actual removed tug oil; preserve actual mass, segregated collecti
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_towing`
 
 ##### Elementary flows
 
@@ -605,7 +605,7 @@ Conditional on tug combustion; use actual measured species or verified fuel/carb
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_towing`
 
 ###### Nitrogen monoxide, to air (`tow_no`)
 
@@ -619,7 +619,7 @@ Conditional on actual engine species release. Measure or apply independently ver
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_towing`
 
 ###### Nitrogen dioxide, to air (`tow_no2`)
 
@@ -633,7 +633,7 @@ Conditional on actual engine species release. Measure or apply independently ver
 - Normalization basis: per reference flow
 - Basis kind: `process_output`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_towing`
 
 ### Process: Qualified service completion (`completion`)
 
@@ -671,14 +671,28 @@ One selected family and one physically qualified completed event/task or measure
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_completion | completion | support_output | Family-specific completion/coverage ledger | one family and service mode; actual task/aircraft/site/date; start/end/acceptance interfaces; actual duration and physical extent; provider/customer responsibility; fire standby protection area/capability/actual hours or event footprint/response/recovery and agent formulation/containment; non-repair upkeep work order and task/procedure/equipment with repair exclusion; hangar aircraft dimensions/occupied area/actual hours/climate/ventilation/security and supplier scope; towing aircraft mass/gear/tow mode/tug powertrain/load/actual route distance and all phases; actual meters/materials/species/receivers; shared facilities/assets and whole-life denominator; uncertainty | Reconcile actual completed named tasks/events with acceptance records. Standby count is measured qualified coverage hours divided by 1 hour; hangar count is actual identified-aircraft custody hours divided by 24. Preserve fractions, aircraft footprint, actual capability and all task phases. No fee or entry-count proxy. | Item(s) | each task/event or actual coverage/custody interval | complete observed same-scenario service period | actual selected function and responsibility gates | per reference flow | acceptance log; work order; dispatch/coverage record; timestamps; population reconciliation |
-| cp_energy | fire; upkeep; hangar; towing | fire_diesel; fire_power; upkeep_power; upkeep_jetfuel; hangar_power; hangar_gas; tow_diesel; tow_power | End-use/source-specific meter ledger | source/grade; meter start/end; actual fuel deliveries/stock changes; temperature/density or gas calorific basis; kWh/MJ/kg; actual phase time/distance/load; charging losses; supplier overlap; shared support; actual blocks | Meter each actual energy exchange and trace vehicle, equipment, boiler, station or space end use. Reconcile inventories and observed actual same-scenario blocks; cover idling, waiting, return and restoration where in scope. Retain actual densities/calorific values with units and uncertainty. Customer aircraft fuel delivery is not service combustion; actual integral functional checks are separately identified. | kg; kWh; MJ | each actual phase and representative observation period | all in-scope direct and shared energy | actual equipment/space/source | per reference flow | calibrated meters; fuel balance; phase logs; actual allocation; supplier scope |
+| cp_completion | completion | support_output | Family-specific completion/coverage ledger | one family and service mode; actual task/aircraft/site/date; start/end/acceptance interfaces; actual duration and physical extent; provider/customer responsibility; fire standby protection area/capability/actual hours or event footprint/response/recovery and agent formulation/containment; non-repair upkeep work order and task/procedure/equipment with repair exclusion; hangar aircraft dimensions/occupied area/actual hours/climate/ventilation/security and supplier scope; towing aircraft mass/gear/tow mode/tug powertrain/load/actual route distance and all phases; actual meters/materials/species/receivers; shared facilities/assets and whole-life denominator; uncertainty | Reconcile actual completed named tasks/events with acceptance records. Upkeep uses one identified aircraft and one accepted named non-repair task per block under validate_upkeep_count; retain aircraft-task records for multi-aircraft work orders. Standby count is measured qualified coverage hours divided by 1 hour; hangar count is actual identified-aircraft custody hours divided by 24. Preserve fractions, aircraft footprint, actual capability and all task phases. No fee or entry-count proxy. | Item(s) | each task/event or actual coverage/custody interval | complete observed same-scenario service period | actual selected function and responsibility gates | per reference flow | acceptance log; work order; dispatch/coverage record; timestamps; population reconciliation |
+| cp_energy_fire | fire | fire_diesel; fire_power | End-use/source-specific meter ledger | source/grade; meter start/end; actual fuel deliveries/stock changes; temperature/density or gas calorific basis; kWh/MJ/kg; actual phase time/distance/load; charging losses; supplier overlap; shared support; actual blocks; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter each actual energy exchange and trace vehicle, equipment, boiler, station or space end use. Reconcile inventories and observed actual same-scenario blocks; cover idling, waiting, return and restoration where in scope. Retain actual densities/calorific values with units and uncertainty. Customer aircraft fuel delivery is not service combustion; actual integral functional checks are separately identified. Apply this protocol only to its listed fire exchanges. Reconcile shared records under validate_protocol_partition. | kg; kWh | each actual phase and representative observation period | all in-scope direct and shared energy | actual equipment/space/source | per reference flow | calibrated meters; fuel balance; phase logs; actual allocation; supplier scope |
+| cp_energy_upkeep | upkeep | upkeep_power; upkeep_jetfuel | End-use/source-specific meter ledger | source/grade; meter start/end; actual fuel deliveries/stock changes; temperature/density or gas calorific basis; kWh/MJ/kg; actual phase time/distance/load; charging losses; supplier overlap; shared support; actual blocks; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter each actual energy exchange and trace vehicle, equipment, boiler, station or space end use. Reconcile inventories and observed actual same-scenario blocks; cover idling, waiting, return and restoration where in scope. Retain actual densities/calorific values with units and uncertainty. Customer aircraft fuel delivery is not service combustion; actual integral functional checks are separately identified. Apply this protocol only to its listed upkeep exchanges. Reconcile shared records under validate_protocol_partition. | kWh; kg | each actual phase and representative observation period | all in-scope direct and shared energy | actual equipment/space/source | per reference flow | calibrated meters; fuel balance; phase logs; actual allocation; supplier scope |
+| cp_energy_hangar | hangar | hangar_power; hangar_gas | End-use/source-specific meter ledger | source/grade; meter start/end; actual fuel deliveries/stock changes; temperature/density or gas calorific basis; kWh/MJ/kg; actual phase time/distance/load; charging losses; supplier overlap; shared support; actual blocks; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter each actual energy exchange and trace vehicle, equipment, boiler, station or space end use. Reconcile inventories and observed actual same-scenario blocks; cover idling, waiting, return and restoration where in scope. Retain actual densities/calorific values with units and uncertainty. Customer aircraft fuel delivery is not service combustion; actual integral functional checks are separately identified. Apply this protocol only to its listed hangar exchanges. Reconcile shared records under validate_protocol_partition. | kWh; MJ | each actual phase and representative observation period | all in-scope direct and shared energy | actual equipment/space/source | per reference flow | calibrated meters; fuel balance; phase logs; actual allocation; supplier scope |
+| cp_energy_towing | towing | tow_diesel; tow_power | End-use/source-specific meter ledger | source/grade; meter start/end; actual fuel deliveries/stock changes; temperature/density or gas calorific basis; kWh/MJ/kg; actual phase time/distance/load; charging losses; supplier overlap; shared support; actual blocks; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Meter each actual energy exchange and trace vehicle, equipment, boiler, station or space end use. Reconcile inventories and observed actual same-scenario blocks; cover idling, waiting, return and restoration where in scope. Retain actual densities/calorific values with units and uncertainty. Customer aircraft fuel delivery is not service combustion; actual integral functional checks are separately identified. Apply this protocol only to its listed towing exchanges. Reconcile shared records under validate_protocol_partition. | kg; kWh | each actual phase and representative observation period | all in-scope direct and shared energy | actual equipment/space/source | per reference flow | calibrated meters; fuel balance; phase logs; actual allocation; supplier scope |
 | cp_fire_material | fire | fire_water; fire_foam | Actual agent/water/containment ledger | prevention/standby/event; actual product manufacturer/formulation/batch; kg concentrate; m3 water/premix; actual dilution and density; test method; tank stock/recovery; actual captured/uncaptured volume; sampled species and receiving compartment | Measure actual concentrate supply/use and source water separately, correcting stock and recovery; state premix basis without double water. Use actual specification/testing/composition evidence; fluorine-free label does not prove absence of legacy contamination. If a specific chemical is identified as released, create its own measured species/receiver row; no aggregate PFAS or generic foam discharge factor. | kg; m3 | each actual use/test/event and stock period | actual selected fire-service boundary | actual equipment and product batch/site | per reference flow | product/batch records; actual tests; mass/water balance; containment and treatment tickets |
 | cp_upkeep_material | upkeep | upkeep_oil; upkeep_nitrogen; upkeep_oxygen | Non-repair work-order material ledger | aircraft/configuration; named procedure/work order; material grade/composition; delivered/recovered kg; pressure/temperature; actual duration; task completion; repairs/cleaning excluded | Measure each actual task-specific supplied material. Identify retained product, removed waste and venting separately with actual composition/pressure evidence; cylinders and instruments use actual supported lifetime share. Require manufacturer/task applicability and flag repair work for exclusion, not generic upkeep inclusion. | kg | each task/material transfer | whole permitted non-repair work order | actual aircraft/support provider | per reference flow | work order; actual procedure; weigh/stock/pressure evidence; completion |
-| cp_material | fire; hangar; towing | fire_pad; hangar_water; tow_hydraulic | Specific facility/tug material ledger | source; exact grade; actual kg/m3; issue/return; replacement interval; actual family task/time share; supplier scope | Measure actual single material and trace actual use or renewal, assigning the supported same-scenario share; never require an invented material use per block. Add each other actual material with its own row. | kg; m3 | each transfer/maintenance period | actual selected service period | actual facility/equipment | per reference flow | purchase/stock/meter/maintenance records; actual attribution |
-| cp_assets | fire; upkeep; hangar; towing | fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar | Whole-life support-asset ledger | actual configuration/BOM/construction boundary; ownership/provider; manufacture; renewals/maintenance/calibration; actual task cycles/runtime or area-time; supported life and utilization; shared roles; cumulative allocations | Use actual asset-specific construction/manufacture and supported whole-life utilization; attribute measured block share while conserving all users/periods. Separate initial/renewal inventory and supplier-included assets. Customer aircraft manufacture is outside support-asset numerator; missing life/denominator requires explicit review, never a convenient assumed life. | Item(s); m2 | each allocation and asset/renewal update | supported whole life and actual observation period | identified support vehicles/equipment/buildings | per reference flow | BOM/construction; actual utilization; life evidence; cumulative share conservation |
-| cp_waste | fire; upkeep; hangar; towing | fire_runoff; fire_absorbent; upkeep_used_oil; hangar_sewage; tow_used_oil | Specific waste/receiver ledger | exact stream; actual kg/m3; composition/contamination; source task; pre-existing vs introduced pollutant; capture/transfer gate; treatment/disposal receiver and technology; provider overlap | Weigh/meter each actual stream and trace real receiver/treatment. Record actual fire runoff capture and each individual uncaptured chemical/compartment; pre-existing accident contamination is distinguished from service additions without claiming avoided burden. Do not infer sewer, hazardous classification, recycling or complete destruction. | kg; m3 | each transfer/release period | all attributable actual streams | actual task/site and treatment gates | per reference flow | transfer/receiver tickets; samples; mass/water balance; treatment evidence |
-| cp_release | fire; upkeep; hangar; towing | fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2 | Source/species-specific release ledger | actual source/fuel/engine/boiler/duty; carbon/oxidation; species mass; NOx equivalent and speciation; receiving air; applicable measured method/factor; uncertainty; accident vs additional service emissions | Measure each species or use verified actual source/duty/fuel-specific methods with explicit units/assumptions. Do not duplicate NOx total as NO and NO2 or merge aircraft accident combustion with service engine releases. Each other real combustion, vent, refrigerant or agent species needs its own chemical/compartment row; unknown is not zero. | kg | each actual source operation and representative monitoring | all represented in-scope sources | actual source and receiver | per reference flow | measurement; source/fuel logs; verified factors; carbon/species balance |
+| cp_material_fire | fire | fire_pad | Specific facility/tug material ledger | source; exact grade; actual kg/m3; issue/return; replacement interval; actual family task/time share; supplier scope; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure actual single material and trace actual use or renewal, assigning the supported same-scenario share; never require an invented material use per block. Add each other actual material with its own row. Apply this protocol only to its listed fire exchanges. Reconcile shared records under validate_protocol_partition. | kg | each transfer/maintenance period | actual selected service period | actual facility/equipment | per reference flow | purchase/stock/meter/maintenance records; actual attribution |
+| cp_material_hangar | hangar | hangar_water | Specific facility/tug material ledger | source; exact grade; actual kg/m3; issue/return; replacement interval; actual family task/time share; supplier scope; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure actual single material and trace actual use or renewal, assigning the supported same-scenario share; never require an invented material use per block. Add each other actual material with its own row. Apply this protocol only to its listed hangar exchanges. Reconcile shared records under validate_protocol_partition. | m3 | each transfer/maintenance period | actual selected service period | actual facility/equipment | per reference flow | purchase/stock/meter/maintenance records; actual attribution |
+| cp_material_towing | towing | tow_hydraulic | Specific facility/tug material ledger | source; exact grade; actual kg/m3; issue/return; replacement interval; actual family task/time share; supplier scope; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure actual single material and trace actual use or renewal, assigning the supported same-scenario share; never require an invented material use per block. Add each other actual material with its own row. Apply this protocol only to its listed towing exchanges. Reconcile shared records under validate_protocol_partition. | kg | each transfer/maintenance period | actual selected service period | actual facility/equipment | per reference flow | purchase/stock/meter/maintenance records; actual attribution |
+| cp_assets_fire | fire | fire_vehicle; fire_station | Whole-life support-asset ledger | actual configuration/BOM/construction boundary; ownership/provider; manufacture; renewals/maintenance/calibration; actual task cycles/runtime or area-time; supported life and utilization; shared roles; cumulative allocations; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Use actual asset-specific construction/manufacture and supported whole-life utilization; attribute measured block share while conserving all users/periods. Separate initial/renewal inventory and supplier-included assets. Customer aircraft manufacture is outside support-asset numerator; missing life/denominator requires explicit review, never a convenient assumed life. Apply this protocol only to its listed fire exchanges. Reconcile shared records under validate_protocol_partition. | Item(s); m2 | each allocation and asset/renewal update | supported whole life and actual observation period | identified support vehicles/equipment/buildings | per reference flow | BOM/construction; actual utilization; life evidence; cumulative share conservation |
+| cp_assets_upkeep | upkeep | upkeep_testset | Whole-life support-asset ledger | actual configuration/BOM/construction boundary; ownership/provider; manufacture; renewals/maintenance/calibration; actual task cycles/runtime or area-time; supported life and utilization; shared roles; cumulative allocations; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Use actual asset-specific construction/manufacture and supported whole-life utilization; attribute measured block share while conserving all users/periods. Separate initial/renewal inventory and supplier-included assets. Customer aircraft manufacture is outside support-asset numerator; missing life/denominator requires explicit review, never a convenient assumed life. Apply this protocol only to its listed upkeep exchanges. Reconcile shared records under validate_protocol_partition. | Item(s) | each allocation and asset/renewal update | supported whole life and actual observation period | identified support vehicles/equipment/buildings | per reference flow | BOM/construction; actual utilization; life evidence; cumulative share conservation |
+| cp_assets_hangar | hangar | hangar_building | Whole-life support-asset ledger | actual configuration/BOM/construction boundary; ownership/provider; manufacture; renewals/maintenance/calibration; actual task cycles/runtime or area-time; supported life and utilization; shared roles; cumulative allocations; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Use actual asset-specific construction/manufacture and supported whole-life utilization; attribute measured block share while conserving all users/periods. Separate initial/renewal inventory and supplier-included assets. Customer aircraft manufacture is outside support-asset numerator; missing life/denominator requires explicit review, never a convenient assumed life. Apply this protocol only to its listed hangar exchanges. Reconcile shared records under validate_protocol_partition. | m2 | each allocation and asset/renewal update | supported whole life and actual observation period | identified support vehicles/equipment/buildings | per reference flow | BOM/construction; actual utilization; life evidence; cumulative share conservation |
+| cp_assets_towing | towing | tow_tug; tow_bar | Whole-life support-asset ledger | actual configuration/BOM/construction boundary; ownership/provider; manufacture; renewals/maintenance/calibration; actual task cycles/runtime or area-time; supported life and utilization; shared roles; cumulative allocations; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Use actual asset-specific construction/manufacture and supported whole-life utilization; attribute measured block share while conserving all users/periods. Separate initial/renewal inventory and supplier-included assets. Customer aircraft manufacture is outside support-asset numerator; missing life/denominator requires explicit review, never a convenient assumed life. Apply this protocol only to its listed towing exchanges. Reconcile shared records under validate_protocol_partition. | Item(s) | each allocation and asset/renewal update | supported whole life and actual observation period | identified support vehicles/equipment/buildings | per reference flow | BOM/construction; actual utilization; life evidence; cumulative share conservation |
+| cp_waste_fire | fire | fire_runoff; fire_absorbent | Specific waste/receiver ledger | exact stream; actual kg/m3; composition/contamination; source task; pre-existing vs introduced pollutant; capture/transfer gate; treatment/disposal receiver and technology; provider overlap; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh/meter each actual stream and trace real receiver/treatment. Record actual fire runoff capture and each individual uncaptured chemical/compartment; pre-existing accident contamination is distinguished from service additions without claiming avoided burden. Do not infer sewer, hazardous classification, recycling or complete destruction. Apply this protocol only to its listed fire exchanges. Reconcile shared records under validate_protocol_partition. | m3; kg | each transfer/release period | all attributable actual streams | actual task/site and treatment gates | per reference flow | transfer/receiver tickets; samples; mass/water balance; treatment evidence |
+| cp_waste_upkeep | upkeep | upkeep_used_oil | Specific waste/receiver ledger | exact stream; actual kg/m3; composition/contamination; source task; pre-existing vs introduced pollutant; capture/transfer gate; treatment/disposal receiver and technology; provider overlap; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh/meter each actual stream and trace real receiver/treatment. Record actual fire runoff capture and each individual uncaptured chemical/compartment; pre-existing accident contamination is distinguished from service additions without claiming avoided burden. Do not infer sewer, hazardous classification, recycling or complete destruction. Apply this protocol only to its listed upkeep exchanges. Reconcile shared records under validate_protocol_partition. | kg | each transfer/release period | all attributable actual streams | actual task/site and treatment gates | per reference flow | transfer/receiver tickets; samples; mass/water balance; treatment evidence |
+| cp_waste_hangar | hangar | hangar_sewage | Specific waste/receiver ledger | exact stream; actual kg/m3; composition/contamination; source task; pre-existing vs introduced pollutant; capture/transfer gate; treatment/disposal receiver and technology; provider overlap; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh/meter each actual stream and trace real receiver/treatment. Record actual fire runoff capture and each individual uncaptured chemical/compartment; pre-existing accident contamination is distinguished from service additions without claiming avoided burden. Do not infer sewer, hazardous classification, recycling or complete destruction. Apply this protocol only to its listed hangar exchanges. Reconcile shared records under validate_protocol_partition. | m3 | each transfer/release period | all attributable actual streams | actual task/site and treatment gates | per reference flow | transfer/receiver tickets; samples; mass/water balance; treatment evidence |
+| cp_waste_towing | towing | tow_used_oil | Specific waste/receiver ledger | exact stream; actual kg/m3; composition/contamination; source task; pre-existing vs introduced pollutant; capture/transfer gate; treatment/disposal receiver and technology; provider overlap; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh/meter each actual stream and trace real receiver/treatment. Record actual fire runoff capture and each individual uncaptured chemical/compartment; pre-existing accident contamination is distinguished from service additions without claiming avoided burden. Do not infer sewer, hazardous classification, recycling or complete destruction. Apply this protocol only to its listed towing exchanges. Reconcile shared records under validate_protocol_partition. | kg | each transfer/release period | all attributable actual streams | actual task/site and treatment gates | per reference flow | transfer/receiver tickets; samples; mass/water balance; treatment evidence |
+| cp_release_fire | fire | fire_co2; fire_no; fire_no2 | Source/species-specific release ledger | actual source/fuel/engine/boiler/duty; carbon/oxidation; species mass; NOx equivalent and speciation; receiving air; applicable measured method/factor; uncertainty; accident vs additional service emissions; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure each species or use verified actual source/duty/fuel-specific methods with explicit units/assumptions. Do not duplicate NOx total as NO and NO2 or merge aircraft accident combustion with service engine releases. Each other real combustion, vent, refrigerant or agent species needs its own chemical/compartment row; unknown is not zero. Apply this protocol only to its listed fire exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual source operation and representative monitoring | all represented in-scope sources | actual source and receiver | per reference flow | measurement; source/fuel logs; verified factors; carbon/species balance |
+| cp_release_upkeep | upkeep | upkeep_co2 | Source/species-specific release ledger | actual source/fuel/engine/boiler/duty; carbon/oxidation; species mass; NOx equivalent and speciation; receiving air; applicable measured method/factor; uncertainty; accident vs additional service emissions; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure each species or use verified actual source/duty/fuel-specific methods with explicit units/assumptions. Do not duplicate NOx total as NO and NO2 or merge aircraft accident combustion with service engine releases. Each other real combustion, vent, refrigerant or agent species needs its own chemical/compartment row; unknown is not zero. Apply this protocol only to its listed upkeep exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual source operation and representative monitoring | all represented in-scope sources | actual source and receiver | per reference flow | measurement; source/fuel logs; verified factors; carbon/species balance |
+| cp_release_hangar | hangar | hangar_co2 | Source/species-specific release ledger | actual source/fuel/engine/boiler/duty; carbon/oxidation; species mass; NOx equivalent and speciation; receiving air; applicable measured method/factor; uncertainty; accident vs additional service emissions; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure each species or use verified actual source/duty/fuel-specific methods with explicit units/assumptions. Do not duplicate NOx total as NO and NO2 or merge aircraft accident combustion with service engine releases. Each other real combustion, vent, refrigerant or agent species needs its own chemical/compartment row; unknown is not zero. Apply this protocol only to its listed hangar exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual source operation and representative monitoring | all represented in-scope sources | actual source and receiver | per reference flow | measurement; source/fuel logs; verified factors; carbon/species balance |
+| cp_release_towing | towing | tow_co2; tow_no; tow_no2 | Source/species-specific release ledger | actual source/fuel/engine/boiler/duty; carbon/oxidation; species mass; NOx equivalent and speciation; receiving air; applicable measured method/factor; uncertainty; accident vs additional service emissions; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure each species or use verified actual source/duty/fuel-specific methods with explicit units/assumptions. Do not duplicate NOx total as NO and NO2 or merge aircraft accident combustion with service engine releases. Each other real combustion, vent, refrigerant or agent species needs its own chemical/compartment row; unknown is not zero. Apply this protocol only to its listed towing exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual source operation and representative monitoring | all represented in-scope sources | actual source and receiver | per reference flow | measurement; source/fuel logs; verified factors; carbon/species balance |
 
 ### Calculation Rules
 
@@ -686,18 +700,18 @@ One selected family and one physically qualified completed event/task or measure
 | --- | --- | --- | --- | --- | --- |
 | family_attribution | all inventory rows | Assign actual individual exchanges to the declared family/mode and actual output population; divide attributable resources by completed same-scenario blocks. Reference output is exactly 1 Item(s), never a family-average count. | cp_completion; actual meters | individual exchange per reference flow |  |
 | time_attribution | support_output | Standby blocks equal measured same-capability coverage hours divided by 1 hour; hangar blocks equal actual one-aircraft custody hours divided by 24 hours, retaining fractions and footprint. Do not convert fees into time. | cp_completion | actual time-block quantity |  |
-| asset_attribution | fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar | Apply supported actual block share of asset whole-life utilization to actual construction/manufacture and distinct renewals; conserve cumulative shares and remove supplier duplication. | cp_assets; cp_completion | asset amount per reference flow |  |
-| species_accounting | fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2 | Use actual species mass or independently verified source/duty/fuel-specific evidence with unit and oxidation/speciation convention documented in the dataset. No numerical emission factor or duty default is provided. | cp_release; cp_energy | individual species per reference flow |  |
+| asset_attribution | fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar | Apply supported actual block share of asset whole-life utilization to actual construction/manufacture and distinct renewals; conserve cumulative shares and remove supplier duplication. | cp_assets_fire; cp_assets_upkeep; cp_assets_hangar; cp_assets_towing; cp_completion | asset amount per reference flow |  |
+| species_accounting | fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2 | Use actual species mass or independently verified source/duty/fuel-specific evidence with unit and oxidation/speciation convention documented in the dataset. No numerical emission factor or duty default is provided. | cp_release_fire; cp_release_upkeep; cp_release_hangar; cp_release_towing; cp_energy_fire; cp_energy_upkeep; cp_energy_hangar; cp_energy_towing | individual species per reference flow |  |
 
 ### Data Quality Requirements
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_function | support_output | Require all family/mode-specific functional extent, duration, aircraft configuration and completion conditions; no cross-family equivalence or PCR safety approval. | cp_completion |
-| quality_fire | fire | Actual product/agent formulation, test method, containment and composition/fate evidence are needed. No presumed PFAS species absence/presence or accidental-fire frequency. | cp_fire_material; cp_waste |
+| quality_fire | fire | Actual product/agent formulation, test method, containment and composition/fate evidence are needed. No presumed PFAS species absence/presence or accidental-fire frequency. | cp_fire_material; cp_waste_fire |
 | quality_upkeep | upkeep | Document a non-repair work order and applicable actual task procedure. Exclude repair/cleaning and separate transferred customer materials from actual service consumption. | cp_upkeep_material |
-| quality_lifecycle | all asset rows | Support exact equipment/facility numerator, actual utilization and whole-life denominator with cumulative conservation; unsupported life prevents complete lifecycle claims. | cp_assets |
-| quality_gaps | all inventory rows | Disclose missing identities, actual energy/material/agent/species, accident contamination distinction, waste receiver and noise/ecological method scope. Missing data and non-characterized impacts are not zero. | cp_energy; cp_waste; cp_release |
+| quality_lifecycle | all asset rows | Support exact equipment/facility numerator, actual utilization and whole-life denominator with cumulative conservation; unsupported life prevents complete lifecycle claims. | cp_assets_fire; cp_assets_upkeep; cp_assets_hangar; cp_assets_towing |
+| quality_gaps | all inventory rows | Disclose missing identities, actual energy/material/agent/species, accident contamination distinction, waste receiver and noise/ecological method scope. Missing data and non-characterized impacts are not zero. | cp_energy_fire; cp_energy_upkeep; cp_energy_hangar; cp_energy_towing; cp_waste_fire; cp_waste_upkeep; cp_waste_hangar; cp_waste_towing; cp_release_fire; cp_release_upkeep; cp_release_hangar; cp_release_towing |
 
 ## 9. Validation Rules
 
@@ -707,6 +721,8 @@ One selected family and one physically qualified completed event/task or measure
 | validate_scope | Enforce non-repair and cleaning/disinfection/brokerage/air-sea-rescue/flight-training/runway-cleaning-snow exclusions. A hangar location cannot change excluded repair into covered support. | un-cpc-air-support |
 | validate_sources | Separate actual support-equipment combustion, integral non-repair checks and customer flight/APU/accident sources. Require actual agent formulation and separately quantified chemical releases; do not infer PFAS or avoided-fire/pollution benefits. |  |
 | validate_atomic_life | Require one specific exchange per card with its own correct property/unit, actual applicability and receiver; conserved life shares and supplier coverage. Unknown identities/denominators remain explicit and prevent unsupported completeness claims. |  |
+| `validate_upkeep_count` | For upkeep, one block is one accepted, specifically named non-repair upkeep task on one identified aircraft. Record the aircraft ID, task ID, exact procedure/extent, start/end and acceptance for each completed block. Split a work order covering several aircraft into its actual aircraft-task records; repeat attempts within the same task are numerator activity, not extra outputs. Several separately defined tasks on one aircraft are separate scenario populations, not interchangeable units, and a bundled task cannot also count its included subtasks as complete outputs. |  |
+| `validate_protocol_partition` | Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods. |  |
 
 ## 10. Published Dataset Profile
 

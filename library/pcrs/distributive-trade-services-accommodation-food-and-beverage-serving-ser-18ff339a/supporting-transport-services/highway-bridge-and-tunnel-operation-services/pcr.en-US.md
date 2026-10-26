@@ -521,6 +521,7 @@ Only measured or justified operator-combustion fine particulate mass; exclude du
 | `validate_components` | Reconcile road/bridge/tunnel asset segments, current maintenance, operating loads and supplier modules once; user fuel/tailpipe inventory remains separate. |  |
 | `validate_atomic` | Reject combined deicer/energy/waste/species labels, whole-salt mass as each ion, unverified receptor assignment and totals duplicated with component releases. |  |
 | `validate_coverage` | Require actual facility configuration, asset life/traffic evidence, meter coverage and explicit upstream gaps; partial operator data cannot claim complete transport-system impacts. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

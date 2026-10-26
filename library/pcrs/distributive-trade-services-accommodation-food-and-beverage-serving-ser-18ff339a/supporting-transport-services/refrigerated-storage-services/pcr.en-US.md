@@ -433,6 +433,7 @@ Only actual R744 loss; disclose fossil/biogenic origin and receiving compartment
 | `validate_balance` | Require each actual chemical, material, waste and air species as an independent row; reconcile refrigerant stock, equipment charge, acquisitions, recovery and offsite transfer before accepting release. | epa-refrigerant-balance |
 | `validate_period` | Require matching activity/utility periods, shares summing to measured totals, supported lifetime asset allocation and explicit upstream gaps; a meter-only inventory cannot claim complete cradle-to-gate coverage. |  |
 | `validate_double_count` | Reject duplicate initial cooling, external handling, customer packaging, supplier assets or freight burdens already in another included dataset. |  |
+| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

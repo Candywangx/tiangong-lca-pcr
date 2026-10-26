@@ -496,6 +496,7 @@ Conditional on measured resuspension/release crossing the system boundary, with 
 | `validate_service` | Require unique navigation_output of 1 item with complete declared subtype/extent, navigation quality and interval. Reject freight tonne-km and undefined lock/pass counts as substitutes. |  |
 | `validate_scope` | Confirm all selected inland operation/maintenance routes, including non-tugboat towpath traction. Exclude cargo handling, warehousing, docking pilotage/tugs and customer vessel fuel/exhaust from this service. | un-cpc3-67512 |
 | `validate_balances` | Reconcile water and sediment balances, actual shared-lock attribution, navigation/other-purpose allocation and infrastructure lifetime shares. Missing identity, emission, upstream or habitat-impact evidence must remain disclosed before a complete lifecycle claim. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

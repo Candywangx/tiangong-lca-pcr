@@ -112,7 +112,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_liquefaction`
 
 ###### 外购液化燃料天然气 (`liq_fuelgas`)
 
@@ -126,7 +126,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_liquefaction`
 
 ###### 外购液化过程供热蒸汽 (`liq_steam`)
 
@@ -140,7 +140,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_liquefaction`
 
 ###### 制冷剂补充甲烷 (`ref_methane`)
 
@@ -224,7 +224,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_chemical`
+- 采集协议：`cp_chemical_liquefaction`
 
 ###### 3A沸石分子筛 (`sieve`)
 
@@ -238,7 +238,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_chemical`
+- 采集协议：`cp_chemical_liquefaction`
 
 ###### 除汞用浸硫活性炭 (`mercury_carbon`)
 
@@ -252,7 +252,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_chemical`
+- 采集协议：`cp_chemical_liquefaction`
 
 ###### 已确定配置的天然气液化装置 (`liq_train`)
 
@@ -266,7 +266,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_liquefaction`
 
 ### 过程：天然气再气化 (`regasification`)
 
@@ -286,7 +286,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_regasification`
 
 ###### 外购再气化燃料天然气 (`regas_fuelgas`)
 
@@ -300,7 +300,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_regasification`
 
 ###### 外购再气化供热蒸汽 (`regas_steam`)
 
@@ -314,7 +314,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_regasification`
 
 ###### 外购热水再气化供热 (`regas_heat`)
 
@@ -328,7 +328,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_regasification`
 
 ###### 已确定配置的天然气再气化装置 (`regas_train`)
 
@@ -342,7 +342,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_regasification`
 
 ##### 基本流
 
@@ -358,7 +358,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_water`
+- 采集协议：`cp_water_regasification`
 
 ###### 再气化河流取水 (`regas_riverwater`)
 
@@ -372,7 +372,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_water`
+- 采集协议：`cp_water_regasification`
 
 #### 输出
 
@@ -390,7 +390,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_water`
+- 采集协议：`cp_water_regasification`
 
 ###### 再气化河流退水 (`regas_river_return`)
 
@@ -404,7 +404,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_water`
+- 采集协议：`cp_water_regasification`
 
 ### 过程：真实公用工程BOG维护及排放管理 (`management`)
 
@@ -424,7 +424,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_water`
+- 采集协议：`cp_water_management`
 
 ###### 水处理活性次氯酸钠 (`hypochlorite`)
 
@@ -438,7 +438,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_chemical`
+- 采集协议：`cp_chemical_management`
 
 ###### 过程吹扫用压缩氮气 (`nitrogen_purge`)
 
@@ -452,7 +452,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_chemical`
+- 采集协议：`cp_chemical_management`
 
 ###### 矿物压缩机润滑油 (`lubricant`)
 
@@ -466,7 +466,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_chemical`
+- 采集协议：`cp_chemical_management`
 
 ###### 已确定配置的过程缓冲LNG罐 (`buffer_tank`)
 
@@ -480,7 +480,7 @@ status: candidate
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_management`
 
 #### 输出
 
@@ -735,12 +735,17 @@ status: candidate
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_mass | completion; management | service_output | 按组成分解的保管调相账 | 运输用途；液化或再气化；真实场址日期路线供应商；进出口保管端点；来料及交付组成含甲烷高碳烃CO2氮水及相关污染物；真实进出口相态温度压力和质量验收；合格净交付kg及观测期间；真实进料库存变化过程缓冲时长内部回路转燃料回收外送BOG及每项损失去向；压缩制冷循环或ORV/SCV/空气/中间介质气化器及能源来源；陆上浮式资产范围；能源来源温度压力；实际取退水温度化学地点；逐种化学品冷剂；排放逸散火炬效率证据；副产品供应商重叠；真实全寿命输出分母及不确定性 | 以校准进出口质量计量或有真实组成温度压力及密度状态方程证据的体积换算；将客户进料、真实外部气及期初库存与合格交付、期末库存、转燃料、另行外送气副输出和逐项放空火炬逸散损失核对；内部BOG返回再冷凝及冷剂回路作为内部转移抵消，不作新采购生产。仅计实际合格净出口，修正不合格返工退回料，不重复计循环处理；保留组分碳平衡、实际缓冲保管时长及不确定性。 | kg | 连续批次计量及每保管期 | 完整真实调相交付期含启停库存变化 | 真实所选进出口缓冲端点 | 每参考流 | 校准质量质量验收计量；气分析；库存燃料BOG记录；组分平衡 |
-| cp_energy | liquefaction; regasification | liq_power; liq_fuelgas; liq_steam; regas_power; regas_fuelgas; regas_steam; regas_heat | 真实来源终端能源账 | 路线技术；真实计量起止；外部燃料组成kg热值基准；内用客户BOG燃料另列；kWh/MJ；供回状态焓；压缩泵气化器负荷；启停；供应商范围；真实合格出口质量 | 真实外部电、每种外燃料、蒸汽热量分别计量；将源特定内燃料燃烧与cp_mass核对且不重复采购，真实发电效率损耗仅计一次；计真实热供回焓、实际处理量及全部可归属阶段，不设比能耗或SCV/ORV默认。 | kg; kWh; MJ | 每计量阶段及核对观测期 | 全部真实路线能源及可归属停机 | 真实压缩制冷气化器及供应 | 每参考流 | 计量；真实燃料BOG库存平衡；状态数据；供应商重叠；分配 |
+| cp_mass | completion | service_output | 按组成分解的保管调相账 | 运输用途；液化或再气化；真实场址日期路线供应商；进出口保管端点；来料及交付组成含甲烷高碳烃CO2氮水及相关污染物；真实进出口相态温度压力和质量验收；合格净交付kg及观测期间；真实进料库存变化过程缓冲时长内部回路转燃料回收外送BOG及每项损失去向；压缩制冷循环或ORV/SCV/空气/中间介质气化器及能源来源；陆上浮式资产范围；能源来源温度压力；实际取退水温度化学地点；逐种化学品冷剂；排放逸散火炬效率证据；副产品供应商重叠；真实全寿命输出分母及不确定性；共同源记录及保管转移编号 | 以校准进出口质量计量或有真实组成温度压力及密度状态方程证据的体积换算；将客户进料、真实外部气及期初库存与合格交付、期末库存、转燃料、另行外送气副输出和逐项放空火炬逸散损失核对；内部BOG返回再冷凝及冷剂回路作为内部转移抵消，不作新采购生产。仅计实际合格净出口，修正不合格返工退回料，不重复计循环处理；保留组分碳平衡、实际缓冲保管时长及不确定性。 由completion负责覆盖所选路线及management的唯一保管/组分总账；各过程源记录按共同记录/转移编号与cp_mass核对一次，此总账不新增management产出或另一服务分母。 | kg | 连续批次计量及每保管期 | 完整真实调相交付期含启停库存变化 | 真实所选进出口缓冲端点 | 每参考流 | 校准质量质量验收计量；气分析；库存燃料BOG记录；组分平衡 |
+| cp_energy_liquefaction | liquefaction | liq_power; liq_fuelgas; liq_steam | 真实来源终端能源账 | 路线技术；真实计量起止；外部燃料组成kg热值基准；内用客户BOG燃料另列；kWh/MJ；供回状态焓；压缩泵气化器负荷；启停；供应商范围；真实合格出口质量；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实外部电、每种外燃料、蒸汽热量分别计量；将源特定内燃料燃烧与cp_mass核对且不重复采购，真实发电效率损耗仅计一次；计真实热供回焓、实际处理量及全部可归属阶段，不设比能耗或SCV/ORV默认。 本协议仅适用于所列liquefaction过程交换；共享记录按validate_protocol_partition核对。 | kWh; kg; MJ | 每计量阶段及核对观测期 | 全部真实路线能源及可归属停机 | 真实压缩制冷气化器及供应 | 每参考流 | 计量；真实燃料BOG库存平衡；状态数据；供应商重叠；分配 |
+| cp_energy_regasification | regasification | regas_power; regas_fuelgas; regas_steam; regas_heat | 真实来源终端能源账 | 路线技术；真实计量起止；外部燃料组成kg热值基准；内用客户BOG燃料另列；kWh/MJ；供回状态焓；压缩泵气化器负荷；启停；供应商范围；真实合格出口质量；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实外部电、每种外燃料、蒸汽热量分别计量；将源特定内燃料燃烧与cp_mass核对且不重复采购，真实发电效率损耗仅计一次；计真实热供回焓、实际处理量及全部可归属阶段，不设比能耗或SCV/ORV默认。 本协议仅适用于所列regasification过程交换；共享记录按validate_protocol_partition核对。 | kWh; kg; MJ | 每计量阶段及核对观测期 | 全部真实路线能源及可归属停机 | 真实压缩制冷气化器及供应 | 每参考流 | 计量；真实燃料BOG库存平衡；状态数据；供应商重叠；分配 |
 | cp_refrigerant | liquefaction | ref_methane; ref_ethane; ref_propane; ref_ethylene; ref_nitrogen | 回路组分冷剂账 | 真实循环回路；每种化学组成；初充寿命份额；补充回收期初期末库存kg；泄漏放空来源接收；真实路线输出 | 将真实混合阶式冷剂分解具体化学组分，以库存回收平衡计外供净补充，循环质量非消耗；按有证据真实寿命利用分初充更换，不重复供应商库存；量化每种真实化学损失接收，其他冷剂另设路线特定行。 | kg | 每补充回收及核对期 | 完整真实回路运行维护间隔 | 真实化学回路供应商 | 每参考流 | 组分证书；充回记录；库存；泄漏证据 |
-| cp_chemical | liquefaction; management | amine; sieve; mercury_carbon; hypochlorite; nitrogen_purge; lubricant | 具体化学品介质账 | 路线终端；准确化学品配方等级；实测kg活性比例；另计水；更换再生；捕集杂质；吹扫压力；供应商范围 | 计每项真实化学品介质，区分活性物溶剂及混合产品组分且不重复供应；连接真实污染物任务证据及真实更换间隔，不设强制配方；再生能源、移除污染物及废物排放另追踪。 | kg | 每真实领用更换再生间隔 | 真实期间及有证据更换份额 | 真实过程供应商端点 | 每参考流 | 采购库存配方记录；真实质量平衡；维护 |
-| cp_water | regasification; management | regas_seawater; regas_riverwater; regas_sea_return; regas_river_return; process_water | 来源接收特定水热账 | 源水体产品；真实体积流量；进出温度压力盐度；季节地点；冷却加热负荷；蒸发滞留退水；杀生剂残余反应产物；真实接收处理 | 真实来源产品与循环水分别计，匹配真实退水消耗；记录实测热变化热通量及当地接收条件，不用通用温度限值；化学残余须各自物种介质及真实处理，不以水量代替；真实海水河流地下水其他源不互换。 | m3；温度；热状态 | 连续代表真实取退水期 | 完整适用路线及真实季节接收背景 | 真实来源接收方 | 每参考流 | 流量计；温度化学样；季节接收证据；水平衡 |
-| cp_assets | liquefaction; regasification; management | liq_train; regas_train; buffer_tank | 全寿命过程资产账 | 配置物料表建设；装置缓冲范围；所有权供应商；制造维护更新；有证据年数真实处理利用收率停机；寿命合格出口kg；累计分配 | 识别真实过程资产及有证据全寿命合格输出，区分单一路线状态及独立仓储运输资产；分可归属建设制造及独立维护更新，守恒累计用户期间份额；铭牌处理量乘任意寿命不是证据，未知分母明确待审。 | Item(s) | 每分配及配置更新变化 | 有证据全寿命及真实观测服务期 | 真实调相装置缓冲及供应商 | 每参考流 | 建设物料表；真实利用收率；寿命证据；累计份额 |
+| cp_chemical_liquefaction | liquefaction | amine; sieve; mercury_carbon | 具体化学品介质账 | 路线终端；准确化学品配方等级；实测kg活性比例；另计水；更换再生；捕集杂质；吹扫压力；供应商范围；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计每项真实化学品介质，区分活性物溶剂及混合产品组分且不重复供应；连接真实污染物任务证据及真实更换间隔，不设强制配方；再生能源、移除污染物及废物排放另追踪。 本协议仅适用于所列liquefaction过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实领用更换再生间隔 | 真实期间及有证据更换份额 | 真实过程供应商端点 | 每参考流 | 采购库存配方记录；真实质量平衡；维护 |
+| cp_chemical_management | management | hypochlorite; nitrogen_purge; lubricant | 具体化学品介质账 | 路线终端；准确化学品配方等级；实测kg活性比例；另计水；更换再生；捕集杂质；吹扫压力；供应商范围；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计每项真实化学品介质，区分活性物溶剂及混合产品组分且不重复供应；连接真实污染物任务证据及真实更换间隔，不设强制配方；再生能源、移除污染物及废物排放另追踪。 本协议仅适用于所列management过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实领用更换再生间隔 | 真实期间及有证据更换份额 | 真实过程供应商端点 | 每参考流 | 采购库存配方记录；真实质量平衡；维护 |
+| cp_water_regasification | regasification | regas_seawater; regas_riverwater; regas_sea_return; regas_river_return | 来源接收特定水热账 | 源水体产品；真实体积流量；进出温度压力盐度；季节地点；冷却加热负荷；蒸发滞留退水；杀生剂残余反应产物；真实接收处理；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实来源产品与循环水分别计，匹配真实退水消耗；记录实测热变化热通量及当地接收条件，不用通用温度限值；化学残余须各自物种介质及真实处理，不以水量代替；真实海水河流地下水其他源不互换。 本协议仅适用于所列regasification过程交换；共享记录按validate_protocol_partition核对。 | m3 | 连续代表真实取退水期 | 完整适用路线及真实季节接收背景 | 真实来源接收方 | 每参考流 | 流量计；温度化学样；季节接收证据；水平衡 |
+| cp_water_management | management | process_water | 来源接收特定水热账 | 源水体产品；真实体积流量；进出温度压力盐度；季节地点；冷却加热负荷；蒸发滞留退水；杀生剂残余反应产物；真实接收处理；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实来源产品与循环水分别计，匹配真实退水消耗；记录实测热变化热通量及当地接收条件，不用通用温度限值；化学残余须各自物种介质及真实处理，不以水量代替；真实海水河流地下水其他源不互换。 本协议仅适用于所列management过程交换；共享记录按validate_protocol_partition核对。 | m3 | 连续代表真实取退水期 | 完整适用路线及真实季节接收背景 | 真实来源接收方 | 每参考流 | 流量计；温度化学样；季节接收证据；水平衡 |
+| cp_assets_liquefaction | liquefaction | liq_train | 全寿命过程资产账 | 配置物料表建设；装置缓冲范围；所有权供应商；制造维护更新；有证据年数真实处理利用收率停机；寿命合格出口kg；累计分配；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 识别真实过程资产及有证据全寿命合格输出，区分单一路线状态及独立仓储运输资产；分可归属建设制造及独立维护更新，守恒累计用户期间份额；铭牌处理量乘任意寿命不是证据，未知分母明确待审。 本协议仅适用于所列liquefaction过程交换；共享记录按validate_protocol_partition核对。 | Item(s) | 每分配及配置更新变化 | 有证据全寿命及真实观测服务期 | 真实调相装置缓冲及供应商 | 每参考流 | 建设物料表；真实利用收率；寿命证据；累计份额 |
+| cp_assets_regasification | regasification | regas_train | 全寿命过程资产账 | 配置物料表建设；装置缓冲范围；所有权供应商；制造维护更新；有证据年数真实处理利用收率停机；寿命合格出口kg；累计分配；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 识别真实过程资产及有证据全寿命合格输出，区分单一路线状态及独立仓储运输资产；分可归属建设制造及独立维护更新，守恒累计用户期间份额；铭牌处理量乘任意寿命不是证据，未知分母明确待审。 本协议仅适用于所列regasification过程交换；共享记录按validate_protocol_partition核对。 | Item(s) | 每分配及配置更新变化 | 有证据全寿命及真实观测服务期 | 真实调相装置缓冲及供应商 | 每参考流 | 建设物料表；真实利用收率；寿命证据；累计份额 |
+| cp_assets_management | management | buffer_tank | 全寿命过程资产账 | 配置物料表建设；装置缓冲范围；所有权供应商；制造维护更新；有证据年数真实处理利用收率停机；寿命合格出口kg；累计分配；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 识别真实过程资产及有证据全寿命合格输出，区分单一路线状态及独立仓储运输资产；分可归属建设制造及独立维护更新，守恒累计用户期间份额；铭牌处理量乘任意寿命不是证据，未知分母明确待审。 本协议仅适用于所列management过程交换；共享记录按validate_protocol_partition核对。 | Item(s) | 每分配及配置更新变化 | 有证据全寿命及真实观测服务期 | 真实调相装置缓冲及供应商 | 每参考流 | 建设物料表；真实利用收率；寿命证据；累计份额 |
 | cp_waste | management | spent_amine; spent_sieve; spent_carbon; used_oil; oily_water | 具体废物接收账 | 单一流；真实kg/m3；溶液吸附物汞油组成；来源路线；真实转移处理再生处置；供应商覆盖 | 称量计量每种真实流，按真实组分基准追踪最终接收处理，不预设无害破坏回收或避免负荷；废介质与移除污染物排放分开，其他真实具体流各自增加。 | kg; m3 | 每真实废物转移期间 | 全部可归属真实废物 | 真实来源及接收处理端点 | 每参考流 | 转移单；真实分析；再生处置范围；平衡 |
 | cp_release | management | methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s | 来源组分分解气体去向账 | 路线来源；真实气体组成质量；燃烧燃料火炬效率氧化；放空逸散冷剂泄漏；单一物种kg接收；移除酸气路线；真实监测因子分物种；碳硫平衡 | 实测分物种真实来源流，并与cp_mass及冷剂化学平衡核对；用独立核验组成效率方法计算真实源燃烧火炬排放，报告未燃甲烷及其他物种而不假定完全破坏；来料原有CO2与氧化CO2分开，NO/NO2若源于总氮氧化物当量须有分物种文件且不重复总量；其他真实化学物接收各自增加，缺失排放证据非零。 | kg | 每来源作业扰动及代表监测 | 真实期全部代表正常扰动来源 | 真实来源介质 | 每参考流 | 计量泄漏实测；真实组成；核验方法；气碳硫平衡 |
 
@@ -750,8 +755,8 @@ status: candidate
 | --- | --- | --- | --- | --- | --- |
 | service_attribution | 所有清单行 | 真实可归属交换除以同路线状态质量期间实际合格净出口kg，并核对库存损失返工；唯一服务输出准确1kg。 | cp_mass; 实际交换采集协议 | 每参考流单一交换 |  |
 | gas_fate_balance | service_output; methane; ethane; propane; co2; co; so2; h2s | 闭合保管燃料BOG损失库存的真实组分质量及碳硫平衡，抵消内部返回且合格交付计一次；记录实测换算组成及未解残差，不强制零。 | cp_mass; cp_release; cp_refrigerant | 组分去向及核对净交付 |  |
-| asset_attribution | liq_train; regas_train; buffer_tank | 按有证据真实资产全寿命利用的可归属路线输出份额分实际制造建设及独立更新，守恒跨期间供应商累计份额。 | cp_assets; cp_mass | 每参考流资产量 |  |
-| species_fate | methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s | 采用实际物种实测或核验来源组成燃烧火炬效率及分物种，并在数据集中明确单位不确定性；不提供数值燃料泄漏火炬破坏或回收因子。 | cp_release; cp_mass; cp_energy | 每参考流单一物种量 |  |
+| asset_attribution | liq_train; regas_train; buffer_tank | 按有证据真实资产全寿命利用的可归属路线输出份额分实际制造建设及独立更新，守恒跨期间供应商累计份额。 | cp_assets_liquefaction; cp_assets_regasification; cp_assets_management; cp_mass | 每参考流资产量 |  |
+| species_fate | methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s | 采用实际物种实测或核验来源组成燃烧火炬效率及分物种，并在数据集中明确单位不确定性；不提供数值燃料泄漏火炬破坏或回收因子。 | cp_release; cp_mass; cp_energy_liquefaction; cp_energy_regasification | 每参考流单一物种量 |  |
 
 ### 数据质量要求
 
@@ -759,8 +764,8 @@ status: candidate
 | --- | --- | --- | --- |
 | quality_route | service_output | 真实运输用途路线合格净质量进出口状态组成及验收必需，不混两调相路线。 | cp_mass |
 | quality_bog | management | 要求真实BOG燃料放空火炬逸散库存记录及组分平衡，内部回收不变新采购或默认收益。 | cp_mass; cp_release |
-| quality_thermal | regasification; liquefaction | 保持真实技术热源冷剂组分取退水热状态化学，缺适用热生态表征须披露，不作零影响。 | cp_energy; cp_refrigerant; cp_water |
-| quality_life | 所有资产行 | 真实清单及寿命输出分母须能力利用停机收率寿命证据并审供应商重叠，未知寿命不能声称完整生命周期。 | cp_assets |
+| quality_thermal | regasification; liquefaction | 保持真实技术热源冷剂组分取退水热状态化学，缺适用热生态表征须披露，不作零影响。 | cp_energy_liquefaction; cp_energy_regasification; cp_refrigerant; cp_water_regasification; cp_water_management |
+| quality_life | 所有资产行 | 真实清单及寿命输出分母须能力利用停机收率寿命证据并审供应商重叠，未知寿命不能声称完整生命周期。 | cp_assets_liquefaction; cp_assets_regasification; cp_assets_management |
 | quality_gaps | 所有清单行 | 披露缺失身份组分火炬接收证据、上游燃气链连接、副输出分配及场址噪声水生态方法缺口，缺失非零。 | cp_waste; cp_release; cp_mass |
 
 ## 9. 校验规则
@@ -771,6 +776,7 @@ status: candidate
 | validate_reference | 唯一service_output须等于1kg并匹配实测合格净出口质量，路线状态组成温压质量及真实期间必需；内部循环不合格库存燃料损失不作合格交付。 |  |
 | validate_balance | 核对保管外燃料内部BOG库存及逐种去向，不重复购气或合格输出，不假定火炬完全破坏，不暗计冷热BOG收益；纯服务边界不声称完整燃气链上游商品负荷为零。 |  |
 | validate_atomic_life | 每行须单一真实交换及各自正确属性单位介质，含取退水热证据；核验寿命份额供应商覆盖，未知身份方法缺口保持明确，不声称发布就绪。 |  |
+| `validate_protocol_partition` | 每项采集协议须指向一个已存在的process_id且仅覆盖其所列流行；每张清单卡须关联其实际过程的对应协议。每次物理读数、交付、转移、排放或资产分配保留唯一source_record_id和exchange_id。源记录服务多个过程或数据集时，在同一期间共用总账中记录分配驱动因素、原始总量、各归属份额及边界外剩余量；各归属数量与剩余量之和须与原始总量一致。拆分协议不得复制完整读数、新增服务产出或重新开始资产寿命分配。每个声明情景保留同一匹配的产出分母，过程数量仅为归属证据，不形成额外归一化。内部转移仅核对一次，并保留跨全部使用方和期间的资产累计份额。 |  |
 
 ## 10. 发布数据集画像
 

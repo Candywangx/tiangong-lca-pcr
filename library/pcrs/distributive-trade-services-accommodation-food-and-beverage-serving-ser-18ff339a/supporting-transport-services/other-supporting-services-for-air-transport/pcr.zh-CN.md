@@ -115,7 +115,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_fire`
 
 ###### 航空器消防站用户端电力 (`fire_power`)
 
@@ -129,7 +129,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_fire`
 
 ###### 航空器消防供应水 (`fire_water`)
 
@@ -171,7 +171,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_material`
+- 采集协议：`cp_material_fire`
 
 ###### 已确定配置的航空器消防车 (`fire_vehicle`)
 
@@ -185,7 +185,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_fire`
 
 ###### 已确定配置的航空器消防站房 (`fire_station`)
 
@@ -199,7 +199,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_fire`
 
 #### 输出
 
@@ -217,7 +217,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_fire`
 
 ###### 废聚丙烯吸油垫 (`fire_absorbent`)
 
@@ -231,7 +231,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_fire`
 
 ##### 基本流
 
@@ -247,7 +247,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_fire`
 
 ###### 排入空气的一氧化氮 (`fire_no`)
 
@@ -261,7 +261,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_fire`
 
 ###### 排入空气的二氧化氮 (`fire_no2`)
 
@@ -275,7 +275,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_fire`
 
 ### 过程：非修理航空器维护 (`upkeep`)
 
@@ -295,7 +295,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_upkeep`
 
 ###### 多元醇酯航空涡轮润滑油 (`upkeep_oil`)
 
@@ -351,7 +351,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_upkeep`
 
 ###### 已确定配置的航空器维护测试仪 (`upkeep_testset`)
 
@@ -365,7 +365,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_upkeep`
 
 #### 输出
 
@@ -383,7 +383,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_upkeep`
 
 ##### 基本流
 
@@ -399,7 +399,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_upkeep`
 
 ### 过程：明确机库保管 (`hangar`)
 
@@ -419,7 +419,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_hangar`
 
 ###### 机库供热用天然气 (`hangar_gas`)
 
@@ -433,7 +433,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_hangar`
 
 ###### 航空器机库设施供应水 (`hangar_water`)
 
@@ -447,7 +447,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_material`
+- 采集协议：`cp_material_hangar`
 
 ###### 已确定配置的航空器机库建筑 (`hangar_building`)
 
@@ -461,7 +461,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_hangar`
 
 #### 输出
 
@@ -479,7 +479,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_hangar`
 
 ##### 基本流
 
@@ -495,7 +495,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_hangar`
 
 ### 过程：明确航空器牵引 (`towing`)
 
@@ -515,7 +515,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_towing`
 
 ###### 航空器牵引车充电电力 (`tow_power`)
 
@@ -529,7 +529,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_towing`
 
 ###### 航空器牵引车矿物液压油 (`tow_hydraulic`)
 
@@ -543,7 +543,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_material`
+- 采集协议：`cp_material_towing`
 
 ###### 已确定配置的航空器牵引车 (`tow_tug`)
 
@@ -557,7 +557,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_towing`
 
 ###### 已确定配置的航空器牵引杆 (`tow_bar`)
 
@@ -571,7 +571,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_assets`
+- 采集协议：`cp_assets_towing`
 
 #### 输出
 
@@ -589,7 +589,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_waste`
+- 采集协议：`cp_waste_towing`
 
 ##### 基本流
 
@@ -605,7 +605,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_towing`
 
 ###### 排入空气的一氧化氮 (`tow_no`)
 
@@ -619,7 +619,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_towing`
 
 ###### 排入空气的二氧化氮 (`tow_no2`)
 
@@ -633,7 +633,7 @@ sync_with: pcr.en-US.md
 - 归一化基准：每参考流
 - 基准类型：`process_output`
 - 证据类型：`collected_record`
-- 采集协议：`cp_release`
+- 采集协议：`cp_release_towing`
 
 ### 过程：限定服务完成 (`completion`)
 
@@ -671,14 +671,28 @@ sync_with: pcr.en-US.md
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_completion | completion | support_output | 服务族特定完成/保障账 | 单一服务族及模式；实际任务/航空器/场址/日期；起止验收接口；实际时长及物理范围；供应商/客户责任；消防待命保障区域/能力/实际小时或事件占地/响应/恢复及药剂配方/围控；非修理维护工单及任务/程序/设备和修理排除；机库航空器尺寸/占地/实际小时/气候/通风/安保及供应商范围；牵引航空器质量/起落架/牵引方式/牵引车动力/载荷/实际路线距离及全部阶段；实际计量/材料/物种/接收方；共用设施资产及全寿命分母；不确定性 | 用验收记录核对真实完成明确任务/事件；待命计数为实测限定保障小时除以1小时，机库计数为实际明确航空器保管小时除以24；保留分数、航空器占位、真实能力及全部任务阶段，不以费用或进出次数代替。 | Item(s) | 每任务/事件或实际保障保管区间 | 完整同情景观测服务期 | 真实选定功能及责任端点 | 每参考流 | 验收日志；工单；出动/保障记录；时间戳；总体核对 |
-| cp_energy | fire; upkeep; hangar; towing | fire_diesel; fire_power; upkeep_power; upkeep_jetfuel; hangar_power; hangar_gas; tow_diesel; tow_power | 终端/来源特定计量账 | 来源等级；计量起止；真实燃料交付/库存变化；温度密度或气体热值基准；kWh/MJ/kg；真实阶段时间距离负荷；充电损耗；供应商重叠；共用支持；实际块 | 计量每项真实能源交换并追踪车辆、设备、锅炉、站房或空间终端；核对库存及观测同情景真实块，涵盖范围内怠速、等待、返回及恢复；保留真实密度/热值、单位及不确定性。客户航空器燃料交付不是服务燃烧，真实必要功能检查另识别。 | kg; kWh; MJ | 每真实阶段及代表观测期 | 全部范围内直接及共用能源 | 真实设备/空间/来源 | 每参考流 | 校准计量；燃料平衡；阶段日志；实际分配；供应商范围 |
+| cp_completion | completion | support_output | 服务族特定完成/保障账 | 单一服务族及模式；实际任务/航空器/场址/日期；起止验收接口；实际时长及物理范围；供应商/客户责任；消防待命保障区域/能力/实际小时或事件占地/响应/恢复及药剂配方/围控；非修理维护工单及任务/程序/设备和修理排除；机库航空器尺寸/占地/实际小时/气候/通风/安保及供应商范围；牵引航空器质量/起落架/牵引方式/牵引车动力/载荷/实际路线距离及全部阶段；实际计量/材料/物种/接收方；共用设施资产及全寿命分母；不确定性 | 用验收记录核对真实完成明确任务/事件；维护按validate_upkeep_count以一架明确航空器的一次已验收明确非修理任务计一个块，多航空器工单须保留逐航空器—任务记录；待命计数为实测限定保障小时除以1小时，机库计数为实际明确航空器保管小时除以24；保留分数、航空器占位、真实能力及全部任务阶段，不以费用或进出次数代替。 | Item(s) | 每任务/事件或实际保障保管区间 | 完整同情景观测服务期 | 真实选定功能及责任端点 | 每参考流 | 验收日志；工单；出动/保障记录；时间戳；总体核对 |
+| cp_energy_fire | fire | fire_diesel; fire_power | 终端/来源特定计量账 | 来源等级；计量起止；真实燃料交付/库存变化；温度密度或气体热值基准；kWh/MJ/kg；真实阶段时间距离负荷；充电损耗；供应商重叠；共用支持；实际块；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计量每项真实能源交换并追踪车辆、设备、锅炉、站房或空间终端；核对库存及观测同情景真实块，涵盖范围内怠速、等待、返回及恢复；保留真实密度/热值、单位及不确定性。客户航空器燃料交付不是服务燃烧，真实必要功能检查另识别。 本协议仅适用于所列fire过程交换；共享记录按validate_protocol_partition核对。 | kg; kWh | 每真实阶段及代表观测期 | 全部范围内直接及共用能源 | 真实设备/空间/来源 | 每参考流 | 校准计量；燃料平衡；阶段日志；实际分配；供应商范围 |
+| cp_energy_upkeep | upkeep | upkeep_power; upkeep_jetfuel | 终端/来源特定计量账 | 来源等级；计量起止；真实燃料交付/库存变化；温度密度或气体热值基准；kWh/MJ/kg；真实阶段时间距离负荷；充电损耗；供应商重叠；共用支持；实际块；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计量每项真实能源交换并追踪车辆、设备、锅炉、站房或空间终端；核对库存及观测同情景真实块，涵盖范围内怠速、等待、返回及恢复；保留真实密度/热值、单位及不确定性。客户航空器燃料交付不是服务燃烧，真实必要功能检查另识别。 本协议仅适用于所列upkeep过程交换；共享记录按validate_protocol_partition核对。 | kWh; kg | 每真实阶段及代表观测期 | 全部范围内直接及共用能源 | 真实设备/空间/来源 | 每参考流 | 校准计量；燃料平衡；阶段日志；实际分配；供应商范围 |
+| cp_energy_hangar | hangar | hangar_power; hangar_gas | 终端/来源特定计量账 | 来源等级；计量起止；真实燃料交付/库存变化；温度密度或气体热值基准；kWh/MJ/kg；真实阶段时间距离负荷；充电损耗；供应商重叠；共用支持；实际块；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计量每项真实能源交换并追踪车辆、设备、锅炉、站房或空间终端；核对库存及观测同情景真实块，涵盖范围内怠速、等待、返回及恢复；保留真实密度/热值、单位及不确定性。客户航空器燃料交付不是服务燃烧，真实必要功能检查另识别。 本协议仅适用于所列hangar过程交换；共享记录按validate_protocol_partition核对。 | kWh; MJ | 每真实阶段及代表观测期 | 全部范围内直接及共用能源 | 真实设备/空间/来源 | 每参考流 | 校准计量；燃料平衡；阶段日志；实际分配；供应商范围 |
+| cp_energy_towing | towing | tow_diesel; tow_power | 终端/来源特定计量账 | 来源等级；计量起止；真实燃料交付/库存变化；温度密度或气体热值基准；kWh/MJ/kg；真实阶段时间距离负荷；充电损耗；供应商重叠；共用支持；实际块；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计量每项真实能源交换并追踪车辆、设备、锅炉、站房或空间终端；核对库存及观测同情景真实块，涵盖范围内怠速、等待、返回及恢复；保留真实密度/热值、单位及不确定性。客户航空器燃料交付不是服务燃烧，真实必要功能检查另识别。 本协议仅适用于所列towing过程交换；共享记录按validate_protocol_partition核对。 | kg; kWh | 每真实阶段及代表观测期 | 全部范围内直接及共用能源 | 真实设备/空间/来源 | 每参考流 | 校准计量；燃料平衡；阶段日志；实际分配；供应商范围 |
 | cp_fire_material | fire | fire_water; fire_foam | 真实药剂/水/围控账 | 预防/待命/事件；真实产品制造商配方批次；浓缩液kg；水/预混液m3；真实稀释及密度；测试方式；罐库存/回收；真实捕集未捕集体积；采样物种及接收介质 | 分别计真实浓缩液供应/消耗及源水，修正库存和回收，明确预混基准且不重复水；采用真实规格/测试/组成证据，无氟标签不证明没有历史污染。若识别具体化学物排放，建立各自实测物种/介质行，不用PFAS集合或通用泡沫排放因子。 | kg; m3 | 每真实使用测试事件及库存期 | 真实选定消防服务边界 | 真实设备及产品批次场址 | 每参考流 | 产品批次记录；真实测试；质量水平衡；围控及处理单 |
 | cp_upkeep_material | upkeep | upkeep_oil; upkeep_nitrogen; upkeep_oxygen | 非修理工单材料账 | 航空器配置；明确程序工单；材料等级组成；交付回收kg；压力温度；真实时长；任务完成；修理清洗排除 | 计量每项真实任务特定材料，依真实组成压力证据区分保留产品、移除废物及放空；气瓶及仪器用实际有证据寿命份额；要求制造商/任务适用证据，将修理标为排除，不以通用维护纳入。 | kg | 每任务材料转移 | 完整允许非修理工单 | 真实航空器/支持供应商 | 每参考流 | 工单；真实程序；称量库存压力证据；完成 |
-| cp_material | fire; hangar; towing | fire_pad; hangar_water; tow_hydraulic | 具体设施/牵引车材料账 | 来源；准确等级；真实kg/m3；领用退回；更换间隔；真实服务族任务时间份额；供应商范围 | 计量真实单一材料并追踪真实使用或更新，分有证据同情景份额，不向每块强设材料消耗；其他实际材料各自设行。 | kg; m3 | 每转移维护期 | 真实所选服务期 | 真实设施设备 | 每参考流 | 采购库存计量维护记录；实际归属 |
-| cp_assets | fire; upkeep; hangar; towing | fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar | 全寿命支持资产账 | 真实配置物料表建设边界；所有权供应商；制造；更新维护校准；真实任务周期运行或面积时间；有证据寿命利用；共用角色；累计分配 | 采用真实资产特定建设制造及有证据全寿命利用，分实测服务块份额并守恒跨用户期间；区分初始更新清单及供应商已含资产，客户航空器制造不属于支持资产分子；缺失寿命分母明确待审，不设方便寿命。 | Item(s); m2 | 每分配及资产更新变化 | 有证据全寿命及真实观测期 | 已识别支持车辆设备建筑 | 每参考流 | 物料表建设；真实利用；寿命证据；累计份额守恒 |
-| cp_waste | fire; upkeep; hangar; towing | fire_runoff; fire_absorbent; upkeep_used_oil; hangar_sewage; tow_used_oil | 具体废物接收账 | 准确流；真实kg/m3；组成污染；来源任务；原有与新增污染物；捕集转移端点；处理处置接收及技术；供应商重叠 | 分别称量计量真实流并追踪真实接收处理；记录真实消防径流捕集及每种未捕集化学物介质，原事故污染与服务新增区分且不声称避免负荷；不推定管网、危险性、回收或完全破坏。 | kg; m3 | 每转移排放期 | 全部可归属真实流 | 真实任务场址及处理端点 | 每参考流 | 转移接收单；样品；质量水平衡；处理证据 |
-| cp_release | fire; upkeep; hangar; towing | fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2 | 来源物种特定排放账 | 真实来源燃料发动机锅炉负荷；碳氧化；物种质量；总氮氧化物当量及分物种；接收空气；适用实测方法因子；不确定性；事故与服务新增排放 | 实测逐种物种或采用核验真实来源负荷燃料方法并明确单位假设，不将总氮氧化物同时填NO和NO2，不把航空器事故燃烧并入服务发动机排放；其他真实燃烧、放空、制冷剂或药剂物种须各自化学物介质行，未知非零。 | kg | 每真实来源作业及代表监测 | 全部代表范围内来源 | 真实来源及接收方 | 每参考流 | 实测；来源燃料日志；核验因子；碳物种平衡 |
+| cp_material_fire | fire | fire_pad | 具体设施/牵引车材料账 | 来源；准确等级；真实kg/m3；领用退回；更换间隔；真实服务族任务时间份额；供应商范围；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计量真实单一材料并追踪真实使用或更新，分有证据同情景份额，不向每块强设材料消耗；其他实际材料各自设行。 本协议仅适用于所列fire过程交换；共享记录按validate_protocol_partition核对。 | kg | 每转移维护期 | 真实所选服务期 | 真实设施设备 | 每参考流 | 采购库存计量维护记录；实际归属 |
+| cp_material_hangar | hangar | hangar_water | 具体设施/牵引车材料账 | 来源；准确等级；真实kg/m3；领用退回；更换间隔；真实服务族任务时间份额；供应商范围；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计量真实单一材料并追踪真实使用或更新，分有证据同情景份额，不向每块强设材料消耗；其他实际材料各自设行。 本协议仅适用于所列hangar过程交换；共享记录按validate_protocol_partition核对。 | m3 | 每转移维护期 | 真实所选服务期 | 真实设施设备 | 每参考流 | 采购库存计量维护记录；实际归属 |
+| cp_material_towing | towing | tow_hydraulic | 具体设施/牵引车材料账 | 来源；准确等级；真实kg/m3；领用退回；更换间隔；真实服务族任务时间份额；供应商范围；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计量真实单一材料并追踪真实使用或更新，分有证据同情景份额，不向每块强设材料消耗；其他实际材料各自设行。 本协议仅适用于所列towing过程交换；共享记录按validate_protocol_partition核对。 | kg | 每转移维护期 | 真实所选服务期 | 真实设施设备 | 每参考流 | 采购库存计量维护记录；实际归属 |
+| cp_assets_fire | fire | fire_vehicle; fire_station | 全寿命支持资产账 | 真实配置物料表建设边界；所有权供应商；制造；更新维护校准；真实任务周期运行或面积时间；有证据寿命利用；共用角色；累计分配；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 采用真实资产特定建设制造及有证据全寿命利用，分实测服务块份额并守恒跨用户期间；区分初始更新清单及供应商已含资产，客户航空器制造不属于支持资产分子；缺失寿命分母明确待审，不设方便寿命。 本协议仅适用于所列fire过程交换；共享记录按validate_protocol_partition核对。 | Item(s); m2 | 每分配及资产更新变化 | 有证据全寿命及真实观测期 | 已识别支持车辆设备建筑 | 每参考流 | 物料表建设；真实利用；寿命证据；累计份额守恒 |
+| cp_assets_upkeep | upkeep | upkeep_testset | 全寿命支持资产账 | 真实配置物料表建设边界；所有权供应商；制造；更新维护校准；真实任务周期运行或面积时间；有证据寿命利用；共用角色；累计分配；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 采用真实资产特定建设制造及有证据全寿命利用，分实测服务块份额并守恒跨用户期间；区分初始更新清单及供应商已含资产，客户航空器制造不属于支持资产分子；缺失寿命分母明确待审，不设方便寿命。 本协议仅适用于所列upkeep过程交换；共享记录按validate_protocol_partition核对。 | Item(s) | 每分配及资产更新变化 | 有证据全寿命及真实观测期 | 已识别支持车辆设备建筑 | 每参考流 | 物料表建设；真实利用；寿命证据；累计份额守恒 |
+| cp_assets_hangar | hangar | hangar_building | 全寿命支持资产账 | 真实配置物料表建设边界；所有权供应商；制造；更新维护校准；真实任务周期运行或面积时间；有证据寿命利用；共用角色；累计分配；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 采用真实资产特定建设制造及有证据全寿命利用，分实测服务块份额并守恒跨用户期间；区分初始更新清单及供应商已含资产，客户航空器制造不属于支持资产分子；缺失寿命分母明确待审，不设方便寿命。 本协议仅适用于所列hangar过程交换；共享记录按validate_protocol_partition核对。 | m2 | 每分配及资产更新变化 | 有证据全寿命及真实观测期 | 已识别支持车辆设备建筑 | 每参考流 | 物料表建设；真实利用；寿命证据；累计份额守恒 |
+| cp_assets_towing | towing | tow_tug; tow_bar | 全寿命支持资产账 | 真实配置物料表建设边界；所有权供应商；制造；更新维护校准；真实任务周期运行或面积时间；有证据寿命利用；共用角色；累计分配；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 采用真实资产特定建设制造及有证据全寿命利用，分实测服务块份额并守恒跨用户期间；区分初始更新清单及供应商已含资产，客户航空器制造不属于支持资产分子；缺失寿命分母明确待审，不设方便寿命。 本协议仅适用于所列towing过程交换；共享记录按validate_protocol_partition核对。 | Item(s) | 每分配及资产更新变化 | 有证据全寿命及真实观测期 | 已识别支持车辆设备建筑 | 每参考流 | 物料表建设；真实利用；寿命证据；累计份额守恒 |
+| cp_waste_fire | fire | fire_runoff; fire_absorbent | 具体废物接收账 | 准确流；真实kg/m3；组成污染；来源任务；原有与新增污染物；捕集转移端点；处理处置接收及技术；供应商重叠；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 分别称量计量真实流并追踪真实接收处理；记录真实消防径流捕集及每种未捕集化学物介质，原事故污染与服务新增区分且不声称避免负荷；不推定管网、危险性、回收或完全破坏。 本协议仅适用于所列fire过程交换；共享记录按validate_protocol_partition核对。 | m3; kg | 每转移排放期 | 全部可归属真实流 | 真实任务场址及处理端点 | 每参考流 | 转移接收单；样品；质量水平衡；处理证据 |
+| cp_waste_upkeep | upkeep | upkeep_used_oil | 具体废物接收账 | 准确流；真实kg/m3；组成污染；来源任务；原有与新增污染物；捕集转移端点；处理处置接收及技术；供应商重叠；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 分别称量计量真实流并追踪真实接收处理；记录真实消防径流捕集及每种未捕集化学物介质，原事故污染与服务新增区分且不声称避免负荷；不推定管网、危险性、回收或完全破坏。 本协议仅适用于所列upkeep过程交换；共享记录按validate_protocol_partition核对。 | kg | 每转移排放期 | 全部可归属真实流 | 真实任务场址及处理端点 | 每参考流 | 转移接收单；样品；质量水平衡；处理证据 |
+| cp_waste_hangar | hangar | hangar_sewage | 具体废物接收账 | 准确流；真实kg/m3；组成污染；来源任务；原有与新增污染物；捕集转移端点；处理处置接收及技术；供应商重叠；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 分别称量计量真实流并追踪真实接收处理；记录真实消防径流捕集及每种未捕集化学物介质，原事故污染与服务新增区分且不声称避免负荷；不推定管网、危险性、回收或完全破坏。 本协议仅适用于所列hangar过程交换；共享记录按validate_protocol_partition核对。 | m3 | 每转移排放期 | 全部可归属真实流 | 真实任务场址及处理端点 | 每参考流 | 转移接收单；样品；质量水平衡；处理证据 |
+| cp_waste_towing | towing | tow_used_oil | 具体废物接收账 | 准确流；真实kg/m3；组成污染；来源任务；原有与新增污染物；捕集转移端点；处理处置接收及技术；供应商重叠；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 分别称量计量真实流并追踪真实接收处理；记录真实消防径流捕集及每种未捕集化学物介质，原事故污染与服务新增区分且不声称避免负荷；不推定管网、危险性、回收或完全破坏。 本协议仅适用于所列towing过程交换；共享记录按validate_protocol_partition核对。 | kg | 每转移排放期 | 全部可归属真实流 | 真实任务场址及处理端点 | 每参考流 | 转移接收单；样品；质量水平衡；处理证据 |
+| cp_release_fire | fire | fire_co2; fire_no; fire_no2 | 来源物种特定排放账 | 真实来源燃料发动机锅炉负荷；碳氧化；物种质量；总氮氧化物当量及分物种；接收空气；适用实测方法因子；不确定性；事故与服务新增排放；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 实测逐种物种或采用核验真实来源负荷燃料方法并明确单位假设，不将总氮氧化物同时填NO和NO2，不把航空器事故燃烧并入服务发动机排放；其他真实燃烧、放空、制冷剂或药剂物种须各自化学物介质行，未知非零。 本协议仅适用于所列fire过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实来源作业及代表监测 | 全部代表范围内来源 | 真实来源及接收方 | 每参考流 | 实测；来源燃料日志；核验因子；碳物种平衡 |
+| cp_release_upkeep | upkeep | upkeep_co2 | 来源物种特定排放账 | 真实来源燃料发动机锅炉负荷；碳氧化；物种质量；总氮氧化物当量及分物种；接收空气；适用实测方法因子；不确定性；事故与服务新增排放；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 实测逐种物种或采用核验真实来源负荷燃料方法并明确单位假设，不将总氮氧化物同时填NO和NO2，不把航空器事故燃烧并入服务发动机排放；其他真实燃烧、放空、制冷剂或药剂物种须各自化学物介质行，未知非零。 本协议仅适用于所列upkeep过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实来源作业及代表监测 | 全部代表范围内来源 | 真实来源及接收方 | 每参考流 | 实测；来源燃料日志；核验因子；碳物种平衡 |
+| cp_release_hangar | hangar | hangar_co2 | 来源物种特定排放账 | 真实来源燃料发动机锅炉负荷；碳氧化；物种质量；总氮氧化物当量及分物种；接收空气；适用实测方法因子；不确定性；事故与服务新增排放；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 实测逐种物种或采用核验真实来源负荷燃料方法并明确单位假设，不将总氮氧化物同时填NO和NO2，不把航空器事故燃烧并入服务发动机排放；其他真实燃烧、放空、制冷剂或药剂物种须各自化学物介质行，未知非零。 本协议仅适用于所列hangar过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实来源作业及代表监测 | 全部代表范围内来源 | 真实来源及接收方 | 每参考流 | 实测；来源燃料日志；核验因子；碳物种平衡 |
+| cp_release_towing | towing | tow_co2; tow_no; tow_no2 | 来源物种特定排放账 | 真实来源燃料发动机锅炉负荷；碳氧化；物种质量；总氮氧化物当量及分物种；接收空气；适用实测方法因子；不确定性；事故与服务新增排放；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 实测逐种物种或采用核验真实来源负荷燃料方法并明确单位假设，不将总氮氧化物同时填NO和NO2，不把航空器事故燃烧并入服务发动机排放；其他真实燃烧、放空、制冷剂或药剂物种须各自化学物介质行，未知非零。 本协议仅适用于所列towing过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实来源作业及代表监测 | 全部代表范围内来源 | 真实来源及接收方 | 每参考流 | 实测；来源燃料日志；核验因子；碳物种平衡 |
 
 ### 计算规则
 
@@ -686,18 +700,18 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | family_attribution | 所有清单行 | 将真实单一交换归属声明服务族模式及真实输出总体，可归属资源除以完成同情景块；参考输出准确1 Item(s)，不作跨族平均计数。 | cp_completion; 实际计量记录 | 每参考流单一交换 |  |
 | time_attribution | support_output | 待命块为实测同能力保障小时除以1小时，机库块为真实一架航空器保管小时除以24小时，保留分数及占位；不以费用换时长。 | cp_completion | 真实时间块量 |  |
-| asset_attribution | fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar | 按有证据资产全寿命利用的真实块份额分实际建设制造及独立更新，守恒累计份额并消除供应商重复。 | cp_assets; cp_completion | 每参考流资产量 |  |
-| species_accounting | fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2 | 用实际物种质量或独立核验来源负荷燃料证据，数据集中记录单位及氧化分物种惯例；不提供数值排放因子或负荷默认值。 | cp_release; cp_energy | 每参考流单一物种量 |  |
+| asset_attribution | fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar | 按有证据资产全寿命利用的真实块份额分实际建设制造及独立更新，守恒累计份额并消除供应商重复。 | cp_assets_fire; cp_assets_upkeep; cp_assets_hangar; cp_assets_towing; cp_completion | 每参考流资产量 |  |
+| species_accounting | fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2 | 用实际物种质量或独立核验来源负荷燃料证据，数据集中记录单位及氧化分物种惯例；不提供数值排放因子或负荷默认值。 | cp_release_fire; cp_release_upkeep; cp_release_hangar; cp_release_towing; cp_energy_fire; cp_energy_upkeep; cp_energy_hangar; cp_energy_towing | 每参考流单一物种量 |  |
 
 ### 数据质量要求
 
 | requirement_id | 适用对象 | 要求 | 证据 |
 | --- | --- | --- | --- |
 | quality_function | support_output | 要求全部服务族模式特定功能范围、时长、航空器配置及完成条件，不跨族等效或声称PCR安全批准。 | cp_completion |
-| quality_fire | fire | 要求真实产品药剂配方、测试方法、围控及组成去向证据，不推定PFAS物种有无或事故频率。 | cp_fire_material; cp_waste |
+| quality_fire | fire | 要求真实产品药剂配方、测试方法、围控及组成去向证据，不推定PFAS物种有无或事故频率。 | cp_fire_material; cp_waste_fire |
 | quality_upkeep | upkeep | 记录非修理工单及真实任务适用程序，排除修理清洗，将交付客户材料与实际服务消耗分开。 | cp_upkeep_material |
-| quality_lifecycle | 所有资产行 | 以证据支持准确设备设施分子、真实利用及全寿命分母并累计守恒，寿命无证据不能声称完整生命周期。 | cp_assets |
-| quality_gaps | 所有清单行 | 披露缺失身份、真实能源材料药剂物种、事故污染区分、废物接收及噪声生态方法范围，缺失数据及未表征影响不等于零。 | cp_energy; cp_waste; cp_release |
+| quality_lifecycle | 所有资产行 | 以证据支持准确设备设施分子、真实利用及全寿命分母并累计守恒，寿命无证据不能声称完整生命周期。 | cp_assets_fire; cp_assets_upkeep; cp_assets_hangar; cp_assets_towing |
+| quality_gaps | 所有清单行 | 披露缺失身份、真实能源材料药剂物种、事故污染区分、废物接收及噪声生态方法范围，缺失数据及未表征影响不等于零。 | cp_energy_fire; cp_energy_upkeep; cp_energy_hangar; cp_energy_towing; cp_waste_fire; cp_waste_upkeep; cp_waste_hangar; cp_waste_towing; cp_release_fire; cp_release_upkeep; cp_release_hangar; cp_release_towing |
 
 ## 9. 校验规则
 
@@ -707,6 +721,8 @@ sync_with: pcr.en-US.md
 | validate_scope | 执行非修理及清洗消毒中介空海搜救飞行培训跑道清洗除雪排除，机库地点不能把排除修理改为覆盖支持。 | un-cpc-air-support |
 | validate_sources | 区分真实支持设备燃烧、必要非修理检查及客户飞行/APU/事故来源，要求实际药剂配方及逐项化学排放，不推定PFAS或避免火灾污染收益。 |  |
 | validate_atomic_life | 每卡要求单一具体交换及各自正确属性单位、真实适用及接收方，寿命份额守恒并核对供应商覆盖；未知身份分母保持明确，不得无证据声称完整。 |  |
+| `validate_upkeep_count` | 对于upkeep，一个服务块是一架明确航空器上一次已验收、准确命名的非修理维护任务。逐已完成块记录航空器ID、任务ID、准确程序/范围、起止及验收。涉及多架航空器的工单须拆成实际航空器—任务记录；同一任务内的重复尝试仅为分子活动，不增加输出。同一航空器上独立定义的不同任务须分属各自情景总体，不能视为可互换单位；打包任务及其包含子任务不得同时计作完整输出。 |  |
+| `validate_protocol_partition` | 每项采集协议须指向一个已存在的process_id且仅覆盖其所列流行；每张清单卡须关联其实际过程的对应协议。每次物理读数、交付、转移、排放或资产分配保留唯一source_record_id和exchange_id。源记录服务多个过程或数据集时，在同一期间共用总账中记录分配驱动因素、原始总量、各归属份额及边界外剩余量；各归属数量与剩余量之和须与原始总量一致。拆分协议不得复制完整读数、新增服务产出或重新开始资产寿命分配。每个声明情景保留同一匹配的产出分母，过程数量仅为归属证据，不形成额外归一化。内部转移仅核对一次，并保留跨全部使用方和期间的资产累计份额。 |  |
 
 ## 10. 发布数据集画像
 

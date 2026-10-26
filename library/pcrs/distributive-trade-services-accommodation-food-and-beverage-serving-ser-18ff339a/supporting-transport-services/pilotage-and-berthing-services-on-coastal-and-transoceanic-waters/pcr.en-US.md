@@ -548,6 +548,7 @@ Conditional actual LNG-engine slip or service-craft fuel-system leakage; measure
 | `validate_reference` | Require unique marine_service at 1 item and positive completed task N; every subtype/team/vessel/geographic qualifier is mandatory, with no duplicate component/whole outputs. |  |
 | `validate_balance` | Require individual fuel, material, waste and species rows with craft/engine evidence and reconciled fleet shares; reject client-vessel fuel in the service-craft module and supplier-covered duplicates. |  |
 | `validate_quality` | State actual asset/maintenance, bilge/reception, cooling/coating/spill screening and upstream gaps; target check pass is not maritime safety/legal approval or complete shipping LCA. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

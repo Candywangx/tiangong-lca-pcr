@@ -135,13 +135,13 @@ Conditional on actual icebreaking equipment maintenance; measure grade, actual r
 
 - Selected flow: Mineral hydraulic oil
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_material.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_material_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_icebreaking`
 - Sources:
 
 ###### Configured icebreaking service vessel (`ice_ship_share`)
@@ -150,13 +150,13 @@ Conditional on actual icebreaker use; identify hull/propulsion/ice capability an
 
 - Selected flow: Configured icebreaking service vessel
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
-- Amount rule: Attributable measured exchange amount per reference flow; cp_assets.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_assets_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_icebreaking`
 - Sources:
 
 #### Outputs
@@ -169,13 +169,13 @@ Conditional on actual segregated removed hydraulic oil; trace collection and tre
 
 - Selected flow: Used mineral hydraulic oil
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_waste.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_waste_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_icebreaking`
 - Sources:
 
 ###### Oily icebreaker bilge water (`ice_bilge`)
@@ -184,13 +184,13 @@ Conditional on actual collected bilge water; retain oil composition and real rec
 
 - Selected flow: Oily icebreaker bilge water
 - Flow property / unit: Volume / m3
-- Amount rule: Attributable measured exchange amount per reference flow; cp_waste.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_waste_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_icebreaking`
 - Sources:
 
 ##### Elementary flows
@@ -201,13 +201,13 @@ Conditional on actual in-scope fuel combustion of this species; use measurement 
 
 - Selected flow: Carbon dioxide, fossil, to air
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_release.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_release_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_icebreaking`
 - Sources:
 
 ###### Carbon monoxide, to air (`ice_co`)
@@ -216,13 +216,13 @@ Conditional on actual in-scope fuel combustion of this species; use measurement 
 
 - Selected flow: Carbon monoxide, to air
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_release.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_release_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_icebreaking`
 - Sources:
 
 ###### Nitrogen monoxide, to air (`ice_no`)
@@ -231,13 +231,13 @@ Conditional on actual in-scope fuel combustion of this species; use measurement 
 
 - Selected flow: Nitrogen monoxide, to air
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_release.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_release_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_icebreaking`
 - Sources:
 
 ###### Nitrogen dioxide, to air (`ice_no2`)
@@ -246,13 +246,13 @@ Conditional on actual in-scope fuel combustion of this species; use measurement 
 
 - Selected flow: Nitrogen dioxide, to air
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_release.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_release_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_icebreaking`
 - Sources:
 
 ###### Sulfur dioxide, to air (`ice_so2`)
@@ -261,13 +261,13 @@ Conditional on actual in-scope fuel combustion of this species; use measurement 
 
 - Selected flow: Sulfur dioxide, to air
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_release.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_release_icebreaking.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_icebreaking`
 - Sources:
 
 ### Process: Process defined vessel-registry case (`registration`)
@@ -312,13 +312,13 @@ Conditional on actual owned workstation use; attribute manufacturing using actua
 
 - Selected flow: Configured registration-processing workstation
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
-- Amount rule: Attributable measured exchange amount per reference flow; cp_assets.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_assets_registration.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_registration`
 - Sources:
 
 ###### Vessel-registration case hosting service (`registry_hosting`)
@@ -342,13 +342,13 @@ Conditional on actual office use; identify floor/shared area, case service popul
 
 - Selected flow: Configured vessel-registry office building
 - Flow property / unit: Area / m2
-- Amount rule: Attributable measured exchange amount per reference flow; cp_assets.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_assets_registration.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_registration`
 - Sources:
 
 #### Outputs
@@ -361,13 +361,13 @@ Conditional on actual operator paper waste; weigh separately and identify actual
 
 - Selected flow: Discarded office printing paper
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_waste.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_waste_registration.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_registration`
 - Sources:
 
 ### Process: Provide actual vessel lay-up storage/preservation (`layup`)
@@ -378,11 +378,11 @@ Conditional on actual operator paper waste; weigh separately and identify actual
 
 ###### Electricity, vessel lay-up preservation supply (`layup_power`)
 
-Conditional on actual stored-vessel ventilation, dehumidification, heating, monitoring, battery maintenance or storage-facility support. Meter each real end use and preserve hot/cold/state specification; no universal preservation load.
+Conditional only on externally supplied electricity crossing the declared foreground boundary for actual stored-vessel ventilation, dehumidification, heating, monitoring, battery maintenance or storage-facility support. Identify delivery meter, AC/DC form, voltage and supplier coverage; incompatible supplies require separate specific flow rows. Meter end uses for reconciliation and preserve the actual hot/cold/state specification. Onsite or onboard generation and battery discharge are internal transfers, not additional external electricity inputs; no universal preservation load.
 
 - Selected flow: Electricity, vessel lay-up preservation supply
 - Flow property / unit: Energy / kWh
-- Amount rule: Attributable measured exchange amount per reference flow; cp_layup.
+- Amount rule: Attributable measured external electrical delivery per reference flow; cp_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
@@ -393,11 +393,11 @@ Conditional on actual stored-vessel ventilation, dehumidification, heating, moni
 
 ###### Diesel fuel, unblended, lay-up preservation (`layup_diesel`)
 
-Conditional on an actual generator/equipment maintaining the declared stored condition with this fuel. Record responsible owner/operator and include the agreed preservation share once, irrespective of ownership; exclude customer propulsion and unrelated activity.
+Conditional on actual generator/equipment fuel used within the declared foreground boundary to maintain the specified stored condition. Record responsible owner/operator and include the agreed preservation share once, irrespective of ownership; exclude customer propulsion and unrelated activity. Retain associated generation output in the internal energy ledger. Where an external electricity dataset or separate generation subprocess already includes this fuel, do not add the same fuel again in layup.
 
 - Selected flow: Diesel fuel, unblended, lay-up preservation
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_layup.
+- Amount rule: Attributable measured fuel consumed within the declared foreground boundary per reference flow, excluding fuel already represented in supplied electricity or a separate generation subprocess; cp_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
@@ -412,13 +412,13 @@ Conditional on this actual preservation material and compatible machinery specif
 
 - Selected flow: Mineral corrosion-protection oil
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_material.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_material_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_layup`
 - Sources:
 
 ###### Silica gel desiccant (`silica_gel`)
@@ -427,13 +427,13 @@ Conditional on actual desiccant use; identify grade and actual replacement/regen
 
 - Selected flow: Silica gel desiccant
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_material.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_material_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_layup`
 - Sources:
 
 ###### Polypropylene mooring rope (`mooring_rope`)
@@ -442,13 +442,13 @@ Conditional on actual afloat storage mooring using this material; allocate suppo
 
 - Selected flow: Polypropylene mooring rope
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_material.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_material_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_material`
+- Collection protocol: `cp_material_layup`
 - Sources:
 
 ###### Configured vessel lay-up berth (`layup_berth`)
@@ -457,13 +457,13 @@ Conditional on actual afloat berth storage; fix berth geometry, vessel footprint
 
 - Selected flow: Configured vessel lay-up berth
 - Flow property / unit: Length / m
-- Amount rule: Attributable measured exchange amount per reference flow; cp_assets.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_assets_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_layup`
 - Sources:
 
 ###### Configured vessel-storage hardstanding (`hardstanding`)
@@ -472,13 +472,13 @@ Conditional on actual dry land storage; identify area, structural construction a
 
 - Selected flow: Configured vessel-storage hardstanding
 - Flow property / unit: Area / m2
-- Amount rule: Attributable measured exchange amount per reference flow; cp_assets.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_assets_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_layup`
 - Sources:
 
 ###### Configured vessel-storage cradle (`cradle`)
@@ -487,13 +487,13 @@ Conditional on actual dry storage support; identify configuration, manufacture a
 
 - Selected flow: Configured vessel-storage cradle
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
-- Amount rule: Attributable measured exchange amount per reference flow; cp_assets.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_assets_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
+- Collection protocol: `cp_assets_layup`
 - Sources:
 
 #### Outputs
@@ -506,13 +506,13 @@ Conditional on actual collected removed preservation oil; record composition, ma
 
 - Selected flow: Used mineral corrosion-protection oil
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_waste.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_waste_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_layup`
 - Sources:
 
 ###### Spent silica gel desiccant (`spent_desiccant`)
@@ -521,13 +521,13 @@ Conditional on actual spent silica gel; weigh and trace regeneration/disposal an
 
 - Selected flow: Spent silica gel desiccant
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_waste.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_waste_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_layup`
 - Sources:
 
 ###### Lay-up service sanitary sewage (`layup_sewage`)
@@ -536,13 +536,13 @@ Conditional on actual service-crew wastewater included in the storage/preservati
 
 - Selected flow: Lay-up service sanitary sewage
 - Flow property / unit: Volume / m3
-- Amount rule: Attributable measured exchange amount per reference flow; cp_waste.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_waste_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_waste`
+- Collection protocol: `cp_waste_layup`
 - Sources:
 
 ##### Elementary flows
@@ -553,13 +553,13 @@ Conditional on actual in-scope fuel combustion of this species; use measurement 
 
 - Selected flow: Carbon dioxide, fossil, to air
 - Flow property / unit: Mass / kg
-- Amount rule: Attributable measured exchange amount per reference flow; cp_release.
+- Amount rule: Attributable measured exchange amount per reference flow; cp_release_layup.
 - Value mode: `foreground_record`
 - Specificity: `site_specific`
 - Normalization basis: per reference flow
 - Basis kind: `reference_flow`
 - Evidence kind: `collected_record`
-- Collection protocol: `cp_release`
+- Collection protocol: `cp_release_layup`
 - Sources:
 
 ### Process: Verify selected-family completion/output (`completion`)
@@ -602,11 +602,17 @@ One selected function: a defined navigation-icebreaking mission, a completed spe
 | cp_completion | completion | support_output | Family-specific completion ledger | selected family; exact block; mission/case/vessel ID; physical extent; actual start/end; accepted output/outcome; operator/provider components; actual custody hours | Verify exactly one completed mission or completed specified registry case, or derive actual vessel-storage blocks from custody hours divided by 24. Keep families, types, outcomes and extents separate; no fee or nominal capacity as quantity. | Item(s) | each completion/custody interval | complete selected service boundary | actual selected-family providers | per reference flow | mission log; formal case decision/delivery; custody timestamps; population reconciliation |
 | cp_ice_energy | icebreaking | ice_diesel; ice_shore_power | Mission ice/duty/energy ledger | mission route/cleared area; actual ice type/thickness/concentration/ridging; weather; convoy/vessel; craft/engine/power; fuel kg/grade/density; charging kWh; assist/transit/idle/wait/return/standby times; actual completion | Measure actual engine fuel and electrical supply, reconcile mission/convoy/shared and non-navigation duties. Use actual ice observations and operational logs, not a default fuel per route kilometre or ship escorted. | kg; kWh | each mission phase/meter interval | whole actual mission and allocated support | actual icebreaking operators/craft | per reference flow | fuel/charge meters; ice/route logs; engine duty; shared-task reconciliation |
 | cp_registry | registration | registry_power; registry_paper; registry_hosting | Case processing and initial-delivery ledger | jurisdiction; case/transaction type; vessel; submitted evidence; actual checks/rework; decision/outcome/date; actual staff/IT activity; kWh; paper kg; provider service hours/capacity/region; first delivery; archive cutoff | Match actual case workflow and completed decision/delivery; submeter/reconcile actual IT/office activity and paper. Supplier hosting needs actual scope and inventory, not kWh inferred from case count. Keep incomplete work in progress explicit and ongoing registry/archives separately bounded. | kWh; kg; h | each case step and completion | actual case through first delivery | actual registry and providers | per reference flow | case log; recorded decision/document; meters; IT/provider scope; delivery evidence |
-| cp_layup | layup | layup_power; layup_diesel | Custody/state and preservation-energy ledger | vessel dimensions/footprint; afloat/dry site; custody start/end/hours; actual hot/cold/state plan; active systems; staffing; measured ventilation/dehumidification/heating/monitoring/battery loads; actual generator fuel; responsible owner/provider | Verify real custody and approved-in-context preservation plan; meter actual energy for maintained systems and separate unrelated propulsion/cleaning. Retain partial days, actual equipment cycling and supplier/customer responsibilities; no universal cold/hot energy assumption. | kWh; kg | each custody/condition/meter interval | actual stored period and attributed transitions | actual vessel/site and providers | per reference flow | custody/state logs; meter/fuel records; preservation execution; scope reconciliation |
-| cp_material | icebreaking; layup | ice_hydraulic; preservation_oil; silica_gel; mooring_rope | Specific support-material balance | individual chemical/material grade; measured kg; issue/return; replacement/regeneration; actual use/lifetime fraction; stock; recovery; actual leaks | Weigh each specific material and attribute actual maintenance/preservation use by supported service utilization. Separate vessel cleaning/disinfection from in-scope state preservation; no full rope or oil-change inventory per block. | kg | each actual material/maintenance event | actual support/preservation assigned | actual selected family assets | per reference flow | weighing; compatibility/grade; stock/material balance; use records |
-| cp_assets | icebreaking; registration; layup | ice_ship_share; registry_workstation; registry_building; layup_berth; hardstanding; cradle | Persistent family-specific asset ledger | asset ID/configuration; construction/manufacture; actual item/m2/m; actual family use; supported lifetime service denominator; multipurpose share; prior cumulative fraction; period fraction; renewals/sensitivity | Match actual family assets and supported whole-life service utilization; conserve cross-job/user/period shares and avoid double counting renewals included upstream. Stored customer-vessel manufacture is outside the storage-service asset numerator. Unknown life/denominator requires explicit review. | Item(s); m2; m | each allocation and asset/renewal update | supported whole life and actual observation period | identified craft/IT/office/storage assets | per reference flow | asset/construction records; actual utilization; life evidence; cumulative shares |
-| cp_waste | icebreaking; registration; layup | ice_used_oil; ice_bilge; registry_waste_paper; used_preservation_oil; spent_desiccant; layup_sewage | Specific waste/reception ledger | individual stream; actual kg/m3; composition/contamination; source family/event; reuse/regeneration; onboard/shore reception; actual treatment/disposal | Weigh/meter each stream separately and trace its real receiver/treatment. No presumed hazardousness, direct water release, reception, recycling or avoided burden. Other actual wastes require their own specific rows. | kg; m3 | each actual transfer/discharge period | all attributable actual waste | actual family providers and treatment gates | per reference flow | reception/transfer tickets; composition; mass/water balance; actual treatment |
-| cp_release | icebreaking; layup | ice_co2; ice_co; ice_no; ice_no2; ice_so2; layup_co2 | Source/species-specific emission ledger | family/source; actual fuel/engine/load; carbon/sulfur/oxidation; measured species kg; NO/NO2 speciation/equivalent basis; air compartment; method applicability; uncertainty | Measure actual species or use independently verified source/duty/fuel-specific methods. Keep customer voyages, excluded public duties and upstream electricity separate. Record each other actual release/leak and receiver individually; do not copy NOx totals into two species. | kg | each emitting operation and representative monitoring | all represented in-scope emissions | actual source and air receiver | per reference flow | measurement; fuel/engine records; verified method; carbon/sulfur and task reconciliation |
+| cp_layup | layup | layup_power; layup_diesel | Custody/state and preservation-energy ledger | vessel dimensions/footprint; afloat/dry site; custody start/end/hours; actual hot/cold/state plan; active systems; staffing; measured ventilation/dehumidification/heating/monitoring/battery loads; actual generator fuel; responsible owner/provider; external delivery meter/AC-DC/voltage/source; onsite/onboard generated kWh; opening/closing stored energy; conversion/charging/discharging losses; excluded/export kWh; generation/supplier boundary and asset coverage; stored-energy source and charge-period IDs; attributed upstream supply inventory | Verify real custody and approved-in-context preservation plan; meter actual energy for maintained systems and separate unrelated propulsion/cleaning. Retain partial days, actual equipment cycling and supplier/customer responsibilities; no universal cold/hot energy assumption. Measure external delivery, generation output and end uses separately and reconcile layup_electricity_balance. Internal generation and storage discharge do not enter layup_power. Count actual generator fuel, direct emissions, maintenance and additional dedicated preservation-generation/storage assets once; identify parts already covered by supplier inventories or excluded customer-vessel manufacture, and do not charge them twice. | kWh; kg | each custody/condition/meter interval | actual stored period and attributed transitions | actual vessel/site and providers | per reference flow | custody/state logs; meter/fuel records; preservation execution; scope reconciliation; delivery diagram; electricity/storage balance; generation and supplier-coverage evidence |
+| cp_material_icebreaking | icebreaking | ice_hydraulic | Specific support-material balance | individual chemical/material grade; measured kg; issue/return; replacement/regeneration; actual use/lifetime fraction; stock; recovery; actual leaks; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh each specific material and attribute actual maintenance/preservation use by supported service utilization. Separate vessel cleaning/disinfection from in-scope state preservation; no full rope or oil-change inventory per block. Apply this protocol only to its listed icebreaking exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual material/maintenance event | actual support/preservation assigned | actual selected family assets | per reference flow | weighing; compatibility/grade; stock/material balance; use records |
+| cp_material_layup | layup | preservation_oil; silica_gel; mooring_rope | Specific support-material balance | individual chemical/material grade; measured kg; issue/return; replacement/regeneration; actual use/lifetime fraction; stock; recovery; actual leaks; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh each specific material and attribute actual maintenance/preservation use by supported service utilization. Separate vessel cleaning/disinfection from in-scope state preservation; no full rope or oil-change inventory per block. Apply this protocol only to its listed layup exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual material/maintenance event | actual support/preservation assigned | actual selected family assets | per reference flow | weighing; compatibility/grade; stock/material balance; use records |
+| cp_assets_icebreaking | icebreaking | ice_ship_share | Persistent family-specific asset ledger | asset ID/configuration; construction/manufacture; actual item/m2/m; actual family use; supported lifetime service denominator; multipurpose share; prior cumulative fraction; period fraction; renewals/sensitivity; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Match actual family assets and supported whole-life service utilization; conserve cross-job/user/period shares and avoid double counting renewals included upstream. Stored customer-vessel manufacture is outside the storage-service asset numerator. Unknown life/denominator requires explicit review. Apply this protocol only to its listed icebreaking exchanges. Reconcile shared records under validate_protocol_partition. | Item(s) | each allocation and asset/renewal update | supported whole life and actual observation period | identified craft/IT/office/storage assets | per reference flow | asset/construction records; actual utilization; life evidence; cumulative shares |
+| cp_assets_registration | registration | registry_workstation; registry_building | Persistent family-specific asset ledger | asset ID/configuration; construction/manufacture; actual item/m2/m; actual family use; supported lifetime service denominator; multipurpose share; prior cumulative fraction; period fraction; renewals/sensitivity; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Match actual family assets and supported whole-life service utilization; conserve cross-job/user/period shares and avoid double counting renewals included upstream. Stored customer-vessel manufacture is outside the storage-service asset numerator. Unknown life/denominator requires explicit review. Apply this protocol only to its listed registration exchanges. Reconcile shared records under validate_protocol_partition. | Item(s); m2 | each allocation and asset/renewal update | supported whole life and actual observation period | identified craft/IT/office/storage assets | per reference flow | asset/construction records; actual utilization; life evidence; cumulative shares |
+| cp_assets_layup | layup | layup_berth; hardstanding; cradle | Persistent family-specific asset ledger | asset ID/configuration; construction/manufacture; actual item/m2/m; actual family use; supported lifetime service denominator; multipurpose share; prior cumulative fraction; period fraction; renewals/sensitivity; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Match actual family assets and supported whole-life service utilization; conserve cross-job/user/period shares and avoid double counting renewals included upstream. Stored customer-vessel manufacture is outside the storage-service asset numerator. Unknown life/denominator requires explicit review. Apply this protocol only to its listed layup exchanges. Reconcile shared records under validate_protocol_partition. | m; m2; Item(s) | each allocation and asset/renewal update | supported whole life and actual observation period | identified craft/IT/office/storage assets | per reference flow | asset/construction records; actual utilization; life evidence; cumulative shares |
+| cp_waste_icebreaking | icebreaking | ice_used_oil; ice_bilge | Specific waste/reception ledger | individual stream; actual kg/m3; composition/contamination; source family/event; reuse/regeneration; onboard/shore reception; actual treatment/disposal; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh/meter each stream separately and trace its real receiver/treatment. No presumed hazardousness, direct water release, reception, recycling or avoided burden. Other actual wastes require their own specific rows. Apply this protocol only to its listed icebreaking exchanges. Reconcile shared records under validate_protocol_partition. | kg; m3 | each actual transfer/discharge period | all attributable actual waste | actual family providers and treatment gates | per reference flow | reception/transfer tickets; composition; mass/water balance; actual treatment |
+| cp_waste_registration | registration | registry_waste_paper | Specific waste/reception ledger | individual stream; actual kg/m3; composition/contamination; source family/event; reuse/regeneration; onboard/shore reception; actual treatment/disposal; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh/meter each stream separately and trace its real receiver/treatment. No presumed hazardousness, direct water release, reception, recycling or avoided burden. Other actual wastes require their own specific rows. Apply this protocol only to its listed registration exchanges. Reconcile shared records under validate_protocol_partition. | kg | each actual transfer/discharge period | all attributable actual waste | actual family providers and treatment gates | per reference flow | reception/transfer tickets; composition; mass/water balance; actual treatment |
+| cp_waste_layup | layup | used_preservation_oil; spent_desiccant; layup_sewage | Specific waste/reception ledger | individual stream; actual kg/m3; composition/contamination; source family/event; reuse/regeneration; onboard/shore reception; actual treatment/disposal; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Weigh/meter each stream separately and trace its real receiver/treatment. No presumed hazardousness, direct water release, reception, recycling or avoided burden. Other actual wastes require their own specific rows. Apply this protocol only to its listed layup exchanges. Reconcile shared records under validate_protocol_partition. | kg; m3 | each actual transfer/discharge period | all attributable actual waste | actual family providers and treatment gates | per reference flow | reception/transfer tickets; composition; mass/water balance; actual treatment |
+| cp_release_icebreaking | icebreaking | ice_co2; ice_co; ice_no; ice_no2; ice_so2 | Source/species-specific emission ledger | family/source; actual fuel/engine/load; carbon/sulfur/oxidation; measured species kg; NO/NO2 speciation/equivalent basis; air compartment; method applicability; uncertainty; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure actual species or use independently verified source/duty/fuel-specific methods. Keep customer voyages, excluded public duties and upstream electricity separate. Record each other actual release/leak and receiver individually; do not copy NOx totals into two species. Apply this protocol only to its listed icebreaking exchanges. Reconcile shared records under validate_protocol_partition. | kg | each emitting operation and representative monitoring | all represented in-scope emissions | actual source and air receiver | per reference flow | measurement; fuel/engine records; verified method; carbon/sulfur and task reconciliation |
+| cp_release_layup | layup | layup_co2 | Source/species-specific emission ledger | family/source; actual fuel/engine/load; carbon/sulfur/oxidation; measured species kg; NO/NO2 speciation/equivalent basis; air compartment; method applicability; uncertainty; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period | Measure actual species or use independently verified source/duty/fuel-specific methods. Keep customer voyages, excluded public duties and upstream electricity separate. Record each other actual release/leak and receiver individually; do not copy NOx totals into two species. Apply this protocol only to its listed layup exchanges. Reconcile shared records under validate_protocol_partition. | kg | each emitting operation and representative monitoring | all represented in-scope emissions | actual source and air receiver | per reference flow | measurement; fuel/engine records; verified method; carbon/sulfur and task reconciliation |
 
 ### Calculation Rules
 
@@ -614,8 +620,9 @@ One selected function: a defined navigation-icebreaking mission, a completed spe
 | --- | --- | --- | --- | --- | --- |
 | family_attribution | all inventory rows | Assign actual resources/maintenance/support to one qualified family/extent and divide by its actual completed blocks. No cross-family count averaging. Reference output is exactly 1 Item(s). | cp_completion; actual family records | exchange amount per reference flow |  |
 | layup_blocks | support_output | For layup only, divide measured vessel custody hours by 24 to obtain actual blocks, retaining partial days and vessel state/footprint. Do not derive time from fees or an assumed annual occupancy. | cp_layup; cp_completion | actual layup block quantity |  |
-| asset_attribution | ice_ship_share; registry_workstation; registry_building; layup_berth; hardstanding; cradle | Apply supported family/block share of whole-life utilization to actual manufacture/construction, conserving cumulative fractions and separating already included renewals and other-purpose work. | cp_assets; cp_completion | asset amount per reference flow |  |
-| species_accounting | ice_co2; ice_co; ice_no; ice_no2; ice_so2; layup_co2 | Use actual species mass or verified engine/fuel/duty evidence with explicit factors/units and NOx-equivalent conversion documented in the dataset. No numerical load, fuel or emission default is supplied. | cp_release; cp_ice_energy; cp_layup | individual species per reference flow |  |
+| layup_electricity_balance | layup_power; layup_diesel; layup_co2 | At consistent interfaces and over the same custody interval, reconcile external electrical deliveries + onsite/onboard generation output = included preservation end uses + excluded/export deliveries + conversion/distribution/storage losses + closing stored energy - opening stored energy. Count only losses not already included in another metered term; retain signed storage change, uncertainty and unexplained differences. Internal generation/storage transfers do not create purchased-electricity inputs. Account for actual generation fuel, direct emissions, maintenance and in-scope dedicated assets once, either within layup or in an explicitly connected generation subprocess, never also through a complete external-electricity dataset for that energy. Allocate to actual preservation scope and normalize once through family_attribution. Carry documented energy-source identity and upstream burdens of opening and closing stored electricity through the same service/period allocation; do not discard opening-stock burdens or assign all closing-stock burdens to the current service. | cp_layup; cp_completion | Reconciled external supply and internal preservation-energy ledger |  |
+| asset_attribution | ice_ship_share; registry_workstation; registry_building; layup_berth; hardstanding; cradle | Apply supported family/block share of whole-life utilization to actual manufacture/construction, conserving cumulative fractions and separating already included renewals and other-purpose work. | cp_assets_icebreaking; cp_assets_registration; cp_assets_layup; cp_completion | asset amount per reference flow |  |
+| species_accounting | ice_co2; ice_co; ice_no; ice_no2; ice_so2; layup_co2 | Use actual species mass or verified engine/fuel/duty evidence with explicit factors/units and NOx-equivalent conversion documented in the dataset. No numerical load, fuel or emission default is supplied. | cp_release_icebreaking; cp_release_layup; cp_ice_energy; cp_layup | individual species per reference flow |  |
 
 ### Data Quality Requirements
 
@@ -624,8 +631,8 @@ One selected function: a defined navigation-icebreaking mission, a completed spe
 | quality_family | support_output | Declare one function/extent and completion type; no universal other-support invoice, cross-family count equivalence or claimed legal/safety approval. | cp_completion |
 | quality_physical | icebreaking; layup | Require actual ice/craft duty or vessel-storage state/time/active-system records; no office-only substitute or default energy per ship. | cp_ice_energy; cp_layup |
 | quality_registry | registration | Preserve case transaction/outcome, actual processing evidence, first-delivery endpoint and archive boundary. Submission/fee does not prove completed registration. | cp_registry |
-| quality_lifecycle | all asset rows | Support whole-life service denominator, multi-role attribution, initial/renewal boundary and cumulative conservation; unknown life/upstream scope prevents complete lifecycle claims. | cp_assets |
-| quality_gaps | all inventory rows | Disclose identity/species/receiver/treatment, ice/habitat/noise and material-preservation evidence gaps and uncertainty; missing is not zero. | cp_waste; cp_release; site records |
+| quality_lifecycle | all asset rows | Support whole-life service denominator, multi-role attribution, initial/renewal boundary and cumulative conservation; unknown life/upstream scope prevents complete lifecycle claims. | cp_assets_icebreaking; cp_assets_registration; cp_assets_layup |
+| quality_gaps | all inventory rows | Disclose identity/species/receiver/treatment, ice/habitat/noise and material-preservation evidence gaps and uncertainty; missing is not zero. | cp_waste_icebreaking; cp_waste_registration; cp_waste_layup; cp_release_icebreaking; cp_release_layup; site records |
 
 ## 9. Validation Rules
 
@@ -635,6 +642,8 @@ One selected function: a defined navigation-icebreaking mission, a completed spe
 | validate_scope | Exclude vessel cleaning/disinfection/brokerage/public rescue/fire/safety/oil-spill fighting; separate public or multipurpose icebreaker duties by actual logs. | un-cpc-other-water |
 | validate_process | Select the actual family-specific process and complete its physical/administrative evidence. Icebreaking does not create assumed passenger/freight outputs; registry does not imply authority approval; lay-up requires actual custody hours and state/preservation scope. |  |
 | validate_atomic_lifecycle | Require specific exchanges with correct own properties/units and actual applicability, conserved asset shares, supplier overlap control and real waste receivers. Unknown identities/method evidence remain explicit; no publication readiness or ecological completeness is inferred. |  |
+| validate_layup_energy | For lay-up, verify external supply versus onboard/onsite generation, actual AC/DC delivery identity, storage/loss balance and responsible operator. Internal generation/storage discharge cannot be added as purchased electricity; fuel, direct emissions, in-scope generation assets and supplier-covered burdens occur once. Retain original exclusions for unrelated propulsion and customer-vessel manufacture; disclose unresolved power/asset evidence. |  |
+| `validate_protocol_partition` | Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods. |  |
 
 ## 10. Published Dataset Profile
 

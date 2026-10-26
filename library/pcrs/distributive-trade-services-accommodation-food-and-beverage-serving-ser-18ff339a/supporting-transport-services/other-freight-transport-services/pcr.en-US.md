@@ -567,6 +567,7 @@ Actual species loss after stock, equipment-charge and recovery/transfer reconcil
 | `validate_reference` | Require unique support_job at1 item, positive N, complete family-specific extent/complexity/time/interfaces and acceptance. Reject pooled unrelated jobs, duplicate document/copy outputs and a fee/tkm-based output. |  |
 | `validate_inventory` | Verify actual computing/network/document/field-work resources and each atomic exchange; reconcile supplier power/hardware, original assets and hosted service, materials/wastes and gas stocks without duplication. |  |
 | `validate_system` | A support-only boundary must disclose separately linked actual carrier/storage/handling burdens in the freight system, never imply transport is emission-free. No default optimization/paperless credit or certification follows. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

@@ -474,6 +474,7 @@ Conditional on verified grain fumigation release; retain treatment formulation, 
 | `validate_mass_time` | Require one storage_output product flow of 1 tday linked to measured mass-time, qualifiers and custody intervals. Reject throughput, internal move counts, empty area and tonne-kilometres as reference substitutes. |  |
 | `validate_scope` | Check commodity-specific grain/general warehouse route. Exclude refrigerated and bulk liquid/gas storage; additional separately sold handling and processing must have reconciled boundaries. | un-cpc3-67290 |
 | `validate_atomicity` | Each present exchange has one specific identity, collection record and same reference denominator. Verify asset/manufacturing overlap, custody loss and chemical recovery; disclose every missing UUID/factor before complete lifecycle claims. |  |
+| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

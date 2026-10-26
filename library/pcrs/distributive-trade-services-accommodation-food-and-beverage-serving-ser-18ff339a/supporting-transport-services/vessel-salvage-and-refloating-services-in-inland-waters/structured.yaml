@@ -33,8 +33,9 @@ system_boundary:
       source_ids: []
     - rule_id: boundary_actual
       applies_to: "foreground_system_boundary"
-      rule: "Screen all actual energy, lifting/diving/cutting gas and materials, support movements, rigging/boom/asset shares, water/soil disturbance, each waste and species release. Add each present exchange atomically; never substitute marine seawater recipients for inland freshwater."
-      source_ids: []
+      rule: "Screen all actual energy, lifting/diving/cutting gas and materials, support movements, rigging/boom/asset shares, water/soil disturbance, each waste and species release. Add each present exchange atomically. For water releases, identify the actual receiving waterbody. Select each release compartment using the actual receiving environment, documented flow-library definitions and LCIA applicability. Inland service classification does not imply freshwater, and salinity alone does not establish a marine compartment for an inland lake. Preserve the physical receiver and measured release where compartment mapping or characterization remains unresolved; do not force freshwater/seawater or treat unknown impact as zero."
+      source_ids:
+        - fao-water-areas
 boundary_abstraction:
   declared_starting_condition: "Surveyed inland casualty and documented pre-operation pollution/riverbed condition; actual available recovery assets"
   starting_condition_role: "foreground_start"
@@ -57,7 +58,7 @@ reference_flow_definition:
     - "vessel type/dimensions/displacement and cargo identity/mass"
     - "distress/sunken/capsized/stranded initial condition"
     - "depth/current/water-level/visibility"
-    - "freshwater or actual salinity"
+    - "actual receiving waterbody/type/location and measured salinity where relevant"
     - "riverbed/contamination baseline"
     - "bridge/lock/access constraints"
     - "stage plan and actual route"
@@ -718,7 +719,7 @@ process_inventory:
           name: "Benzene, to freshwater"
           flow_type: "elementary"
           property_unit: "Mass / kg"
-          description: "Conditional measured incremental benzene release attributable to recovery after background/casualty distinction. No inference that every wreck contains benzene or all recovered oil is benzene."
+          description: "Conditional only on measured incremental benzene release attributable to recovery, after background/casualty distinction, to an actual receiving waterbody supported as freshwater by the documented flow/compartment mapping. For a different actual receiving medium, add a separate benzene/compartment row with its own receiver evidence and unresolved binding if needed; do not reuse this freshwater card. No inference that every wreck contains benzene or all recovered oil is benzene."
           amount:
             expression: "Attributable measured exchange amount per reference flow; cp_release."
             value_mode: "foreground_record"
@@ -754,14 +755,14 @@ dataset_production:
       process_id: "recovery"
       flow_role: "recovery_service"
       record_type: "foreground record"
-      raw_fields: "task/object/cargo IDs; initial state/mass; depth/current/water level; bridge/lock limits; plan/stages; equipment; actual activity; attempts; acceptance/handoff"
+      raw_fields: "task/object/cargo IDs; initial state/mass; depth/current/water level; bridge/lock limits; plan/stages; equipment; actual activity; attempts; acceptance/handoff; actual waterbody ID/type/location; hydrological connection and salinity with units where relevant"
       collection_method: "Reconcile survey, actual recovery plan, equipment/stage logs and signed recovered-state/custody handoff; retain incomplete/failed scope explicitly."
       unit: "item"
       frequency: "each stage/task"
       temporal_coverage: "same declared task/reporting period"
       site_scope: "actual inland recovery site and assigned equipment"
       aggregation_rule: "per reference flow"
-      quality_evidence: "survey; photographs; stage records; signed handoff"
+      quality_evidence: "survey; photographs; stage records; signed handoff; receiving-waterbody characterization"
     - protocol_id: cp_energy
       process_id: "recovery"
       flow_role: "diesel; petrol; electricity"
@@ -814,14 +815,14 @@ dataset_production:
       process_id: "recovery"
       flow_role: "co2_air; co_air; no_air; no2_air; so2_air; pm25_air; benzene_water"
       record_type: "foreground record"
-      raw_fields: "source/stage; baseline; actual species/fraction; fuel/exhaust or concentration/flow; receiver; retained/removed pollutant; evidence/factor units"
-      collection_method: "Measure actual operator/incremental release or use explicit justified source/activity factors; separate pre-existing pollution and freshwater receptor; unresolved difference remains a gap."
+      raw_fields: "source/stage; baseline; actual species/fraction; fuel/exhaust or concentration/flow; actual receiving medium/waterbody/type/location; relevant salinity/hydrological evidence; flow-library compartment definition and LCIA mapping/applicability; retained/removed pollutant; evidence/factor units"
+      collection_method: "Measure actual operator/incremental release or use explicit justified source/activity factors; separate pre-existing pollution. Match every release to its actual receiver and supported flow-library compartment under boundary_actual; record the mapping and LCIA applicability or unresolved gap. Use benzene_water only for supported freshwater reception, with separate specific rows for other receiving media. Unresolved mass-balance differences remain gaps."
       unit: "kg"
       frequency: "event/duty and task"
       temporal_coverage: "same declared task/reporting period"
       site_scope: "actual inland recovery site and assigned equipment"
       aggregation_rule: "per reference flow"
-      quality_evidence: "baseline/discharge tests; mass balance; factor applicability"
+      quality_evidence: "baseline/discharge tests; mass balance; factor applicability; receiver characterization; documented compartment/LCIA mapping and limitations"
   calculation_rules:
     - id: task_denominator
       applies_to: "recovery_service"
@@ -868,7 +869,7 @@ dataset_production:
       evidence: "cp_energy; cp_material; cp_asset"
     - id: dq_pollution
       applies_to: "oily_water; sediment; benzene_water"
-      requirement: "Pre-operation baseline and actual collected/released pollutant/species with receiving freshwater compartments; distinguish unknown from zero."
+      requirement: "Pre-operation baseline and actual collected/released pollutant/species with evidenced receiving waterbodies/compartments. Record flow-library and LCIA mapping applicability, including unresolved inland brackish/saline-water cases; distinguish unknown from zero."
       evidence: "cp_waste; cp_release"
     - id: dq_identity
       applies_to: "all inventory rows"
@@ -886,18 +887,22 @@ validation_rules:
     source_ids: []
   - rule_id: validate_release
     applies_to: "foreground_dataset_conformance"
-    rule: "Require separate old-contamination and new-release evidence, specific freshwater species/receiver and actual waste destination. Reject assumed avoided-pollution, scrap substitution and whole-oil-as-one-species shortcuts."
+    rule: "Require separate old-contamination and new-release evidence, each specific substance and actual receiving environment, supported flow-library compartment mapping and actual waste destination. Use the freshwater benzene card only for supported freshwater reception; require separate specific rows for other media. Reject freshwater inferred from inland classification or marine assignment inferred from salinity alone, assumed avoided pollution, scrap substitution and whole-oil-as-one-species shortcuts. Disclose unresolved compartment/LCIA coverage."
     source_ids: []
   - rule_id: validate_coverage
     applies_to: "foreground_dataset_conformance"
     rule: "Require actual source-linked fuel/gas/assets and full task-cycle allocation; unknown baseline, stage or treatment coverage is disclosed. A target check pass is not a safe salvage/diving/cutting approval."
+    source_ids: []
+  - rule_id: validate_unit_export
+    applies_to: "foreground_dataset_conformance"
+    rule: "Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again."
     source_ids: []
 published_dataset_profile:
   dataset_role: "Unit-process inland vessel/cargo recovery task; narrower non-standalone-tow scope"
   downstream_use: "secondary_dataset; background_dataset"
   allowed_use: "Same actual recovery subtype, initial state, inland site conditions, equipment and accepted endpoint/custody boundary"
   excluded_use: "Independent towing; coastal/public rescue; generic per-vessel/tonne recovery factor; avoided pollution/steel credit; unqualified recycling"
-  required_metadata: "All task qualifiers; N; stage duty/gases/energy; asset life; custody original ship/cargo; contamination baseline; waste receivers; freshwater release evidence"
+  required_metadata: "All task qualifiers; N; stage duty/gases/energy; asset life; custody original ship/cargo; contamination baseline; waste receivers; actual receiving waterbody/type/location and relevant salinity/hydrological evidence; release measurements and documented flow-compartment/LCIA mapping or unresolved gaps"
   required_quality_disclosure: "Narrower scope and standalone-tow exclusion; UUID gaps; actual route/extent; baseline/new-release uncertainty; treatment and upstream omissions"
   update_trigger: "Initial casualty/river condition, recovery success endpoint, method/equipment, pollution baseline, supplier boundary or material data-quality change"
 data_sources:
@@ -913,23 +918,27 @@ data_sources:
     type: "official_guidance"
     reference: "HSE, Commercial diving projects inland/inshore, L104 second edition2014, official scope description. https://www.hse.gov.uk/pubns/books/l104.htm"
     used_for: "Inland commercial-diving applicability screening only; full code procedures, legal compliance and numeric gas/depth requirements not inferred."
+  - id: "fao-water-areas"
+    type: "official_guidance"
+    reference: "FAO CWP Handbook of Fishery Statistics, Main water areas, Marine and inland waters, read 2026-10-26. https://www.fao.org/cwp-on-fishery-statistics/handbook/general-concepts/main-water-areas/en/"
+    used_for: "Supports only the distinction between inland/marine geography and freshwater/saline conditions. This fisheries-statistics guidance does not define CPC applicability or an LCI/LCIA compartment, salinity threshold or characterization factor; actual receiver mapping still requires the declared flow-library and impact-method evidence."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:b3664014d8988c29ddf27d64fe4508691b447f0e85b285c968f55029e7a3f9ad"
+  source_sha256: "sha256:4e1a3577f060bc5b7cfbc4c99cde3f394ce005028cca919dffb82755b9790cde"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5470"
+    - unit_id: "normative_5518"
       family: "system_boundary"
       span:
         start:
-          offset: 5470
+          offset: 5518
           line: 59
           column: 1
         end:
-          offset: 7540
+          offset: 8049
           line: 79
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Surveyed inland casualty and documented pre-operation pollution/riverbed condition; actual available recovery assets |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Defined inland salvage/recovery/refloating subset; independent towing and public rescue functions excluded |\n| recursive_input_rule | Purchased recovery stages and necessary support movements enter once with exact endpoint; no duplicate full-project and subcontractor activity |\n| upstream_dataset_requirement | Actual fuel/electricity/gases/material supply, working craft/equipment life shares, reception/treatment and support transport |\n| disclosure | Initial casualty/pollution and river conditions; actual stages/equipment; completion interfaces; old-property custody; new release; supplier/upstream gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_recovery` | Include actual survey, mobilization, stabilization, cargo removal/lightening, lift/righting/refloating, dewatering, necessary supporting movement, custody handoff and site clearance/return. Select from real staged plan, not a universal recipe. | usace-mcalpine-salvage |\n| `boundary_diving` | Include professional diving resources only when actually used and record actual project/equipment/gas/energy/time conditions; this inventory does not prescribe a diving or cutting procedure. | hse-inland-diving |\n| `boundary_casualty` | Keep initial ship/cargo/oil as a separately identified custody/contamination ledger, not new manufactured co-products. Track recovered amounts, residual condition, receiver and actual incremental environmental releases separately. |  |\n| `boundary_actual` | Screen all actual energy, lifting/diving/cutting gas and materials, support movements, rigging/boom/asset shares, water/soil disturbance, each waste and species release. Add each present exchange atomically; never substitute marine seawater recipients for inland freshwater. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Surveyed inland casualty and documented pre-operation pollution/riverbed condition; actual available recovery assets |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Defined inland salvage/recovery/refloating subset; independent towing and public rescue functions excluded |\n| recursive_input_rule | Purchased recovery stages and necessary support movements enter once with exact endpoint; no duplicate full-project and subcontractor activity |\n| upstream_dataset_requirement | Actual fuel/electricity/gases/material supply, working craft/equipment life shares, reception/treatment and support transport |\n| disclosure | Initial casualty/pollution and river conditions; actual stages/equipment; completion interfaces; old-property custody; new release; supplier/upstream gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_recovery` | Include actual survey, mobilization, stabilization, cargo removal/lightening, lift/righting/refloating, dewatering, necessary supporting movement, custody handoff and site clearance/return. Select from real staged plan, not a universal recipe. | usace-mcalpine-salvage |\n| `boundary_diving` | Include professional diving resources only when actually used and record actual project/equipment/gas/energy/time conditions; this inventory does not prescribe a diving or cutting procedure. | hse-inland-diving |\n| `boundary_casualty` | Keep initial ship/cargo/oil as a separately identified custody/contamination ledger, not new manufactured co-products. Track recovered amounts, residual condition, receiver and actual incremental environmental releases separately. |  |\n| `boundary_actual` | Screen all actual energy, lifting/diving/cutting gas and materials, support movements, rigging/boom/asset shares, water/soil disturbance, each waste and species release. Add each present exchange atomically. For water releases, identify the actual receiving waterbody. Select each release compartment using the actual receiving environment, documented flow-library definitions and LCIA applicability. Inland service classification does not imply freshwater, and salinity alone does not establish a marine compartment for an inland lake. Preserve the physical receiver and measured release where compartment mapping or characterization remains unresolved; do not force freshwater/seawater or treat unknown impact as zero. | fao-water-areas |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -946,11 +955,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5470
+              offset: 5518
               line: 59
               column: 1
             end:
-              offset: 5491
+              offset: 5539
               line: 59
               column: 22
           text: "## 5. System Boundary"
@@ -966,15 +975,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_26910"
+    - unit_id: "normative_27709"
       family: "allocation"
       span:
         start:
-          offset: 26910
+          offset: 27709
           line: 587
           column: 1
         end:
-          offset: 28018
+          offset: 28817
           line: 596
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_project` | Prefer stage/equipment-specific meters and logs; assign shared mobilization, standby, high-water delays and retries by documented actual project activity, then accepted task extent. Do not allocate by salvage award or cargo value. |  |\n| `allocate_assets` | Allocate working craft, crane/pontoon, pump, diving/cutting rig, sling and lift bags by supported lifetime utilization and actual task use; aggregate supplier assets and included components cannot both be charged. |  |\n| `allocate_custody` | Recovered vessel/cargo is original property, not a newly produced co-product. Keep recovery amounts/fate outside an automatic revenue allocation or avoided-manufacture credit; independently model any further recycling/dismantling study boundary. |  |\n| `allocate_pollution` | Record pre-existing casualty pollution separately from operator combustion, new spills and disturbance-induced releases. A removed pollutant mass is not a negative emission; no default avoided future release. |  |\n\n"
@@ -994,11 +1003,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 26910
+              offset: 27709
               line: 587
               column: 1
             end:
-              offset: 26950
+              offset: 27749
               line: 587
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1014,18 +1023,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_34302"
+    - unit_id: "normative_35854"
       family: "validation"
       span:
         start:
-          offset: 34302
+          offset: 35854
           line: 627
           column: 1
         end:
-          offset: 35330
-          line: 636
+          offset: 37683
+          line: 637
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_scope` | Require identified inland vessel/cargo recovery, raising/righting/refloating endpoint; reject coastal scope, independent transport tow, public life rescue/police/fire and standalone shipbreaking/clean-up. | un-cpc-67532 |\n| `validate_reference` | Require unique recovery_service at 1 item and positive N with actual initial condition/stages/equipment and signed handoff; no duplicate stage/whole-task or recovered-property production outputs. |  |\n| `validate_release` | Require separate old-contamination and new-release evidence, specific freshwater species/receiver and actual waste destination. Reject assumed avoided-pollution, scrap substitution and whole-oil-as-one-species shortcuts. |  |\n| `validate_coverage` | Require actual source-linked fuel/gas/assets and full task-cycle allocation; unknown baseline, stage or treatment coverage is disclosed. A target check pass is not a safe salvage/diving/cutting approval. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_scope` | Require identified inland vessel/cargo recovery, raising/righting/refloating endpoint; reject coastal scope, independent transport tow, public life rescue/police/fire and standalone shipbreaking/clean-up. | un-cpc-67532 |\n| `validate_reference` | Require unique recovery_service at 1 item and positive N with actual initial condition/stages/equipment and signed handoff; no duplicate stage/whole-task or recovered-property production outputs. |  |\n| `validate_release` | Require separate old-contamination and new-release evidence, each specific substance and actual receiving environment, supported flow-library compartment mapping and actual waste destination. Use the freshwater benzene card only for supported freshwater reception; require separate specific rows for other media. Reject freshwater inferred from inland classification or marine assignment inferred from salinity alone, assumed avoided pollution, scrap substitution and whole-oil-as-one-species shortcuts. Disclose unresolved compartment/LCIA coverage. |  |\n| `validate_coverage` | Require actual source-linked fuel/gas/assets and full task-cycle allocation; unknown baseline, stage or treatment coverage is disclosed. A target check pass is not a safe salvage/diving/cutting approval. |  |\n| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1042,11 +1051,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 34302
+              offset: 35854
               line: 627
               column: 1
             end:
-              offset: 34324
+              offset: 35876
               line: 627
               column: 23
           text: "## 9. Validation Rules"
@@ -1066,206 +1075,219 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_5470"
+      unit_id: "normative_5518"
       source_span:
         start:
-          offset: 6447
+          offset: 6495
           line: 74
           column: 1
         end:
-          offset: 6741
+          offset: 6789
           line: 74
           column: 295
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_diving"
       identity_kind: "explicit"
-      unit_id: "normative_5470"
+      unit_id: "normative_5518"
       source_span:
         start:
-          offset: 6742
+          offset: 6790
           line: 75
           column: 1
         end:
-          offset: 6976
+          offset: 7024
           line: 75
           column: 235
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_casualty"
       identity_kind: "explicit"
-      unit_id: "normative_5470"
+      unit_id: "normative_5518"
       source_span:
         start:
-          offset: 6977
+          offset: 7025
           line: 76
           column: 1
         end:
-          offset: 7236
+          offset: 7284
           line: 76
           column: 260
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_actual"
       identity_kind: "explicit"
-      unit_id: "normative_5470"
+      unit_id: "normative_5518"
       source_span:
         start:
-          offset: 7237
+          offset: 7285
           line: 77
           column: 1
         end:
-          offset: 7538
+          offset: 8047
           line: 77
-          column: 302
+          column: 763
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_project"
       identity_kind: "explicit"
-      unit_id: "normative_26910"
+      unit_id: "normative_27709"
       source_span:
         start:
-          offset: 27004
+          offset: 27803
           line: 591
           column: 1
         end:
-          offset: 27262
+          offset: 28061
           line: 591
           column: 259
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_assets"
       identity_kind: "explicit"
-      unit_id: "normative_26910"
+      unit_id: "normative_27709"
       source_span:
         start:
-          offset: 27263
+          offset: 28062
           line: 592
           column: 1
         end:
-          offset: 27503
+          offset: 28302
           line: 592
           column: 241
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_custody"
       identity_kind: "explicit"
-      unit_id: "normative_26910"
+      unit_id: "normative_27709"
       source_span:
         start:
-          offset: 27504
+          offset: 28303
           line: 593
           column: 1
         end:
-          offset: 27777
+          offset: 28576
           line: 593
           column: 274
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_pollution"
       identity_kind: "explicit"
-      unit_id: "normative_26910"
+      unit_id: "normative_27709"
       source_span:
         start:
-          offset: 27778
+          offset: 28577
           line: 594
           column: 1
         end:
-          offset: 28016
+          offset: 28815
           line: 594
           column: 239
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_34302"
+      unit_id: "normative_35854"
       source_span:
         start:
-          offset: 34378
+          offset: 35930
           line: 631
           column: 1
         end:
-          offset: 34620
+          offset: 36172
           line: 631
           column: 243
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_34302"
+      unit_id: "normative_35854"
       source_span:
         start:
-          offset: 34621
+          offset: 36173
           line: 632
           column: 1
         end:
-          offset: 34846
+          offset: 36398
           line: 632
           column: 226
     - pointer: "/validation_rules/2"
       rule_id: "validate_release"
       identity_kind: "explicit"
-      unit_id: "normative_34302"
+      unit_id: "normative_35854"
       source_span:
         start:
-          offset: 34847
+          offset: 36399
           line: 633
           column: 1
         end:
-          offset: 35095
+          offset: 36977
           line: 633
-          column: 249
+          column: 579
     - pointer: "/validation_rules/3"
       rule_id: "validate_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_34302"
+      unit_id: "normative_35854"
       source_span:
         start:
-          offset: 35096
+          offset: 36978
           line: 634
           column: 1
         end:
-          offset: 35328
+          offset: 37210
           line: 634
           column: 233
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_unit_export"
+      identity_kind: "explicit"
+      unit_id: "normative_35854"
+      source_span:
+        start:
+          offset: 37211
+          line: 635
+          column: 1
+        end:
+          offset: 37681
+          line: 635
+          column: 471
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5470"
+      unit_id: "normative_5518"
       source_span:
         start:
-          offset: 5470
+          offset: 5518
           line: 59
           column: 1
         end:
-          offset: 5491
+          offset: 5539
           line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5470"
+      unit_id: "normative_5518"
       source_span:
         start:
-          offset: 5519
+          offset: 5567
           line: 63
           column: 1
         end:
-          offset: 6393
+          offset: 6441
           line: 70
           column: 172
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_26910"
+      unit_id: "normative_27709"
       source_span:
         start:
-          offset: 26910
+          offset: 27709
           line: 587
           column: 1
         end:
-          offset: 26950
+          offset: 27749
           line: 587
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_34302"
+      unit_id: "normative_35854"
       source_span:
         start:
-          offset: 34302
+          offset: 35854
           line: 627
           column: 1
         end:
-          offset: 34324
+          offset: 35876
           line: 627
           column: 23
 projection_metadata:
@@ -1275,5 +1297,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:b3664014d8988c29ddf27d64fe4508691b447f0e85b285c968f55029e7a3f9ad"
-  generated_content_sha256: "sha256:6e1a9613cc98e80a09a62827dfe9cbea97a7a3a7466946c28c451c7df99ecc0d"
+    sha256: "sha256:4e1a3577f060bc5b7cfbc4c99cde3f394ce005028cca919dffb82755b9790cde"
+  generated_content_sha256: "sha256:e64ff491c1f4d54735caeb28006f57b01650b91d7e9ae174d49e78eb4ac7708e"

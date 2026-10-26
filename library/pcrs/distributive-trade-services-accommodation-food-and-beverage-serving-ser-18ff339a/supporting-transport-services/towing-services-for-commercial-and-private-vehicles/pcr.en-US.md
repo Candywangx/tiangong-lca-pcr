@@ -474,6 +474,7 @@ Actual supported PM2.5, with source and particle-size cutoff. Distinguish exhaus
 | `validate_task` | Require one towing_output of 1 item linked to one accepted vehicle relocation with declared start/end and method. Reject tonne-km, fees or repair-only jobs as substitutes. | un-cpc3-67440 |
 | `validate_phase_boundary` | Verify dispatch, empty approach, scene work, loaded towing, handoff and actual repositioning attribution, including waits/retries. Reconcile subcontract stages and customer/repair/storage boundaries without double counting. |  |
 | `validate_atomicity` | Each actual fuel, utility, part, asset, waste and emitted species requires its own specific exchange and same reference denominator. Audit component overlap, life shares and identity/upstream gaps; a parser pass is not methodology publication approval. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

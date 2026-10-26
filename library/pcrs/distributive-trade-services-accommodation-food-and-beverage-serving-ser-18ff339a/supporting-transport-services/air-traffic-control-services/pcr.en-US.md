@@ -580,6 +580,7 @@ Only actual reconciled SF6 release by gas stock/equipment charge/transfer balanc
 | `validate_reference` | Require unique control_block at 1 item, fixed sixty-minute definition, positive delivered B and all functions/traffic/coverage/availability qualifiers. Reject unavailable intervals counted as normal output and per-flight equivalence without a separate explicit model. |  |
 | `validate_atomic` | Require each fuel, gas, battery chemistry, hardware, waste and emitted species independently; balance refrigerant/insulating stock and recovery, and avoid duplicate installed gas/initial batteries. |  |
 | `validate_limits` | Disclose actual standby/backup/cooling, lifetime allocations and upstream gaps; a PCR check cannot establish ATC safety certification, operational approval or aircraft emission savings. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

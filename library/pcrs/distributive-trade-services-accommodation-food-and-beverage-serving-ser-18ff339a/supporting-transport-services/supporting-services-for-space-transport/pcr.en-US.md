@@ -565,6 +565,7 @@ One accepted support task/block of exactly the declared transport function, conf
 | `validate_task` | Require one unique support_output of 1 item with all functional qualifiers, actual duration, acceptance and family processes. Reject universal per-launch/per-kg payload factors and mixing unlike tasks. |  |
 | `validate_interface` | Audit ground/vehicle material handover and supplier interfaces; exclude customer rocket flight and payload manufacture, track actual support losses once, and preserve unsuccessful attempts in their attributable boundary. |  |
 | `validate_inventory` | Check each actual utility, gas, chemical, asset, waste and species against records and compatible per-task basis; disclose unknown identities/lifetimes/releases and incomplete upstream inventory. Mechanical pass does not establish full space-mission environmental or scientific approval. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

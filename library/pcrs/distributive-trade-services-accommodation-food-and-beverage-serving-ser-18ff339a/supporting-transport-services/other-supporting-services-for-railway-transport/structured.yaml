@@ -11,7 +11,7 @@ product_category_identity:
   market_state: "Accepted measurable support function; fee, ticket value or fuel resale is not the functional quantity"
 functional_unit:
   what: "Deliver one precisely specified railway-support function using the declared facility"
-  how_much: "One completed block with service-family-specific physical extent from section 1"
+  how_much: "One completed block with the service-family-specific counted object and physical extent required by validate_family_passenger_terminal, validate_family_infrastructure, validate_family_freight_terminal, validate_family_technical_support, validate_family_refuelling_stop or validate_family_other_support"
   how_well: "Actual access, availability, custody or technical acceptance requirements fulfilled and evidenced; no universal quality grade"
   how_long_or_cycle: "Explicit start/end timestamps and actual duration of the defined block; include attributable standby and retries"
   reference_flow_link: "support_block"
@@ -549,7 +549,7 @@ dataset_production:
       flow_role: "support_block"
       record_type: "Accepted service/block ledger"
       raw_fields: "service family; exact function; physical extent; passengers/trains/consignments; baggage pieces/mass and custody time; track segment/length; axle class; availability capacity/time; work order; fuel delivery; gates/timestamps; acceptance"
-      collection_method: "Verify completed function against the section 1 definition; record actual extent and separate component/whole bundle identities. Count only homogeneous accepted blocks and retain failed work in their inventory."
+      collection_method: "Verify the completed function against the matching validate_family_* rule; record actual extent and separate component/whole bundle identities. Count only homogeneous accepted blocks and retain failed work in their inventory."
       unit: "Item(s)"
       frequency: "each block"
       temporal_coverage: "full defined block and allocated support"
@@ -714,6 +714,30 @@ validation_rules:
     applies_to: "foreground_dataset_conformance"
     rule: "Require every inventory row to be a specific exchange with actual applicability. Verify conserved asset shares, non-overlapping renewals, provider scope and actual waste/pollutant treatment. Unresolved identities or evidence remain explicit and no publication readiness is inferred."
     source_ids: []
+  - rule_id: validate_family_passenger_terminal
+    applies_to: "foreground_dataset_conformance"
+    rule: "For service_family=passenger_terminal, count one completed defined passenger-terminal transaction or visit. Fix passenger count, ticket/assistance/left-luggage function, station footprint, actual duration and acceptance. Left-luggage scope includes identified pieces/mass and custody time; exclude baggage loading/unloading."
+    source_ids: []
+  - rule_id: validate_family_infrastructure
+    applies_to: "foreground_dataset_conformance"
+    rule: "For service_family=infrastructure, count one completed defined access passage or facility-availability block. Fix line/segment, exact length, train/class/axle load, passage or availability duration, operational limits, signalling and asset coverage. Select one passage or one timed availability block per dataset; never equate them."
+    source_ids: []
+  - rule_id: validate_family_freight_terminal
+    applies_to: "foreground_dataset_conformance"
+    rule: "For service_family=freight_terminal, count one completed defined non-handling terminal-support transaction. Fix train/consignment population, access/administrative function, actual dwell and terminal footprint; exclude cargo loading/unloading and shunting."
+    source_ids: []
+  - rule_id: validate_family_technical_support
+    applies_to: "foreground_dataset_conformance"
+    rule: "For service_family=technical_support, count one completed defined technical-support task. Fix work order, train/equipment configuration, actual checks/facilities provided, duration and signed completion; major rolling-stock overhaul/manufacture is outside this support task."
+    source_ids: []
+  - rule_id: validate_family_refuelling_stop
+    applies_to: "foreground_dataset_conformance"
+    rule: "For service_family=refuelling_stop, count one completed defined train-refuelling transaction. Fix actual fuel type and metered transferred mass/volume plus density, connected train, duration and delivery gate; count only facility overhead here, not fuel consumed later by the train."
+    source_ids: []
+  - rule_id: validate_family_other_support
+    applies_to: "foreground_dataset_conformance"
+    rule: "For service_family=other_support, count one completed specifically named railway-support function. Provide its physical extent, duration, acceptance and non-intermediation boundary using the same measured protocols; an unspecified other-service invoice is unavailable for this methodology."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "railway_support_service"
   downstream_use: "secondary_dataset; background_dataset"
@@ -733,18 +757,18 @@ data_sources:
     used_for: "Distinct traction-energy account and actual metered usage; UK operator interface evidence only, no tariff, loss uplift or global LCA factor adopted"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:7219b4c7201897fa5263f0ea4f543f1cf770073ccc0c7387021f38eb5d6222db"
+  source_sha256: "sha256:e4f78d64aa3d323e51cf62faa2f7099904ba8ae0df970961645a15e29376d33e"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6802"
+    - unit_id: "normative_7024"
       family: "system_boundary"
       span:
         start:
-          offset: 6802
+          offset: 7024
           line: 66
           column: 1
         end:
-          offset: 9193
+          offset: 9415
           line: 86
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified support task/facility block with existing train, passengers and goods; facility and utility upstream burdens are retained |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Declared railway-support function excluding transport, shunting, handling and intermediation |\n| recursive_input_rule | Subcontracted same-function support enters once with exact physical extent and upstream inventory; remove overlapping operator resources/assets |\n| upstream_dataset_requirement | Actual facility energy, consumables, relevant infrastructure/equipment construction, renewal and waste-treatment inventories |\n| disclosure | Service-family block and extent, gates/times, excluded services, customer-energy custody, provider split, initial/renewal assets, allocation and evidence gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_functions | Include only actual operations needed for the declared block: passenger terminal administration/custody, infrastructure access/signalling, non-handling freight-terminal support, technical-point support or fuel-stop operation. Select and document the real function rather than assuming every block uses every facility. | un-cpc-rail-support |\n| boundary_traction | Separate traction electricity delivered to trains from support-facility electricity and identify actual distribution losses. Metered customer traction is a distinct energy account; UK billing practice is evidence of this interface, not a global tariff or emission factor. | networkrail-metering |\n| boundary_custody | Customer fuel, train water and baggage/goods remain separately metered custody deliveries; they do not become site combustion or consumed commodity production merely by passing through the facility. Integrated fuel/energy-supply datasets retain their physical input/output exchanges and upstream burdens separately; this support-only service cannot claim that entire integrated footprint. |  |\n| boundary_actual | Include actual attributable standby, failed attempts, cleaning, maintenance, utilities and construction shares. Screen every real fuel, refrigerant, pollutant species and waste stream; add a specific row when present. No assumed zero burden for unlisted operations or upstream gaps. |  |\n\n"
@@ -764,11 +788,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6802
+              offset: 7024
               line: 66
               column: 1
             end:
-              offset: 6823
+              offset: 7045
               line: 66
               column: 22
           text: "## 5. System Boundary"
@@ -784,15 +808,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_24818"
+    - unit_id: "normative_25040"
       family: "allocation"
       span:
         start:
-          offset: 24818
+          offset: 25040
           line: 455
           column: 1
         end:
-          offset: 26382
+          offset: 26604
           line: 464
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_functions | Subdivide service families and physical extent first. Allocate shared electricity/heat/support with measured load-time, occupied area-time, facility use and block logs; reconcile all uses and retain standby. Do not divide unlike passenger visits, train passages and refuelling transactions by one combined count. |  |\n| allocate_assets | Use persistent construction/manufacturing ledgers and supported whole-life service denominators. Track passenger-floor use, infrastructure train/axle use and technical/fuel equipment use separately. Period accounting distributes only the already attributed period share; cumulative fractions across all blocks/customers/periods cannot exceed one or reset annually. Unknown life/denominator requires review and sensitivity. |  |\n| allocate_renewals | Distinguish initial track/facility construction from separately recorded actual renewal steel, ballast and sleepers. Use either an upstream inventory already covering a renewal or explicit renewal rows for that same activity, never both. Separate actual recovered materials and no automatic recycling credit. |  |\n| allocate_scope | A provider inventory replaces its covered resources/assets once. Customer fuel/energy, ticket revenue, custody goods and passenger transport are not co-products of this support count. Allocate a true service bundle by traced component work, preserving the whole bundle only if its exact components and extent are fixed. |  |\n\n"
@@ -812,11 +836,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 24818
+              offset: 25040
               line: 455
               column: 1
             end:
-              offset: 24858
+              offset: 25080
               line: 455
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -832,18 +856,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_34682"
+    - unit_id: "normative_34919"
       family: "validation"
       span:
         start:
-          offset: 34682
+          offset: 34919
           line: 497
           column: 1
         end:
-          offset: 35794
-          line: 506
+          offset: 38055
+          line: 512
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_block | Require unique support_block output equal to 1 Item(s), one fixed function/extent, exact interface times and acceptance. Reject fees, tickets sold alone without function definition, passenger-km and tonne-km as service-count equivalents. |  |\n| validate_classification | Check the selected terminal/infrastructure/technical/fuel support function against the official scope and exclude separately modelled cargo/baggage handling, shunting and intermediation. | un-cpc-rail-support |\n| validate_energy | Reconcile site versus customer fuel/traction energy; do not burn all dispensed fuel in the support model. Keep facility use, pass-through custody, actual losses and upstream supply distinct. |  |\n| validate_atomic_lifecycle | Require every inventory row to be a specific exchange with actual applicability. Verify conserved asset shares, non-overlapping renewals, provider scope and actual waste/pollutant treatment. Unresolved identities or evidence remain explicit and no publication readiness is inferred. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_block | Require unique support_block output equal to 1 Item(s), one fixed function/extent, exact interface times and acceptance. Reject fees, tickets sold alone without function definition, passenger-km and tonne-km as service-count equivalents. |  |\n| validate_classification | Check the selected terminal/infrastructure/technical/fuel support function against the official scope and exclude separately modelled cargo/baggage handling, shunting and intermediation. | un-cpc-rail-support |\n| validate_energy | Reconcile site versus customer fuel/traction energy; do not burn all dispensed fuel in the support model. Keep facility use, pass-through custody, actual losses and upstream supply distinct. |  |\n| validate_atomic_lifecycle | Require every inventory row to be a specific exchange with actual applicability. Verify conserved asset shares, non-overlapping renewals, provider scope and actual waste/pollutant treatment. Unresolved identities or evidence remain explicit and no publication readiness is inferred. |  |\n| `validate_family_passenger_terminal` | For service_family=passenger_terminal, count one completed defined passenger-terminal transaction or visit. Fix passenger count, ticket/assistance/left-luggage function, station footprint, actual duration and acceptance. Left-luggage scope includes identified pieces/mass and custody time; exclude baggage loading/unloading. |  |\n| `validate_family_infrastructure` | For service_family=infrastructure, count one completed defined access passage or facility-availability block. Fix line/segment, exact length, train/class/axle load, passage or availability duration, operational limits, signalling and asset coverage. Select one passage or one timed availability block per dataset; never equate them. |  |\n| `validate_family_freight_terminal` | For service_family=freight_terminal, count one completed defined non-handling terminal-support transaction. Fix train/consignment population, access/administrative function, actual dwell and terminal footprint; exclude cargo loading/unloading and shunting. |  |\n| `validate_family_technical_support` | For service_family=technical_support, count one completed defined technical-support task. Fix work order, train/equipment configuration, actual checks/facilities provided, duration and signed completion; major rolling-stock overhaul/manufacture is outside this support task. |  |\n| `validate_family_refuelling_stop` | For service_family=refuelling_stop, count one completed defined train-refuelling transaction. Fix actual fuel type and metered transferred mass/volume plus density, connected train, duration and delivery gate; count only facility overhead here, not fuel consumed later by the train. |  |\n| `validate_family_other_support` | For service_family=other_support, count one completed specifically named railway-support function. Provide its physical extent, duration, acceptance and non-intermediation boundary using the same measured protocols; an unspecified other-service invoice is unavailable for this methodology. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -860,11 +884,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 34682
+              offset: 34919
               line: 497
               column: 1
             end:
-              offset: 34704
+              offset: 34941
               line: 497
               column: 23
           text: "## 9. Validation Rules"
@@ -884,206 +908,284 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_functions"
       identity_kind: "explicit"
-      unit_id: "normative_6802"
+      unit_id: "normative_7024"
       source_span:
         start:
-          offset: 7785
+          offset: 8007
           line: 81
           column: 1
         end:
-          offset: 8149
+          offset: 8371
           line: 81
           column: 365
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_traction"
       identity_kind: "explicit"
-      unit_id: "normative_6802"
+      unit_id: "normative_7024"
       source_span:
         start:
-          offset: 8150
+          offset: 8372
           line: 82
           column: 1
         end:
-          offset: 8468
+          offset: 8690
           line: 82
           column: 319
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_custody"
       identity_kind: "explicit"
-      unit_id: "normative_6802"
+      unit_id: "normative_7024"
       source_span:
         start:
-          offset: 8469
+          offset: 8691
           line: 83
           column: 1
         end:
-          offset: 8883
+          offset: 9105
           line: 83
           column: 415
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_actual"
       identity_kind: "explicit"
-      unit_id: "normative_6802"
+      unit_id: "normative_7024"
       source_span:
         start:
-          offset: 8884
+          offset: 9106
           line: 84
           column: 1
         end:
-          offset: 9191
+          offset: 9413
           line: 84
           column: 308
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_functions"
       identity_kind: "explicit"
-      unit_id: "normative_24818"
+      unit_id: "normative_25040"
       source_span:
         start:
-          offset: 24912
+          offset: 25134
           line: 459
           column: 1
         end:
-          offset: 25252
+          offset: 25474
           line: 459
           column: 341
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_assets"
       identity_kind: "explicit"
-      unit_id: "normative_24818"
+      unit_id: "normative_25040"
       source_span:
         start:
-          offset: 25253
+          offset: 25475
           line: 460
           column: 1
         end:
-          offset: 25700
+          offset: 25922
           line: 460
           column: 448
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_renewals"
       identity_kind: "explicit"
-      unit_id: "normative_24818"
+      unit_id: "normative_25040"
       source_span:
         start:
-          offset: 25701
+          offset: 25923
           line: 461
           column: 1
         end:
-          offset: 26036
+          offset: 26258
           line: 461
           column: 336
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_24818"
+      unit_id: "normative_25040"
       source_span:
         start:
-          offset: 26037
+          offset: 26259
           line: 462
           column: 1
         end:
-          offset: 26380
+          offset: 26602
           line: 462
           column: 344
     - pointer: "/validation_rules/0"
       rule_id: "validate_block"
       identity_kind: "explicit"
-      unit_id: "normative_34682"
+      unit_id: "normative_34919"
       source_span:
         start:
-          offset: 34758
+          offset: 34995
           line: 501
           column: 1
         end:
-          offset: 35019
+          offset: 35256
           line: 501
           column: 262
     - pointer: "/validation_rules/1"
       rule_id: "validate_classification"
       identity_kind: "explicit"
-      unit_id: "normative_34682"
+      unit_id: "normative_34919"
       source_span:
         start:
-          offset: 35020
+          offset: 35257
           line: 502
           column: 1
         end:
-          offset: 35258
+          offset: 35495
           line: 502
           column: 239
     - pointer: "/validation_rules/2"
       rule_id: "validate_energy"
       identity_kind: "explicit"
-      unit_id: "normative_34682"
+      unit_id: "normative_34919"
       source_span:
         start:
-          offset: 35259
+          offset: 35496
           line: 503
           column: 1
         end:
-          offset: 35474
+          offset: 35711
           line: 503
           column: 216
     - pointer: "/validation_rules/3"
       rule_id: "validate_atomic_lifecycle"
       identity_kind: "explicit"
-      unit_id: "normative_34682"
+      unit_id: "normative_34919"
       source_span:
         start:
-          offset: 35475
+          offset: 35712
           line: 504
           column: 1
         end:
-          offset: 35792
+          offset: 36029
           line: 504
           column: 318
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_family_passenger_terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_34919"
+      source_span:
+        start:
+          offset: 36030
+          line: 505
+          column: 1
+        end:
+          offset: 36400
+          line: 505
+          column: 371
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_family_infrastructure"
+      identity_kind: "explicit"
+      unit_id: "normative_34919"
+      source_span:
+        start:
+          offset: 36401
+          line: 506
+          column: 1
+        end:
+          offset: 36775
+          line: 506
+          column: 375
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_family_freight_terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_34919"
+      source_span:
+        start:
+          offset: 36776
+          line: 507
+          column: 1
+        end:
+          offset: 37076
+          line: 507
+          column: 301
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_family_technical_support"
+      identity_kind: "explicit"
+      unit_id: "normative_34919"
+      source_span:
+        start:
+          offset: 37077
+          line: 508
+          column: 1
+        end:
+          offset: 37396
+          line: 508
+          column: 320
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_family_refuelling_stop"
+      identity_kind: "explicit"
+      unit_id: "normative_34919"
+      source_span:
+        start:
+          offset: 37397
+          line: 509
+          column: 1
+        end:
+          offset: 37722
+          line: 509
+          column: 326
+    - pointer: "/validation_rules/9"
+      rule_id: "validate_family_other_support"
+      identity_kind: "explicit"
+      unit_id: "normative_34919"
+      source_span:
+        start:
+          offset: 37723
+          line: 510
+          column: 1
+        end:
+          offset: 38053
+          line: 510
+          column: 331
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6802"
+      unit_id: "normative_7024"
       source_span:
         start:
-          offset: 6802
+          offset: 7024
           line: 66
           column: 1
         end:
-          offset: 6823
+          offset: 7045
           line: 66
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6802"
+      unit_id: "normative_7024"
       source_span:
         start:
-          offset: 6851
+          offset: 7073
           line: 70
           column: 1
         end:
-          offset: 7731
+          offset: 7953
           line: 77
           column: 176
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_24818"
+      unit_id: "normative_25040"
       source_span:
         start:
-          offset: 24818
+          offset: 25040
           line: 455
           column: 1
         end:
-          offset: 24858
+          offset: 25080
           line: 455
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_34682"
+      unit_id: "normative_34919"
       source_span:
         start:
-          offset: 34682
+          offset: 34919
           line: 497
           column: 1
         end:
-          offset: 34704
+          offset: 34941
           line: 497
           column: 23
 projection_metadata:
@@ -1093,5 +1195,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7219b4c7201897fa5263f0ea4f543f1cf770073ccc0c7387021f38eb5d6222db"
-  generated_content_sha256: "sha256:507b7bb7457ca6b93ed9aedc6e30e4212156e135a73133c875e6edd43f539126"
+    sha256: "sha256:e4f78d64aa3d323e51cf62faa2f7099904ba8ae0df970961645a15e29376d33e"
+  generated_content_sha256: "sha256:6ef9bf64170e0bfa2f40154b864020080d2424f7960ebcc58691911883576986"

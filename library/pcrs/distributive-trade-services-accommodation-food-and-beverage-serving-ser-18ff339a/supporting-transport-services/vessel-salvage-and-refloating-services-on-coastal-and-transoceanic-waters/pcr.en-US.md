@@ -491,6 +491,7 @@ Conditional on measured incremental salvage-caused benzene release, with causal 
 | `validate_salvage` | Require one salvage_output of 1 item linked to actual accepted vessel/cargo recovery, raising/righting/refloating objective. Reject standalone towing, inland-water tasks and public rescue/fire/police as this reference. | un-cpc3-67531 |
 | `validate_boundary` | Reconcile failed attempts, standby, support services and supplier included burdens; original customer property is not newly manufactured output. Separate subsequent repair/storage/scrapping. |  |
 | `validate_emissions` | Audit each emitted substance and contaminated managed stream, baseline attribution, actual treatment and asset life shares. Do not count collected oil simultaneously as newly leaked oil and avoided leakage; disclose all identity/upstream/attribution gaps. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

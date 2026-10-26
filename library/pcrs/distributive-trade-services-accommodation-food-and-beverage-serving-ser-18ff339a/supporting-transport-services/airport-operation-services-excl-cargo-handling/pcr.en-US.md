@@ -540,6 +540,7 @@ Actual airport-operated boiler/generator/support-equipment fossil combustion usi
 | `validate_operation` | Require unique airport_output of 1 item with accepted infrastructure-operation extent, functional quality and interval. Reject cleaning actions, automatic passenger/movement equivalence and aircraft carriage as substitutes. | un-cpc3-67610 |
 | `validate_scopes` | Verify conditional terminal/airfield processes and complete-airport shared attribution; exclude baggage/cargo handling, ATC and independently sold runway cleaning/snow. Do not duplicate supplier support and expanded chemical/fuel/waste burdens. | un-cpc3-67610 |
 | `validate_actual_flows` | Audit each actual utility, chemical, refrigerant, asset, waste and released substance with matched period/basis. Disclose identity, asset-life, runoff-treatment and upstream gaps; parser pass is not a full airport environmental or methodology approval. |  |
+| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |
 
 ## 10. Published Dataset Profile
 

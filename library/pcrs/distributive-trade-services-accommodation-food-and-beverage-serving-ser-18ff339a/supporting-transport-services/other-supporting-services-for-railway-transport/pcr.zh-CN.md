@@ -39,7 +39,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | What | 利用所声明设施提供一个准确规定的铁路支持功能 |
-| How much | 一个已完成块，其服务族特定物理范围见第1节 |
+| How much | 一个已完成块，其服务族特定计数对象和物理范围须符合validate_family_passenger_terminal、validate_family_infrastructure、validate_family_freight_terminal、validate_family_technical_support、validate_family_refuelling_stop或validate_family_other_support |
 | How well | 满足并证明实际接入、可用性、保管或技术验收要求，不设通用质量等级 |
 | How long or cycle | 所定义块的明确起止时间戳及实际时长，含可归属待机及重试 |
 | reference_flow_link | `support_block` |
@@ -467,7 +467,7 @@ Item(s)计数一个已验收且明确定义的服务案例。声明该案例适�
 
 | protocol_id | process_id | flow_role | 记录类型 | 原始字段 | 采集方法 | 单位 | 频率 | 时间覆盖 | 场址范围 | 汇总规则 | 质量证据 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_activity | support | support_block | 验收服务/块账 | 服务族；准确功能；物理范围；旅客/列车/批次；行李件数/质量及保管时间；轨道区段/长度；轴重类型；可用容量/时间；工单；供油交付；端点/时间；验收 | 按第1节定义核验已完成功能，记录实际范围并区分组件/整体包身份；仅计同质验收块，失败工作保留在清单中。 | Item(s) | 每服务块 | 完整服务块及已分配保障 | 所声明设施及供应商 | 每参考流 | 工单；车站/接入日志；保管记录；签署验收；准确总体核对 |
+| cp_activity | support | support_block | 验收服务/块账 | 服务族；准确功能；物理范围；旅客/列车/批次；行李件数/质量及保管时间；轨道区段/长度；轴重类型；可用容量/时间；工单；供油交付；端点/时间；验收 | 按对应validate_family_*规则核验已完成功能，记录实际范围并区分组件/整体包身份；仅计同质验收块，失败工作保留在清单中。 | Item(s) | 每服务块 | 完整服务块及已分配保障 | 所声明设施及供应商 | 每参考流 | 工单；车站/接入日志；保管记录；签署验收；准确总体核对 |
 | cp_energy | support | electricity; heat | 能源及客户交付账 | 分别记录实际kWh及MJ；计量；电压/地区；时间；任务；实测负荷；待机；牵引交付及实际配电损耗；供应商覆盖 | 对实际支持功能分表计量，分别核对建筑/信号/泵及客户牵引；共用保障按实测因果使用分配，不按票价。 | kWh; MJ | 每任务/计量时段 | 完整块及归属待机 | 实际设施 | 每参考流 | 计量；任务/负荷日志；供应商/客户能源核对 |
 | cp_fuel | support | diesel | 消耗与交付燃料平衡 | 燃料等级；设施消耗；发电机/机械负荷；接收/库存；客户交付计量；密度/温度；实际损失 | 设施耗油与客户加油及存储燃料分别核对；采用校准质量或可追溯实测密度换算；客户交付供应不归为场址燃烧。 | kg | 每使用/转移及库存期 | 全部实际纳入消耗 | 设施燃料设备 | 每参考流 | 油罐/加油计量；库存平衡；实际负荷日志 |
 | cp_material | support | water; ticket_paper; cleaner; lubricant | 具体材料账 | 单一材料；实际kg或m3；领退库存；功能；组成；客户供水交付；事件 | 分别计量各具体交换并核对库存/退回，区分保管供水与实际消耗；其他实际化学品/材料逐项增加。 | kg; m3 | 每领用/使用及监测期 | 全部实际保障 | 纳入场址及运营方 | 每参考流 | 计量/称重；采购及维护日志；材料平衡 |
@@ -502,6 +502,12 @@ Item(s)计数一个已验收且明确定义的服务案例。声明该案例适�
 | validate_classification | 按官方范围检查所选终端/基础设施/技术/加油支持功能，排除另行建模的货物/行李装卸、调车及中介。 | un-cpc-rail-support |
 | validate_energy | 核对场址与客户燃料/牵引能源，不得在支持模型中燃烧全部加注燃料；区分设施消耗、保管交付、实际损失及上游供应。 |  |
 | validate_atomic_lifecycle | 每个清单行为具体交换并有实际适用性；核验资产份额守恒、更新不重叠、供应商范围及实际废物/污染物处理。身份或证据未解决须明确，不推定具备发布条件。 |  |
+| `validate_family_passenger_terminal` | 当service_family=passenger_terminal时，计数对象为一个已完成的明确旅客终端交易或到访。固定旅客数、售票/协助/行李寄存功能、车站空间、实际时长及验收；寄存须识别件数/质量与保管时长，排除行李装卸。 |  |
+| `validate_family_infrastructure` | 当service_family=infrastructure时，计数对象为一次已完成的明确通行或设施可用性块。固定线路/区段、准确长度、列车/车型/轴重、通行或可用时长、运行限制、信号及资产覆盖。每数据集仅选一次通行或一个定时可用块，不得等同。 |  |
+| `validate_family_freight_terminal` | 当service_family=freight_terminal时，计数对象为一个已完成的非装卸终端支持交易。固定列车/货物批次总体、接入/管理功能、实际停留及终端空间；排除货物装卸及调车牵引。 |  |
+| `validate_family_technical_support` | 当service_family=technical_support时，计数对象为一个已完成的明确技术支持任务。固定工单、列车/设备配置、实际检查/设施服务、时长及签署完成；大修/车辆制造不属于该支持任务。 |  |
+| `validate_family_refuelling_stop` | 当service_family=refuelling_stop时，计数对象为一个已完成的明确列车加油交易。固定实际燃料及实测交付质量/体积和密度、连接列车、时长及交付端点；本服务仅计设施开销，不计此后列车耗油。 |  |
+| `validate_family_other_support` | 当service_family=other_support时，计数对象为一个已完成且准确命名的铁路支持功能。按相同实测协议提供物理范围、时长、验收及非中介边界；未明确功能的其他服务发票不能用于本方法。 |  |
 
 ## 10. 发布数据集画像
 

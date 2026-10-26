@@ -11,7 +11,7 @@ product_category_identity:
   market_state: "Completed measurable storage service with auditable custody, stock-time and loss records"
 functional_unit:
   what: "Maintain bulk substance custody within declared composition, phase, containment and condition limits"
-  how_much: "One tonne-day of actual stored mass integrated over custody time"
+  how_much: "One tonne-day of eligible customer working-stock mass integrated over custody time; exclude dedicated operating support inventory"
   how_well: "Satisfy actual contracted integrity, composition, temperature and pressure specifications; disclose losses and excursions"
   how_long_or_cycle: "Actual custody interval; prorate partial days using event timestamps, including required pre/post custody support allocated transparently"
   reference_flow_link: "storage_service"
@@ -36,11 +36,11 @@ system_boundary:
       rule: "Screen actual refrigerants, chemicals, fuels, maintenance wastes and storage-specific assets. Add every present exchange individually; unknown composition, loss or asset denominator is a declared gap rather than zero."
       source_ids: []
 boundary_abstraction:
-  declared_starting_condition: "Existing bulk substance accepted at storage gate and installed containment; inherited commodity production is outside the storage-only service while actual utilities and assets retain upstream burdens"
+  declared_starting_condition: "Existing customer working stock accepted at the storage gate and installed containment; inherited production of stock remaining in customer custody is outside the storage-only service, while actual utilities, assets, consumed fuel and support-stock supply attributed under the allocation rules retain their upstream burdens"
   starting_condition_role: "foreground_start"
   product_classification_scope: "Bulk liquids and gases storage, with composition/conditions-specific datasets"
   recursive_input_rule: "Subcontracted storage enters once with defined stock-time and complete upstream scope; remove overlapping owned utilities/assets. Internal transfers within one custody boundary do not create another full storage output."
-  upstream_dataset_requirement: "Actual electricity/heat/fuel, nitrogen, water, chemical, tank/pump/compressor/cavern construction and waste-treatment inventories appropriate to the declared scenario"
+  upstream_dataset_requirement: "Actual electricity/heat/fuel product supply, separately identified support-stock supplies and replacements where attributed, nitrogen, water, chemicals, tank/pump/compressor/cavern construction and waste-treatment inventories appropriate to the declared scenario; preserve actual supplied product identity and prevent supplier/customer overlap"
   disclosure: "Actual gates, stock-time population, fill/empty operations, conditioning, heel/cushion inventory, losses, species, provider/asset boundaries, upstream omissions and conversion exclusions"
 reference_flow_definition:
   reference_amount: "1"
@@ -55,8 +55,10 @@ reference_flow_definition:
   required_qualifiers:
     - "substance and actual composition"
     - "liquid/gas phase"
-    - "custody stock ownership"
-    - "actual stored mass history"
+    - "custody stock ownership and delivery obligations"
+    - "separate customer working-stock and dedicated support-stock histories"
+    - "technical basis for cushion/base inventory and minimum operating heel"
+    - "role-transfer timestamps"
     - "temperature and pressure including absolute/gauge convention"
     - "tank/vessel/cavern ID"
     - "capacity and construction"
@@ -66,7 +68,8 @@ reference_flow_definition:
     - "ambient conditions"
     - "thermal and pressure maintenance route"
     - throughput
-    - "heel/cushion inventory"
+    - "support-stock origin"
+    - "upstream responsibility and lifetime allocation"
     - "vent/recovery/flare route"
     - "metering and density basis"
     - "electricity supply"
@@ -82,7 +85,7 @@ measurement_rules:
       name: "Mass*time"
       uuid: "b3f0f892-c5a3-4c66-a432-c09e3d1e9bd6"
     required_unit: "tday"
-    rule: "Use cp_storage to integrate actual mass over elapsed custody time; tday maps exactly to t*d. Normalize actual attributable exchanges to one such reference flow."
+    rule: "Use cp_storage and stock_time to integrate only eligible customer working-stock mass over elapsed custody time. Exclude dedicated cushion/base inventory and minimum operating heel irrespective of ownership; a customer working-stock heel remains included when supported by operating limits and delivery obligations. tday maps exactly to t*d. Normalize attributable exchanges once to one such reference flow."
   - id: density_basis
     applies_to: "storage_service"
     required_property_ref:
@@ -96,7 +99,7 @@ measurement_rules:
       name: "Mass*time"
       uuid: ""
     required_unit: "tday"
-    rule: "Reconcile initial stock, actual receipts/withdrawals, final stock, losses and cushion/heel stock; distinguish customer stored stock from fuel used onsite."
+    rule: "Maintain separate customer working-stock, dedicated support-stock and fuel ledgers. Reconcile opening stock plus receipts and documented role transfers against withdrawals, consumption, actual losses and closing stock; internal role transfers cancel in the facility balance and never place the same mass in both stock roles. Use operating limits and delivery obligations to justify classification, including any heel."
 process_map:
   - id: storage
     name: "Receive, maintain and withdraw bulk custody inventory"
@@ -150,9 +153,27 @@ process_inventory:
           name: "Methane fuel"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Conditional on actual methane consumption for onsite storage heating or flare pilots. Natural-gas mixtures need additional named component rows based on measured composition; exclude combustion already included in purchased heat."
+          description: "Conditional on actual use of a separately supplied methane product for onsite storage heating or flare pilots; record its supplier specification and delivery state. This row is not the methane fraction of a natural-gas mixture. Use natural_gas_fuel for a supplied natural-gas product and retain its composition only for mass, energy, carbon and emission calculations. Exclude fuel and combustion already included in purchased heat; stock withdrawals follow allocate_fuel_supply."
           amount:
-            expression: "Attributable measured exchange amount per reference flow; cp_fuel."
+            expression: "Attributable measured actual fuel-product supply per reference flow; cp_fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_fuel
+          role: "Natural gas fuel, declared composition and delivery state"
+          name: "Natural gas fuel, declared composition and delivery state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual natural-gas product use for onsite storage heating or flare pilots. Each dataset identifies one actual supplied product with measured composition, phase, delivery pressure/temperature, supply gate and upstream supply scope. Preserve this product identity for purchased gas or documented custody-stock withdrawals; do not replace it with pure methane, ethane or other constituent supplies and do not add constituent product quantities to the mixture quantity. Component records support mass, energy, carbon and emission calculations. Exclude fuel and combustion already included in purchased heat; stock withdrawals follow allocate_fuel_supply."
+          amount:
+            expression: "Attributable measured actual fuel-product supply per reference flow; cp_fuel."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -336,7 +357,7 @@ process_inventory:
           name: "Bulk storage service for the declared substance and conditions"
           flow_type: "product"
           property_unit: "Mass*time b3f0f892-c5a3-4c66-a432-c09e3d1e9bd6 / tday"
-          description: "One tonne-day of actual stored mass integrated over custody time, for one specified composition, phase, temperature, pressure and containment configuration."
+          description: "One tonne-day of eligible customer working-stock mass integrated over custody time, for one specified composition, phase, temperature, pressure and containment configuration. Exclude dedicated cushion/base inventory and minimum operating heel under storage_basis; retain a heel that qualifies as customer working stock under the declared delivery conditions."
           amount:
             expression: "1 tday"
             value_mode: "fixed_value"
@@ -620,20 +641,29 @@ allocation_rules:
     applies_to: "foreground_burden_allocation"
     rule: "Remove any utilities, maintenance or assets already included in a supplier service inventory. Allocate empty-tank standby, cleaning and terminal support transparently across the supported storage service population; no default price-based split."
     source_ids: []
+  - rule_id: allocate_fuel_supply
+    applies_to: "foreground_burden_allocation"
+    rule: "Include actual upstream fuel supply once and preserve its supplied product identity. For fuel transferred from customer custody stock, transfer the corresponding actual supply burden to the storage fuel account and record an equal removal from the customer's supply allocation; reconcile mass, source dataset and responsibility at the dataset interface. Fuel transferred from support stock is an internal use: its original acquisition remains in the support-stock ledger, and it creates no second external fuel-supply input. Record all actual fuel combustion and losses through cp_species. If the customer transfer or source identity is unproven, disclose the unresolved interface; do not assume a conventional gas or pure-component supply or claim a complete lifecycle result."
+    source_ids: []
+  - rule_id: allocate_support_inventory
+    applies_to: "foreground_burden_allocation"
+    rule: "Dedicated cushion/base inventory and minimum operating heel support the facility rather than increase customer working-stock service. Keep a persistent product-specific ledger separating initial/augmentation supply, in-situ retained stock, transfers, routine replacements, actual losses and retirement recovery. Allocate actual initial/augmentation supply burdens over the supported whole-life eligible working-stock time served by each supply cohort; conserve cumulative shares across periods/customers without annual reset. Assign routine loss-replacement supply to the actual responsible operating period once; do not count a replacement again as initial supply. In-situ retained stock is physical opening stock, not fictitious purchased or injected gas: include actual preparation, later injections and evidenced transferred prior burdens, and disclose missing provenance. Add actual support-product inputs/outputs separately by identity and link cp_support_inventory; remove quantities/burdens already included in customer, asset or supplier inventories. Retain actual losses, internal fuel use and recovery/disposal operations; report actual recovered-product or waste quantities and ownership at retirement under allocate_losses, with no credit for anticipated recovery, no automatic reversal of initial supply and no unsupported avoided-production credit. Absence of a purchase does not establish zero upstream burdens: actual later extraction, fuel use or export of in-situ stock must record the relevant resource-acquisition/production boundary, real quantity and supporting evidence."
+    source_ids:
+      - eia-storage-basics
 dataset_production:
   collection_protocols:
     - protocol_id: cp_storage
       process_id: "storage"
       flow_role: "storage_service"
-      record_type: "Custody and stock-time ledger"
-      raw_fields: "substance/batch; composition; mass timestamps; initial/final stock; receipts; withdrawals; losses; phase; temperature; pressure; density; heel/cushion inventory; actual gate timestamps"
-      collection_method: "Use calibrated custody mass meters, weighing or calibrated level/volume with measured batch density. Gas conversion also records absolute pressure, temperature and applicable compressibility. Integrate actual inventory mass over elapsed custody time; resolve events sufficiently to represent filling and withdrawal. Reconcile material balance."
+      record_type: "Separate custody, support-stock and stock-time ledgers"
+      raw_fields: "substance/batch; composition; customer working-stock and dedicated support-stock mass timestamps; ownership and delivery obligations; technical minimum inventory; opening/final stocks; receipts; withdrawals; losses; role transfers and timestamps; phase; temperature; pressure; density; actual gate timestamps"
+      collection_method: "Use calibrated custody mass meters, weighing or calibrated level/volume with measured batch density. Gas conversion also records absolute pressure, temperature and applicable compressibility. Classify stock using operating limits and delivery obligations; integrate only eligible customer working-stock mass. Record cushion/base and minimum operating heel separately, and identify any customer working-stock heel that remains eligible. Resolve filling, withdrawal and role-transfer events; reconcile each ledger and the facility total."
       unit: "tday"
       frequency: "every stock change plus justified monitoring intervals"
       temporal_coverage: "complete declared custody interval including partial days"
       site_scope: "declared tanks/vessels/caverns and all operators"
       aggregation_rule: "per reference flow"
-      quality_evidence: "calibration; stock records; measured density/composition; event timing; balance reconciliation"
+      quality_evidence: "calibration; stock records; measured density/composition; event timing; operating limits; delivery contracts; balance reconciliation"
     - protocol_id: cp_energy
       process_id: "storage"
       flow_role: "electricity; heat"
@@ -648,16 +678,16 @@ dataset_production:
       quality_evidence: "meters; duty logs; supplier scope; facility totals"
     - protocol_id: cp_fuel
       process_id: "storage"
-      flow_role: "methane_fuel"
-      record_type: "Fuel component balance"
-      raw_fields: "fuel mass; actual gas composition; pilot/heating duty; gas removed from stock; meter; stock difference"
-      collection_method: "Meter actual supplied/consumed methane and each additional fuel component; distinguish stock withdrawal for fuel from commercial stored stock and reconcile carbon fate."
+      flow_role: "methane_fuel; natural_gas_fuel"
+      record_type: "Actual supplied-fuel product and responsibility ledger"
+      raw_fields: "fuel product and source dataset; supplied/used mass; composition and heating-value basis; phase and delivery temperature/pressure; supply gate; pilot/heating duty; opening/closing fuel stock; custody/support-stock withdrawals; transfers; combustion and non-combustion losses; customer/supplier upstream burden transfer"
+      collection_method: "Meter and reconcile use of each actual supplied fuel product separately. Preserve natural gas as its specified product; component mass, energy and carbon records are calculation data, not additional constituent product inputs. Reconcile customer withdrawals with matched upstream responsibility transfers and support-stock withdrawals with their already recorded acquisition under allocate_fuel_supply. Separate internal use from new external supply, exclude purchased-heat overlap and reconcile actual carbon fate. Apply fuel_product_balance to distinguish physical fuel use from attributable supply, and pass the unnormalized period quantity to service_normalization."
       unit: "kg"
       frequency: "each fuel issue/operating interval"
       temporal_coverage: "all actual onsite fuel use"
       site_scope: "actual heating and control equipment"
       aggregation_rule: "per reference flow"
-      quality_evidence: "fuel meters; composition analysis; stock records"
+      quality_evidence: "fuel meters; supplier/product specification; composition analysis; heating-value basis; stock records; upstream dataset and matched responsibility-transfer records"
     - protocol_id: cp_material
       process_id: "storage"
       flow_role: "nitrogen; water; activated_carbon; lubricant"
@@ -694,6 +724,18 @@ dataset_production:
       site_scope: "identified physical containment and equipment"
       aggregation_rule: "per reference flow"
       quality_evidence: "asset/engineering records; utilization evidence; supported life; cumulative share reconciliation"
+    - protocol_id: cp_support_inventory
+      process_id: "storage"
+      flow_role: "storage_service"
+      record_type: "Persistent support-stock supply and burden ledger"
+      raw_fields: "actual product/composition and delivery state; inventory role and technical minimum; origin as purchased/injected, in-situ retained or documented transfer; initial/augmentation cohort mass and dates; actual upstream scope; routine replacement mass and responsibility; opening/closing stock; actual losses and internal fuel use; recovery/disposal destination and ownership; supported lifetime working-stock time; period working-stock time; prior/current allocation fractions; customer/asset/supplier overlap; cohort closure date; actual completed lifetime service; acquired, allocated, transferred and residual supply burdens"
+      collection_method: "Reconcile physical stock separately from attributed upstream quantities. Each actual support-product supply/export requires its own identified card linked to this protocol; no generic support-gas collection card. Preserve provenance, responsibility and upstream transfers; apply support_inventory_attribution without inventing supply for in-situ stock. Collect actual retirement recovery rather than presumed future credit. This protocol supports storage_service and creates no additional reference output."
+      unit: "kg; tday"
+      frequency: "each supply, role transfer, replacement, allocation update and retirement event"
+      temporal_coverage: "supported whole life with declared observation period"
+      site_scope: "identified containment and actual support stocks"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "supplier and injection records; technical minimum and origin records; contracts and matched transfers; stock/loss balances; supported life-service denominator; cumulative allocation ledger; actual recovery/disposal records; cohort-closure reconciliation"
     - protocol_id: cp_waste
       process_id: "storage"
       flow_role: "spent_carbon; used_oil; tank_washwater"
@@ -721,18 +763,22 @@ dataset_production:
   calculation_rules:
     - id: stock_time
       applies_to: "storage_service"
-      rule: "Integrate actual stock mass in tonnes over elapsed days; the result is actual t*d storage activity. Use event-resolved or justified interpolated stock records and retain partial days. tday maps to t*d; no fixed occupancy or density."
+      rule: "S = sum(M_work,j * delta_t_j), using eligible customer working-stock mass M_work,j in tonnes and elapsed time delta_t_j in days; use justified integration/interpolation for varying mass. Exclude dedicated cushion/base inventory and minimum operating heel irrespective of ownership; retain customer working-stock heel supported by delivery obligations and technical limits. Apply role changes only from documented timestamps, never count both roles, and retain partial days. tday maps to t*d; no fixed occupancy or density. S must be positive for normalization; allocate idle support to the evidenced served population under allocate_provider rather than inventing storage output."
       inputs:
         - cp_storage
-        - "measured mass history"
+        - "separate stock histories"
+        - "operating limits"
+        - "delivery obligations"
         - "elapsed time"
-      output: "tday activity"
-      source_ids: []
+      output: "eligible working-stock tday activity"
+      source_ids:
+        - eia-storage-basics
     - id: service_normalization
       applies_to: "all inventory rows"
-      rule: "Assign attributable actual exchanges to the represented homogeneous storage scenario, then divide by its measured stock-time activity. Retain all allocated support and losses. Reference output is exactly 1 tday."
+      rule: "Assign actual exchanges and the period share of initial/augmentation support supply to the represented homogeneous storage scenario, then divide once by its positive eligible working-stock time S from stock_time. Retain all allocated operating support, actual losses and applicable replacements; dedicated support-stock mass never enters S. Reference output is exactly 1 tday."
       inputs:
         - cp_storage
+        - cp_support_inventory
         - "attributable exchange totals"
       output: "exchange amount per reference flow"
       source_ids: []
@@ -745,11 +791,30 @@ dataset_production:
         - "measured control performance"
       output: "individual chemical release per reference flow"
       source_ids: []
+    - id: fuel_product_balance
+      applies_to: "methane_fuel; natural_gas_fuel"
+      rule: "For each actual product, physical fuel use equals opening fuel stock plus receipts and documented stock-to-fuel transfers, less closing fuel stock and non-fuel transfers; reconcile this use with combustion and actual fuel losses. The fuel-product supply input excludes internal support-stock transfers whose acquisition is already attributed under cp_support_inventory, but their actual combustion/losses remain in cp_species. Include customer-stock transfers only with the matched upstream responsibility treatment in allocate_fuel_supply. Composition fractions reconcile mass, energy, carbon and releases; they create neither pure-product purchases nor additional mixture inputs. Pass the attributable period fuel-product supply total to service_normalization; do not divide in this rule."
+      inputs:
+        - cp_fuel
+        - cp_storage
+        - "cp_support_inventory where applicable"
+        - "actual product supply records"
+      output: "attributable period fuel-product quantity in kg, reconciled with total physical fuel use"
+      source_ids: []
+    - id: support_inventory_attribution
+      applies_to: "actual named support-product input rows"
+      rule: "For each product, Q_support,p = sum(Q_c * f_c,p) + Q_replace,p. Q_c is actual initial/augmentation supply or evidenced burden-bearing transfer for cohort c, excluding fictitious supply for in-situ retained stock; f_c,p = S_c,p / S_c,life uses evidenced period and whole-life eligible working-stock time supported by that cohort. Conserve cumulative f_c,p at most one; revise supported life with the persistent ledger without resetting prior allocations. Q_replace,p is actual routine replacement assigned to period p under documented responsibility, not already in Q_c or a supplier/customer inventory. Divide Q_support,p by S only in service_normalization. Keep physical stock changes, actual emissions, internal fuel use and retirement recovery separate; initial stock mass is not annual consumption, additions are not proof of leakage and recovery is not an automatic negative input. Missing provenance or lifetime denominator remains a gap, not a default quantity. At actual cohort closure, reconcile the full initial/augmentation acquisition burden to cumulative storage-service allocations plus any evidenced allocation to actual recovered outputs under allocate_losses. Assign any unallocated remainder to the evidenced completed service population, preserving the allocation ledger; do not park it in hypothetical future service, cancel it against expected recovery or invent a positive denominator. If the closure cannot be evidenced, retain an explicit gap and withhold a complete-lifecycle claim."
+      inputs:
+        - cp_support_inventory
+        - cp_storage
+        - "supported lifetime service and responsibility records"
+      output: "attributed period support-product quantity in kg with physical-stock reconciliation"
+      source_ids: []
   data_quality_requirements:
     - id: quality_basis
       applies_to: "storage_service"
-      requirement: "Require measured stock-time and composition/thermodynamic configuration. Distinguish throughput, capacity and actual custody mass; do not infer gas mass from unqualified standard volume."
-      evidence: "cp_storage"
+      requirement: "Require measured eligible working-stock time and composition/thermodynamic configuration. Evidence the boundary between customer working stock and dedicated operating support, including heel classification and role transfers. Distinguish throughput, capacity and physical total stock; do not infer gas mass from unqualified standard volume. Require support-stock source and lifetime-allocation evidence where applicable; unknown support acquisition or life-service denominator prevents a complete lifecycle claim."
+      evidence: "cp_storage; cp_support_inventory"
     - id: quality_species
       applies_to: "all inventory rows"
       requirement: "Identify every actual loss species and control fate; aggregated VOC/BOG remains unresolved until speciated. Record method applicability and uncertainty; no universal leak, flare or evaporation factor."
@@ -765,27 +830,36 @@ dataset_production:
 validation_rules:
   - rule_id: validate_reference
     applies_to: "foreground_dataset_conformance"
-    rule: "Require unique storage_service output equal to 1 tday, corresponding to one t*d of measured mass-time and explicit substance/conditions. Reject nominal capacity, throughput, billable time alone and unqualified volume as substitute denominator."
-    source_ids: []
+    rule: "Require unique storage_service output equal to 1 tday, corresponding to one t*d of measured eligible customer working-stock time and explicit substance/conditions. Reject dedicated cushion/base inventory or minimum operating heel in the denominator, and reject excluding a qualifying customer working-stock heel solely by name. Reject nominal capacity, throughput, billable time alone, nonpositive S and unqualified volume as substitute denominators."
+    source_ids:
+      - eia-storage-basics
   - rule_id: validate_balance
     applies_to: "foreground_dataset_conformance"
-    rule: "Reconcile custody stock, receipts, withdrawals, heel/cushion inventory and losses. Separate onsite consumed fuel, commodity production, liquefaction/regasification, transport and storage-only support without omissions or duplication."
+    rule: "Reconcile customer working stock, dedicated support stock and fuel separately and then to the facility total, including receipts, withdrawals, role transfers and actual losses. Verify operating-limit and delivery evidence for cushion/heel classification. Separate onsite fuel, commodity production, liquefaction/regasification, transport and storage-only support without omissions or duplication."
     source_ids: []
   - rule_id: validate_species
     applies_to: "foreground_dataset_conformance"
-    rule: "Check every actual emission, vent/BOG route and control destination with component identities. Reject VOC, gases and boil-off-gas aggregate selected flows; do not assume zero loss or perfect flaring."
+    rule: "Check every actual emission, vent/BOG route and control destination with component identities. Reject VOC, gases and boil-off-gas aggregate labels as selected elementary release flows; do not assume zero loss or perfect flaring. A specified actual mixture product may remain a product input, but neither constituent calculations nor an aggregate observation creates an additional supply exchange."
     source_ids:
       - epa-tanks-faq
   - rule_id: validate_lifecycle
     applies_to: "foreground_dataset_conformance"
     rule: "Check asset cumulative shares at most one, justified life/service denominators, actual upstream scope and provider overlap. Identity/measurement/factor gaps stay explicit; draft methodology and count checks are not publication approval."
     source_ids: []
+  - rule_id: validate_fuel_support
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify methane_fuel is an actually supplied methane product and natural_gas_fuel retains its actual mixture product identity, composition, delivery state and supply scope. Reject mixture-plus-constituent supply duplication, assumed pure-component substitutes and fuel already included in purchased heat. Verify matched customer upstream responsibility transfers and reconcile internal support-stock fuel use with its original acquisition rather than a second supply input; retain an explicit gap where evidence is missing. For support inventory require actual product-specific cards, cp_support_inventory and supported initial/augmentation lifetime shares with cumulative fractions at most one; distinguish routine replacements, in-situ stock and actual retirement quantities. Reject fictitious initial purchases, annual recharge of the whole support stock, duplicate supplier/asset/customer burdens, assumed leakage from additions and unsupported recovery/avoided-production credits. Require full acquisition-burden reconciliation for closed cohorts."
+    source_ids: []
+  - rule_id: validate_unit_export
+    applies_to: "foreground_dataset_conformance"
+    rule: "Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "bulk_storage_service"
   downstream_use: "secondary_dataset; background_dataset"
   allowed_use: "A specified bulk-storage stage of a traceable supply chain with compatible substance, phase, conditions and custody gates"
   excluded_use: "Complete commodity footprint; production liquefaction/regasification/transport; unqualified oil/wine/gas pooling; implied safety or methodology approval"
-  required_metadata: "All reference qualifiers; measured stock-time; exact unit mapping; actual routes and species; asset/provider coverage; loss/replacement responsibility; upstream versions; allocation"
+  required_metadata: "All reference qualifiers; measured eligible working-stock time; support-stock exclusion and heel-classification evidence; exact unit mapping; actual fuel products and matched upstream responsibility transfers; actual routes and species; asset/provider coverage; support-stock origin, lifetime allocation and retirement ledger; loss/replacement responsibility; upstream versions; allocation"
   required_quality_disclosure: "Identity and measurement gaps; vapor-method limits; unmeasured species/control efficiency; density uncertainty; asset life and missing upstream data"
   update_trigger: "Changed substance/composition/phase; temperature/pressure; containment; fill cycles; loss/control route; utility supply; asset life or custody scope"
 data_sources:
@@ -797,23 +871,27 @@ data_sources:
     type: "official_guidance"
     reference: "US EPA AP-42 Chapter 7: TANKS Software Frequent Questions, heated tanks, speciated emissions, nitrogen blanket, controls, cleaning and variable liquids; current web statement read 2026-10-23. https://www.epa.gov/air-emissions-factors-and-quantification/ap-42-chapter-7-tanks-software-frequent-questions"
     used_for: "Organic-liquid vapor properties/composition and controls require explicit conditions; no quantitative factor, gas/cryogenic model or generic zero-loss claim adopted"
+  - id: "eia-storage-basics"
+    type: "official_guidance"
+    reference: "US Energy Information Administration, The Basics of Underground Natural Gas Storage. https://www.eia.gov/naturalgas/storage/basics/"
+    used_for: "Supports the distinction between working gas and base/cushion gas retained for operation. The eligible-working-stock denominator, liquid-heel treatment and upstream/lifetime allocation rules are explicit PCR method choices, not EIA LCA prescriptions; no default inventory ratio, lifetime or emission factor is adopted"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:6124033516599168d027f95be1897fac3ca8e0ab86fb057dfd5453fb0dc10fb5"
+  source_sha256: "sha256:c0380418ac8b3922a2be22617b22cc8049d0f9b9c12d2014983d0fb36b2d53d7"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5585"
+    - unit_id: "normative_6814"
       family: "system_boundary"
       span:
         start:
-          offset: 5585
+          offset: 6814
           line: 57
           column: 1
         end:
-          offset: 7862
+          offset: 9391
           line: 77
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Existing bulk substance accepted at storage gate and installed containment; inherited commodity production is outside the storage-only service while actual utilities and assets retain upstream burdens |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Bulk liquids and gases storage, with composition/conditions-specific datasets |\n| recursive_input_rule | Subcontracted storage enters once with defined stock-time and complete upstream scope; remove overlapping owned utilities/assets. Internal transfers within one custody boundary do not create another full storage output. |\n| upstream_dataset_requirement | Actual electricity/heat/fuel, nitrogen, water, chemical, tank/pump/compressor/cavern construction and waste-treatment inventories appropriate to the declared scenario |\n| disclosure | Actual gates, stock-time population, fill/empty operations, conditioning, heel/cushion inventory, losses, species, provider/asset boundaries, upstream omissions and conversion exclusions |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_storage | Include actual acceptance, storage, withdrawal, meters, standby, pressure/temperature maintenance, vapor recovery and attributable cleaning/maintenance; separate production liquefaction and downstream regasification. | un-cpc-bulk-storage |\n| boundary_vapors | Screen tank heating, actual composition, changing levels, nitrogen blanket, vapor controls and cleaning. Use chemical-specific data; EPA organic-liquid guidance does not establish cryogenic-gas losses or universal control performance. | epa-tanks-faq |\n| boundary_fate | Trace each actual component from generation to capture, internal return, product export, flare and atmosphere. Internal boil-off return is not an exported product or elementary release. Only actual residual component discharge enters an air row; flare CO2 and unburned methane are separate. |  |\n| boundary_complete | Screen actual refrigerants, chemicals, fuels, maintenance wastes and storage-specific assets. Add every present exchange individually; unknown composition, loss or asset denominator is a declared gap rather than zero. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Existing customer working stock accepted at the storage gate and installed containment; inherited production of stock remaining in customer custody is outside the storage-only service, while actual utilities, assets, consumed fuel and support-stock supply attributed under the allocation rules retain their upstream burdens |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Bulk liquids and gases storage, with composition/conditions-specific datasets |\n| recursive_input_rule | Subcontracted storage enters once with defined stock-time and complete upstream scope; remove overlapping owned utilities/assets. Internal transfers within one custody boundary do not create another full storage output. |\n| upstream_dataset_requirement | Actual electricity/heat/fuel product supply, separately identified support-stock supplies and replacements where attributed, nitrogen, water, chemicals, tank/pump/compressor/cavern construction and waste-treatment inventories appropriate to the declared scenario; preserve actual supplied product identity and prevent supplier/customer overlap |\n| disclosure | Actual gates, stock-time population, fill/empty operations, conditioning, heel/cushion inventory, losses, species, provider/asset boundaries, upstream omissions and conversion exclusions |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_storage | Include actual acceptance, storage, withdrawal, meters, standby, pressure/temperature maintenance, vapor recovery and attributable cleaning/maintenance; separate production liquefaction and downstream regasification. | un-cpc-bulk-storage |\n| boundary_vapors | Screen tank heating, actual composition, changing levels, nitrogen blanket, vapor controls and cleaning. Use chemical-specific data; EPA organic-liquid guidance does not establish cryogenic-gas losses or universal control performance. | epa-tanks-faq |\n| boundary_fate | Trace each actual component from generation to capture, internal return, product export, flare and atmosphere. Internal boil-off return is not an exported product or elementary release. Only actual residual component discharge enters an air row; flare CO2 and unburned methane are separate. |  |\n| boundary_complete | Screen actual refrigerants, chemicals, fuels, maintenance wastes and storage-specific assets. Add every present exchange individually; unknown composition, loss or asset denominator is a declared gap rather than zero. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -830,11 +908,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5585
+              offset: 6814
               line: 57
               column: 1
             end:
-              offset: 5606
+              offset: 6835
               line: 57
               column: 22
           text: "## 5. System Boundary"
@@ -850,18 +928,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_26158"
+    - unit_id: "normative_30066"
       family: "allocation"
       span:
         start:
-          offset: 26158
-          line: 506
+          offset: 30066
+          line: 521
           column: 1
         end:
-          offset: 27763
-          line: 515
+          offset: 34128
+          line: 532
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_direct | Subdivide tanks, substance batches and operating regimes first. Assign receipt/withdrawal energy from actual transfers, holding energy from actual condition-maintenance activity, and shared support from measured causal utilization; reconcile the full facility total before stock-time normalization. Stock-time alone cannot represent pumping or vapor-control work. |  |\n| allocate_assets | Use a persistent asset ledger for tank, pump, compressor and cavern. Allocate construction/manufacture and actual renewals by supported whole-life service utilization, with cycle and calendar limits disclosed. Period accounting distributes only the already attributed period share; cumulative shares across customers and periods may not exceed one or reset annually. Unknown life/denominator requires review and sensitivity. |  |\n| allocate_losses | Retain actual losses, capture and flare within the storage route. Customer commodity is not a service co-product. Exported recovered material requires actual identity, composition and measured quantity plus a justified allocation convention; do not claim avoided-production credit by default. Internal recovery retains its burden and creates no independent product output. |  |\n| allocate_provider | Remove any utilities, maintenance or assets already included in a supplier service inventory. Allocate empty-tank standby, cleaning and terminal support transparently across the supported storage service population; no default price-based split. |  |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_direct | Subdivide tanks, substance batches and operating regimes first. Assign receipt/withdrawal energy from actual transfers, holding energy from actual condition-maintenance activity, and shared support from measured causal utilization; reconcile the full facility total before stock-time normalization. Stock-time alone cannot represent pumping or vapor-control work. |  |\n| allocate_assets | Use a persistent asset ledger for tank, pump, compressor and cavern. Allocate construction/manufacture and actual renewals by supported whole-life service utilization, with cycle and calendar limits disclosed. Period accounting distributes only the already attributed period share; cumulative shares across customers and periods may not exceed one or reset annually. Unknown life/denominator requires review and sensitivity. |  |\n| allocate_losses | Retain actual losses, capture and flare within the storage route. Customer commodity is not a service co-product. Exported recovered material requires actual identity, composition and measured quantity plus a justified allocation convention; do not claim avoided-production credit by default. Internal recovery retains its burden and creates no independent product output. |  |\n| allocate_provider | Remove any utilities, maintenance or assets already included in a supplier service inventory. Allocate empty-tank standby, cleaning and terminal support transparently across the supported storage service population; no default price-based split. |  |\n| allocate_fuel_supply | Include actual upstream fuel supply once and preserve its supplied product identity. For fuel transferred from customer custody stock, transfer the corresponding actual supply burden to the storage fuel account and record an equal removal from the customer's supply allocation; reconcile mass, source dataset and responsibility at the dataset interface. Fuel transferred from support stock is an internal use: its original acquisition remains in the support-stock ledger, and it creates no second external fuel-supply input. Record all actual fuel combustion and losses through cp_species. If the customer transfer or source identity is unproven, disclose the unresolved interface; do not assume a conventional gas or pure-component supply or claim a complete lifecycle result. |  |\n| allocate_support_inventory | Dedicated cushion/base inventory and minimum operating heel support the facility rather than increase customer working-stock service. Keep a persistent product-specific ledger separating initial/augmentation supply, in-situ retained stock, transfers, routine replacements, actual losses and retirement recovery. Allocate actual initial/augmentation supply burdens over the supported whole-life eligible working-stock time served by each supply cohort; conserve cumulative shares across periods/customers without annual reset. Assign routine loss-replacement supply to the actual responsible operating period once; do not count a replacement again as initial supply. In-situ retained stock is physical opening stock, not fictitious purchased or injected gas: include actual preparation, later injections and evidenced transferred prior burdens, and disclose missing provenance. Add actual support-product inputs/outputs separately by identity and link cp_support_inventory; remove quantities/burdens already included in customer, asset or supplier inventories. Retain actual losses, internal fuel use and recovery/disposal operations; report actual recovered-product or waste quantities and ownership at retirement under allocate_losses, with no credit for anticipated recovery, no automatic reversal of initial supply and no unsupported avoided-production credit. Absence of a purchase does not establish zero upstream burdens: actual later extraction, fuel use or export of in-situ stock must record the relevant resource-acquisition/production boundary, real quantity and supporting evidence. | eia-storage-basics |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -878,12 +956,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 26158
-              line: 506
+              offset: 30066
+              line: 521
               column: 1
             end:
-              offset: 26198
-              line: 506
+              offset: 30106
+              line: 521
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -898,18 +976,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36053"
+    - unit_id: "normative_49266"
       family: "validation"
       span:
         start:
-          offset: 36053
-          line: 547
+          offset: 49266
+          line: 567
           column: 1
         end:
-          offset: 37166
-          line: 556
+          offset: 52506
+          line: 578
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_reference | Require unique storage_service output equal to 1 tday, corresponding to one t*d of measured mass-time and explicit substance/conditions. Reject nominal capacity, throughput, billable time alone and unqualified volume as substitute denominator. |  |\n| validate_balance | Reconcile custody stock, receipts, withdrawals, heel/cushion inventory and losses. Separate onsite consumed fuel, commodity production, liquefaction/regasification, transport and storage-only support without omissions or duplication. |  |\n| validate_species | Check every actual emission, vent/BOG route and control destination with component identities. Reject VOC, gases and boil-off-gas aggregate selected flows; do not assume zero loss or perfect flaring. | epa-tanks-faq |\n| validate_lifecycle | Check asset cumulative shares at most one, justified life/service denominators, actual upstream scope and provider overlap. Identity/measurement/factor gaps stay explicit; draft methodology and count checks are not publication approval. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_reference | Require unique storage_service output equal to 1 tday, corresponding to one t*d of measured eligible customer working-stock time and explicit substance/conditions. Reject dedicated cushion/base inventory or minimum operating heel in the denominator, and reject excluding a qualifying customer working-stock heel solely by name. Reject nominal capacity, throughput, billable time alone, nonpositive S and unqualified volume as substitute denominators. | eia-storage-basics |\n| validate_balance | Reconcile customer working stock, dedicated support stock and fuel separately and then to the facility total, including receipts, withdrawals, role transfers and actual losses. Verify operating-limit and delivery evidence for cushion/heel classification. Separate onsite fuel, commodity production, liquefaction/regasification, transport and storage-only support without omissions or duplication. |  |\n| validate_species | Check every actual emission, vent/BOG route and control destination with component identities. Reject VOC, gases and boil-off-gas aggregate labels as selected elementary release flows; do not assume zero loss or perfect flaring. A specified actual mixture product may remain a product input, but neither constituent calculations nor an aggregate observation creates an additional supply exchange. | epa-tanks-faq |\n| validate_lifecycle | Check asset cumulative shares at most one, justified life/service denominators, actual upstream scope and provider overlap. Identity/measurement/factor gaps stay explicit; draft methodology and count checks are not publication approval. |  |\n| validate_fuel_support | Verify methane_fuel is an actually supplied methane product and natural_gas_fuel retains its actual mixture product identity, composition, delivery state and supply scope. Reject mixture-plus-constituent supply duplication, assumed pure-component substitutes and fuel already included in purchased heat. Verify matched customer upstream responsibility transfers and reconcile internal support-stock fuel use with its original acquisition rather than a second supply input; retain an explicit gap where evidence is missing. For support inventory require actual product-specific cards, cp_support_inventory and supported initial/augmentation lifetime shares with cumulative fractions at most one; distinguish routine replacements, in-situ stock and actual retirement quantities. Reject fictitious initial purchases, annual recharge of the whole support stock, duplicate supplier/asset/customer burdens, assumed leakage from additions and unsupported recovery/avoided-production credits. Require full acquisition-burden reconciliation for closed cohorts. |  |\n| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -926,12 +1004,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36053
-              line: 547
+              offset: 49266
+              line: 567
               column: 1
             end:
-              offset: 36075
-              line: 547
+              offset: 49288
+              line: 567
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -950,207 +1028,259 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_storage"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6814"
       source_span:
         start:
-          offset: 6767
+          offset: 8296
           line: 72
           column: 1
         end:
-          offset: 7028
+          offset: 8557
           line: 72
           column: 262
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_vapors"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6814"
       source_span:
         start:
-          offset: 7029
+          offset: 8558
           line: 73
           column: 1
         end:
-          offset: 7301
+          offset: 8830
           line: 73
           column: 273
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_fate"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6814"
       source_span:
         start:
-          offset: 7302
+          offset: 8831
           line: 74
           column: 1
         end:
-          offset: 7615
+          offset: 9144
           line: 74
           column: 314
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_complete"
       identity_kind: "explicit"
-      unit_id: "normative_5585"
+      unit_id: "normative_6814"
       source_span:
         start:
-          offset: 7616
+          offset: 9145
           line: 75
           column: 1
         end:
-          offset: 7860
+          offset: 9389
           line: 75
           column: 245
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_direct"
       identity_kind: "explicit"
-      unit_id: "normative_26158"
+      unit_id: "normative_30066"
       source_span:
         start:
-          offset: 26252
-          line: 510
+          offset: 30160
+          line: 525
           column: 1
         end:
-          offset: 26640
-          line: 510
+          offset: 30548
+          line: 525
           column: 389
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_assets"
       identity_kind: "explicit"
-      unit_id: "normative_26158"
+      unit_id: "normative_30066"
       source_span:
         start:
-          offset: 26641
-          line: 511
+          offset: 30549
+          line: 526
           column: 1
         end:
-          offset: 27090
-          line: 511
+          offset: 30998
+          line: 526
           column: 450
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_losses"
       identity_kind: "explicit"
-      unit_id: "normative_26158"
+      unit_id: "normative_30066"
       source_span:
         start:
-          offset: 27091
-          line: 512
+          offset: 30999
+          line: 527
           column: 1
         end:
-          offset: 27488
-          line: 512
+          offset: 31396
+          line: 527
           column: 398
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_provider"
       identity_kind: "explicit"
-      unit_id: "normative_26158"
+      unit_id: "normative_30066"
       source_span:
         start:
-          offset: 27489
-          line: 513
+          offset: 31397
+          line: 528
           column: 1
         end:
-          offset: 27761
-          line: 513
+          offset: 31669
+          line: 528
           column: 273
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocate_fuel_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_30066"
+      source_span:
+        start:
+          offset: 31670
+          line: 529
+          column: 1
+        end:
+          offset: 32477
+          line: 529
+          column: 808
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocate_support_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_30066"
+      source_span:
+        start:
+          offset: 32478
+          line: 530
+          column: 1
+        end:
+          offset: 34126
+          line: 530
+          column: 1649
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_36053"
+      unit_id: "normative_49266"
       source_span:
         start:
-          offset: 36129
-          line: 551
+          offset: 49342
+          line: 571
           column: 1
         end:
-          offset: 36400
-          line: 551
-          column: 272
+          offset: 49838
+          line: 571
+          column: 497
     - pointer: "/validation_rules/1"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_36053"
+      unit_id: "normative_49266"
       source_span:
         start:
-          offset: 36401
-          line: 552
+          offset: 49839
+          line: 572
           column: 1
         end:
-          offset: 36660
-          line: 552
-          column: 260
+          offset: 50261
+          line: 572
+          column: 423
     - pointer: "/validation_rules/2"
       rule_id: "validate_species"
       identity_kind: "explicit"
-      unit_id: "normative_36053"
+      unit_id: "normative_49266"
       source_span:
         start:
-          offset: 36661
-          line: 553
+          offset: 50262
+          line: 573
           column: 1
         end:
-          offset: 36899
-          line: 553
-          column: 239
+          offset: 50697
+          line: 573
+          column: 436
     - pointer: "/validation_rules/3"
       rule_id: "validate_lifecycle"
       identity_kind: "explicit"
-      unit_id: "normative_36053"
+      unit_id: "normative_49266"
       source_span:
         start:
-          offset: 36900
-          line: 554
+          offset: 50698
+          line: 574
           column: 1
         end:
-          offset: 37164
-          line: 554
+          offset: 50962
+          line: 574
           column: 265
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_fuel_support"
+      identity_kind: "explicit"
+      unit_id: "normative_49266"
+      source_span:
+        start:
+          offset: 50963
+          line: 575
+          column: 1
+        end:
+          offset: 52045
+          line: 575
+          column: 1083
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_unit_export"
+      identity_kind: "explicit"
+      unit_id: "normative_49266"
+      source_span:
+        start:
+          offset: 52046
+          line: 576
+          column: 1
+        end:
+          offset: 52504
+          line: 576
+          column: 459
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5585"
+      unit_id: "normative_6814"
       source_span:
         start:
-          offset: 5585
+          offset: 6814
           line: 57
           column: 1
         end:
-          offset: 5606
+          offset: 6835
           line: 57
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5585"
+      unit_id: "normative_6814"
       source_span:
         start:
-          offset: 5634
+          offset: 6863
           line: 61
           column: 1
         end:
-          offset: 6713
+          offset: 8242
           line: 68
           column: 204
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_26158"
+      unit_id: "normative_30066"
       source_span:
         start:
-          offset: 26158
-          line: 506
+          offset: 30066
+          line: 521
           column: 1
         end:
-          offset: 26198
-          line: 506
+          offset: 30106
+          line: 521
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36053"
+      unit_id: "normative_49266"
       source_span:
         start:
-          offset: 36053
-          line: 547
+          offset: 49266
+          line: 567
           column: 1
         end:
-          offset: 36075
-          line: 547
+          offset: 49288
+          line: 567
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1159,5 +1289,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:6124033516599168d027f95be1897fac3ca8e0ab86fb057dfd5453fb0dc10fb5"
-  generated_content_sha256: "sha256:b494f234c77edeea44b051d75fbc15462c9598161d51cf2b8a53cfe046acd55b"
+    sha256: "sha256:c0380418ac8b3922a2be22617b22cc8049d0f9b9c12d2014983d0fb36b2d53d7"
+  generated_content_sha256: "sha256:8a6d946488380a504349ccc880ab975ef2ce3be19ed07bbe768c59b5351096e4"
