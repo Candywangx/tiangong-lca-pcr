@@ -989,7 +989,7 @@ async function generate() {
     async function flushPack() {
       if (!pending.length) return;
       const firstLogicalShard = logicalShardCount - pending.length;
-      const payload = packSearchShards(pending, commit, language, firstLogicalShard);
+      const payload = packSearchShards(pending, commit, language, firstLogicalShard, 6);
       const url = `/generated/search/${language}/pack-${String(shards.length).padStart(3, "0")}.json`;
       const logicalShards = pending.map(wire => {
         const data: unknown = JSON.parse(wire);
@@ -997,7 +997,7 @@ async function generate() {
         return {wireBytes: Buffer.byteLength(wire), wireSha256: sha256(wire), records: data.records.length};
       });
       const descriptor: SearchPhysicalFile = {url, bytes: Buffer.byteLength(payload), gzipBytes: gzipSync(payload, {level: 9}).length, sha256: sha256(payload), firstLogicalShard, logicalShardCount: pending.length, records: logicalShards.reduce((sum, item) => sum + item.records, 0), logicalShards};
-      const restored = await unpackSearchFile({schemaVersion: 5, sourceCommit: commit, language, logicalShardCount, files: [descriptor]}, descriptor, Buffer.from(payload), sha256);
+      const restored = await unpackSearchFile({schemaVersion: 6, sourceCommit: commit, language, logicalShardCount, files: [descriptor]}, descriptor, Buffer.from(payload), sha256);
       if (restored.some((data, index) => JSON.stringify(data) !== pending[index])) throw new Error("Search transport does not restore exact logical bytes");
       write("public" + url.slice("/generated".length), payload);
       shards.push(descriptor);
@@ -1035,7 +1035,7 @@ async function generate() {
     }
     await flush();
     await flushPack();
-    const searchManifest = JSON.stringify({schemaVersion: 5, sourceCommit: commit, language, logicalShardCount, files: shards});
+    const searchManifest = JSON.stringify({schemaVersion: 6, sourceCommit: commit, language, logicalShardCount, files: shards});
     write("public/search/" + language + "/manifest.json", searchManifest);
     const manifestAsset = {url: `/generated/search/${language}/manifest.json`, bytes: Buffer.byteLength(searchManifest), gzipBytes: gzipSync(searchManifest, {level: 9}).length, records: 0, sha256: sha256(searchManifest)};
     const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, manifestAsset.bytes);
