@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
-lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedAt: 2026-10-26
+lastReviewedCommit: 42ec3ae0b97a8cbf3a482cf1411d1765ccd5734a
+lastReviewedNote: "PCR #152: reviewed the exact @types/node >=25.0.0 ceiling in both existing npm updater entries and the Node 24 LTS revisit condition. Dependency/runtime pins, graph ownership, canonical authoring and full qualification/publication boundaries are unchanged; static checks do not claim hosted activation."
 ---
 
 # TianGong LCA PCR Library
