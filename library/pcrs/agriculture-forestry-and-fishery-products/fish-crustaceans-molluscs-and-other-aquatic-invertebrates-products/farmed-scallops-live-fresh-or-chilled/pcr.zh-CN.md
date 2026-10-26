@@ -3,6 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-
 language: zh-CN
 status: candidate
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 悬挂网笼养殖活体整只虾夷扇贝

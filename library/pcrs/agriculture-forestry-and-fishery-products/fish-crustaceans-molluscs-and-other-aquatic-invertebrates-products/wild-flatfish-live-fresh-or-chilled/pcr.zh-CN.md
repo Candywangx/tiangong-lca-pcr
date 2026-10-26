@@ -3,6 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-
 language: zh-CN
 status: candidate
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 生产者首次交接处的完整野生食用比目鱼

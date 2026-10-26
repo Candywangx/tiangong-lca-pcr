@@ -4,6 +4,7 @@ language: zh-CN
 status: candidate
 content_maturity: authored_methodology
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 养殖观赏鱼

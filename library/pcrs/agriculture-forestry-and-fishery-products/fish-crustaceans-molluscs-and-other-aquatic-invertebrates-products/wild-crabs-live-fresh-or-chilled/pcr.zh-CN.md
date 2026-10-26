@@ -4,6 +4,7 @@ status: candidate
 content_maturity: authored_methodology
 language: zh-CN
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 首次生产者交接的带壳野生食用整蟹

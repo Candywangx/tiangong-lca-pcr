@@ -3,6 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-
 status: candidate
 language: zh-CN
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 野生水肺采捕活体去内脏红海参

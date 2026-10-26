@@ -3,6 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-
 language: zh-CN
 status: candidate
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 野生整只活体水面供气潜捕红海胆

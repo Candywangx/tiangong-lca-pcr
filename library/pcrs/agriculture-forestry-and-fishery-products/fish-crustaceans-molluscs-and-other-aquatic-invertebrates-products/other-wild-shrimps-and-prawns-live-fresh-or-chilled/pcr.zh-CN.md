@@ -3,6 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-
 language: zh-CN
 status: candidate
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 野生网板拖网带头整只冰鲜白虾

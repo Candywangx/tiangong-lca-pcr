@@ -3,6 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-
 language: zh-CN
 status: candidate
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 水产养殖种苗、亲本或饲料用途的野生活鱼

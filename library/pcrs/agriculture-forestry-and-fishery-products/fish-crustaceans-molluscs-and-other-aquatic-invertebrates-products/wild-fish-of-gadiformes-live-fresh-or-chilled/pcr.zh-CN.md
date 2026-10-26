@@ -3,6 +3,7 @@ pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-
 status: candidate
 language: zh-CN
 sync_with: pcr.en-US.md
+translation_status: aligned
 ---
 
 # 野生海捕保留头部去内脏的鲜或冷藏鳕形目鱼

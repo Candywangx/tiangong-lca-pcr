@@ -4,7 +4,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
 content_maturity: authored_methodology
-translation_status: draft_translation
+translation_status: aligned
 ---
 
 # 用于水产养殖苗种、亲鱼或饵料的养殖活鱼
