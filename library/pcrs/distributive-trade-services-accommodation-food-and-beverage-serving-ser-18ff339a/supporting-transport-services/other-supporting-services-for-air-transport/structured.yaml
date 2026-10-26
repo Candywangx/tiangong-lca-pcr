@@ -1,10 +1,1454 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67630"
-  title: "Other supporting services for air transport"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.other-supporting-services-for-air-transport"
+  classification_refs: "CPC 3.0 67630; narrower"
+  covered_products: "The four separately qualified families in section 1 only"
+  excluded_products: "Aircraft repair/cleaning/disinfection, brokerage, public air-sea rescue, general flight training, runway cleaning/snow removal and unreviewed residual functions"
+  representative_product: "One completed specified aircraft-towing task with actual aircraft mass, configuration, route and phases"
+  production_route: "Qualify one family/mode → execute its physical support process → verify task/event completion or actual coverage/custody hours → report one matched block"
+  market_state: "Completed physical support with a declared function, extent and acceptance, no cross-family equivalence"
+functional_unit:
+  what: "Provide one exactly specified aircraft-support function"
+  how_much: "One family/mode-specific block defined in section 1, never pooled across modes"
+  how_well: "Actual recorded task, protection, custody or accepted-position criteria and outcome; no assumed safety certification or guaranteed avoided accident"
+  how_long_or_cycle: "Actual complete task/event; fire standby one actual hour; hangar one actual 24-hour occupancy block; retain fractional time blocks and actual resource-restoration boundary"
+  reference_flow_link: "support_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_fire
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual aircraft-fire prevention/standby resources or the specified response/containment/restoration event. Allocate genuine readiness testing and support on measured coverage; do not invent an incident or foam discharge for an uneventful hour. Exclude air-sea rescue and unrelated public functions."
+      source_ids:
+        - un-cpc-air-support
+    - rule_id: boundary_foam
+      applies_to: "foreground_system_boundary"
+      rule: "Record actual concentrate, water, equipment test method, captured runoff and individual uncaptured chemicals. Current FAA guidance distinguishes AFFF/F3 systems and optional testing methods; it supplies no universal discharge factor. Actual batch analysis/formulation and fate are required before naming PFAS species; historical contamination is separate."
+      source_ids:
+        - faa-arff-test
+    - rule_id: boundary_upkeep
+      applies_to: "foreground_system_boundary"
+      rule: "Include only documented non-repair maintenance/upkeep, actual consumables and integral checks. Identify each task against the applicable aircraft procedure; general FAA ground-service descriptions do not classify every servicing activity into this PCR. Separate excluded cleaning/repair and independent refuelling, and do not manufacture the customer aircraft again."
+      source_ids:
+        - un-cpc-air-support
+        - faa-ground-service
+    - rule_id: boundary_hangar
+      applies_to: "foreground_system_boundary"
+      rule: "Include declared covered-space custody and actual lighting/ventilation/heating/doors/security, facility upkeep and life shares. Separately contracted aircraft upkeep/towing/fire service enters once only if part of the declared package; a hangar location does not turn repairs into hangar service."
+      source_ids:
+        - un-cpc-air-support
+    - rule_id: boundary_towing
+      applies_to: "foreground_system_boundary"
+      rule: "Include equipment dispatch, hookup, actual tow/pushback, waiting, acceptance, empty return and attributable support. Match aircraft mass/configuration and tug mode to actual route. Customer propulsion/APU is separately disclosed with explicit inclusion if integral, not assigned to tug combustion; independent flight/taxi stays outside."
+      source_ids:
+        - faa-ground-service
+boundary_abstraction:
+  declared_starting_condition: "Defined aircraft/support request and actual protection, work-order, hangar-custody or tow-release gate; retain actual upstream support inputs/assets"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Four reviewed named support families with non-repair and other explicit exclusions"
+  recursive_input_rule: "Subcontracted same-function support enters once with exact provider boundary and physical extent, removing overlapping owned inputs/assets"
+  upstream_dataset_requirement: "Actual fuels/electricity/water/agent/material supply, specific support equipment/facilities and actual waste treatment"
+  disclosure: "Family/mode, actual interfaces/duration/extent, customer aircraft status/ownership, provider overlap, restoration/rework, agents/contamination, asset-life evidence and omissions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed specified aircraft-support service block"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "one family and service mode"
+    - "actual task/aircraft/site/date"
+    - "start/end/acceptance interfaces"
+    - "actual duration and physical extent"
+    - "provider/customer responsibility"
+    - "fire standby protection area/capability/actual hours or event footprint/response/recovery and agent formulation/containment"
+    - "non-repair upkeep work order and task/procedure/equipment with repair exclusion"
+    - "hangar aircraft dimensions/occupied area/actual hours/climate/ventilation/security and supplier scope"
+    - "towing aircraft mass/gear/tow mode/tug powertrain/load/actual route distance and all phases"
+    - "actual meters/materials/species/receivers"
+    - "shared facilities/assets and whole-life denominator"
+    - uncertainty
+reference_flows:
+  []
+measurement_rules:
+  - id: support_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count one fully qualified family/mode block with cp_completion. Reference amount and unique output must agree; no pooling different functions or physical extents."
+  - id: time_blocks
+    applies_to: "support_output"
+    required_property_ref:
+      name: "Number of items"
+      uuid: ""
+    required_unit: "Item(s)"
+    rule: "For standby, count actual specified coverage hours divided by 1 hour; for hangar, actual aircraft custody hours divided by 24 hours. Preserve fractions and scope; fees, scheduled availability and entry counts are not actual duration."
+  - id: fuel_mass
+    applies_to: "fire_diesel; upkeep_jetfuel; tow_diesel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use actual fuel grade and measured consumption; volume-to-mass requires measured/supported batch density at declared temperature. Do not substitute aircraft flight fuel for support-equipment consumption."
+  - id: concentrate
+    applies_to: "fire_foam"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure concentrate and dilution water separately with actual formulation/mixing evidence. Premix volume is not concentrate mass; no generic foam-to-PFAS factor is allowed."
+process_map:
+  - id: fire
+    name: "Aircraft-fire prevention or response"
+    inclusion: "conditional"
+    inclusion_condition: "Only when this family is selected, with actual applicable exchanges"
+    role: "foreground"
+    quantitative_reference: "One qualified reference block"
+  - id: upkeep
+    name: "Non-repair aircraft upkeep"
+    inclusion: "conditional"
+    inclusion_condition: "Only when this family is selected, with actual applicable exchanges"
+    role: "foreground"
+    quantitative_reference: "One qualified reference block"
+  - id: hangar
+    name: "Specified hangar custody"
+    inclusion: "conditional"
+    inclusion_condition: "Only when this family is selected, with actual applicable exchanges"
+    role: "foreground"
+    quantitative_reference: "One qualified reference block"
+  - id: towing
+    name: "Specified aircraft towing"
+    inclusion: "conditional"
+    inclusion_condition: "Only when this family is selected, with actual applicable exchanges"
+    role: "foreground"
+    quantitative_reference: "One qualified reference block"
+  - id: completion
+    name: "Qualified service completion"
+    inclusion: "required"
+    inclusion_condition: "Unique completed declared block"
+    role: "foreground"
+    quantitative_reference: "One qualified reference block"
+process_inventory:
+  - id: fire
+    label: "Aircraft-fire prevention or response"
+    inputs:
+      product:
+        - row_id: fire_diesel
+          role: "Diesel fuel, unblended, aircraft-fire service"
+          name: "Diesel fuel, unblended, aircraft-fire service"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual ARFF vehicle or pump consumption of this fuel; identify standby checks, dispatch, response, return and system restoration separately. No default accident or foam discharge per standby block."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: fire_power
+          role: "Electricity, aircraft-fire station supply"
+          name: "Electricity, aircraft-fire station supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual station lighting, communications, charging and support in the declared prevention/standby/event boundary; separate other municipal tasks and already supplied charging."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: fire_water
+          role: "Water, supplied for aircraft firefighting"
+          name: "Water, supplied for aircraft firefighting"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual firefighting, system testing or preparation water. Record measured withdrawal, tank change, water in concentrate and actual recovery; do not count premixed foam water twice. Identify actual water source."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fire_material
+              source_ids: []
+            ranges: []
+        - row_id: fire_foam
+          role: "Synthetic fluorine-free hydrocarbon-fire foam concentrate"
+          name: "Synthetic fluorine-free hydrocarbon-fire foam concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this specific actual concentrate, with manufacturer/product formulation, batch and verified qualification. Measure concentrate separately from dilution water and premix. This is not an assumed universal agent; AFFF or another real formulation needs its own individually specified row and composition evidence."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fire_material
+              source_ids: []
+            ranges: []
+        - row_id: fire_pad
+          role: "Polypropylene oil-absorbent pad"
+          name: "Polypropylene oil-absorbent pad"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual use of this specific absorbent in the declared response; measure clean pad supply mass separately from captured accident fuel and trace actual stock/reuse. Do not assign production of the already spilled customer fuel to the new absorbent."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: fire_vehicle
+          role: "Configured aircraft firefighting vehicle"
+          name: "Configured aircraft firefighting vehicle"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Attribute actual vehicle/pump/tank configuration manufacture, maintenance and renewals using supported whole-life service utilization; no full vehicle per event or reset of life shares each year."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: fire_station
+          role: "Configured aircraft-fire station building"
+          name: "Configured aircraft-fire station building"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Conditional on actual station use; identify floor area and construction scope and supported whole-life protected-service utilization; exclude unrelated rescue/public operations by records."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: fire_runoff
+          role: "Collected aircraft-fire foam runoff"
+          name: "Collected aircraft-fire foam runoff"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual captured foam runoff with measured composition and source. Track real receiver/treatment and boundary gate; distinguish pre-existing accident fuel/contamination from added agent and service releases. Uncaptured releases require individual chemical/receiving-compartment rows, not an assumed wastewater treatment path."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: fire_absorbent
+          role: "Spent polypropylene oil-absorbent pad"
+          name: "Spent polypropylene oil-absorbent pad"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual spill-control material used during the declared aircraft-fire response. Record clean pad mass, captured contaminant and actual disposal separately; no assumed hazardousness or recycled credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fire_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on ARFF engine/pump combustion; use actual measured species or verified fuel/carbon evidence and real source boundary. Other actual chemicals require individual rows; no customer accident fire, aircraft voyage or avoided-fire credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: fire_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual engine species release. Measure or apply independently verified source/duty/fuel-specific speciation, stating any NOx-equivalent convention; do not duplicate a NOx total in two species rows."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: fire_no2
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual engine species release. Measure or apply independently verified source/duty/fuel-specific speciation, stating any NOx-equivalent convention; do not duplicate a NOx total in two species rows."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+  - id: upkeep
+    label: "Non-repair aircraft upkeep"
+    inputs:
+      product:
+        - row_id: upkeep_power
+          role: "Electricity, non-repair aircraft-upkeep equipment supply"
+          name: "Electricity, non-repair aircraft-upkeep equipment supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual inspection, lubrication/servicing equipment, ground power and attributable support for the named non-repair task; no full hangar energy if already counted by the hangar supplier."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: upkeep_oil
+          role: "Polyol ester aircraft-turbine lubricating oil"
+          name: "Polyol ester aircraft-turbine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual routine lubrication/servicing using this identified oil grade. Record delivered and removed oil and replenishment; no engine overhaul, engine replacement or repair parts are included. Other actual lubricant chemistry requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upkeep_material
+              source_ids: []
+            ranges: []
+        - row_id: upkeep_nitrogen
+          role: "Nitrogen, compressed, aircraft servicing"
+          name: "Nitrogen, compressed, aircraft servicing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual nitrogen servicing, with supply pressure and delivered/recovered quantity. Distinguish cylinder supply from purchased gas and actual service venting; do not include an entire reusable cylinder per task."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upkeep_material
+              source_ids: []
+            ranges: []
+        - row_id: upkeep_oxygen
+          role: "Oxygen, compressed, aircraft servicing"
+          name: "Oxygen, compressed, aircraft servicing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual oxygen replenishment within a declared non-repair servicing task; record grade, pressure and actual quantity under applicable aircraft procedures. This PCR supplies no safety instructions or authority to conduct the task."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upkeep_material
+              source_ids: []
+            ranges: []
+        - row_id: upkeep_jetfuel
+          role: "Jet A-1 fuel, non-repair functional check"
+          name: "Jet A-1 fuel, non-repair functional check"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual documented functional checks integral to the permitted non-repair task; identify fuel consumed, test duration and source. Exclude customer flight/taxi fuel, merely delivered fuel stock, engine repair testing and unrelated propulsion."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: upkeep_testset
+          role: "Configured aircraft-upkeep test instrument"
+          name: "Configured aircraft-upkeep test instrument"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual identified inspection/test instrument; use supported task utilization and useful life, calibration and actual renewal scope. Customer aircraft manufacture is not a service asset input."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: upkeep_used_oil
+          role: "Used polyol ester aircraft-turbine lubricating oil"
+          name: "Used polyol ester aircraft-turbine lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual segregated removed oil; weigh and track actual receiver/treatment. No presumed discharge or automatic avoided virgin oil credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: upkeep_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on documented non-repair functional-check combustion; use actual measured species or verified fuel/carbon evidence and real source boundary. Other actual chemicals require individual rows; no customer accident fire, aircraft voyage or avoided-fire credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+  - id: hangar
+    label: "Specified hangar custody"
+    inputs:
+      product:
+        - row_id: hangar_power
+          role: "Electricity, aircraft-hangar supply"
+          name: "Electricity, aircraft-hangar supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Measure actual lighting, ventilation, door drives, monitoring and attributable common services for the fixed custody/space block. Separate metered customer equipment, upkeep supplier inputs and already counted shared fire station service."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: hangar_gas
+          role: "Natural gas, hangar heating"
+          name: "Natural gas, hangar heating"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on actual natural-gas heating; preserve metered gas composition/calorific basis, boiler efficiency boundary and actual climate/temperature requirement. Purchased heat or other actual fuel needs a separate row; never infer heating from floor area alone."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: hangar_water
+          role: "Water, aircraft-hangar facility supply"
+          name: "Water, aircraft-hangar facility supply"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual facility sanitary or in-scope maintenance water; distinguish excluded aircraft cleaning/disinfection, fire-event water and customer servicing. Record actual source and receiving path."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: hangar_building
+          role: "Configured aircraft hangar building"
+          name: "Configured aircraft hangar building"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Identify building/door/floor configuration and actual covered footprint, supported construction life, area-time utilization and renewals. No new aircraft manufacture or full hangar construction per parked aircraft."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: hangar_sewage
+          role: "Aircraft-hangar sanitary sewage"
+          name: "Aircraft-hangar sanitary sewage"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual sanitary sewage attributable to this facility service; trace real sewer/treatment, not combined runoff or aircraft wash water. Add each other specific facility waste separately."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: hangar_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual natural-gas boiler combustion; use actual measured species or verified fuel/carbon evidence and real source boundary. Other actual chemicals require individual rows; no customer accident fire, aircraft voyage or avoided-fire credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+  - id: towing
+    label: "Specified aircraft towing"
+    inputs:
+      product:
+        - row_id: tow_diesel
+          role: "Diesel fuel, unblended, aircraft tug"
+          name: "Diesel fuel, unblended, aircraft tug"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual combustion tug using this fuel; record loaded/empty positioning, hookup, actual tow, waiting and return. Customer aircraft propulsion/APU is separately disclosed and cannot become tug combustion."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: tow_power
+          role: "Electricity, aircraft-tug charging"
+          name: "Electricity, aircraft-tug charging"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual electric tug or charger; measure charger-side supply and losses once and match battery/cycle/aircraft mass. No conversion from electric tow count to diesel litres without independent physical evidence."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: tow_hydraulic
+          role: "Mineral hydraulic oil, aircraft tug"
+          name: "Mineral hydraulic oil, aircraft tug"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual hydraulic-system service; measure grade and actual consumed/replaced share over maintenance interval. Other oil grades or tyre/battery renewals require separate specific rows."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: tow_tug
+          role: "Configured aircraft towing tractor"
+          name: "Configured aircraft towing tractor"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Use actual towing mode, aircraft-mass capacity, powertrain and whole-life loaded/empty utilization to assign manufacturing, renewal and maintenance shares; supplier embodied assets are not repeated."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: tow_bar
+          role: "Configured aircraft towbar"
+          name: "Configured aircraft towbar"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual towbar configuration/use; retain actual supported life and task share. Towbarless operations do not require this input."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: tow_used_oil
+          role: "Used mineral hydraulic oil, aircraft tug"
+          name: "Used mineral hydraulic oil, aircraft tug"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual removed tug oil; preserve actual mass, segregated collection and real treatment. No forced oil change per completed tow."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: tow_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on tug combustion; use actual measured species or verified fuel/carbon evidence and real source boundary. Other actual chemicals require individual rows; no customer accident fire, aircraft voyage or avoided-fire credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: tow_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual engine species release. Measure or apply independently verified source/duty/fuel-specific speciation, stating any NOx-equivalent convention; do not duplicate a NOx total in two species rows."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: tow_no2
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual engine species release. Measure or apply independently verified source/duty/fuel-specific speciation, stating any NOx-equivalent convention; do not duplicate a NOx total in two species rows."
+          amount:
+            expression: "Actual attributable exchange measured for the declared service block"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+  - id: completion
+    label: "Qualified service completion"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: support_output
+          role: "Completed specified aircraft-support service block"
+          name: "Completed specified aircraft-support service block"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "One selected family and one physically qualified completed event/task or measured time block. Standby, response, upkeep, hangar custody and towing are not interchangeable outputs."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_completion
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_family
+    applies_to: "foreground_burden_allocation"
+    rule: "Direct-meter actual mission/task/custody or readiness resources. Allocate shared support using documented causal duty, covered capacity/area-time, equipment runtime or task records and actual same-scenario output population. Do not use fee ratios or combine heterogeneous families as equivalent counts."
+    source_ids: []
+  - rule_id: allocate_standby
+    applies_to: "foreground_burden_allocation"
+    rule: "For a readiness-hour dataset include attributable checks/training/maintenance that sustain the specified readiness over the observed coverage period, separating general flight training. Event datasets identify whether capacity/readiness share is included; do not charge the same station hour twice through both supplier and owned service. No assumed accident probability."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Use supported whole-life actual service utilization to divide identified construction/manufacture and renewals. Retain area-time for buildings and appropriate duty/time/cycle use for equipment. All users/periods cumulative shares cannot exceed one life inventory; no annual reset, invented life or per-task whole asset."
+    source_ids: []
+  - rule_id: allocate_pollution
+    applies_to: "foreground_burden_allocation"
+    rule: "Distinguish accident-origin fuel/fire/contamination from additional firefighting resources, captured transfers and incremental releases. Include actual service waste management once without inventing initial pollutant production burdens, avoided fire/pollution credit or automatic recycling substitution."
+    source_ids: []
+  - rule_id: allocate_supplier
+    applies_to: "foreground_burden_allocation"
+    rule: "Purchased hangar, ARFF, towing or ground-power services must expose exact included utilities/assets/maintenance/response scope; reconcile owned rows and supplier coverage before summing. Keep customer aircraft propulsion and transferred fuel/gas custody separate from provider combustion."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_completion
+      process_id: "completion"
+      flow_role: "support_output"
+      record_type: "Family-specific completion/coverage ledger"
+      raw_fields: "one family and service mode; actual task/aircraft/site/date; start/end/acceptance interfaces; actual duration and physical extent; provider/customer responsibility; fire standby protection area/capability/actual hours or event footprint/response/recovery and agent formulation/containment; non-repair upkeep work order and task/procedure/equipment with repair exclusion; hangar aircraft dimensions/occupied area/actual hours/climate/ventilation/security and supplier scope; towing aircraft mass/gear/tow mode/tug powertrain/load/actual route distance and all phases; actual meters/materials/species/receivers; shared facilities/assets and whole-life denominator; uncertainty"
+      collection_method: "Reconcile actual completed named tasks/events with acceptance records. Standby count is measured qualified coverage hours divided by 1 hour; hangar count is actual identified-aircraft custody hours divided by 24. Preserve fractions, aircraft footprint, actual capability and all task phases. No fee or entry-count proxy."
+      unit: "Item(s)"
+      frequency: "each task/event or actual coverage/custody interval"
+      temporal_coverage: "complete observed same-scenario service period"
+      site_scope: "actual selected function and responsibility gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "acceptance log; work order; dispatch/coverage record; timestamps; population reconciliation"
+    - protocol_id: cp_energy
+      process_id: "fire_upkeep_hangar_towing"
+      flow_role: "fire_diesel; fire_power; upkeep_power; upkeep_jetfuel; hangar_power; hangar_gas; tow_diesel; tow_power"
+      record_type: "End-use/source-specific meter ledger"
+      raw_fields: "source/grade; meter start/end; actual fuel deliveries/stock changes; temperature/density or gas calorific basis; kWh/MJ/kg; actual phase time/distance/load; charging losses; supplier overlap; shared support; actual blocks"
+      collection_method: "Meter each actual energy exchange and trace vehicle, equipment, boiler, station or space end use. Reconcile inventories and observed actual same-scenario blocks; cover idling, waiting, return and restoration where in scope. Retain actual densities/calorific values with units and uncertainty. Customer aircraft fuel delivery is not service combustion; actual integral functional checks are separately identified."
+      unit: "kg; kWh; MJ"
+      frequency: "each actual phase and representative observation period"
+      temporal_coverage: "all in-scope direct and shared energy"
+      site_scope: "actual equipment/space/source"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated meters; fuel balance; phase logs; actual allocation; supplier scope"
+    - protocol_id: cp_fire_material
+      process_id: "fire"
+      flow_role: "fire_water; fire_foam"
+      record_type: "Actual agent/water/containment ledger"
+      raw_fields: "prevention/standby/event; actual product manufacturer/formulation/batch; kg concentrate; m3 water/premix; actual dilution and density; test method; tank stock/recovery; actual captured/uncaptured volume; sampled species and receiving compartment"
+      collection_method: "Measure actual concentrate supply/use and source water separately, correcting stock and recovery; state premix basis without double water. Use actual specification/testing/composition evidence; fluorine-free label does not prove absence of legacy contamination. If a specific chemical is identified as released, create its own measured species/receiver row; no aggregate PFAS or generic foam discharge factor."
+      unit: "kg; m3"
+      frequency: "each actual use/test/event and stock period"
+      temporal_coverage: "actual selected fire-service boundary"
+      site_scope: "actual equipment and product batch/site"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "product/batch records; actual tests; mass/water balance; containment and treatment tickets"
+    - protocol_id: cp_upkeep_material
+      process_id: "upkeep"
+      flow_role: "upkeep_oil; upkeep_nitrogen; upkeep_oxygen"
+      record_type: "Non-repair work-order material ledger"
+      raw_fields: "aircraft/configuration; named procedure/work order; material grade/composition; delivered/recovered kg; pressure/temperature; actual duration; task completion; repairs/cleaning excluded"
+      collection_method: "Measure each actual task-specific supplied material. Identify retained product, removed waste and venting separately with actual composition/pressure evidence; cylinders and instruments use actual supported lifetime share. Require manufacturer/task applicability and flag repair work for exclusion, not generic upkeep inclusion."
+      unit: "kg"
+      frequency: "each task/material transfer"
+      temporal_coverage: "whole permitted non-repair work order"
+      site_scope: "actual aircraft/support provider"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "work order; actual procedure; weigh/stock/pressure evidence; completion"
+    - protocol_id: cp_material
+      process_id: "fire_hangar_towing"
+      flow_role: "fire_pad; hangar_water; tow_hydraulic"
+      record_type: "Specific facility/tug material ledger"
+      raw_fields: "source; exact grade; actual kg/m3; issue/return; replacement interval; actual family task/time share; supplier scope"
+      collection_method: "Measure actual single material and trace actual use or renewal, assigning the supported same-scenario share; never require an invented material use per block. Add each other actual material with its own row."
+      unit: "kg; m3"
+      frequency: "each transfer/maintenance period"
+      temporal_coverage: "actual selected service period"
+      site_scope: "actual facility/equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "purchase/stock/meter/maintenance records; actual attribution"
+    - protocol_id: cp_assets
+      process_id: "fire_upkeep_hangar_towing"
+      flow_role: "fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar"
+      record_type: "Whole-life support-asset ledger"
+      raw_fields: "actual configuration/BOM/construction boundary; ownership/provider; manufacture; renewals/maintenance/calibration; actual task cycles/runtime or area-time; supported life and utilization; shared roles; cumulative allocations"
+      collection_method: "Use actual asset-specific construction/manufacture and supported whole-life utilization; attribute measured block share while conserving all users/periods. Separate initial/renewal inventory and supplier-included assets. Customer aircraft manufacture is outside support-asset numerator; missing life/denominator requires explicit review, never a convenient assumed life."
+      unit: "Item(s); m2"
+      frequency: "each allocation and asset/renewal update"
+      temporal_coverage: "supported whole life and actual observation period"
+      site_scope: "identified support vehicles/equipment/buildings"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "BOM/construction; actual utilization; life evidence; cumulative share conservation"
+    - protocol_id: cp_waste
+      process_id: "fire_upkeep_hangar_towing"
+      flow_role: "fire_runoff; fire_absorbent; upkeep_used_oil; hangar_sewage; tow_used_oil"
+      record_type: "Specific waste/receiver ledger"
+      raw_fields: "exact stream; actual kg/m3; composition/contamination; source task; pre-existing vs introduced pollutant; capture/transfer gate; treatment/disposal receiver and technology; provider overlap"
+      collection_method: "Weigh/meter each actual stream and trace real receiver/treatment. Record actual fire runoff capture and each individual uncaptured chemical/compartment; pre-existing accident contamination is distinguished from service additions without claiming avoided burden. Do not infer sewer, hazardous classification, recycling or complete destruction."
+      unit: "kg; m3"
+      frequency: "each transfer/release period"
+      temporal_coverage: "all attributable actual streams"
+      site_scope: "actual task/site and treatment gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "transfer/receiver tickets; samples; mass/water balance; treatment evidence"
+    - protocol_id: cp_release
+      process_id: "fire_upkeep_hangar_towing"
+      flow_role: "fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2"
+      record_type: "Source/species-specific release ledger"
+      raw_fields: "actual source/fuel/engine/boiler/duty; carbon/oxidation; species mass; NOx equivalent and speciation; receiving air; applicable measured method/factor; uncertainty; accident vs additional service emissions"
+      collection_method: "Measure each species or use verified actual source/duty/fuel-specific methods with explicit units/assumptions. Do not duplicate NOx total as NO and NO2 or merge aircraft accident combustion with service engine releases. Each other real combustion, vent, refrigerant or agent species needs its own chemical/compartment row; unknown is not zero."
+      unit: "kg"
+      frequency: "each actual source operation and representative monitoring"
+      temporal_coverage: "all represented in-scope sources"
+      site_scope: "actual source and receiver"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "measurement; source/fuel logs; verified factors; carbon/species balance"
+  calculation_rules:
+    - id: family_attribution
+      applies_to: "all inventory rows"
+      rule: "Assign actual individual exchanges to the declared family/mode and actual output population; divide attributable resources by completed same-scenario blocks. Reference output is exactly 1 Item(s), never a family-average count."
+      inputs:
+        - cp_completion
+        - "actual meters"
+      output: "individual exchange per reference flow"
+      source_ids: []
+    - id: time_attribution
+      applies_to: "support_output"
+      rule: "Standby blocks equal measured same-capability coverage hours divided by 1 hour; hangar blocks equal actual one-aircraft custody hours divided by 24 hours, retaining fractions and footprint. Do not convert fees into time."
+      inputs:
+        - cp_completion
+      output: "actual time-block quantity"
+      source_ids: []
+    - id: asset_attribution
+      applies_to: "fire_vehicle; fire_station; upkeep_testset; hangar_building; tow_tug; tow_bar"
+      rule: "Apply supported actual block share of asset whole-life utilization to actual construction/manufacture and distinct renewals; conserve cumulative shares and remove supplier duplication."
+      inputs:
+        - cp_assets
+        - cp_completion
+      output: "asset amount per reference flow"
+      source_ids: []
+    - id: species_accounting
+      applies_to: "fire_co2; fire_no; fire_no2; upkeep_co2; hangar_co2; tow_co2; tow_no; tow_no2"
+      rule: "Use actual species mass or independently verified source/duty/fuel-specific evidence with unit and oxidation/speciation convention documented in the dataset. No numerical emission factor or duty default is provided."
+      inputs:
+        - cp_release
+        - cp_energy
+      output: "individual species per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_function
+      applies_to: "support_output"
+      requirement: "Require all family/mode-specific functional extent, duration, aircraft configuration and completion conditions; no cross-family equivalence or PCR safety approval."
+      evidence: "cp_completion"
+    - id: quality_fire
+      applies_to: "fire"
+      requirement: "Actual product/agent formulation, test method, containment and composition/fate evidence are needed. No presumed PFAS species absence/presence or accidental-fire frequency."
+      evidence: "cp_fire_material; cp_waste"
+    - id: quality_upkeep
+      applies_to: "upkeep"
+      requirement: "Document a non-repair work order and applicable actual task procedure. Exclude repair/cleaning and separate transferred customer materials from actual service consumption."
+      evidence: "cp_upkeep_material"
+    - id: quality_lifecycle
+      applies_to: "all asset rows"
+      requirement: "Support exact equipment/facility numerator, actual utilization and whole-life denominator with cumulative conservation; unsupported life prevents complete lifecycle claims."
+      evidence: "cp_assets"
+    - id: quality_gaps
+      applies_to: "all inventory rows"
+      requirement: "Disclose missing identities, actual energy/material/agent/species, accident contamination distinction, waste receiver and noise/ecological method scope. Missing data and non-characterized impacts are not zero."
+      evidence: "cp_energy; cp_waste; cp_release"
+validation_rules:
+  - rule_id: validate_output
+    applies_to: "foreground_dataset_conformance"
+    rule: "Unique support_output product output must equal 1 Item(s) and match one exact completed task/event or actual coverage/custody block. Separate standby/event, task types and families."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Enforce non-repair and cleaning/disinfection/brokerage/air-sea-rescue/flight-training/runway-cleaning-snow exclusions. A hangar location cannot change excluded repair into covered support."
+    source_ids:
+      - un-cpc-air-support
+  - rule_id: validate_sources
+    applies_to: "foreground_dataset_conformance"
+    rule: "Separate actual support-equipment combustion, integral non-repair checks and customer flight/APU/accident sources. Require actual agent formulation and separately quantified chemical releases; do not infer PFAS or avoided-fire/pollution benefits."
+    source_ids: []
+  - rule_id: validate_atomic_life
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one specific exchange per card with its own correct property/unit, actual applicability and receiver; conserved life shares and supplier coverage. Unknown identities/denominators remain explicit and prevent unsupported completeness claims."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "other_aircraft_support"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "One compatible aircraft-fire, non-repair upkeep, hangar or towing component with the same function/mode, physical extent and actual interfaces"
+  excluded_use: "Cross-family benchmarks, whole aircraft flight/lifetime, repair/cleaning, rescue, training, airport-wide burden or implied safety/airworthiness authorization and avoided-fire claims"
+  required_metadata: "one family and service mode; actual task/aircraft/site/date; start/end/acceptance interfaces; actual duration and physical extent; provider/customer responsibility; fire standby protection area/capability/actual hours or event footprint/response/recovery and agent formulation/containment; non-repair upkeep work order and task/procedure/equipment with repair exclusion; hangar aircraft dimensions/occupied area/actual hours/climate/ventilation/security and supplier scope; towing aircraft mass/gear/tow mode/tug powertrain/load/actual route distance and all phases; actual meters/materials/species/receivers; shared facilities/assets and whole-life denominator; uncertainty"
+  required_quality_disclosure: "Task/aircraft/time representativeness, actual meters/agent and species evidence, pre-existing contamination, supplier/customer ownership, asset-life/receiver gaps and impact-method omissions"
+  update_trigger: "Changed family/mode/task/aircraft/route, readiness capability, hangar state/energy, agent formulation/test/containment, provider scope, real equipment configuration or life evidence"
+data_sources:
+  - id: "un-cpc-air-support"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 67630 explanatory note, shared draft PDF pp377–378. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67630"
+    used_for: "Four named families and explicit exclusions; open residual title does not establish universal coverage"
+  - id: "faa-ground-service"
+    type: "official_guidance"
+    reference: "FAA AC00-34B, Aircraft Ground Handling, Servicing, and Marshalling, 17 July 2024, especially section13. https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_00-34B.pdf"
+    used_for: "Task/aircraft/equipment-specific servicing and towing context; not an emission factor, global safety rule or classification of all ground operations"
+  - id: "faa-arff-test"
+    type: "official_guidance"
+    reference: "FAA Part139 CertAlert26-03, AFFF and Synthetic Fluorine Free Foam testing, 5 August 2026. https://www.faa.gov/airports/airport_safety/certalerts/part_139_certalert_26_03"
+    used_for: "Actual AFFF/F3 equipment and testing distinctions; no adoption of US intervals, universal formulation or quantitative release factors"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c0d099d1729b6ffa7462d33a2502f8af77b5a0ed91360908194f783ef1cb6d78"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6721"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6721
+          line: 65
+          column: 1
+        end:
+          offset: 9609
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Defined aircraft/support request and actual protection, work-order, hangar-custody or tow-release gate; retain actual upstream support inputs/assets |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Four reviewed named support families with non-repair and other explicit exclusions |\n| recursive_input_rule | Subcontracted same-function support enters once with exact provider boundary and physical extent, removing overlapping owned inputs/assets |\n| upstream_dataset_requirement | Actual fuels/electricity/water/agent/material supply, specific support equipment/facilities and actual waste treatment |\n| disclosure | Family/mode, actual interfaces/duration/extent, customer aircraft status/ownership, provider overlap, restoration/rework, agents/contamination, asset-life evidence and omissions |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_fire | Include actual aircraft-fire prevention/standby resources or the specified response/containment/restoration event. Allocate genuine readiness testing and support on measured coverage; do not invent an incident or foam discharge for an uneventful hour. Exclude air-sea rescue and unrelated public functions. | un-cpc-air-support |\n| boundary_foam | Record actual concentrate, water, equipment test method, captured runoff and individual uncaptured chemicals. Current FAA guidance distinguishes AFFF/F3 systems and optional testing methods; it supplies no universal discharge factor. Actual batch analysis/formulation and fate are required before naming PFAS species; historical contamination is separate. | faa-arff-test |\n| boundary_upkeep | Include only documented non-repair maintenance/upkeep, actual consumables and integral checks. Identify each task against the applicable aircraft procedure; general FAA ground-service descriptions do not classify every servicing activity into this PCR. Separate excluded cleaning/repair and independent refuelling, and do not manufacture the customer aircraft again. | un-cpc-air-support; faa-ground-service |\n| boundary_hangar | Include declared covered-space custody and actual lighting/ventilation/heating/doors/security, facility upkeep and life shares. Separately contracted aircraft upkeep/towing/fire service enters once only if part of the declared package; a hangar location does not turn repairs into hangar service. | un-cpc-air-support |\n| boundary_towing | Include equipment dispatch, hookup, actual tow/pushback, waiting, acceptance, empty return and attributable support. Match aircraft mass/configuration and tug mode to actual route. Customer propulsion/APU is separately disclosed with explicit inclusion if integral, not assigned to tug combustion; independent flight/taxi stays outside. | faa-ground-service |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 234
+              line: 8
+              column: 1
+            end:
+              offset: 279
+              line: 8
+              column: 46
+          text: "# Other supporting services for air transport"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6721
+              line: 65
+              column: 1
+            end:
+              offset: 6742
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35945"
+      family: "allocation"
+      span:
+        start:
+          offset: 35945
+          line: 658
+          column: 1
+        end:
+          offset: 37760
+          line: 668
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_family | Direct-meter actual mission/task/custody or readiness resources. Allocate shared support using documented causal duty, covered capacity/area-time, equipment runtime or task records and actual same-scenario output population. Do not use fee ratios or combine heterogeneous families as equivalent counts. |  |\n| allocate_standby | For a readiness-hour dataset include attributable checks/training/maintenance that sustain the specified readiness over the observed coverage period, separating general flight training. Event datasets identify whether capacity/readiness share is included; do not charge the same station hour twice through both supplier and owned service. No assumed accident probability. |  |\n| allocate_assets | Use supported whole-life actual service utilization to divide identified construction/manufacture and renewals. Retain area-time for buildings and appropriate duty/time/cycle use for equipment. All users/periods cumulative shares cannot exceed one life inventory; no annual reset, invented life or per-task whole asset. |  |\n| allocate_pollution | Distinguish accident-origin fuel/fire/contamination from additional firefighting resources, captured transfers and incremental releases. Include actual service waste management once without inventing initial pollutant production burdens, avoided fire/pollution credit or automatic recycling substitution. |  |\n| allocate_supplier | Purchased hangar, ARFF, towing or ground-power services must expose exact included utilities/assets/maintenance/response scope; reconcile owned rows and supplier coverage before summing. Keep customer aircraft propulsion and transferred fuel/gas custody separate from provider combustion. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 234
+              line: 8
+              column: 1
+            end:
+              offset: 279
+              line: 8
+              column: 46
+          text: "# Other supporting services for air transport"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35945
+              line: 658
+              column: 1
+            end:
+              offset: 35985
+              line: 658
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48740"
+      family: "validation"
+      span:
+        start:
+          offset: 48740
+          line: 702
+          column: 1
+        end:
+          offset: 49806
+          line: 711
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_output | Unique support_output product output must equal 1 Item(s) and match one exact completed task/event or actual coverage/custody block. Separate standby/event, task types and families. |  |\n| validate_scope | Enforce non-repair and cleaning/disinfection/brokerage/air-sea-rescue/flight-training/runway-cleaning-snow exclusions. A hangar location cannot change excluded repair into covered support. | un-cpc-air-support |\n| validate_sources | Separate actual support-equipment combustion, integral non-repair checks and customer flight/APU/accident sources. Require actual agent formulation and separately quantified chemical releases; do not infer PFAS or avoided-fire/pollution benefits. |  |\n| validate_atomic_life | Require one specific exchange per card with its own correct property/unit, actual applicability and receiver; conserved life shares and supplier coverage. Unknown identities/denominators remain explicit and prevent unsupported completeness claims. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 234
+              line: 8
+              column: 1
+            end:
+              offset: 279
+              line: 8
+              column: 46
+          text: "# Other supporting services for air transport"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48740
+              line: 702
+              column: 1
+            end:
+              offset: 48762
+              line: 702
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_fire"
+      identity_kind: "explicit"
+      unit_id: "normative_6721"
+      source_span:
+        start:
+          offset: 7718
+          line: 80
+          column: 1
+        end:
+          offset: 8065
+          line: 80
+          column: 348
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_foam"
+      identity_kind: "explicit"
+      unit_id: "normative_6721"
+      source_span:
+        start:
+          offset: 8066
+          line: 81
+          column: 1
+        end:
+          offset: 8457
+          line: 81
+          column: 392
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upkeep"
+      identity_kind: "explicit"
+      unit_id: "normative_6721"
+      source_span:
+        start:
+          offset: 8458
+          line: 82
+          column: 1
+        end:
+          offset: 8887
+          line: 82
+          column: 430
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_hangar"
+      identity_kind: "explicit"
+      unit_id: "normative_6721"
+      source_span:
+        start:
+          offset: 8888
+          line: 83
+          column: 1
+        end:
+          offset: 9227
+          line: 83
+          column: 340
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_towing"
+      identity_kind: "explicit"
+      unit_id: "normative_6721"
+      source_span:
+        start:
+          offset: 9228
+          line: 84
+          column: 1
+        end:
+          offset: 9607
+          line: 84
+          column: 380
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_family"
+      identity_kind: "explicit"
+      unit_id: "normative_35945"
+      source_span:
+        start:
+          offset: 36039
+          line: 662
+          column: 1
+        end:
+          offset: 36366
+          line: 662
+          column: 328
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_standby"
+      identity_kind: "explicit"
+      unit_id: "normative_35945"
+      source_span:
+        start:
+          offset: 36367
+          line: 663
+          column: 1
+        end:
+          offset: 36764
+          line: 663
+          column: 398
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_35945"
+      source_span:
+        start:
+          offset: 36765
+          line: 664
+          column: 1
+        end:
+          offset: 37109
+          line: 664
+          column: 345
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_pollution"
+      identity_kind: "explicit"
+      unit_id: "normative_35945"
+      source_span:
+        start:
+          offset: 37110
+          line: 665
+          column: 1
+        end:
+          offset: 37442
+          line: 665
+          column: 333
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocate_supplier"
+      identity_kind: "explicit"
+      unit_id: "normative_35945"
+      source_span:
+        start:
+          offset: 37443
+          line: 666
+          column: 1
+        end:
+          offset: 37758
+          line: 666
+          column: 316
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_output"
+      identity_kind: "explicit"
+      unit_id: "normative_48740"
+      source_span:
+        start:
+          offset: 48816
+          line: 706
+          column: 1
+        end:
+          offset: 49022
+          line: 706
+          column: 207
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_48740"
+      source_span:
+        start:
+          offset: 49023
+          line: 707
+          column: 1
+        end:
+          offset: 49253
+          line: 707
+          column: 231
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_sources"
+      identity_kind: "explicit"
+      unit_id: "normative_48740"
+      source_span:
+        start:
+          offset: 49254
+          line: 708
+          column: 1
+        end:
+          offset: 49526
+          line: 708
+          column: 273
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_atomic_life"
+      identity_kind: "explicit"
+      unit_id: "normative_48740"
+      source_span:
+        start:
+          offset: 49527
+          line: 709
+          column: 1
+        end:
+          offset: 49804
+          line: 709
+          column: 278
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6721"
+      source_span:
+        start:
+          offset: 6721
+          line: 65
+          column: 1
+        end:
+          offset: 6742
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6721"
+      source_span:
+        start:
+          offset: 6770
+          line: 69
+          column: 1
+        end:
+          offset: 7664
+          line: 76
+          column: 195
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35945"
+      source_span:
+        start:
+          offset: 35945
+          line: 658
+          column: 1
+        end:
+          offset: 35985
+          line: 658
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48740"
+      source_span:
+        start:
+          offset: 48740
+          line: 702
+          column: 1
+        end:
+          offset: 48762
+          line: 702
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c0d099d1729b6ffa7462d33a2502f8af77b5a0ed91360908194f783ef1cb6d78"
+  generated_content_sha256: "sha256:8e44b94e411bc969070f53d41802b9941e52d6a41f98dd89bb69ee220e6d65ea"

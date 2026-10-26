@@ -1,10 +1,1183 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67610"
-  title: "Airport operation services (excl. cargo handling)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.airport-operation-services-excl-cargo-handling"
+  classification_refs: "CPC 3.0 67610"
+  covered_products: "Qualified whole-airport or defined passenger-terminal/airfield/runway operation service"
+  excluded_products: "Cargo/baggage handling; standalone runway cleaning/snow removal; ATC; independent aircraft upkeep/towing/hangar/repair; airline carriage"
+  representative_product: "One accepted airport-facility operation event for a declared configuration, functional extent and coverage interval"
+  production_route: "Establish declared facility condition → operate actual terminal/airfield functions and maintenance/support → close interval and verify delivered availability/service"
+  market_state: "Airport infrastructure operation delivered under declared operator, airline, tenant and contractor boundaries"
+functional_unit:
+  what: "Deliver the stated airport infrastructure operating function"
+  how_much: "One accepted event with fixed whole-airport or specified facility extent, actual passenger/movement scale and exact coverage interval"
+  how_well: "Actual declared operating availability, terminal access/capacity, runway/airfield condition, safety/accessibility and acceptance requirements; not an invented universal service grade"
+  how_long_or_cycle: "Exact event/operating interval from declared start to accepted close, with opening/closure/standby and delivered service recorded"
+  reference_flow_link: "airport_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_airport
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual passenger-terminal and airfield/runway operating functions and facility upkeep in the declared event. A terminal-only service does not include an entire airport; shared whole-airport inventory must not be attached again to each runway/terminal."
+      source_ids:
+        - un-cpc3-67610
+    - rule_id: boundary_support
+      applies_to: "foreground_system_boundary"
+      rule: "Standalone runway cleaning/snow removal remains outside the reference. Necessary upstream support is recorded once through supplier inventory or its explicitly replaced decomposition."
+      source_ids:
+        - un-cpc3-67610
+    - rule_id: boundary_runoff
+      applies_to: "foreground_system_boundary"
+      rule: "Distinguish pavement versus aircraft deicing sources, actual chemical formulation, collected effluent, treatment and directly discharged substances. Site-specific fate matters; no regulatory collection percentage or impact factor becomes a default inventory parameter."
+      source_ids:
+        - epa-airport-deicing
+    - rule_id: boundary_assets
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual facility construction, replacement, maintenance and retirement shares with documented life/utilization. Screen additional actual chemicals, refrigerants, consumables, noise/land/ecological effects and wastes individually; a short card list is not a zero-burden exemption."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Declared airport/facility configuration and initial operating condition; public installed infrastructure is not burden-free"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Passenger-terminal/airfield/runway infrastructure operation, not cargo handling or independent cleaning"
+  recursive_input_rule: "Subcontracted same-category airport operation enters as scoped supplier service; reconcile included utilities/assets and do not duplicate local inventories"
+  upstream_dataset_requirement: "Actual utilities/materials, infrastructure/equipment manufacture/retirement, necessary cleaning/snow support and wastewater/waste management"
+  disclosure: "Whole-airport versus facility event; passenger/movement/interval counts; conditional processes; operator/supplier split; aircraft/ATC exclusion; upstream coverage and asset life"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Airport infrastructure operation service event"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "airport/site"
+    - "whole public airport versus terminal/apron/runway contract"
+    - "facility area/layout/configuration"
+    - "included functions"
+    - "exact start/end and duration"
+    - "opening/closure/standby and achieved availability"
+    - "actual passengers and movements with counting rules"
+    - "aircraft class and runway occupancy where relevant"
+    - "climate/weather"
+    - "operator/airline/tenant/contractor split"
+    - "cleaning/snow support and supplier coverage"
+    - "deicer chemistry/drainage"
+    - "asset scope/life denominator"
+    - "electricity region/voltage"
+reference_flows:
+  []
+measurement_rules:
+  - id: operation_event
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Use cp_event accepted event with its exact facility, functions and interval. Passenger count, movement count and whole-airport event are distinct recorded dimensions without default equivalence."
+  - id: deicer_mass
+    applies_to: "potassium_acetate; sodium_formate"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record actual whole formulation mass and measured/certified active fraction separately. Product mass is not pure chemical, nitrogen load or directly discharged mass."
+process_map:
+  - id: terminal
+    name: "Operate passenger-terminal facilities"
+    inclusion: "conditional"
+    inclusion_condition: "Terminal function included in declared contract/event"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: airfield
+    name: "Operate airfield, apron and runway facilities"
+    inclusion: "conditional"
+    inclusion_condition: "Airfield function included; necessary support interfaces recorded separately"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: shared
+    name: "Reconcile shared airport support and accepted event"
+    inclusion: "required"
+    inclusion_condition: "Actual selected facility extent only"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: terminal
+    label: "Operate passenger-terminal facilities"
+    inputs:
+      product:
+        - row_id: terminal_electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual terminal lighting, HVAC, security, passenger circulation and operator IT electricity; record region/voltage and exclude tenant/airline/baggage-handling loads outside scope."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_energy
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual terminal heating/hot water; preserve composition and meter conditions with evidenced volume conversion, not a generic density."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_energy
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual terminal sanitation, facility cleaning and passenger water use; segregate tenants, aircraft supplies and baggage/cargo services."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_energy
+              source_ids: []
+            ranges: []
+        - row_id: r134a_supply
+          role: "1,1,1,2-Tetrafluoroethane refrigerant"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual R134a terminal cooling; record service stocks, equipment charge and recovery. Other refrigerants require their own specific rows and no default leak rate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_refrigerant
+              source_ids: []
+            ranges: []
+        - row_id: building
+          role: "Airport passenger terminal building"
+          name: "Airport passenger terminal building"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Actual terminal building manufacture/retirement share; declare building, landlord, tenant and apron component scope, supported lifetime and utilization."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_assets
+              source_ids: []
+            ranges: []
+        - row_id: boarding_bridge
+          role: "Passenger boarding bridge"
+          name: "Passenger boarding bridge"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on airport-operated bridge; actual supported manufacturing share, coverage and utilization. Airline aircraft and baggage equipment remain separate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_assets
+              source_ids: []
+            ranges: []
+        - row_id: hvac
+          role: "Passenger-terminal air-conditioning unit"
+          name: "Passenger-terminal air-conditioning unit"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual installed unit; manufacturing/retirement share excludes electricity and refrigerant already recorded separately."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitary_wastewater
+          role: "Passenger-terminal sanitary wastewater"
+          name: "Passenger-terminal sanitary wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual collected terminal sanitary effluent transferred to treatment; exclude tenant/aircraft effluent outside operator boundary and separate stormwater."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: r134a_air
+          role: "1,1,1,2-Tetrafluoroethane, to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual terminal R134a release from reconciled stock/equipment-charge/service/recovery records; no purchase-equals-leak or standard leak percentage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_terminal_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_refrigerant
+              source_ids: []
+            ranges: []
+  - id: airfield
+    label: "Operate airfield, apron and runway facilities"
+    inputs:
+      product:
+        - row_id: airfield_electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual airfield lighting, signs, facility controls and attributable ground-facility energy where this voltage applies; ATC/radio-navigation and aircraft energy are separate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_energy
+              source_ids: []
+            ranges: []
+        - row_id: potassium_acetate
+          role: "Potassium-acetate pavement deicing solution"
+          name: "Potassium-acetate pavement deicing solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only within explicitly decomposed necessary pavement-treatment support, replacing an aggregated supplier-service input. Measure whole solution and actual active fraction; do not duplicate chemistry already included in purchased snow-clearance support."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_materials
+              source_ids:
+                - epa-airport-deicing
+            ranges: []
+        - row_id: sodium_formate
+          role: "Sodium-formate pavement deicing granules"
+          name: "Sodium-formate pavement deicing granules"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this actual formulation in separately scoped airport support; record composition and whole-product mass. It is distinct from acetate solution and aircraft deicing chemicals."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_materials
+              source_ids:
+                - epa-airport-deicing
+            ranges: []
+        - row_id: concrete
+          role: "Ready-mixed concrete"
+          name: "Ready-mixed concrete"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual runway/taxiway/apron civil-works manufacturing and repair share; record grade, construction quantities and life utilization, excluding complete upstream asset duplicates."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_assets
+              source_ids: []
+            ranges: []
+        - row_id: asphalt
+          role: "Asphalt pavement mixture"
+          name: "Asphalt pavement mixture"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual bituminous pavement construction/replacement; retain formulation, quantity and supported service-life allocation rather than imposing a universal runway structure."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_assets
+              source_ids: []
+            ranges: []
+        - row_id: runway_light
+          role: "LED runway edge-light fixture"
+          name: "LED runway edge-light fixture"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on this actual lighting technology; allocate equipment manufacture/replacement over supported life, separate metered electricity and preserve actual configuration."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_assets
+              source_ids: []
+            ranges: []
+        - row_id: sweeping_service
+          role: "Runway sweeping support service"
+          name: "Runway sweeping support service"
+          flow_type: "product"
+          property_unit: "Time / h"
+          description: "Purchased necessary upstream support only, with actual supplier boundary and activity. Standalone runway cleaning is outside this PCR reference; omit duplicate supplier-covered fuel/material/waste rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_services."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_services
+              source_ids: []
+            ranges: []
+        - row_id: snow_service
+          role: "Runway snow-clearance support service"
+          name: "Runway snow-clearance support service"
+          flow_type: "product"
+          property_unit: "Time / h"
+          description: "Purchased necessary upstream support only. Reconcile deicer/vehicle/waste inclusion; when decomposing supplier support in primary data, replace this aggregate rather than count both."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_services."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_services
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: deicer_runoff
+          role: "Collected pavement-deicer runoff wastewater"
+          name: "Collected pavement-deicer runoff wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual collected pavement-support wastewater, with chemical composition and treatment destination. Distinguish aircraft-deicing drainage and avoid duplicate treatment embedded in supplier support."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_waste
+              source_ids:
+                - epa-airport-deicing
+            ranges: []
+        - row_id: concrete_waste
+          role: "Discarded pavement concrete"
+          name: "Discarded pavement concrete"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual removed concrete treatment share from airport pavement upkeep; no automatic aggregate-recycling credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_waste
+              source_ids: []
+            ranges: []
+        - row_id: asphalt_waste
+          role: "Discarded asphalt pavement mixture"
+          name: "Discarded asphalt pavement mixture"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual removed asphalt stream with measured mass and fate; reuse/stock and disposal must not count the same mass twice."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ammonia
+          role: "Ammonia, to freshwater"
+          name: "Ammonia, to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual measured operator-attributable direct discharge, with species/compartment and support-service boundary. Total nitrogen, product urea mass and COD are not ammonia mass; total-ammonia or nitrogen-basis laboratory results require supported chemical-speciation and basis conversion before this molecular identity is used. Do not duplicate treatment-dataset releases."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_airfield_runoff."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_airfield_runoff
+              source_ids:
+                - epa-airport-deicing
+            ranges: []
+  - id: shared
+    label: "Reconcile shared airport support and accepted event"
+    inputs:
+      product:
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual airport-operator standby/maintenance equipment fuel; separate aircraft/tug/airline GSE and supplier-covered cleaning fuel to avoid double counting."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_shared_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shared_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: airport_output
+          role: "Airport infrastructure operation service event"
+          name: "Airport infrastructure operation service event"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One accepted event of the stated airport/facility extent and interval, with measured actual passenger/movement dimensions; not a separately counted cleaning or aircraft-operation output."
+          amount:
+            expression: "1 item"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_event
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual airport-operated boiler/generator/support-equipment fossil combustion using actual fuel and cited method; aircraft propulsion/APU and purchased-electricity supply are not direct airport-operation emissions in this row."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_shared_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shared_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_facilities
+    applies_to: "foreground_burden_allocation"
+    rule: "Use direct facility/function meters and actual space-time/activity records first. Public airport common burdens require causal allocation between terminal, runway, apron, tenants and airlines; do not automatically allocate by revenue, passengers or movements."
+    source_ids: []
+  - rule_id: allocate_period
+    applies_to: "foreground_burden_allocation"
+    rule: "Retain attributable standby, closure, low-utilization and failed support in the defined operating event. Match all counts and meters to the same interval; terminal passengers and aircraft movements are separate dimensions, not universal equivalents."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Apply actual-use/supported-lifetime-use shares to facility construction/equipment manufacture and retirement; reconcile complete-building/pavement/component scope and cumulative shares capped at one life. No invented runway structure, asset mass or life."
+    source_ids: []
+  - rule_id: allocate_support
+    applies_to: "foreground_burden_allocation"
+    rule: "Supplier cleaning/snow support and its expanded chemical/fuel/waste inventory are alternatives for the same scope. Track operator/contractor responsibility and avoid counting the same runoff treatment or deicer burden twice."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_event
+      process_id: "shared"
+      flow_role: "airport_output"
+      record_type: "operation_event_record"
+      raw_fields: "event; facility/contract extent; functions; start/end; duration; opening/closure; availability; actual passengers; movements and counting rules; operator/tenant/airline split"
+      collection_method: "Reconcile accepted operating/service interval with facility records and matched actual counts; retain sub-event interfaces without multiplying full airport outputs."
+      unit: "item"
+      frequency: "each event and interval"
+      temporal_coverage: "full specified operating interval"
+      site_scope: "declared airport/facility extent"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "acceptance; operations records; matched counts"
+    - protocol_id: cp_airfield_assets
+      process_id: "airfield"
+      flow_role: "concrete; asphalt; runway_light"
+      record_type: "asset_record"
+      raw_fields: "asset/configuration; construction quantity; component scope; actual use; supported life use; prior shares; replacement/retirement"
+      collection_method: "Reconcile actual building/pavement/equipment registers, bills and utilization with independently supported lifetime denominators and upstream component coverage."
+      unit: "row unit"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_airfield_energy
+      process_id: "airfield"
+      flow_role: "airfield_electricity"
+      record_type: "meter_record"
+      raw_fields: "row; meter; actual energy/water; source; operating period; function/tenant share; stock; density conditions"
+      collection_method: "Use calibrated meters, supply records and task/zone attribution; reconcile actual stock and operator/airline boundaries."
+      unit: "row unit"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_airfield_materials
+      process_id: "airfield"
+      flow_role: "potassium_acetate; sodium_formate"
+      record_type: "formulation_record"
+      raw_fields: "specific product; whole mass; active fraction; supplier; application; collection; upstream-service coverage"
+      collection_method: "Weigh actual issues/returns and obtain formulation evidence; direct support chemicals replace the aggregated supplier scope, not supplement it."
+      unit: "kg"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_airfield_runoff
+      process_id: "airfield"
+      flow_role: "ammonia"
+      record_type: "runoff_species_record"
+      raw_fields: "substance; outfall; flow; concentration; timing; receiving compartment; treatment; pavement/aircraft source; attribution"
+      collection_method: "Use actual paired flow/concentration or measured species mass with treatment and source attribution; distinguish total nitrogen, ammonia and oxygen-demand indicators."
+      unit: "kg"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_airfield_services
+      process_id: "airfield"
+      flow_role: "sweeping_service; snow_service"
+      record_type: "supplier_service_record"
+      raw_fields: "provider; actual hours; task/area/weather; chemical/vehicle/waste inclusion; cleaning/snow scope"
+      collection_method: "Match necessary upstream support to supplier primary inventory; hours are activity only, not an emission factor, and decomposition replaces supplier aggregates."
+      unit: "h"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_airfield_waste
+      process_id: "airfield"
+      flow_role: "deicer_runoff; concrete_waste; asphalt_waste"
+      record_type: "waste_record"
+      raw_fields: "specific stream; measured mass; composition; contamination; source; treatment; destination; supplier coverage"
+      collection_method: "Measure segregated flows and reconcile treatment/transfer records; distinguish sanitary, pavement and aircraft sources and upstream included treatment."
+      unit: "kg"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_shared_emissions
+      process_id: "shared"
+      flow_role: "fossil_co2"
+      record_type: "emission_record"
+      raw_fields: "species; actual stationary/mobile source; fuel; activity; test/model; factor source; compartment"
+      collection_method: "Measure actual operator emissions or use cited applicable source/fuel method with matched activity; aircraft/APU and electricity supply remain separate."
+      unit: "kg"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_shared_energy
+      process_id: "shared"
+      flow_role: "diesel"
+      record_type: "meter_record"
+      raw_fields: "row; meter; actual energy/water; source; operating period; function/tenant share; stock; density conditions"
+      collection_method: "Use calibrated meters, supply records and task/zone attribution; reconcile actual stock and operator/airline boundaries."
+      unit: "row unit"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_terminal_assets
+      process_id: "terminal"
+      flow_role: "building; boarding_bridge; hvac"
+      record_type: "asset_record"
+      raw_fields: "asset/configuration; construction quantity; component scope; actual use; supported life use; prior shares; replacement/retirement"
+      collection_method: "Reconcile actual building/pavement/equipment registers, bills and utilization with independently supported lifetime denominators and upstream component coverage."
+      unit: "row unit"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_terminal_energy
+      process_id: "terminal"
+      flow_role: "terminal_electricity; natural_gas; water"
+      record_type: "meter_record"
+      raw_fields: "row; meter; actual energy/water; source; operating period; function/tenant share; stock; density conditions"
+      collection_method: "Use calibrated meters, supply records and task/zone attribution; reconcile actual stock and operator/airline boundaries."
+      unit: "row unit"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_terminal_refrigerant
+      process_id: "terminal"
+      flow_role: "r134a_supply; r134a_air"
+      record_type: "refrigerant_balance"
+      raw_fields: "species; start/end stored stock; acquisition/disbursement; equipment charge change; service; recovery"
+      collection_method: "Reconcile species stock and equipment-charge/service/recovery to quantify actual release; no default percentage or purchase-equals-leak."
+      unit: "kg"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+    - protocol_id: cp_terminal_waste
+      process_id: "terminal"
+      flow_role: "sanitary_wastewater"
+      record_type: "waste_record"
+      raw_fields: "specific stream; measured mass; composition; contamination; source; treatment; destination; supplier coverage"
+      collection_method: "Measure segregated flows and reconcile treatment/transfer records; distinguish sanitary, pavement and aircraft sources and upstream included treatment."
+      unit: "kg"
+      frequency: "actual task/meter/maintenance interval"
+      temporal_coverage: "same interval as cp_event"
+      site_scope: "declared process and operator/supplier scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "source records; calibration/stock; scope reconciliation"
+  calculation_rules:
+    - id: calc_operation
+      applies_to: "all inventory rows"
+      rule: "Attribute actual measured/collected exchanges to the exact facility/function/interval and apply documented shared-scope allocation. Normalize matched comparable totals by accepted events without automatically replacing the denominator with passengers, movements or hours."
+      inputs:
+        - cp_event
+        - "actual process protocols"
+      output: "per reference flow"
+      source_ids: []
+    - id: calc_assets
+      applies_to: "concrete; asphalt; building; runway_light; boarding_bridge; hvac"
+      rule: "Use actual construction/equipment quantities, current service use and independently supported lifetime utilization; reconcile cumulative and component shares before attribution to the event. Unknown life/utilization remains explicit."
+      inputs:
+        - "asset protocols"
+        - cp_event
+      output: "asset share per reference flow"
+      source_ids: []
+    - id: calc_runoff_species
+      applies_to: "potassium_acetate; sodium_formate; deicer_runoff; ammonia"
+      rule: "Reconcile whole formulation/active composition, collection, treatment and actual residual discharge with site records. Convert concentration with actual matched flow only; product mass, COD or total nitrogen cannot replace one emitted chemical species."
+      inputs:
+        - "materials/waste/runoff protocols"
+        - cp_event
+      output: "specific product/stream/species per reference flow"
+      source_ids:
+        - epa-airport-deicing
+  data_quality_requirements:
+    - id: dq_extent
+      applies_to: "airport_output"
+      requirement: "Require whole-airport versus facility extent, accepted interval, actual availability, passenger/movement definitions and operator boundary; a fee or airport name is insufficient."
+      evidence: "cp_event"
+    - id: dq_support
+      applies_to: "sweeping_service; snow_service; potassium_acetate; sodium_formate"
+      requirement: "Prove support-service inclusion and alternative aggregate/decomposed accounting; preserve standalone cleaning exclusion and chemical specificity."
+      evidence: "supplier and material records"
+    - id: dq_assets
+      applies_to: "concrete; asphalt; building; runway_light; boarding_bridge; hvac"
+      requirement: "Actual life/utilization, construction and component scope must be documented, with uncertainty and missing upstream burdens disclosed."
+      evidence: "asset protocols"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Confirm exact flow/property/unit and Chinese names before adoption; unresolved flows remain individual and actual additional exchanges must be added atomically."
+      evidence: "Direct support and unresolved register"
+validation_rules:
+  - rule_id: validate_operation
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique airport_output of 1 item with accepted infrastructure-operation extent, functional quality and interval. Reject cleaning actions, automatic passenger/movement equivalence and aircraft carriage as substitutes."
+    source_ids:
+      - un-cpc3-67610
+  - rule_id: validate_scopes
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify conditional terminal/airfield processes and complete-airport shared attribution; exclude baggage/cargo handling, ATC and independently sold runway cleaning/snow. Do not duplicate supplier support and expanded chemical/fuel/waste burdens."
+    source_ids:
+      - un-cpc3-67610
+  - rule_id: validate_actual_flows
+    applies_to: "foreground_dataset_conformance"
+    rule: "Audit each actual utility, chemical, refrigerant, asset, waste and released substance with matched period/basis. Disclose identity, asset-life, runoff-treatment and upstream gaps; parser pass is not a full airport environmental or methodology approval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "airport_infrastructure_operation"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified airport/terminal/airfield operating component in a scenario matching declared functions, interval and actual utilization"
+  excluded_use: "Complete flight/passenger footprint; standalone cleaning/snow service; universal per-passenger/per-movement airport factor; aircraft maintenance/towing/ATC"
+  required_metadata: "All reference qualifiers; conditional processes; actual counts/availability; supplier and tenant split; assets and upstream identities; chemical/runoff support boundaries"
+  required_quality_disclosure: "Event comparability; utilization and standby; life denominator; support overlap; water/refrigerant/runoff uncertainty; missing UUIDs/upstream/noise/land evidence"
+  update_trigger: "Changed facility scope/configuration, operating interval/passenger or movement profile, operator contract, maintenance/deicer route, energy, asset life or discharge evidence"
+data_sources:
+  - id: "un-cpc3-67610"
+    type: "official_guidance"
+    reference: "UNSD, Explanatory Notes of CPC Version3.0, subclass67610, February2025, with adjacent67620/67630 context. https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf"
+    used_for: "Passenger-terminal/airfield/runway operation scope and explicit cargo/baggage/standalone runway-cleaning exclusions; no factors"
+  - id: "epa-airport-deicing"
+    type: "official_guidance"
+    reference: "US EPA, Airport Deicing Environmental Impact and Benefit Assessment, April2012, EPA-821-R-12-003, sections1.2–1.4 and2.1. https://www.epa.gov/sites/production/files/2015-06/documents/airport-deicing_environmental-impact-and-benefit-assessment-final-2012.pdf"
+    used_for: "Pavement versus aircraft chemical formulations and runoff pathways; site-specific monitored chemicals/treatment, no regulatory percentages, default doses or impact factors adopted"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:5fc9307245be353841db3847d50e32551700b8f66eb06cf1021f739b5e1be3bf"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5325"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5325
+          line: 58
+          column: 1
+        end:
+          offset: 7513
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Declared airport/facility configuration and initial operating condition; public installed infrastructure is not burden-free |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Passenger-terminal/airfield/runway infrastructure operation, not cargo handling or independent cleaning |\n| recursive_input_rule | Subcontracted same-category airport operation enters as scoped supplier service; reconcile included utilities/assets and do not duplicate local inventories |\n| upstream_dataset_requirement | Actual utilities/materials, infrastructure/equipment manufacture/retirement, necessary cleaning/snow support and wastewater/waste management |\n| disclosure | Whole-airport versus facility event; passenger/movement/interval counts; conditional processes; operator/supplier split; aircraft/ATC exclusion; upstream coverage and asset life |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_airport` | Include actual passenger-terminal and airfield/runway operating functions and facility upkeep in the declared event. A terminal-only service does not include an entire airport; shared whole-airport inventory must not be attached again to each runway/terminal. | un-cpc3-67610 |\n| `boundary_support` | Standalone runway cleaning/snow removal remains outside the reference. Necessary upstream support is recorded once through supplier inventory or its explicitly replaced decomposition. | un-cpc3-67610 |\n| `boundary_runoff` | Distinguish pavement versus aircraft deicing sources, actual chemical formulation, collected effluent, treatment and directly discharged substances. Site-specific fate matters; no regulatory collection percentage or impact factor becomes a default inventory parameter. | epa-airport-deicing |\n| `boundary_assets` | Include actual facility construction, replacement, maintenance and retirement shares with documented life/utilization. Screen additional actual chemicals, refrigerants, consumables, noise/land/ecological effects and wastes individually; a short card list is not a zero-burden exemption. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 237
+              line: 8
+              column: 1
+            end:
+              offset: 290
+              line: 8
+              column: 54
+          text: "# Airport operation services excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5325
+              line: 58
+              column: 1
+            end:
+              offset: 5346
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25091"
+      family: "allocation"
+      span:
+        start:
+          offset: 25091
+          line: 490
+          column: 1
+        end:
+          offset: 26289
+          line: 499
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_facilities` | Use direct facility/function meters and actual space-time/activity records first. Public airport common burdens require causal allocation between terminal, runway, apron, tenants and airlines; do not automatically allocate by revenue, passengers or movements. |  |\n| `allocate_period` | Retain attributable standby, closure, low-utilization and failed support in the defined operating event. Match all counts and meters to the same interval; terminal passengers and aircraft movements are separate dimensions, not universal equivalents. |  |\n| `allocate_assets` | Apply actual-use/supported-lifetime-use shares to facility construction/equipment manufacture and retirement; reconcile complete-building/pavement/component scope and cumulative shares capped at one life. No invented runway structure, asset mass or life. |  |\n| `allocate_support` | Supplier cleaning/snow support and its expanded chemical/fuel/waste inventory are alternatives for the same scope. Track operator/contractor responsibility and avoid counting the same runoff treatment or deicer burden twice. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 237
+              line: 8
+              column: 1
+            end:
+              offset: 290
+              line: 8
+              column: 54
+          text: "# Airport operation services excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25091
+              line: 490
+              column: 1
+            end:
+              offset: 25131
+              line: 490
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36174"
+      family: "validation"
+      span:
+        start:
+          offset: 36174
+          line: 536
+          column: 1
+        end:
+          offset: 37089
+          line: 544
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_operation` | Require unique airport_output of 1 item with accepted infrastructure-operation extent, functional quality and interval. Reject cleaning actions, automatic passenger/movement equivalence and aircraft carriage as substitutes. | un-cpc3-67610 |\n| `validate_scopes` | Verify conditional terminal/airfield processes and complete-airport shared attribution; exclude baggage/cargo handling, ATC and independently sold runway cleaning/snow. Do not duplicate supplier support and expanded chemical/fuel/waste burdens. | un-cpc3-67610 |\n| `validate_actual_flows` | Audit each actual utility, chemical, refrigerant, asset, waste and released substance with matched period/basis. Disclose identity, asset-life, runoff-treatment and upstream gaps; parser pass is not a full airport environmental or methodology approval. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 237
+              line: 8
+              column: 1
+            end:
+              offset: 290
+              line: 8
+              column: 54
+          text: "# Airport operation services excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36174
+              line: 536
+              column: 1
+            end:
+              offset: 36196
+              line: 536
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_airport"
+      identity_kind: "explicit"
+      unit_id: "normative_5325"
+      source_span:
+        start:
+          offset: 6357
+          line: 73
+          column: 1
+        end:
+          offset: 6657
+          line: 73
+          column: 301
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_support"
+      identity_kind: "explicit"
+      unit_id: "normative_5325"
+      source_span:
+        start:
+          offset: 6658
+          line: 74
+          column: 1
+        end:
+          offset: 6882
+          line: 74
+          column: 225
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_runoff"
+      identity_kind: "explicit"
+      unit_id: "normative_5325"
+      source_span:
+        start:
+          offset: 6883
+          line: 75
+          column: 1
+        end:
+          offset: 7197
+          line: 75
+          column: 315
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_5325"
+      source_span:
+        start:
+          offset: 7198
+          line: 76
+          column: 1
+        end:
+          offset: 7511
+          line: 76
+          column: 314
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_facilities"
+      identity_kind: "explicit"
+      unit_id: "normative_25091"
+      source_span:
+        start:
+          offset: 25185
+          line: 494
+          column: 1
+        end:
+          offset: 25475
+          line: 494
+          column: 291
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_period"
+      identity_kind: "explicit"
+      unit_id: "normative_25091"
+      source_span:
+        start:
+          offset: 25476
+          line: 495
+          column: 1
+        end:
+          offset: 25752
+          line: 495
+          column: 277
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_25091"
+      source_span:
+        start:
+          offset: 25753
+          line: 496
+          column: 1
+        end:
+          offset: 26034
+          line: 496
+          column: 282
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_support"
+      identity_kind: "explicit"
+      unit_id: "normative_25091"
+      source_span:
+        start:
+          offset: 26035
+          line: 497
+          column: 1
+        end:
+          offset: 26287
+          line: 497
+          column: 253
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_operation"
+      identity_kind: "explicit"
+      unit_id: "normative_36174"
+      source_span:
+        start:
+          offset: 36250
+          line: 540
+          column: 1
+        end:
+          offset: 36516
+          line: 540
+          column: 267
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_scopes"
+      identity_kind: "explicit"
+      unit_id: "normative_36174"
+      source_span:
+        start:
+          offset: 36517
+          line: 541
+          column: 1
+        end:
+          offset: 36801
+          line: 541
+          column: 285
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_actual_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_36174"
+      source_span:
+        start:
+          offset: 36802
+          line: 542
+          column: 1
+        end:
+          offset: 37087
+          line: 542
+          column: 286
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5325"
+      source_span:
+        start:
+          offset: 5325
+          line: 58
+          column: 1
+        end:
+          offset: 5346
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5325"
+      source_span:
+        start:
+          offset: 5374
+          line: 62
+          column: 1
+        end:
+          offset: 6303
+          line: 69
+          column: 195
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25091"
+      source_span:
+        start:
+          offset: 25091
+          line: 490
+          column: 1
+        end:
+          offset: 25131
+          line: 490
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36174"
+      source_span:
+        start:
+          offset: 36174
+          line: 536
+          column: 1
+        end:
+          offset: 36196
+          line: 536
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5fc9307245be353841db3847d50e32551700b8f66eb06cf1021f739b5e1be3bf"
+  generated_content_sha256: "sha256:1f3fd27ddba498bfd24c1118a479ab60d7a9f7b1c4d4f5a8a37be77abc80bd86"

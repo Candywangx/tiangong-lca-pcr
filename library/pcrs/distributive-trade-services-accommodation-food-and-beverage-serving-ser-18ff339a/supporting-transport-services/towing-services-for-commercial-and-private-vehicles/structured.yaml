@@ -1,10 +1,1039 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67440"
-  title: "Towing services for commercial and private vehicles"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.towing-services-for-commercial-and-private-vehicles"
+  classification_refs: "CPC 3.0 67440"
+  covered_products: "Completed vehicle towing/recovery or other vehicle-removal task, including parking-violation removal, with explicit vehicle and method"
+  excluded_products: "Ordinary vehicle freight; standalone repair; subsequent storage, scrapping and vehicle manufacture"
+  representative_product: "One completed towing task for one identified vehicle between specified interfaces"
+  production_route: "Dispatch → approach → secure/load → tow/recover → unload/handoff; attributable repositioning and cleanup retained"
+  market_state: "Accepted vehicle-relocation service with recorded custody and operator scope"
+functional_unit:
+  what: "Complete the declared towing transfer of one identified vehicle"
+  how_much: "One completed task, with actual vehicle mass/class, method, loaded distance, approach/reposition distance and waiting extent"
+  how_well: "Actual acceptance, custody handoff, vehicle condition and manufacturer-compatible recovery requirements; no assumed universal tow method or damage tolerance"
+  how_long_or_cycle: "From dispatch acceptance through vehicle handoff, plus allocated actual repositioning/cleanup; waiting and unsuccessful attributable attempts remain included"
+  reference_flow_link: "towing_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_tow
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual service stages and vehicle relocation for breakdown or other towing reasons. Keep customer vehicle manufacture/routine use and independent repair/storage outside; only actual attributable recovery activity enters."
+      source_ids:
+        - un-cpc3-67440
+    - rule_id: boundary_configuration
+      applies_to: "foreground_system_boundary"
+      rule: "Declare the actual configured recovery equipment, including lifting/loading apparatus and winch where present. One method is not presumed suitable or energetically equivalent for every customer vehicle."
+      source_ids:
+        - dvsa-recovery-equipment
+    - rule_id: boundary_energy
+      applies_to: "foreground_system_boundary"
+      rule: "Record fuel by actual tow-vehicle/engine and activity, including idling and empty phases. Separate purchased electric energy and upstream energy supply from direct mobile combustion."
+      source_ids:
+        - epa-mobile-combustion
+    - rule_id: boundary_atomic
+      applies_to: "foreground_system_boundary"
+      rule: "Add every actual separately identified fuel, refrigerant, maintenance part, spill-cleanup material, waste and emission species omitted from the initial cards. Check depot dispatch/cleaning and asset burden coverage; absent equipment needs recorded applicability."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified requested vehicle at stated location and condition, with actual towing configuration available"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Qualified towing/recovery task including breakdown and parking-removal scenarios"
+  recursive_input_rule: "Subcontract towing stages enter as evidenced upstream services; prevent duplicate own-fleet fuel, distance and manufacturing shares for the same stage"
+  upstream_dataset_requirement: "Actual energy supply, consumables, configured vehicle/equipment production/retirement and waste treatment with component coverage"
+  disclosure: "Vehicle/incident/method; dispatch and delivery interfaces; mission phases; empty/repositioning allocation; failed tasks; recovery damage; depot and asset-life denominators"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed vehicle towing task"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "task/vehicle identifier"
+    - "breakdown/enforcement/other reason"
+    - "commercial/private class"
+    - "measured or traceable vehicle mass and load"
+    - "powertrain/driven axles and condition"
+    - "towing method"
+    - "origin/destination and acceptance"
+    - "approach/loaded/repositioning route distance"
+    - "winch/loading and waiting hours"
+    - "failed attempts"
+    - "operator and subcontract boundary"
+    - "equipment configuration"
+    - "depot/cleanup share"
+    - "observation period"
+    - "electricity region/voltage"
+reference_flows:
+  []
+measurement_rules:
+  - id: completed_task
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Count one cp_task accepted vehicle handoff once. Dispatch, hooking, towing and unloading within that task are stages, not four complete service outputs."
+  - id: phase_reconciliation
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Retain all actual loaded/empty distances and power-take-off/idling hours by phase. Mileage cannot replace measured fuel or imply zero scene energy."
+process_map:
+  - id: towing
+    name: "Dispatch, recover/tow and hand off identified vehicle"
+    inclusion: "required"
+    inclusion_condition: "Actual incident, configured equipment and conditional rows"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: towing
+    label: "Dispatch, recover/tow and hand off identified vehicle"
+    inputs:
+      product:
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual diesel burned by the towing vehicle and its engine-driven lifting system; retain loaded, empty, idling and power-take-off phases without counting the same engine fuel twice."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: petrol
+          role: "Petrol"
+          name: "Petrol"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual petrol-powered towing/support equipment attributable to this mission; keep distinct from customer vehicle routine fuel."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual electric tow-truck charging, electric winch and depot/dispatch electricity; record supply region/voltage and measured charger losses. Avoid duplicate battery-side and grid-side electricity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Hydraulic lubricating oil"
+          name: "Hydraulic lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual hydraulic make-up/replacement allocated to the identified lifting/winch equipment; distinguish stored stock, consumed additions and drained oil."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: engine_oil
+          role: "Engine lubricating oil"
+          name: "Engine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on combustion towing vehicle maintenance; use actual oil service quantities and supported mission-share attribution."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual attributable towing-equipment cleaning water, not an assumed customer-car washing service. Record meter/collection basis."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: wire_rope
+          role: "Steel winch wire rope"
+          name: "Steel winch wire rope"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual steel rope; record rope grade, replacement mass and reuse/life utilization. Do not charge a new rope to every mission or duplicate rope already in full equipment manufacture."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: strap
+          role: "Polyester vehicle-securing strap"
+          name: "Polyester vehicle-securing strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual strap manufacture/replacement share with reuse records; distinguish vehicle tie-down from customer freight packaging."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: tyre
+          role: "Truck tyre"
+          name: "Truck tyre"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual towing-vehicle replacement tyre share, with measured tyre quantity/mass and supported use life; avoid duplicating initial tyres in the vehicle manufacturing dataset."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: tow_truck
+          role: "Vehicle recovery truck"
+          name: "Vehicle recovery truck"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Manufacture/retirement share of the actual configured recovery truck. Declare flatbed, wheel-lift or other actual apparatus, powertrain and upstream component scope."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: winch
+          role: "Vehicle-recovery winch"
+          name: "Vehicle-recovery winch"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on a separately modelled actual winch; manufacturing share only if not already included in complete recovery-truck inventory. Operation energy is recorded in energy rows once."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: towing_output
+          role: "Completed vehicle towing task"
+          name: "Completed vehicle towing task"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Accepted handoff of one identified vehicle at the declared destination; retain its entire attributable mission input, without treating the customer vehicle itself as newly manufactured output."
+          amount:
+            expression: "1 item"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_task
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_hydraulic
+          role: "Waste hydraulic oil"
+          name: "Waste hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual segregated drained hydraulic oil with contamination and treatment destination; oil still in equipment is not waste output."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_engine_oil
+          role: "Waste engine lubricating oil"
+          name: "Waste engine lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual segregated engine-maintenance waste oil; distinguish hydraulic oil and service-provider included disposal."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_rope
+          role: "Discarded steel winch wire rope"
+          name: "Discarded steel winch wire rope"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual retired steel rope mass and treatment; no default recycling credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_tyre
+          role: "Discarded truck tyre"
+          name: "Discarded truck tyre"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual replacement tyre sent to documented treatment; distinguish retreading and material loss during use."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Towing-equipment washing wastewater"
+          name: "Towing-equipment washing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual collected washing effluent with contamination and treatment; spill cleanup streams require their own specific identities."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual tow-truck/support-engine fossil combustion from fuel-specific measured carbon basis or documented factor; upstream fuel production stays separate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-mobile-combustion
+            ranges: []
+        - row_id: methane
+          role: "Methane, fossil, to air"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured or supported specific-engine combustion methane; keep fuel origin, engine/control and activity explicit, not an assumed fraction of CO2."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-mobile-combustion
+            ranges: []
+        - row_id: nitrous_oxide
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual supported engine N2O, with fuel, technology and model year or test record; do not treat it as nitrogen dioxide."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-mobile-combustion
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual measured/modelled NO2; total NOx requires evidenced speciation before it can use this identity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm25
+          role: "Particulate matter below 2.5 micrometres, to air"
+          name: "Particulate matter below 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual supported PM2.5, with source and particle-size cutoff. Distinguish exhaust, tyre and brake wear and avoid overlapping aggregate particle totals."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_mission
+    applies_to: "foreground_burden_allocation"
+    rule: "Directly attribute task fuel/charging and scene operation first. Shared legs require actual route/time/load evidence; allocate approach and post-delivery repositioning consistently, without assuming every task returns to base."
+    source_ids: []
+  - rule_id: allocate_failures
+    applies_to: "foreground_burden_allocation"
+    rule: "Retain task-attributable waiting, cancelled attempts and rework in matched comparable mission totals, and divide by accepted completed tasks. Zero completed output cannot support a fabricated per-task intensity."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocate actual configured truck, winch and maintenance manufacture/retirement by documented use over supported lifetime use; reconcile initial/replacement components and cumulative shares capped at one life. No assumed truck mass, lifetime kilometres or winch capacity."
+    source_ids: []
+  - rule_id: allocate_custody
+    applies_to: "foreground_burden_allocation"
+    rule: "Customer vehicles are service objects, not co-products or newly produced vehicles. Allocate actual recovery-caused damage/spill treatment transparently and keep subsequent repair/storage/scrapping in separate linked scopes. No avoided-damage or recycling credit by default."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_task
+      process_id: "towing"
+      flow_role: "towing_output"
+      record_type: "mission_record"
+      raw_fields: "task/vehicle ID; incident; vehicle mass/class/powertrain; method; origin/destination; dispatch/approach/load/tow/unload/handoff; empty/reposition distance; waiting; failed attempts; acceptance"
+      collection_method: "Reconcile GPS/odometer, dispatch log, scene records and signed handoff by unique task; keep loaded and empty phases and caller cancellation distinct."
+      unit: "item"
+      frequency: "each mission"
+      temporal_coverage: "full task and matched support period"
+      site_scope: "one declared vehicle/incident/method scenario"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "dispatch/GPS; handoff; vehicle evidence"
+    - protocol_id: cp_energy
+      process_id: "towing"
+      flow_role: "diesel; petrol; electricity; water"
+      record_type: "meter_record"
+      raw_fields: "row; vehicle/engine; fuel stock; measured fuel; charger readings; phase distance/hours; idling/PTO; depot task share; density/conditions"
+      collection_method: "Use actual vehicle fuel/charging and water records with stock reconciliation; separate drive and PTO energy only when meters support the split. Volume conversion needs fuel-specific evidence."
+      unit: "row unit"
+      frequency: "each task and fuel/charging period"
+      temporal_coverage: "same period as cp_task"
+      site_scope: "actual towing fleet and support"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meters; fuel/charger ledger; phase log"
+    - protocol_id: cp_materials
+      process_id: "towing"
+      flow_role: "hydraulic_oil; engine_oil; wire_rope; strap; tyre"
+      record_type: "maintenance_record"
+      raw_fields: "specific material/part; issued/returned mass; replacement; reuse/life use; configuration; task share"
+      collection_method: "Weigh actual maintenance/material quantities and document supported utilization shares; reconcile initial components and outsourced service contents."
+      unit: "kg"
+      frequency: "maintenance event and period"
+      temporal_coverage: "same fleet period as tasks"
+      site_scope: "identified towing equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "work orders; stock; reuse ledger"
+    - protocol_id: cp_assets
+      process_id: "towing"
+      flow_role: "tow_truck; winch"
+      record_type: "asset_record"
+      raw_fields: "asset ID; configuration; powertrain; manufacture/component scope; actual use; supported lifetime use; previous shares; retirement"
+      collection_method: "Reconcile asset register, upstream manufacture and odometer/hour ledger with supported lifetime denominator; separately identify embedded winch/rope components."
+      unit: "item"
+      frequency: "asset update and matched period"
+      temporal_coverage: "asset life plus task period"
+      site_scope: "actual towing equipment only"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "register; component scope; denominator evidence"
+    - protocol_id: cp_waste
+      process_id: "towing"
+      flow_role: "waste_hydraulic; waste_engine_oil; waste_rope; waste_tyre; wastewater"
+      record_type: "waste_record"
+      raw_fields: "specific stream; mass; composition; contamination; origin; treatment; destination; date; task/fleet share"
+      collection_method: "Measure segregated maintenance/cleaning streams and reconcile manifests; customer spills and tyres left on the vehicle are not automatically operator waste."
+      unit: "kg"
+      frequency: "each waste event"
+      temporal_coverage: "same period as maintenance/task share"
+      site_scope: "attributable towing operations"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weighing; manifests; responsibility"
+    - protocol_id: cp_emissions
+      process_id: "towing"
+      flow_role: "fossil_co2; methane; nitrous_oxide; nitrogen_dioxide; pm25"
+      record_type: "emission_record"
+      raw_fields: "species; fuel/carbon origin; engine/technology/year; activity; phase; model/test; source factor; control; compartment"
+      collection_method: "Use actual measurements or cited vehicle/engine-specific methods with matched fuel and phase records. Preserve each species, origin and receiving compartment; keep supply emissions separate."
+      unit: "kg"
+      frequency: "test and matched mission period"
+      temporal_coverage: "same period as cp_task"
+      site_scope: "actual mobile/support sources"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "test/model source; fuel and phase records"
+  calculation_rules:
+    - id: calc_task_intensity
+      applies_to: "all inventory rows"
+      rule: "Reconcile complete attributable mission exchanges and consistent approach/repositioning/support shares; divide matched comparable totals by accepted completed tasks. Phases cannot be omitted because no customer is onboard."
+      inputs:
+        - cp_task
+        - cp_energy
+        - cp_materials
+        - cp_waste
+      output: "per reference flow"
+      source_ids: []
+    - id: calc_assets
+      applies_to: "tow_truck; winch"
+      rule: "Apply allocate_assets using actual utilization and supported lifetime denominator, then normalize attributable period shares on cp_task. Unproven life or component overlap remains a disclosed review gap."
+      inputs:
+        - cp_assets
+        - cp_task
+      output: "per reference flow"
+      source_ids: []
+    - id: calc_emission_species
+      applies_to: "fossil_co2; methane; nitrous_oxide"
+      rule: "Use measured species mass or a cited fuel-/technology-specific method with actual phase activity and documented control. Fuel-based CO2 and activity-based CH4/N2O must retain their own actual bases; no universal fuel economy, mileage-only idling proxy, NOx-to-NO2 shortcut or default impact factor."
+      inputs:
+        - cp_emissions
+        - cp_energy
+        - cp_task
+      output: "species mass per reference flow"
+      source_ids:
+        - epa-mobile-combustion
+    - id: calc_other_pollutants
+      applies_to: "nitrogen_dioxide; pm25"
+      rule: "Use pollutant-specific measurement or an independently cited equipment/technology method with actual activity; preserve NO2 speciation and PM2.5 size cutoff. The GHG mobile-combustion source does not establish these pollutant factors."
+      inputs:
+        - cp_emissions
+        - cp_energy
+        - cp_task
+      output: "species mass per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_task
+      applies_to: "towing_output"
+      requirement: "Require vehicle, incident, method, distance and handoff identity; separate parking-removal and breakdown routes. Fees and vehicle mass alone cannot establish function."
+      evidence: "cp_task"
+    - id: dq_phase
+      applies_to: "all inventory rows"
+      requirement: "Reconcile full empty/loaded/scene/waiting/cleanup and failed-attempt coverage; maintain actual configuration and matched periods across fuel, charging and support."
+      evidence: "cp_task; cp_energy"
+    - id: dq_assets
+      applies_to: "tow_truck; winch"
+      requirement: "Require evidenced lifetime/utilization and initial/replacement scope, with sensitivity for uncertain denominators."
+      evidence: "cp_assets"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify exact flow/property/unit and official Chinese name before adoption. Missing UUIDs remain individual gaps, never a pooled fuel/material label or proof of full validation."
+      evidence: "Direct-read support and unresolved register"
+validation_rules:
+  - rule_id: validate_task
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one towing_output of 1 item linked to one accepted vehicle relocation with declared start/end and method. Reject tonne-km, fees or repair-only jobs as substitutes."
+    source_ids:
+      - un-cpc3-67440
+  - rule_id: validate_phase_boundary
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify dispatch, empty approach, scene work, loaded towing, handoff and actual repositioning attribution, including waits/retries. Reconcile subcontract stages and customer/repair/storage boundaries without double counting."
+    source_ids: []
+  - rule_id: validate_atomicity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Each actual fuel, utility, part, asset, waste and emitted species requires its own specific exchange and same reference denominator. Audit component overlap, life shares and identity/upstream gaps; a parser pass is not methodology publication approval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "vehicle_towing_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified towing/recovery task component in an identified incident, vehicle-operation or enforcement scenario"
+  excluded_use: "Universal tow factor independent of vehicle/method/distance; original customer vehicle manufacture; complete repair, storage or scrapping footprint"
+  required_metadata: "All task qualifiers; phase distances/times; mission/support/subcontract allocation; energy origin; actual asset/component scope; upstream identities"
+  required_quality_disclosure: "Failed task and repositioning coverage; vehicle-mass/phase uncertainty; emissions method; life denominator; missing UUIDs/upstream inventory; damage and responsibility limits"
+  update_trigger: "Changed incident/vehicle class, route, towing apparatus, powertrain, fleet operation, contract boundary, maintenance or lifetime evidence"
+data_sources:
+  - id: "un-cpc3-67440"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0 subclass 67440 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67440"
+    used_for: "Breakdown and other vehicle towing including parking-removal scope"
+  - id: "dvsa-recovery-equipment"
+    type: "official_guidance"
+    reference: "UK DVSA, Running a vehicle recovery business: driver and vehicle safety rules, updated 12 August 2025, section 2.1 physical construction. https://www.gov.uk/government/publications/guide-for-recovery-operations/running-a-vehicle-recovery-business-driver-and-vehicle-safety-rules"
+    used_for: "Equipment diversity and declared recovery configuration; UK context only, no universal legal or towing-method approval"
+  - id: "epa-mobile-combustion"
+    type: "official_guidance"
+    reference: "US EPA, Direct Emissions from Mobile Combustion Source, December 2023, Activity Data and mobile-combustion species. https://www.epa.gov/sites/default/files/2020-12/documents/mobileemissions.pdf"
+    used_for: "Fuel/activity and individual CO2, CH4, N2O accounting; excludes upstream supply/electricity methods, no default factor adopted; not full-LCA standard"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:9ed8e0cea0d6c6d2d021fb77b84239a9dff4afb84f948f8b6c5dedffd93346e8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5071"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5071
+          line: 58
+          column: 1
+        end:
+          offset: 7088
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified requested vehicle at stated location and condition, with actual towing configuration available |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Qualified towing/recovery task including breakdown and parking-removal scenarios |\n| recursive_input_rule | Subcontract towing stages enter as evidenced upstream services; prevent duplicate own-fleet fuel, distance and manufacturing shares for the same stage |\n| upstream_dataset_requirement | Actual energy supply, consumables, configured vehicle/equipment production/retirement and waste treatment with component coverage |\n| disclosure | Vehicle/incident/method; dispatch and delivery interfaces; mission phases; empty/repositioning allocation; failed tasks; recovery damage; depot and asset-life denominators |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_tow` | Include actual service stages and vehicle relocation for breakdown or other towing reasons. Keep customer vehicle manufacture/routine use and independent repair/storage outside; only actual attributable recovery activity enters. | un-cpc3-67440 |\n| `boundary_configuration` | Declare the actual configured recovery equipment, including lifting/loading apparatus and winch where present. One method is not presumed suitable or energetically equivalent for every customer vehicle. | dvsa-recovery-equipment |\n| `boundary_energy` | Record fuel by actual tow-vehicle/engine and activity, including idling and empty phases. Separate purchased electric energy and upstream energy supply from direct mobile combustion. | epa-mobile-combustion |\n| `boundary_atomic` | Add every actual separately identified fuel, refrigerant, maintenance part, spill-cleanup material, waste and emission species omitted from the initial cards. Check depot dispatch/cleaning and asset burden coverage; absent equipment needs recorded applicability. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 242
+              line: 8
+              column: 1
+            end:
+              offset: 295
+              line: 8
+              column: 54
+          text: "# Towing services for commercial and private vehicles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5071
+              line: 58
+              column: 1
+            end:
+              offset: 5092
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21274"
+      family: "allocation"
+      span:
+        start:
+          offset: 21274
+          line: 430
+          column: 1
+        end:
+          offset: 22465
+          line: 439
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_mission` | Directly attribute task fuel/charging and scene operation first. Shared legs require actual route/time/load evidence; allocate approach and post-delivery repositioning consistently, without assuming every task returns to base. |  |\n| `allocate_failures` | Retain task-attributable waiting, cancelled attempts and rework in matched comparable mission totals, and divide by accepted completed tasks. Zero completed output cannot support a fabricated per-task intensity. |  |\n| `allocate_assets` | Allocate actual configured truck, winch and maintenance manufacture/retirement by documented use over supported lifetime use; reconcile initial/replacement components and cumulative shares capped at one life. No assumed truck mass, lifetime kilometres or winch capacity. |  |\n| `allocate_custody` | Customer vehicles are service objects, not co-products or newly produced vehicles. Allocate actual recovery-caused damage/spill treatment transparently and keep subsequent repair/storage/scrapping in separate linked scopes. No avoided-damage or recycling credit by default. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 242
+              line: 8
+              column: 1
+            end:
+              offset: 295
+              line: 8
+              column: 54
+          text: "# Towing services for commercial and private vehicles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21274
+              line: 430
+              column: 1
+            end:
+              offset: 21314
+              line: 430
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28660"
+      family: "validation"
+      span:
+        start:
+          offset: 28660
+          line: 470
+          column: 1
+        end:
+          offset: 29489
+          line: 478
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_task` | Require one towing_output of 1 item linked to one accepted vehicle relocation with declared start/end and method. Reject tonne-km, fees or repair-only jobs as substitutes. | un-cpc3-67440 |\n| `validate_phase_boundary` | Verify dispatch, empty approach, scene work, loaded towing, handoff and actual repositioning attribution, including waits/retries. Reconcile subcontract stages and customer/repair/storage boundaries without double counting. |  |\n| `validate_atomicity` | Each actual fuel, utility, part, asset, waste and emitted species requires its own specific exchange and same reference denominator. Audit component overlap, life shares and identity/upstream gaps; a parser pass is not methodology publication approval. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 242
+              line: 8
+              column: 1
+            end:
+              offset: 295
+              line: 8
+              column: 54
+          text: "# Towing services for commercial and private vehicles"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28660
+              line: 470
+              column: 1
+            end:
+              offset: 28682
+              line: 470
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_tow"
+      identity_kind: "explicit"
+      unit_id: "normative_5071"
+      source_span:
+        start:
+          offset: 6040
+          line: 73
+          column: 1
+        end:
+          offset: 6305
+          line: 73
+          column: 266
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_configuration"
+      identity_kind: "explicit"
+      unit_id: "normative_5071"
+      source_span:
+        start:
+          offset: 6306
+          line: 74
+          column: 1
+        end:
+          offset: 6565
+          line: 74
+          column: 260
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_energy"
+      identity_kind: "explicit"
+      unit_id: "normative_5071"
+      source_span:
+        start:
+          offset: 6566
+          line: 75
+          column: 1
+        end:
+          offset: 6796
+          line: 75
+          column: 231
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_5071"
+      source_span:
+        start:
+          offset: 6797
+          line: 76
+          column: 1
+        end:
+          offset: 7086
+          line: 76
+          column: 290
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_mission"
+      identity_kind: "explicit"
+      unit_id: "normative_21274"
+      source_span:
+        start:
+          offset: 21368
+          line: 434
+          column: 1
+        end:
+          offset: 21622
+          line: 434
+          column: 255
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_failures"
+      identity_kind: "explicit"
+      unit_id: "normative_21274"
+      source_span:
+        start:
+          offset: 21623
+          line: 435
+          column: 1
+        end:
+          offset: 21863
+          line: 435
+          column: 241
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_21274"
+      source_span:
+        start:
+          offset: 21864
+          line: 436
+          column: 1
+        end:
+          offset: 22161
+          line: 436
+          column: 298
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_custody"
+      identity_kind: "explicit"
+      unit_id: "normative_21274"
+      source_span:
+        start:
+          offset: 22162
+          line: 437
+          column: 1
+        end:
+          offset: 22463
+          line: 437
+          column: 302
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_task"
+      identity_kind: "explicit"
+      unit_id: "normative_28660"
+      source_span:
+        start:
+          offset: 28736
+          line: 474
+          column: 1
+        end:
+          offset: 28945
+          line: 474
+          column: 210
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_phase_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_28660"
+      source_span:
+        start:
+          offset: 28946
+          line: 475
+          column: 1
+        end:
+          offset: 29204
+          line: 475
+          column: 259
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_atomicity"
+      identity_kind: "explicit"
+      unit_id: "normative_28660"
+      source_span:
+        start:
+          offset: 29205
+          line: 476
+          column: 1
+        end:
+          offset: 29487
+          line: 476
+          column: 283
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5071"
+      source_span:
+        start:
+          offset: 5071
+          line: 58
+          column: 1
+        end:
+          offset: 5092
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5071"
+      source_span:
+        start:
+          offset: 5120
+          line: 62
+          column: 1
+        end:
+          offset: 5986
+          line: 69
+          column: 189
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21274"
+      source_span:
+        start:
+          offset: 21274
+          line: 430
+          column: 1
+        end:
+          offset: 21314
+          line: 430
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28660"
+      source_span:
+        start:
+          offset: 28660
+          line: 470
+          column: 1
+        end:
+          offset: 28682
+          line: 470
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9ed8e0cea0d6c6d2d021fb77b84239a9dff4afb84f948f8b6c5dedffd93346e8"
+  generated_content_sha256: "sha256:96f0fa5bea9a2ea3d33d5f55818e48a4dfdc816af38366725348df70cabbac01"

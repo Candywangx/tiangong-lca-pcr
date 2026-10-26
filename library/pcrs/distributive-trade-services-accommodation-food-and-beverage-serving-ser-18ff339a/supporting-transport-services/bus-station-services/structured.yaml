@@ -1,10 +1,965 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67410"
-  title: "Bus station services"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.bus-station-services"
+  classification_refs: "CPC 3.0 67410"
+  covered_products: "Urban/suburban/interurban bus-terminal facility, ticket/reservation and luggage-office/left-luggage services; separately qualified scenarios"
+  excluded_products: "Bus carriage and vehicle operation; baggage/freight loading; unrelated retail and catering"
+  representative_product: "One completed passenger terminal visit with declared included functions"
+  production_route: "Receive service request/admit passenger → actual facility/office/custody operations → complete specified service and close record"
+  market_state: "Terminal service provided under stated operator/carrier/customer contract boundaries"
+functional_unit:
+  what: "Complete one identified bus passenger terminal-service event at the stated functional extent"
+  how_much: "One event with passenger count, station functions, transaction count and any custody extent explicitly declared"
+  how_well: "Actual declared passenger-access, opening-hours, safety/accessibility, transaction acceptance and custody-release requirements; no invented universal quality threshold"
+  how_long_or_cycle: "Actual event from request/admission to completion/release, including its attributable waiting and support period"
+  reference_flow_link: "terminal_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_services
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual passenger facilities, ticketing/reservations, luggage-office administration and custody only for the chosen event. Physical baggage/freight loading remains outside 67410."
+      source_ids:
+        - un-cpc3-67410
+    - rule_id: boundary_support
+      applies_to: "foreground_system_boundary"
+      rule: "Include attributable lighting, heating, cooling, ventilation, IT, security, sanitation, cleaning and real maintenance. Track operating/control schedules and meter use; no standard building energy share is assumed."
+      source_ids:
+        - energystar-om
+    - rule_id: boundary_assets
+      applies_to: "foreground_system_boundary"
+      rule: "Include supported manufacture/retirement shares of actual terminal building, ticket IT, cooling and custody equipment; prevent overlap with complete upstream building or contractor datasets."
+      source_ids: []
+    - rule_id: boundary_atomic
+      applies_to: "foreground_system_boundary"
+      rule: "Screen each additional actual fuel, purchased heat/cooling, refrigerant, cleaning formulation, maintenance component, waste and emission separately; add exact atomic rows. Absence must be evidenced, not inferred from a short template."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Declared terminal configuration and service request/passenger admission; installed facilities are not burden-free"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Bus-terminal passenger support and office/custody service, excluding vehicle carriage and baggage loading"
+  recursive_input_rule: "Subcontracted same-category terminal support enters as one evidenced upstream service scope; do not also duplicate its energy or assets locally"
+  upstream_dataset_requirement: "Actual utilities, consumables, IT/facility manufacture/retirement and waste treatment; reconcile contractor inventories"
+  disclosure: "Service subtype and extent; passenger/station interface; opening/dwell time; carrier/contractor/tenant split; asset life/utilization; missing upstream scope"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Bus passenger terminal service event"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "station/site and period"
+    - "urban/suburban/interurban context"
+    - "event subtype"
+    - "exact start/end and included functions"
+    - "passenger count and throughput"
+    - "station hall/platform extent and opening hours"
+    - "dwell time"
+    - "ticket/reservation success criteria"
+    - "any luggage consignment count/mass/custody duration"
+    - "accessibility and safety requirements"
+    - "operator/carrier/contractor split"
+    - "tenant separation"
+    - "asset scope/life denominator"
+    - "electricity region/voltage"
+reference_flows:
+  []
+measurement_rules:
+  - id: event_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Count the cp_events completed event definition once with its declared extent and start/end. Failed work remains attributable input, not extra successful output."
+  - id: event_separation
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Keep terminal visits, independently contracted transactions and custody events separate. No generic count-to-time, passenger-to-bus or luggage-mass equivalence is assumed."
+process_map:
+  - id: terminal
+    name: "Provide and complete declared terminal service"
+    inclusion: "required"
+    inclusion_condition: "Actual event subtype and each row condition"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: terminal
+    label: "Provide and complete declared terminal service"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter hall/platform lighting, ventilation, cooling, escalators, security and ticketing equipment actually within operator scope. Record region and voltage; meter bus charging separately as vehicle energy."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual station heating or hot-water production. Preserve metered unit and composition; volume-to-mass conversion needs measured conditions and evidenced density."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual station-owned standby generation; separate fuel stock changes and test operation. Bus fuel, including bus idling, is outside this row."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Meter station sanitation, cleaning and other actual passenger-service water; distinguish tenants, vehicle washing and stormwater."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: ticket_paper
+          role: "Thermal ticket paper"
+          name: "Thermal ticket paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on printed tickets or reservation receipts; weigh issued/returned stock including failed printing. Electronic-only events do not invent paper consumption."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: tissue
+          role: "Sanitary tissue paper"
+          name: "Sanitary tissue paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual passenger-facility sanitary paper consumption; separate retail goods sold by tenants."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: cleaner
+          role: "Sodium-hypochlorite cleaning solution"
+          name: "Sodium-hypochlorite cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only when this actual formulated cleaner is used; record solution concentration and whole-solution mass, not pure active chemical mass. Other cleaners require their own specific rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: r134a_supply
+          role: "1,1,1,2-Tetrafluoroethane refrigerant"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual R134a station air-conditioning equipment; record supplier and service-cylinder mass, stocks, installed charge and recovery. Purchased supply is not assumed equal to release."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+        - row_id: building
+          role: "Bus passenger terminal building"
+          name: "Bus passenger terminal building"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Allocate production and retirement of the actual terminal building using construction scope and supported lifetime utilization; keep station hall, bus platform, tenant and unrelated spaces distinct."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: ticket_terminal
+          role: "Electronic ticketing terminal"
+          name: "Electronic ticketing terminal"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual ticket/reservation terminal; record model, use and documented life. Do not count one whole computer per ticket."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: hvac
+          role: "Passenger-hall air-conditioning unit"
+          name: "Passenger-hall air-conditioning unit"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Actual equipment manufacturing/retirement share, with installed configuration and supported operation-life denominator. Separate electricity and onsite refrigerant servicing from embodied inventory."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: locker
+          role: "Steel left-luggage locker"
+          name: "Steel left-luggage locker"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual left-luggage service; record locker configuration, storage extent, real occupancy and supported lifetime use."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: terminal_output
+          role: "Bus passenger terminal service event"
+          name: "Bus passenger terminal service event"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One completed event of the declared subtype and functional extent; subsidiary actions within a full visit do not generate additional complete outputs."
+          amount:
+            expression: "1 item"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_events
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_paper
+          role: "Discarded thermal ticket paper"
+          name: "Discarded thermal ticket paper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual station-held failed/expired tickets and printing offcuts; distinguish tickets handed to passengers and retain actual treatment."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Passenger-terminal sanitary wastewater"
+          name: "Passenger-terminal sanitary wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual collected sanitary effluent sent to treatment; distinguish rain runoff and vehicle-washing effluent. Record destination and treatment coverage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_tissue
+          role: "Discarded sanitary tissue paper"
+          name: "Discarded sanitary tissue paper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only segregated discarded sanitary paper sent as solid waste; do not also count the same paper in the sanitary wastewater stream."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual station boiler or generator fossil combustion, from measurement or a documented fuel-specific carbon balance. Exclude bus exhaust and upstream electricity-supply emissions from this direct row."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: r134a_air
+          role: "1,1,1,2-Tetrafluoroethane, to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual R134a losses from station equipment; derive from documented refrigerant balance, including equipment charge changes and recovery, not a default leak rate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "foreground_burden_allocation"
+    rule: "Use direct submetering and actual event/task records first. Ticket IT follows measured terminal/session activity; custody equipment follows actual consignment duration/occupancy; station space support uses evidenced occupied area-time and passenger use where causal."
+    source_ids: []
+  - rule_id: allocation_complete
+    applies_to: "foreground_burden_allocation"
+    rule: "Distribute matched-period support including attributable standby, low-use hours and failures over completed comparable events. Do not erase idle facility burdens, equate tickets sold with all station visitors, or count passengers once at each internal checkpoint."
+    source_ids: []
+  - rule_id: allocation_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "For each real asset use actual utilization divided by supported lifetime utilization, reconcile period/previous shares and cap cumulative attribution at one full life. No arbitrary building life or equipment mass; supplier-covered manufacture is not counted twice."
+    source_ids: []
+  - rule_id: allocation_interfaces
+    applies_to: "foreground_burden_allocation"
+    rule: "Keep bus operation, carrier idling, independent baggage loading, tenants and contractor scopes reconciled. A separately reported carrier-idling scenario stays linked to carriage and must not also be embedded in station service."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_events
+      process_id: "terminal"
+      flow_role: "terminal_output"
+      record_type: "event_record"
+      raw_fields: "event_id; subtype; included functions; passenger count; start/end; success; transaction/consignment; dwell; opening hours; operator split"
+      collection_method: "Reconcile access counts and completed office/custody logs by unique event; keep failed actions and internal checkpoints distinct. For custody retain actual bag count, mass and period without equating it to loading service."
+      unit: "item"
+      frequency: "each event and reconciled period"
+      temporal_coverage: "whole matched operating period"
+      site_scope: "one declared service scenario"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "event ledger; access counts; completed records"
+    - protocol_id: cp_utilities
+      process_id: "terminal"
+      flow_role: "electricity; natural_gas; diesel; water"
+      record_type: "meter_record"
+      raw_fields: "row; readings; unit; stock; region; voltage; operating schedule; hall/platform; tenant/carrier share"
+      collection_method: "Read calibrated meters and fuel/water bills with task/zone allocation; retain standby and separate vehicle energy and tenant loads."
+      unit: "row unit"
+      frequency: "meter interval and billing period"
+      temporal_coverage: "same period as events"
+      site_scope: "operator service scope"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; bills; zone diagrams"
+    - protocol_id: cp_materials
+      process_id: "terminal"
+      flow_role: "ticket_paper; tissue; cleaner"
+      record_type: "material_record"
+      raw_fields: "specific material; issued/returned mass; formulation; concentration; stock; task"
+      collection_method: "Weigh actual material use and reconcile stock; preserve cleaning-solution versus active-ingredient basis and issued paper versus sold goods."
+      unit: "kg"
+      frequency: "each issue and period"
+      temporal_coverage: "same period as events"
+      site_scope: "actual station consumables"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "stock ledger; weighing; supplier composition"
+    - protocol_id: cp_assets
+      process_id: "terminal"
+      flow_role: "building; ticket_terminal; hvac; locker"
+      record_type: "asset_record"
+      raw_fields: "asset_id; configuration; manufacture scope; construction inventory; actual use; lifetime utilization; previous shares; retirement"
+      collection_method: "Use actual asset/construction records and equipment/space utilization; independently justify life denominator and supplier component coverage."
+      unit: "item"
+      frequency: "asset changes and period"
+      temporal_coverage: "asset life and current events"
+      site_scope: "actually used station assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "register; life evidence; utilization ledger"
+    - protocol_id: cp_waste
+      process_id: "terminal"
+      flow_role: "waste_paper; wastewater; waste_tissue"
+      record_type: "waste_record"
+      raw_fields: "stream; mass; contamination; source; destination; treatment; date; allocation"
+      collection_method: "Measure segregated streams and reconcile treatment manifests, including paper already in sewage to prevent double counting."
+      unit: "kg"
+      frequency: "each disposal and period"
+      temporal_coverage: "same period as events"
+      site_scope: "station scope excluding tenant/vehicle wastes"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weighing; manifests; sewage records"
+    - protocol_id: cp_emissions
+      process_id: "terminal"
+      flow_role: "fossil_co2"
+      record_type: "emission_record"
+      raw_fields: "species; source; fuel; carbon content; test/model; activity; compartment"
+      collection_method: "Use measured station-source emissions or a cited fuel-specific method and measured activity; vehicle emissions remain in carrier inventories."
+      unit: "kg"
+      frequency: "test and activity period"
+      temporal_coverage: "same period as events"
+      site_scope: "actual station boiler/generator"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "test; fuel record; method source"
+    - protocol_id: cp_refrigerant
+      process_id: "terminal"
+      flow_role: "r134a_supply; r134a_air"
+      record_type: "refrigerant_balance"
+      raw_fields: "species; beginning/end stock; acquisitions; disbursements; beginning/end equipment charge; servicing; recovery; contractor coverage"
+      collection_method: "Apply individual-species material balance with documented stock and installed-charge changes; distinguish supply, recovery and emissions. Supplier/manufacturer-filled charge is reconciled to avoid double counts."
+      unit: "kg"
+      frequency: "each service and reporting period"
+      temporal_coverage: "same period as events"
+      site_scope: "actual station refrigerant equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "service invoices; cylinder weighing; stock/charge ledger"
+  calculation_rules:
+    - id: calc_completed_events
+      applies_to: "terminal_output"
+      rule: "Count unique completed comparable events with stated extent, excluding internal duplicate records and failed/cancelled events; their attributable work remains in inputs. Divide matched-period allocated exchanges by completed event count."
+      inputs:
+        - cp_events
+        - cp_utilities
+        - cp_materials
+      output: "per reference flow"
+      source_ids: []
+    - id: calc_asset_share
+      applies_to: "building; ticket_terminal; hvac; locker"
+      rule: "Apply allocation_assets to supported manufacture/retirement inventory and measured service utilization; normalize period share over cp_events without counting the whole asset per event."
+      inputs:
+        - cp_assets
+        - cp_events
+      output: "per reference flow"
+      source_ids: []
+    - id: calc_refrigerant
+      applies_to: "r134a_air"
+      rule: "Use the species balance: beginning stored stock plus acquisitions plus beginning equipment charge, minus ending stored stock, disbursements and ending equipment charge. Reconcile actual recovery and equipment changes; investigate negative or unexplained balances before attributing release. No leakage percentage or GWP is prescribed."
+      inputs:
+        - cp_refrigerant
+        - cp_events
+      output: "species mass per reference flow"
+      source_ids:
+        - epa-refrigerant-balance
+  data_quality_requirements:
+    - id: dq_event
+      applies_to: "terminal_output"
+      requirement: "Functional extent and accepted completion are mandatory; one ticket is not automatically one visitor and one booking group is not automatically one passenger."
+      evidence: "cp_events"
+    - id: dq_period
+      applies_to: "all inventory rows"
+      requirement: "Same station/period/scenario and operating/tenant/carrier boundaries for event counts, utilities and waste. Retain standby and low occupancy."
+      evidence: "cp_events; cp_utilities"
+    - id: dq_assets
+      applies_to: "building; ticket_terminal; hvac; locker"
+      requirement: "Use actual life/utilization records with sensitivity and component overlap checks; no assumed asset mass or life."
+      evidence: "cp_assets"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Flow identity, reference properties, units and localized displays must be verified before use; empty flow UUIDs remain individually disclosed, not fictional resolved services."
+      evidence: "Direct-read support and unresolved register"
+validation_rules:
+  - rule_id: validate_event
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique terminal_output of 1 item with complete event subtype, functional extent, service quality and start/end; reject passenger-km, bus trips, prices or unexplained transaction averages as substitutes."
+    source_ids: []
+  - rule_id: validate_boundary
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify all terminal-office functions in scope, distinct luggage custody versus 67190 loading, and carrier/contractor/tenant interfaces. A full visit and its included office actions cannot both count as full terminal outputs."
+    source_ids:
+      - un-cpc3-67410
+  - rule_id: validate_atomicity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check each actual utility, material, asset, waste and emitted species independently; reconcile refrigerant supply/recovery/charge changes. Disclose identity and upstream gaps; parser pass alone does not establish full lifecycle completeness or methodology approval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "passenger_terminal_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified bus-terminal support component in declared passenger travel or office/custody scenario"
+  excluded_use: "Complete passenger travel footprint, vehicle operation, baggage loading or interchangeable generic station event factor"
+  required_metadata: "All reference qualifiers; passenger/functions/period; site interfaces; tenant/carrier/contractor split; actual allocations; assets and upstream identities"
+  required_quality_disclosure: "Event comparability; dwell/traffic uncertainty; support/standby coverage; asset denominator; refrigerant balance; unresolved UUIDs and upstream omissions"
+  update_trigger: "Changed station function, passenger profile, terminal configuration, contract boundary, energy, refrigerant or lifetime-utilization evidence"
+data_sources:
+  - id: "un-cpc3-67410"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0, subclass 67410 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67410"
+    used_for: "Full passenger terminal and office/custody scope; 67190 loading exclusion"
+  - id: "energystar-om"
+    type: "official_guidance"
+    reference: "ENERGY STAR, Operation and Maintenance Best Practices, Tune It Up / Turn It Off / Check It Out. https://www.energystar.gov/buildings/save-energy-commercial-buildings/ways-save/om-best-practices"
+    used_for: "Actual building schedules, controls and measurement of HVAC, lighting and office systems; not bus-station energy default"
+  - id: "epa-refrigerant-balance"
+    type: "official_guidance"
+    reference: "US EPA, Direct Fugitive Emissions from Refrigeration, Air Conditioning, Fire Suppression, and Industrial Gases, December 2023, section 2.3 material balance. https://www.epa.gov/sites/default/files/2020-12/documents/fugitiveemissions.pdf"
+    used_for: "Individual refrigerant stock, acquisitions/disbursements and equipment-charge balance; no default leak factor or GWP adopted; not full-LCA guidance"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:cadbc7d58a86051d4dc0430da77d4b30f050211f610eab6b0454fc8f5e5b5f58"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5098"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5098
+          line: 58
+          column: 1
+        end:
+          offset: 7032
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Declared terminal configuration and service request/passenger admission; installed facilities are not burden-free |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Bus-terminal passenger support and office/custody service, excluding vehicle carriage and baggage loading |\n| recursive_input_rule | Subcontracted same-category terminal support enters as one evidenced upstream service scope; do not also duplicate its energy or assets locally |\n| upstream_dataset_requirement | Actual utilities, consumables, IT/facility manufacture/retirement and waste treatment; reconcile contractor inventories |\n| disclosure | Service subtype and extent; passenger/station interface; opening/dwell time; carrier/contractor/tenant split; asset life/utilization; missing upstream scope |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_services` | Include actual passenger facilities, ticketing/reservations, luggage-office administration and custody only for the chosen event. Physical baggage/freight loading remains outside 67410. | un-cpc3-67410 |\n| `boundary_support` | Include attributable lighting, heating, cooling, ventilation, IT, security, sanitation, cleaning and real maintenance. Track operating/control schedules and meter use; no standard building energy share is assumed. | energystar-om |\n| `boundary_assets` | Include supported manufacture/retirement shares of actual terminal building, ticket IT, cooling and custody equipment; prevent overlap with complete upstream building or contractor datasets. |  |\n| `boundary_atomic` | Screen each additional actual fuel, purchased heat/cooling, refrigerant, cleaning formulation, maintenance component, waste and emission separately; add exact atomic rows. Absence must be evidenced, not inferred from a short template. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 211
+              line: 8
+              column: 1
+            end:
+              offset: 233
+              line: 8
+              column: 23
+          text: "# Bus station services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5098
+              line: 58
+              column: 1
+            end:
+              offset: 5119
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_19146"
+      family: "allocation"
+      span:
+        start:
+          offset: 19146
+          line: 370
+          column: 1
+        end:
+          offset: 20387
+          line: 379
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocation_direct` | Use direct submetering and actual event/task records first. Ticket IT follows measured terminal/session activity; custody equipment follows actual consignment duration/occupancy; station space support uses evidenced occupied area-time and passenger use where causal. |  |\n| `allocation_complete` | Distribute matched-period support including attributable standby, low-use hours and failures over completed comparable events. Do not erase idle facility burdens, equate tickets sold with all station visitors, or count passengers once at each internal checkpoint. |  |\n| `allocation_assets` | For each real asset use actual utilization divided by supported lifetime utilization, reconcile period/previous shares and cap cumulative attribution at one full life. No arbitrary building life or equipment mass; supplier-covered manufacture is not counted twice. |  |\n| `allocation_interfaces` | Keep bus operation, carrier idling, independent baggage loading, tenants and contractor scopes reconciled. A separately reported carrier-idling scenario stays linked to carriage and must not also be embedded in station service. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 211
+              line: 8
+              column: 1
+            end:
+              offset: 233
+              line: 8
+              column: 23
+          text: "# Bus station services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 19146
+              line: 370
+              column: 1
+            end:
+              offset: 19186
+              line: 370
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26486"
+      family: "validation"
+      span:
+        start:
+          offset: 26486
+          line: 410
+          column: 1
+        end:
+          offset: 27363
+          line: 418
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_event` | Require unique terminal_output of 1 item with complete event subtype, functional extent, service quality and start/end; reject passenger-km, bus trips, prices or unexplained transaction averages as substitutes. |  |\n| `validate_boundary` | Verify all terminal-office functions in scope, distinct luggage custody versus 67190 loading, and carrier/contractor/tenant interfaces. A full visit and its included office actions cannot both count as full terminal outputs. | un-cpc3-67410 |\n| `validate_atomicity` | Check each actual utility, material, asset, waste and emitted species independently; reconcile refrigerant supply/recovery/charge changes. Disclose identity and upstream gaps; parser pass alone does not establish full lifecycle completeness or methodology approval. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 211
+              line: 8
+              column: 1
+            end:
+              offset: 233
+              line: 8
+              column: 23
+          text: "# Bus station services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26486
+              line: 410
+              column: 1
+            end:
+              offset: 26508
+              line: 410
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_services"
+      identity_kind: "explicit"
+      unit_id: "normative_5098"
+      source_span:
+        start:
+          offset: 6068
+          line: 73
+          column: 1
+        end:
+          offset: 6295
+          line: 73
+          column: 228
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_support"
+      identity_kind: "explicit"
+      unit_id: "normative_5098"
+      source_span:
+        start:
+          offset: 6296
+          line: 74
+          column: 1
+        end:
+          offset: 6550
+          line: 74
+          column: 255
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_5098"
+      source_span:
+        start:
+          offset: 6551
+          line: 75
+          column: 1
+        end:
+          offset: 6768
+          line: 75
+          column: 218
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_5098"
+      source_span:
+        start:
+          offset: 6769
+          line: 76
+          column: 1
+        end:
+          offset: 7030
+          line: 76
+          column: 262
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_19146"
+      source_span:
+        start:
+          offset: 19240
+          line: 374
+          column: 1
+        end:
+          offset: 19535
+          line: 374
+          column: 296
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_19146"
+      source_span:
+        start:
+          offset: 19536
+          line: 375
+          column: 1
+        end:
+          offset: 19830
+          line: 375
+          column: 295
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_19146"
+      source_span:
+        start:
+          offset: 19831
+          line: 376
+          column: 1
+        end:
+          offset: 20124
+          line: 376
+          column: 294
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_19146"
+      source_span:
+        start:
+          offset: 20125
+          line: 377
+          column: 1
+        end:
+          offset: 20385
+          line: 377
+          column: 261
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_event"
+      identity_kind: "explicit"
+      unit_id: "normative_26486"
+      source_span:
+        start:
+          offset: 26562
+          line: 414
+          column: 1
+        end:
+          offset: 26798
+          line: 414
+          column: 237
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_26486"
+      source_span:
+        start:
+          offset: 26799
+          line: 415
+          column: 1
+        end:
+          offset: 27065
+          line: 415
+          column: 267
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_atomicity"
+      identity_kind: "explicit"
+      unit_id: "normative_26486"
+      source_span:
+        start:
+          offset: 27066
+          line: 416
+          column: 1
+        end:
+          offset: 27361
+          line: 416
+          column: 296
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5098"
+      source_span:
+        start:
+          offset: 5098
+          line: 58
+          column: 1
+        end:
+          offset: 5119
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5098"
+      source_span:
+        start:
+          offset: 5147
+          line: 62
+          column: 1
+        end:
+          offset: 6014
+          line: 69
+          column: 174
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_19146"
+      source_span:
+        start:
+          offset: 19146
+          line: 370
+          column: 1
+        end:
+          offset: 19186
+          line: 370
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26486"
+      source_span:
+        start:
+          offset: 26486
+          line: 410
+          column: 1
+        end:
+          offset: 26508
+          line: 410
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cadbc7d58a86051d4dc0430da77d4b30f050211f610eab6b0454fc8f5e5b5f58"
+  generated_content_sha256: "sha256:a9b1250378fdbbf9d5aad6eac36a567c78f3c8495445c6ea39cd54146d7ffd03"

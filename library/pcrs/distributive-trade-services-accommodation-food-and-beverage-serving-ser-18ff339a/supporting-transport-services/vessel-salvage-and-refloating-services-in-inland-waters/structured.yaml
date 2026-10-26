@@ -1,10 +1,1279 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67532"
-  title: "Vessel salvage and refloating services in inland waters"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.vessel-salvage-and-refloating-services-in-inland-waters"
+  classification_refs: "CPC3.0 67532; narrower non-standalone-tow recovery scope"
+  covered_products: "Inland vessel/cargo salvage, raising, righting and stranded-vessel refloating with identified recovery handoff"
+  excluded_products: "Standalone towing/pushing; coastal salvage; life rescue/fire/police; ordinary transport; standalone shipbreaking/clean-up"
+  representative_product: "One accepted inland recovery task for the named vessel/cargo and declared success endpoint"
+  production_route: "Survey and establish initial condition → actual stabilization/recovery stages → verified state/custody handoff → attributable site clearance/return"
+  market_state: "Completed defined recovery service; recovered original property separately accounted"
+functional_unit:
+  what: "Recover, raise, right or refloat the identified inland casualty to the agreed state/handoff"
+  how_much: "One accepted task, declaring vessel/cargo identity, initial state and exact completion extent"
+  how_well: "Documented stability/floatation/recovery/hand-over acceptance criteria appropriate to the actual plan, not a universal success percentage"
+  how_long_or_cycle: "Full assigned task through accepted endpoint including actual standby, failed attempts, weather/high-water delay, mobilization and return"
+  reference_flow_link: "recovery_service"
+system_boundary:
+  rules:
+    - rule_id: boundary_recovery
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual survey, mobilization, stabilization, cargo removal/lightening, lift/righting/refloating, dewatering, necessary supporting movement, custody handoff and site clearance/return. Select from real staged plan, not a universal recipe."
+      source_ids:
+        - usace-mcalpine-salvage
+    - rule_id: boundary_diving
+      applies_to: "foreground_system_boundary"
+      rule: "Include professional diving resources only when actually used and record actual project/equipment/gas/energy/time conditions; this inventory does not prescribe a diving or cutting procedure."
+      source_ids:
+        - hse-inland-diving
+    - rule_id: boundary_casualty
+      applies_to: "foreground_system_boundary"
+      rule: "Keep initial ship/cargo/oil as a separately identified custody/contamination ledger, not new manufactured co-products. Track recovered amounts, residual condition, receiver and actual incremental environmental releases separately."
+      source_ids: []
+    - rule_id: boundary_actual
+      applies_to: "foreground_system_boundary"
+      rule: "Screen all actual energy, lifting/diving/cutting gas and materials, support movements, rigging/boom/asset shares, water/soil disturbance, each waste and species release. Add each present exchange atomically; never substitute marine seawater recipients for inland freshwater."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Surveyed inland casualty and documented pre-operation pollution/riverbed condition; actual available recovery assets"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Defined inland salvage/recovery/refloating subset; independent towing and public rescue functions excluded"
+  recursive_input_rule: "Purchased recovery stages and necessary support movements enter once with exact endpoint; no duplicate full-project and subcontractor activity"
+  upstream_dataset_requirement: "Actual fuel/electricity/gases/material supply, working craft/equipment life shares, reception/treatment and support transport"
+  disclosure: "Initial casualty/pollution and river conditions; actual stages/equipment; completion interfaces; old-property custody; new release; supplier/upstream gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed qualified inland vessel or cargo recovery task"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "task/object IDs"
+    - "vessel type/dimensions/displacement and cargo identity/mass"
+    - "distress/sunken/capsized/stranded initial condition"
+    - "depth/current/water-level/visibility"
+    - "freshwater or actual salinity"
+    - "riverbed/contamination baseline"
+    - "bridge/lock/access constraints"
+    - "stage plan and actual route"
+    - "craft/crane/pump/diving/cutting equipment"
+    - "real power/load/time"
+    - "standby/failed attempts"
+    - "success endpoint/custody handoff"
+    - "support movement and supplier boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: task_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "cp_task binds initial state, recovery stages and accepted endpoint/custody handoff; tasks of different physical extent are not equivalent by count alone."
+  - id: fuel_mass
+    applies_to: "diesel; petrol"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure fuel by actual engine/pump/crane duty and record corresponding load/time; nameplate power or casualty mass is not measured fuel or energy."
+  - id: water_origin
+    applies_to: "oily_water; sediment; benzene_water"
+    required_property_ref:
+      name: "Mass; Volume"
+      uuid: ""
+    required_unit: "kg; m3"
+    rule: "Separate initial casualty contamination/background, recovered contaminant and incremental recovery release; preserve wet/dry and concentration bases."
+process_map:
+  - id: recovery
+    name: "Survey, support and complete identified inland recovery"
+    inclusion: "required"
+    inclusion_condition: "Actual recovery project and handoff, including shared resources and whole-task accounting"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: lifting
+    name: "Lift, right, buoy or dewater as actually planned"
+    inclusion: "conditional"
+    inclusion_condition: "Actual equipment route; not all tasks need every step"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: diving
+    name: "Perform actual professional dive contribution"
+    inclusion: "conditional"
+    inclusion_condition: "Actual diving stage only"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: cutting
+    name: "Perform actual documented cutting contribution"
+    inclusion: "conditional"
+    inclusion_condition: "Actual specified cutting route; surface and underwater methods not assumed interchangeable"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: lifting
+    label: "Lift, right, buoy or dewater as actually planned"
+    inputs:
+      product:
+        - row_id: steel_sling
+          role: "Steel wire lifting sling"
+          name: "Steel wire lifting sling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual rigging material/lifetime share; keep rated configuration records without assuming generic lifting capacity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: lift_bag
+          role: "Reinforced-rubber inflatable lifting bag"
+          name: "Reinforced-rubber inflatable lifting bag"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual buoyancy-assist route; record actual bag construction and gas/air supply separately; no assumed lifting volume."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: floating_crane
+          role: "Floating salvage crane"
+          name: "Floating salvage crane"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual crane route; declare crane/pontoon/prime-mover aggregate boundary and avoid adding included vessel components again."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: pump
+          role: "Submersible dewatering pump"
+          name: "Submersible dewatering pump"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual dewatering; retain pump capacity/duty records and upstream production share; power/fuel is measured separately."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: diving
+    label: "Perform actual professional dive contribution"
+    inputs:
+      product:
+        - row_id: breathing_air
+          role: "Compressed air, breathing quality"
+          name: "Compressed air, breathing quality"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only externally supplied breathing air; document composition/quality and cylinder mass balance. Internally compressed air is not purchased again beside its compressor energy. Other actual blends need separate specific rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: diving_system
+          role: "Commercial surface-supplied diving system"
+          name: "Commercial surface-supplied diving system"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual professional diving; record configuration, compressor/chamber coverage and supported utilization; no default gas or depth."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: cutting
+    label: "Perform actual documented cutting contribution"
+    inputs:
+      product:
+        - row_id: oxygen
+          role: "Oxygen, industrial gas"
+          name: "Oxygen, industrial gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual recorded cutting gas; distinguish it from breathing gas and record returned cylinder stock."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: acetylene
+          role: "Acetylene"
+          name: "Acetylene"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual above-water oxyacetylene cutting route recorded in the work plan; do not prescribe this gas for underwater cutting. Other tools/gases require their own actual rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: cutting_rig
+          role: "Above-water oxyacetylene cutting set"
+          name: "Above-water oxyacetylene cutting set"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual cutting equipment; record actual duty/lifetime share; no assumption that every wreck must be cut."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: recovery
+    label: "Survey, support and complete identified inland recovery"
+    inputs:
+      product:
+        - row_id: diesel
+          role: "Diesel fuel, petroleum-derived"
+          name: "Diesel fuel, petroleum-derived"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual salvage support vessels, cranes, generators or pumps only; distinguish each engine/duty and fuel specification in records. Original casualty fuel is not a purchased operating input."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: petrol
+          role: "Petrol, petroleum-derived"
+          name: "Petrol, petroleum-derived"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual petrol pump/support craft operation; separate from diesel and recovered casualty fuel."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity, alternating current"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual purchased shore/charging/support electricity; internally generated diesel electricity is not another purchased input."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Actual fresh cleaning/process supply only; river water pumped from the casualty has separate source/volume records."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Mineral hydraulic oil"
+          name: "Mineral hydraulic oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual crane/winch/pump hydraulic-oil net consumption; distinguish original wreck oil and supplier-covered maintenance."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: sorbent
+          role: "Polypropylene oil-sorbent pad"
+          name: "Polypropylene oil-sorbent pad"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual pads used in salvage containment; measure issued/recovered amounts and captured contaminant separately."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: boom
+          role: "Floating oil containment boom"
+          name: "Floating oil containment boom"
+          flow_type: "product"
+          property_unit: "Length / m"
+          description: "Conditional actual boom deployed; specify composite design, deployment duration and supported lifetime-use share rather than assuming disposable use."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: workboat
+          role: "Inland salvage support workboat"
+          name: "Inland salvage support workboat"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Actual working craft manufacturing/overhaul/retirement share with hull, engine and fit-out boundary; excludes casualty vessel manufacture."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovery_service
+          role: "Completed inland recovery task"
+          name: "Completed qualified inland vessel or cargo recovery task"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One task accepted at its declared recovered-state/custody interface. Whole-project waste and release rows retain the actual generating stage/source, not a claim that releases happen only on completion."
+          amount:
+            expression: "1 item"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_task
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: oily_water
+          role: "Salvage dewatering wastewater containing oil"
+          name: "Salvage dewatering wastewater containing oil"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Actual collected dewatering stream with original/new pollutant origin, composition and treatment. Do not equate all pumped river water with hazardous waste or a pollutant release."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: sediment
+          role: "Recovered riverbed sediment sludge"
+          name: "Recovered riverbed sediment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional material physically removed during recovery; document wet/dry basis, contamination and receiver, distinct from in-situ resuspension."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent mineral hydraulic oil"
+          name: "Spent mineral hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual salvage-equipment maintenance waste only, with custody/treatment separate from casualty oil."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: oily_sorbent
+          role: "Oil-saturated polypropylene sorbent pad"
+          name: "Oil-saturated polypropylene sorbent pad"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discarded pad plus captured liquid; record component balance and receiver without duplicating recovered oil."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_sling
+          role: "Discarded steel wire lifting sling"
+          name: "Discarded steel wire lifting sling"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual retired rigging material with actual recycling/treatment; no automatic steel substitution credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: cut_offcut
+          role: "Discarded carbon-steel cutting offcut"
+          name: "Discarded carbon-steel cutting offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only an actual discarded cutting residue within contract; original recovered hull sections handed over as customer property are not new steel co-products."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2_air
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual operator fuel/cutting-carbon oxidation only; no negative avoided-casualty emission credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: co_air
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual species from operator engines/cutting with measurement or explicitly justified activity-specific factors."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: no_air
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Species-resolved operator release; aggregate NOx-as-NO2 needs justified speciation first."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: no2_air
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual NO2 separately from NO; retain source engine/tool and receiving-air compartment."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: so2_air
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual fuel sulfur/oxidation or exhaust evidence; no assumed sulfur content."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: pm25_air
+          role: "Particulate matter, aerodynamic diameter below 2.5 micrometres, to air"
+          name: "Particulate matter, aerodynamic diameter below 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual size-resolved operator combustion/cutting fraction; separate metal species and avoid overlapping total-PM accounting."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: benzene_water
+          role: "Benzene, to freshwater"
+          name: "Benzene, to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional measured incremental benzene release attributable to recovery after background/casualty distinction. No inference that every wreck contains benzene or all recovered oil is benzene."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_project
+    applies_to: "foreground_burden_allocation"
+    rule: "Prefer stage/equipment-specific meters and logs; assign shared mobilization, standby, high-water delays and retries by documented actual project activity, then accepted task extent. Do not allocate by salvage award or cargo value."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocate working craft, crane/pontoon, pump, diving/cutting rig, sling and lift bags by supported lifetime utilization and actual task use; aggregate supplier assets and included components cannot both be charged."
+    source_ids: []
+  - rule_id: allocate_custody
+    applies_to: "foreground_burden_allocation"
+    rule: "Recovered vessel/cargo is original property, not a newly produced co-product. Keep recovery amounts/fate outside an automatic revenue allocation or avoided-manufacture credit; independently model any further recycling/dismantling study boundary."
+    source_ids: []
+  - rule_id: allocate_pollution
+    applies_to: "foreground_burden_allocation"
+    rule: "Record pre-existing casualty pollution separately from operator combustion, new spills and disturbance-induced releases. A removed pollutant mass is not a negative emission; no default avoided future release."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_task
+      process_id: "recovery"
+      flow_role: "recovery_service"
+      record_type: "foreground record"
+      raw_fields: "task/object/cargo IDs; initial state/mass; depth/current/water level; bridge/lock limits; plan/stages; equipment; actual activity; attempts; acceptance/handoff"
+      collection_method: "Reconcile survey, actual recovery plan, equipment/stage logs and signed recovered-state/custody handoff; retain incomplete/failed scope explicitly."
+      unit: "item"
+      frequency: "each stage/task"
+      temporal_coverage: "same declared task/reporting period"
+      site_scope: "actual inland recovery site and assigned equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "survey; photographs; stage records; signed handoff"
+    - protocol_id: cp_energy
+      process_id: "recovery"
+      flow_role: "diesel; petrol; electricity"
+      record_type: "foreground record"
+      raw_fields: "engine/tool ID; fuel/stock; delivery/return; shore meter; actual power/load/duration; standby/retry/travel; share"
+      collection_method: "Measure actual operator fuel and purchased electricity by source; reconcile full task cycle without reusing casualty fuel as purchased supply."
+      unit: "kg; kWh"
+      frequency: "duty interval/task"
+      temporal_coverage: "same declared task/reporting period"
+      site_scope: "actual inland recovery site and assigned equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration; fuel balance; duty logs"
+    - protocol_id: cp_material
+      process_id: "recovery"
+      flow_role: "water; hydraulic_oil; sorbent; steel_sling; breathing_air; oxygen; acetylene"
+      record_type: "foreground record"
+      raw_fields: "specific substance/product; composition; cylinder/stock mass; issued/returned; consumed/retired; task/stage source"
+      collection_method: "Use actual stock/cylinder weighing or traceable delivered quantity; keep breathing/cutting gases and internally generated supply distinct; record material service-life shares."
+      unit: "kg; m3"
+      frequency: "issue/event and period"
+      temporal_coverage: "same declared task/reporting period"
+      site_scope: "actual inland recovery site and assigned equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "stock/cylinder records; composition; supplier boundary"
+    - protocol_id: cp_asset
+      process_id: "recovery"
+      flow_role: "boom; workboat; lift_bag; floating_crane; pump; diving_system; cutting_rig"
+      record_type: "foreground record"
+      raw_fields: "asset ID/configuration; upstream boundary; actual use; maintenance/retirement; lifetime evidence; task share"
+      collection_method: "Bind working equipment to upstream manufacture and retirement; document physical lifetime and actual stage utilization without double-counting included components."
+      unit: "item; m"
+      frequency: "asset event/period"
+      temporal_coverage: "same declared task/reporting period"
+      site_scope: "actual inland recovery site and assigned equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "asset/maintenance registers; utilization/life evidence"
+    - protocol_id: cp_waste
+      process_id: "recovery"
+      flow_role: "oily_water; sediment; spent_oil; oily_sorbent; waste_sling; cut_offcut"
+      record_type: "foreground record"
+      raw_fields: "specific waste; original/new source; amount; water/oil/solids composition; wet/dry basis; receiver; treatment; share"
+      collection_method: "Measure each collected stream and custody; distinguish recovered customer property, retained original pollutant, operator waste and treated discharge."
+      unit: "kg; m3"
+      frequency: "each collection/transfer"
+      temporal_coverage: "same declared task/reporting period"
+      site_scope: "actual inland recovery site and assigned equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "waste manifests; sampling; receiver records"
+    - protocol_id: cp_release
+      process_id: "recovery"
+      flow_role: "co2_air; co_air; no_air; no2_air; so2_air; pm25_air; benzene_water"
+      record_type: "foreground record"
+      raw_fields: "source/stage; baseline; actual species/fraction; fuel/exhaust or concentration/flow; receiver; retained/removed pollutant; evidence/factor units"
+      collection_method: "Measure actual operator/incremental release or use explicit justified source/activity factors; separate pre-existing pollution and freshwater receptor; unresolved difference remains a gap."
+      unit: "kg"
+      frequency: "event/duty and task"
+      temporal_coverage: "same declared task/reporting period"
+      site_scope: "actual inland recovery site and assigned equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "baseline/discharge tests; mass balance; factor applicability"
+  calculation_rules:
+    - id: task_denominator
+      applies_to: "recovery_service"
+      rule: "N = accepted completed recovery tasks of the exact initial-state/endpoint scope; require N positive. Component lifts and recovered tonnes do not increase task count."
+      inputs:
+        - cp_task
+      output: "N"
+      source_ids: []
+    - id: exchange_allocation
+      applies_to: "all inventory rows"
+      rule: "Assign each measured numerator to actual stages/equipment and full task activity using documented physical drivers, then divide by N. Preserve failed attempts, standby and return."
+      inputs:
+        - cp_task
+        - cp_energy
+        - cp_material
+        - cp_waste
+      output: "exchange per reference flow"
+      source_ids: []
+    - id: asset_allocation
+      applies_to: "boom; workboat; lift_bag; floating_crane; pump; diving_system; cutting_rig"
+      rule: "Allocate production/maintenance/retirement by supported lifetime utilization and actual task share; keep shared pontoon/crane/boat boundaries and divide attributable quantity by N."
+      inputs:
+        - cp_asset
+        - cp_task
+      output: "asset share per reference flow"
+      source_ids: []
+    - id: source_release
+      applies_to: "co2_air; co_air; no_air; no2_air; so2_air; pm25_air; benzene_water"
+      rule: "Resolve each actual operator or incremental species/fraction release using source-specific measurement/balance or justified factors, separate background/casualty origin and captured mass, then divide attributable quantity by N. Do not turn recovered contamination into negative emissions."
+      inputs:
+        - cp_release
+        - cp_waste
+        - cp_task
+      output: "species per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_object
+      applies_to: "recovery_service"
+      requirement: "Initial vessel/cargo identity and condition, inland geography and accepted recovery endpoint/custody are complete; standalone towing not silently selected."
+      evidence: "cp_task"
+    - id: dq_route
+      applies_to: "all inventory rows"
+      requirement: "Actual lifting/dewatering/diving/cutting route and energy/gas/equipment logs, not a universal salvage bill of materials or lifespan."
+      evidence: "cp_energy; cp_material; cp_asset"
+    - id: dq_pollution
+      applies_to: "oily_water; sediment; benzene_water"
+      requirement: "Pre-operation baseline and actual collected/released pollutant/species with receiving freshwater compartments; distinguish unknown from zero."
+      evidence: "cp_waste; cp_release"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Flow/property/unit support must be verified before linked data production; archive count support is not fresh flow confirmation."
+      evidence: "direct identity verification"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require identified inland vessel/cargo recovery, raising/righting/refloating endpoint; reject coastal scope, independent transport tow, public life rescue/police/fire and standalone shipbreaking/clean-up."
+    source_ids:
+      - un-cpc-67532
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique recovery_service at 1 item and positive N with actual initial condition/stages/equipment and signed handoff; no duplicate stage/whole-task or recovered-property production outputs."
+    source_ids: []
+  - rule_id: validate_release
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require separate old-contamination and new-release evidence, specific freshwater species/receiver and actual waste destination. Reject assumed avoided-pollution, scrap substitution and whole-oil-as-one-species shortcuts."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require actual source-linked fuel/gas/assets and full task-cycle allocation; unknown baseline, stage or treatment coverage is disclosed. A target check pass is not a safe salvage/diving/cutting approval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Unit-process inland vessel/cargo recovery task; narrower non-standalone-tow scope"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Same actual recovery subtype, initial state, inland site conditions, equipment and accepted endpoint/custody boundary"
+  excluded_use: "Independent towing; coastal/public rescue; generic per-vessel/tonne recovery factor; avoided pollution/steel credit; unqualified recycling"
+  required_metadata: "All task qualifiers; N; stage duty/gases/energy; asset life; custody original ship/cargo; contamination baseline; waste receivers; freshwater release evidence"
+  required_quality_disclosure: "Narrower scope and standalone-tow exclusion; UUID gaps; actual route/extent; baseline/new-release uncertainty; treatment and upstream omissions"
+  update_trigger: "Initial casualty/river condition, recovery success endpoint, method/equipment, pollution baseline, supplier boundary or material data-quality change"
+data_sources:
+  - id: "un-cpc-67532"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 67532. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67532"
+    used_for: "Unambiguous inland recovery/raising/righting/refloating scope and public-rescue exclusions; standalone towing not selected."
+  - id: "usace-mcalpine-salvage"
+    type: "official_guidance"
+    reference: "USACE Louisville District, Salvage efforts to retrieve sunken barges continue at McAlpine Dam (2019). https://www.lrd.usace.army.mil/Media/News/Article/3637047/salvage-efforts-to-retrieve-sunken-barges-continue-at-mcalpine-dam/"
+    used_for: "Observed inland staged recovery, cargo lightening, crane/cutting and variable river levels; case evidence only, no generic machinery count, fuel, yield or duration."
+  - id: "hse-inland-diving"
+    type: "official_guidance"
+    reference: "HSE, Commercial diving projects inland/inshore, L104 second edition2014, official scope description. https://www.hse.gov.uk/pubns/books/l104.htm"
+    used_for: "Inland commercial-diving applicability screening only; full code procedures, legal compliance and numeric gas/depth requirements not inferred."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b3664014d8988c29ddf27d64fe4508691b447f0e85b285c968f55029e7a3f9ad"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5470"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5470
+          line: 59
+          column: 1
+        end:
+          offset: 7540
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Surveyed inland casualty and documented pre-operation pollution/riverbed condition; actual available recovery assets |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Defined inland salvage/recovery/refloating subset; independent towing and public rescue functions excluded |\n| recursive_input_rule | Purchased recovery stages and necessary support movements enter once with exact endpoint; no duplicate full-project and subcontractor activity |\n| upstream_dataset_requirement | Actual fuel/electricity/gases/material supply, working craft/equipment life shares, reception/treatment and support transport |\n| disclosure | Initial casualty/pollution and river conditions; actual stages/equipment; completion interfaces; old-property custody; new release; supplier/upstream gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_recovery` | Include actual survey, mobilization, stabilization, cargo removal/lightening, lift/righting/refloating, dewatering, necessary supporting movement, custody handoff and site clearance/return. Select from real staged plan, not a universal recipe. | usace-mcalpine-salvage |\n| `boundary_diving` | Include professional diving resources only when actually used and record actual project/equipment/gas/energy/time conditions; this inventory does not prescribe a diving or cutting procedure. | hse-inland-diving |\n| `boundary_casualty` | Keep initial ship/cargo/oil as a separately identified custody/contamination ledger, not new manufactured co-products. Track recovered amounts, residual condition, receiver and actual incremental environmental releases separately. |  |\n| `boundary_actual` | Screen all actual energy, lifting/diving/cutting gas and materials, support movements, rigging/boom/asset shares, water/soil disturbance, each waste and species release. Add each present exchange atomically; never substitute marine seawater recipients for inland freshwater. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 246
+              line: 8
+              column: 1
+            end:
+              offset: 310
+              line: 8
+              column: 65
+          text: "# Vessel salvage and refloating in inland waters: recovery tasks"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5470
+              line: 59
+              column: 1
+            end:
+              offset: 5491
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26910"
+      family: "allocation"
+      span:
+        start:
+          offset: 26910
+          line: 587
+          column: 1
+        end:
+          offset: 28018
+          line: 596
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_project` | Prefer stage/equipment-specific meters and logs; assign shared mobilization, standby, high-water delays and retries by documented actual project activity, then accepted task extent. Do not allocate by salvage award or cargo value. |  |\n| `allocate_assets` | Allocate working craft, crane/pontoon, pump, diving/cutting rig, sling and lift bags by supported lifetime utilization and actual task use; aggregate supplier assets and included components cannot both be charged. |  |\n| `allocate_custody` | Recovered vessel/cargo is original property, not a newly produced co-product. Keep recovery amounts/fate outside an automatic revenue allocation or avoided-manufacture credit; independently model any further recycling/dismantling study boundary. |  |\n| `allocate_pollution` | Record pre-existing casualty pollution separately from operator combustion, new spills and disturbance-induced releases. A removed pollutant mass is not a negative emission; no default avoided future release. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 246
+              line: 8
+              column: 1
+            end:
+              offset: 310
+              line: 8
+              column: 65
+          text: "# Vessel salvage and refloating in inland waters: recovery tasks"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26910
+              line: 587
+              column: 1
+            end:
+              offset: 26950
+              line: 587
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_34302"
+      family: "validation"
+      span:
+        start:
+          offset: 34302
+          line: 627
+          column: 1
+        end:
+          offset: 35330
+          line: 636
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_scope` | Require identified inland vessel/cargo recovery, raising/righting/refloating endpoint; reject coastal scope, independent transport tow, public life rescue/police/fire and standalone shipbreaking/clean-up. | un-cpc-67532 |\n| `validate_reference` | Require unique recovery_service at 1 item and positive N with actual initial condition/stages/equipment and signed handoff; no duplicate stage/whole-task or recovered-property production outputs. |  |\n| `validate_release` | Require separate old-contamination and new-release evidence, specific freshwater species/receiver and actual waste destination. Reject assumed avoided-pollution, scrap substitution and whole-oil-as-one-species shortcuts. |  |\n| `validate_coverage` | Require actual source-linked fuel/gas/assets and full task-cycle allocation; unknown baseline, stage or treatment coverage is disclosed. A target check pass is not a safe salvage/diving/cutting approval. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 246
+              line: 8
+              column: 1
+            end:
+              offset: 310
+              line: 8
+              column: 65
+          text: "# Vessel salvage and refloating in inland waters: recovery tasks"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 34302
+              line: 627
+              column: 1
+            end:
+              offset: 34324
+              line: 627
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_5470"
+      source_span:
+        start:
+          offset: 6447
+          line: 74
+          column: 1
+        end:
+          offset: 6741
+          line: 74
+          column: 295
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_diving"
+      identity_kind: "explicit"
+      unit_id: "normative_5470"
+      source_span:
+        start:
+          offset: 6742
+          line: 75
+          column: 1
+        end:
+          offset: 6976
+          line: 75
+          column: 235
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_casualty"
+      identity_kind: "explicit"
+      unit_id: "normative_5470"
+      source_span:
+        start:
+          offset: 6977
+          line: 76
+          column: 1
+        end:
+          offset: 7236
+          line: 76
+          column: 260
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_5470"
+      source_span:
+        start:
+          offset: 7237
+          line: 77
+          column: 1
+        end:
+          offset: 7538
+          line: 77
+          column: 302
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_project"
+      identity_kind: "explicit"
+      unit_id: "normative_26910"
+      source_span:
+        start:
+          offset: 27004
+          line: 591
+          column: 1
+        end:
+          offset: 27262
+          line: 591
+          column: 259
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_26910"
+      source_span:
+        start:
+          offset: 27263
+          line: 592
+          column: 1
+        end:
+          offset: 27503
+          line: 592
+          column: 241
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_custody"
+      identity_kind: "explicit"
+      unit_id: "normative_26910"
+      source_span:
+        start:
+          offset: 27504
+          line: 593
+          column: 1
+        end:
+          offset: 27777
+          line: 593
+          column: 274
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_pollution"
+      identity_kind: "explicit"
+      unit_id: "normative_26910"
+      source_span:
+        start:
+          offset: 27778
+          line: 594
+          column: 1
+        end:
+          offset: 28016
+          line: 594
+          column: 239
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_34302"
+      source_span:
+        start:
+          offset: 34378
+          line: 631
+          column: 1
+        end:
+          offset: 34620
+          line: 631
+          column: 243
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_34302"
+      source_span:
+        start:
+          offset: 34621
+          line: 632
+          column: 1
+        end:
+          offset: 34846
+          line: 632
+          column: 226
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_release"
+      identity_kind: "explicit"
+      unit_id: "normative_34302"
+      source_span:
+        start:
+          offset: 34847
+          line: 633
+          column: 1
+        end:
+          offset: 35095
+          line: 633
+          column: 249
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_34302"
+      source_span:
+        start:
+          offset: 35096
+          line: 634
+          column: 1
+        end:
+          offset: 35328
+          line: 634
+          column: 233
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5470"
+      source_span:
+        start:
+          offset: 5470
+          line: 59
+          column: 1
+        end:
+          offset: 5491
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5470"
+      source_span:
+        start:
+          offset: 5519
+          line: 63
+          column: 1
+        end:
+          offset: 6393
+          line: 70
+          column: 172
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26910"
+      source_span:
+        start:
+          offset: 26910
+          line: 587
+          column: 1
+        end:
+          offset: 26950
+          line: 587
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_34302"
+      source_span:
+        start:
+          offset: 34302
+          line: 627
+          column: 1
+        end:
+          offset: 34324
+          line: 627
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b3664014d8988c29ddf27d64fe4508691b447f0e85b285c968f55029e7a3f9ad"
+  generated_content_sha256: "sha256:6e1a9613cc98e80a09a62827dfe9cbea97a7a3a7466946c28c451c7df99ecc0d"

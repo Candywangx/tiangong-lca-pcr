@@ -1,10 +1,1108 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67512"
-  title: "Inland waterway operation services (excl. cargo handling)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.inland-waterway-operation-services-excl-cargo-handling"
+  classification_refs: "CPC 3.0 67512"
+  covered_products: "Inland channel/canal operation and maintenance, navigation structures/aids and non-tugboat shore traction; separately qualified service events"
+  excluded_products: "Cargo handling; warehousing; docking pilotage/tugboat assistance; vessel carriage; unallocated hydropower/flood-control inventory"
+  representative_product: "One qualified inland-navigation infrastructure service event for a specified vessel passage and reach"
+  production_route: "Establish declared navigable/asset condition → actual operation/maintenance/shore traction/aids → verified service completion or interval acceptance"
+  market_state: "Verified inland navigation support delivered for a defined reach/asset, quality and period"
+functional_unit:
+  what: "Deliver the explicitly specified inland-navigation infrastructure service"
+  how_much: "One accepted event with actual route length, vessel/traffic extent, lockages/traction and service interval declared"
+  how_well: "Declared navigable depth/width, water level, vessel/draft/load envelope, aid availability and delivered maintenance condition; actual acceptance criteria"
+  how_long_or_cycle: "Actual passage/operation interval or separately defined accepted maintenance/availability coverage period"
+  reference_flow_link: "navigation_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_all_routes
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual canal/channel maintenance, lock/lift/weir/sluice service, shore-tractor/locomotive traction and navigation aids as applicable. Do not substitute excluded tugboat docking for shore traction."
+      source_ids:
+        - un-cpc3-67512
+    - rule_id: boundary_water
+      applies_to: "foreground_system_boundary"
+      rule: "Track lockages, reservoir/river supply, back-pumping and operating levels using actual records. Distinguish transfers, return, evaporation and consumptive losses; no default lock-water or pumping coefficient."
+      source_ids:
+        - crt-water-management
+    - rule_id: boundary_sediment
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual maintenance dredging, characterization, resuspension and management destination. Dredged-material acceptability depends on physical/chemical/biological properties and local destination; do not presume all material harmless or beneficially used."
+      source_ids:
+        - epa-inland-sediment
+    - rule_id: boundary_assets
+      applies_to: "foreground_system_boundary"
+      rule: "Include supported construction, replacement, maintenance and retirement shares of actual channel works, structures, traction and aids. Screen additional actual fuels, batteries, coatings, emissions and ecological transformation separately; missing data are not zero."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Declared inland reach/asset and initial navigation/water/sediment condition; installed infrastructure is not burden-free"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Inland navigation infrastructure operation/maintenance and non-tugboat shore traction"
+  recursive_input_rule: "Subcontracted same-category operation or maintenance enters as an evidenced service with scope; do not duplicate its energy, sediment handling or assets"
+  upstream_dataset_requirement: "Actual energy/material supply, construction/equipment manufacture/retirement and sediment/waste management; no assumed free public assets"
+  disclosure: "Service event extent; navigation/other-function allocation; source/return water; sediment characterization; actual traffic/availability; infrastructure lifetime/utilization and missing upstream scope"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Inland navigation infrastructure service event"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "reach/asset and start/end interfaces"
+    - "service subtype and accepted extent"
+    - "artificial/natural waterway"
+    - "actual route length"
+    - "vessel dimensions/draft/load and served traffic"
+    - "water level/flow"
+    - "lock/lift/weir/sluice operations and shared lockages"
+    - "shore-traction method/distance"
+    - "aid configuration/coverage"
+    - "maintenance/dredging scope"
+    - "passage or availability interval"
+    - "operator/subcontract boundary"
+    - "hydropower/flood/irrigation allocation"
+    - "water source/return basin"
+    - "asset life denominator"
+    - "electricity origin/voltage"
+reference_flows:
+  []
+measurement_rules:
+  - id: service_event
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Use cp_service to count one accepted event with its exact service extent. Keep passage, shared-lock, shore-traction and independently sold maintenance/availability scenarios separate."
+  - id: water_balance
+    applies_to: "river_water; returned_water"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record source/return, pumping, lock transfer, reuse and losses separately. Through-lock volume is not automatically consumptive use; reuse is not a fresh withdrawal."
+  - id: sediment_basis
+    applies_to: "riverbed_sediment; dredged_sediment; suspended_sediment"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured dry solids, wet mass, moisture and carrier water; use actual solids fraction, never an assumed sediment/slurry density or zero resuspension."
+process_map:
+  - id: navigation
+    name: "Operate and maintain declared inland navigation service"
+    inclusion: "required"
+    inclusion_condition: "Actual service subtype and conditional operations"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: navigation
+    label: "Operate and maintain declared inland navigation service"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual grid supply to lock drives, boat lifts, pumping/back-pumping, signals and shore traction where this voltage applies; meter by function and record region. Onsite photovoltaic or other power needs its own generation/asset boundary, without duplicated supply burdens."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual operator dredger, light vessel, towpath tractor/locomotive or maintenance equipment diesel; distinguish assets and functions. Customer vessel propulsion fuel is outside this input."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Hydraulic lubricating oil"
+          name: "Hydraulic lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual gate/lift/traction equipment make-up or replacement; preserve stock changes and avoid assuming every installation is hydraulic."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: tow_cable
+          role: "Steel tow cable"
+          name: "Steel tow cable"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual canal towpath traction other than tugboat; allocate supported replacement/reuse and avoid duplicating initial cable manufacture."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: coating
+          role: "Epoxy maintenance coating"
+          name: "Epoxy maintenance coating"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual coating maintenance; record whole formulation, solvent/water content, application and waste. Other formulations are separate rows, not a generic paint pool."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: concrete
+          role: "Ready-mixed concrete"
+          name: "Ready-mixed concrete"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual navigation civil-work construction/repair inventory share with specified grade and supported service life; exclude quantities included in a complete upstream lock/structure dataset."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: steel
+          role: "Structural steel"
+          name: "Structural steel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual gate, bank or navigation-structure construction/repair steel share; distinguish initial works and replacements and avoid duplicated complete-asset scope."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: lock_drive
+          role: "Navigation-lock gate drive"
+          name: "Navigation-lock gate drive"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual lock drive; document configuration and manufacture/retirement utilization denominator. Boat lifts use their own actual equipment identity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: boat_lift
+          role: "Navigation boat lift"
+          name: "Navigation boat lift"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual boat-lift service; record lift configuration, accepted vessel extent and actual use over evidenced lifetime utilization."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: tractor
+          role: "Towpath tractor"
+          name: "Towpath tractor"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual bank-based non-tugboat canal towing; record tractor model, traction route and supported lifetime utilization."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: locomotive
+          role: "Towpath traction locomotive"
+          name: "Towpath traction locomotive"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual towpath locomotive traction; do not relabel tugboat assistance as this land-equipment exchange."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: buoy
+          role: "Navigation light buoy"
+          name: "Navigation light buoy"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual light buoy; record lamp, power supply, battery and maintenance coverage and supported manufacturing share. Separately model replaced battery only if not already included."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: light_vessel
+          role: "Navigation light vessel"
+          name: "Navigation light vessel"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on actual lightship/light-vessel service; declare complete vessel manufacturing scope, fuel and stationed duration without treating it as customer transport."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: dredger
+          role: "Maintenance cutter-suction dredger"
+          name: "Maintenance cutter-suction dredger"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional on this actual dredging configuration; other dredging types require their own specific row. Allocate manufacture over supported utilization, not a full dredger per passage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_water
+          role: "Freshwater from river, in situ"
+          name: "Freshwater from river, in situ"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Actual external freshwater abstraction/diversion crossing the declared environmental interface, with source basin and water level. Internal lock circulation and back-pumping are not repeated new withdrawals."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - crt-water-management
+            ranges: []
+        - row_id: riverbed_sediment
+          role: "Freshwater riverbed sediment solids, in situ"
+          name: "Freshwater riverbed sediment solids, in situ"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual in-situ material removed by navigation maintenance, with measured dry-solid mass and location; carrier/slurry water is recorded separately and is not sediment dry mass."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_sediment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sediment
+              source_ids:
+                - epa-inland-sediment
+            ranges: []
+    outputs:
+      product:
+        - row_id: navigation_output
+          role: "Inland navigation infrastructure service event"
+          name: "Inland navigation infrastructure service event"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One accepted navigation-infrastructure event with specified subtype, reach, function and interval; a customer vessel or cargo is not manufactured output."
+          amount:
+            expression: "1 item"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: dredged_sediment
+          role: "Dredged freshwater sediment dry solids"
+          name: "Dredged freshwater sediment dry solids"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual characterized dry-solid sediment sent to declared treatment/disposal, with moisture/water balance retained. Product/beneficial-use status requires independent evidence and a single consistent route, not automatic recycling credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_sediment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sediment
+              source_ids:
+                - epa-inland-sediment
+            ranges: []
+        - row_id: waste_oil
+          role: "Waste hydraulic oil"
+          name: "Waste hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual segregated drained maintenance oil with contamination and treatment records; distinguish spilled oil and oil remaining in equipment."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_cable
+          role: "Discarded steel tow cable"
+          name: "Discarded steel tow cable"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual retired shore-traction cable mass and destination; reuse stock is not discarded waste."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: returned_water
+          role: "Water, to river"
+          name: "Water, to river"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Actual return flow crossing the declared boundary, with receiving basin, timing and water quality. Return is not assumed equal to abstraction; internal transfers are not counted twice."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - crt-water-management
+            ranges: []
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual operator fuel combustion only, using measured carbon basis or cited applicable factors; customer vessel exhaust and upstream energy supply remain separate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: suspended_sediment
+          role: "Suspended sediment, to freshwater"
+          name: "Suspended sediment, to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured resuspension/release crossing the system boundary, with particle/composition/location. Do not assign the full excavated waste mass again as suspended release."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_sediment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sediment
+              source_ids:
+                - epa-inland-sediment
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "foreground_burden_allocation"
+    rule: "Directly meter and attribute lock/lift, pump, traction, aid and dredging tasks first. Shared lockages require actual vessel/occupancy and operating evidence; do not assign a whole chamber cycle separately to every vessel."
+    source_ids: []
+  - rule_id: allocation_multiuse
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate navigation from hydropower, flood management, irrigation and recreation using causal engineering/operation evidence. Do not split by revenue or grant avoided-electricity credits by default; justify residual allocation and sensitivity."
+    source_ids: []
+  - rule_id: allocation_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocate actual infrastructure/equipment manufacture and retirement over supported lifetime service utilization and current actual service share. Reconcile construction/replacement and complete-asset/component scope; cumulative shares cannot exceed one full life."
+    source_ids: []
+  - rule_id: allocation_period
+    applies_to: "foreground_burden_allocation"
+    rule: "Keep passage-based and accepted maintenance/availability-period events separate. Traffic-based attribution needs actual traffic and service quality; retain standby, navigation closures and unsuccessful work attributable to maintained service. Do not divide by an invented future vessel count."
+    source_ids: []
+  - rule_id: allocation_sediment
+    applies_to: "foreground_burden_allocation"
+    rule: "Dredged material is a managed physical stream, not a default co-product. Keep dry solids, carrier water, managed output and actual suspended release reconciled; independently justify any beneficial-use/product route without automatic substitution credit."
+    source_ids:
+      - epa-inland-sediment
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_service
+      process_id: "navigation"
+      flow_role: "navigation_output"
+      record_type: "service_event_record"
+      raw_fields: "event ID; subtype; reach/asset; vessel/traffic extent; draft/load; route length; water level; lockages; shore traction; aid condition; accepted interval; completion"
+      collection_method: "Reconcile actual passage/lock/traction records or independently contracted maintenance/availability acceptance; keep complete event stages and actual served extent."
+      unit: "item"
+      frequency: "each event and period"
+      temporal_coverage: "full declared service interval"
+      site_scope: "one declared subtype/reach scenario"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "traffic/lock logs; surveys; acceptance"
+    - protocol_id: cp_energy
+      process_id: "navigation"
+      flow_role: "electricity; diesel"
+      record_type: "energy_record"
+      raw_fields: "meter/fuel; asset; task; operating/idle hours; power source; lock/pump/traction/dredging/aids; stock changes"
+      collection_method: "Measure separate actual functional energy and reconcile supplier/stock records; isolate customer-vessel energy and shared non-navigation functions."
+      unit: "row unit"
+      frequency: "matched task and billing period"
+      temporal_coverage: "same period as cp_service"
+      site_scope: "operator assets and declared support"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration; fuel ledger; task records"
+    - protocol_id: cp_materials
+      process_id: "navigation"
+      flow_role: "hydraulic_oil; tow_cable; coating"
+      record_type: "material_record"
+      raw_fields: "specific material; grade/formulation; issued/returned mass; reuse; replacement; task/asset share"
+      collection_method: "Weigh actual issue/return and document configuration/use life; separate coating composition and remaining/recovered material."
+      unit: "kg"
+      frequency: "each maintenance/task"
+      temporal_coverage: "same service/maintenance period"
+      site_scope: "actual navigation assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "work orders; stock; formulation/use records"
+    - protocol_id: cp_assets
+      process_id: "navigation"
+      flow_role: "concrete; steel; lock_drive; boat_lift; tractor; locomotive; buoy; light_vessel; dredger"
+      record_type: "asset_record"
+      raw_fields: "asset/reach ID; construction/component scope; actual quantities; life utilization; current use; prior shares; replacement; retirement"
+      collection_method: "Use asset registers, surveyed works, bills of quantities and operating ledgers; independently support each lifetime denominator and multi-function share."
+      unit: "row unit"
+      frequency: "asset/maintenance event and period"
+      temporal_coverage: "asset life and current service"
+      site_scope: "actual reach and equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "register; bills; life/utilization evidence"
+    - protocol_id: cp_water
+      process_id: "navigation"
+      flow_role: "river_water; returned_water"
+      record_type: "water_balance_record"
+      raw_fields: "source/receiving basin; inflow; outflow; storage change; lock transfer; back-pump; evaporation; other loss; timing; water quality"
+      collection_method: "Use calibrated flows/levels and actual operation logs to distinguish external withdrawals/returns from internal transfer and reuse. Do not turn total lock transfer into consumption."
+      unit: "m3"
+      frequency: "each operation and balance period"
+      temporal_coverage: "same interval as service"
+      site_scope: "declared source/reach/return interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "flow calibration; water balance; basin records"
+    - protocol_id: cp_sediment
+      process_id: "navigation"
+      flow_role: "riverbed_sediment; dredged_sediment; suspended_sediment"
+      record_type: "sediment_record"
+      raw_fields: "dredge location; wet mass; dry solids; water content; particle/chemical/biological characterization; carrier water; managed destination; suspended release"
+      collection_method: "Survey/sample actual material and reconcile dry-solid balances, moisture, management and actual releases. Characterization and destination evidence are specific to the job, not assumed harmlessness."
+      unit: "kg"
+      frequency: "each dredging task and sampling interval"
+      temporal_coverage: "matched maintenance/service period"
+      site_scope: "actual dredged reach and disposal route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "surveys; lab results; transfer manifests"
+    - protocol_id: cp_waste
+      process_id: "navigation"
+      flow_role: "waste_oil; waste_cable"
+      record_type: "waste_record"
+      raw_fields: "specific stream; measured mass; contamination; treatment; destination; asset/task share"
+      collection_method: "Measure segregated maintenance streams and reconcile manifests; spills and discarded materials require distinct identities."
+      unit: "kg"
+      frequency: "each waste event"
+      temporal_coverage: "same maintenance/service period"
+      site_scope: "attributable operator maintenance"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weighing; manifests; work orders"
+    - protocol_id: cp_emissions
+      process_id: "navigation"
+      flow_role: "fossil_co2"
+      record_type: "emission_record"
+      raw_fields: "species; source engine; fuel carbon; activity; test/model; factor source; compartment"
+      collection_method: "Use actual operator-source measurements or a cited applicable fuel-specific method; retain source/technology and navigation share; customer-vessel emissions remain separate."
+      unit: "kg"
+      frequency: "test and activity period"
+      temporal_coverage: "same period as service"
+      site_scope: "actual operator energy sources"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "test/model evidence; activity ledger"
+  calculation_rules:
+    - id: calc_service
+      applies_to: "all inventory rows"
+      rule: "Attribute actual measured period exchanges to the declared accepted service subtype and extent, applying documented shared-function and event attribution. Divide matched comparable totals by accepted events; do not convert availability periods to passages without actual evidence."
+      inputs:
+        - cp_service
+        - "actual functional records"
+      output: "per reference flow"
+      source_ids: []
+    - id: calc_water
+      applies_to: "river_water; returned_water"
+      rule: "Reconcile external inflow, external return, storage changes, evaporation and other actual losses, recording internal lock transfers and reuse separately. Report basin/time-specific withdrawal and return, not a default net consumptive volume."
+      inputs:
+        - cp_water
+        - cp_service
+      output: "volume per reference flow"
+      source_ids:
+        - crt-water-management
+    - id: calc_sediment
+      applies_to: "riverbed_sediment; dredged_sediment; suspended_sediment"
+      rule: "Use measured solids fraction to separate sediment dry mass and slurry water; reconcile in-situ removal with managed outputs, stock and actual suspended release. Contaminant releases require each measured species and compartment separately."
+      inputs:
+        - cp_sediment
+        - cp_service
+      output: "dry-solid mass per reference flow"
+      source_ids: []
+    - id: calc_assets
+      applies_to: "concrete; steel; lock_drive; boat_lift; tractor; locomotive; buoy; light_vessel; dredger"
+      rule: "Apply supported lifetime-use and actual navigation-use shares to construction/manufacture/retirement inventory; reconcile components and normalized current service attribution. Unknown future use or life remains an explicit review gap."
+      inputs:
+        - cp_assets
+        - cp_service
+      output: "asset share per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_extent
+      applies_to: "navigation_output"
+      requirement: "Require reach, service subtype, passage/interval, vessel/traffic and delivered navigation condition; a fee or generic kilometre is insufficient."
+      evidence: "cp_service"
+    - id: dq_water
+      applies_to: "river_water; returned_water"
+      requirement: "Document source/return basin, timing and water quality; distinguish internal transfer, withdrawal and consumption."
+      evidence: "cp_water"
+    - id: dq_sediment
+      applies_to: "riverbed_sediment; dredged_sediment; suspended_sediment"
+      requirement: "Characterize actual solids and destination; no assumed clean sediment, generic disposal factor or default beneficial use."
+      evidence: "cp_sediment"
+    - id: dq_multiuse
+      applies_to: "all inventory rows"
+      requirement: "Require supported navigation versus other-function shares and actual life/utilization evidence, with uncertainty/sensitivity and upstream omissions."
+      evidence: "functional records; cp_assets"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify exact flow/property/unit and Chinese name before adoption. Each missing UUID remains individual; parser success does not prove water/sediment identity or complete ecological coverage."
+      evidence: "Direct support and unresolved register"
+validation_rules:
+  - rule_id: validate_service
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique navigation_output of 1 item with complete declared subtype/extent, navigation quality and interval. Reject freight tonne-km and undefined lock/pass counts as substitutes."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm all selected inland operation/maintenance routes, including non-tugboat towpath traction. Exclude cargo handling, warehousing, docking pilotage/tugs and customer vessel fuel/exhaust from this service."
+    source_ids:
+      - un-cpc3-67512
+  - rule_id: validate_balances
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile water and sediment balances, actual shared-lock attribution, navigation/other-purpose allocation and infrastructure lifetime shares. Missing identity, emission, upstream or habitat-impact evidence must remain disclosed before a complete lifecycle claim."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "inland_navigation_infrastructure_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified inland infrastructure service input to the matching navigation or maintenance scenario"
+  excluded_use: "Complete vessel freight footprint; docking tug/pilotage; universal lock factor; unallocated hydropower or automatic sediment-use credit"
+  required_metadata: "All reference qualifiers; source/return and sediment boundaries; actual events/intervals; multiuse allocation; asset/component lives and upstream identities"
+  required_quality_disclosure: "Navigation extent and downtime; water/sediment uncertainty; shared-function sensitivity; lifetime denominator; missing UUIDs/upstream/ecological evidence"
+  update_trigger: "Reach/depth/water-level change, dredging or sediment contamination, lock/traction/aids configuration, actual traffic, shared functions, energy or supported life evidence changes"
+data_sources:
+  - id: "un-cpc3-67512"
+    type: "official_guidance"
+    reference: "UNSD CPC Version3.0 subclass67512 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67512"
+    used_for: "Full inland navigation/maintenance/shore-traction/aids scope and explicit exclusions"
+  - id: "crt-water-management"
+    type: "official_guidance"
+    reference: "Canal and River Trust, Managing our water: Day to day, Monitoring and Management. https://canalrivertrust.org.uk/our-cause/looking-after-canals-and-rivers/managing-our-water/day-to-day"
+    used_for: "Operator primary account of actual lockage, reservoir, pumping and water monitoring; UK context, no per-lock coefficient adopted"
+  - id: "epa-inland-sediment"
+    type: "official_guidance"
+    reference: "US EPA, Inland Testing Manual under CWA Section404, physical/chemical/biological dredged-material evaluation description. https://www.epa.gov/cwa-404/inland-testing-manual-under-cwa-section-404"
+    used_for: "Actual dredged-material characterization before destination choice; US disposal-evaluation context, not universal permit or lifecycle factor"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1654ac9fd4ff85479a4899c21f9c8f0d06a00c8ddb5aea2cfb029e06172816a8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5563"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5563
+          line: 59
+          column: 1
+        end:
+          offset: 7697
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Declared inland reach/asset and initial navigation/water/sediment condition; installed infrastructure is not burden-free |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Inland navigation infrastructure operation/maintenance and non-tugboat shore traction |\n| recursive_input_rule | Subcontracted same-category operation or maintenance enters as an evidenced service with scope; do not duplicate its energy, sediment handling or assets |\n| upstream_dataset_requirement | Actual energy/material supply, construction/equipment manufacture/retirement and sediment/waste management; no assumed free public assets |\n| disclosure | Service event extent; navigation/other-function allocation; source/return water; sediment characterization; actual traffic/availability; infrastructure lifetime/utilization and missing upstream scope |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_all_routes` | Include actual canal/channel maintenance, lock/lift/weir/sluice service, shore-tractor/locomotive traction and navigation aids as applicable. Do not substitute excluded tugboat docking for shore traction. | un-cpc3-67512 |\n| `boundary_water` | Track lockages, reservoir/river supply, back-pumping and operating levels using actual records. Distinguish transfers, return, evaporation and consumptive losses; no default lock-water or pumping coefficient. | crt-water-management |\n| `boundary_sediment` | Include actual maintenance dredging, characterization, resuspension and management destination. Dredged-material acceptability depends on physical/chemical/biological properties and local destination; do not presume all material harmless or beneficially used. | epa-inland-sediment |\n| `boundary_assets` | Include supported construction, replacement, maintenance and retirement shares of actual channel works, structures, traction and aids. Screen additional actual fuels, batteries, coatings, emissions and ecological transformation separately; missing data are not zero. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 245
+              line: 8
+              column: 1
+            end:
+              offset: 306
+              line: 8
+              column: 62
+          text: "# Inland waterway operation services excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5563
+              line: 59
+              column: 1
+            end:
+              offset: 5584
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_23182"
+      family: "allocation"
+      span:
+        start:
+          offset: 23182
+          line: 448
+          column: 1
+        end:
+          offset: 24723
+          line: 458
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocation_direct` | Directly meter and attribute lock/lift, pump, traction, aid and dredging tasks first. Shared lockages require actual vessel/occupancy and operating evidence; do not assign a whole chamber cycle separately to every vessel. |  |\n| `allocation_multiuse` | Separate navigation from hydropower, flood management, irrigation and recreation using causal engineering/operation evidence. Do not split by revenue or grant avoided-electricity credits by default; justify residual allocation and sensitivity. |  |\n| `allocation_assets` | Allocate actual infrastructure/equipment manufacture and retirement over supported lifetime service utilization and current actual service share. Reconcile construction/replacement and complete-asset/component scope; cumulative shares cannot exceed one full life. |  |\n| `allocation_period` | Keep passage-based and accepted maintenance/availability-period events separate. Traffic-based attribution needs actual traffic and service quality; retain standby, navigation closures and unsuccessful work attributable to maintained service. Do not divide by an invented future vessel count. |  |\n| `allocation_sediment` | Dredged material is a managed physical stream, not a default co-product. Keep dry solids, carrier water, managed output and actual suspended release reconciled; independently justify any beneficial-use/product route without automatic substitution credit. | epa-inland-sediment |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 245
+              line: 8
+              column: 1
+            end:
+              offset: 306
+              line: 8
+              column: 62
+          text: "# Inland waterway operation services excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 23182
+              line: 448
+              column: 1
+            end:
+              offset: 23222
+              line: 448
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32216"
+      family: "validation"
+      span:
+        start:
+          offset: 32216
+          line: 492
+          column: 1
+        end:
+          offset: 33048
+          line: 500
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_service` | Require unique navigation_output of 1 item with complete declared subtype/extent, navigation quality and interval. Reject freight tonne-km and undefined lock/pass counts as substitutes. |  |\n| `validate_scope` | Confirm all selected inland operation/maintenance routes, including non-tugboat towpath traction. Exclude cargo handling, warehousing, docking pilotage/tugs and customer vessel fuel/exhaust from this service. | un-cpc3-67512 |\n| `validate_balances` | Reconcile water and sediment balances, actual shared-lock attribution, navigation/other-purpose allocation and infrastructure lifetime shares. Missing identity, emission, upstream or habitat-impact evidence must remain disclosed before a complete lifecycle claim. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 245
+              line: 8
+              column: 1
+            end:
+              offset: 306
+              line: 8
+              column: 62
+          text: "# Inland waterway operation services excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32216
+              line: 492
+              column: 1
+            end:
+              offset: 32238
+              line: 492
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_all_routes"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 6590
+          line: 74
+          column: 1
+        end:
+          offset: 6838
+          line: 74
+          column: 249
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_water"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 6839
+          line: 75
+          column: 1
+        end:
+          offset: 7093
+          line: 75
+          column: 255
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_sediment"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 7094
+          line: 76
+          column: 1
+        end:
+          offset: 7401
+          line: 76
+          column: 308
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 7402
+          line: 77
+          column: 1
+        end:
+          offset: 7695
+          line: 77
+          column: 294
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_23182"
+      source_span:
+        start:
+          offset: 23276
+          line: 452
+          column: 1
+        end:
+          offset: 23526
+          line: 452
+          column: 251
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_multiuse"
+      identity_kind: "explicit"
+      unit_id: "normative_23182"
+      source_span:
+        start:
+          offset: 23527
+          line: 453
+          column: 1
+        end:
+          offset: 23801
+          line: 453
+          column: 275
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_23182"
+      source_span:
+        start:
+          offset: 23802
+          line: 454
+          column: 1
+        end:
+          offset: 24094
+          line: 454
+          column: 293
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_period"
+      identity_kind: "explicit"
+      unit_id: "normative_23182"
+      source_span:
+        start:
+          offset: 24095
+          line: 455
+          column: 1
+        end:
+          offset: 24416
+          line: 455
+          column: 322
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_sediment"
+      identity_kind: "explicit"
+      unit_id: "normative_23182"
+      source_span:
+        start:
+          offset: 24417
+          line: 456
+          column: 1
+        end:
+          offset: 24721
+          line: 456
+          column: 305
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_service"
+      identity_kind: "explicit"
+      unit_id: "normative_32216"
+      source_span:
+        start:
+          offset: 32292
+          line: 496
+          column: 1
+        end:
+          offset: 32505
+          line: 496
+          column: 214
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_32216"
+      source_span:
+        start:
+          offset: 32506
+          line: 497
+          column: 1
+        end:
+          offset: 32753
+          line: 497
+          column: 248
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_32216"
+      source_span:
+        start:
+          offset: 32754
+          line: 498
+          column: 1
+        end:
+          offset: 33046
+          line: 498
+          column: 293
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 5563
+          line: 59
+          column: 1
+        end:
+          offset: 5584
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 5612
+          line: 63
+          column: 1
+        end:
+          offset: 6536
+          line: 70
+          column: 217
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_23182"
+      source_span:
+        start:
+          offset: 23182
+          line: 448
+          column: 1
+        end:
+          offset: 23222
+          line: 448
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32216"
+      source_span:
+        start:
+          offset: 32216
+          line: 492
+          column: 1
+        end:
+          offset: 32238
+          line: 492
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1654ac9fd4ff85479a4899c21f9c8f0d06a00c8ddb5aea2cfb029e06172816a8"
+  generated_content_sha256: "sha256:931f0ac8ca264b932d6246a6fd6bb9bd14824a93d442f10ede725687eedb43a4"
