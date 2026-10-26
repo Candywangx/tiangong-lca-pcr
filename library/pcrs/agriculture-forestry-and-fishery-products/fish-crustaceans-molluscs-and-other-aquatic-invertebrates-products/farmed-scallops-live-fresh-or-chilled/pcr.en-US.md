@@ -90,7 +90,7 @@ Actual independent gentle shell cleaning and packaging are conditional operation
 | `live_packaging` | Live product packaging and presentation | conditional | Actual protective package/presentation operation occurs before delivery | Sorted live to protected/presented live lot; logistics owned by live_delivery | Measured protected live lot excluding package mass; normalized per 1 kg reference flow |
 | `live_delivery` | Live preservation and local delivery | required | | Bounded chilling/protection and logistics from ready live lot to live recipient acceptance; actual conditions recorded | 1 kg accepted net live whole product |
 
-Each umbrella below expands only into actual exchanges. Its `U_instance` is independently evidenced and approved for that row instance and native unit, never inherited from a mixed-unit parent. A provisional 0..U bound is an unresolved evidence need, not an empirical typical value, default amount, allowed limit or permission to substitute zero. Product transfer counterparts share transfer ids and carry burdens once. Direct-support alternatives, wastes and releases are conditional on actual occurrence.
+Each collection scope below expands only into actual exchanges. Its `U_instance` is independently evidenced and approved for that row instance and native unit, never inherited from a mixed-unit parent. A provisional 0..U bound is an unresolved evidence need, not an empirical typical value, default amount, allowed limit or permission to substitute zero. Product transfer counterparts share transfer ids and carry burdens once. Direct-support alternatives, wastes and releases are conditional on actual occurrence.
 
 ### Process: Suspended-net nursery and growout (`net_culture`)
 

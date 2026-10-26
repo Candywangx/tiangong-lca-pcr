@@ -53,7 +53,7 @@ sync_with: pcr.en-US.md
 | reference_mass | reference product | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 使用经校准秤或可追溯校准称重记录，在实物接收时称量验收完整活鱼，扣除自由载水和设备皮重；采用 cp_acceptance。 |
 | count_mass | cod_juveniles; cod_ready; harvest_cod; cod_collected; sort_cod; cod_sorted; delivery_cod; cod_processor_receipt | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 尾数换算须保留原始尾数、代表性批次活鱼净质量样本、抽样设计及不确定性；不得使用通用幼鱼或成鱼尾数质量因子。 |
 | native_units | all inventory rows | 实际交换属性 | 实际本征单位 | 保留燃料原始质量或体积及密度证据、电力kWh/MJ换算、水体积、服务功能单位和化学或元素基准；不得将服务自动换算为质量。 |
-| substance_basis | growout_aquatic; growout_air; harvest_releases; sort_direct_releases; delivery_releases; delivery_air | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 声明化学物种及接收介质；区分营养元素与化合物质量、化石与生物源碳、载水体积与新增污染负荷。 |
+| substance_basis | collect_growout_aquatic; collect_growout_air; collect_harvest_releases; collect_sort_direct_releases; collect_delivery_releases; collect_delivery_air | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 声明化学物种及接收介质；区分营养元素与化合物质量、化石与生物源碳、载水体积与新增污染负荷。 |
 
 ## 5. 系统边界
 
@@ -77,7 +77,7 @@ sync_with: pcr.en-US.md
 | boundary_support | all inventory rows | 纳入实际养成设备清洁、辅助工作船、收获搬运、保活及物流。不得为活鱼水舱虚构独立鱼体预处理或产品包装作业。实际辅助交换在使用节点逐项展开。 | cod-accounting-method |
 | boundary_periods | cod_growout; cod_harvest; cod_sort; cod_live_delivery | 对幼鱼接收、海水群体生长、分批收获、交付、空置清洁、失败、资产更换及终止按全部相关报告年索引。期初期末群体库存结转负荷，不重复分配。 | cod-accounting-method |
 | boundary_shared | growout_services; harvest_services; sort_services; delivery_services | 为网箱系泊、投喂系统、工作船、活鱼运输船及公用设施建立唯一共享账，列明使用节点、群体及服务时期。每节点仅承担有证据份额；综合供应商和直接组成项实行独占归属。 | cod-accounting-method |
-| boundary_generation | growout_electricity; growout_fuel; harvest_electricity; harvest_fuel; sort_electricity; sort_services; sort_direct_releases; delivery_electricity; delivery_fuel | 现场发电已列燃料及直接排放时，所发电力仅作内部能量转移，不再增加购电上游负荷。外购电的供应商发电上游仅计一次。计量并区分外购、自发电和转移，确定唯一发电机归属及明确燃料电力边界。 | cod-accounting-method |
+| boundary_generation | growout_electricity; growout_fuel; harvest_electricity; harvest_fuel; sort_electricity; sort_services; collect_sort_direct_releases; delivery_electricity; delivery_fuel | 现场发电已列燃料及直接排放时，所发电力仅作内部能量转移，不再增加购电上游负荷。外购电的供应商发电上游仅计一次。计量并区分外购、自发电和转移，确定唯一发电机归属及明确燃料电力边界。 | cod-accounting-method |
 | boundary_losses | all inventory rows | 结合生物生长、有意转移、死亡、逃逸及库存核对尾数、生物量和饲料；不得强迫幼鱼质量等于最终质量。账目损失不自动成为废物或基本流交换。不设生态或营养物移除信用。 | cod-accounting-method |
 
 ## 6. 过程清单结构
@@ -91,7 +91,7 @@ sync_with: pcr.en-US.md
 | cod_sort | 活鱼分级与去向分选 | required | 装载前实际去向决策 | 区分验收等级、降级退回及拒收状态，按批次索引 | 验收活鱼交付批次及声明的次级状态 |
 | cod_live_delivery | 保活与活鱼运输船交付 | required | 所选加工方活体接收渠道 | 在装载、航程及验收期间保持完整活体状态 | 加工方接收的1 kg验收净质量完整活鳕 |
 
-群体可能在网箱及报告期之间重叠。记录实际作业模式与事件边界，不预设每年单批。每次转移两端使用同一编号；内部产品输出不是额外最终产品。即使多个等级共用一张语义卡，等级去向账也须列明实际每个等级。不预设未记录的次级产品。
+群体可能在网箱及报告期之间重叠。记录实际作业模式与事件边界，不预设每年单批。每次转移两端使用同一编号；内部产品输出不是额外最终产品。列明每个实际等级及去向。只有产品身份、物种、状态、功能、流属性/单位及交换角色相同的多批记录才可共用一张原子卡；实际不同产品、状态、用途或接收边界须独立成卡，并保留自身数量和身份证据。不预设未记录的次级产品。
 
 ### 过程：海水网箱养成（`cod_growout`）
 
@@ -676,7 +676,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | same_reference_normalization | all inventory rows | 各项归属实际交换除以同一应计群体输出范围的验收活鱼净质量；保留原始本征单位及数量。最终参考是验收质量除以同一验收质量，不是产率估算。 | 节点协议；cp_acceptance；分配账 | 每 1 kg 参考流交换数量 | cod-accounting-method |
 | cohort_reconciliation | cod_growout; cod_harvest; cod_sort; cod_live_delivery | 核对期初库存、购入、生物生长、内部转移、期末库存、有意输出、死亡及逃逸；分别保留尾数和生物量证据。生物生长使幼鱼质量与最终质量不能简单相等。 | 群体饲料转移验收损失记录 | 可追溯库存及负荷结转，不重复转移 | cod-accounting-method |
-| direct_release_calculation | growout_aquatic; growout_fossil_co2; growout_air; harvest_fossil_co2; harvest_releases; delivery_releases; delivery_fossil_co2; delivery_air | 使用适用的实测负荷、浓度流量或有据燃料饲料物质平衡因子；保留物质、元素化合物基准、介质、技术及不确定性。去除背景和综合供应商重叠；不设默认排放因子。 | 节点活动；测量；因子来源；服务归属 | 参考基准上各实际物质负荷 | cod-accounting-method |
+| direct_release_calculation | collect_growout_aquatic; growout_fossil_co2; collect_growout_air; harvest_fossil_co2; collect_harvest_releases; collect_delivery_releases; delivery_fossil_co2; collect_delivery_air | 使用适用的实测负荷、浓度流量或有据燃料饲料物质平衡因子；保留物质、元素化合物基准、介质、技术及不确定性。去除背景和综合供应商重叠；不设默认排放因子。 | 节点活动；测量；因子来源；服务归属 | 参考基准上各实际物质负荷 | cod-accounting-method |
 | range_resolution | all inventory rows | 除最终1..1归一化恒等关系，0..U_row表示未解决筛选证据需求，绝非观测或已接受经验界限。每项展开交换须按自身属性和本征单位独立批准U_instance，记录证据、审查人及范围；汇总界限不能覆盖混合交换。 | 实际交换范围；节点协议；经审查范围证据 | 独立可替换筛选界限或明确未解决证据 | cod-accounting-method |
 
 ### 数据质量要求

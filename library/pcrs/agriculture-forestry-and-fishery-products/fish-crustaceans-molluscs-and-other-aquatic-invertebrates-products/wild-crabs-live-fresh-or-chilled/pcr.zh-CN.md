@@ -236,7 +236,7 @@ sync_with: pcr.en-US.md
 
 ###### 单独计量的液态水 (`capture_internal_water_ice_transfer_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -248,9 +248,18 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
+- 数量范围：capture_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`capture_internal_water_ice_transfer_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -262,7 +271,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
-
+- 数量范围：capture_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 分级入口的未分拣留置野生渔获 (`capture_retained_catch`)
 
@@ -406,7 +422,7 @@ sync_with: pcr.en-US.md
 
 ###### 单独计量的液态水 (`grading_internal_water_ice_receipt_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -418,9 +434,18 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grading`
 
+- 数量范围：grading_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grading_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`grading_internal_water_ice_receipt_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -432,7 +457,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grading`
 
-
+- 数量范围：grading_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grading_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 中国电网平均低于 1 kV 的用户侧交流电 (`grading_cn_electricity`)
 
@@ -616,7 +648,7 @@ sync_with: pcr.en-US.md
 
 ###### 单独计量的液态水 (`grading_internal_water_ice_transfer_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -628,9 +660,18 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grading`
 
+- 数量范围：grading_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grading_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`grading_internal_water_ice_transfer_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -642,7 +683,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grading`
 
-
+- 数量范围：grading_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grading_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 分级出口合格活体食用整蟹 (`grading_live_food`)
 
@@ -828,7 +876,7 @@ sync_with: pcr.en-US.md
 
 ###### 单独计量的液态水 (`live_hold_internal_water_ice_receipt_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -840,9 +888,18 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_hold`
 
+- 数量范围：live_hold_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_live_hold_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`live_hold_internal_water_ice_receipt_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -854,7 +911,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_hold`
 
-
+- 数量范围：live_hold_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_live_hold_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 中国电网平均低于 1 kV 的用户侧交流电 (`live_hold_cn_electricity`)
 
@@ -1100,7 +1164,7 @@ sync_with: pcr.en-US.md
 
 ###### 单独计量的液态水 (`live_hold_internal_water_ice_transfer_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -1112,9 +1176,18 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_hold`
 
+- 数量范围：live_hold_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_live_hold_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`live_hold_internal_water_ice_transfer_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -1126,7 +1199,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_live_hold`
 
-
+- 数量范围：live_hold_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_live_hold_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 有界维持后存活的野生整蟹，声明分级状态 (`hold_live_survivors`)
 
@@ -1354,7 +1434,7 @@ sync_with: pcr.en-US.md
 
 ###### 单独计量的液态水 (`fresh_chill_internal_water_ice_receipt_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -1366,9 +1446,18 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fresh_chill`
 
+- 数量范围：fresh_chill_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_fresh_chill_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`fresh_chill_internal_water_ice_receipt_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -1380,7 +1469,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fresh_chill`
 
-
+- 数量范围：fresh_chill_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_fresh_chill_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 中国电网平均低于 1 kV 的用户侧交流电 (`fresh_chill_cn_electricity`)
 
@@ -1608,7 +1704,7 @@ sync_with: pcr.en-US.md
 
 ###### 单独计量的液态水 (`fresh_chill_internal_water_ice_transfer_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -1620,9 +1716,18 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fresh_chill`
 
+- 数量范围：fresh_chill_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_fresh_chill_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`fresh_chill_internal_water_ice_transfer_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -1634,7 +1739,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_fresh_chill`
 
-
+- 数量范围：fresh_chill_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_fresh_chill_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 实际鲜品处理或非冻结冷却后合格食用整蟹 (`chill_accepted_food`)
 
@@ -1778,7 +1890,7 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 
 ###### 单独计量的液态水 (`presentation_internal_water_ice_receipt_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -1790,9 +1902,18 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
+- 数量范围：presentation_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`presentation_internal_water_ice_receipt_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -1804,7 +1925,14 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
-
+- 数量范围：presentation_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 中国电网平均低于 1 kV 的用户侧交流电 (`presentation_cn_electricity`)
 
@@ -1988,7 +2116,7 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 
 ###### 单独计量的液态水 (`presentation_water_ice_handover_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -1999,10 +2127,19 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
+
+- 数量范围：presentation_water_ice_handover_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_water_ice_handover_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 单独计量的固态水冰 (`presentation_water_ice_handover_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -2014,11 +2151,18 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
-
+- 数量范围：presentation_water_ice_handover_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_water_ice_handover_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 单独计量的液态水 (`presentation_internal_water_ice_transfer_water`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的液态水
 - 流属性/单位：Mass / kg
@@ -2030,9 +2174,18 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
+- 数量范围：presentation_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`presentation_internal_water_ice_transfer_ice`)
 
-仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
+仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变蟹体净参考质量。
 
 - 选定流：单独计量的固态水冰
 - 流属性/单位：Mass / kg
@@ -2044,7 +2197,14 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
-
+- 数量范围：presentation_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 首次生产者交接的带壳野生食用整蟹，声明实际活/鲜/冷却状态 (`crabs_first_handover`)
 
@@ -2287,8 +2447,8 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `lot_attribution` | 所有清单行 | 明确保留两种标注视图。先对完整声明群体、航次或运行核对未作共产品分配的实际接收、转移、产品、损失及存量；内部转移按相同状态与单位配对并保留实测质量。以有证据的服务份额，将共享资源或服务事件一次归属实际使用节点及期间，不用共产品份额缩小产品、生物量、水或废物分区。将此物理清单除以相匹配且为正的最终验收净千克。再根据第 7 节共产品规则，仅分配一次并另行生成标注的单输出 LCA 负荷或清单投影，同时保留未分配清单及分配矩阵。不得用已分配交换检验未分配物理闭合、在下游再次乘输出份额，或把内部数量设为最终 1 kg。 | 节点协议；分配台账；验收最终净质量；库存历史 | 每 1 kg 参考流归属交换 | `wild-crab-foreground-method` |
-| `reference_envelope` | 所有非最终行范围 | 对每个实际实例化身份、状态、节点及 pre_sort/post_sort 作业段分别建立 U_row。采用独立代表性参考批次归一化量的最大值乘预先声明且不小于 1 的不确定性裕度，或具有同单位和基准的供应商设计包络乘该裕度；保留原始量、参考净千克、样本量、适用范围及裕度依据。目标批次不得参与建立其自身上界，多物质集合卡不能共用池化上界。缺少独立证据则该实例范围未实例化，不能声称数值 QA 通过或完成定量数据包。 | 独立调查记录；范围；不确定度裕量 | U_row | `wild-crab-foreground-method` |
-| `conditional_interface_envelopes` | capture_internal_water_ice_transfer_water; capture_internal_water_ice_transfer_ice; grading_internal_water_ice_receipt_water; grading_internal_water_ice_receipt_ice; grading_internal_water_ice_transfer_water; grading_internal_water_ice_transfer_ice; live_hold_internal_water_ice_receipt_water; live_hold_internal_water_ice_receipt_ice; live_hold_internal_water_ice_transfer_water; live_hold_internal_water_ice_transfer_ice; fresh_chill_internal_water_ice_receipt_water; fresh_chill_internal_water_ice_receipt_ice; fresh_chill_internal_water_ice_transfer_water; fresh_chill_internal_water_ice_transfer_ice; presentation_internal_water_ice_receipt_water; presentation_internal_water_ice_receipt_ice; presentation_actual_source_water; presentation_internal_water_ice_transfer_water; presentation_internal_water_ice_transfer_ice; presentation_water_ice_handover_water; presentation_water_ice_handover_ice; presentation_packaging_handover | 对每张明确列出的条件接口卡，在实际身份、状态、节点、作业段及单位实例化后，以独立代表性参考运行的同视图归一化最大值乘预先声明且不小于 1 的裕度，或同单位与基准供应设计包络建立 U_row。保留样本、来源、基准及不确定性；不得用目标批次建立自身上界。服务单位及支持未核实或独立包络缺失均是未解决实例，不能声称数值 QA 通过，不填零。水冰与包装的实物流转和服务折算量分别闭合。 | 独立参考记录；实际单位与基准 | U_row | `wild-crab-foreground-method` |
+| `reference_envelope` | 所有非最终行范围 | 对每个实际实例化身份、状态、节点及 pre_sort/post_sort 作业段分别建立 U_row。采用独立代表性参考批次归一化量的最大值乘预先声明且不小于 1 的不确定性裕度，或具有同单位和基准的供应商设计包络乘该裕度；保留原始量、参考净千克、样本量、适用范围及裕度依据。目标批次不得参与建立其自身上界，多物质采集义务不能共用池化上界。缺少独立证据则该实例范围未实例化，不能声称数值 QA 通过或完成定量数据包。 | 独立调查记录；范围；不确定度裕量 | U_row | `wild-crab-foreground-method` |
+| `conditional_interface_envelopes` | capture_internal_water_ice_transfer_water; capture_internal_water_ice_transfer_ice; grading_internal_water_ice_receipt_water; grading_internal_water_ice_receipt_ice; grading_internal_water_ice_transfer_water; grading_internal_water_ice_transfer_ice; live_hold_internal_water_ice_receipt_water; live_hold_internal_water_ice_receipt_ice; live_hold_internal_water_ice_transfer_water; live_hold_internal_water_ice_transfer_ice; fresh_chill_internal_water_ice_receipt_water; fresh_chill_internal_water_ice_receipt_ice; fresh_chill_internal_water_ice_transfer_water; fresh_chill_internal_water_ice_transfer_ice; presentation_internal_water_ice_receipt_water; presentation_internal_water_ice_receipt_ice; dq_complete_presentation_actual_source_water; presentation_internal_water_ice_transfer_water; presentation_internal_water_ice_transfer_ice; presentation_water_ice_handover_water; presentation_water_ice_handover_ice; presentation_packaging_handover | 对每张列明原子卡，或列明采集义务要求的各项实际交换，在实际身份、状态、节点、作业段及单位实例化后，以独立代表性参考运行的同视图归一化最大值乘预先声明且不小于 1 的裕度，或同单位与基准供应设计包络建立 U_row。保留样本、来源、基准及不确定性；不得用目标批次建立自身上界。服务单位及支持未核实或独立包络缺失均是未解决实例，不能声称数值 QA 通过，不填零。水冰与包装的实物流转和服务折算量分别闭合。 | 独立参考记录；实际单位与基准 | U_row | `wild-crab-foreground-method` |
 
 ### 数据质量要求
 
@@ -2369,7 +2529,7 @@ pre_sort 整蟹产出带实际状态、物种、躯体状态、质量及时间�
 | `validate_hold_state` | live_hold; fresh_chill; presentation | 活体存活、合格鲜品转流和不合格死亡互斥。鲜品转流须独立记录实际死亡/处理历史及适用接收证据；不明死亡仍为缺口或剔除。检查节点激活、前后状态、批次时间及旁路转移等价性。不从日志缺失推断零时长暂养或不存在饲料/供气/废水。 | `wild-crab-foreground-method` |
 | `validate_ranges` | all cards | 对已提供非最终范围，核对其每 1 kg 参考流的相同分子单位及 reference_envelope 下独立 U_row 证据。无范围的卡记录尚未解决的独立范围证据需求，不声称已有协议推导区间。数值 QA 前须从独立代表性调查期或供应方证据建立各实例包络，保留适用范围、样本量及不确定度；缺证据即为缺口，不得称 QA 通过或填默认量、零。真实越界值保留并调查，不截断。最终 1..1 kg 仅为参考归一化。 | `wild-crab-foreground-method` |
 | `validate_ownership` | all nodes | 检查全部预期产出/交接、失败航次负荷、库存结转、共享节点/期间份额及包装返还。每个物理燃料、水、带操作服务或资产事件只有唯一负荷归属；不得漏记或重复供应者上游负荷及实际直接排放。材料与水台账分别于污染物/物种台账检查。 | `wild-crab-foreground-method` |
-| `validate_binding` | all exchanges | 下游过程发布前，每项实际交换须分别确认具体身份、属性、单位及相关地域/状态/介质。有条件集合卡可实例化多个实际物质/材料，绝不固定为通用 UUID。固定电/冰/CO2 卡仅适用其声明条件，数量系数须独立证据。身份与计量校验不认证食品安全或渔业可持续性。 | `wild-crab-foreground-method` |
+| `validate_binding` | all exchanges | 下游过程发布前，每项实际交换须分别确认具体身份、属性、单位及相关地域/状态/介质。有采集义务可实例化多个实际物质/材料，绝不固定为通用 UUID。固定电/冰/CO2 卡仅适用其声明条件，数量系数须独立证据。身份与计量校验不认证食品安全或渔业可持续性。 | `wild-crab-foreground-method` |
 | `validate_secondary_bait` | capture_bait | 核对原系统、回收/供应交接、实际配方/状态、继承或截断决定及重复负荷；没有供应证据时保留缺口，不采用实验捕获效率、可持续性断言或负碳信用。 | `cerbule-secondary-bait-2023`; `wild-crab-foreground-method` |
 | `validate_inventory_completion` | 所有具体交换及第8节逐流完善责任 | 核查每项适用 dq_complete 责任均已形成独立实测且身份核实的交换卡；逐项确认数量、原生单位、Range证据、归一化、接收介质、去向和不重复归属。任一实际子交换、数量、身份或去向未落实均使最终数据包不完整并校验失败；未知不得填零。静态PCR检查不能替代这些证据。 |  |
 

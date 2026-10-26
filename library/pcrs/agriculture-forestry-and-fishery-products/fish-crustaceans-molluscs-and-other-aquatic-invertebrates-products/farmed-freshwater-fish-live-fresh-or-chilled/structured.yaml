@@ -490,7 +490,15 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_waste_farm_services
               source_ids: []
-            ranges: []
+            ranges:
+              - role: uncertainty_range
+                lower: "0"
+                upper: "U_culture_sludge_pond_sediment"
+                unit: "kg"
+                basis: "per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
         - row_id: culture_sludge_ras_sludge
           role: "Collected recirculating-aquaculture-system sludge sent to treatment"
           name: "Collected recirculating-aquaculture-system sludge sent to treatment"
@@ -508,7 +516,15 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_waste_farm_services
               source_ids: []
-            ranges: []
+            ranges:
+              - role: uncertainty_range
+                lower: "0"
+                upper: "U_culture_sludge_ras_sludge"
+                unit: "kg"
+                basis: "per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
         - row_id: effluent_to_treatment
           role: "Effluent transferred to a wastewater treatment provider"
           name: "Effluent transferred to a wastewater treatment provider"
@@ -1328,8 +1344,8 @@ dataset_production:
       output: "water/energy ledgers and node attribution"
       source_ids: []
     - id: direct_emission_model
-      applies_to: "aqueous_nutrient_releases; fossil_co2_air; other_direct_releases"
-      rule: "Use measured net concentration and discharge or explicit source-specific balance/factor models for each substance, reconciling feed nutrients, fish retention, removed sludge and actual receiving medium. Fossil CO2 needs actual fuel and independently evidenced carbon/oxidation factors; missing factors are disclosed, never inferred from a UUID."
+      applies_to: "dq_complete_aqueous_nutrient_releases; fossil_co2_air; dq_complete_other_direct_releases"
+      rule: "For each actual aqueous substance and receiving medium, record total outward load from the matched discharge volume and measured concentration over the same interval, with documented unit and element/compound conversion. Independently retain every inlet volume and concentration, sludge removal, fish retention, storage and other destinations. A concentration difference multiplied only by outlet volume is not a general net-load method when inlet/outlet volumes or background fates differ. Use a background-adjusted inventory only with an explicit substance-specific method proving the inlet contribution that actually reaches this outlet, its fate, compatible boundaries and a single adjustment; report total outward load and the net balance diagnostic separately, never as two inventories of the same release. A negative net diagnostic is not automatically negative emission, removal credit or zero. Any source-specific balance/factor model must state its applicability, inputs, formula, provenance and uncertainty. Fossil CO2 requires actual fuel and independently evidenced matching carbon/oxidation factors; missing factors remain gaps, never inferred from a UUID."
       inputs:
         - cp_emissions_own_seed
         - cp_emissions_growout
@@ -1423,7 +1439,7 @@ dataset_production:
       evidence: "per-flow original records under the linked protocol, identity and destination evidence"
     - id: dq_complete_shared_asset_materials
       applies_to: "farm_services; inputs; product"
-      requirement: "Identify and separately collect every actual exchange covered by “Attributed pond, pump, cage and RAS infrastructure materials”; retain all following collection, quantity and normalization obligations: Record each actual construction, aerator, tank, pipe, net, filter/media or handling asset component separately with composition, maintenance, service period, consuming nodes and end-of-life; only attributable material equivalents enter this card. Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg Binding: Amount rule: Measured material stock plus replacements multiplied by documented service/use shares across nodes and periods; retain asset ledger and demolition/waste burden. Value mode: Foreground record (foreground_record) Specificity: Site-specific (site_specific) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (reference_flow) Evidence kind: Collected record (collected_record) Collection protocol: cp_assets Sources: ghg-product-allocation-2011 Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted."
+      requirement: "Identify and separately collect every actual exchange covered by “Attributed pond, pump, cage and RAS infrastructure materials”; retain all following collection, quantity and normalization obligations: Record each actual construction, aerator, tank, pipe, net, filter/media or handling asset component separately with composition, maintenance, service period, consuming nodes and end-of-life; only attributable material equivalents enter this collection obligation. Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg Binding: Amount rule: Measured material stock plus replacements multiplied by documented service/use shares across nodes and periods; retain asset ledger and demolition/waste burden. Value mode: Foreground record (foreground_record) Specificity: Site-specific (site_specific) Normalization basis: per 1 kg reference flow Basis kind: Reference flow (reference_flow) Evidence kind: Collected record (collected_record) Collection protocol: cp_assets Sources: ghg-product-allocation-2011 Establish native units, measured quantities, destinations and independent range evidence for each concrete exchange. This completion requirement supplies no child quantity, default or allowed range; establish each child range independently. No actual exchange may be omitted."
       evidence: "per-flow original records under the linked protocol, identity and destination evidence"
     - id: dq_complete_other_supplied_water
       applies_to: "farm_services; inputs; product"
@@ -1547,7 +1563,7 @@ data_sources:
     used_for: "Defines reporting output as 1 kg and exact 1–1 kg reference Range; no empirical quantity or external factor claim"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e24c3326a00d7197e5425a9f305f0b563b04488ea512ef8c0d3874d993ccdfd3"
+  source_sha256: "sha256:180dcf15385e9bc5ecad4840e63e9a0483e2eab11ada5ebb18325182e8a6b8b6"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5197"
@@ -1598,16 +1614,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47104"
+    - unit_id: "normative_48218"
       family: "allocation"
       span:
         start:
-          offset: 47104
-          line: 769
+          offset: 48218
+          line: 787
           column: 1
         end:
-          offset: 49020
-          line: 778
+          offset: 50134
+          line: 796
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocate_subdivide` | all intended outputs | First subdivide separately measured species, cohorts, culture units and harvest/handling operations. Enumerate all intended food fish, sold seed/broodstock, other polyculture fish and integrated crop/animal outputs with actual purpose, hand-off and destination before attribution. Internal transfers cancel; no substitution credit is automatic. | `ghg-product-allocation-2011` |\n| `allocate_common` | shared inputs and intended co-products | For residual joint burdens use a evidenced causal physical relationship: directly metered consumption, feed uptake/growth requirement or documented service use as appropriate. Wet mass alone is not assumed causal across trophic fish/crops. If causality cannot be supported, disclose economic allocation using contemporaneous gate prices and quantities, with a physical-basis sensitivity and rationale. | `ghg-product-allocation-2011` |\n| `allocate_period_assets` | periods; farm_services | Attribute broodstock, pond/cage/RAS assets, replacements, shared power/water and cleaning/fallow events to all documented consumers and service periods using observed service lives and usage records. Connect partial harvests to one opening/closing-stock ledger. Fractions sum to one for each shared burden; remaining/retired stock and stranded burdens are disclosed without double annualization. | `ghg-product-allocation-2011` |\n| `allocate_waste` | waste and rejects | Waste disposal burdens remain with the generating activity. A sold purposeful output is classified as a product with an attribution decision, never also waste; unsold/dead fish, sludge and packaging follow actual treatment records. Death/escape/weight-change bookkeeping does not become an accepted reference output. | `ghg-product-allocation-2011` |\n\n"
       headings:
@@ -1626,12 +1642,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47104
-              line: 769
+              offset: 48218
+              line: 787
               column: 1
             end:
-              offset: 47144
-              line: 769
+              offset: 48258
+              line: 787
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1646,16 +1662,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_119870"
+    - unit_id: "normative_121851"
       family: "validation"
       span:
         start:
-          offset: 119870
-          line: 858
+          offset: 121851
+          line: 876
           column: 1
         end:
-          offset: 123188
-          line: 871
+          offset: 125169
+          line: 889
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference lot | Verify aquaculture origin, non-Salmonidae species family, human-food purpose, freshwater culture context, whole unheaded/ungutted form, actual live/fresh/chilled state and first producer farmgate; incomplete qualifiers prevent finalization. Do not use a reference name to cover a live-only or landing-site fixed UUID. | `un-cpc3-2025` |\n| `validate_route` | own_seed; growout | Require current producer cohort and unit-stage evidence for seed origin and technology flags, required parent growout, explicit own/purchased mutual exclusion, documented hybrids/transfers and resources/deltas. A route label or historical FAO numerical value does not establish actual farm topology or performance. | `fao-carp-2009`; `ufifas-ras-fa099` |\n| `validate_mass` | all fish and input records | Check calibrated/tared accepted net fish mass and count-to-wet-mass sampling; match each internal transfer once, distinguish biological growth from opening stock, receipt, harvest, mortality, escape and closing stock. Retain explicit uncertainty/residuals; do not force juveniles or harvest input to 1 kg. |  |\n| `validate_utilities` | farm_services; growout | Reconcile water, energy and provider ledgers; CN low-voltage identity is conditional, other supply stays distinct. Confirm numerator property/unit, supplied versus abstracted water, species/element nutrient basis and receiving medium; prevent supplier/direct emission and effluent/substance duplication. | `ufifas-ras-fa099` |\n| `validate_modes_outputs` | all processes and allocation | Audit batch/continuous interval links, cleaning/changeovers/fallow burdens, intended-output completeness and hand-offs, period and shared-consumer fractions, and single assignment of each harvested lot. Actual no-use/bypass evidence is required for zero conditional resources; missing observation is not zero. | `ghg-product-allocation-2011` |\n| `validate_quality` | all exchanges | Every concrete final exchange needs a verified matching flow identity and support property/unit; unresolved cards require later actual-exchange verification. Each provisional Range is a replaceable QA screen, not an allowed limit, default inventory value or medication/performance target. Values outside it trigger explanation and evidence review rather than forced clipping. |  |\n| `validate_handling` | harvest; preservation; dispatch | Select actual pre-gate holding/chilling from timestamp, state and operation evidence; verify survival/temperature observations and segregated rejects, drainage, ice and package tare. Exclude independent post-gate distribution, freezing and head/gut-removal processing. | `fao-freshwater-marketing` |\n| `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |\n\n"
       headings:
@@ -1674,12 +1690,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 119870
-              line: 858
+              offset: 121851
+              line: 876
               column: 1
             end:
-              offset: 119892
-              line: 858
+              offset: 121873
+              line: 876
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1789,158 +1805,158 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_47104"
+      unit_id: "normative_48218"
       source_span:
         start:
-          offset: 47217
-          line: 773
+          offset: 48331
+          line: 791
           column: 1
         end:
-          offset: 47643
-          line: 773
+          offset: 48757
+          line: 791
           column: 427
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_common"
       identity_kind: "explicit"
-      unit_id: "normative_47104"
+      unit_id: "normative_48218"
       source_span:
         start:
-          offset: 47644
-          line: 774
+          offset: 48758
+          line: 792
           column: 1
         end:
-          offset: 48142
-          line: 774
+          offset: 49256
+          line: 792
           column: 499
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_period_assets"
       identity_kind: "explicit"
-      unit_id: "normative_47104"
+      unit_id: "normative_48218"
       source_span:
         start:
-          offset: 48143
-          line: 775
+          offset: 49257
+          line: 793
           column: 1
         end:
-          offset: 48626
-          line: 775
+          offset: 49740
+          line: 793
           column: 484
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_waste"
       identity_kind: "explicit"
-      unit_id: "normative_47104"
+      unit_id: "normative_48218"
       source_span:
         start:
-          offset: 48627
-          line: 776
+          offset: 49741
+          line: 794
           column: 1
         end:
-          offset: 49018
-          line: 776
+          offset: 50132
+          line: 794
           column: 392
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 119965
-          line: 862
+          offset: 121946
+          line: 880
           column: 1
         end:
-          offset: 120338
-          line: 862
+          offset: 122319
+          line: 880
           column: 374
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 120339
-          line: 863
+          offset: 122320
+          line: 881
           column: 1
         end:
-          offset: 120734
-          line: 863
+          offset: 122715
+          line: 881
           column: 396
     - pointer: "/validation_rules/2"
       rule_id: "validate_mass"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 120735
-          line: 864
+          offset: 122716
+          line: 882
           column: 1
         end:
-          offset: 121094
-          line: 864
+          offset: 123075
+          line: 882
           column: 360
     - pointer: "/validation_rules/3"
       rule_id: "validate_utilities"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 121095
-          line: 865
+          offset: 123076
+          line: 883
           column: 1
         end:
-          offset: 121471
-          line: 865
+          offset: 123452
+          line: 883
           column: 377
     - pointer: "/validation_rules/4"
       rule_id: "validate_modes_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 121472
-          line: 866
+          offset: 123453
+          line: 884
           column: 1
         end:
-          offset: 121875
-          line: 866
+          offset: 123856
+          line: 884
           column: 404
     - pointer: "/validation_rules/5"
       rule_id: "validate_quality"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 121876
-          line: 867
+          offset: 123857
+          line: 885
           column: 1
         end:
-          offset: 122295
-          line: 867
+          offset: 124276
+          line: 885
           column: 420
     - pointer: "/validation_rules/6"
       rule_id: "validate_handling"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 122296
-          line: 868
+          offset: 124277
+          line: 886
           column: 1
         end:
-          offset: 122653
-          line: 868
+          offset: 124634
+          line: 886
           column: 358
     - pointer: "/validation_rules/7"
       rule_id: "validate_inventory_completion"
       identity_kind: "explicit"
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 122654
-          line: 869
+          offset: 124635
+          line: 887
           column: 1
         end:
-          offset: 123186
-          line: 869
+          offset: 125167
+          line: 887
           column: 533
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1969,27 +1985,27 @@ normative_context:
           column: 203
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47104"
+      unit_id: "normative_48218"
       source_span:
         start:
-          offset: 47104
-          line: 769
+          offset: 48218
+          line: 787
           column: 1
         end:
-          offset: 47144
-          line: 769
+          offset: 48258
+          line: 787
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_119870"
+      unit_id: "normative_121851"
       source_span:
         start:
-          offset: 119870
-          line: 858
+          offset: 121851
+          line: 876
           column: 1
         end:
-          offset: 119892
-          line: 858
+          offset: 121873
+          line: 876
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1998,5 +2014,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e24c3326a00d7197e5425a9f305f0b563b04488ea512ef8c0d3874d993ccdfd3"
-  generated_content_sha256: "sha256:b3e682fcc586e467676722edb73cfea7e2f02807b2ac32349070f111ee2014ea"
+    sha256: "sha256:180dcf15385e9bc5ecad4840e63e9a0483e2eab11ada5ebb18325182e8a6b8b6"
+  generated_content_sha256: "sha256:ccf58b3363a426577a5f8df4c59bebef39fadc815f48c2374c9de10cf40ad758"

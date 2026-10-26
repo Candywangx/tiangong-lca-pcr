@@ -18,7 +18,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.wild-salmonidae-live-fresh-or-chilled |
-| classification_refs | CPC 3.0 04221；建议 narrower 整尾鱼范围 |
+| classification_refs | CPC 3.0 04221；已接受 narrower 整尾鱼范围 |
 | covered_products | 首次上岸的野生捕捞食用整尾鲑科鱼，未去头/未去内脏，实际活、鲜或冷藏 |
 | excluded_products | 养殖来源鱼；非鲑科鱼；观赏/非食用鱼；苗种；冷冻/解冻鱼；去内脏/去头或进一步加工鱼 |
 | representative_product | 有记录的野生捕捞整尾鲑科鱼批次，首次上岸净湿鱼质量 |
@@ -81,7 +81,7 @@ sync_with: pcr.en-US.md
 | boundary_support | stock_enhancement | 从实际来源证据确定放流种群贡献，并以记录期间量化可归属上游提供者负荷；未知贡献披露为缺口，不设零或虚构养殖。 | noaa-pacific-salmon-support |
 | boundary_period_assets | all processes | 关联航次、暂养、上岸、季节报告及资产服务/替换/退役期间；列明共用渔船、鱼舱、泵、上岸平台及全部使用节点。可归属材料与服务负荷仅计一次。 | |
 | boundary_ecosystem | catch records | 记录移除目标/非目标生物量、活体放回、弃捕存活/死亡和渔具遗失的地点与不确定性。增加交换前确定实际去向及材料/物质，不虚构天然鱼种群基本流 UUID。 | noaa-salmon-fishery-planning |
-| boundary_full_inventory | all processes | 在实际使用节点记录辅助燃料、能源、环境取水、处理剂、废水及直接特定物质排放，含关口前清洗/换批；概括卡须实例化实际具体交换而非通用默认身份。 | |
+| boundary_full_inventory | all processes | 在实际使用节点记录辅助燃料、能源、环境取水、处理剂、废水及直接特定物质排放，含关口前清洗/换批；采集义务须实例化实际具体交换而非通用默认身份。 | |
 
 ## 6. 过程清单结构
 
@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 | preserve | 上岸前活鱼暂养或冷却 | conditional | 批次有实际首次关口前暂养/冷却记录 | 保鲜，位于捕捞之后 | 实际整尾鱼输入/输出质量 |
 | landing | 首次上岸交接 | required | 实际首次上岸或收购交接 | 保护包装及交接，接受实际选择分支 | 1 kg 验收最终鱼 |
 
-全部卡使用最终参考分母。除 1–1 kg 参考定义外，其余范围均为刻意宽泛、暂定的推理 QA 筛选，并非默认清单因子、法规限值或通用允许值。非负有限界限用于短/长航次、岸上/渔船作业、干/湿包装及暂养方案的数据录入数量级检查。零值仅表示有证据的不发生。实际场址/批次记录及合理说明的超界值优先；异常值须解释并以经审查场址证据替换暂定范围。条件性概括卡在实际规格明确后实例化零个、一个或多个独立核验的交换。
+全部卡使用最终参考分母。除 1–1 kg 参考定义外，其余范围均为刻意宽泛、暂定的推理 QA 筛选，并非默认清单因子、法规限值或通用允许值。非负有限界限用于短/长航次、岸上/渔船作业、干/湿包装及暂养方案的数据录入数量级检查。零值仅表示有证据的不发生。实际场址/批次记录及合理说明的超界值优先；异常值须解释并以经审查场址证据替换暂定范围。采集义务在实际规格明确后实例化零个、一个或多个独立核验的交换。
 
 ### 过程：野生种群捕捞 (`capture`)
 
@@ -159,7 +159,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：实际外供处理水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 绑定模式：`fixed`
+- 绑定模式：未解析（`unresolved`）
 - 数量规则：按 cp_capture_water 取得该批次实际量，完成有记录的归属后除以最终验收净鱼 kg；不使用范围替代记录。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
@@ -386,7 +386,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：实际外供处理水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 绑定模式：`fixed`
+- 绑定模式：未解析（`unresolved`）
 - 数量规则：按 cp_preserve_water 取得该批次实际量，完成有记录的归属后除以最终验收净鱼 kg；不使用范围替代记录。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
@@ -615,7 +615,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：实际外供处理水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 绑定模式：`fixed`
+- 绑定模式：未解析（`unresolved`）
 - 数量规则：按 cp_landing_water 取得该批次实际量，完成有记录的归属后除以最终验收净鱼 kg；不使用范围替代记录。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
@@ -834,7 +834,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- |
 | identity_gate_state | reference and fish transfers | 科学鲑科身份、野生来源、生境及实际首次关口/状态须一致；状态未知不完整。 | 物种/来源文件及批次验收 |
 | full_coverage | all inventory rows | 表达完整航次/季节，含无渔获作业量、维护、清洗、换批、替换及关口前损失；说明排除及数据缺口。 | 匹配航次/种群/服务/水/电表台账 |
-| scope_match | providers and identities | 匹配实际材料、污染物、流类型、接收介质、国家/电压、供应商和关口；最终交换前把概括卡落实为独立核验具体身份。 | 提供者规格；详情核验和质量记录 |
+| scope_match | providers and identities | 匹配实际材料、污染物、流类型、接收介质、国家/电压、供应商和关口；最终交换前把采集义务落实为独立核验具体身份。 | 提供者规格；详情核验和质量记录 |
 | range_screen | all cards | 实际记录优先于暂定推理 QA 范围；说明超界、不发生及替代模型量，评估不确定性，不强迫数值落入筛选界限。 | 场址记录；经审查范围替换和敏感性 |
 | ecosystem_records | capture | 保留当前管辖机构种群状态/许可背景、弃捕存活、生境/渔具影响及遗失渔具证据；本 PCR 不提供法规数值。 | 实际注明日期的许可、观察及渔具遗失记录 |
 | `dq_inventory_completion` | 所有逐流清单完善要求 | 为每项实际物理或化学交换建立独立卡片，记录过程、方向、流类型、各自实测数量、原生单位、最终参考归一化、适用性、去向、UUID和独立范围证据。不得把集合总量、原集合筛选范围或一个UUID复制给所有子交换。仅有证据证明未发生时可记不适用；未知不等于零。适用责任未完成时，最终数据包不完整且校验失败。 | 逐流覆盖台账、原始计量、身份、去向和范围证据 |
@@ -867,7 +867,7 @@ sync_with: pcr.en-US.md
 | validate_mode_period | all inventory rows | 核查航次/季节标识、完整作业量、清洗/换批、放流批次及资产替换/退役期间；归属明确且无共用批次/期间负荷重复。 | ghg-product-allocation |
 | validate_shared | infrastructure and outputs | 核查完整使用者/输出台账及本 PCR 特定的物理/价值归属证据，必要时做敏感性分析；不自动质量分配或令支持负荷为零。 | ghg-product-allocation |
 | validate_water_energy | utilities and emissions | 核对输入/回流/消耗/废水台账及实际电力/燃料规格，保留污染物物质及介质。避免外购/自发电或处理/直接排放负荷重复。 | |
-| validate_identities | all cards | 每项实际最终交换须落实为独立核验具体身份及支持属性/单位；未解决概括卡保留为数据缺口。结构检查通过不证明身份或启用/发布就绪。 | |
+| validate_identities | all cards | 每项实际最终交换须落实为独立核验具体身份及支持属性/单位；未解决采集义务保留为数据缺口。结构检查通过不证明身份或启用/发布就绪。 | |
 | validate_sources_ranges | all amounts | 各卡须有计量协议及分母/证据正确的有限范围；最终 1–1 kg 为方法定义。其他暂定筛选不补足缺失观察、固定因子或法规限值。 | |
 | `validate_inventory_completion` | 所有具体交换及第8节逐流完善责任 | 核查每项适用 dq_complete 责任均已形成独立实测且身份核实的交换卡；逐项确认数量、原生单位、Range证据、归一化、接收介质、去向和不重复归属。任一实际子交换、数量、身份或去向未落实均使最终数据包不完整并校验失败；未知不得填零。静态PCR检查不能替代这些证据。 |  |
 

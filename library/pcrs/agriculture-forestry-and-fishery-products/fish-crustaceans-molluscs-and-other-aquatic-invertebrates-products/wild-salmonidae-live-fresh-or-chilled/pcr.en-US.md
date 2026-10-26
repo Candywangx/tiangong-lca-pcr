@@ -18,7 +18,7 @@ Aquaculture grow-out, ornamental or non-food fish, eggs or juvenile seed as the 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.wild-salmonidae-live-fresh-or-chilled |
-| classification_refs | CPC 3.0 04221; proposed narrower whole-fish scope |
+| classification_refs | CPC 3.0 04221; accepted narrower whole-fish scope |
 | covered_products | Wild-captured whole unheaded/ungutted food Salmonidae in actual live, fresh or chilled state at first landing |
 | excluded_products | Aquaculture-origin fish; non-Salmonidae fish; ornamental/non-food fish; seed; frozen/thawed fish; gut/head-removed or further processed fish |
 | representative_product | A documented whole wild-caught Salmonidae lot, net wet fish mass at first landing |
@@ -81,7 +81,7 @@ Declare every qualifier in the foreground package and retain its underlying reco
 | boundary_support | stock_enhancement | Determine release-stock contribution from actual origin evidence and quantify attributable upstream provider burden with documented periods; unknown contribution is a disclosed gap, not zero or invented cultivation. | noaa-pacific-salmon-support |
 | boundary_period_assets | all processes | Link trip, holding, landing, seasonal reporting and asset service/replacement/retirement periods; enumerate shared vessel, hold, pumps, landing platform and every consuming node. Include attributable material and service burdens once. | |
 | boundary_ecosystem | catch records | Record removed target/non-target biomass, live releases, discard survival/mortality and gear loss with locations and uncertainty. Establish actual destination and material/substance before adding exchanges; do not invent an elementary fish-stock UUID. | noaa-salmon-fishery-planning |
-| boundary_full_inventory | all processes | Inventory actual ancillary fuels, energy, water abstraction, treatment agents, wastewater and direct species-specific releases wherever used, including pre-gate cleaning/changeover; umbrella cards require actual concrete exchanges rather than generic default identities. | |
+| boundary_full_inventory | all processes | Inventory actual ancillary fuels, energy, water abstraction, treatment agents, wastewater and direct species-specific releases wherever used, including pre-gate cleaning/changeover; collection obligations in Section 8 require actual concrete exchanges rather than generic default identities. | |
 
 ## 6. Process Inventory Structure
 
@@ -95,7 +95,7 @@ The production mode is a trip/shore batch with a defined seasonal reporting peri
 | preserve | Pre-landing live holding or chilling | conditional | Actual pre-first-gate holding/chilling recorded for the lot | Preservation; follows capture | Actual incoming and outgoing whole-fish mass |
 | landing | First landing and dispatch | required | Actual first landing or collector handover | Protective packaging and handover; receives actual selected branch | 1 kg accepted final fish |
 
-All cards use the final reference denominator. Ranges other than the 1–1 kg reference definition are deliberately broad provisional reasoned QA screens, not default inventory factors, regulatory limits or universal allowable values. Their nonnegative finite bounds screen data-entry orders of magnitude across short/long trips, shore/vessel effort, wet/dry packaging and holding alternatives. Zero means evidenced absence only. Actual site/lot records and justified excursions take precedence; unusual values require explanation and replacement of provisional screens with reviewed site evidence. Conditional umbrella cards instantiate zero, one or multiple independently verified exchanges after actual specification is known.
+All cards use the final reference denominator. Ranges other than the 1–1 kg reference definition are deliberately broad provisional reasoned QA screens, not default inventory factors, regulatory limits or universal allowable values. Their nonnegative finite bounds screen data-entry orders of magnitude across short/long trips, shore/vessel effort, wet/dry packaging and holding alternatives. Zero means evidenced absence only. Actual site/lot records and justified excursions take precedence; unusual values require explanation and replacement of provisional screens with reviewed site evidence. Conditional collection obligations in Section 8 instantiate zero, one or multiple independently verified exchanges after actual specification is known.
 
 ### Process: Wild-stock capture (`capture`)
 
@@ -834,7 +834,7 @@ Conditional actual fossil CO2 from landing fuel combustion to unspecified air; m
 | --- | --- | --- | --- |
 | identity_gate_state | reference and fish transfers | Scientific Salmonidae identity, wild origin, habitat and actual first gate/state must agree; unknown state is incomplete. | Species/origin documentation and lot acceptance |
 | full_coverage | all inventory rows | Represent complete trip/season including unsuccessful effort, maintenance, washing, changeovers, replacement and pre-gate losses; justify exclusions and data gaps. | Matched trip/stock/service/water/meter ledgers |
-| scope_match | providers and identities | Match actual material, pollutant, flow type, receiving medium, country/voltage, provider and gate; refine umbrella cards into concrete independently verified identities before final exchanges. | Provider specification; detail verification and quality record |
+| scope_match | providers and identities | Match actual material, pollutant, flow type, receiving medium, country/voltage, provider and gate; refine collection obligations in Section 8 into concrete independently verified identities before final exchanges. | Provider specification; detail verification and quality record |
 | range_screen | all cards | Actual records take precedence over provisional reasoned QA ranges; justify excursions, absence and substituted model quantities; assess uncertainty without forcing values within screens. | Site records; reviewed range replacement and sensitivity |
 | ecosystem_records | capture | Retain stock status/permit context from current jurisdiction, discard survival, habitat/gear impacts and lost gear evidence; numeric regulations are not supplied here. | Actual dated permits, observer and gear-loss records |
 | `dq_inventory_completion` | all inventory-completion requirements | Create a separate card for every actual physical or chemical exchange, with process, direction, flow type, its own measured quantity, native unit, final-reference normalization, applicability, destination, UUID and independent range evidence. Never copy a family total, a grouped screening range or one UUID onto every child. Use not_applicable only for evidenced absence; unknown is not zero. Any unfulfilled applicable obligation makes the final dataset incomplete and fails validation. | per-flow coverage ledger, raw measurements, identity, fate and range evidence |

@@ -598,8 +598,8 @@ dataset_production:
       source_ids:
         - same-lot-accounting-method
     - id: instance_attribution
-      applies_to: "all inventory rows"
-      rule: "Assign actual event quantity to node/period/output once using declared allocation shares, then divide by same-lot accepted net body mass A; preserve each instance native numerator unit. Do not normalize a zero-acceptance pool."
+      applies_to: "shared resource, emission, service and asset burdens in the LCA view"
+      rule: "After physical reconciliation, directly assign dedicated burdens and apply the justified Section 7 shares only to residual shared burdens, once across nodes, periods and intended outputs. Divide that attributable LCA burden by positive same-lot A. Do not multiply physical animal transfers, intended-output quantities, carrier/package transfers, stock changes or destination-specific loss quantities by co-product burden shares; preserve those raw physical ledgers and normalize each measured quantity by A separately. Paired physical transfers retain the same quantity/state in both nodes. Do not normalize a zero-acceptance pool."
       inputs:
         - "actual event quantity"
         - "node/period/output shares"
@@ -662,7 +662,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_capture_alternates
       applies_to: "capture; Outputs; Product flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual capture-stage intended alternate animal product or stock. Conditional independently intended fish/other-animal products or retained stock exiting capture before T1/T2. Give every species, grade, condition, quantity, period and actual recipient/stock handoff its own instance; no duplicated downstream sale or environmental credit. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_capture measured alternate body mass per destination instance divided by A after attribution <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_capture <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished alternate-instance uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_capture_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual capture-stage intended alternate animal product or stock. Conditional independently intended fish/other-animal products or retained stock exiting capture before T1/T2. Give every species, grade, condition, quantity, period and actual recipient/stock handoff its own instance; no duplicated downstream sale or environmental credit. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_capture measured alternate body mass per destination instance divided by A before co-product burden allocation in the physical ledger <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_capture <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished alternate-instance uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_capture_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_capture_wastes
       applies_to: "capture; Outputs; Waste flows"
@@ -686,7 +686,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_sort_alternates
       applies_to: "sort; Outputs; Product flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual sorting-stage intended alternate animal product or stock. Conditional lower-grade target fish, other intended species or retained animal stock. Each grade/species/condition/destination gets a separate measured output and recipient/stock handoff; a saleable downgrade is not waste. Do not claim its later processing belongs to this reference route. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_sort measured alternate body mass per destination instance divided by A after attribution <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_sort <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished sorting-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_sort_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual sorting-stage intended alternate animal product or stock. Conditional lower-grade target fish, other intended species or retained animal stock. Each grade/species/condition/destination gets a separate measured output and recipient/stock handoff; a saleable downgrade is not waste. Do not claim its later processing belongs to this reference route. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_sort measured alternate body mass per destination instance divided by A before co-product burden allocation in the physical ledger <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_sort <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished sorting-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_sort_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_sort_wastes
       applies_to: "sort; Outputs; Waste flows"
@@ -706,7 +706,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_chill_alternates
       applies_to: "chill; Outputs; Product flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual chilling-stage intended alternate product or stock. Conditional actual downgraded/diverted fish or retained stock and reusable carriers/ice not entering T5/T8. Separate each material, animal condition, grade and destination handoff; do not turn saleable fish or reusable carrier into waste. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_chill measured product mass per destination instance divided by A after attribution <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_chill <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished chilling-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_chill_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual chilling-stage intended alternate product or stock. Conditional actual downgraded/diverted fish or retained stock and reusable carriers/ice not entering T5/T8. Separate each material, animal condition, grade and destination handoff; do not turn saleable fish or reusable carrier into waste. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_chill measured product mass per destination instance divided by A before co-product burden allocation in the physical ledger <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_chill <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished chilling-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_chill_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_chill_wastes
       applies_to: "chill; Outputs; Waste flows"
@@ -734,7 +734,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_present_alternates
       applies_to: "present; Outputs; Product flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual presentation-stage intended alternate product or stock. Conditional actual downgraded/diverted fish, stock, returned or retained unused packaging/ice. Each material/animal grade and destination has its own product handoff and mass; do not duplicate T6/T7. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_present measured alternate product mass per destination instance divided by A after attribution <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_present <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished presentation-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_present_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual presentation-stage intended alternate product or stock. Conditional actual downgraded/diverted fish, stock, returned or retained unused packaging/ice. Each material/animal grade and destination has its own product handoff and mass; do not duplicate T6/T7. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_present measured alternate product mass per destination instance divided by A before co-product burden allocation in the physical ledger <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_present <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished presentation-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_present_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_present_wastes
       applies_to: "present; Outputs; Waste flows"
@@ -754,7 +754,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_delivery_alternates
       applies_to: "delivery; Outputs; Product flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual pre-receipt intended alternate animal product or stock. Conditional actual recipient-rejected but resaleable/downgraded/diverted fish or closing stock before acceptance. Each state/grade/destination has its own body mass, period and physical recipient/stock handoff. They are not accepted_seabass and not automatically wastes. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_delivery measured alternate body mass per destination instance divided by A after attribution <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_delivery <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished delivery-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_delivery_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual pre-receipt intended alternate animal product or stock. Conditional actual recipient-rejected but resaleable/downgraded/diverted fish or closing stock before acceptance. Each state/grade/destination has its own body mass, period and physical recipient/stock handoff. They are not accepted_seabass and not automatically wastes. <br> - Flow property / unit: Mass / kg <br> - Amount rule: cp_delivery measured alternate body mass per destination instance divided by A before co-product burden allocation in the physical ledger <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_delivery <br> - Sources: same-lot-accounting-method <br> - Range: Unestablished delivery-alternate uncertainty <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_delivery_alternates_instance <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_delivery_carrier_outputs
       applies_to: "delivery; Outputs; Product flows"
@@ -837,7 +837,7 @@ data_sources:
     used_for: "Positive A/A identity, measured transfer and stock balances, native-unit collection, output/period/service attribution rationale and sensitivity; no empirical yield, emission factor or lifetime"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ff3793d3809b39861c9bd83a8b7b6c26f44c524d8e514535d5bd5590cffb4fb4"
+  source_sha256: "sha256:d7f04a0afb265e3ae0cf78e523a25948226221267e0516cf418b9e5695d04230"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5337"
@@ -888,15 +888,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_25426"
+    - unit_id: "normative_25544"
       family: "allocation"
       span:
         start:
-          offset: 25426
+          offset: 25544
           line: 423
           column: 1
         end:
-          offset: 27849
+          offset: 27967
           line: 432
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_output` | all intended animal products | First subdivide separately measured target and other-species/grade/destination operations. For inseparable shared capture/run burdens use actual net animal mass shares across all intended outputs of that trip/period, with reason for physical relevance and sensitivity against actual economic shares where price/grade differences matter. Record all outputs and allocation sums, including capture/sort/chill/present/delivery alternates. Wastes, returns and residue receive explicit management burdens; no avoided-production credit. Do not allocate the same target burden once at internal T1-T6 and again at sale. | same-lot-accounting-method |\n| `allocation_trip` | batch trips and cleanup | Include failed and no-output trips, setup, changeover and cleanup in the declared capture reporting service pool; assign to actual intended outputs of that pool, not only successful selected trips. A zero accepted-mass pool cannot produce a per-kg result; retain burdens and disclose the gap. Keep stock-linked burdens with measured opening/closing stock, rather than discarding them. | same-lot-accounting-method |\n| `allocation_period` | multi-period stocks and assets | Carry opening fish/ice stocks with upstream burdens and use measured issue/closing ledgers. Allocate reusable container, vessel, gear and infrastructure manufacture/repair/replacement/termination over evidenced delivered service, actual use and periods. State service-life rationale, observed use, remaining service and sensitivity; no universal lifetime. Assign idle/failed periods explicitly and preserve balance between carried and current burdens. | same-lot-accounting-method |\n| `allocation_shared` | shared assets and complete services | Register each vessel, bin, landing facility or vehicle and all actual capture/sort/chill/present/delivery consumers and periods. Subdivide metered service first, otherwise use evidenced occupied capacity/time or activity with rationale and sensitivity. Shares sum to the full attributable service once. Complete upstream/contracted service has one owner and excludes its covered component energy, assets and direct releases from foreground duplication. Physical reuse transfers do not recreate manufacture burdens. | same-lot-accounting-method |\n\n"
@@ -916,11 +916,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 25426
+              offset: 25544
               line: 423
               column: 1
             end:
-              offset: 25466
+              offset: 25584
               line: 423
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -936,15 +936,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_101793"
+    - unit_id: "normative_102853"
       family: "validation"
       span:
         start:
-          offset: 101793
+          offset: 102853
           line: 497
           column: 1
         end:
-          offset: 104478
+          offset: 105538
           line: 508
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference eligibility | Require actual wild D. labrax, England inshore artificial-lure trolling and whole ungutted raw never-frozen chilled physical receipt. Excluded routes/states cannot be renamed to pass. No historical source proves current legal/safety status. | seafish-trolling; cefas-bass-1996; marlin-seabass-2007; un-cpc3-fish-notes |\n| `validate_reference` | accepted_seabass and cp_delivery | Require A > 0, calibrated net fish mass with all exclusions, same-lot A/A identity and reference-link/name/state agreement. Counts require actual same-lot mass evidence; never substitute packaged, gutted or generic fish mass. | same-lot-accounting-method |\n| `validate_nodes` | capture, sort, chill, present, delivery | Require each node and its native-unit protocol, T1-T8 paired physical transfers, actual grade/destination product outputs at every node, incidental matter, stock, loss, waste and direct-release reconciliation. Unknown occurrence is unresolved, not inactive. Chilling cannot be bypassed for this reference. | same-lot-accounting-method; seafish-trolling |\n| `validate_attribution` | trip/output/period/shared burdens | Require complete intended-output set, trip/lot boundaries, failed/no-output trips, cleanup/changeover, opening/closing stocks, all asset/service consumers/periods, replacement/termination evidence and rationale/sensitivity. Verify share sums and one event owner; no double handoff allocation or complete-service/component duplication. | same-lot-accounting-method |\n| `validate_evidence` | exchanges, Ranges and releases | Resolve actual instance identities/property/native units before final exchanges. Verify substance/species, receiving medium and chemical/carbon basis; treatment and direct release differ. A provisional U or checker pass does not prove empirical quantities, UUID verification or publication readiness. | same-lot-accounting-method |\n| `validate_atomic_completion` | all applicable per-flow collection obligations and final exchanges | Final dataset completion and validation require every actual exchange to have an independent atomic card and its own quantity, property/native unit, collection or calculation evidence, range/uncertainty evidence, normalization, actual destination and verified UUID. Unknown identity, activity state, quantity, range evidence or fate blocks completion; it is never zero, a presumed bypass or permission to omit an obligation. Every important concrete flow retains its own range/uncertainty evidence collection duty; a symbolic upper bound is not an empirical range. | |\n\n"
@@ -964,11 +964,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 101793
+              offset: 102853
               line: 497
               column: 1
             end:
-              offset: 101815
+              offset: 102875
               line: 497
               column: 23
           text: "## 9. Validation Rules"
@@ -1053,131 +1053,131 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_output"
       identity_kind: "explicit"
-      unit_id: "normative_25426"
+      unit_id: "normative_25544"
       source_span:
         start:
-          offset: 25539
+          offset: 25657
           line: 427
           column: 1
         end:
-          offset: 26235
+          offset: 26353
           line: 427
           column: 697
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_trip"
       identity_kind: "explicit"
-      unit_id: "normative_25426"
+      unit_id: "normative_25544"
       source_span:
         start:
-          offset: 26236
+          offset: 26354
           line: 428
           column: 1
         end:
-          offset: 26699
+          offset: 26817
           line: 428
           column: 464
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_period"
       identity_kind: "explicit"
-      unit_id: "normative_25426"
+      unit_id: "normative_25544"
       source_span:
         start:
-          offset: 26700
+          offset: 26818
           line: 429
           column: 1
         end:
-          offset: 27239
+          offset: 27357
           line: 429
           column: 540
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_shared"
       identity_kind: "explicit"
-      unit_id: "normative_25426"
+      unit_id: "normative_25544"
       source_span:
         start:
-          offset: 27240
+          offset: 27358
           line: 430
           column: 1
         end:
-          offset: 27847
+          offset: 27965
           line: 430
           column: 608
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_101793"
+      unit_id: "normative_102853"
       source_span:
         start:
-          offset: 101888
+          offset: 102948
           line: 501
           column: 1
         end:
-          offset: 102252
+          offset: 103312
           line: 501
           column: 365
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_101793"
+      unit_id: "normative_102853"
       source_span:
         start:
-          offset: 102253
+          offset: 103313
           line: 502
           column: 1
         end:
-          offset: 102569
+          offset: 103629
           line: 502
           column: 317
     - pointer: "/validation_rules/2"
       rule_id: "validate_nodes"
       identity_kind: "explicit"
-      unit_id: "normative_101793"
+      unit_id: "normative_102853"
       source_span:
         start:
-          offset: 102570
+          offset: 103630
           line: 503
           column: 1
         end:
-          offset: 102987
+          offset: 104047
           line: 503
           column: 418
     - pointer: "/validation_rules/3"
       rule_id: "validate_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_101793"
+      unit_id: "normative_102853"
       source_span:
         start:
-          offset: 102988
+          offset: 104048
           line: 504
           column: 1
         end:
-          offset: 103416
+          offset: 104476
           line: 504
           column: 429
     - pointer: "/validation_rules/4"
       rule_id: "validate_evidence"
       identity_kind: "explicit"
-      unit_id: "normative_101793"
+      unit_id: "normative_102853"
       source_span:
         start:
-          offset: 103417
+          offset: 104477
           line: 505
           column: 1
         end:
-          offset: 103805
+          offset: 104865
           line: 505
           column: 389
     - pointer: "/validation_rules/5"
       rule_id: "validate_atomic_completion"
       identity_kind: "explicit"
-      unit_id: "normative_101793"
+      unit_id: "normative_102853"
       source_span:
         start:
-          offset: 103806
+          offset: 104866
           line: 506
           column: 1
         end:
-          offset: 104476
+          offset: 105536
           line: 506
           column: 671
   diagnostics:
@@ -1207,26 +1207,26 @@ normative_context:
           column: 186
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_25426"
+      unit_id: "normative_25544"
       source_span:
         start:
-          offset: 25426
+          offset: 25544
           line: 423
           column: 1
         end:
-          offset: 25466
+          offset: 25584
           line: 423
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_101793"
+      unit_id: "normative_102853"
       source_span:
         start:
-          offset: 101793
+          offset: 102853
           line: 497
           column: 1
         end:
-          offset: 101815
+          offset: 102875
           line: 497
           column: 23
 projection_metadata:
@@ -1236,5 +1236,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ff3793d3809b39861c9bd83a8b7b6c26f44c524d8e514535d5bd5590cffb4fb4"
-  generated_content_sha256: "sha256:16c28a8a0387bdf14392eac0b4719c1e7f270ba245947526c649e3e4d32bb8e3"
+    sha256: "sha256:d7f04a0afb265e3ae0cf78e523a25948226221267e0516cf418b9e5695d04230"
+  generated_content_sha256: "sha256:8ad66db016b0efc73c4fe513a02db9fd31ca838f638e4cb85a5f61af6f6f6239"

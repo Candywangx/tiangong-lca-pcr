@@ -104,6 +104,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
+- Range: Unresolved independent range evidence for capture_internal_water_ice_receipt_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_internal_water_ice_receipt_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`capture_internal_water_ice_receipt_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -118,7 +127,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
-
+- Range: Unresolved independent range evidence for capture_internal_water_ice_receipt_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_internal_water_ice_receipt_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Purchased shore electricity for capture preparation (`capture_shore_electricity`)
 
@@ -165,6 +181,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
+- Range: Unresolved independent range evidence for capture_internal_water_ice_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_internal_water_ice_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`capture_internal_water_ice_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -179,7 +204,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
-
+- Range: Unresolved independent range evidence for capture_internal_water_ice_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_internal_water_ice_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Collected whole unsorted catch at sorting handoff (`captured_unsorted`)
 
@@ -234,7 +266,7 @@ Only actual direct fossil combustion owned by the capture fuel ledger is include
 
 ### Process: Grade and destination sorting (`grade`)
 
-Receive captured_unsorted directly or preserved_unsorted from actual pre-sort preservation, matched by transfer/pass id and observed state. Food-qualified flatfish of each grade proceed directly to presentation or to an actual post-grade preservation pass. Other intended species/non-food sales, live release, direct environmental discard and managed waste have separate destinations. Every umbrella expands to independently identified actual exchanges; no universal mixed-species UUID is asserted.
+Receive captured_unsorted directly or preserved_unsorted from actual pre-sort preservation, matched by transfer/pass id and observed state. Food-qualified flatfish of each grade proceed directly to presentation or to an actual post-grade preservation pass. Other intended species/non-food sales, live release, direct environmental discard and managed waste have separate destinations. Every collection scope expands to independently identified actual exchanges; no universal mixed-species UUID is asserted.
 
 #### Inputs
 
@@ -254,6 +286,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
+- Range: Unresolved independent range evidence for grade_internal_water_ice_receipt_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_internal_water_ice_receipt_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`grade_internal_water_ice_receipt_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -268,7 +309,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
-
+- Range: Unresolved independent range evidence for grade_internal_water_ice_receipt_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_internal_water_ice_receipt_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Collected whole unsorted catch received for sorting (`grade_catch_in`)
 
@@ -361,6 +409,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
+- Range: Unresolved independent range evidence for grade_internal_water_ice_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_internal_water_ice_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`grade_internal_water_ice_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -375,7 +432,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
-
+- Range: Unresolved independent range evidence for grade_internal_water_ice_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_internal_water_ice_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Food-qualified whole flatfish by accepted or downgraded food grade (`graded_food`)
 
@@ -495,6 +559,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
+- Range: Unresolved independent range evidence for preserve_internal_water_ice_receipt_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_internal_water_ice_receipt_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`preserve_internal_water_ice_receipt_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -509,7 +582,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
-
+- Range: Unresolved independent range evidence for preserve_internal_water_ice_receipt_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_internal_water_ice_receipt_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Food-qualified whole flatfish entering bounded preservation (`preserve_fish_in`)
 
@@ -672,6 +752,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
+- Range: Unresolved independent range evidence for preserve_internal_water_ice_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_internal_water_ice_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`preserve_internal_water_ice_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -686,7 +775,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
-
+- Range: Unresolved independent range evidence for preserve_internal_water_ice_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_internal_water_ice_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Food-qualified whole flatfish after actual preservation (`preserved_food`)
 
@@ -853,6 +949,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_presentation`
 
+- Range: Unresolved independent range evidence for presentation_internal_water_ice_receipt_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_presentation_internal_water_ice_receipt_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`presentation_internal_water_ice_receipt_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -867,7 +972,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_presentation`
 
-
+- Range: Unresolved independent range evidence for presentation_internal_water_ice_receipt_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_presentation_internal_water_ice_receipt_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Food-qualified whole flatfish at presentation entry (`presentation_fish_in`)
 
@@ -960,6 +1072,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_presentation`
 
+- Range: Unresolved independent range evidence for presentation_water_ice_handover_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_presentation_water_ice_handover_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`presentation_water_ice_handover_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -974,7 +1095,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_presentation`
 
-
+- Range: Unresolved independent range evidence for presentation_water_ice_handover_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_presentation_water_ice_handover_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Separately measured liquid water (`presentation_internal_water_ice_transfer_water`)
 
@@ -990,6 +1118,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_presentation`
 
+- Range: Unresolved independent range evidence for presentation_internal_water_ice_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_presentation_internal_water_ice_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`presentation_internal_water_ice_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -1004,7 +1141,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_presentation`
 
-
+- Range: Unresolved independent range evidence for presentation_internal_water_ice_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_presentation_internal_water_ice_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Whole wild food flatfish at first producer handover (`whole_flatfish_handover`)
 
@@ -1142,10 +1286,10 @@ The bound identity represents emissions to air, unspecified. Where actual eviden
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_capture` | `capture` | Source-to-collected catch; one vessel or collector operating unit | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg | Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in umbrella cards. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ | Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
-| `cp_grade` | `grade` | Complete destination partition; not a second capture operation | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg | Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in umbrella cards. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ | Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
-| `cp_preserve` | `preserve` | Observed usable-state intervention with stock and losses | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg  actual service provider/scope/functional unit/property/unitgroup and unresolved support; water/ice source/destination and paired ids; physical packaging dispatch/return/stock;| Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in umbrella cards. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ  collect each service separately in verified provider-native functional unit provider_service_unit, not material kg;| Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
-| `cp_presentation` | `presentation` | Actual final state and net fish acceptance at first producer gate | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg  actual service provider/scope/functional unit/property/unitgroup and unresolved support; water/ice source/destination and paired ids; physical packaging dispatch/return/stock;| Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in umbrella cards. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ  collect each service separately in verified provider-native functional unit provider_service_unit, not material kg;| Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
+| `cp_capture` | `capture` | Source-to-collected catch; one vessel or collector operating unit | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg | Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in collection obligations in Section 8. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ | Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
+| `cp_grade` | `grade` | Complete destination partition; not a second capture operation | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg | Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in collection obligations in Section 8. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ | Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
+| `cp_preserve` | `preserve` | Observed usable-state intervention with stock and losses | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg  actual service provider/scope/functional unit/property/unitgroup and unresolved support; water/ice source/destination and paired ids; physical packaging dispatch/return/stock;| Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in collection obligations in Section 8. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ  collect each service separately in verified provider-native functional unit provider_service_unit, not material kg;| Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
+| `cp_presentation` | `presentation` | Actual final state and net fish acceptance at first producer gate | Measured records and supported derived quantities | event_id; pass_id; trip/campaign; lot/transfer_id; species; gear; live/fresh/chilled condition; food eligibility; timestamp/gate; owner; raw amount/unit; opening/closing stock; destination; meter/tank; concentration/carbon/density factors and sources; share driver; final accepted net kg  actual service provider/scope/functional unit/property/unitgroup and unresolved support; water/ice source/destination and paired ids; physical packaging dispatch/return/stock;| Use calibrated mass measurements, paired handover records, meters/tank stock reconciliation and representative state-specific count/density samples. Identify every actual exchange in collection obligations in Section 8. Capture additionally logs effort/bottom contact/incidental catch/gear events; grade records every destination; preserve records intervention, mortality, water and refrigerant closure; presentation verifies calibrated final net mass excluding ice/water/packaging. Derived emissions retain independently evidenced composition/factor and calculation. | kg; MJ  collect each service separately in verified provider-native functional unit provider_service_unit, not material kg;| Every event/transfer and meter interval; reconcile each trip/campaign and cutoff | Complete declared reporting period, maintenance/idle events, opening/closing stocks and asset service phases | Only this real node within the declared single operating unit | per 1 kg reference flow | Calibration; source documents; stock/transfer closure; factor provenance; independent samples; independent held-out campaign review for replacement of provisional screens |
 
 ### Calculation Rules
 
@@ -1153,7 +1297,7 @@ The bound identity represents emissions to air, unspecified. Where actual eviden
 | --- | --- | --- | --- | --- | --- |
 | `event_normalization` | all inventory rows | Keep two explicitly labelled views. First reconcile unallocated physical receipts, transfers, products, losses and stocks for the complete declared cohort/trip/run; pair internal transfers in the same state and unit, retaining their measured mass. Assign shared resource/service events to actual consuming nodes and periods once using evidenced service shares, without shrinking product, biomass, water or waste partitions by a co-product share. Divide this physical inventory by the matching positive accepted final net kg. Separately derive a labelled single-output LCA burden/inventory projection using section 7 co-product allocation exactly once, retaining the unallocated inventory and allocation matrix. Never test allocated exchanges against an unallocated physical balance, apply output shares again downstream, or set an internal quantity to the final 1 kg. | event records; share drivers; final accepted net kg | amount per 1 kg reference flow | `foreground-flatfish-method` |
 | `quantity_derivations` | water; exhaust; count-recorded biomass | Convert counts using measured matching species/state mass samples; convert volume with actual condition-specific density; derive actual emissions from documented fuel/carbon/oxidation or equipment factors and actual activity. Record every factor, source, unit, uncertainty and intermediate calculation; no numeric factor other than verified unit conversion is supplied by this PCR. | matching samples; density/composition/factor evidence; actual activity | traceable mass/energy/emission quantities | `foreground-flatfish-method` |
-| `conditional_interface_envelopes` | capture_internal_water_ice_receipt; capture_internal_water_ice_transfer; grade_internal_water_ice_receipt; grade_internal_water_ice_transfer; grade_actual_water_evaporation; preserve_internal_water_ice_receipt; preserve_external_service; preserve_internal_water_ice_transfer; presentation_internal_water_ice_receipt; presentation_external_service; presentation_actual_source_water; presentation_internal_water_ice_transfer; presentation_water_ice_handover; presentation_actual_water_evaporation | For each explicitly listed conditional interface card instantiate actual identity, state, node, pass and numerator unit before establishing U_row from the same-view normalized maximum of an independent representative campaign times a predeclared margin at least 1, or a matching-unit/basis supplier design envelope. Retain samples, source, basis and uncertainty; never use the target batch to establish its own upper bound. Unverified service unit/support or absent independent envelope remains an unresolved instance, not numeric QA-cleared or zero. Reconcile physical water/ice/packaging movements separately from service-share quantities. | independent reference records; actual unit and basis | U_row | `foreground-flatfish-method` |
+| `conditional_interface_envelopes` | capture_internal_water_ice_receipt_water; capture_internal_water_ice_receipt_ice; capture_internal_water_ice_transfer_water; capture_internal_water_ice_transfer_ice; grade_internal_water_ice_receipt_water; grade_internal_water_ice_receipt_ice; grade_internal_water_ice_transfer_water; grade_internal_water_ice_transfer_ice; preserve_internal_water_ice_receipt_water; preserve_internal_water_ice_receipt_ice; preserve_internal_water_ice_transfer_water; preserve_internal_water_ice_transfer_ice; presentation_internal_water_ice_receipt_water; presentation_internal_water_ice_receipt_ice; presentation_water_ice_handover_water; presentation_water_ice_handover_ice; presentation_internal_water_ice_transfer_water; presentation_internal_water_ice_transfer_ice; grade_actual_water_evaporation; presentation_actual_water_evaporation; dq_complete_preserve_external_service; dq_complete_presentation_external_service; dq_complete_presentation_actual_source_water | For each listed atomic card, or each actual exchange required by a listed collection obligation, instantiate actual identity, state, node, pass and numerator unit before establishing U_row from the same-view normalized maximum of an independent representative campaign times a predeclared margin at least 1, or a matching-unit/basis supplier design envelope. Retain samples, source, basis and uncertainty; never use the target batch to establish its own upper bound. Unverified service unit/support or absent independent envelope remains an unresolved instance, not numeric QA-cleared or zero. Reconcile physical water/ice/packaging movements separately from service-share quantities. | independent reference records; actual unit and basis | U_row | `foreground-flatfish-method` |
 
 ### Data Quality Requirements
 
@@ -1231,7 +1375,7 @@ The bound identity represents emissions to air, unspecified. Where actual eviden
 | `v_state` | all transfers | Test capture -> pre-sort onboard chill -> landing grade -> dispatch; direct live/fresh capture -> grade -> dispatch; and post-grade preservation, including both-pass cases with unique pass ids. Match every actual transfer/state/quantity and same-state absent-pass bypass. Pre-sort output is not automatically food-qualified. Already fresh fish needs no invented kill; live output excludes dead fish. Dead fish needs independent fresh/chilled food acceptance or reject fate. No duplicated intermediate output, resource, mortality or stock between passes; internal feed is measured, never fixed to final one kg. | `foreground-flatfish-method` |
 | `v_complete` | all nodes | Close species/body-mass partitions, intended outputs, releases/discards/waste, water and pollutants, fuel, gear, refrigerant and packaging stocks within documented measurement uncertainty. Retain bottom-contact/entanglement/incidental-catch condition and effort evidence even where no characterized LCA factor exists; missing characterization is disclosed, not reported as zero ecological impact. | `foreground-flatfish-method` |
 | `v_range` | all flow cards | Every Range is an explicit provisional screening envelope unless it is the exact final reference quantity. Non-reference envelopes are not allowed ranges, site observations, default inventory values or evidence of plausibility. A value outside the envelope triggers investigation, not clipping; a value inside does not validate the batch. Replace provisional screens with independently held-out reviewed campaign evidence before quantitative reuse, without using the evaluated batch maximum as its own guardrail. | `foreground-flatfish-method` |
-| `v_identity` | all exchange identities | Resolve each actual umbrella exchange to one verified compatible flow before downstream exchange publication. Verify direction/type, substance or product state, property/unit, geography, technology and destination independently. No UUID observation establishes an amount or emission factor. Unverified oxygen, fuel, final fish, wastes and emissions remain unresolved; do not relabel a narrower freshwater diesel or factory oxygen reference. | `foreground-flatfish-method` |
+| `v_identity` | all exchange identities | Resolve each actual collection scope exchange to one verified compatible flow before downstream exchange publication. Verify direction/type, substance or product state, property/unit, geography, technology and destination independently. No UUID observation establishes an amount or emission factor. Unverified oxygen, fuel, final fish, wastes and emissions remain unresolved; do not relabel a narrower freshwater diesel or factory oxygen reference. | `foreground-flatfish-method` |
 | `v_attribution` | all periods and outputs |Reconcile every intended output and revenue/physical driver across the same system period, every shared-consumer share and opening/closing stock burden. Check that outbound/return effort, onboard preservation energy, manufactured/purchased ice, purchased services and direct emissions are counted once. Missing route-specific effort, release condition, stock fate or allocation evidence prevents a complete foreground package. Check the at-sea gate case explicitly: separate product custody from completed producer return-service accounting, with return burdens assigned once without moving the product gate. | `foreground-flatfish-method` |
 | `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |
 

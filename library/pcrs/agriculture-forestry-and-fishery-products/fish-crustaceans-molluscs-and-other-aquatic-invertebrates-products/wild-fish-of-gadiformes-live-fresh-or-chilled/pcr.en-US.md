@@ -16,7 +16,7 @@ This method covers producer wild marine capture through the first food handover 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | `pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.wild-fish-of-gadiformes-live-fresh-or-chilled` |
-| classification_refs | CPC 3.0 04241; proposed narrower boundary, not all leaf forms. |
+| classification_refs | CPC 3.0 04241; accepted narrower boundary, not all leaf forms. |
 | covered_products | Wild marine Gadiformes head-on gutted food carcasses, fresh or nonfrozen chilled, at first producer handover. |
 | excluded_products | Inland/farmed origin; final live/ungutted/headed/filleted/frozen/thawed/processed states; organs as reference; nonfood and later trader gates. |
 | representative_product | Wild marine Atlantic cod, head-on gutted, chilled, actual grade and gill state. |
@@ -110,6 +110,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
+- Range: Unresolved independent range evidence for capture_water_received_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_water_received_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`capture_water_received_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -124,7 +133,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
-
+- Range: Unresolved independent range evidence for capture_water_received_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_water_received_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual electricity supply at capture (`capture_electricity`)
 
@@ -360,6 +376,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
+- Range: Unresolved independent range evidence for capture_water_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_water_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`capture_water_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -374,7 +399,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_capture`
 
-
+- Range: Unresolved independent range evidence for capture_water_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_capture_water_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Whole target fish transferred from capture (`whole_target_catch`)
 
@@ -557,6 +589,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_condition`
 
+- Range: Unresolved independent range evidence for condition_water_received_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_condition_water_received_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`condition_water_received_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -571,7 +612,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_condition`
 
-
+- Range: Unresolved independent range evidence for condition_water_received_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_condition_water_received_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state received at condition (`condition_fish_in`)
 
@@ -807,6 +855,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_condition`
 
+- Range: Unresolved independent range evidence for condition_water_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_condition_water_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`condition_water_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -821,7 +878,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_condition`
 
-
+- Range: Unresolved independent range evidence for condition_water_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_condition_water_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state transferred from condition (`condition_fish_onward`)
 
@@ -1070,6 +1134,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
+- Range: Unresolved independent range evidence for grade_water_received_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_water_received_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`grade_water_received_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -1084,7 +1157,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
-
+- Range: Unresolved independent range evidence for grade_water_received_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_water_received_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state received at grade (`grade_fish_in`)
 
@@ -1320,6 +1400,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
+- Range: Unresolved independent range evidence for grade_water_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_water_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`grade_water_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -1334,7 +1423,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_grade`
 
-
+- Range: Unresolved independent range evidence for grade_water_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_grade_water_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state transferred from grade (`grade_fish_onward`)
 
@@ -1588,6 +1684,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
+- Range: Unresolved independent range evidence for preserve_water_received_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_water_received_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`preserve_water_received_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -1602,7 +1707,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
-
+- Range: Unresolved independent range evidence for preserve_water_received_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_water_received_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state received at preserve (`preserve_fish_in`)
 
@@ -1861,6 +1973,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
+- Range: Unresolved independent range evidence for preserve_water_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_water_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`preserve_water_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -1875,7 +1996,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_preserve`
 
-
+- Range: Unresolved independent range evidence for preserve_water_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_preserve_water_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state transferred from preserve (`preserve_fish_onward`)
 
@@ -2080,6 +2208,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_present`
 
+- Range: Unresolved independent range evidence for present_water_received_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_present_water_received_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`present_water_received_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -2094,7 +2231,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_present`
 
-
+- Range: Unresolved independent range evidence for present_water_received_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_present_water_received_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state received at present (`present_fish_in`)
 
@@ -2330,6 +2474,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_present`
 
+- Range: Unresolved independent range evidence for present_water_transfer_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_present_water_transfer_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`present_water_transfer_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -2344,7 +2497,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_present`
 
-
+- Range: Unresolved independent range evidence for present_water_transfer_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_present_water_transfer_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Actual fish state transferred from present (`present_fish_onward`)
 
@@ -2527,6 +2687,15 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_handover`
 
+- Range: Unresolved independent range evidence for handover_carrier_in_water; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_handover_carrier_in_water
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
 ###### Separately measured solid water ice (`handover_carrier_in_ice`)
 
 Record only this material’s separately measured mass at the declared process handoff, using paired transfer IDs and the same lot and period. Do not copy a combined water/ice total to this card; carrier or protection use does not change net animal reference mass.
@@ -2541,7 +2710,14 @@ Record only this material’s separately measured mass at the declared process h
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_handover`
 
-
+- Range: Unresolved independent range evidence for handover_carrier_in_ice; no empirical interval or numerical default is established
+  - Range role: Uncertainty range (`uncertainty_range`)
+  - Lower: 0
+  - Upper: U_handover_carrier_in_ice
+  - Unit: kg
+  - Basis: per 1 kg reference flow; establish this instance independently from compatible evidence, retaining raw measurements and uncertainty; do not inherit aggregate or sibling bounds
+  - Basis kind: Reference flow (`reference_flow`)
+  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Accepted head-on gutted fish received for handover (`handover_fish_in`)
 
@@ -2813,7 +2989,7 @@ Only actual independently owned fossil combustion at the gate with compatible un
 | unit_conversion | all inventory rows | Original kWh multiplied by 3.6 gives MJ; original t multiplied by 1000 gives kg, g multiplied by 0.001 gives kg. Retain raw units, conversions and property evidence; do not mass-convert real service functional units. | raw units; verified support groups | Consistent units with original quantities |  |
 | service_range | external service cards | Expand services by provider, scope and actual native functional unit; provider_service_unit is not a controlled unit. Each U_<node>_external_service is a nonnegative finite upper bound supported by matching independent comparable service-period data or matching supplier evidence, normalized to positive accepted final net fish kg. Retain raw quantities, functional unit, denominator, scope, coverage period and independent applicability rationale; never self-validate from the same batch maximum. Without evidence retain the symbol and property/unit-group gaps, without claiming quantitative Range QA or final exchange completion. | actual provider units; independent service evidence; node protocol | Evidenced service bounds or retained gaps |  |
 | range_review | non-reference ranges | Role-specific upper screens are provisional broad estimates per 1 kg reference flow: fish/organs 100 kg, bait/consumables/gear 20 kg, packages 10 kg, water 10000 kg, gate carrier water/ice 1000 kg, purchased ice 20 kg, direct fuel 100 kg, fossil CO2 400 kg, other air substances 20 kg, refrigerants 5 kg and energy 1000 MJ; none is an empirical QA threshold. Near-zero output can exceed them: never clip actual values. Independently comparable data or matching supplier evidence must establish applicability before final inventory QA. | role; independent observations; supplier scope | Evidenced range or quantitative evidence gap |  |
-| conditional_interface_envelopes | condition_actual_live_fish_return; condition_actual_dead_fish_release; grade_actual_live_fish_return; grade_actual_dead_fish_release; preserve_actual_live_fish_return; preserve_actual_dead_fish_release; present_actual_dead_fish_release; handover_actual_dead_fish_release; condition_partially_prepared_fish; handover_direct_fuel; handover_electricity; handover_operating_materials; handover_external_service; handover_operating_waste; handover_fossil_co2; handover_other_direct_release; present_actual_alternative_fish_product; handover_actual_alternative_fish_product | For each listed conditional role, instantiate actual identity/state/node/pass/numerator unit and matching positive final kg before quantitative QA. U_<row_id> is a finite nonnegative same-unit upper on the explicitly labelled physical or LCA view, established from a separate representative campaign maximum times a predeclared margin >=1, or a matching independent supplier/design envelope. Retain independent source/raw samples, scope, conversion, denominator, view and uncertainty; never use the target batch maximum to validate itself. A symbol, provisional old screen or checker pass supplies no numeric evidence. Service unit/property/unitgroup gaps remain blockers; actual kg-handled is allowed only for a verified native provider reference. No clipping or invented zero. | independent campaign/supplier evidence; actual role and unit; final kg; declared view | independently evidenced U bounds or explicit unresolved gaps |  |
+| conditional_interface_envelopes | condition_actual_live_fish_return; condition_actual_dead_fish_release; grade_actual_live_fish_return; grade_actual_dead_fish_release; preserve_actual_live_fish_return; preserve_actual_dead_fish_release; present_actual_dead_fish_release; handover_actual_dead_fish_release; condition_partially_prepared_fish; dq_complete_handover_direct_fuel; handover_electricity; dq_complete_handover_operating_materials; dq_complete_handover_external_service; dq_complete_handover_operating_waste; handover_fossil_co2; dq_complete_handover_other_direct_release; dq_complete_present_actual_alternative_fish_product; dq_complete_handover_actual_alternative_fish_product | For each listed conditional role, instantiate actual identity/state/node/pass/numerator unit and matching positive final kg before quantitative QA. U_<row_id> is a finite nonnegative same-unit upper on the explicitly labelled physical or LCA view, established from a separate representative campaign maximum times a predeclared margin >=1, or a matching independent supplier/design envelope. Retain independent source/raw samples, scope, conversion, denominator, view and uncertainty; never use the target batch maximum to validate itself. A symbol, provisional old screen or checker pass supplies no numeric evidence. Service unit/property/unitgroup gaps remain blockers; actual kg-handled is allowed only for a verified native provider reference. No clipping or invented zero. | independent campaign/supplier evidence; actual role and unit; final kg; declared view | independently evidenced U bounds or explicit unresolved gaps |  |
 
 ### Data Quality Requirements
 

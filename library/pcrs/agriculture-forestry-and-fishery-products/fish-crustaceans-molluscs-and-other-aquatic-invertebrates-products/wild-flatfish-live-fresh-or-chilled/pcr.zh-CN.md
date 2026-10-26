@@ -104,6 +104,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
+- 数量范围：capture_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`capture_internal_water_ice_receipt_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -118,7 +127,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
-
+- 数量范围：capture_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 捕捞准备使用的外购岸电 (`capture_shore_electricity`)
 
@@ -165,6 +181,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
+- 数量范围：capture_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`capture_internal_water_ice_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -179,7 +204,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
-
+- 数量范围：capture_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 分选交接处收集的完整未分选渔获 (`captured_unsorted`)
 
@@ -234,7 +266,7 @@ sync_with: pcr.en-US.md
 
 ### 过程：等级与去向分选 (`grade`)
 
-按交接或作业段编号及观察状态匹配，直接接收 captured_unsorted 或实际分选前保鲜的 preserved_unsorted。各等级合格比目鱼直接进入 presentation，或实际分级后保鲜作业段。其他有意物种或非食用销售、活体放归、直接环境弃置及受管理废物分别记录去向。每张概括卡展开为独立明确的实际交换，不声明通用混合物种 UUID。
+按交接或作业段编号及观察状态匹配，直接接收 captured_unsorted 或实际分选前保鲜的 preserved_unsorted。各等级合格比目鱼直接进入 presentation，或实际分级后保鲜作业段。其他有意物种或非食用销售、活体放归、直接环境弃置及受管理废物分别记录去向。每项采集义务展开为独立明确的实际交换，不声明通用混合物种 UUID。
 
 #### 输入
 
@@ -254,6 +286,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
+- 数量范围：grade_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`grade_internal_water_ice_receipt_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -268,7 +309,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
-
+- 数量范围：grade_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 分选接收的完整未分选渔获 (`grade_catch_in`)
 
@@ -361,6 +409,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
+- 数量范围：grade_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`grade_internal_water_ice_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -375,7 +432,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
-
+- 数量范围：grade_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 按验收或降级食用等级明确的合格完整比目鱼 (`graded_food`)
 
@@ -495,6 +559,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
+- 数量范围：preserve_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`preserve_internal_water_ice_receipt_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -509,7 +582,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
-
+- 数量范围：preserve_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 进入限定保鲜的合格完整比目鱼 (`preserve_fish_in`)
 
@@ -672,6 +752,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
+- 数量范围：preserve_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`preserve_internal_water_ice_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -686,7 +775,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
-
+- 数量范围：preserve_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 实际保鲜后的合格完整比目鱼 (`preserved_food`)
 
@@ -853,6 +949,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
+- 数量范围：presentation_internal_water_ice_receipt_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_receipt_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`presentation_internal_water_ice_receipt_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -867,7 +972,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
-
+- 数量范围：presentation_internal_water_ice_receipt_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_receipt_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 进入交付呈现的合格完整比目鱼 (`presentation_fish_in`)
 
@@ -960,6 +1072,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
+- 数量范围：presentation_water_ice_handover_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_water_ice_handover_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`presentation_water_ice_handover_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -974,7 +1095,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
-
+- 数量范围：presentation_water_ice_handover_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_water_ice_handover_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 单独计量的液态水 (`presentation_internal_water_ice_transfer_water`)
 
@@ -990,6 +1118,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
+- 数量范围：presentation_internal_water_ice_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`presentation_internal_water_ice_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -1004,7 +1141,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_presentation`
 
-
+- 数量范围：presentation_internal_water_ice_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_presentation_internal_water_ice_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 生产者首次交接处的完整野生食用比目鱼 (`whole_flatfish_handover`)
 
@@ -1153,7 +1297,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `event_normalization` | all inventory rows | 明确保留两种标注视图。先对完整声明群体、航次或运行核对未作共产品分配的实际接收、转移、产品、损失及存量；内部转移按相同状态与单位配对并保留实测质量。以有证据的服务份额，将共享资源或服务事件一次归属实际使用节点及期间，不用共产品份额缩小产品、生物量、水或废物分区。将此物理清单除以相匹配且为正的最终验收净千克。再根据第 7 节共产品规则，仅分配一次并另行生成标注的单输出 LCA 负荷或清单投影，同时保留未分配清单及分配矩阵。不得用已分配交换检验未分配物理闭合、在下游再次乘输出份额，或把内部数量设为最终 1 kg。 | event records; share drivers; final accepted net kg | amount per 1 kg reference flow | `foreground-flatfish-method` |
 | `quantity_derivations` | water; exhaust; count-recorded biomass | 计数采用匹配物种及状态的实测质量样本换算；体积采用实际条件特定密度换算；实际排放依据有记录的燃料或碳含量或氧化、设备因子及实际活动量推导。记录每个因子、来源、单位、不确定性及中间计算；本 PCR 除已核实单位换算外不提供数值因子。 | matching samples; density/composition/factor evidence; actual activity | traceable mass/energy/emission quantities | `foreground-flatfish-method` |
-| `conditional_interface_envelopes` | capture_internal_water_ice_receipt; capture_internal_water_ice_transfer; grade_internal_water_ice_receipt; grade_internal_water_ice_transfer; grade_actual_water_evaporation; preserve_internal_water_ice_receipt; preserve_external_service; preserve_internal_water_ice_transfer; presentation_internal_water_ice_receipt; presentation_external_service; presentation_actual_source_water; presentation_internal_water_ice_transfer; presentation_water_ice_handover; presentation_actual_water_evaporation | 对每张明确列出的条件接口卡，在实际身份、状态、节点、作业段及单位实例化后，以独立代表性参考运行的同视图归一化最大值乘预先声明且不小于 1 的裕度，或同单位与基准供应设计包络建立 U_row。保留样本、来源、基准及不确定性；不得用目标批次建立自身上界。服务单位及支持未核实或独立包络缺失均是未解决实例，不能声称数值 QA 通过，不填零。水冰与包装的实物流转和服务折算量分别闭合。 | 独立参考记录；实际单位与基准 | U_row | `foreground-flatfish-method` |
+| `conditional_interface_envelopes` | capture_internal_water_ice_receipt_water; capture_internal_water_ice_receipt_ice; capture_internal_water_ice_transfer_water; capture_internal_water_ice_transfer_ice; grade_internal_water_ice_receipt_water; grade_internal_water_ice_receipt_ice; grade_internal_water_ice_transfer_water; grade_internal_water_ice_transfer_ice; preserve_internal_water_ice_receipt_water; preserve_internal_water_ice_receipt_ice; preserve_internal_water_ice_transfer_water; preserve_internal_water_ice_transfer_ice; presentation_internal_water_ice_receipt_water; presentation_internal_water_ice_receipt_ice; presentation_water_ice_handover_water; presentation_water_ice_handover_ice; presentation_internal_water_ice_transfer_water; presentation_internal_water_ice_transfer_ice; grade_actual_water_evaporation; presentation_actual_water_evaporation; dq_complete_preserve_external_service; dq_complete_presentation_external_service; dq_complete_presentation_actual_source_water | 对每张列明的原子卡，或列明采集义务要求的每项实际交换，在实际身份、状态、节点、作业段及单位实例化后，以独立代表性参考运行的同视图归一化最大值乘预先声明且不小于 1 的裕度，或同单位与基准供应设计包络建立 U_row。保留样本、来源、基准及不确定性；不得用目标批次建立自身上界。服务单位及支持未核实或独立包络缺失均是未解决实例，不能声称数值 QA 通过，不填零。水冰与包装的实物流转和服务折算量分别闭合。 | 独立参考记录；实际单位与基准 | U_row | `foreground-flatfish-method` |
 
 ### 数据质量要求
 

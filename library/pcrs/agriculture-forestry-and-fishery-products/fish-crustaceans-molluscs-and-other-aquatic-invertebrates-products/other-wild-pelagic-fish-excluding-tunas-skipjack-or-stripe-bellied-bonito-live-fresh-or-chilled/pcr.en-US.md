@@ -90,7 +90,7 @@ Production mode is trip/haul/lot batches with time-resolved chilling and recipie
 | `pack` | Box or crate presentation | conditional | conditional; actual box/crate presentation before first physical receipt | Whole chilled fish enclosed or presented without changing fish state; bulk route bypasses | per 1 kg reference flow |
 | `receipt` | Harvester handover and first physical acceptance | required | required; first physical recipient accepts whole chilled fish | Offload/transfer and acceptance, ending at named recipient before processing or distribution | per 1 kg reference flow |
 
-For all ranges except the final A/A identity, 0..U_row or 0..U_instance is a provisional unresolved evidence envelope, not an empirical range, default quantity or hard validation limit. Obtain a positive finite upper bound from actual records and uncertainty before finalization. An umbrella range applies separately to every concrete native-unit instance. Conditional zero means documented absence, not missing data.
+For all ranges except the final A/A identity, 0..U_row or 0..U_instance is a provisional unresolved evidence envelope, not an empirical range, default quantity or hard validation limit. Obtain a positive finite upper bound from actual records and uncertainty before finalization. Establish a separate compatible range or explicit uncertainty evidence for every concrete native-unit instance; never copy a collection-scope bound onto its components. Conditional zero means documented absence, not missing data.
 
 ### Process: Single-vessel midwater-trawl capture (`capture`)
 

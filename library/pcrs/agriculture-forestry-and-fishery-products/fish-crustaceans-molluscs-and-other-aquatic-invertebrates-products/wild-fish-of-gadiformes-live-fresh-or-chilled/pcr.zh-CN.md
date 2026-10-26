@@ -110,6 +110,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
+- 数量范围：capture_water_received_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_water_received_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`capture_water_received_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -124,7 +133,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
-
+- 数量范围：capture_water_received_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_water_received_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次野生海捕及完整航次责任的实际供电 (`capture_electricity`)
 
@@ -360,6 +376,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
+- 数量范围：capture_water_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_water_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`capture_water_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -374,7 +399,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_capture`
 
-
+- 数量范围：capture_water_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_capture_water_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 捕捞转出的目标整鱼 (`whole_target_catch`)
 
@@ -557,6 +589,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_condition`
 
+- 数量范围：condition_water_received_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_condition_water_received_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`condition_water_received_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -571,7 +612,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_condition`
 
-
+- 数量范围：condition_water_received_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_condition_water_received_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次保留头部去内脏及初步清理接收的实际鱼体 (`condition_fish_in`)
 
@@ -807,6 +855,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_condition`
 
+- 数量范围：condition_water_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_condition_water_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`condition_water_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -821,7 +878,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_condition`
 
-
+- 数量范围：condition_water_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_condition_water_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次保留头部去内脏及初步清理转出的实际鱼体 (`condition_fish_onward`)
 
@@ -1004,11 +1068,11 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：推理估算 (`reasoned_estimate`)
 
-###### 在 condition 实际放归环境水体的存活鱼 (`condition_actual_live_fish_return`)
+###### 在 预处理 实际放归环境水体的存活鱼 (`condition_actual_live_fish_return`)
 
 仅在本道次实际接收存活鱼且确实放归已识别存活个体时启用：保留物种、整鱼及头内脏鳃状态、存活证据、原始实测质量、事件或道次及时间、受纳水体和适用许可或情境。此节点对实际接收后的放归负责，不回填为捕捞留存前放归，也不虚构返向转移。与继续转出产品、废物和期末库存互斥；不假定放归、存活系数或抵扣。
 
-- 选定流：在 condition 实际放归环境水体的存活鱼
+- 选定流：在 预处理 实际放归环境水体的存活鱼
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_condition 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -1026,11 +1090,11 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 在 condition 实际释放入水的死亡整鱼或鱼体物料 (`condition_actual_dead_fish_release`)
+###### 在 预处理 实际释放入水的死亡整鱼或鱼体物料 (`condition_actual_dead_fish_release`)
 
 仅限本道次拒收或死亡整鱼、鱼体有记录的实际直接环境去向；识别物种、头内脏鳃状态、原始质量、事件、受纳水体及适用管理或许可证据。不规定为合法处置路线。移出器官或血液、废水组分、送处理鱼、有意产品及库存分开；同一物料不重复计数，也不改记为捕捞阶段损失。
 
-- 选定流：在 condition 实际释放入水的死亡整鱼或鱼体物料
+- 选定流：在 预处理 实际释放入水的死亡整鱼或鱼体物料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_condition 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -1070,6 +1134,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
+- 数量范围：grade_water_received_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_water_received_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`grade_water_received_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -1084,7 +1157,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
-
+- 数量范围：grade_water_received_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_water_received_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次实际物理及去向分级接收的实际鱼体 (`grade_fish_in`)
 
@@ -1320,6 +1400,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
+- 数量范围：grade_water_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_water_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`grade_water_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -1334,7 +1423,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_grade`
 
-
+- 数量范围：grade_water_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_grade_water_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次实际物理及去向分级转出的实际鱼体 (`grade_fish_onward`)
 
@@ -1522,11 +1618,11 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：推理估算 (`reasoned_estimate`)
 
-###### 在 grade 实际放归环境水体的存活鱼 (`grade_actual_live_fish_return`)
+###### 在 分级 实际放归环境水体的存活鱼 (`grade_actual_live_fish_return`)
 
 仅在本道次实际接收存活鱼且确实放归已识别存活个体时启用：保留物种、整鱼及头内脏鳃状态、存活证据、原始实测质量、事件或道次及时间、受纳水体和适用许可或情境。此节点对实际接收后的放归负责，不回填为捕捞留存前放归，也不虚构返向转移。与继续转出产品、废物和期末库存互斥；不假定放归、存活系数或抵扣。
 
-- 选定流：在 grade 实际放归环境水体的存活鱼
+- 选定流：在 分级 实际放归环境水体的存活鱼
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_grade 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -1544,11 +1640,11 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 在 grade 实际释放入水的死亡整鱼或鱼体物料 (`grade_actual_dead_fish_release`)
+###### 在 分级 实际释放入水的死亡整鱼或鱼体物料 (`grade_actual_dead_fish_release`)
 
 仅限本道次拒收或死亡整鱼、鱼体有记录的实际直接环境去向；识别物种、头内脏鳃状态、原始质量、事件、受纳水体及适用管理或许可证据。不规定为合法处置路线。移出器官或血液、废水组分、送处理鱼、有意产品及库存分开；同一物料不重复计数，也不改记为捕捞阶段损失。
 
-- 选定流：在 grade 实际释放入水的死亡整鱼或鱼体物料
+- 选定流：在 分级 实际释放入水的死亡整鱼或鱼体物料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_grade 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -1588,6 +1684,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
+- 数量范围：preserve_water_received_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_water_received_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`preserve_water_received_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -1602,7 +1707,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
-
+- 数量范围：preserve_water_received_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_water_received_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次实际非冻结冷却及有界冷藏接收的实际鱼体 (`preserve_fish_in`)
 
@@ -1861,6 +1973,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
+- 数量范围：preserve_water_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_water_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`preserve_water_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -1875,7 +1996,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_preserve`
 
-
+- 数量范围：preserve_water_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_preserve_water_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次实际非冻结冷却及有界冷藏转出的实际鱼体 (`preserve_fish_onward`)
 
@@ -2014,11 +2142,11 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：推理估算 (`reasoned_estimate`)
 
-###### 在 preserve 实际放归环境水体的存活鱼 (`preserve_actual_live_fish_return`)
+###### 在 保鲜 实际放归环境水体的存活鱼 (`preserve_actual_live_fish_return`)
 
 仅在本道次实际接收存活鱼且确实放归已识别存活个体时启用：保留物种、整鱼及头内脏鳃状态、存活证据、原始实测质量、事件或道次及时间、受纳水体和适用许可或情境。此节点对实际接收后的放归负责，不回填为捕捞留存前放归，也不虚构返向转移。与继续转出产品、废物和期末库存互斥；不假定放归、存活系数或抵扣。
 
-- 选定流：在 preserve 实际放归环境水体的存活鱼
+- 选定流：在 保鲜 实际放归环境水体的存活鱼
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_preserve 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -2036,11 +2164,11 @@ sync_with: pcr.en-US.md
   - 基准类型：`reference_flow`
   - 证据类型：`reasoned_estimate`
 
-###### 在 preserve 实际释放入水的死亡整鱼或鱼体物料 (`preserve_actual_dead_fish_release`)
+###### 在 保鲜 实际释放入水的死亡整鱼或鱼体物料 (`preserve_actual_dead_fish_release`)
 
 仅限本道次拒收或死亡整鱼、鱼体有记录的实际直接环境去向；识别物种、头内脏鳃状态、原始质量、事件、受纳水体及适用管理或许可证据。不规定为合法处置路线。移出器官或血液、废水组分、送处理鱼、有意产品及库存分开；同一物料不重复计数，也不改记为捕捞阶段损失。
 
-- 选定流：在 preserve 实际释放入水的死亡整鱼或鱼体物料
+- 选定流：在 保鲜 实际释放入水的死亡整鱼或鱼体物料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_preserve 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -2080,6 +2208,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_present`
 
+- 数量范围：present_water_received_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_present_water_received_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`present_water_received_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -2094,7 +2231,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_present`
 
-
+- 数量范围：present_water_received_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_present_water_received_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次生产者保护性包装呈现接收的实际鱼体 (`present_fish_in`)
 
@@ -2330,6 +2474,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_present`
 
+- 数量范围：present_water_transfer_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_present_water_transfer_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`present_water_transfer_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -2344,7 +2497,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_present`
 
-
+- 数量范围：present_water_transfer_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_present_water_transfer_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 本次生产者保护性包装呈现转出的实际鱼体 (`present_fish_onward`)
 
@@ -2483,11 +2643,11 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：推理估算 (`reasoned_estimate`)
 
-###### 在 present 实际释放入水的死亡整鱼或鱼体物料 (`present_actual_dead_fish_release`)
+###### 在 呈装 实际释放入水的死亡整鱼或鱼体物料 (`present_actual_dead_fish_release`)
 
 仅限本道次拒收或死亡整鱼、鱼体有记录的实际直接环境去向；识别物种、头内脏鳃状态、原始质量、事件、受纳水体及适用管理或许可证据。不规定为合法处置路线。移出器官或血液、废水组分、送处理鱼、有意产品及库存分开；同一物料不重复计数，也不改记为捕捞阶段损失。
 
-- 选定流：在 present 实际释放入水的死亡整鱼或鱼体物料
+- 选定流：在 呈装 实际释放入水的死亡整鱼或鱼体物料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_present 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -2527,6 +2687,15 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_handover`
 
+- 数量范围：handover_carrier_in_water 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_handover_carrier_in_water
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
+
 ###### 单独计量的固态水冰 (`handover_carrier_in_ice`)
 
 仅记录该物质在所述过程交接的独立实测质量，使用配对交接号和相同批次、时期。不得将水与冰的集合总量复制到本卡；其载运或保护作用不改变鱼体净参考质量。
@@ -2541,7 +2710,14 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_handover`
 
-
+- 数量范围：handover_carrier_in_ice 的独立范围证据未解析，尚未建立经验区间或数值默认值
+  - 范围角色：不确定性范围（`uncertainty_range`）
+  - 下限：0
+  - 上限：U_handover_carrier_in_ice
+  - 单位：kg
+  - 基准：每 1 kg 参考流；本实例须用兼容证据独立建立，保留原始实测和不确定性，不继承集合或兄弟卡上限
+  - 基准类型：参考流（`reference_flow`）
+  - 证据类型：推理估算（`reasoned_estimate`）
 
 ###### 为交接接收的合格带头去内脏鱼 (`handover_fish_in`)
 
@@ -2738,11 +2914,11 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：推理估算 (`reasoned_estimate`)
 
-###### 在 handover 实际释放入水的死亡整鱼或鱼体物料 (`handover_actual_dead_fish_release`)
+###### 在 交接 实际释放入水的死亡整鱼或鱼体物料 (`handover_actual_dead_fish_release`)
 
 仅限本道次拒收或死亡整鱼、鱼体有记录的实际直接环境去向；识别物种、头内脏鳃状态、原始质量、事件、受纳水体及适用管理或许可证据。不规定为合法处置路线。移出器官或血液、废水组分、送处理鱼、有意产品及库存分开；同一物料不重复计数，也不改记为捕捞阶段损失。
 
-- 选定流：在 handover 实际释放入水的死亡整鱼或鱼体物料
+- 选定流：在 交接 实际释放入水的死亡整鱼或鱼体物料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依 cp_handover 采集本角色实际数量：先闭合未分配实物接收、转移、产出、损失与库存，共用节点或期间资源仅归属一次，再按第 8 节除以正最终验收净鱼体千克数。另按第 7 节对标明的单输出 LCA 视图归属一次，保留实物账及分配矩阵，不以输出份额缩减质量分区。
 - 数值来源模式：`calculated_value`
@@ -2813,7 +2989,7 @@ sync_with: pcr.en-US.md
 | unit_conversion | all inventory rows | 原始 kWh 乘 3.6 得 MJ；原始 t 乘 1000 得 kg，g 乘 0.001 得 kg。保留原始单位、换算和性质证据，服务真实功能单位不套质量换算。 | raw units; verified support groups | 一致单位及原始量 |  |
 | service_range | external service cards | 逐供应者、服务范围和实际原生功能单位展开服务，provider_service_unit 不代表受控单位。每个 U_<node>_external_service 为相符独立可比服务期数据或相符供应商证据支持、按正的合格最终净鱼千克数归一化的非负有限上界；保留原始量、功能单位、分母、范围、覆盖期和独立适用性解释，不以本批最大值自证。无证据时保持符号和属性及单位组缺口，不能声称数量范围 QA 或最终交换完备。 | actual provider units; independent service evidence; node protocol | 有证据服务界或保留缺口 |  |
 | range_review | non-reference ranges | 每 1 kg 参考流的上限随角色区分：鱼及器官 100 kg、饵或耗材或渔具 20 kg、包装 10 kg、水 10000 kg、门处携带水冰 1000 kg、购冰 20 kg、直接燃料 100 kg、化石二氧化碳 400 kg、其他空气物质 20 kg、制冷剂 5 kg、能量 1000 MJ，均为暂定宽泛筛选估算而非实证 QA 阈值。接近零产出时可超出，实际值不得裁剪；须由独立可比数据或相符供应商证据核实适用性后才能最终清单 QA。 | role; independent observations; supplier scope | 有证据范围或量化证据缺口 |  |
-| conditional_interface_envelopes | condition_actual_live_fish_return; condition_actual_dead_fish_release; grade_actual_live_fish_return; grade_actual_dead_fish_release; preserve_actual_live_fish_return; preserve_actual_dead_fish_release; present_actual_dead_fish_release; handover_actual_dead_fish_release; condition_partially_prepared_fish; handover_direct_fuel; handover_electricity; handover_operating_materials; handover_external_service; handover_operating_waste; handover_fossil_co2; handover_other_direct_release; present_actual_alternative_fish_product; handover_actual_alternative_fish_product | 对每项列明条件角色，定量 QA 前实例化真实身份、状态、节点、道次、分子单位及匹配正最终公斤。U_<row_id> 是同分子单位、明确标明实物或 LCA 视图的非负有限上界，由独立代表作业期最大值乘预声明且 >=1 的裕量，或匹配独立供方或设计包络建立。保留独立来源或原始样本、范围、换算、分母、视图及不确定性，不用目标批次自身最大值验证自身。符号、旧暂定筛选界限或检查器通过不提供数值证据。服务单位、属性和单位组缺口仍阻断定稿；真实处理公斤仅在核实供方原生参考后可用。不截断或虚构零。 | 独立作业期或供方证据；真实角色和单位；最终公斤；声明视图 | 独立证据 U 上界或明确未决缺口 |  |
+| conditional_interface_envelopes | condition_actual_live_fish_return; condition_actual_dead_fish_release; grade_actual_live_fish_return; grade_actual_dead_fish_release; preserve_actual_live_fish_return; preserve_actual_dead_fish_release; present_actual_dead_fish_release; handover_actual_dead_fish_release; condition_partially_prepared_fish; dq_complete_handover_direct_fuel; handover_electricity; dq_complete_handover_operating_materials; dq_complete_handover_external_service; dq_complete_handover_operating_waste; handover_fossil_co2; dq_complete_handover_other_direct_release; dq_complete_present_actual_alternative_fish_product; dq_complete_handover_actual_alternative_fish_product | 对每项列明条件角色，定量 QA 前实例化真实身份、状态、节点、道次、分子单位及匹配正最终公斤。U_<row_id> 是同分子单位、明确标明实物或 LCA 视图的非负有限上界，由独立代表作业期最大值乘预声明且 >=1 的裕量，或匹配独立供方或设计包络建立。保留独立来源或原始样本、范围、换算、分母、视图及不确定性，不用目标批次自身最大值验证自身。符号、旧暂定筛选界限或检查器通过不提供数值证据。服务单位、属性和单位组缺口仍阻断定稿；真实处理公斤仅在核实供方原生参考后可用。不截断或虚构零。 | 独立作业期或供方证据；真实角色和单位；最终公斤；声明视图 | 独立证据 U 上界或明确未决缺口 |  |
 
 ### 数据质量要求
 
