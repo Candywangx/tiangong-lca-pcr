@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
-lastReviewedNote: "PCR #148: reviewed the bounded no-JavaScript preload checker correction. Ownership, canonical authoring, scientific approval and complete source/publication qualification remain unchanged; fixture evidence does not qualify the full release."
+lastReviewedAt: 2026-10-26
+lastReviewedCommit: 42ec3ae0b97a8cbf3a482cf1411d1765ccd5734a
+lastReviewedNote: "PCR #152: reviewed the exact @types/node >=25.0.0 ceiling in both existing npm updater entries and the Node 24 LTS revisit condition. Dependency/runtime pins, graph ownership, canonical authoring and full qualification/publication boundaries are unchanged; static checks do not claim hosted activation."
 ---
 
 # PCR 资料库架构
