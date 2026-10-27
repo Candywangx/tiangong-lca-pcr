@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-10-26
-lastReviewedNote: "Added the lossless v6 numeric-column transport, bounded decoder, v5 compatibility and same-wire corpus comparison without changing content, ranking or resource budgets. PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedAt: 2026-10-24
+lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
 lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -149,10 +149,8 @@ Module and guide page metadata keeps its existing download fields. This removes
 redundant worker input without changing source bytes, reading routes or downloads.
 
 After a complete export, `node packages/pcr-docs/scripts/search-v5-corpus-audit.ts`
-checks shipped bytes, exact native/record restoration, same-corpus v4/v5/v6 sizes and
-ordered query comparisons. An explicit assets-root argument permits the same
-search-only audit after generation, without claiming complete static-export or
-browser qualification. Historical audits do not qualify a new corpus or commit.
+checks shipped bytes, exact native/record restoration, same-corpus v4/v5 sizes and
+ordered query comparisons. Historical audits do not qualify a new corpus or commit.
 
 ### Page summaries
 
@@ -513,22 +511,6 @@ qualification.
 The Worker also retains the legacy fork v5 `shards` manifest and its optional
 global term dictionary. Physical `files` manifests and legacy `shards` manifests
 are distinct formats; mixed manifests fail closed.
-
-Search manifest version 6 retains these logical v4 shards and physical receipts,
-and uses envelope `schemaVersion: 2` with
-`encoding: "v4-columnar-term-dictionary-vlq"`. Supported numeric columns are
-encoded as three base64 VLQ strings: signed zigzag dictionary deltas, unsigned
-headers, and signed zigzag posting deltas with explicit sequence lengths.
-The encoder selects this representation only when smaller; string IDs, large
-integers, unsupported shapes and columns exceeding the shared numeric expansion
-budget retain native arrays. The decoder requires
-shortest-form bounded integers, consumes every string exactly, and checks counts
-before allocation against remaining encoded characters and a shared 20 MB numeric
-expansion budget per pack. Logical byte lengths and hashes are then rechecked
-before import. Complete records and search behavior remain unchanged; v1–5
-readers remain available. The unchanged raw/gzip budgets include the full manifest.
-Corpus auditing compares v6 with repacked v5 over the exact same logical wires,
-source commit, language and pack membership, including both manifests.
 
 ### Bounded native downloads
 
