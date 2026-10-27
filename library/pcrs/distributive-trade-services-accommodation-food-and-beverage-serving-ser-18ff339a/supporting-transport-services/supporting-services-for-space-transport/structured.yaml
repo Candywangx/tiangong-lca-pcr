@@ -1,10 +1,1264 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67640"
-  title: "Supporting services for space transport"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.supporting-services-for-space-transport"
+  classification_refs: "CPC 3.0 67640"
+  covered_products: "Specified specialized ground, range and transport control/tracking support tasks"
+  excluded_products: "Transport flight and payload functions; unrelated communication/navigation; independent manufacture/testing"
+  representative_product: "Space-transport support task"
+  production_route: "Required reconciliation plus actual conditional ground/range/control routes"
+  market_state: "Accepted configured support task or bounded service block with documented completion interfaces"
+functional_unit:
+  what: "Provide the declared specialized support function for an identified space-transport operation"
+  how_much: "One completed accepted task/block of specified function, facility/link capacity, campaign extent and exact interval"
+  how_well: "Document achieved readiness, coverage, continuity, data/command quality, safety interfaces and acceptance criteria appropriate to the selected function"
+  how_long_or_cycle: "Explicit preparation/start through accepted handover/end, including attributable standby, rehearsals, scrubs and rework"
+  reference_flow_link: "support_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_support
+      applies_to: "foreground_system_boundary"
+      rule: "Select the actual ground/range/control processes needed by the accepted transport-support task; keep unrelated science, aviation, production and general communication activities outside or allocate their shared scope explicitly."
+      source_ids:
+        - un-cpc3-67640
+        - nasa-wallops
+    - rule_id: boundary_custody
+      applies_to: "foreground_system_boundary"
+      rule: "Record customer vehicle/payload and flight propellants as custody/interface records, not newly produced support output. Separate delivered flight material, actual ground purge/vent, return, recovery, stock change and physical loss. Allocate upstream propellant supply once at the agreed customer interface; handling energy and losses must not disappear or be duplicated."
+      source_ids:
+        - nasa-gases
+    - rule_id: boundary_increment
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude rocket plume, ascent/reentry emissions, flight propellant combustion and vehicle manufacture from direct support. Ground engine/hot-fire testing requires a separately declared actual support purpose and exhaustive species/fuel inventory; no flight emission factor or default plume chemistry."
+      source_ids: []
+    - rule_id: boundary_lifecycle
+      applies_to: "foreground_system_boundary"
+      rule: "Include support-installation construction, GSE, instruments, computing, maintenance and retirement shares. Actual vacuum, cryogenic or gas-generation equipment requires both its supported lifecycle share and measured energy, unless those same burdens are already included in a purchased complete service; do not count both. Add every additional actual gas, reagent, refrigerant, water stream, waste and emission as an individual exchange; screen land, water, noise/ecological effects and remote deployment rather than treating this card list as exhaustive."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified transport campaign phase and support installation initially available in its recorded condition"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Specialized support to actual space transportation, with ground/range/control family qualifiers"
+  recursive_input_rule: "Same-category subcontracted support enters as a scoped supplier input; use either its complete inventory or an explicitly replacing disaggregation, never both"
+  upstream_dataset_requirement: "Actual utilities, individual gases/materials, support facilities/equipment lifecycle and specific waste management; external network/relay support only for its actual transport share"
+  disclosure: "Exact campaign/phase/function/interval and handovers; ground consumption versus flight custody; supplier overlap; life/utilization and release evidence"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Space-transport support task"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "mission/campaign and transport phase"
+    - "support family and precise functions"
+    - "site and ground/vehicle/customer interfaces"
+    - "equipment/link/facility configuration and capacity"
+    - "actual duration/start/end"
+    - "service extent and acceptance/achieved quality"
+    - "rehearsal/scrub/retry/standby allocation"
+    - "gas species/state/purity/pressure and custody transfer/recovery"
+    - "operator/customer/supplier responsibility"
+    - "actual metered utilities"
+    - "range/transport versus unrelated users"
+    - "asset lifecycle denominator"
+    - "specific waste/release compartments"
+reference_flows:
+  []
+measurement_rules:
+  - id: support_task
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Use one cp_task accepted configured event; maintain exact functional extent and service interval. Do not replace by mission success, fee, payload mass or number of launches."
+  - id: gas_mass
+    applies_to: "nitrogen; helium; air"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use measured species/mixture mass. Standard-volume conversion requires actual stated reference conditions, composition and evidenced density; no generic bottle/pressure/flow conversion."
+process_map:
+  - id: ground
+    name: "Ground processing and equipment support"
+    inclusion: "conditional"
+    inclusion_condition: "Ground-processing function in declared task"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: range
+    name: "Transport range operational support"
+    inclusion: "conditional"
+    inclusion_condition: "Actual space-transport range support"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: control
+    name: "Transport mission control and tracking support"
+    inclusion: "conditional"
+    inclusion_condition: "Actual transport-control/tracking function"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: accept
+    name: "Reconcile and accept support task"
+    inclusion: "required"
+    inclusion_condition: "Every specified task/block"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: ground
+    label: "Ground processing and equipment support"
+    inputs:
+      product:
+        - row_id: ground_electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual processing, conditioning, pumping and GSE demand at this voltage; exclude vehicle flight power and supplier-covered consumption."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_meter
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen
+          role: "Gaseous nitrogen"
+          name: "Gaseous nitrogen"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual ground purging, valve actuation or conditioning gas; record delivery state, purity and pressure, upstream vaporization and whether gas crosses the vehicle handover."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_gas
+              source_ids:
+                - nasa-gases
+            ranges: []
+        - row_id: helium
+          role: "Gaseous helium"
+          name: "Gaseous helium"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual ground leak testing, purge or pressurization. Separate ground consumption from helium delivered for flight-system use and reconcile recovery."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_gas
+              source_ids:
+                - nasa-gases
+            ranges: []
+        - row_id: air
+          role: "Compressed breathing air"
+          name: "Compressed breathing air"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional supplied protective breathing air used in hazardous ground processing; record actual mixture/specification. Locally generated air needs its actual compressor inventory instead of duplicate purchased supply."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_gas
+              source_ids:
+                - nasa-gases
+            ranges: []
+        - row_id: water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual ground cooling, cleaning or deluge makeup within the declared support. Distinguish withdrawals, recirculation, collected effluent and evaporation; do not attribute rocket exhaust chemistry to water supply."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_meter
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Mineral hydraulic oil"
+          name: "Mineral hydraulic oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional ground equipment maintenance and actual replacement makeup; record grade and stock. Not flight-vehicle hydraulic charge."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_material
+              source_ids: []
+            ranges: []
+        - row_id: isopropanol
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual documented ground-support cleaning with this substance; record purity, recovery, evaporation and spent-solvent fate. Do not assume universal solvent use."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_material
+              source_ids: []
+            ranges: []
+        - row_id: umbilical
+          role: "Ground nitrogen purge umbilical assembly"
+          name: "Ground nitrogen purge umbilical assembly"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Actual installed ground assembly manufacturing/replacement/retirement share with supported utilization denominator; exclude vehicle-side hardware and duplicate complete facility scope."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_asset
+              source_ids: []
+            ranges: []
+        - row_id: pump
+          role: "Ground water-deluge pump"
+          name: "Ground water-deluge pump"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Conditional actual installed pump lifecycle share; no assumed capacity or lifetime and no duplicate pump embedded in complete pad dataset."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_asset
+              source_ids: []
+            ranges: []
+        - row_id: building
+          role: "Space-transport processing building"
+          name: "Space-transport processing building"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Actual processing-facility construction and retirement share, including declared clean-room and utility component extent only once."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ground_wastewater
+          role: "Collected ground-processing wash wastewater"
+          name: "Collected ground-processing wash wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure this segregated contaminated liquid and actual treatment destination; separate deluge runoff, sanitary effluent and chemical scrubber liquor if present as additional individual streams."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent mineral hydraulic oil"
+          name: "Spent mineral hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual segregated ground-equipment maintenance oil transferred to treatment with stock and service records; not all purchased oil becomes waste immediately."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_solvent
+          role: "Spent isopropanol cleaning solvent"
+          name: "Spent isopropanol cleaning solvent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separate used solvent with measured composition and fate; distinguish recovered solvent and emitted isopropanol."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: nitrogen_air
+          role: "Nitrogen, to air"
+          name: "Nitrogen, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual ground-system nitrogen vent or release after measured transfer, recovery and stock reconciliation. Gas transferred to vehicle is not automatically a ground emission."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_release
+              source_ids: []
+            ranges: []
+        - row_id: helium_air
+          role: "Helium, to air"
+          name: "Helium, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual ground-attributable helium release; preserve ground/vehicle interface and avoid assuming every supplied kilogram is vented locally."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_release
+              source_ids: []
+            ranges: []
+        - row_id: isopropanol_air
+          role: "Isopropanol, to air"
+          name: "Isopropanol, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual measured or supported mass-balance cleaning release, with captured/recovered/waste quantities subtracted consistently."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_ground_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ground_release
+              source_ids: []
+            ranges: []
+  - id: range
+    label: "Transport range operational support"
+    inputs:
+      product:
+        - row_id: range_electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual range instruments, safety coordination, weather and surveillance infrastructure electricity at the stated voltage and task interval."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_range_meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_range_meter
+              source_ids:
+                - nasa-wallops
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual range mobile/backup generator or support vehicle fuel, with standby and deployment attribution; purchased generation electricity is an alternative for the same generation scope."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_range_meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_range_meter
+              source_ids:
+                - nasa-wallops
+            ranges: []
+        - row_id: radar
+          role: "Space-transport range tracking radar"
+          name: "Space-transport range tracking radar"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Actual radar lifecycle share assigned to transport-support task, excluding unrelated aircraft/test-range and duplicate complete-station shares."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_range_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_range_asset
+              source_ids:
+                - nasa-wallops
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual support-generator/vehicle combustion only using site fuel and applicable cited method; rocket propulsion and upstream electricity emissions remain separate."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_range_combustion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_range_combustion
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only species-specific measured or applicable supported source estimate; total NOx is not automatically NO2 mass and no universal rocket factor applies."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_range_combustion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_range_combustion
+              source_ids: []
+            ranges: []
+  - id: control
+    label: "Transport mission control and tracking support"
+    inputs:
+      product:
+        - row_id: control_electricity
+          role: "Low-voltage alternating current electricity"
+          name: "Low-voltage alternating current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual transport-mission control, telemetry processing, tracking link and attributable room cooling electricity; reconcile range-console and external network overlap."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_control_meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_meter
+              source_ids:
+                - nasa-wallops
+            ranges: []
+        - row_id: server
+          role: "Mission-control computer server"
+          name: "Mission-control computer server"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Actual server manufacture/replacement/retirement share with supported lifetime workload; electricity is measured separately."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_control_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_asset
+              source_ids: []
+            ranges: []
+        - row_id: antenna
+          role: "Ground telemetry tracking antenna"
+          name: "Ground telemetry tracking antenna"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "Actual ground antenna lifecycle share in transport support; distinguish its ground station from space-relay infrastructure and unrelated payload data services."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_control_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_asset
+              source_ids:
+                - nasa-wallops
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: discarded_server
+          role: "Discarded mission-control computer server"
+          name: "Discarded mission-control computer server"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual attributable discarded server mass and treatment; omit if retirement is already inside the adopted complete asset lifecycle dataset."
+          amount:
+            expression: "Actual attributable measured amount per reference flow; cp_control_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: accept
+    label: "Reconcile and accept support task"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: support_output
+          role: "Space-transport support task"
+          name: "Space-transport support task"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One accepted support task/block of exactly the declared transport function, configuration, extent, interval and handover; it is not the customer flight or payload outcome."
+          amount:
+            expression: "1 item"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_task
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_function
+    applies_to: "foreground_burden_allocation"
+    rule: "Direct meters, gas balances, instrument schedules and actual workload take priority. For multi-user range/building/control facilities split transport versus unrelated users by causal metered or measured function-time/capacity use; do not automatically allocate by launch count, contract value or payload mass."
+    source_ids: []
+  - rule_id: allocate_attempts
+    applies_to: "foreground_burden_allocation"
+    rule: "Attribute necessary preparation, rehearsal, deployment, scrub, abort, standby and retry to the defined accepted support task even if a flight is delayed or fails. A successfully delivered support block can exist without successful flight; never delete associated actual burdens or count failed trials as extra accepted outputs."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Use actual asset quantity multiplied by actual attributable utilization divided by independently supported lifetime utilization, with compatible units and cumulative scope capped at one asset life. Reconcile whole-facility versus component manufacture/replacement/retirement; no invented lifetimes, masses or universal tasks per asset."
+    source_ids: []
+  - rule_id: allocate_interface
+    applies_to: "foreground_burden_allocation"
+    rule: "Reconcile customer flight inputs and upstream supplier inventories at handover. Returned/recovered gases and equipment are stocks/interfaces, not avoided-launch or recycling credits. Any reused material treatment/substitution must follow explicitly documented upstream allocation without automatic benefit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_task
+      process_id: "accept"
+      flow_role: "support_output"
+      record_type: "support_task_record"
+      raw_fields: "mission/phase; family/functions; site; capacity/configuration; start/end; interfaces; acceptance/quality; standby/rehearsal/scrub/retry; operator/customer/supplier boundary"
+      collection_method: "Match signed service acceptance and actual activity logs to one precisely defined support task/block; do not use launch success or invoices alone."
+      unit: "item"
+      frequency: "each task/block"
+      temporal_coverage: "whole declared task interval"
+      site_scope: "all actual support sites and handovers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "acceptance; task logs; interface reconciliation"
+    - protocol_id: cp_control_asset
+      process_id: "control"
+      flow_role: "server; antenna"
+      record_type: "asset_lifecycle_record"
+      raw_fields: "asset/configuration; actual quantity; installation/component scope; current use; supported lifetime utilization; cumulative shares; replacement/retirement"
+      collection_method: "Match actual asset register and upstream scope to measured task use and independently supported lifetime denominator; disclose unknown life or manufacture inventory."
+      unit: "row unit"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_control_meter
+      process_id: "control"
+      flow_role: "control_electricity"
+      record_type: "meter_record"
+      raw_fields: "row; actual fuel/electricity/water; meter; conditions; stocks; function/interval; supplier coverage"
+      collection_method: "Use calibrated readings and actual issue/return balances; separate internal electricity generation, purchased supply and vehicle/customer flows."
+      unit: "row unit"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_control_waste
+      process_id: "control"
+      flow_role: "discarded_server"
+      record_type: "segregated_waste_record"
+      raw_fields: "stream; measured mass; composition/contamination; task share; treatment; destination; asset/supplier inclusion"
+      collection_method: "Weigh each segregated actual stream and match transfer/treatment records; prevent duplicate included supplier or complete-asset retirement."
+      unit: "kg"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_ground_asset
+      process_id: "ground"
+      flow_role: "umbilical; pump; building"
+      record_type: "asset_lifecycle_record"
+      raw_fields: "asset/configuration; actual quantity; installation/component scope; current use; supported lifetime utilization; cumulative shares; replacement/retirement"
+      collection_method: "Match actual asset register and upstream scope to measured task use and independently supported lifetime denominator; disclose unknown life or manufacture inventory."
+      unit: "row unit"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_ground_gas
+      process_id: "ground"
+      flow_role: "nitrogen; helium; air"
+      record_type: "gas_custody_record"
+      raw_fields: "species/mixture; phase; purity; pressure/temperature; issue/return; ground use; vehicle transfer; recovery; stock change; vent"
+      collection_method: "Use weighed deliveries or calibrated mass meters with documented conversion. Reconcile external receipt plus opening stock with closing stock, flight/customer transfer, offsite returned/recovered material, actual ground release and other evidenced terminal fate, accounting for chemical transformation. Ground-use readings are activity records reconciled to these fates, not an extra sink; internal recovery/reuse is not another boundary input/output."
+      unit: "kg"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_ground_material
+      process_id: "ground"
+      flow_role: "hydraulic_oil; isopropanol"
+      record_type: "material_stock_record"
+      raw_fields: "specific substance/grade; actual issues/returns; purity; stocks; use; recovered/waste/emitted fate"
+      collection_method: "Weigh actual consumed ground material and reconcile stock and fate without assuming all purchases immediately become emissions or waste."
+      unit: "kg"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_ground_meter
+      process_id: "ground"
+      flow_role: "ground_electricity; water"
+      record_type: "meter_record"
+      raw_fields: "row; actual fuel/electricity/water; meter; conditions; stocks; function/interval; supplier coverage"
+      collection_method: "Use calibrated readings and actual issue/return balances; separate internal electricity generation, purchased supply and vehicle/customer flows."
+      unit: "row unit"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_ground_release
+      process_id: "ground"
+      flow_role: "nitrogen_air; helium_air; isopropanol_air"
+      record_type: "species_balance_record"
+      raw_fields: "species; source; ground/vehicle interface; receipt; stock; transfer; capture/recovery; waste; residual release; compartment"
+      collection_method: "Measure release or use a closed supported species balance with actual stocks, transfers, recovery and chemical transformations; do not infer release from delivery alone."
+      unit: "kg"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_ground_waste
+      process_id: "ground"
+      flow_role: "ground_wastewater; spent_oil; spent_solvent"
+      record_type: "segregated_waste_record"
+      raw_fields: "stream; measured mass; composition/contamination; task share; treatment; destination; asset/supplier inclusion"
+      collection_method: "Weigh each segregated actual stream and match transfer/treatment records; prevent duplicate included supplier or complete-asset retirement."
+      unit: "kg"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_range_asset
+      process_id: "range"
+      flow_role: "radar"
+      record_type: "asset_lifecycle_record"
+      raw_fields: "asset/configuration; actual quantity; installation/component scope; current use; supported lifetime utilization; cumulative shares; replacement/retirement"
+      collection_method: "Match actual asset register and upstream scope to measured task use and independently supported lifetime denominator; disclose unknown life or manufacture inventory."
+      unit: "row unit"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_range_combustion
+      process_id: "range"
+      flow_role: "co2; no2"
+      record_type: "support_combustion_record"
+      raw_fields: "species; equipment/fuel; actual activity; measured test or applicable method/factor; conditions; compartment; supplier scope"
+      collection_method: "Use actual support-source tests or independently cited applicable species/source method with matched activity; no rocket-flight or generic NOx-to-NO2 equivalence."
+      unit: "kg"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+    - protocol_id: cp_range_meter
+      process_id: "range"
+      flow_role: "range_electricity; diesel"
+      record_type: "meter_record"
+      raw_fields: "row; actual fuel/electricity/water; meter; conditions; stocks; function/interval; supplier coverage"
+      collection_method: "Use calibrated readings and actual issue/return balances; separate internal electricity generation, purchased supply and vehicle/customer flows."
+      unit: "row unit"
+      frequency: "actual task/meter/service interval"
+      temporal_coverage: "same interval as cp_task"
+      site_scope: "actual declared process/sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "primary records; calibration; scope and balance reconciliation"
+  calculation_rules:
+    - id: calc_task
+      applies_to: "all inventory rows"
+      rule: "Attribute actual matched exchanges to the specified support function, extent and interval; divide comparable summed inventory by accepted task/block count only after configuration/quality equivalence is established. No automatic launch/payload/hour conversion."
+      inputs:
+        - cp_task
+        - "actual process protocols"
+      output: "per reference flow"
+      source_ids: []
+    - id: calc_gas
+      applies_to: "nitrogen; helium; air; nitrogen_air; helium_air"
+      rule: "External receipt + opening stock = closing stock + flight/customer transfer + offsite returned/recovered material + actual ground release + other evidenced terminal fate, accounting for chemical transformation and consistent species/state boundaries. Internal recovery/reuse does not create another boundary input/output. Ground-use metering is an activity account reconciled with each terminal fate, never an independent mass sum added to release or recovery; keep flight material upstream allocation explicit."
+      inputs:
+        - "gas and release protocols"
+        - cp_task
+      output: "species mass per reference flow"
+      source_ids:
+        - nasa-gases
+    - id: calc_assets
+      applies_to: "umbilical; pump; building; radar; server; antenna"
+      rule: "Multiply actual asset quantity by task-attributable utilization divided by supported lifetime utilization; reconcile units, replacement and cumulative complete/component scope before normalization."
+      inputs:
+        - "asset protocols"
+        - cp_task
+      output: "asset share per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_function
+      applies_to: "support_output"
+      requirement: "Require actual transport-support function, configuration, extent, interval and accepted interfaces; a spaceport name or mission label alone is insufficient."
+      evidence: "cp_task"
+    - id: dq_balance
+      applies_to: "nitrogen; helium; air; water"
+      requirement: "Retain calibrated mass/energy/water records and ground/customer custody balance, including vent/recovery and supplier upstream scope."
+      evidence: "gas/meter/release protocols"
+    - id: dq_assets
+      applies_to: "all asset rows"
+      requirement: "Require actual configuration, supported lifetime utilization and nonoverlapping manufacture/maintenance/retirement; quantify uncertainty without inventing defaults."
+      evidence: "asset protocols"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Resolve exact flow/property/unit and localized name before verified adoption; missing identities and additional actual exchanges remain explicit."
+      evidence: "Identity register and primary inventory"
+validation_rules:
+  - rule_id: validate_task
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one unique support_output of 1 item with all functional qualifiers, actual duration, acceptance and family processes. Reject universal per-launch/per-kg payload factors and mixing unlike tasks."
+    source_ids: []
+  - rule_id: validate_interface
+    applies_to: "foreground_dataset_conformance"
+    rule: "Audit ground/vehicle material handover and supplier interfaces; exclude customer rocket flight and payload manufacture, track actual support losses once, and preserve unsuccessful attempts in their attributable boundary."
+    source_ids: []
+  - rule_id: validate_inventory
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check each actual utility, gas, chemical, asset, waste and species against records and compatible per-task basis; disclose unknown identities/lifetimes/releases and incomplete upstream inventory. Mechanical pass does not establish full space-mission environmental or scientific approval."
+    source_ids: []
+  - rule_id: validate_unit_export
+    applies_to: "foreground_dataset_conformance"
+    rule: "Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "specialized_space_transport_support"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Matching configured specialized transport-support component with explicit ground/range/control function and service extent"
+  excluded_use: "Whole launch/spacecraft/payload footprint; universal mission factor; unrelated satellite communication/navigation/scientific operation"
+  required_metadata: "All qualifiers; conditional routes; actual interval and success/acceptance distinction; customer gas/propellant interfaces; allocation, supplier and asset scope; primary records"
+  required_quality_disclosure: "Task comparability; scrubs and standby; missing gases/species; custody and supplier overlap; life denominator; upstream/land/noise/water evidence gaps"
+  update_trigger: "Changed mission phase, support extent/configuration, gas/propellant interface, utility supply, utilization/life, supplier route or measured releases"
+data_sources:
+  - id: "un-cpc3-67640"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version3.0, subclass67640 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67640"
+    used_for: "Specialized support category only; detailed functional boundaries are declared foreground applicability rules, not a UN enumerated subtype list"
+  - id: "nasa-gases"
+    type: "official_guidance"
+    reference: "NASA, Propellants, Life Support Branch Fuels NASA Missions, June27 2023, paragraphs on ground gases, transfer and scrubbers. https://www.nasa.gov/centers-and-facilities/kennedy/propellants-life-support-branch-fuels-nasa-missions/"
+    used_for: "Ground nitrogen/helium/breathing-air support and separation of handled flight commodities; qualitative route evidence only, no quantities/doses/factors adopted"
+  - id: "nasa-wallops"
+    type: "official_guidance"
+    reference: "NASA, Wallops Range Users Handbook,840-HDBK-0004 Version4, April1 2024, sections3.2.7–3.2.8 and3.3.1–3.3.8. https://www.nasa.gov/wp-content/uploads/2023/09/wallopsrangeusershandbook-2024.pdf"
+    used_for: "Range control, mobile power, telemetry and tracking support examples; apply only actual space-transport share, not unrelated aircraft/science uses; no equipment size, service life or energy factors adopted"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:4b82070e3fac1d3bc8f9438f14038bbff596d15ab82e187965266e89ec47b048"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4822"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4822
+          line: 56
+          column: 1
+        end:
+          offset: 7459
+          line: 76
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified transport campaign phase and support installation initially available in its recorded condition |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Specialized support to actual space transportation, with ground/range/control family qualifiers |\n| recursive_input_rule | Same-category subcontracted support enters as a scoped supplier input; use either its complete inventory or an explicitly replacing disaggregation, never both |\n| upstream_dataset_requirement | Actual utilities, individual gases/materials, support facilities/equipment lifecycle and specific waste management; external network/relay support only for its actual transport share |\n| disclosure | Exact campaign/phase/function/interval and handovers; ground consumption versus flight custody; supplier overlap; life/utilization and release evidence |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_support` | Select the actual ground/range/control processes needed by the accepted transport-support task; keep unrelated science, aviation, production and general communication activities outside or allocate their shared scope explicitly. | un-cpc3-67640; nasa-wallops |\n| `boundary_custody` | Record customer vehicle/payload and flight propellants as custody/interface records, not newly produced support output. Separate delivered flight material, actual ground purge/vent, return, recovery, stock change and physical loss. Allocate upstream propellant supply once at the agreed customer interface; handling energy and losses must not disappear or be duplicated. | nasa-gases |\n| `boundary_increment` | Exclude rocket plume, ascent/reentry emissions, flight propellant combustion and vehicle manufacture from direct support. Ground engine/hot-fire testing requires a separately declared actual support purpose and exhaustive species/fuel inventory; no flight emission factor or default plume chemistry. |  |\n| `boundary_lifecycle` | Include support-installation construction, GSE, instruments, computing, maintenance and retirement shares. Actual vacuum, cryogenic or gas-generation equipment requires both its supported lifecycle share and measured energy, unless those same burdens are already included in a purchased complete service; do not count both. Add every additional actual gas, reagent, refrigerant, water stream, waste and emission as an individual exchange; screen land, water, noise/ecological effects and remote deployment rather than treating this card list as exhaustive. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 8
+              column: 1
+            end:
+              offset: 271
+              line: 8
+              column: 42
+          text: "# Supporting services for space transport"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4822
+              line: 56
+              column: 1
+            end:
+              offset: 4843
+              line: 56
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25573"
+      family: "allocation"
+      span:
+        start:
+          offset: 25573
+          line: 515
+          column: 1
+        end:
+          offset: 27064
+          line: 524
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_function` | Direct meters, gas balances, instrument schedules and actual workload take priority. For multi-user range/building/control facilities split transport versus unrelated users by causal metered or measured function-time/capacity use; do not automatically allocate by launch count, contract value or payload mass. |  |\n| `allocate_attempts` | Attribute necessary preparation, rehearsal, deployment, scrub, abort, standby and retry to the defined accepted support task even if a flight is delayed or fails. A successfully delivered support block can exist without successful flight; never delete associated actual burdens or count failed trials as extra accepted outputs. |  |\n| `allocate_assets` | Use actual asset quantity multiplied by actual attributable utilization divided by independently supported lifetime utilization, with compatible units and cumulative scope capped at one asset life. Reconcile whole-facility versus component manufacture/replacement/retirement; no invented lifetimes, masses or universal tasks per asset. |  |\n| `allocate_interface` | Reconcile customer flight inputs and upstream supplier inventories at handover. Returned/recovered gases and equipment are stocks/interfaces, not avoided-launch or recycling credits. Any reused material treatment/substitution must follow explicitly documented upstream allocation without automatic benefit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 8
+              column: 1
+            end:
+              offset: 271
+              line: 8
+              column: 42
+          text: "# Supporting services for space transport"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25573
+              line: 515
+              column: 1
+            end:
+              offset: 25613
+              line: 515
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37286"
+      family: "validation"
+      span:
+        start:
+          offset: 37286
+          line: 561
+          column: 1
+        end:
+          offset: 38630
+          line: 570
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_task` | Require one unique support_output of 1 item with all functional qualifiers, actual duration, acceptance and family processes. Reject universal per-launch/per-kg payload factors and mixing unlike tasks. |  |\n| `validate_interface` | Audit ground/vehicle material handover and supplier interfaces; exclude customer rocket flight and payload manufacture, track actual support losses once, and preserve unsuccessful attempts in their attributable boundary. |  |\n| `validate_inventory` | Check each actual utility, gas, chemical, asset, waste and species against records and compatible per-task basis; disclose unknown identities/lifetimes/releases and incomplete upstream inventory. Mechanical pass does not establish full space-mission environmental or scientific approval. |  |\n| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 8
+              column: 1
+            end:
+              offset: 271
+              line: 8
+              column: 42
+          text: "# Supporting services for space transport"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37286
+              line: 561
+              column: 1
+            end:
+              offset: 37308
+              line: 561
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_support"
+      identity_kind: "explicit"
+      unit_id: "normative_4822"
+      source_span:
+        start:
+          offset: 5848
+          line: 71
+          column: 1
+        end:
+          offset: 6131
+          line: 71
+          column: 284
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_custody"
+      identity_kind: "explicit"
+      unit_id: "normative_4822"
+      source_span:
+        start:
+          offset: 6132
+          line: 72
+          column: 1
+        end:
+          offset: 6540
+          line: 72
+          column: 409
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_increment"
+      identity_kind: "explicit"
+      unit_id: "normative_4822"
+      source_span:
+        start:
+          offset: 6541
+          line: 73
+          column: 1
+        end:
+          offset: 6870
+          line: 73
+          column: 330
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_lifecycle"
+      identity_kind: "explicit"
+      unit_id: "normative_4822"
+      source_span:
+        start:
+          offset: 6871
+          line: 74
+          column: 1
+        end:
+          offset: 7457
+          line: 74
+          column: 587
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_function"
+      identity_kind: "explicit"
+      unit_id: "normative_25573"
+      source_span:
+        start:
+          offset: 25667
+          line: 519
+          column: 1
+        end:
+          offset: 26005
+          line: 519
+          column: 339
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_attempts"
+      identity_kind: "explicit"
+      unit_id: "normative_25573"
+      source_span:
+        start:
+          offset: 26006
+          line: 520
+          column: 1
+        end:
+          offset: 26362
+          line: 520
+          column: 357
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_25573"
+      source_span:
+        start:
+          offset: 26363
+          line: 521
+          column: 1
+        end:
+          offset: 26725
+          line: 521
+          column: 363
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_interface"
+      identity_kind: "explicit"
+      unit_id: "normative_25573"
+      source_span:
+        start:
+          offset: 26726
+          line: 522
+          column: 1
+        end:
+          offset: 27062
+          line: 522
+          column: 337
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_task"
+      identity_kind: "explicit"
+      unit_id: "normative_37286"
+      source_span:
+        start:
+          offset: 37362
+          line: 565
+          column: 1
+        end:
+          offset: 37588
+          line: 565
+          column: 227
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_interface"
+      identity_kind: "explicit"
+      unit_id: "normative_37286"
+      source_span:
+        start:
+          offset: 37589
+          line: 566
+          column: 1
+        end:
+          offset: 37839
+          line: 566
+          column: 251
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_37286"
+      source_span:
+        start:
+          offset: 37840
+          line: 567
+          column: 1
+        end:
+          offset: 38157
+          line: 567
+          column: 318
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_unit_export"
+      identity_kind: "explicit"
+      unit_id: "normative_37286"
+      source_span:
+        start:
+          offset: 38158
+          line: 568
+          column: 1
+        end:
+          offset: 38628
+          line: 568
+          column: 471
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4822"
+      source_span:
+        start:
+          offset: 4822
+          line: 56
+          column: 1
+        end:
+          offset: 4843
+          line: 56
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4822"
+      source_span:
+        start:
+          offset: 4871
+          line: 60
+          column: 1
+        end:
+          offset: 5794
+          line: 67
+          column: 169
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25573"
+      source_span:
+        start:
+          offset: 25573
+          line: 515
+          column: 1
+        end:
+          offset: 25613
+          line: 515
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37286"
+      source_span:
+        start:
+          offset: 37286
+          line: 561
+          column: 1
+        end:
+          offset: 37308
+          line: 561
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4b82070e3fac1d3bc8f9438f14038bbff596d15ab82e187965266e89ec47b048"
+  generated_content_sha256: "sha256:d012747f2bb2f3910001621e7b17f317d6e24ae77c9bea9fdb893e2bb0874b9e"

@@ -1,10 +1,1095 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67490"
-  title: "Other supporting services for road transport"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.other-supporting-services-for-road-transport"
+  classification_refs: "CPC3.0 67490; narrower semantic subset"
+  covered_products: "Noncarrier commercial oversize-road-movement pilot/escort tasks with explicit role/team and completed route segment"
+  excluded_products: "All unspecified residual families; terminals/road operation/parking/towing/cleaning/intermediation; carriage; security guarding; public policing; standalone engineering"
+  representative_product: "One completed qualified noncarrier pilot/escort task"
+  production_route: "Review assignment/route → prepare equipment and mobilize → actual escort warning/communication → acceptance/log/return"
+  market_state: "Delivered physical road-movement assistance with signed task/role completion; no freight carriage output"
+functional_unit:
+  what: "Perform the identified noncarrier lead/rear/height-pole escort scope for the specified road move"
+  how_much: "One accepted task with declared role/team, route endpoints/length, escorted vehicles, load envelope and actual activity"
+  how_well: "Actual task acceptance and communication/warning scope, completion location/time and incident/handoff record; no universal safety outcome assumed"
+  how_long_or_cycle: "Full assignment cycle including attributable planning, survey travel, mobilization, escort, delays, return and closeout"
+  reference_flow_link: "escort_service"
+system_boundary:
+  rules:
+    - rule_id: boundary_cycle
+      applies_to: "foreground_system_boundary"
+      rule: "Include attributable assignment planning, actual route-review travel, preparation, mobilization, escort warning/communication, waiting/retries, closeout and return; respect separately purchased stages without duplicating the full task."
+      source_ids:
+        - fhwa-escort-planning
+        - fhwa-escort-movement
+        - fhwa-escort-posttrip
+    - rule_id: boundary_carrier
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude the load truck, cargo production, carrier fuel and payload transport inventory. Include the escort vehicles actual service travel only; same commercial invoice does not merge carrier and escort functions."
+      source_ids: []
+    - rule_id: boundary_assets
+      applies_to: "foreground_system_boundary"
+      rule: "Screen vehicle fit-out, radios, warning lights, height pole, tyre replacement, infrastructure use and maintenance; record actual assets and physical lifetime shares, avoiding duplicate fitted equipment."
+      source_ids:
+        - fhwa-escort-planning
+    - rule_id: boundary_extension
+      applies_to: "foreground_system_boundary"
+      rule: "The cards are conditional examples within this one service family. Add actual fuels, equipment, consumables, emissions and wastes individually; different residual families need their own reviewed methodology, not these cards by default."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Accepted noncarrier escort assignment with specified role/team and available vehicle/equipment; prior manufacture not burden-free"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Only the explicitly bounded pilot/escort subset under reviewed residual applicability; no automatic scope for unknown 67490 tasks"
+  recursive_input_rule: "Bought escort contribution enters once with exact role/route/time scope; exclude the same vehicle fuel/assets already included by its supplier"
+  upstream_dataset_requirement: "Actual fuel/electricity, vehicle/equipment/tyre production, road facility use, maintenance and waste treatment"
+  disclosure: "Role/team completeness; mobilization and return; carrier separation; road/asset coverage; classification limitations; upstream gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed qualified noncarrier road pilot/escort task"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "task/order ID"
+    - "positive function/classification rationale"
+    - "commercial noncarrier status"
+    - "exact role/team scope"
+    - "lead/rear/height-pole duties"
+    - "route endpoints and distance"
+    - "escorted vehicle/convoy count"
+    - "dimensions/mass and constraints"
+    - "dates and weather"
+    - "actual assignment/escort/idle/return time and distances"
+    - "powertrain and vehicles"
+    - "warning/communication equipment"
+    - "completion/handoff"
+    - "supplier versus owned coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: task_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "cp_task counts completed identified scope; supporting photos, radios or kilometres are not extra complete tasks. Failed/cancelled work remains allocated burden."
+  - id: physical_extent
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Record each escort vehicle actual distances, elapsed/idle time and lead/rear role; no inferred average crew, vehicle count or load size."
+  - id: energy_route
+    applies_to: "gasoline; diesel; electricity"
+    required_property_ref:
+      name: "Mass; Energy"
+      uuid: ""
+    required_unit: "kg; kWh"
+    rule: "Use measured escort consumption and actual charging loss; exclude carrier traction and supplier-covered energy."
+process_map:
+  - id: escort
+    name: "Prepare, perform and close specified noncarrier escort task"
+    inclusion: "required"
+    inclusion_condition: "Actual contracted role/team and route; row conditions apply"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: escort
+    label: "Prepare, perform and close specified noncarrier escort task"
+    inputs:
+      product:
+        - row_id: gasoline
+          role: "Petrol, petroleum-derived"
+          name: "Petrol, petroleum-derived"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual petrol escort vehicle operation; include assigned approach, route checks, escort, detours, idle and return, excluding load carrier fuel."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel, petroleum-derived"
+          name: "Diesel fuel, petroleum-derived"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual diesel escort/support vehicle; identify fuel grade and bio-content; separate other fuel formulations as actual rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity, alternating current"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Measure actual EV/radio charging and task-attributable planning/support electricity, retaining charging loss; do not count internally generated alternator power again as purchased electricity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: oil
+          role: "Mineral lubricating oil"
+          name: "Mineral lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual attributable vehicle maintenance; record net oil consumption and prevent duplication inside purchased maintenance."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: tyre
+          role: "Passenger-car radial tyre"
+          name: "Passenger-car radial tyre"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on this actual replacement tyre; record actual design and measured lifetime mileage; pickup or other tyre designs require separate rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: flag
+          role: "Polyester warning flag"
+          name: "Polyester warning flag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual issue/replacement; distinguish durable flag lifetime allocation from one-use consumption."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: petrol_car
+          role: "Petrol passenger vehicle configured for pilot escort"
+          name: "Petrol passenger vehicle configured for pilot escort"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only actual owned configuration; attribute manufacture, equipment fit-out and retirement by documented task/lifetime utilization; no load carrying."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: diesel_pickup
+          role: "Diesel pickup configured for pilot escort"
+          name: "Diesel pickup configured for pilot escort"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on actual diesel pickup; preserve manufacturing boundary and service use; exclude cargo carrier truck."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: electric_car
+          role: "Battery-electric passenger vehicle configured for pilot escort"
+          name: "Battery-electric passenger vehicle configured for pilot escort"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on actual EV, with initial/replacement battery boundary disclosed; no default battery lifetime or duplicate initial battery."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: radio
+          role: "VHF two-way radio transceiver"
+          name: "VHF two-way radio transceiver"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on this actual communication device; allocate its production/service life and actual charging once."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: beacon
+          role: "Amber LED vehicle warning beacon"
+          name: "Amber LED vehicle warning beacon"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on actual separately acquired beacon; not an extra asset if already included in fitted vehicle."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: height_pole
+          role: "Fibreglass vehicle-mounted clearance height pole"
+          name: "Fibreglass vehicle-mounted clearance height pole"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on a height-pole escort role; record actual calibrated configuration and supported useful service life."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: road_service
+          role: "Specified road facility-operation passage service"
+          name: "Specified road facility-operation passage service"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Actual escort vehicle road use only, segmented by road/bridge/tunnel extent and compatible upstream infrastructure boundary. Do not duplicate infrastructure already in the vehicle-use dataset."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_road."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_road
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: escort_service
+          role: "Completed noncarrier road pilot/escort task"
+          name: "Completed qualified noncarrier road pilot/escort task"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One accepted exact role/team scope completed at the declared handoff; the actual task log and completion evidence are retained."
+          amount:
+            expression: "1 item"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_task
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_oil
+          role: "Spent mineral lubricating oil"
+          name: "Spent mineral lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual captured oil; reconcile with maintenance service coverage and receiving treatment."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_tyre
+          role: "Discarded passenger-car radial tyre"
+          name: "Discarded passenger-car radial tyre"
+          flow_type: "waste"
+          property_unit: "Number of items / item"
+          description: "Conditional on actual tyre replacement, with actual receiver and recycling/treatment boundary; no automatic credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_flag
+          role: "Discarded polyester warning flag"
+          name: "Discarded polyester warning flag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual discarded flag by material and receiver, distinct from a durable flag share."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2_air
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only escort/operator direct fuel combustion; use measured carbon/oxidation evidence or exhaust. Do not import carrier truck CO2 here."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: co_air
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual escort-engine emission measured or supported by an explicit engine/fuel/duty-specific factor; no default legal-limit proxy."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: no_air
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Species-resolved release; aggregate NOx-as-NO2 requires supported speciation and is not automatically this mass."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: no2_air
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Separate NO2 from NO and retain actual receiving compartment and duty basis."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: pm25_air
+          role: "Particulate matter, aerodynamic diameter below 2.5 micrometres, to air"
+          name: "Particulate matter, aerodynamic diameter below 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual size-resolved escort combustion release; total PM and overlapping fractions cannot be counted twice. Wear and resuspended dust require separate source evidence."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_task
+    applies_to: "foreground_burden_allocation"
+    rule: "Prefer task-specific fuel, charging and equipment records. Shared preparation, dispatch and standby require measured role/time/activity drivers and reconciliation to the same company period."
+    source_ids: []
+  - rule_id: allocate_team
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate independently delivered lead/rear/team scopes; do not allocate by cargo value or call each escort car another complete team task. Multiple escorted loads need explicitly documented shared-task boundaries."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocate actual vehicles, tyres and equipment by supported lifetime utilization and task use; identify included fit-out/battery and maintenance. Do not assume lifetime or recovery credit."
+    source_ids: []
+  - rule_id: allocate_return
+    applies_to: "foreground_burden_allocation"
+    rule: "Retain empty approach, return, standby and failed-task burden; justify sharing across successive assignments and avoid inventing a successful task for cancelled work."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_task
+      process_id: "escort"
+      flow_role: "escort_service"
+      record_type: "foreground record"
+      raw_fields: "order; positive classification rationale; exact role/team; route; load envelope; vehicle IDs; start/end; duties; acceptance; exceptions"
+      collection_method: "Verify signed function-specific work order and completion/handoff with actual trip/communication logs; assess competing carriage/security/public functions."
+      unit: "item"
+      frequency: "each task"
+      temporal_coverage: "same declared operating period"
+      site_scope: "actual assigned escort role/team"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "signed task and completion; route/duty log"
+    - protocol_id: cp_energy
+      process_id: "escort"
+      flow_role: "gasoline; diesel; electricity"
+      record_type: "foreground record"
+      raw_fields: "vehicle/fuel; tank opening/closing; deliveries; charging; loss; route-review/escort/idle/return; attribution"
+      collection_method: "Use actual fuel/charging measurements reconciled to escort vehicle trip logs and support meters; exclude carrier truck consumption."
+      unit: "kg; kWh"
+      frequency: "trip and meter interval"
+      temporal_coverage: "same declared operating period"
+      site_scope: "actual assigned escort role/team"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration; fuel/charging records; odometer logs"
+    - protocol_id: cp_material
+      process_id: "escort"
+      flow_role: "oil; flag"
+      record_type: "foreground record"
+      raw_fields: "specific material; issue/return; actual use; maintenance coverage; task share"
+      collection_method: "Reconcile material stock and service issues with actual task/maintenance allocation, retaining each material identity."
+      unit: "kg"
+      frequency: "issue and period balance"
+      temporal_coverage: "same declared operating period"
+      site_scope: "actual assigned escort role/team"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "stock cards; formulation; supplier service boundary"
+    - protocol_id: cp_asset
+      process_id: "escort"
+      flow_role: "tyre; petrol_car; diesel_pickup; electric_car; radio; beacon; height_pole"
+      record_type: "foreground record"
+      raw_fields: "specific asset; fit-out boundary; installation/replacement; actual distance/time/task use; lifetime evidence"
+      collection_method: "Bind assets to upstream production and retirement; observe actual utilization and document supported physical life; avoid included-component duplication."
+      unit: "item"
+      frequency: "asset event and period"
+      temporal_coverage: "same declared operating period"
+      site_scope: "actual assigned escort role/team"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "asset register; maintenance records; lifetime evidence"
+    - protocol_id: cp_road
+      process_id: "escort"
+      flow_role: "road_service"
+      record_type: "foreground record"
+      raw_fields: "escort vehicle; actual road segments; lengths; class; passage count; upstream transport/infrastructure boundary"
+      collection_method: "Reconcile actual escort approach/task/return routes with compatible road-operation datasets; preserve segment extent and avoid duplicate road shares."
+      unit: "item"
+      frequency: "each route segment"
+      temporal_coverage: "same declared operating period"
+      site_scope: "actual assigned escort role/team"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "trip record; upstream boundary verification"
+    - protocol_id: cp_waste
+      process_id: "escort"
+      flow_role: "waste_oil; waste_tyre; waste_flag"
+      record_type: "foreground record"
+      raw_fields: "specific waste; amount; receiver; treatment; event; task share"
+      collection_method: "Measure actual separate wastes, reconcile maintenance coverage and receiver documents; no automatic substitution credit."
+      unit: "kg; item"
+      frequency: "each transfer"
+      temporal_coverage: "same declared operating period"
+      site_scope: "actual assigned escort role/team"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "waste manifests; receiver evidence"
+    - protocol_id: cp_emission
+      process_id: "escort"
+      flow_role: "co2_air; co_air; no_air; no2_air; pm25_air"
+      record_type: "foreground record"
+      raw_fields: "escort engine; fuel; duty; measured exhaust or justified factor/version/unit; species/fraction; task share"
+      collection_method: "Use actual escort duty and exhaust or explicitly justified engine/fuel factors; resolve species and avoid overlapping PM; disclose unquantified tyre/brake wear."
+      unit: "kg"
+      frequency: "duty interval and task"
+      temporal_coverage: "same declared operating period"
+      site_scope: "actual assigned escort role/team"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "exhaust/fuel tests; factor applicability; load/units evidence"
+  calculation_rules:
+    - id: task_denominator
+      applies_to: "escort_service"
+      rule: "N = completed accepted tasks of the exact declared role/team and extent; require N positive. Constituent warning/communication events are not extra outputs."
+      inputs:
+        - cp_task
+      output: "N"
+      source_ids: []
+    - id: exchange_allocation
+      applies_to: "all inventory rows"
+      rule: "Attribute each measured numerator to the complete assigned cycle using explicit physical drivers, then divide by N; preserve actual escort miles/hours and shared return rules."
+      inputs:
+        - cp_task
+        - cp_energy
+        - cp_material
+        - cp_road
+        - cp_waste
+      output: "exchange per reference flow"
+      source_ids: []
+    - id: asset_allocation
+      applies_to: "tyre; petrol_car; diesel_pickup; electric_car; radio; beacon; height_pole"
+      rule: "Assign production/maintenance/retirement by supported lifetime utilization and actual task use, excluding components already embedded in a supplier inventory; divide attributable share by N."
+      inputs:
+        - cp_asset
+        - cp_task
+      output: "asset share per reference flow"
+      source_ids: []
+    - id: emission_allocation
+      applies_to: "co2_air; co_air; no_air; no2_air; pm25_air"
+      rule: "Resolve measured or explicitly justified species/fraction mass for actual escort duty, sum non-overlapping intervals and divide allocated mass by N; missing factors/speciation remain gaps."
+      inputs:
+        - cp_emission
+        - cp_energy
+        - cp_task
+      output: "species per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_function
+      applies_to: "escort_service"
+      requirement: "Positive physical role/task evidence plus documented residual classification and exclusions; an invoice or unrelated NAICS code is insufficient."
+      evidence: "cp_task; un-cpc-67490"
+    - id: dq_scope
+      applies_to: "all inventory rows"
+      requirement: "Same exact role/team, route/extent and period; all actual vehicle travel, standby, equipment and provider coverage reconciled."
+      evidence: "cp_task; cp_energy; cp_asset"
+    - id: dq_species
+      applies_to: "co2_air; co_air; no_air; no2_air; pm25_air"
+      requirement: "Real escort source, factor/duty units and atomic species; no generic NOx mass as each nitrogen species or duplicated PM fractions."
+      evidence: "cp_emission"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Resolve actual flow identities before database-linked use; historical count support does not verify product flows."
+      evidence: "direct identity verification"
+validation_rules:
+  - rule_id: validate_applicability
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require documented noncarrier road-movement assistance and reviewed residual classification, including the competing-classification checks. Reject unexamined other service families and the explicit CPC exclusions."
+    source_ids:
+      - un-cpc-67490
+  - rule_id: validate_task
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique escort_service output, 1 item and positive N with role/team, route, vehicle/load conditions and completion handoff. Do not equate single lead-car duty and whole escort team."
+    source_ids: []
+  - rule_id: validate_inventory
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require individual energy, materials, equipment, wastes and emissions, with complete assigned cycle and no carrier/infrastructure/supplier double count. Office electricity alone cannot represent a physical escort task."
+    source_ids: []
+  - rule_id: validate_limits
+    applies_to: "foreground_dataset_conformance"
+    rule: "Report unresolved identities, wear/exhaust gaps, classification limitation and lifetime uncertainty. A candidate check pass neither approves all residual activities nor establishes permits or legal compliance."
+    source_ids: []
+  - rule_id: validate_unit_export
+    applies_to: "foreground_dataset_conformance"
+    rule: "Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Unit-process noncarrier pilot/escort support task; narrower residual methodology"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Same reviewed physical service family, exact role/team and comparable route/vehicle/load conditions with explicit coverage"
+  excluded_use: "Generic other-road-service factor; carriage, security/public policing, excluded CPC functions or unrelated residual families"
+  required_metadata: "All task qualifiers; positive classification rationale; role/team N; actual vehicle activity; equipment/road/lifetime boundaries; supplier coverage"
+  required_quality_disclosure: "Narrower-than-leaf scope; classification inference not UN named example; flow UUID gaps; wear/emission data; return allocation; lifetime uncertainty"
+  update_trigger: "Task family/function, role/team, route extent, traction, equipment, competing-classification interpretation or material data-quality change"
+data_sources:
+  - id: "un-cpc-67490"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 67490. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67490"
+    used_for: "Residual exclusions and counterclassification screening; does not explicitly name escort; narrower applicability is independent reasoning."
+  - id: "fhwa-escort-planning"
+    type: "official_guidance"
+    reference: "FHWA-HOP-16-051, Pilot/Escort Best Practices, chapter I. https://ops.fhwa.dot.gov/publications/fhwahop16051/ch1.htm"
+    used_for: "Assignment, route and actual equipment preparation logic; qualitative technical evidence, not CPC mapping or current legal specification."
+  - id: "fhwa-escort-movement"
+    type: "official_guidance"
+    reference: "FHWA-HOP-16-051, Pilot/Escort Best Practices, chapter III. https://ops.fhwa.dot.gov/publications/fhwahop16051/ch3.htm"
+    used_for: "Distinct lead/rear warning/communication role and actual load-movement conditions; no numerical safety factor adopted."
+  - id: "fhwa-escort-posttrip"
+    type: "official_guidance"
+    reference: "FHWA-HOP-16-050, Pilot/Escort Training Manual, module6. https://ops.fhwa.dot.gov/publications/fhwahop16050/m6.htm"
+    used_for: "Task closeout, actual mileage/time and condition logs; no default consumption or lifetime."
+  - id: "un-cpc-counterclasses"
+    type: "official_guidance"
+    reference: "UNSD CPC3 explanatory notes, 6511 road freight, 85240 armoured car, 85250 guarding, 91260 police. https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf"
+    used_for: "Competing-function exclusions; no automatic crosswalk between escort and residual class."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:39f8462e203d2b2cf070e788c87c710281423cd0f481dbe07150e3be16988419"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5743"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5743
+          line: 59
+          column: 1
+        end:
+          offset: 7803
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted noncarrier escort assignment with specified role/team and available vehicle/equipment; prior manufacture not burden-free |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Only the explicitly bounded pilot/escort subset under reviewed residual applicability; no automatic scope for unknown 67490 tasks |\n| recursive_input_rule | Bought escort contribution enters once with exact role/route/time scope; exclude the same vehicle fuel/assets already included by its supplier |\n| upstream_dataset_requirement | Actual fuel/electricity, vehicle/equipment/tyre production, road facility use, maintenance and waste treatment |\n| disclosure | Role/team completeness; mobilization and return; carrier separation; road/asset coverage; classification limitations; upstream gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_cycle` | Include attributable assignment planning, actual route-review travel, preparation, mobilization, escort warning/communication, waiting/retries, closeout and return; respect separately purchased stages without duplicating the full task. | fhwa-escort-planning; fhwa-escort-movement; fhwa-escort-posttrip |\n| `boundary_carrier` | Exclude the load truck, cargo production, carrier fuel and payload transport inventory. Include the escort vehicles actual service travel only; same commercial invoice does not merge carrier and escort functions. |  |\n| `boundary_assets` | Screen vehicle fit-out, radios, warning lights, height pole, tyre replacement, infrastructure use and maintenance; record actual assets and physical lifetime shares, avoiding duplicate fitted equipment. | fhwa-escort-planning |\n| `boundary_extension` | The cards are conditional examples within this one service family. Add actual fuels, equipment, consumables, emissions and wastes individually; different residual families need their own reviewed methodology, not these cards by default. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 235
+              line: 8
+              column: 1
+            end:
+              offset: 312
+              line: 8
+              column: 78
+          text: "# Other supporting services for road transport: noncarrier pilot/escort tasks"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5743
+              line: 59
+              column: 1
+            end:
+              offset: 5764
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21309"
+      family: "allocation"
+      span:
+        start:
+          offset: 21309
+          line: 431
+          column: 1
+        end:
+          offset: 22268
+          line: 440
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_task` | Prefer task-specific fuel, charging and equipment records. Shared preparation, dispatch and standby require measured role/time/activity drivers and reconciliation to the same company period. |  |\n| `allocate_team` | Separate independently delivered lead/rear/team scopes; do not allocate by cargo value or call each escort car another complete team task. Multiple escorted loads need explicitly documented shared-task boundaries. |  |\n| `allocate_assets` | Allocate actual vehicles, tyres and equipment by supported lifetime utilization and task use; identify included fit-out/battery and maintenance. Do not assume lifetime or recovery credit. |  |\n| `allocate_return` | Retain empty approach, return, standby and failed-task burden; justify sharing across successive assignments and avoid inventing a successful task for cancelled work. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 235
+              line: 8
+              column: 1
+            end:
+              offset: 312
+              line: 8
+              column: 78
+          text: "# Other supporting services for road transport: noncarrier pilot/escort tasks"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21309
+              line: 431
+              column: 1
+            end:
+              offset: 21349
+              line: 431
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28309"
+      family: "validation"
+      span:
+        start:
+          offset: 28309
+          line: 472
+          column: 1
+        end:
+          offset: 29817
+          line: 482
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_applicability` | Require documented noncarrier road-movement assistance and reviewed residual classification, including the competing-classification checks. Reject unexamined other service families and the explicit CPC exclusions. | un-cpc-67490 |\n| `validate_task` | Require unique escort_service output, 1 item and positive N with role/team, route, vehicle/load conditions and completion handoff. Do not equate single lead-car duty and whole escort team. |  |\n| `validate_inventory` | Require individual energy, materials, equipment, wastes and emissions, with complete assigned cycle and no carrier/infrastructure/supplier double count. Office electricity alone cannot represent a physical escort task. |  |\n| `validate_limits` | Report unresolved identities, wear/exhaust gaps, classification limitation and lifetime uncertainty. A candidate check pass neither approves all residual activities nor establishes permits or legal compliance. |  |\n| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 235
+              line: 8
+              column: 1
+            end:
+              offset: 312
+              line: 8
+              column: 78
+          text: "# Other supporting services for road transport: noncarrier pilot/escort tasks"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28309
+              line: 472
+              column: 1
+            end:
+              offset: 28331
+              line: 472
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_cycle"
+      identity_kind: "explicit"
+      unit_id: "normative_5743"
+      source_span:
+        start:
+          offset: 6718
+          line: 74
+          column: 1
+        end:
+          offset: 7043
+          line: 74
+          column: 326
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_carrier"
+      identity_kind: "explicit"
+      unit_id: "normative_5743"
+      source_span:
+        start:
+          offset: 7044
+          line: 75
+          column: 1
+        end:
+          offset: 7284
+          line: 75
+          column: 241
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_5743"
+      source_span:
+        start:
+          offset: 7285
+          line: 76
+          column: 1
+        end:
+          offset: 7534
+          line: 76
+          column: 250
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_5743"
+      source_span:
+        start:
+          offset: 7535
+          line: 77
+          column: 1
+        end:
+          offset: 7801
+          line: 77
+          column: 267
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_task"
+      identity_kind: "explicit"
+      unit_id: "normative_21309"
+      source_span:
+        start:
+          offset: 21403
+          line: 435
+          column: 1
+        end:
+          offset: 21618
+          line: 435
+          column: 216
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_team"
+      identity_kind: "explicit"
+      unit_id: "normative_21309"
+      source_span:
+        start:
+          offset: 21619
+          line: 436
+          column: 1
+        end:
+          offset: 21857
+          line: 436
+          column: 239
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_21309"
+      source_span:
+        start:
+          offset: 21858
+          line: 437
+          column: 1
+        end:
+          offset: 22072
+          line: 437
+          column: 215
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_return"
+      identity_kind: "explicit"
+      unit_id: "normative_21309"
+      source_span:
+        start:
+          offset: 22073
+          line: 438
+          column: 1
+        end:
+          offset: 22266
+          line: 438
+          column: 194
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_28309"
+      source_span:
+        start:
+          offset: 28385
+          line: 476
+          column: 1
+        end:
+          offset: 28644
+          line: 476
+          column: 260
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_task"
+      identity_kind: "explicit"
+      unit_id: "normative_28309"
+      source_span:
+        start:
+          offset: 28645
+          line: 477
+          column: 1
+        end:
+          offset: 28858
+          line: 477
+          column: 214
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_28309"
+      source_span:
+        start:
+          offset: 28859
+          line: 478
+          column: 1
+        end:
+          offset: 29107
+          line: 478
+          column: 249
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_limits"
+      identity_kind: "explicit"
+      unit_id: "normative_28309"
+      source_span:
+        start:
+          offset: 29108
+          line: 479
+          column: 1
+        end:
+          offset: 29344
+          line: 479
+          column: 237
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_unit_export"
+      identity_kind: "explicit"
+      unit_id: "normative_28309"
+      source_span:
+        start:
+          offset: 29345
+          line: 480
+          column: 1
+        end:
+          offset: 29815
+          line: 480
+          column: 471
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5743"
+      source_span:
+        start:
+          offset: 5743
+          line: 59
+          column: 1
+        end:
+          offset: 5764
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5743"
+      source_span:
+        start:
+          offset: 5792
+          line: 63
+          column: 1
+        end:
+          offset: 6664
+          line: 70
+          column: 149
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21309"
+      source_span:
+        start:
+          offset: 21309
+          line: 431
+          column: 1
+        end:
+          offset: 21349
+          line: 431
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28309"
+      source_span:
+        start:
+          offset: 28309
+          line: 472
+          column: 1
+        end:
+          offset: 28331
+          line: 472
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:39f8462e203d2b2cf070e788c87c710281423cd0f481dbe07150e3be16988419"
+  generated_content_sha256: "sha256:b827e5f76dab555da18d780e67f7e9f19cf76f8a81215ad21495bf5ef06ba7a2"

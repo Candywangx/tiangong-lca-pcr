@@ -1,10 +1,1022 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67430"
-  title: "Parking lot services"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.parking-lot-services"
+  classification_refs: "CPC 3.0 67430; exact"
+  covered_products: "Qualified parking-space provision and explicitly scoped parking-fee collection across stated vehicle/facility modes"
+  excluded_products: "Lock-up garage rental, valet, vehicle transport/charging supply, washing/repair and unrelated property uses"
+  representative_product: "One car occupying one specified underground-garage space for one actual hour with actual lighting and ventilation"
+  production_route: "Observe actual arrival/occupancy → provide declared parking/fee function with actual support → observe departure and reconcile occupied time"
+  market_state: "Completed measured occupied-space service, not a fee receipt, capacity reservation or assumed average visit"
+functional_unit:
+  what: "Provide the declared parking-space or fee-collection function for one specified occupied vehicle space"
+  how_much: "One defined vehicle-space occupied for one actual hour; one counted one-hour service block"
+  how_well: "Actual declared vehicle fit, access, protection/security and ventilation conditions fulfilled; no universal shelter or safety grade"
+  how_long_or_cycle: "Exactly one actual occupied hour, derived from measured elapsed occupancy; fractional hours retained without fee rounding"
+  reference_flow_link: "parking_block"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual access control, occupied-space operation, lighting, underground/enclosed ventilation, mechanical lifts, drainage, cleaning, operator support and attributable standby. Open-air or unpowered modes retain their actual non-energy activities without assumed fan/lift use."
+      source_ids: []
+    - rule_id: boundary_metering
+      applies_to: "foreground_system_boundary"
+      rule: "Use actual end-use and facility utility metering with documented allocation and reconcile building versus parking use. General DOE metering guidance supports end-use measurement, not a parking energy factor, ventilation rate or operating requirement."
+      source_ids:
+        - doe-metering
+    - rule_id: boundary_customer
+      applies_to: "foreground_system_boundary"
+      rule: "Keep customer propulsion, idling and charging-supply inventories separate from facility overhead; garage air-quality concentrations are not facility emission mass. Ventilation transfers customer exhaust rather than generating another emission. For an explicitly combined system add customer operations once and disclose that expanded boundary."
+      source_ids: []
+    - rule_id: boundary_role
+      applies_to: "foreground_system_boundary"
+      rule: "A fee-only operator includes its actual meters/payment/administration and allocated support; parking-space construction and operation supplied by another party remain an explicit upstream component for complete-system claims. Do not allocate the whole road/building to one curb fee or erase actual parking infrastructure because ownership is external."
+      source_ids: []
+    - rule_id: boundary_exchange_completeness
+      applies_to: "foreground_system_boundary"
+      rule: "Add every actual cleaning chemical, refrigerant, maintenance material, waste stream and pollutant species absent from the initial cards as its own specific conditional exchange, with the applicable property/unit and linked collection protocol. Confirm actual applicability from records; missing identity or quantity is an explicit gap, not zero. Generic mixed-waste or energy labels are not selected flows."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified occupied parking space and existing customer vehicle; relevant facility/assets and utilities retain upstream burdens"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Parking-space provision or explicitly limited fee collection, declared separately"
+  recursive_input_rule: "Subcontracted parking/fee service enters once with compatible vehicle-space-time and scope; remove overlapping owned support and assets"
+  upstream_dataset_requirement: "Actual electricity/heat/fuel, cleaning materials, pavement/garage/equipment construction, renewal and treatment inventories"
+  disclosure: "Space/time observations, provider role, ventilation/lighting/lift modes, charging and traffic boundaries, shared areas, lifecycle allocation and evidence gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "One-hour specified parking-service block"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "vehicle class and dimensions"
+    - "one-vehicle/one-space extent"
+    - "actual occupied hours and original arrival/departure/occupancy observations"
+    - "role space_provision or fee_collection_only"
+    - "facility/zone/space ID"
+    - "surface/garage/curb and sheltered/unsheltered configuration"
+    - "stall and shared circulation area"
+    - "natural/mechanical ventilation and actual control duty"
+    - "lighting and mechanical-lift functions"
+    - "actual access/security/acceptance specification"
+    - "duration distribution when representing a population"
+    - "energy supply"
+    - "EV charging boundary"
+    - "operator/provider split"
+    - "asset and maintenance scope"
+    - "location and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: occupied_block
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count one-hour physical parking blocks using cp_activity actual occupancy. Each block has the same declared vehicle/space/conditions; keep partial hours and distinguish fees/entry counts."
+  - id: customer_energy
+    applies_to: "meter_energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Meter facility overhead and vehicle-delivered charging separately. Retain actual conversion/loss boundaries without assigning customer driving/charging to facility fuel combustion."
+process_map:
+  - id: parking
+    name: "Provide the qualified occupied-space parking block"
+    inclusion: "required"
+    inclusion_condition: "Actual declared facility, vehicle and provider-role scenario"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: parking
+    label: "Provide the qualified occupied-space parking block"
+    inputs:
+      product:
+        - row_id: lighting
+          role: "Parking lighting electricity"
+          name: "Electricity, alternating current, parking-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual zone lighting and its controls, including attributable standby; retain supply region/voltage and occupancy/daylight schedule."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: ventilation
+          role: "Garage ventilation electricity"
+          name: "Electricity, alternating current, parking-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual mechanical ventilation; meter fan/control electricity and actual duty in the occupied zone. Open-air/bicycle-only modes do not inherit a default garage fan load; never reduce required ventilation just to reduce inventory."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: lift_energy
+          role: "Mechanical parking lift electricity"
+          name: "Electricity, alternating current, parking-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual automated platform or vehicle lift use; meter operating/standby load and actual lifting events. This is parking equipment, not valet driving."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: drain_energy
+          role: "Parking drainage pump electricity"
+          name: "Electricity, alternating current, parking-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual site drainage pumping; meter actual operation and assign parking share separately from other building uses."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: meter_energy
+          role: "Parking access and fee-system electricity"
+          name: "Electricity, alternating current, parking-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual access barrier, parking meter, payment/security and operator IT demand. Exclude electricity sold or delivered to customer vehicles and avoid overlap with other equipment rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: heat
+          role: "Purchased facility heat"
+          name: "Purchased facility heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on actual heated parking facilities or operator service space; meter delivered heat and attribute occupied/function scope. Heating other building uses remains separate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: diesel
+          role: "Facility generator diesel fuel"
+          name: "Diesel fuel, unblended"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual operator generator/maintenance equipment consuming this grade. Customer vehicle fuel and driving are outside facility combustion."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Parking cleaning water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual pavement/equipment cleaning or sanitary support; measure supply and distinguish rainwater runoff and unrelated car-washing services."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: cleaner
+          role: "Sodium carbonate cleaner"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual cleaning chemical; other chemicals or a formulated cleaner require their own specific identity and measured composition/grade."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Parking-lift hydraulic oil"
+          name: "Mineral hydraulic oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual mineral-oil hydraulic equipment maintenance; reconcile issued, returned, stock, collected oil and actual leaks."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: asphalt
+          role: "Parking pavement asphalt renewal"
+          name: "Hot-mix asphalt pavement material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual asphalt surface renewal; collect grade, material mass, work area and actual application machinery separately if required. Do not duplicate renewal already included upstream."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_maintenance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_maintenance
+              source_ids: []
+            ranges: []
+        - row_id: building_share
+          role: "Parking-garage construction share"
+          name: "Configured parking-garage structure"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Conditional on actual structured/underground parking; identify floor area, structural configuration and construction inventory. Share access/circulation areas transparently; do not also count the same structural slab as separate paving."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: pavement_share
+          role: "Parking pavement construction share"
+          name: "Configured asphalt parking pavement"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Conditional on actual asphalt lot or allocated curb-parking surface; identify exact parking area and road/parking boundary. Exclude unrelated carriageway construction and separately recorded renewal."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: lift_share
+          role: "Mechanical parking-lift manufacture share"
+          name: "Configured mechanical parking lift"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual parking-lift use; identify model, manufacturing scope, recorded cycles and supported lifetime/cycle denominator; no default lift lifespan."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: meter_share
+          role: "Parking-meter manufacture share"
+          name: "Configured parking fee meter"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual meter use, including on-street fee collection; attribute supported manufacturing share and avoid a second charge within a supplier fee-system inventory."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: parking_block
+          role: "One-hour specified parking-service block"
+          name: "One-hour specified parking-service block"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "One block means one vehicle of the declared class occupying one defined space for one actual hour, with declared space-provision or fee-collection-only role and actual facility functions."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_activity
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: used_oil
+          role: "Used parking-lift hydraulic oil"
+          name: "Used mineral hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual segregated removed hydraulic oil; weigh and identify treatment. Collected waste oil is distinct from a physical leak to soil/water."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: washwater
+          role: "Contaminated parking-floor washwater"
+          name: "Contaminated parking-floor washwater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual collected floor washwater; measure volume and oil/chemical contamination and identify sewer/treatment destination. Uncaptured runoff needs its own actual receiving-compartment/species analysis."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_asphalt
+          role: "Removed parking asphalt"
+          name: "Removed asphalt pavement material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual pavement removal; weigh this stream and distinguish reuse/treatment and disposal. No automatic recycling or displacement credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Facility fossil carbon dioxide release"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual facility fuel combustion, measured or derived using verified fuel carbon/oxidation. Customer exhaust ventilated through a garage is not newly generated facility combustion and must not be counted twice."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_time
+    applies_to: "foreground_burden_allocation"
+    rule: "Subdivide vehicle class, actual space geometry, facility zone and service role. Allocate holding/lighting/space burdens using actual measured occupied space-time and relevant capacity, retaining justified unoccupied support. Allocate access/lift/payment event costs from actual events to their measured stay before hourly normalization. No equal-entry, fee or universal car/bicycle ratio."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Use persistent pavement/garage/lift/meter ledgers with supported whole-life service denominators and actual parking shares. Keep structural floors and external asphalt areas non-overlapping; separate initial construction and actual renewals. Observed-period allocation distributes only that period manufacturing/construction share; cumulative shares across all uses/periods may not exceed one or reset annually. Unknown life/denominator requires review and sensitivity."
+    source_ids: []
+  - rule_id: allocate_scope
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate vehicle charging, customer transport, building tenants and any valet service from parking overhead. A supplier support inventory replaces its covered burdens once. Fees and stored customer vehicles are not co-products; actual removed asphalt/oil receives no automatic avoided-production credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_activity
+      process_id: "parking"
+      flow_role: "parking_block"
+      record_type: "Actual occupancy and service-role ledger"
+      raw_fields: "vehicle class/dimensions; actual stall area; arrival/departure/occupancy timestamps; actual elapsed occupied hours; zone; provider role; facility functions; lift/access/payment events; fee rounding; stay distribution"
+      collection_method: "Match actual occupancy observations, not just paid tickets or entry counts; compute elapsed occupied hours including partial hours and reconcile clock/occupancy gaps. One counted block is one actual occupied hour for one declared vehicle/space. Retain event burdens and actual duration distribution."
+      unit: "Item(s)"
+      frequency: "each stay/occupancy change"
+      temporal_coverage: "complete stays and assigned standby/support"
+      site_scope: "identified lot/garage/curb zones"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "occupancy/entry-exit observations; clock calibration; space map; paid-versus-actual reconciliation"
+    - protocol_id: cp_energy
+      process_id: "parking"
+      flow_role: "lighting; ventilation; lift_energy; drain_energy; meter_energy; heat"
+      record_type: "End-use energy meter and duty log"
+      raw_fields: "separate kWh/MJ; supply region/voltage; lighting schedule; fan duty/zone; lift events; drainage; fee IT; standby; charging delivery and conversion losses; other building use"
+      collection_method: "Submeter actual end uses or reconcile shared meters with measured equipment duty and zone occupancy. Separate EV energy delivered, parking overhead and other tenants; retain safety/ventilation operating conditions and uncertainty, without default energy or ventilation factors."
+      unit: "kWh; MJ"
+      frequency: "each meter/duty interval and event"
+      temporal_coverage: "all represented operation and standby"
+      site_scope: "actual facility zones and suppliers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meters; measured loads; control logs; customer-energy/tenant reconciliation"
+    - protocol_id: cp_fuel
+      process_id: "parking"
+      flow_role: "diesel"
+      record_type: "Operator fuel balance"
+      raw_fields: "fuel grade; kg; receipts/stocks; generator/maintenance operation; density and temperature if converted; actual consumption"
+      collection_method: "Reconcile actual facility consumption from calibrated mass measurements or traceable batch density. Customer fuel/driving is separate."
+      unit: "kg"
+      frequency: "each actual use and stock interval"
+      temporal_coverage: "all actual operator fuel use"
+      site_scope: "actual generator/maintenance equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "fuel meters/invoices; stock balance; actual duty"
+    - protocol_id: cp_material
+      process_id: "parking"
+      flow_role: "water; cleaner; hydraulic_oil"
+      record_type: "Individual supply/maintenance ledger"
+      raw_fields: "actual chemical/material; supplied kg or water m3; composition/grade; issues/returns; stock; cleaning/maintenance event"
+      collection_method: "Meter/weigh each specific exchange and reconcile stocks/returns. Distinguish actual cleaning water from runoff and car washing; capture oil recovery and actual losses."
+      unit: "kg; m3"
+      frequency: "each issue/cleaning/service event"
+      temporal_coverage: "all attributable maintenance and support"
+      site_scope: "declared parking facilities"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "supply records; calibrated meters/scales; maintenance balance"
+    - protocol_id: cp_maintenance
+      process_id: "parking"
+      flow_role: "asphalt"
+      record_type: "Actual pavement renewal ledger"
+      raw_fields: "section/area; material grade; mass; renewal event; machine activity; initial construction/upstream renewal scope; service allocation"
+      collection_method: "Measure actual renewed material and match the affected parking section; add actual application-machine energy separately and remove already included upstream renewal."
+      unit: "kg"
+      frequency: "each actual renewal"
+      temporal_coverage: "actual work assigned to represented service"
+      site_scope: "identified parking section"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "work orders; material weighing; area plans; upstream scope"
+    - protocol_id: cp_assets
+      process_id: "parking"
+      flow_role: "building_share; pavement_share; lift_share; meter_share"
+      record_type: "Persistent asset and utilization ledger"
+      raw_fields: "asset ID/configuration; m2 or Item(s); actual parking share; construction/manufacturing boundary; initial/renewal split; actual use; supported lifetime service denominator; cumulative prior fractions; period share; uncertainty"
+      collection_method: "Assign actual asset inventories using supported whole-life utilization and transparent time/space/event drivers. Conserve cumulative shares across all users/periods, avoid structural/pavement overlap, and review unsupported lifetime estimates."
+      unit: "m2; Item(s)"
+      frequency: "each allocation/asset update"
+      temporal_coverage: "supported whole life and declared observation period"
+      site_scope: "actual parking-related assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "construction/asset records; actual utilization; life evidence; share reconciliation"
+    - protocol_id: cp_waste
+      process_id: "parking"
+      flow_role: "used_oil; washwater; waste_asphalt"
+      record_type: "Specific waste/treatment ledger"
+      raw_fields: "individual stream; measured kg/m3; composition; source event; recipient; treatment; recovered quantity"
+      collection_method: "Weigh removed asphalt/oil separately and meter actual washwater; identify composition and treatment. Uncaptured runoff or a leak requires separate substance/compartment evidence rather than a waste-transfer assumption."
+      unit: "kg; m3"
+      frequency: "each actual transfer/discharge"
+      temporal_coverage: "all attributable wastes"
+      site_scope: "facility and treatment gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "waste tickets; composition; water balance; treatment inventories"
+    - protocol_id: cp_release
+      process_id: "parking"
+      flow_role: "fossil_co2"
+      record_type: "Facility-specific emission ledger"
+      raw_fields: "fuel actually consumed onsite; carbon/oxidation evidence; measured CO2 kg; air compartment; actual duty; customer exhaust boundary"
+      collection_method: "Measure actual facility release or use reviewed fuel-specific calculation evidence. Screen other actual species individually. Customer exhaust concentration monitoring is not emission mass and remains separate from facility combustion."
+      unit: "kg"
+      frequency: "each emitting operation or representative measurement"
+      temporal_coverage: "all actual facility emissions represented"
+      site_scope: "operator equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "measurement; documented method; fuel/duty reconciliation; uncertainty"
+  calculation_rules:
+    - id: occupied_time
+      applies_to: "parking_block"
+      rule: "Sum actual elapsed occupied hours within each declared vehicle/space/facility scenario. One counted block has one actual occupied hour; retain fractional blocks and do not round to billed hours."
+      inputs:
+        - cp_activity
+      output: "actual one-hour block quantity"
+      source_ids: []
+    - id: parking_attribution
+      applies_to: "all inventory rows"
+      rule: "Assign event-driven actual costs to the observed stay first and holding/support totals by measured space-time/causal use, then divide by actual occupied one-hour blocks in that qualified scenario. Reference output is exactly 1 Item(s)."
+      inputs:
+        - cp_activity
+        - "attributable measured totals"
+      output: "exchange amount per reference flow"
+      source_ids: []
+    - id: asset_attribution
+      applies_to: "building_share; pavement_share; lift_share; meter_share"
+      rule: "Multiply actual upstream construction/manufacture by the supported reference-block share of whole-life service, preserving period and cumulative conservation and avoiding separately recorded renewal overlap."
+      inputs:
+        - cp_assets
+        - cp_maintenance
+      output: "asset amount per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_duration
+      applies_to: "parking_block"
+      requirement: "Verify real occupancy and one-hour block extent, clock alignment, vehicle class, space dimensions and actual duration distribution. Paid duration or entrance count alone is insufficient."
+      evidence: "cp_activity"
+    - id: quality_operations
+      applies_to: "all inventory rows"
+      requirement: "Record actual sheltered/underground/curb configuration, lighting, ventilation and lift duty. Preserve actual safety/operating conditions; no universal fan or energy coefficient."
+      evidence: "cp_energy; doe-metering"
+    - id: quality_lifecycle
+      applies_to: "building_share; pavement_share; lift_share; meter_share"
+      requirement: "Substantiate supported life/service denominators and conserved parking-only shares, with initial/renewal and road/building boundaries. Unknown life/upstream data prevents a complete lifecycle claim."
+      evidence: "cp_assets; cp_maintenance"
+    - id: quality_gaps
+      applies_to: "all inventory rows"
+      requirement: "Disclose customer-energy and exhaust exclusions, provider roles, omitted species/materials, identity/measurement gaps and uncertainty; missing is not zero."
+      evidence: "actual records and scope review"
+validation_rules:
+  - rule_id: validate_block
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique parking_block output equal to 1 Item(s) with explicit one-vehicle/one-space/one-actual-hour meaning and complete qualifiers. Reject entrance count, fee rounding, reservation time and unlike vehicle/facility pooling as occupied-time evidence."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Exclude lock-up garage rental and valet. Separate fee-only and full space provision; confirm actual upstream parking infrastructure when a full-system claim is made."
+    source_ids:
+      - un-cpc-parking
+  - rule_id: validate_customer
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile vehicle charging sold as energy and customer transport/exhaust independently. Facility ventilation electricity is included but customer exhaust is not generated twice or treated as operator fuel use."
+    source_ids: []
+  - rule_id: validate_inventory
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require atomic exchanges, actual conditional applicability, conserved asset shares, non-overlapping structural/pavement/renewal scopes and documented waste treatment. Identity and evidence gaps remain explicit; no publication readiness follows from the draft."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "parking_space_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified parking-space/time stage or explicitly limited fee component, with compatible vehicle, duration, facility and provider role"
+  excluded_use: "Complete vehicle journey/charging footprint, garage-rental/valet footprint, count-only cross-vehicle comparison or fee-based environmental claims"
+  required_metadata: "vehicle class and dimensions; one-vehicle/one-space extent; actual occupied hours and original arrival/departure/occupancy observations; role space_provision or fee_collection_only; facility/zone/space ID; surface/garage/curb and sheltered/unsheltered configuration; stall and shared circulation area; natural/mechanical ventilation and actual control duty; lighting and mechanical-lift functions; actual access/security/acceptance specification; duration distribution when representing a population; energy supply; EV charging boundary; operator/provider split; asset and maintenance scope; location and period"
+  required_quality_disclosure: "Actual occupancy/duration and meter gaps; ventilation/lift representativeness; customer-energy/exhaust exclusions; provider/asset boundaries; life and missing upstream uncertainty"
+  update_trigger: "Changed vehicle/space type, duration population, shelter/ventilation/lift configuration, energy supply, charging boundary, provider role, asset life or allocation"
+data_sources:
+  - id: "un-cpc-parking"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 subclass 67430 explanatory note; draft PDF p374 consistent. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67430"
+    used_for: "Vehicle/motorcycle/bicycle parking and street fee scope; garage-rental/valet exclusions; no factor or default stay duration"
+  - id: "doe-metering"
+    type: "official_guidance"
+    reference: "US DOE FEMP, Metering in Federal Buildings, current web page read 2026-10-23. https://www.energy.gov/cmei/femp/metering-federal-buildings"
+    used_for: "Building/distribution/end-use energy and water measurement practices; US federal guidance is used for metering rationale only, not a universal parking operating rule or quantitative factor"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:09dd8cfeefcacd3a75cc22489a49fbc13c3799ef48c2808006dcd4f3c9e03c3f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5034"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5034
+          line: 56
+          column: 1
+        end:
+          offset: 7787
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified occupied parking space and existing customer vehicle; relevant facility/assets and utilities retain upstream burdens |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Parking-space provision or explicitly limited fee collection, declared separately |\n| recursive_input_rule | Subcontracted parking/fee service enters once with compatible vehicle-space-time and scope; remove overlapping owned support and assets |\n| upstream_dataset_requirement | Actual electricity/heat/fuel, cleaning materials, pavement/garage/equipment construction, renewal and treatment inventories |\n| disclosure | Space/time observations, provider role, ventilation/lighting/lift modes, charging and traffic boundaries, shared areas, lifecycle allocation and evidence gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_operations | Include actual access control, occupied-space operation, lighting, underground/enclosed ventilation, mechanical lifts, drainage, cleaning, operator support and attributable standby. Open-air or unpowered modes retain their actual non-energy activities without assumed fan/lift use. |  |\n| boundary_metering | Use actual end-use and facility utility metering with documented allocation and reconcile building versus parking use. General DOE metering guidance supports end-use measurement, not a parking energy factor, ventilation rate or operating requirement. | doe-metering |\n| boundary_customer | Keep customer propulsion, idling and charging-supply inventories separate from facility overhead; garage air-quality concentrations are not facility emission mass. Ventilation transfers customer exhaust rather than generating another emission. For an explicitly combined system add customer operations once and disclose that expanded boundary. |  |\n| boundary_role | A fee-only operator includes its actual meters/payment/administration and allocated support; parking-space construction and operation supplied by another party remain an explicit upstream component for complete-system claims. Do not allocate the whole road/building to one curb fee or erase actual parking infrastructure because ownership is external. |  |\n| boundary_exchange_completeness | Add every actual cleaning chemical, refrigerant, maintenance material, waste stream and pollutant species absent from the initial cards as its own specific conditional exchange, with the applicable property/unit and linked collection protocol. Confirm actual applicability from records; missing identity or quantity is an explicit gap, not zero. Generic mixed-waste or energy labels are not selected flows. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 211
+              line: 8
+              column: 1
+            end:
+              offset: 233
+              line: 8
+              column: 23
+          text: "# Parking lot services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5034
+              line: 56
+              column: 1
+            end:
+              offset: 5055
+              line: 56
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21464"
+      family: "allocation"
+      span:
+        start:
+          offset: 21464
+          line: 401
+          column: 1
+        end:
+          offset: 22794
+          line: 409
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_time | Subdivide vehicle class, actual space geometry, facility zone and service role. Allocate holding/lighting/space burdens using actual measured occupied space-time and relevant capacity, retaining justified unoccupied support. Allocate access/lift/payment event costs from actual events to their measured stay before hourly normalization. No equal-entry, fee or universal car/bicycle ratio. |  |\n| allocate_assets | Use persistent pavement/garage/lift/meter ledgers with supported whole-life service denominators and actual parking shares. Keep structural floors and external asphalt areas non-overlapping; separate initial construction and actual renewals. Observed-period allocation distributes only that period manufacturing/construction share; cumulative shares across all uses/periods may not exceed one or reset annually. Unknown life/denominator requires review and sensitivity. |  |\n| allocate_scope | Separate vehicle charging, customer transport, building tenants and any valet service from parking overhead. A supplier support inventory replaces its covered burdens once. Fees and stored customer vehicles are not co-products; actual removed asphalt/oil receives no automatic avoided-production credit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 211
+              line: 8
+              column: 1
+            end:
+              offset: 233
+              line: 8
+              column: 23
+          text: "# Parking lot services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21464
+              line: 401
+              column: 1
+            end:
+              offset: 21504
+              line: 401
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_30849"
+      family: "validation"
+      span:
+        start:
+          offset: 30849
+          line: 441
+          column: 1
+        end:
+          offset: 31936
+          line: 450
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_block | Require unique parking_block output equal to 1 Item(s) with explicit one-vehicle/one-space/one-actual-hour meaning and complete qualifiers. Reject entrance count, fee rounding, reservation time and unlike vehicle/facility pooling as occupied-time evidence. |  |\n| validate_scope | Exclude lock-up garage rental and valet. Separate fee-only and full space provision; confirm actual upstream parking infrastructure when a full-system claim is made. | un-cpc-parking |\n| validate_customer | Reconcile vehicle charging sold as energy and customer transport/exhaust independently. Facility ventilation electricity is included but customer exhaust is not generated twice or treated as operator fuel use. |  |\n| validate_inventory | Require atomic exchanges, actual conditional applicability, conserved asset shares, non-overlapping structural/pavement/renewal scopes and documented waste treatment. Identity and evidence gaps remain explicit; no publication readiness follows from the draft. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 211
+              line: 8
+              column: 1
+            end:
+              offset: 233
+              line: 8
+              column: 23
+          text: "# Parking lot services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 30849
+              line: 441
+              column: 1
+            end:
+              offset: 30871
+              line: 441
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_5034"
+      source_span:
+        start:
+          offset: 5992
+          line: 71
+          column: 1
+        end:
+          offset: 6302
+          line: 71
+          column: 311
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_metering"
+      identity_kind: "explicit"
+      unit_id: "normative_5034"
+      source_span:
+        start:
+          offset: 6303
+          line: 72
+          column: 1
+        end:
+          offset: 6592
+          line: 72
+          column: 290
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_customer"
+      identity_kind: "explicit"
+      unit_id: "normative_5034"
+      source_span:
+        start:
+          offset: 6593
+          line: 73
+          column: 1
+        end:
+          offset: 6963
+          line: 73
+          column: 371
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_role"
+      identity_kind: "explicit"
+      unit_id: "normative_5034"
+      source_span:
+        start:
+          offset: 6964
+          line: 74
+          column: 1
+        end:
+          offset: 7338
+          line: 74
+          column: 375
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_exchange_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_5034"
+      source_span:
+        start:
+          offset: 7339
+          line: 75
+          column: 1
+        end:
+          offset: 7785
+          line: 75
+          column: 447
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_time"
+      identity_kind: "explicit"
+      unit_id: "normative_21464"
+      source_span:
+        start:
+          offset: 21558
+          line: 405
+          column: 1
+        end:
+          offset: 21969
+          line: 405
+          column: 412
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_21464"
+      source_span:
+        start:
+          offset: 21970
+          line: 406
+          column: 1
+        end:
+          offset: 22464
+          line: 406
+          column: 495
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_21464"
+      source_span:
+        start:
+          offset: 22465
+          line: 407
+          column: 1
+        end:
+          offset: 22792
+          line: 407
+          column: 328
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_block"
+      identity_kind: "explicit"
+      unit_id: "normative_30849"
+      source_span:
+        start:
+          offset: 30925
+          line: 445
+          column: 1
+        end:
+          offset: 31205
+          line: 445
+          column: 281
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_30849"
+      source_span:
+        start:
+          offset: 31206
+          line: 446
+          column: 1
+        end:
+          offset: 31409
+          line: 446
+          column: 204
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_customer"
+      identity_kind: "explicit"
+      unit_id: "normative_30849"
+      source_span:
+        start:
+          offset: 31410
+          line: 447
+          column: 1
+        end:
+          offset: 31646
+          line: 447
+          column: 237
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_30849"
+      source_span:
+        start:
+          offset: 31647
+          line: 448
+          column: 1
+        end:
+          offset: 31934
+          line: 448
+          column: 288
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5034"
+      source_span:
+        start:
+          offset: 5034
+          line: 56
+          column: 1
+        end:
+          offset: 5055
+          line: 56
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5034"
+      source_span:
+        start:
+          offset: 5083
+          line: 60
+          column: 1
+        end:
+          offset: 5938
+          line: 67
+          column: 176
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21464"
+      source_span:
+        start:
+          offset: 21464
+          line: 401
+          column: 1
+        end:
+          offset: 21504
+          line: 401
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_30849"
+      source_span:
+        start:
+          offset: 30849
+          line: 441
+          column: 1
+        end:
+          offset: 30871
+          line: 441
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:09dd8cfeefcacd3a75cc22489a49fbc13c3799ef48c2808006dcd4f3c9e03c3f"
+  generated_content_sha256: "sha256:640354579d46f37b29cf9818b9fd305bfbe3e1b56678e3926a1d81c39dd4e5f1"

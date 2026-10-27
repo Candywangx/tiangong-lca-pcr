@@ -1,10 +1,1248 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67620"
-  title: "Air traffic control services"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.air-traffic-control-services"
+  classification_refs: "CPC3.0 67620"
+  covered_products: "Declared airport tower approach/landing/takeoff control and airport-located radar service configurations"
+  excluded_products: "Radio navigation aids; whole en-route network by default; airport/airline operation; aircraft production/operation"
+  representative_product: "One completed sixty-minute block of a declared terminal-control service configuration and coverage"
+  production_route: "Establish declared service availability → operate actual control/surveillance and support systems → record delivered block and traffic/interruptions"
+  market_state: "Delivered bounded facility service with actual coverage and operating evidence; no inferred safety certification"
+functional_unit:
+  what: "Provide the exact declared tower/airport-radar control-service scope and availability"
+  how_much: "One sixty-minute service block for the identified configuration/coverage, with actual traffic distribution recorded"
+  how_well: "Declared operating coverage, staffed/available functions, equipment/degraded state and actual acceptance/recording criteria; no invented safety approval"
+  how_long_or_cycle: "Sixty actual delivered minutes under one declared service condition; interruptions and configuration changes split records"
+  reference_flow_link: "control_block"
+system_boundary:
+  rules:
+    - rule_id: boundary_function
+      applies_to: "foreground_system_boundary"
+      rule: "Record actual tower/radar/approach roles and handoffs; different facilities need their real equipment and coverage rather than a universal radar assumption."
+      source_ids:
+        - faa-facility-classification
+    - rule_id: boundary_support
+      applies_to: "foreground_system_boundary"
+      rule: "Include attributable power conditioning/UPS, backup tests/running, batteries, cooling, building support, maintenance and retirement. Record actual installed systems, not historical fleet defaults."
+      source_ids:
+        - faa-power-context
+    - rule_id: boundary_aircraft
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude customer aircraft fuel/exhaust/manufacture and whole-flight control/route effects. A downstream aviation-system model must identify any claimed control-induced aircraft change separately and avoid duplicates."
+      source_ids: []
+    - rule_id: boundary_actual
+      applies_to: "foreground_system_boundary"
+      rule: "Screen each actual refrigerant/insulating gas, heating fuel, battery chemistry, electronic replacement, support vehicle and waste. Add individual specific exchanges where present; no default gas leak, generator use or emission-free facility claim."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Configured tower/airport-radar facility providing the declared service; prior building/equipment production shares disclosed"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Airport tower control/approach/landing/takeoff and airport-located radar; no automatic radio-aid/en-route network coverage"
+  recursive_input_rule: "Purchased control/surveillance/IT/support contribution enters once with functional/temporal allocation; do not duplicate included equipment or energy"
+  upstream_dataset_requirement: "Actual electricity/diesel/water/gas supply; building/radar/radio/IT/UPS/generator/cooling manufacture/replacement; waste/gas recovery treatment"
+  disclosure: "Actual functions/traffic/duration/coverage; availability and degraded periods; shared supplier/airport boundaries; asset lives; backup/cooling and upstream gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Delivered sixty-minute qualified airport-control service block"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "item"
+  required_qualifiers:
+    - "facility/airport"
+    - "tower/radar/combined subtype"
+    - "actual approach/landing/takeoff function scope"
+    - "spatial/airspace/runway coverage and handoff"
+    - "declared service block"
+    - "actual start/end and delivered minutes"
+    - "actual arrivals/departures/transits and traffic mix"
+    - "staffed positions/operating mode"
+    - "radar/radio/IT inventory"
+    - redundancy
+    - "outage/degraded conditions"
+    - "reporting period"
+    - "meter/supplier allocation"
+    - "cooling gas identities"
+    - "backup tests"
+    - "asset boundaries"
+reference_flows:
+  []
+measurement_rules:
+  - id: block_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "item"
+    rule: "Count defined sixty-minute service blocks using cp_service, retaining actual delivered minutes and function/traffic conditions. Aircraft movements are separately measured descriptors, not interchangeable block counts."
+  - id: electricity_energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use actual imported electricity, support circuit shares and UPS/cooling losses; generation/charging/internal circulation is reconciled, not purchased twice."
+  - id: fuel_mass
+    applies_to: "diesel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure actual backup test/run fuel using cp_energy; standby nameplate power or aircraft counts do not establish consumption."
+  - id: gas_mass
+    applies_to: "r134a_input; sf6_input; r134a_air; sf6_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Balance each actual species with cylinder stock, equipment charge, acquisition and recovery/transfer changes; additions alone are not losses."
+process_map:
+  - id: control
+    name: "Operate and support declared airport-control block"
+    inclusion: "required"
+    inclusion_condition: "Actual declared functions, delivered duration and coverage"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: surveillance
+    name: "Provide actual airport-located radar contribution"
+    inclusion: "conditional"
+    inclusion_condition: "Actual included airport radar only"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: continuity
+    name: "Provide actual power continuity and backup contribution"
+    inclusion: "conditional"
+    inclusion_condition: "Actual UPS/battery/generator installations and observed maintenance/testing"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: surveillance
+    label: "Provide actual airport-located radar contribution"
+    inputs:
+      product:
+        - row_id: radar_asset
+          role: "Airport surveillance radar installation"
+          name: "Airport surveillance radar installation"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only the actual airport-located radar installation and allocated service share; identify antenna/processing/support boundary. External en-route systems are not automatically this asset."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: continuity
+    label: "Provide actual power continuity and backup contribution"
+    inputs:
+      product:
+        - row_id: diesel
+          role: "Diesel fuel, petroleum-derived"
+          name: "Diesel fuel, petroleum-derived"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual backup-generator running, testing and attributable maintenance duty; fuel is not inferred from installed standby capacity or each flight."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: engine_oil
+          role: "Mineral engine lubricating oil"
+          name: "Mineral engine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual generator servicing net oil use with stock and purchased-service coverage reconciled."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ups
+          role: "Static uninterruptible power supply unit"
+          name: "Static uninterruptible power supply unit"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Actual UPS power-conversion hardware share; declare whether initial battery is included and measure conversion loss once."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: lead_battery
+          role: "Valve-regulated lead-acid UPS battery"
+          name: "Valve-regulated lead-acid UPS battery"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual battery design/capacity; distinguish block/module and cell counts and initial versus replacement burden. No default life."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: lfp_battery
+          role: "Lithium iron phosphate UPS battery module"
+          name: "Lithium iron phosphate UPS battery module"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual alternative chemistry; not interchangeable with lead-acid units; preserve capacity and manufacturing coverage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: generator
+          role: "Standby diesel generator set"
+          name: "Standby diesel generator set"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Actual installed generator production/retirement share, physical service life and utilization; no assumed operating hours or replacement years."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: control
+    label: "Operate and support declared airport-control block"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Electricity, alternating current"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual control/radio/IT, surveillance, UPS losses, cooling, lighting and facility support by circuit before attribution. Diesel-generated electricity is not another purchased grid input."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: r134a_input
+          role: "1,1,1,2-Tetrafluoroethane, refrigerant R134a"
+          name: "1,1,1,2-Tetrafluoroethane, refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual R134a cooling circuit; reconcile initial charge, stock/returns, replenishment and supplier-included charge. Other refrigerants require their own precise rows and blend constituent releases."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids: []
+            ranges: []
+        - row_id: sf6_input
+          role: "Sulfur hexafluoride, electrical insulating gas"
+          name: "Sulfur hexafluoride, electrical insulating gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual gas-insulated electrical equipment; no assumed SF6 use at every facility. Correct purchases for stock/returns and equipment charge."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional actual cooling make-up or sanitary/cleaning use; distinguish fresh supply from recirculating volume."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: server
+          role: "Air-traffic-control processing server"
+          name: "Air-traffic-control processing server"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Actual configured processing hardware; manufacturing/lifetime share with replacement/storage/peripheral boundary declared; no duplicate hosted supplier hardware."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: radio
+          role: "VHF air-ground radio transceiver"
+          name: "VHF air-ground radio transceiver"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Actual communications equipment used by this service; preserve channel/configuration and supported lifetime utilization."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: tower_building
+          role: "Airport air-traffic-control tower building"
+          name: "Airport air-traffic-control tower building"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Actual allocated tower/control facility construction and retirement share; distinguish shared airport space and separately allocated fitted equipment."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+        - row_id: chiller
+          role: "Air-cooled control-facility chiller"
+          name: "Air-cooled control-facility chiller"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional actual design; specify initial refrigerant coverage and replacements, avoiding duplicate charge in the gas/material inventory."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_asset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_asset
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: control_block
+          role: "Delivered qualified airport-control block"
+          name: "Delivered sixty-minute qualified airport-control service block"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / item"
+          description: "One defined sixty-minute delivered service block under cp_service. Shared waste/emission rows below retain the actual generating source and period, not only the block end."
+          amount:
+            expression: "1 item"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_server
+          role: "Discarded air-traffic-control processing server"
+          name: "Discarded air-traffic-control processing server"
+          flow_type: "waste"
+          property_unit: "Number of items / item"
+          description: "Actual retired hardware with receiver and electronics treatment boundary; confidential data-handling evidence is referenced without exposing operational data."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_lead
+          role: "Spent valve-regulated lead-acid UPS battery"
+          name: "Spent valve-regulated lead-acid UPS battery"
+          flow_type: "waste"
+          property_unit: "Number of items / item"
+          description: "Actual retired same-capacity battery block/module; measure transfer and receiving recycling/treatment, no automatic lead credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_lfp
+          role: "Spent lithium iron phosphate UPS battery module"
+          name: "Spent lithium iron phosphate UPS battery module"
+          flow_type: "waste"
+          property_unit: "Number of items / item"
+          description: "Only actual LFP retirement, separately from lead-acid; retain receiver and actual treatment."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent mineral engine lubricating oil"
+          name: "Spent mineral engine lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual generator service waste, distinct from returned unused oil and purchased maintenance coverage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Cooling-system blowdown wastewater"
+          name: "Cooling-system blowdown wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional actual captured cooling blowdown; composition and receiving treatment required. No default water-cooled plant."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: co2_air
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual facility combustion, primarily backup testing/running where present; customer aircraft CO2 is outside this module."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: co_air
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual generator species from measured or explicitly justified engine/fuel/duty evidence."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: no_air
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Species-resolved facility release; NOx-as-NO2 totals require justified speciation."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: no2_air
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Separate actual NO2 from NO and retain source/duty."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: pm25_air
+          role: "Particulate matter, aerodynamic diameter below 2.5 micrometres, to air"
+          name: "Particulate matter, aerodynamic diameter below 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual fine combustion fraction; no overlapping total/fraction duplication or aircraft exhaust import."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: r134a_air
+          role: "1,1,1,2-Tetrafluoroethane, to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only reconciled loss from actual R134a circuit after stock, equipment-charge and recovery/transfer changes; additions alone are not emissions."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids: []
+            ranges: []
+        - row_id: sf6_air
+          role: "Sulfur hexafluoride, to air"
+          name: "Sulfur hexafluoride, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual reconciled SF6 release by gas stock/equipment charge/transfer balance, not all purchased insulating gas."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_subdivision
+    applies_to: "foreground_burden_allocation"
+    rule: "Prefer circuit/function/position/sensor subdivision; shared airport or control-center assets and utilities require documented measured function/time/capacity drivers. Never assign the whole en-route network to local tower blocks."
+    source_ids: []
+  - rule_id: allocate_duration
+    applies_to: "foreground_burden_allocation"
+    rule: "Within one compatible configuration/coverage condition, allocate actual period inventory to delivered blocks B; keep redundancy, low-traffic standby, maintenance and backup tests as real service-support burdens. Traffic distribution remains explicit."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocate building/radar/IT/radio/UPS/cooling manufacture and disposal using supported physical service life and utilization; replacements and initial batteries/gas already inside upstream inventories are not counted again."
+    source_ids: []
+  - rule_id: allocate_gas
+    applies_to: "foreground_burden_allocation"
+    rule: "Separate gas recovered or transferred from atmospheric loss; no automatic avoided leakage or battery recycling credit."
+    source_ids:
+      - epa-gas-balance
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_service
+      process_id: "control"
+      flow_role: "control_block"
+      record_type: "foreground record"
+      raw_fields: "facility/functions/coverage; actual staffed/available interval; delivered minutes; arrivals/departures/transits; traffic mix; outage/degradation; acceptance"
+      collection_method: "Verify actual operating and traffic logs with function/handoff boundaries; split configuration/degraded changes and record delivered minutes, without asserting legal/safety approval."
+      unit: "item"
+      frequency: "service interval and period"
+      temporal_coverage: "same declared service/reporting period"
+      site_scope: "identified facility/function allocation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "operating/traffic logs; timestamp and coverage reconciliation"
+    - protocol_id: cp_energy
+      process_id: "control"
+      flow_role: "electricity; diesel"
+      record_type: "foreground record"
+      raw_fields: "meter/circuit; imports; UPS/cooling losses; generator fuel stock/flow; actual run/test; allocation; supply"
+      collection_method: "Use calibrated actual electricity and fuel measurements; reconcile function/period totals and no double count of internal generation."
+      unit: "kWh; kg"
+      frequency: "meter and backup event"
+      temporal_coverage: "same declared service/reporting period"
+      site_scope: "identified facility/function allocation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration; bills; fuel/test logs"
+    - protocol_id: cp_material
+      process_id: "control"
+      flow_role: "water; engine_oil"
+      record_type: "foreground record"
+      raw_fields: "specific product; issue/return; stock; consumption; generator/cooling source; share"
+      collection_method: "Reconcile actual net material/water consumption to supported maintenance/utility operations, separating recirculated water."
+      unit: "kg; m3"
+      frequency: "issue/period balance"
+      temporal_coverage: "same declared service/reporting period"
+      site_scope: "identified facility/function allocation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "stock and meter records; service coverage"
+    - protocol_id: cp_gas
+      process_id: "control"
+      flow_role: "r134a_input; sf6_input; r134a_air; sf6_air"
+      record_type: "foreground record"
+      raw_fields: "species; opening/closing cylinder stock; acquisitions; offsite/recovery transfers; actual equipment charge start/end; task/function share"
+      collection_method: "Weigh/reconcile each actual gas stock, equipment charge and transfers; avoid double counting service-contractor charge from site stock; purchases are not emissions."
+      unit: "kg"
+      frequency: "each transfer and period boundary"
+      temporal_coverage: "same declared service/reporting period"
+      site_scope: "identified facility/function allocation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "cylinder/service/recovery records; complete balance"
+    - protocol_id: cp_asset
+      process_id: "control"
+      flow_role: "server; radio; tower_building; chiller; radar_asset; ups; lead_battery; lfp_battery; generator"
+      record_type: "foreground record"
+      raw_fields: "asset/configuration; capacity; manufacture; battery/gas/component coverage; actual utilization; lifetime; replacement/retirement"
+      collection_method: "Bind actual installed assets to upstream inventories with documented physical life and function/time use; distinguish hardware, initial charges and replacements."
+      unit: "item; m2"
+      frequency: "asset event and period"
+      temporal_coverage: "same declared service/reporting period"
+      site_scope: "identified facility/function allocation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "asset register; maintenance/replacement logs; life evidence"
+    - protocol_id: cp_waste
+      process_id: "control"
+      flow_role: "waste_server; waste_lead; waste_lfp; spent_oil; wastewater"
+      record_type: "foreground record"
+      raw_fields: "specific waste; capacity/chemistry/composition; amount; receiver/treatment; period/share"
+      collection_method: "Measure each waste and verify actual receiving treatment; distinguish chemistry and same-capacity battery units; treatment counted once."
+      unit: "item; kg; m3"
+      frequency: "each transfer"
+      temporal_coverage: "same declared service/reporting period"
+      site_scope: "identified facility/function allocation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "waste/recycling receipts; composition; receiver boundary"
+    - protocol_id: cp_emission
+      process_id: "control"
+      flow_role: "co2_air; co_air; no_air; no2_air; pm25_air"
+      record_type: "foreground record"
+      raw_fields: "actual generator/fuel; run/test/load; species/fraction; exhaust measurement or explicit factor/version/unit; allocation"
+      collection_method: "Measure or use explicitly justified actual engine/fuel/duty factors; resolve individual species/PM fractions and exclude aircraft exhaust."
+      unit: "kg"
+      frequency: "backup duty and period"
+      temporal_coverage: "same declared service/reporting period"
+      site_scope: "identified facility/function allocation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "fuel/exhaust tests; factor applicability; units audit"
+  calculation_rules:
+    - id: block_denominator
+      applies_to: "control_block"
+      rule: "B = actual delivered minutes /60 within compatible stated configuration and coverage; B must be positive. Retain fractional blocks and actual traffic/availability records."
+      inputs:
+        - cp_service
+      output: "B"
+      source_ids: []
+    - id: exchange_allocation
+      applies_to: "all inventory rows"
+      rule: "Attribute each measured period numerator by documented facility/function physical shares, then divide by B. Preserve shared standby, redundancy, maintenance and tests; no automatic per-aircraft denominator."
+      inputs:
+        - cp_service
+        - cp_energy
+        - cp_material
+        - cp_waste
+      output: "exchange per reference flow"
+      source_ids: []
+    - id: gas_loss
+      applies_to: "r134a_air; sf6_air"
+      rule: "For each actual gas, loss = opening stored stock + acquisitions + opening equipment charge - closing stored stock - offsite transfers - closing equipment charge. Recovery remains in closing stock or an offsite transfer once; investigate negative/unreconciled balances, then allocate actual function share and divide by B."
+      inputs:
+        - cp_gas
+        - cp_service
+      output: "gas loss per reference flow"
+      source_ids:
+        - epa-gas-balance
+    - id: asset_allocation
+      applies_to: "server; radio; tower_building; chiller; radar_asset; ups; lead_battery; lfp_battery; generator"
+      rule: "Allocate upstream asset manufacturing/replacement/retirement by supported physical life and actual function/time utilization, then the period share per B; no default battery replacement cycle."
+      inputs:
+        - cp_asset
+        - cp_service
+      output: "asset share per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_function
+      applies_to: "control_block"
+      requirement: "Actual block duration, functions/coverage, traffic mix and degraded status complete; same sixty minutes does not establish cross-facility equivalence."
+      evidence: "cp_service"
+    - id: dq_period
+      applies_to: "all inventory rows"
+      requirement: "Match metering, backup tests, maintenance, gas balances and delivered periods; reconcile shared supplier/airport totals."
+      evidence: "cp_energy; cp_gas; cp_asset"
+    - id: dq_gases
+      applies_to: "r134a_air; sf6_air"
+      requirement: "Species and stock/equipment/recovery evidence complete; unknown loss is not zero, and added charge is not automatically atmospheric release."
+      evidence: "cp_gas"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Resolve flow/support identities before linked production; archived count support is not fresh product-flow verification."
+      evidence: "direct identity verification"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require airport tower-control or airport-located radar function; exclude navigation-aid67990 and unreviewed extension to whole en-route service."
+    source_ids:
+      - un-cpc-67620
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique control_block at 1 item, fixed sixty-minute definition, positive delivered B and all functions/traffic/coverage/availability qualifiers. Reject unavailable intervals counted as normal output and per-flight equivalence without a separate explicit model."
+    source_ids: []
+  - rule_id: validate_atomic
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require each fuel, gas, battery chemistry, hardware, waste and emitted species independently; balance refrigerant/insulating stock and recovery, and avoid duplicate installed gas/initial batteries."
+    source_ids: []
+  - rule_id: validate_limits
+    applies_to: "foreground_dataset_conformance"
+    rule: "Disclose actual standby/backup/cooling, lifetime allocations and upstream gaps; a PCR check cannot establish ATC safety certification, operational approval or aircraft emission savings."
+    source_ids: []
+  - rule_id: validate_unit_export
+    applies_to: "foreground_dataset_conformance"
+    rule: "Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Unit-process airport tower/radar service block"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Same qualified function configuration, sixty-minute block definition, coverage, traffic/availability condition and supplier/asset boundaries"
+  excluded_use: "Universal per-flight factor; radio-navigation aid; all en-route ATC; airline operation; safety approval or avoided aircraft-fuel credit"
+  required_metadata: "All block qualifiers; delivered B/minutes and traffic; equipment/circuit map; backup/gas/battery records; lifetime and shared-function allocations"
+  required_quality_disclosure: "UUID gaps; coverage/traffic distribution; degraded/outage treatment; gas/backup uncertainties; asset/supplier overlap; upstream omissions"
+  update_trigger: "Facility/function/coverage or traffic regime change; equipment/radar relocation; power/cooling/gas/battery change; asset life or data-quality change"
+data_sources:
+  - id: "un-cpc-67620"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 67620. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67620"
+    used_for: "Airport tower/airport-located radar scope and navigation-aid exclusion."
+  - id: "faa-facility-classification"
+    type: "official_guidance"
+    reference: "FAA OPSNET Facility Classification. https://www.aspm.faa.gov/aspmhelp/index/OPSNET__Facility_Classification.html"
+    used_for: "Distinction between tower, terminal radar/combined and en-route facilities; not a CPC crosswalk or operational approval."
+  - id: "faa-power-context"
+    type: "official_guidance"
+    reference: "FAA Capital Investment Plan FY2012-2016 (2011), AppendixB Electrical Power Systems sustain/support. https://www.faa.gov/air_traffic/publications/cip/files/FY12-16/FY12-16_CIP_Complete_May_2011.pdf"
+    used_for: "Historical technical evidence of backup/UPS/battery support; no old fleet count, service life, cost or current requirement adopted."
+  - id: "epa-gas-balance"
+    type: "official_guidance"
+    reference: "US EPA, Direct Fugitive Emissions from Refrigeration, Air Conditioning, Fire Suppression, and Industrial Gases, section2.3. https://www.epa.gov/sites/default/files/2020-12/documents/fugitiveemissions.pdf"
+    used_for: "Actual gas stock/equipment-charge material-balance logic; no leak rate or GWP adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:340ff9c36e28ad813f3f8c6a29bfe002bde1d6883ee978351c266b59c25d96b9"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5505"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5505
+          line: 58
+          column: 1
+        end:
+          offset: 7514
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Configured tower/airport-radar facility providing the declared service; prior building/equipment production shares disclosed |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Airport tower control/approach/landing/takeoff and airport-located radar; no automatic radio-aid/en-route network coverage |\n| recursive_input_rule | Purchased control/surveillance/IT/support contribution enters once with functional/temporal allocation; do not duplicate included equipment or energy |\n| upstream_dataset_requirement | Actual electricity/diesel/water/gas supply; building/radar/radio/IT/UPS/generator/cooling manufacture/replacement; waste/gas recovery treatment |\n| disclosure | Actual functions/traffic/duration/coverage; availability and degraded periods; shared supplier/airport boundaries; asset lives; backup/cooling and upstream gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_function` | Record actual tower/radar/approach roles and handoffs; different facilities need their real equipment and coverage rather than a universal radar assumption. | faa-facility-classification |\n| `boundary_support` | Include attributable power conditioning/UPS, backup tests/running, batteries, cooling, building support, maintenance and retirement. Record actual installed systems, not historical fleet defaults. | faa-power-context |\n| `boundary_aircraft` | Exclude customer aircraft fuel/exhaust/manufacture and whole-flight control/route effects. A downstream aviation-system model must identify any claimed control-induced aircraft change separately and avoid duplicates. |  |\n| `boundary_actual` | Screen each actual refrigerant/insulating gas, heating fuel, battery chemistry, electronic replacement, support vehicle and waste. Add individual specific exchanges where present; no default gas leak, generator use or emission-free facility claim. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 219
+              line: 8
+              column: 1
+            end:
+              offset: 249
+              line: 8
+              column: 31
+          text: "# Air traffic control services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5505
+              line: 58
+              column: 1
+            end:
+              offset: 5526
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25164"
+      family: "allocation"
+      span:
+        start:
+          offset: 25164
+          line: 534
+          column: 1
+        end:
+          offset: 26209
+          line: 543
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_subdivision` | Prefer circuit/function/position/sensor subdivision; shared airport or control-center assets and utilities require documented measured function/time/capacity drivers. Never assign the whole en-route network to local tower blocks. |  |\n| `allocate_duration` | Within one compatible configuration/coverage condition, allocate actual period inventory to delivered blocks B; keep redundancy, low-traffic standby, maintenance and backup tests as real service-support burdens. Traffic distribution remains explicit. |  |\n| `allocate_assets` | Allocate building/radar/IT/radio/UPS/cooling manufacture and disposal using supported physical service life and utilization; replacements and initial batteries/gas already inside upstream inventories are not counted again. |  |\n| `allocate_gas` | Separate gas recovered or transferred from atmospheric loss; no automatic avoided leakage or battery recycling credit. | epa-gas-balance |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 219
+              line: 8
+              column: 1
+            end:
+              offset: 249
+              line: 8
+              column: 31
+          text: "# Air traffic control services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25164
+              line: 534
+              column: 1
+            end:
+              offset: 25204
+              line: 534
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32800"
+      family: "validation"
+      span:
+        start:
+          offset: 32800
+          line: 575
+          column: 1
+        end:
+          offset: 34267
+          line: 585
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_scope` | Require airport tower-control or airport-located radar function; exclude navigation-aid67990 and unreviewed extension to whole en-route service. | un-cpc-67620 |\n| `validate_reference` | Require unique control_block at 1 item, fixed sixty-minute definition, positive delivered B and all functions/traffic/coverage/availability qualifiers. Reject unavailable intervals counted as normal output and per-flight equivalence without a separate explicit model. |  |\n| `validate_atomic` | Require each fuel, gas, battery chemistry, hardware, waste and emitted species independently; balance refrigerant/insulating stock and recovery, and avoid duplicate installed gas/initial batteries. |  |\n| `validate_limits` | Disclose actual standby/backup/cooling, lifetime allocations and upstream gaps; a PCR check cannot establish ATC safety certification, operational approval or aircraft emission savings. |  |\n| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 219
+              line: 8
+              column: 1
+            end:
+              offset: 249
+              line: 8
+              column: 31
+          text: "# Air traffic control services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32800
+              line: 575
+              column: 1
+            end:
+              offset: 32822
+              line: 575
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_function"
+      identity_kind: "explicit"
+      unit_id: "normative_5505"
+      source_span:
+        start:
+          offset: 6537
+          line: 73
+          column: 1
+        end:
+          offset: 6749
+          line: 73
+          column: 213
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_support"
+      identity_kind: "explicit"
+      unit_id: "normative_5505"
+      source_span:
+        start:
+          offset: 6750
+          line: 74
+          column: 1
+        end:
+          offset: 6991
+          line: 74
+          column: 242
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_aircraft"
+      identity_kind: "explicit"
+      unit_id: "normative_5505"
+      source_span:
+        start:
+          offset: 6992
+          line: 75
+          column: 1
+        end:
+          offset: 7237
+          line: 75
+          column: 246
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_5505"
+      source_span:
+        start:
+          offset: 7238
+          line: 76
+          column: 1
+        end:
+          offset: 7512
+          line: 76
+          column: 275
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_25164"
+      source_span:
+        start:
+          offset: 25258
+          line: 538
+          column: 1
+        end:
+          offset: 25519
+          line: 538
+          column: 262
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_duration"
+      identity_kind: "explicit"
+      unit_id: "normative_25164"
+      source_span:
+        start:
+          offset: 25520
+          line: 539
+          column: 1
+        end:
+          offset: 25799
+          line: 539
+          column: 280
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_25164"
+      source_span:
+        start:
+          offset: 25800
+          line: 540
+          column: 1
+        end:
+          offset: 26049
+          line: 540
+          column: 250
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_gas"
+      identity_kind: "explicit"
+      unit_id: "normative_25164"
+      source_span:
+        start:
+          offset: 26050
+          line: 541
+          column: 1
+        end:
+          offset: 26207
+          line: 541
+          column: 158
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_32800"
+      source_span:
+        start:
+          offset: 32876
+          line: 579
+          column: 1
+        end:
+          offset: 33058
+          line: 579
+          column: 183
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_32800"
+      source_span:
+        start:
+          offset: 33059
+          line: 580
+          column: 1
+        end:
+          offset: 33356
+          line: 580
+          column: 298
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_32800"
+      source_span:
+        start:
+          offset: 33357
+          line: 581
+          column: 1
+        end:
+          offset: 33581
+          line: 581
+          column: 225
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_limits"
+      identity_kind: "explicit"
+      unit_id: "normative_32800"
+      source_span:
+        start:
+          offset: 33582
+          line: 582
+          column: 1
+        end:
+          offset: 33794
+          line: 582
+          column: 213
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_unit_export"
+      identity_kind: "explicit"
+      unit_id: "normative_32800"
+      source_span:
+        start:
+          offset: 33795
+          line: 583
+          column: 1
+        end:
+          offset: 34265
+          line: 583
+          column: 471
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5505"
+      source_span:
+        start:
+          offset: 5505
+          line: 58
+          column: 1
+        end:
+          offset: 5526
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5505"
+      source_span:
+        start:
+          offset: 5554
+          line: 62
+          column: 1
+        end:
+          offset: 6483
+          line: 69
+          column: 178
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25164"
+      source_span:
+        start:
+          offset: 25164
+          line: 534
+          column: 1
+        end:
+          offset: 25204
+          line: 534
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32800"
+      source_span:
+        start:
+          offset: 32800
+          line: 575
+          column: 1
+        end:
+          offset: 32822
+          line: 575
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:340ff9c36e28ad813f3f8c6a29bfe002bde1d6883ee978351c266b59c25d96b9"
+  generated_content_sha256: "sha256:55b14ca5f8a5e6a926b66aa61f5ad653b19b3ff659cc204e5bb542ad58c335f5"

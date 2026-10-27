@@ -21,6 +21,8 @@ const zh: Readonly<Record<string,string>> = {
   "design-assets": "设计资产",
   "digital-content": "数字内容",
   "digital-original-assets": "数字原作资产",
+  "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a":
+    "批发零售、住宿、餐饮、运输及电力、燃气和水配送服务",
   "geological-information-assets": "地质信息资产",
   "metal-ores": "金属矿石",
   "natural-water": "天然水",
@@ -68,6 +70,7 @@ const zh: Readonly<Record<string,string>> = {
     "广播、电视和通信设备",
   "research-and-development-services": "研发服务",
   "special-purpose-machinery": "专用机械",
+  "supporting-transport-services": "运输支持服务",
   "telecommunications-broadcasting-and-information-supply-services":
     "电信、广播和信息提供服务",
   "textile-articles-other-than-apparel": "服装以外的纺织制品",

@@ -1,10 +1,1651 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67990"
-  title: "Other supporting transport services n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.other-supporting-transport-services-n-e-c"
+  classification_refs: "CPC 3.0 67990; narrower"
+  covered_products: "Transport-purpose natural-gas liquefaction or regasification service with actual net qualified delivered mass"
+  excluded_products: "Type-rating, GPS/radio-navigation, other unreviewed residual functions, gas commodity production, independent storage/transport and customer end use"
+  representative_product: "Regasification service corresponding to 1 kg actual qualified net gaseous send-out at specified composition, temperature and pressure"
+  production_route: "Declare one route/inlet → perform its actual conditioning and phase conversion → manage actual energy/BOG/losses and buffer → verify net accepted outlet"
+  market_state: "Completed service on customer gas custody; upstream commodity burden belongs to the full gas chain, separately linked"
+functional_unit:
+  what: "Provide the selected transport-purpose natural-gas phase-conversion service"
+  how_much: "Service corresponding to 1 kg actual net qualified gas delivered in the declared outlet phase/state; exclude internal recycle, fuel, losses and off-spec stock"
+  how_well: "Actual declared composition, temperature, pressure and quality/acceptance at matched custody interfaces, with composition and mass balance"
+  how_long_or_cycle: "Actual production/delivery observation period including attributable startup, shutdown, downtime, necessary buffer and stock corrections"
+  reference_flow_link: "service_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "foreground_system_boundary"
+      rule: "Select one actual liquefaction or regasification route with specified physical states. IFC describes a broader LNG chain; only applicable actual conversion processes and necessary conditioning are included here. Independent transport, storage, handling and upstream gas production remain separately scoped."
+      source_ids:
+        - un-cpc-transport-phase
+        - ifc-lng-2017
+    - rule_id: boundary_bog
+      applies_to: "foreground_system_boundary"
+      rule: "Reconcile actual BOG generation, return/recondensation/reliquefaction, internal fuel, external return/sale, stock change, venting, flaring and fugitive loss by composition and destination. Internal transfers are not fresh external purchases or duplicate finished output. Fuel use and emissions remain in the responsible service stage even when gas is customer-owned."
+      source_ids:
+        - ifc-lng-2017
+    - rule_id: boundary_heat_water
+      applies_to: "foreground_system_boundary"
+      rule: "Identify actual compressors/refrigerant cycle or ORV/SCV/air/intermediate-fluid vaporizer and heat source. Keep electricity, fuels, steam and purchased heat separate. Measure source-specific water intake/return quantity, location, temperature/thermal change and residual chemistry; no default temperature limit or claim of zero impact for ambient heat."
+      source_ids:
+        - ifc-lng-2017
+    - rule_id: boundary_emissions
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual combustion, flare incomplete oxidation/slip, vent, fugitives, separated-feed contaminants and refrigerant loss as individual species/compartments. Do not assume complete flare destruction, assign total gas to methane, merge NOx species or use an aggregate VOC exchange."
+      source_ids:
+        - ifc-lng-2017
+    - rule_id: boundary_assets
+      applies_to: "foreground_system_boundary"
+      rule: "Retain construction/manufacture, necessary process-buffer assets, maintenance, replacements and real waste receivers with supported life utilization. Storage sold independently, carrier propulsion and customer gas-chain assets do not become process conversion assets."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual customer gas/LNG at the agreed conversion inlet with measured composition/state and custody ownership"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Transport-purpose natural-gas liquefaction or regasification only"
+  recursive_input_rule: "Purchased same-function conversion enters once with compatible route/states/output basis and provider coverage; remove overlapping owned utilities/assets"
+  upstream_dataset_requirement: "Actual externally consumed energy/material/refrigerant, process assets/renewals and actual treatment; customer commodity custody and internal BOG are tracked separately"
+  disclosure: "transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Natural-gas transport phase-conversion service, qualified net mass"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "transport purpose"
+    - "liquefaction OR regasification"
+    - "actual site/date/route and provider"
+    - "inlet/outlet custody gates"
+    - "feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants"
+    - "actual inlet/outlet phase"
+    - temperature
+    - "pressure and quality/acceptance"
+    - "net qualifying delivered kg and observation period"
+    - "actual feed"
+    - "stock changes"
+    - "process buffer time"
+    - "internal recycle"
+    - "fuel diversion"
+    - "recovered/exported BOG and each loss fate"
+    - "compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy"
+    - "onshore/floating asset scope"
+    - "utility source/temperature/pressure"
+    - "actual water intake/return temperature/chemistry/location"
+    - "each chemical/refrigerant"
+    - "emissions/fugitive/flare efficiency evidence"
+    - "coproduct/provider overlap"
+    - "real whole-life output denominator and uncertainty"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use cp_mass to measure actual net qualified outlet mass corresponding to this service. Exactly 1 kg is the reference output; route, composition/state and quality are mandatory and not interchangeable."
+  - id: gas_conversion
+    applies_to: "service_output; liq_fuelgas; regas_fuelgas"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Mass/volume conversion requires actual composition, pressure, temperature and verified density or metered equation of state. State standard-volume reference conditions explicitly; no universal LNG density or expansion ratio."
+  - id: thermal_energy
+    applies_to: "liq_steam; regas_steam; regas_heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Use actual net delivered enthalpy and supply/return states with supplier losses boundary; do not infer heat from water volume alone or conflate electricity and fuel energy."
+  - id: component_mass
+    applies_to: "ref_methane; ref_ethane; ref_propane; ref_ethylene; ref_nitrogen; amine; hypochlorite"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep actual chemical component mass distinct from total refrigerant mixture or aqueous solution; record verified composition and stock/recovery. No aggregate VOC/PFAS/refrigerant selector is an atomic exchange."
+process_map:
+  - id: liquefaction
+    name: "Natural-gas liquefaction"
+    inclusion: "conditional"
+    inclusion_condition: "Selected route or actual applicable common process, never duplicate two routes"
+    role: "foreground"
+    quantitative_reference: "Service per 1 kg qualified net delivered gas"
+  - id: regasification
+    name: "Natural-gas regasification"
+    inclusion: "conditional"
+    inclusion_condition: "Selected route or actual applicable common process, never duplicate two routes"
+    role: "foreground"
+    quantitative_reference: "Service per 1 kg qualified net delivered gas"
+  - id: management
+    name: "Actual utilities, BOG, maintenance and release management"
+    inclusion: "conditional"
+    inclusion_condition: "Selected route or actual applicable common process, never duplicate two routes"
+    role: "foreground"
+    quantitative_reference: "Service per 1 kg qualified net delivered gas"
+  - id: completion
+    name: "Net qualified phase-conversion service delivery"
+    inclusion: "required"
+    inclusion_condition: "Unique service output"
+    role: "foreground"
+    quantitative_reference: "Service per 1 kg qualified net delivered gas"
+process_inventory:
+  - id: liquefaction
+    label: "Natural-gas liquefaction"
+    inputs:
+      product:
+        - row_id: liq_power
+          role: "Electricity, natural-gas liquefaction supply"
+          name: "Electricity, natural-gas liquefaction supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual grid/external electricity for the declared liquefaction route: compressors, refrigeration, feed conditioning, pumps and controls. Record actual end uses and losses; exclude power already represented by on-site fuel and generation."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_liquefaction
+              source_ids: []
+            ranges: []
+        - row_id: liq_fuelgas
+          role: "Natural gas, purchased liquefaction fuel"
+          name: "Natural gas, purchased liquefaction fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual externally purchased gas burned by the service operator. Identify composition, fuel meter, compressor/turbine/boiler duty and calorific basis. Internal BOG and customer feed diverted as fuel are separate custody-to-consumption ledger entries, never a second external purchase."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_liquefaction
+              source_ids: []
+            ranges: []
+        - row_id: liq_steam
+          role: "Steam, purchased liquefaction-process heat"
+          name: "Steam, purchased liquefaction-process heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on actual external steam for feed conditioning/regeneration or process heat. Record supply/return pressure, temperature, enthalpy and condensate scope; do not combine with purchased hot water or on-site boiler fuel."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_liquefaction
+              source_ids: []
+            ranges: []
+        - row_id: ref_methane
+          role: "Methane, refrigerant makeup"
+          name: "Methane, refrigerant makeup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges: []
+        - row_id: ref_ethane
+          role: "Ethane, refrigerant makeup"
+          name: "Ethane, refrigerant makeup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges: []
+        - row_id: ref_propane
+          role: "Propane, refrigerant makeup"
+          name: "Propane, refrigerant makeup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges: []
+        - row_id: ref_ethylene
+          role: "Ethylene, refrigerant makeup"
+          name: "Ethylene, refrigerant makeup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges: []
+        - row_id: ref_nitrogen
+          role: "Nitrogen, refrigerant makeup"
+          name: "Nitrogen, refrigerant makeup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges: []
+        - row_id: amine
+          role: "Methyldiethanolamine, gas-conditioning makeup"
+          name: "Methyldiethanolamine, gas-conditioning makeup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual MDEA sweetening necessary within the agreed liquefaction-service inlet boundary. Record solution composition and active MDEA mass; separately account for water and other formulation components. Separately supplied upstream gas treatment must not be repeated."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_liquefaction
+              source_ids: []
+            ranges: []
+        - row_id: sieve
+          role: "Zeolite molecular sieve 3A"
+          name: "Zeolite molecular sieve 3A"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual specified dehydration medium; measure actual supply/replacement and regeneration energy, with support for service-life allocation. Another sieve grade or conditioning route requires its own actual material row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_liquefaction
+              source_ids: []
+            ranges: []
+        - row_id: mercury_carbon
+          role: "Sulfur-impregnated activated carbon, mercury removal"
+          name: "Sulfur-impregnated activated carbon, mercury removal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual feed contaminant evidence and this identified removal medium. Include measured replacement share and regeneration/treatment scope; mercury removal is not assumed for every feed."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_liquefaction
+              source_ids: []
+            ranges: []
+        - row_id: liq_train
+          role: "Configured natural-gas liquefaction train"
+          name: "Configured natural-gas liquefaction train"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Identify actual compression/refrigeration/conditioning configuration, construction/manufacture, maintenance and renewals with supported whole-life qualified-output denominator, not nameplate capacity alone. Do not allocate the whole train to each kg."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets_liquefaction
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: regasification
+    label: "Natural-gas regasification"
+    inputs:
+      product:
+        - row_id: regas_power
+          role: "Electricity, natural-gas regasification supply"
+          name: "Electricity, natural-gas regasification supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual pumping, compression, recondenser, vaporizer auxiliaries and controls. Meter actual send-out pressure and ORV/SCV/air/intermediate-fluid route; do not infer zero electricity from ambient heat."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_regasification
+              source_ids: []
+            ranges: []
+        - row_id: regas_fuelgas
+          role: "Natural gas, purchased regasification fuel"
+          name: "Natural gas, purchased regasification fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual external fuel-gas combustion, including the real SCV or auxiliary boiler. Source-meter internal send-out/BOG fuel separately without duplicate gas purchase; record actual source composition and combustion."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_regasification
+              source_ids: []
+            ranges: []
+        - row_id: regas_steam
+          role: "Steam, purchased regasification heat"
+          name: "Steam, purchased regasification heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on actual purchased steam heat; retain supply/return enthalpy and condensate boundaries. Actual steam is distinct from purchased hot-water heat, ambient water intake and internal SCV combustion."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_regasification
+              source_ids: []
+            ranges: []
+        - row_id: regas_heat
+          role: "Heat, purchased hot-water regasification supply"
+          name: "Heat, purchased hot-water regasification supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on actual external hot-water heat delivery; measure inlet/outlet temperature, mass/flow and net enthalpy with supplier scope. Waste-heat label does not establish zero burden or an avoided-heat credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_regasification
+              source_ids: []
+            ranges: []
+        - row_id: regas_train
+          role: "Configured natural-gas regasification train"
+          name: "Configured natural-gas regasification train"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Identify actual ORV/SCV/air/shell-and-tube or intermediate-fluid configuration, pumps/recondenser and land/floating plant scope. Use supported whole-life utilization; offshore service assets are not a new customer transport vessel."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets_regasification
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: regas_seawater
+          role: "Water, ocean, regasification intake"
+          name: "Water, ocean, regasification intake"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual direct ORV/coastal seawater withdrawal. Meter exact intake, location, salinity, temperature, pumping and chemical addition; purchased processed water is a different product input. No generic seawater intake is imposed on inland/air/SCV routes."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_regasification
+              source_ids: []
+            ranges: []
+        - row_id: regas_riverwater
+          role: "Water, river, regasification intake"
+          name: "Water, river, regasification intake"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual direct freshwater river withdrawal; retain source-specific temperature, chemistry, seasonal flow and return location separately from seawater or groundwater."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_regasification
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: regas_sea_return
+          role: "Water, ocean, regasification return"
+          name: "Water, ocean, regasification return"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual return to the ocean; measure actual quantity, source/receiver, temperature/thermal change, salinity and residual chemicals. Chemicals require individual release rows and thermal effects require applicable site methods; volume alone cannot represent them."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_regasification
+              source_ids: []
+            ranges: []
+        - row_id: regas_river_return
+          role: "Water, river, regasification return"
+          name: "Water, river, regasification return"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual return to the identified freshwater river; preserve receiver, temperature and composition. Do not substitute an ocean return or assume all withdrawn water returns unchanged."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_regasification
+              source_ids: []
+            ranges: []
+  - id: management
+    label: "Actual utilities, BOG, maintenance and release management"
+    inputs:
+      product:
+        - row_id: process_water
+          role: "Water, supplied LNG-process utility"
+          name: "Water, supplied LNG-process utility"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual purchased process/boiler make-up/wash/sanitary water, specifying source, treatment and end use. Add each other source/product separately; closed-loop recirculation is not new withdrawal."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_management
+              source_ids: []
+            ranges: []
+        - row_id: hypochlorite
+          role: "Sodium hypochlorite, water-treatment active chemical"
+          name: "Sodium hypochlorite, water-treatment active chemical"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on this actual water-treatment chemical. Measure active substance, solution concentration and separately supplied dilution water; record reaction/residual products individually instead of treating input as an unchanged discharge."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_management
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_purge
+          role: "Nitrogen, compressed, process purge"
+          name: "Nitrogen, compressed, process purge"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual process/inerting gas use, with pressure and delivered mass; distinguish refrigerant-loop nitrogen already counted, internal recycle and actual vent composition."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_management
+              source_ids: []
+            ranges: []
+        - row_id: lubricant
+          role: "Mineral compressor lubricating oil"
+          name: "Mineral compressor lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual compressor oil grade and service; measure consumption/replacement across maintenance interval and attributable route output, avoiding full oil charge per kg."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_management
+              source_ids: []
+            ranges: []
+        - row_id: buffer_tank
+          role: "Configured process-buffer LNG tank"
+          name: "Configured process-buffer LNG tank"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional on buffer/turnover genuinely necessary for the declared phase-conversion process. Fix custody interfaces, inventory/time and whole-life construction/maintenance share; independent storage service and its assets/BOG are separately scoped, not counted twice."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets_management
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_amine
+          role: "Spent aqueous methyldiethanolamine solution"
+          name: "Spent aqueous methyldiethanolamine solution"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual spent segregated solution with measured water/amine/contaminant composition; track actual treatment/reclamation and reconcile active input and waste solution bases."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_sieve
+          role: "Spent zeolite molecular sieve 3A"
+          name: "Spent zeolite molecular sieve 3A"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual discharged medium; measure actual mass/adsorbates and trace regeneration/disposal, not a new waste charge for every operating day."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_carbon
+          role: "Spent mercury-loaded sulfur-impregnated activated carbon"
+          name: "Spent mercury-loaded sulfur-impregnated activated carbon"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual mercury-removal medium and measured loading; track containment and actual receiver. No assumed mercury-free treatment or complete destruction."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: used_oil
+          role: "Used mineral compressor lubricating oil"
+          name: "Used mineral compressor lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual removed segregated oil; measure actual mass and receiver/treatment, with no automatic recycling credit."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: oily_water
+          role: "Collected oily LNG-process wastewater"
+          name: "Collected oily LNG-process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual closed-drain/process oily water; record composition and real treatment gate. Sanitary sewage and hydrotest waste have separate actual streams if present; do not merge all wastewater."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: methane
+          role: "Methane, to air"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual fugitive, vent, flare-slip or refrigerant methane release, each source separately recorded. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: ethane
+          role: "Ethane, to air"
+          name: "Ethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual gas/refrigerant ethane release with separate source/fate records. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: propane
+          role: "Propane, to air"
+          name: "Propane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual gas/refrigerant propane release with separate source/fate records. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: ethylene
+          role: "Ethylene, to air"
+          name: "Ethylene, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual refrigerant ethylene release. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual combustion/flare or separated-feed CO2 release, distinguishing feed-origin CO2 from formed combustion CO2. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual incomplete-combustion CO release. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual combustion NO release with explicit NOx equivalent/speciation convention. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual combustion NO2 release without duplicating total NOx. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: so2
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual sulfur-containing fuel/acid-gas combustion with verified sulfur balance. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: h2s
+          role: "Hydrogen sulfide, to air"
+          name: "Hydrogen sulfide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual separated acid-gas or fugitive H2S release, not assumed for sweet gas. Quantify the named species at its actual air receiver using measurements or independently verified source-specific methods. No generic VOC/gas aggregate; each other actual species requires its own row."
+          amount:
+            expression: "Actual attributable exchange measured for the declared conversion service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+  - id: completion
+    label: "Net qualified phase-conversion service delivery"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: service_output
+          role: "Natural-gas transport phase-conversion service, qualified net mass"
+          name: "Natural-gas transport phase-conversion service, qualified net mass"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One kg of qualified actual net gas mass delivered in the declared converted state represents the corresponding phase-conversion service only. Choose liquefaction or regasification; the service output is not newly manufactured customer natural gas."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_route
+    applies_to: "foreground_burden_allocation"
+    rule: "Direct-meter each actual route and qualifying output. Shared compression/BOG/utilities use documented physical duty, net enthalpy, measured runtime or causal throughput, with actual startup/shutdown and stock reconciliation. Do not average liquid and gas route kg, nameplate capacities or fees."
+    source_ids: []
+  - rule_id: allocate_custody
+    applies_to: "foreground_burden_allocation"
+    rule: "Track customer gas custody and internal fuel/BOG separately from purchased external fuel; actual consumed customer gas causes real source emissions and a gas-chain replacement obligation, not a zero emission or duplicate gas-production input here. Full chain authors link commodity production/losses once."
+    source_ids: []
+  - rule_id: allocate_recovery
+    applies_to: "foreground_burden_allocation"
+    rule: "Returned/reliquefied/recondensed BOG is an internal balance once. Qualifying gas delivered at the route outlet counts once; gas exported in another state is separately reported with function/burden allocation if it is a co-service, not silently added to the denominator or given an avoided product credit."
+    source_ids: []
+  - rule_id: allocate_coproduct
+    applies_to: "foreground_burden_allocation"
+    rule: "For actual integrated conditioning that produces recovered NGL/sulfur or another co-output, first separate the actual functional processes and meters, then document a causal physical allocation and mass/energy reconciliation if separation is impossible. Add each identified co-output individually; no automatic credit for cold/heat/BOG utilization."
+    source_ids: []
+  - rule_id: allocate_life
+    applies_to: "foreground_burden_allocation"
+    rule: "Divide actual asset manufacture/construction and distinct maintenance/renewal inventory by supported whole-life actual qualifying service utilization. Use expected route output with evidence on capacity, utilization, downtime, yield, degradation and life; conserve all user/period shares without annual reset. No invented life or whole facility per kg."
+    source_ids: []
+  - rule_id: allocate_supplier
+    applies_to: "foreground_burden_allocation"
+    rule: "Reconcile utility/plant/BOG/storage supplier coverage with owned rows before summing. Floating regasification plant construction may be attributable, but carrier voyage or independent storage is separately scoped. Process buffer is counted once at actual inventory/time and cannot be sold again as unreported free storage."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "completion"
+      flow_role: "service_output"
+      record_type: "Composition-resolved custody and conversion ledger"
+      raw_fields: "transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty; common source-record and custody-transfer IDs"
+      collection_method: "Use calibrated inlet/outlet mass metering or traceable volume conversion with actual composition, temperature, pressure and density/equation-of-state evidence. Reconcile customer feed plus actual external gas and opening inventory against qualified delivered mass, ending inventory, fuel diversion, separately exported gas/co-output and individual vent/flare/fugitive losses. Internal BOG return/recondensation and refrigerant loops cancel as internal transfers, not additional purchases/production. Measure actual qualifying net outlet only, correcting off-spec/rework/returned material and avoiding repeated throughput count. Retain component and carbon balances, actual buffer custody time and uncertainties. Owned by completion as the single route-wide custody/component reconciliation ledger. Source records from the selected route and management use common record/transfer IDs and reconcile once against cp_mass; this ledger creates neither a management output nor another service denominator."
+      unit: "kg"
+      frequency: "continuous/batch meters and each custody period"
+      temporal_coverage: "whole actual conversion/delivery period including startups and stock changes"
+      site_scope: "actual selected inlet/outlet and buffer gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated mass/quality meters; gas analyses; stock/fuel/BOG records; component balance"
+    - protocol_id: cp_energy_liquefaction
+      process_id: "liquefaction"
+      flow_role: "liq_power; liq_fuelgas; liq_steam"
+      record_type: "Actual source/end-use utility ledger"
+      raw_fields: "route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; charging/provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Meter actual external electricity, each external fuel, steam and heat separately. Reconcile source-specific internal-fuel combustion against cp_mass without duplicate purchase; include actual generation efficiency/losses once. Measure real thermal supply/return enthalpy, actual throughput and all attributable operating phases; no specific-energy or SCV/ORV default. Apply this protocol only to its listed liquefaction exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "kWh; kg; MJ"
+      frequency: "each meter/phase and reconciled observation period"
+      temporal_coverage: "all actual route utilities and attributable downtime"
+      site_scope: "actual compression/refrigeration/vaporizer and supplies"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meters; actual fuel/BOG/stock balance; state data; provider overlap; allocation"
+    - protocol_id: cp_energy_regasification
+      process_id: "regasification"
+      flow_role: "regas_power; regas_fuelgas; regas_steam; regas_heat"
+      record_type: "Actual source/end-use utility ledger"
+      raw_fields: "route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; charging/provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Meter actual external electricity, each external fuel, steam and heat separately. Reconcile source-specific internal-fuel combustion against cp_mass without duplicate purchase; include actual generation efficiency/losses once. Measure real thermal supply/return enthalpy, actual throughput and all attributable operating phases; no specific-energy or SCV/ORV default. Apply this protocol only to its listed regasification exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "kWh; kg; MJ"
+      frequency: "each meter/phase and reconciled observation period"
+      temporal_coverage: "all actual route utilities and attributable downtime"
+      site_scope: "actual compression/refrigeration/vaporizer and supplies"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meters; actual fuel/BOG/stock balance; state data; provider overlap; allocation"
+    - protocol_id: cp_refrigerant
+      process_id: "liquefaction"
+      flow_role: "ref_methane; ref_ethane; ref_propane; ref_ethylene; ref_nitrogen"
+      record_type: "Loop/component refrigerant ledger"
+      raw_fields: "actual cycle/loop; each chemical composition; initial charge/life share; additions/recovery/opening/closing stock kg; leak/vent source and receiver; actual route output"
+      collection_method: "Resolve actual mixed/cascade refrigerants into specific chemical components and measure net externally supplied makeup with stock/recovery balance. Circulating mass is not consumption. Attribute initial charge and replacement to supported actual life/use without duplicating supplier stock; quantify each actual chemical loss/receiver, and add a separate route-specific row for another refrigerant."
+      unit: "kg"
+      frequency: "each refill/recovery and reconciled period"
+      temporal_coverage: "whole actual loop operating/maintenance interval"
+      site_scope: "actual chemical loops and suppliers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "component certificates; charge/recovery records; stocks; leak evidence"
+    - protocol_id: cp_chemical_liquefaction
+      process_id: "liquefaction"
+      flow_role: "amine; sieve; mercury_carbon"
+      record_type: "Specific chemical/medium ledger"
+      raw_fields: "route/end use; exact chemical/formulation/grade; measured actual kg and active fraction; separate water; replacement/regeneration; impurities captured; purge pressure; supplier scope; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Measure each actual chemical or medium; distinguish active substance, solution carrier and mixed product components without duplicate supply. Link to real contaminant/task evidence and actual replacement interval, not a compulsory recipe. Track regeneration energy, contaminants removed and resulting waste/release separately. Apply this protocol only to its listed liquefaction exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "kg"
+      frequency: "each actual issue/replacement/regeneration interval"
+      temporal_coverage: "actual period and supported replacement share"
+      site_scope: "actual process/supplier gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "purchase/stock/formulation records; actual mass balance; maintenance"
+    - protocol_id: cp_chemical_management
+      process_id: "management"
+      flow_role: "hypochlorite; nitrogen_purge; lubricant"
+      record_type: "Specific chemical/medium ledger"
+      raw_fields: "route/end use; exact chemical/formulation/grade; measured actual kg and active fraction; separate water; replacement/regeneration; impurities captured; purge pressure; supplier scope; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Measure each actual chemical or medium; distinguish active substance, solution carrier and mixed product components without duplicate supply. Link to real contaminant/task evidence and actual replacement interval, not a compulsory recipe. Track regeneration energy, contaminants removed and resulting waste/release separately. Apply this protocol only to its listed management exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "kg"
+      frequency: "each actual issue/replacement/regeneration interval"
+      temporal_coverage: "actual period and supported replacement share"
+      site_scope: "actual process/supplier gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "purchase/stock/formulation records; actual mass balance; maintenance"
+    - protocol_id: cp_water_regasification
+      process_id: "regasification"
+      flow_role: "regas_seawater; regas_riverwater; regas_sea_return; regas_river_return"
+      record_type: "Source/receiver-specific water and thermal ledger"
+      raw_fields: "source waterbody/product; actual volume/flow; inlet/outlet temperature/pressure/salinity; season/location; cooling/heating duty; evaporation/retention/return; biocide residuals and reaction products; actual receiver/treatment; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Meter actual source/product separately from recirculation and match actual returns/consumption. Record measured thermal change/heat flux and local receiving conditions without universal temperature limits. Chemical residues require their own species/compartment rows and actual treatment, not a volume-only proxy. Actual seawater, river, groundwater or another source is not interchangeable. Apply this protocol only to its listed regasification exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "m3"
+      frequency: "continuous/representative actual intake and return periods"
+      temporal_coverage: "whole applicable route and actual season/receiving context"
+      site_scope: "actual sources and receivers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "flow meters; temperature/chemistry samples; seasonal receiving evidence; water balance"
+    - protocol_id: cp_water_management
+      process_id: "management"
+      flow_role: "process_water"
+      record_type: "Source/receiver-specific water and thermal ledger"
+      raw_fields: "source waterbody/product; actual volume/flow; inlet/outlet temperature/pressure/salinity; season/location; cooling/heating duty; evaporation/retention/return; biocide residuals and reaction products; actual receiver/treatment; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Meter actual source/product separately from recirculation and match actual returns/consumption. Record measured thermal change/heat flux and local receiving conditions without universal temperature limits. Chemical residues require their own species/compartment rows and actual treatment, not a volume-only proxy. Actual seawater, river, groundwater or another source is not interchangeable. Apply this protocol only to its listed management exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "m3"
+      frequency: "continuous/representative actual intake and return periods"
+      temporal_coverage: "whole applicable route and actual season/receiving context"
+      site_scope: "actual sources and receivers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "flow meters; temperature/chemistry samples; seasonal receiving evidence; water balance"
+    - protocol_id: cp_assets_liquefaction
+      process_id: "liquefaction"
+      flow_role: "liq_train"
+      record_type: "Whole-life process asset ledger"
+      raw_fields: "configuration/BOM/construction; plant/buffer scope; ownership/provider; manufacture/maintenance/renewals; supported years and actual throughput/utilization/yield/downtime; life qualifying outlet kg; cumulative allocation; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Identify actual process assets and supported whole-life qualifying output, distinguishing one route/state and independent storage/transport assets. Apply attributable share of construction/manufacture plus distinct maintenance/renewals; conserve cumulative user/period shares. Nameplate throughput times arbitrary lifetime is not evidence; unknown denominators require explicit review. Apply this protocol only to its listed liquefaction exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "Item(s)"
+      frequency: "each allocation and configuration/renewal update"
+      temporal_coverage: "supported whole life and actual observed service period"
+      site_scope: "actual conversion train/buffer and providers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "construction/BOM; actual utilization and yield; life evidence; cumulative shares"
+    - protocol_id: cp_assets_regasification
+      process_id: "regasification"
+      flow_role: "regas_train"
+      record_type: "Whole-life process asset ledger"
+      raw_fields: "configuration/BOM/construction; plant/buffer scope; ownership/provider; manufacture/maintenance/renewals; supported years and actual throughput/utilization/yield/downtime; life qualifying outlet kg; cumulative allocation; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Identify actual process assets and supported whole-life qualifying output, distinguishing one route/state and independent storage/transport assets. Apply attributable share of construction/manufacture plus distinct maintenance/renewals; conserve cumulative user/period shares. Nameplate throughput times arbitrary lifetime is not evidence; unknown denominators require explicit review. Apply this protocol only to its listed regasification exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "Item(s)"
+      frequency: "each allocation and configuration/renewal update"
+      temporal_coverage: "supported whole life and actual observed service period"
+      site_scope: "actual conversion train/buffer and providers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "construction/BOM; actual utilization and yield; life evidence; cumulative shares"
+    - protocol_id: cp_assets_management
+      process_id: "management"
+      flow_role: "buffer_tank"
+      record_type: "Whole-life process asset ledger"
+      raw_fields: "configuration/BOM/construction; plant/buffer scope; ownership/provider; manufacture/maintenance/renewals; supported years and actual throughput/utilization/yield/downtime; life qualifying outlet kg; cumulative allocation; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      collection_method: "Identify actual process assets and supported whole-life qualifying output, distinguishing one route/state and independent storage/transport assets. Apply attributable share of construction/manufacture plus distinct maintenance/renewals; conserve cumulative user/period shares. Nameplate throughput times arbitrary lifetime is not evidence; unknown denominators require explicit review. Apply this protocol only to its listed management exchanges. Reconcile shared records under validate_protocol_partition."
+      unit: "Item(s)"
+      frequency: "each allocation and configuration/renewal update"
+      temporal_coverage: "supported whole life and actual observed service period"
+      site_scope: "actual conversion train/buffer and providers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "construction/BOM; actual utilization and yield; life evidence; cumulative shares"
+    - protocol_id: cp_waste
+      process_id: "management"
+      flow_role: "spent_amine; spent_sieve; spent_carbon; used_oil; oily_water"
+      record_type: "Specific waste/receiver ledger"
+      raw_fields: "single stream; actual kg/m3; solution/adsorbate/mercury/oil composition; originating route; actual transfer/treatment/reclamation/disposal; provider coverage"
+      collection_method: "Weigh/meter each real stream and trace real final receiver/treatment with actual constituent basis and no presumed harmlessness, destruction, recycling or avoided burden. Keep spent medium distinct from removed contaminant releases; add other actual specific streams separately."
+      unit: "kg; m3"
+      frequency: "each actual waste transfer/period"
+      temporal_coverage: "all attributable actual waste"
+      site_scope: "actual origin and receiving treatment gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "transfer tickets; actual analyses; regeneration/disposal scope; balance"
+    - protocol_id: cp_release
+      process_id: "management"
+      flow_role: "methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s"
+      record_type: "Source/component-resolved gas fate ledger"
+      raw_fields: "route/source; actual gas composition and mass; combustion/fuel/flare efficiency and oxidation; vent/fugitive/refrigerant leak; named species kg and receiver; removed acid gas route; actual monitoring/factors/speciation; carbon/sulfur balance"
+      collection_method: "Measure/speciate actual source streams and reconcile with cp_mass and refrigerant/chemical balances. Calculate actual source-specific combustion and flare emissions using independently verified composition/efficiency methods; report unburned methane and other species rather than assuming complete destruction. Keep CO2 already in feed distinct from oxidation CO2; NO/NO2 from a NOx-equivalent total require documented speciation, never duplicate total. Add every actual other chemical and receiver separately; missing emission evidence is not zero."
+      unit: "kg"
+      frequency: "each source operation/upset and representative monitoring"
+      temporal_coverage: "all represented normal/upset sources in actual period"
+      site_scope: "actual source/compartment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "metering/leak measurements; actual composition; verified methods; gas/carbon/sulfur balance"
+  calculation_rules:
+    - id: service_attribution
+      applies_to: "all inventory rows"
+      rule: "Divide actual attributable exchange by actual qualified net outlet kg of the same route/state/quality and period, with stock/loss/rework reconciliation. Unique service output is exactly 1 kg."
+      inputs:
+        - cp_mass
+        - "actual exchange protocols"
+      output: "individual exchange per reference flow"
+      source_ids: []
+    - id: gas_fate_balance
+      applies_to: "service_output; methane; ethane; propane; co2; co; so2; h2s"
+      rule: "Close actual component mass and carbon/sulfur balances across custody, fuel, BOG, losses and stock; cancel internal returns and count qualified delivery once. Document measured conversion/composition and any unresolved residual, not forced zero."
+      inputs:
+        - cp_mass
+        - cp_release
+        - cp_refrigerant
+      output: "component fate and reconciled net delivery"
+      source_ids: []
+    - id: asset_attribution
+      applies_to: "liq_train; regas_train; buffer_tank"
+      rule: "Apply supported attributable route-output share of actual asset whole-life utilization to actual manufacture/construction and distinct renewals; retain cumulative conservation across all periods/providers."
+      inputs:
+        - cp_assets_liquefaction
+        - cp_assets_regasification
+        - cp_assets_management
+        - cp_mass
+      output: "asset amount per reference flow"
+      source_ids: []
+    - id: species_fate
+      applies_to: "methane; ethane; propane; ethylene; co2; co; no; no2; so2; h2s"
+      rule: "Use actual species measurement or verified source composition, combustion/flare efficiency and speciation with explicit dataset units and uncertainty. No numerical fuel, leak, flare destruction or recovery factor is supplied."
+      inputs:
+        - cp_release
+        - cp_mass
+        - cp_energy_liquefaction
+        - cp_energy_regasification
+      output: "individual species per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_route
+      applies_to: "service_output"
+      requirement: "Actual transport purpose, route, net qualified mass, inlet/outlet state/composition and acceptance are mandatory; no pooling two phase-conversion routes."
+      evidence: "cp_mass"
+    - id: quality_bog
+      applies_to: "management"
+      requirement: "Require actual BOG/fuel/vent/flare/fugitive and stock records and component balance; internal recovery does not become fresh purchase or default credit."
+      evidence: "cp_mass; cp_release"
+    - id: quality_thermal
+      applies_to: "regasification; liquefaction"
+      requirement: "Keep actual technology, heat source, refrigerant components, water source/return thermal state and chemistry; absent applicable thermal/ecological characterization is disclosed, not zero impact."
+      evidence: "cp_energy_liquefaction; cp_energy_regasification; cp_refrigerant; cp_water_regasification; cp_water_management"
+    - id: quality_life
+      applies_to: "all asset rows"
+      requirement: "Support actual inventory and life-output denominator with capacity/utilization/downtime/yield/life evidence and supplier overlap review. Unknown life prevents a complete lifecycle claim."
+      evidence: "cp_assets_liquefaction; cp_assets_regasification; cp_assets_management"
+    - id: quality_gaps
+      applies_to: "all inventory rows"
+      requirement: "Disclose missing identities, component/flare/receiver evidence, upstream gas-chain links, co-output allocation and actual site noise/water/ecological method gaps; missing is not zero."
+      evidence: "cp_waste; cp_release; cp_mass"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Only transport-purpose gas liquefaction/regasification is covered; exclude type-rating/GPS/navigation and other residual functions, independent storage/transport and upstream gas commodity production."
+    source_ids:
+      - un-cpc-transport-phase
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Unique service_output must equal 1 kg and match measured net qualified outlet mass with mandatory route/state/composition/T/P/quality and actual period. Internal recycle, off-spec stock, fuel and losses are not qualified delivered output."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile custody, external fuel, internal BOG, stock and each species destination; no duplicate gas purchase, double qualified output, complete-flare assumption or implicit cold/heat/BOG credit. Service-only boundary does not assert zero upstream commodity burden in the complete gas chain."
+    source_ids: []
+  - rule_id: validate_atomic_life
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every row must be one actual exchange with its own correct property/unit and compartment, including source/return water thermal evidence. Verify life fractions and provider coverage; leave unknown identities/method gaps explicit rather than declare publication readiness."
+    source_ids: []
+  - rule_id: validate_protocol_partition
+    applies_to: "foreground_dataset_conformance"
+    rule: "Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "transport_natural_gas_phase_conversion_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "One compatible transport-purpose liquefaction or regasification component with the same physical route/states and gas-mass service basis, linked once into the gas chain"
+  excluded_use: "Generic industry support, type-rating/navigation, complete gas commodity lifecycle, unrelated storage/transport, cross-route kg equivalence or automatic avoided cold/heat/BOG benefits"
+  required_metadata: "transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty"
+  required_quality_disclosure: "Actual meters/route/composition representativeness, commodity custody and upstream links, internal fuel/BOG/species balance, thermal/water/receiver gaps and supported asset-life denominator"
+  update_trigger: "Changed transport use, route/technology, feed/outlet composition/state/quality, duty/load, BOG/flare/recovery, heat/water/chemical supply, provider/buffer boundary or life-output evidence"
+data_sources:
+  - id: "un-cpc-transport-phase"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 67990 explanatory note; shared draft PDF p378. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67990"
+    used_for: "Natural-gas liquefaction/regasification for transportation; type-rating/navigation remain outside the reviewed narrower method"
+  - id: "ifc-lng-2017"
+    type: "official_guidance"
+    reference: "IFC/World Bank Group, Environmental, Health, and Safety Guidelines: Liquefied Natural Gas Facilities, 11 April 2017, pp1–2,5–9,21–23. https://www.ifc.org/content/dam/ifc/doc/mgrt/20170406-final-lng-ehs-guideline-april-2017.pdf"
+    used_for: "Qualitative actual-route/process, BOG/fuel/flare/fugitive, water/thermal/chemical and waste-source context only. No numerical limits, LNG density, expansion ratio, efficiency or emission factors adopted; wider LNG transport/storage scope is not automatically included"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:ec93160366a7191b02221546d22161d6c30b9ddce909fed126c164975daa79e0"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6911"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6911
+          line: 63
+          column: 1
+        end:
+          offset: 10367
+          line: 84
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual customer gas/LNG at the agreed conversion inlet with measured composition/state and custody ownership |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Transport-purpose natural-gas liquefaction or regasification only |\n| recursive_input_rule | Purchased same-function conversion enters once with compatible route/states/output basis and provider coverage; remove overlapping owned utilities/assets |\n| upstream_dataset_requirement | Actual externally consumed energy/material/refrigerant, process assets/renewals and actual treatment; customer commodity custody and internal BOG are tracked separately |\n| disclosure | transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_route | Select one actual liquefaction or regasification route with specified physical states. IFC describes a broader LNG chain; only applicable actual conversion processes and necessary conditioning are included here. Independent transport, storage, handling and upstream gas production remain separately scoped. | un-cpc-transport-phase; ifc-lng-2017 |\n| boundary_bog | Reconcile actual BOG generation, return/recondensation/reliquefaction, internal fuel, external return/sale, stock change, venting, flaring and fugitive loss by composition and destination. Internal transfers are not fresh external purchases or duplicate finished output. Fuel use and emissions remain in the responsible service stage even when gas is customer-owned. | ifc-lng-2017 |\n| boundary_heat_water | Identify actual compressors/refrigerant cycle or ORV/SCV/air/intermediate-fluid vaporizer and heat source. Keep electricity, fuels, steam and purchased heat separate. Measure source-specific water intake/return quantity, location, temperature/thermal change and residual chemistry; no default temperature limit or claim of zero impact for ambient heat. | ifc-lng-2017 |\n| boundary_emissions | Include actual combustion, flare incomplete oxidation/slip, vent, fugitives, separated-feed contaminants and refrigerant loss as individual species/compartments. Do not assume complete flare destruction, assign total gas to methane, merge NOx species or use an aggregate VOC exchange. | ifc-lng-2017 |\n| boundary_assets | Retain construction/manufacture, necessary process-buffer assets, maintenance, replacements and real waste receivers with supported life utilization. Storage sold independently, carrier propulsion and customer gas-chain assets do not become process conversion assets. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 232
+              line: 8
+              column: 1
+            end:
+              offset: 276
+              line: 8
+              column: 45
+          text: "# Other supporting transport services n.e.c."
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6911
+              line: 63
+              column: 1
+            end:
+              offset: 6932
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42786"
+      family: "allocation"
+      span:
+        start:
+          offset: 42786
+          line: 721
+          column: 1
+        end:
+          offset: 44968
+          line: 732
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_route | Direct-meter each actual route and qualifying output. Shared compression/BOG/utilities use documented physical duty, net enthalpy, measured runtime or causal throughput, with actual startup/shutdown and stock reconciliation. Do not average liquid and gas route kg, nameplate capacities or fees. |  |\n| allocate_custody | Track customer gas custody and internal fuel/BOG separately from purchased external fuel; actual consumed customer gas causes real source emissions and a gas-chain replacement obligation, not a zero emission or duplicate gas-production input here. Full chain authors link commodity production/losses once. |  |\n| allocate_recovery | Returned/reliquefied/recondensed BOG is an internal balance once. Qualifying gas delivered at the route outlet counts once; gas exported in another state is separately reported with function/burden allocation if it is a co-service, not silently added to the denominator or given an avoided product credit. |  |\n| allocate_coproduct | For actual integrated conditioning that produces recovered NGL/sulfur or another co-output, first separate the actual functional processes and meters, then document a causal physical allocation and mass/energy reconciliation if separation is impossible. Add each identified co-output individually; no automatic credit for cold/heat/BOG utilization. |  |\n| allocate_life | Divide actual asset manufacture/construction and distinct maintenance/renewal inventory by supported whole-life actual qualifying service utilization. Use expected route output with evidence on capacity, utilization, downtime, yield, degradation and life; conserve all user/period shares without annual reset. No invented life or whole facility per kg. |  |\n| allocate_supplier | Reconcile utility/plant/BOG/storage supplier coverage with owned rows before summing. Floating regasification plant construction may be attributable, but carrier voyage or independent storage is separately scoped. Process buffer is counted once at actual inventory/time and cannot be sold again as unreported free storage. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 232
+              line: 8
+              column: 1
+            end:
+              offset: 276
+              line: 8
+              column: 45
+          text: "# Other supporting transport services n.e.c."
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42786
+              line: 721
+              column: 1
+            end:
+              offset: 42826
+              line: 721
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_64418"
+      family: "validation"
+      span:
+        start:
+          offset: 64418
+          line: 771
+          column: 1
+        end:
+          offset: 66580
+          line: 781
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Only transport-purpose gas liquefaction/regasification is covered; exclude type-rating/GPS/navigation and other residual functions, independent storage/transport and upstream gas commodity production. | un-cpc-transport-phase |\n| validate_reference | Unique service_output must equal 1 kg and match measured net qualified outlet mass with mandatory route/state/composition/T/P/quality and actual period. Internal recycle, off-spec stock, fuel and losses are not qualified delivered output. |  |\n| validate_balance | Reconcile custody, external fuel, internal BOG, stock and each species destination; no duplicate gas purchase, double qualified output, complete-flare assumption or implicit cold/heat/BOG credit. Service-only boundary does not assert zero upstream commodity burden in the complete gas chain. |  |\n| validate_atomic_life | Every row must be one actual exchange with its own correct property/unit and compartment, including source/return water thermal evidence. Verify life fractions and provider coverage; leave unknown identities/method gaps explicit rather than declare publication readiness. |  |\n| `validate_protocol_partition` | Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 232
+              line: 8
+              column: 1
+            end:
+              offset: 276
+              line: 8
+              column: 45
+          text: "# Other supporting transport services n.e.c."
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 64418
+              line: 771
+              column: 1
+            end:
+              offset: 64440
+              line: 771
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6911"
+      source_span:
+        start:
+          offset: 8586
+          line: 78
+          column: 1
+        end:
+          offset: 8952
+          line: 78
+          column: 367
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_bog"
+      identity_kind: "explicit"
+      unit_id: "normative_6911"
+      source_span:
+        start:
+          offset: 8953
+          line: 79
+          column: 1
+        end:
+          offset: 9353
+          line: 79
+          column: 401
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_heat_water"
+      identity_kind: "explicit"
+      unit_id: "normative_6911"
+      source_span:
+        start:
+          offset: 9354
+          line: 80
+          column: 1
+        end:
+          offset: 9747
+          line: 80
+          column: 394
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_6911"
+      source_span:
+        start:
+          offset: 9748
+          line: 81
+          column: 1
+        end:
+          offset: 10072
+          line: 81
+          column: 325
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_6911"
+      source_span:
+        start:
+          offset: 10073
+          line: 82
+          column: 1
+        end:
+          offset: 10365
+          line: 82
+          column: 293
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_route"
+      identity_kind: "explicit"
+      unit_id: "normative_42786"
+      source_span:
+        start:
+          offset: 42880
+          line: 725
+          column: 1
+        end:
+          offset: 43198
+          line: 725
+          column: 319
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_custody"
+      identity_kind: "explicit"
+      unit_id: "normative_42786"
+      source_span:
+        start:
+          offset: 43199
+          line: 726
+          column: 1
+        end:
+          offset: 43530
+          line: 726
+          column: 332
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_42786"
+      source_span:
+        start:
+          offset: 43531
+          line: 727
+          column: 1
+        end:
+          offset: 43863
+          line: 727
+          column: 333
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_coproduct"
+      identity_kind: "explicit"
+      unit_id: "normative_42786"
+      source_span:
+        start:
+          offset: 43864
+          line: 728
+          column: 1
+        end:
+          offset: 44240
+          line: 728
+          column: 377
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocate_life"
+      identity_kind: "explicit"
+      unit_id: "normative_42786"
+      source_span:
+        start:
+          offset: 44241
+          line: 729
+          column: 1
+        end:
+          offset: 44616
+          line: 729
+          column: 376
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocate_supplier"
+      identity_kind: "explicit"
+      unit_id: "normative_42786"
+      source_span:
+        start:
+          offset: 44617
+          line: 730
+          column: 1
+        end:
+          offset: 44966
+          line: 730
+          column: 350
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_64418"
+      source_span:
+        start:
+          offset: 64494
+          line: 775
+          column: 1
+        end:
+          offset: 64740
+          line: 775
+          column: 247
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_64418"
+      source_span:
+        start:
+          offset: 64741
+          line: 776
+          column: 1
+        end:
+          offset: 65007
+          line: 776
+          column: 267
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_64418"
+      source_span:
+        start:
+          offset: 65008
+          line: 777
+          column: 1
+        end:
+          offset: 65325
+          line: 777
+          column: 318
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_atomic_life"
+      identity_kind: "explicit"
+      unit_id: "normative_64418"
+      source_span:
+        start:
+          offset: 65326
+          line: 778
+          column: 1
+        end:
+          offset: 65627
+          line: 778
+          column: 302
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_protocol_partition"
+      identity_kind: "explicit"
+      unit_id: "normative_64418"
+      source_span:
+        start:
+          offset: 65628
+          line: 779
+          column: 1
+        end:
+          offset: 66578
+          line: 779
+          column: 951
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6911"
+      source_span:
+        start:
+          offset: 6911
+          line: 63
+          column: 1
+        end:
+          offset: 6932
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6911"
+      source_span:
+        start:
+          offset: 6960
+          line: 67
+          column: 1
+        end:
+          offset: 8532
+          line: 74
+          column: 865
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42786"
+      source_span:
+        start:
+          offset: 42786
+          line: 721
+          column: 1
+        end:
+          offset: 42826
+          line: 721
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_64418"
+      source_span:
+        start:
+          offset: 64418
+          line: 771
+          column: 1
+        end:
+          offset: 64440
+          line: 771
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ec93160366a7191b02221546d22161d6c30b9ddce909fed126c164975daa79e0"
+  generated_content_sha256: "sha256:06ab298a9b6418f68c14e80ae18f7d6fcf91b171dcc543eaa31cdd305499f467"

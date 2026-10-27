@@ -1,8 +1,529 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.other-supporting-services-for-railway-transport
 language: zh-CN
-status: scaffold
 sync_with: pcr.en-US.md
+status: candidate
 ---
 
-# 待补充
+# 其他铁路运输支持服务
+
+## 1. 范围与适用性
+
+铁路旅客终端、铁路基础设施及相关设施、非装卸货运终端、技术支持点、铁路加油停靠点及其他准确识别的铁路支持功能，排除中介。每数据集选定一个功能及有物理定义的已完成服务块；不同服务块是独立情景，不能因均用计数单位而视为等效输出。[来源：`un-cpc-rail-support`]
+
+排除集装箱/非集装箱货物及旅客行李装卸（67110/67190）、铁路推送/牵引或调车（67310）、客货运输、客货中介（85610/85630）、车辆制造/大修及无关零售/物业活动。终端自身售票纳入，独立订票中介不纳入；行李寄存与装卸区分。终端打包合同须拆分排除活动，不能将其负荷置零。[来源：`un-cpc-rail-support`]
+
+| 服务族 | 计数服务块 | 必需物理定义 |
+| --- | --- | --- |
+| passenger_terminal | 一个已完成的明确旅客终端交易或到访 | 固定旅客数、售票/协助/行李寄存功能、车站空间、实际时长及验收；寄存须识别件数/质量与保管时长，排除行李装卸。 |
+| infrastructure | 一次已完成的明确通行或设施可用性块 | 固定线路/区段、准确长度、列车/车型/轴重、通行或可用时长、运行限制、信号及资产覆盖。每数据集仅选一次通行或一个定时可用块，不得等同。 |
+| freight_terminal | 一个已完成的非装卸终端支持交易 | 固定列车/货物批次总体、接入/管理功能、实际停留及终端空间；排除货物装卸及调车牵引。 |
+| technical_support | 一个已完成的明确技术支持任务 | 固定工单、列车/设备配置、实际检查/设施服务、时长及签署完成；大修/车辆制造不属于该支持任务。 |
+| refuelling_stop | 一个已完成的明确列车加油交易 | 固定实际燃料及实测交付质量/体积和密度、连接列车、时长及交付端点；本服务仅计设施开销，不计此后列车耗油。 |
+| other_support | 一个已完成且准确命名的铁路支持功能 | 按相同实测协议提供物理范围、时长、验收及非中介边界；未明确功能的其他服务发票不能用于本方法。 |
+
+## 2. 产品类别识别
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.other-supporting-services-for-railway-transport |
+| classification_refs | CPC 3.0 67390; exact |
+| covered_products | 所声明服务族中的明确非中介铁路支持服务块 |
+| excluded_products | 铁路运输、调车、货物/行李装卸、中介、制造/大修及无关商业 |
+| representative_product | 针对一列明确到达列车、已记录终端停留的一个已完成非装卸货运终端支持交易 |
+| production_route | 定义功能/范围 → 运行实际有关设施及保障 → 记录具有验收物理范围的已完成服务 |
+| market_state | 已验收可计量支持功能；费用、票价或燃料转售不是功能数量 |
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| What | 利用所声明设施提供一个准确规定的铁路支持功能 |
+| How much | 一个已完成块，其服务族特定计数对象和物理范围须符合validate_family_passenger_terminal、validate_family_infrastructure、validate_family_freight_terminal、validate_family_technical_support、validate_family_refuelling_stop或validate_family_other_support |
+| How well | 满足并证明实际接入、可用性、保管或技术验收要求，不设通用质量等级 |
+| How long or cycle | 所定义块的明确起止时间戳及实际时长，含可归属待机及重试 |
+| reference_flow_link | `support_block` |
+
+| 字段 | 值 |
+| --- | --- |
+| 参考数量 | 1 |
+| 参考产品流 | 已完成的明确铁路支持服务块 |
+| 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| 参考单位 | Item(s) |
+| 必需限定信息 | 服务族及单一具体功能；服务块定义与准确物理范围；车站/线路/终端/技术点/加油站编号；起止接口及时间戳；实际服务旅客/列车/货物批次总体；实际时长；适用时的轨道长度及列车/车轴配置；货物/行李装卸排除；客户燃料/水/电交付；运营方/供应商分工；供能及牵引分离；设施及资产范围；实际质量/安全要求与完成；期间及地区 |
+
+Item(s)计数一个已验收且明确定义的服务案例。声明该案例适用的实际列车/旅客数、时长、长度、供油量或行李保管量，均不得由费用推断。不同功能或范围值不能混合、直接比较或按通用服务因子换算；可用性块须有准确容量及持续时间，不能是无限定设施年。货运终端块不是一吨公里运输。
+
+## 4. 计量与单位规则
+
+| rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| block_count | 参考产品 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` | Item(s) | 用cp_activity计数已验收块并保持物理范围；子任务/重试及第二张发票不产生另一个完整输出。 |
+| unit_separation | support_block | 物品数量 | Item(s) | 保留时间、轨道长度、旅客/列车数及交付燃料量作为明确范围计量，不建立跨族单位等效。 |
+| fuel_custody | diesel | 质量 | kg | 采用场址实际消耗燃料；体积转质量须有可追溯牌号/批次密度及温度。客户加油另行计量，属于保管过手交付。 |
+
+## 5. 系统边界
+
+### 边界概化
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | 已识别支持任务/设施块，列车、旅客及货物已存在；保留设施及公用工程上游负荷 |
+| starting_condition_role | foreground_start |
+| product_classification_scope | 所声明铁路支持功能，排除运输、调车、装卸及中介 |
+| recursive_input_rule | 相同功能的分包支持以准确物理范围及上游清单计入一次，剔除运营方重叠资源/资产 |
+| upstream_dataset_requirement | 实际设施能源、耗材、有关基础设施/设备建设、更新及废物处理清单 |
+| disclosure | 服务族块及范围、端点/时间、排除服务、客户能源保管、供应商分工、初始/更新资产、分配及证据缺口 |
+
+| rule_id | 规则 | source_ids |
+| --- | --- | --- |
+| boundary_functions | 仅纳入所声明块实际所需作业：旅客终端管理/保管、基础设施接入/信号、非装卸货运终端支持、技术点支持或加油停靠点运行。选择并记录实际功能，不假定每块使用所有设施。 | un-cpc-rail-support |
+| boundary_traction | 区分交付列车的牵引用电与支持设施用电，识别实际配电损耗。客户实测牵引用电是独立能源账；英国计费实践仅支持该接口，不是全球费率或排放因子。 | networkrail-metering |
+| boundary_custody | 客户燃料、列车用水及行李/货物保留为独立计量的保管交付；通过设施不意味着场址燃烧或商品生产消耗。集成燃料/供能数据集须另行保留物理投入/输出及上游负荷；本仅支持服务不能声称完整集成足迹。 |  |
+| boundary_actual | 纳入实际可归属待机、失败作业、清洗、维护、公用工程及建设份额。筛查每种实际燃料、制冷剂、污染物物种及废物流，实际存在时另加具体行；未列作业或上游缺口不默认零负荷。 |  |
+
+## 6. 过程清单结构
+
+该单过程针对一个服务族块实例化，执行第1节活动特定条件。各行为单一交换的条件性示例；轨道建设与实际更新范围不得重叠。纯电/电子服务块不预设柴油、制冷剂或排放。其他实际燃料等级、维护材料、污染物及废物须另设具体交换，能源、总氮氧化物、挥发性有机物或废物集合标签不是选定流。
+
+### 过程图
+
+| process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
+| --- | --- | --- | --- | --- | --- |
+| support | 提供明确铁路支持服务块 | required | 选定一个功能并固定物理范围，逐项落实流条件 | foreground_production | 每参考流 |
+
+### 过程：提供明确铁路支持服务块（`support`）
+
+#### 输入
+
+##### 产品流
+
+###### 铁路支持设施用户端交流电（`electricity`）
+
+按所选服务计量实际车站照明、电梯、信息设备、信号、技术设备及加油泵。排除交付列车的牵引用电，另行核对归属基础设施运营的配电损耗。
+
+- 选定流：铁路支持设施用户端交流电
+- 流属性/单位：能量 / kWh
+- 数量规则：每参考流的可归属实测交换量；cp_energy。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
+- 来源：
+
+###### 外购空间供热（`heat`）
+
+实际外购车站/设施供暖时纳入；计量交付热量及使用/服务面积归属，不再重复加入供应商锅炉燃烧。
+
+- 选定流：外购空间供热
+- 流属性/单位：能量 / MJ
+- 数量规则：每参考流的可归属实测交换量；cp_energy。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_energy`
+- 来源：
+
+###### 设施运营用未掺混柴油（`diesel`）
+
+仅在实际支持设施发电机或维护机械燃烧该燃料时纳入。仅加注客户机车的燃料属于保管交付，不是本消耗；其他燃料/混合燃料须另设行。
+
+- 选定流：设施运营用未掺混柴油
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_fuel。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_fuel`
+- 来源：
+
+###### 自来水（`water`）
+
+实际旅客设施、清洗或技术保障用水时纳入；列车供水交付与设施耗水分开，保持供应商边界。
+
+- 选定流：自来水
+- 流属性/单位：体积 / m3
+- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_material`
+- 来源：
+
+###### 热敏票据纸（`ticket_paper`）
+
+实际打印纸质票据时纳入；计量领用/未用纸及打印废物，电子交易不得虚设纸耗。
+
+- 选定流：热敏票据纸
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_material`
+- 来源：
+
+###### 碳酸钠清洗剂（`cleaner`）
+
+实际使用该具体清洗物质时纳入；配方清洗剂须有组成及其独立具体产品身份。
+
+- 选定流：碳酸钠清洗剂
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_material`
+- 来源：
+
+###### 矿物润滑油（`lubricant`）
+
+实际支持设备维护时纳入；核对新用量、退回库存及回收废油，不纳入所选支持服务之外的机车燃料或润滑。
+
+- 选定流：矿物润滑油
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_material。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_material`
+- 来源：
+
+###### 钢制铁路轨道钢轨（`rail_steel`）
+
+基础设施服务实际发生可归属换轨时纳入；记录牌号、断面、领用/拆除质量及分配服务时段，排除轨道上游数据集已含替换。
+
+- 选定流：钢制铁路轨道钢轨
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_maintenance。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_maintenance`
+- 来源：
+
+###### 碎石铁路道砟（`ballast`）
+
+实际补砟/换砟时纳入；新石与复用石分别称重并识别组成，排除已含更新。
+
+- 选定流：碎石铁路道砟
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_maintenance。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_maintenance`
+- 来源：
+
+###### 混凝土铁路轨枕（`sleeper`）
+
+实际更换混凝土轨枕时纳入；识别设计并计数实际替换量，木/钢枕须另设行，不得套用本名称。
+
+- 选定流：混凝土铁路轨枕
+- 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- 数量规则：每参考流的可归属实测交换量；cp_maintenance。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_maintenance`
+- 来源：
+
+###### 已确定配置的铁路站房（`building_share`）
+
+实际使用车站/终端建筑时纳入；按已识别建筑面积、有证据的全寿命服务/使用量及本服务块使用量分配建设份额。
+
+- 选定流：已确定配置的铁路站房
+- 流属性/单位：面积 / m2
+- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_assets`
+- 来源：
+
+###### 已确定配置的铁路轨道区段（`track_share`）
+
+基础设施运营时纳入；识别准确区段、轨距、建设组件及长度。初始建设与单列实际更新分开，不得每次通行计入整条线路。
+
+- 选定流：已确定配置的铁路轨道区段
+- 流属性/单位：长度 / m
+- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_assets`
+- 来源：
+
+###### 已确定配置的铁路信号控制器（`signal_share`）
+
+实际使用信号控制器时纳入；以资产编号及实测利用量支持制造份额，区分共用信号范围与轨道建设。
+
+- 选定流：已确定配置的铁路信号控制器
+- 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_assets`
+- 来源：
+
+###### 已确定配置的铁路加油装置（`pump_share`）
+
+铁路停靠点实际加油时纳入；明确装置及其制造清单，不包含客户机车制造。
+
+- 选定流：已确定配置的铁路加油装置
+- 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- 数量规则：每参考流的可归属实测交换量；cp_assets。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_assets`
+- 来源：
+
+###### 1,1,1,2-四氟乙烷制冷剂（`hfc_charge`）
+
+实际对支持设施冷却回路补充HFC-134a时纳入，其他制冷剂须分别设具体化学物质行。
+
+- 选定流：1,1,1,2-四氟乙烷制冷剂
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_refrigerant。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_refrigerant`
+- 来源：
+
+#### 输出
+
+##### 产品流
+
+###### 已完成的明确铁路支持服务块（`support_block`）
+
+一个已完成块须固定服务定义表中的一个功能、物理范围及验收接口，不是抽象且可互换的铁路服务单位。
+
+- 选定流：已完成的明确铁路支持服务块
+- 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- 数量规则：1 Item(s)
+- 数值来源模式：`fixed_value`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_activity`
+- 来源：
+
+##### 废物流
+
+###### 废矿物润滑油（`used_oil`）
+
+实际分离排出废油时纳入；称重并识别处理，不得将同一回收油另作环境排放。
+
+- 选定流：废矿物润滑油
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_waste`
+- 来源：
+
+###### 废热敏票据纸（`waste_paper`）
+
+实际运营方产生票据纸废物时纳入；单独称重并识别处理，不假定可回收。
+
+- 选定流：废热敏票据纸
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_waste`
+- 来源：
+
+###### 拆除的受污染铁路道砟（`waste_ballast`）
+
+实际拆除道砟时纳入；表征污染并区分复用材料、处理及最终废物，不自动计替代收益。
+
+- 选定流：拆除的受污染铁路道砟
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_waste`
+- 来源：
+
+###### 生活污水（`sewage`）
+
+实际车站/设施生活排水时纳入；实测或核对水平衡及实际处理。含油清洗废水须另设具体流，不得混入本行。
+
+- 选定流：生活污水
+- 流属性/单位：体积 / m3
+- 数量规则：每参考流的可归属实测交换量；cp_waste。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_waste`
+- 来源：
+
+##### 基本流
+
+###### 化石二氧化碳，排入空气（`fossil_co2`）
+
+实际支持设施化石燃料燃烧时纳入；采用实测排放或经核验燃料/含碳量/氧化证据，不得将客户加油交付或列车牵引视为设施排放。
+
+- 选定流：化石二氧化碳，排入空气
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_release`
+- 来源：
+
+###### 正己烷，排入空气（`hexane_air`）
+
+实际燃料转移/维护活动中排放正己烷蒸气时纳入；量化具体物种、控制路线及空气介质。其他实际物种须另设行，总挥发性有机物不等于正己烷。
+
+- 选定流：正己烷，排入空气
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_release。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_release`
+- 来源：
+
+###### 1,1,1,2-四氟乙烷，排入空气（`hfc_air`）
+
+实际HFC-134a泄漏时纳入；核对回路补充量、期初/末充注及回收物，购买制冷剂不等于全部排放。
+
+- 选定流：1,1,1,2-四氟乙烷，排入空气
+- 流属性/单位：质量 / kg
+- 数量规则：每参考流的可归属实测交换量；cp_refrigerant。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_refrigerant`
+- 来源：
+
+## 7. 分配与共产品处理
+
+| rule_id | 规则 | source_ids |
+| --- | --- | --- |
+| allocate_functions | 优先拆分服务族与物理范围；按实测负荷时间、使用面积时间、设施利用量及块日志分配共用电热/保障，核对全部用途并保留待机。不得将不同旅客到访、列车通行及加油交易合并计数再平均。 |  |
+| allocate_assets | 采用持续建设/制造账及有证据的全寿命服务分母；旅客建筑使用、线路列车/轴重利用及技术/加油设备利用分别记录。期间核算仅分配已归属该期份额；跨块/客户/期间累计比例不得超过一或每年重置，未知寿命/分母须审查及敏感性分析。 |  |
+| allocate_renewals | 区分初始轨道/设施建设与单列实际钢轨、道砟及轨枕更新。对同一更新活动选择已含更新的上游清单或显式更新行，不得两者重复；实际回收材料单列，不自动赋予回收收益。 |  |
+| allocate_scope | 供应商清单对已含资源/资产仅替代一次。客户燃料/能源、票务收入、保管货物及客运不是本支持计数的共产品。真实打包服务按可追溯组件工作分配；只有组件及范围准确固定时才保留整体服务包。 |  |
+
+## 8. 前景数据采集、计算与质量规则
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | 记录类型 | 原始字段 | 采集方法 | 单位 | 频率 | 时间覆盖 | 场址范围 | 汇总规则 | 质量证据 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_activity | support | support_block | 验收服务/块账 | 服务族；准确功能；物理范围；旅客/列车/批次；行李件数/质量及保管时间；轨道区段/长度；轴重类型；可用容量/时间；工单；供油交付；端点/时间；验收 | 按对应validate_family_*规则核验已完成功能，记录实际范围并区分组件/整体包身份；仅计同质验收块，失败工作保留在清单中。 | Item(s) | 每服务块 | 完整服务块及已分配保障 | 所声明设施及供应商 | 每参考流 | 工单；车站/接入日志；保管记录；签署验收；准确总体核对 |
+| cp_energy | support | electricity; heat | 能源及客户交付账 | 分别记录实际kWh及MJ；计量；电压/地区；时间；任务；实测负荷；待机；牵引交付及实际配电损耗；供应商覆盖 | 对实际支持功能分表计量，分别核对建筑/信号/泵及客户牵引；共用保障按实测因果使用分配，不按票价。 | kWh; MJ | 每任务/计量时段 | 完整块及归属待机 | 实际设施 | 每参考流 | 计量；任务/负荷日志；供应商/客户能源核对 |
+| cp_fuel | support | diesel | 消耗与交付燃料平衡 | 燃料等级；设施消耗；发电机/机械负荷；接收/库存；客户交付计量；密度/温度；实际损失 | 设施耗油与客户加油及存储燃料分别核对；采用校准质量或可追溯实测密度换算；客户交付供应不归为场址燃烧。 | kg | 每使用/转移及库存期 | 全部实际纳入消耗 | 设施燃料设备 | 每参考流 | 油罐/加油计量；库存平衡；实际负荷日志 |
+| cp_material | support | water; ticket_paper; cleaner; lubricant | 具体材料账 | 单一材料；实际kg或m3；领退库存；功能；组成；客户供水交付；事件 | 分别计量各具体交换并核对库存/退回，区分保管供水与实际消耗；其他实际化学品/材料逐项增加。 | kg; m3 | 每领用/使用及监测期 | 全部实际保障 | 纳入场址及运营方 | 每参考流 | 计量/称重；采购及维护日志；材料平衡 |
+| cp_maintenance | support | rail_steel; ballast; sleeper | 已识别基础设施更新账 | 区段；更新事件；钢轨牌号/质量；石料质量；轨枕设计/件数；拆除/复用量；原资产范围；服务时段 | 按实际工单称量钢轨/道砟、计数混凝土轨枕；核对初始建设及上游更新覆盖，仅分配有证据的服务份额。 | kg; Item(s) | 每更新事件 | 代表服务可归属实际更新 | 已识别轨道区段 | 每参考流 | 工单；称重；组件计数；上游边界；分配账 |
+| cp_assets | support | building_share; track_share; signal_share; pump_share | 持续建设/设备账 | 资产编号；m2/m/件数；配置；建设/制造清单；实际利用；全寿命利用分母；先前累计份额；期间份额；敏感性 | 将实际资产及有证据的服务寿命匹配所选功能；区分初始建设/更新范围，跨所有用户/期间守恒累计分配；未知分母须明确待审。 | m2; m; Item(s) | 每分配及资产更新 | 有证据的全寿命及所声明观测期 | 实际所选设施/资产 | 每参考流 | 工程/资产记录；实际利用；寿命依据；累计守恒 |
+| cp_refrigerant | support | hfc_charge; hfc_air | HFC-134a回路平衡 | 回路；期初/末充注；补充；回收；处置；检漏；功能份额 | 核对实际分化学物充注转移及有证据的泄漏；其他制冷剂分别识别并做平衡。 | kg | 每维护事件及监测期 | 代表设施制冷 | 实际回路 | 每参考流 | 维护记录；充注称重；检漏；平衡 |
+| cp_waste | support | used_oil; waste_paper; waste_ballast; sewage | 分类废物/处理账 | 单一废物流；实际kg或m3；污染；服务/更新事件；接收方；处理；回收量 | 分别称量固体/废油并计量生活排水；含污染清洗废水及其他实际废物流分开，记录处理且不自动赋予回收收益。 | kg; m3 | 每转移/排水期 | 全部实际可归属废物 | 运营方及处理端点 | 每参考流 | 称重/转移单；废物分析；水平衡；处理清单 |
+| cp_release | support | fossil_co2; hexane_air | 分物种排放账 | 具体物种；kg；介质；实际消耗燃料；蒸气组成；控制；实际设备/负荷；方法范围 | 实测排放或采用经审查的化学物/燃料/设备特定方法；区分保管转移、蒸气损失、回收物及设施燃烧，其他实际污染物逐项增加。 | kg | 每作业及代表监测 | 全部实际排放活动 | 实际支持设施 | 每参考流 | 物种测量；燃料/负荷日志；方法文档；不确定性 |
+
+### 计算规则
+
+| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| block_attribution | 所有清单行 | 将实际交换总量归属同质功能/范围情景，再除以实际验收块数；失败工作与待机保留在归属总量中；参考输出准确为1 Item(s)。 | cp_activity；可归属实测总量 | 每参考流交换量 |  |
+| asset_attribution | building_share; track_share; signal_share; pump_share | 将有证据的服务块比例用于实际建设/制造清单并守恒全寿命份额；区分初始资产与显式更新范围，不每年重置整个资产。 | cp_assets；cp_maintenance；实际功能利用量 | 每参考流资产量 |  |
+| customer_energy_reconciliation | diesel; electricity | 设施实际消耗与客户油电交付及实际配电损耗分别核对；交付升数或牵引电量不得作为设施燃烧数量。 | cp_fuel；cp_energy；保管交付计量 | 每参考流设施交换量 |  |
+
+### 数据质量要求
+
+| requirement_id | 适用对象 | 要求 | 证据 |
+| --- | --- | --- | --- |
+| quality_extent | support_block | 固定一个服务族/功能及准确范围、起止和验收；保留原旅客/列车/时间/长度/燃料记录，不得使用未定义通用块。 | cp_activity |
+| quality_scope | 所有清单行 | 审计排除运输/装卸/中介及客户能源边界，记录组件/服务包及自有/供应商重叠。 | un-cpc-rail-support; cp_activity; cp_energy; cp_fuel |
+| quality_lifecycle | building_share; track_share; signal_share; pump_share | 支持资产寿命、初始/更新边界及跨期分配守恒；寿命或上游清单未解决时不得声称完整生命周期。 | cp_assets; cp_maintenance |
+| quality_gaps | 所有清单行 | 披露身份、测量、物种、控制及上游缺口，缺值不等于零；保留实际地区/期间，不采用无依据默认因子。 | 实际记录及适用性审查 |
+
+## 9. 校验规则
+
+| rule_id | 规则 | source_ids |
+| --- | --- | --- |
+| validate_block | 要求唯一support_block输出等于1 Item(s)，一个固定功能/范围及准确接口时间与验收；拒绝费用、无功能定义的售票量、旅客公里及吨公里作为服务计数等效。 |  |
+| validate_classification | 按官方范围检查所选终端/基础设施/技术/加油支持功能，排除另行建模的货物/行李装卸、调车及中介。 | un-cpc-rail-support |
+| validate_energy | 核对场址与客户燃料/牵引能源，不得在支持模型中燃烧全部加注燃料；区分设施消耗、保管交付、实际损失及上游供应。 |  |
+| validate_atomic_lifecycle | 每个清单行为具体交换并有实际适用性；核验资产份额守恒、更新不重叠、供应商范围及实际废物/污染物处理。身份或证据未解决须明确，不推定具备发布条件。 |  |
+| `validate_family_passenger_terminal` | 当service_family=passenger_terminal时，计数对象为一个已完成的明确旅客终端交易或到访。固定旅客数、售票/协助/行李寄存功能、车站空间、实际时长及验收；寄存须识别件数/质量与保管时长，排除行李装卸。 |  |
+| `validate_family_infrastructure` | 当service_family=infrastructure时，计数对象为一次已完成的明确通行或设施可用性块。固定线路/区段、准确长度、列车/车型/轴重、通行或可用时长、运行限制、信号及资产覆盖。每数据集仅选一次通行或一个定时可用块，不得等同。 |  |
+| `validate_family_freight_terminal` | 当service_family=freight_terminal时，计数对象为一个已完成的非装卸终端支持交易。固定列车/货物批次总体、接入/管理功能、实际停留及终端空间；排除货物装卸及调车牵引。 |  |
+| `validate_family_technical_support` | 当service_family=technical_support时，计数对象为一个已完成的明确技术支持任务。固定工单、列车/设备配置、实际检查/设施服务、时长及签署完成；大修/车辆制造不属于该支持任务。 |  |
+| `validate_family_refuelling_stop` | 当service_family=refuelling_stop时，计数对象为一个已完成的明确列车加油交易。固定实际燃料及实测交付质量/体积和密度、连接列车、时长及交付端点；本服务仅计设施开销，不计此后列车耗油。 |  |
+| `validate_family_other_support` | 当service_family=other_support时，计数对象为一个已完成且准确命名的铁路支持功能。按相同实测协议提供物理范围、时长、验收及非中介边界；未明确功能的其他服务发票不能用于本方法。 |  |
+
+## 10. 发布数据集画像
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | railway_support_service |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | 物理范围及保管/接入端点兼容的所规定铁路支持功能组成部分 |
+| excluded_use | 完整铁路运输/牵引或燃料供应足迹；无限定跨功能族比较/平均；暗示技术/安全批准 |
+| required_metadata | 服务族及单一具体功能；服务块定义与准确物理范围；车站/线路/终端/技术点/加油站编号；起止接口及时间戳；实际服务旅客/列车/货物批次总体；实际时长；适用时的轨道长度及列车/车轴配置；货物/行李装卸排除；客户燃料/水/电交付；运营方/供应商分工；供能及牵引分离；设施及资产范围；实际质量/安全要求与完成；期间及地区 |
+| required_quality_disclosure | 身份及测量缺口；功能/范围限制；客户能源及供应商边界；资产寿命/更新不确定性；遗漏上游范围 |
+| update_trigger | 功能/范围、设施/线路配置、保障设备、客户能源接口、服务质量、资产寿命或分配证据变化 |
+
+## 11. 数据源
+
+| 来源编号 | 类型 | 参考文献 | 用途 |
+| --- | --- | --- | --- |
+| un-cpc-rail-support | official_guidance | 联合国统计司CPC 3.0，67390解释说明，与解释说明草案PDF第373页一致。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67390 | 旅客终端、基础设施、非装卸货运终端、技术点及加油点范围/排除项，不提供因子或通用事件等效 |
+| networkrail-metering | official_guidance | 英国Network Rail《车载计量》，2026-10-23阅读当前网页。https://www.networkrail.co.uk/industry-and-commercial/information-for-operators/on-train-metering/ | 独立牵引能源账及实际计量使用量；仅为英国运营接口证据，不采用费率、损耗加成或全球生命周期因子 |
