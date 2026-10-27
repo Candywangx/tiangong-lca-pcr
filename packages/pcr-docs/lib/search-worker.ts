@@ -40,7 +40,7 @@ async function load(language:string):Promise<SearchShard[]> {
  if(!response.ok)throw new Error("Search index is unavailable.");
  const manifestText=await response.text();
  const manifest:unknown=JSON.parse(manifestText);
- if(record(manifest)&&manifest.schemaVersion===5&&Object.hasOwn(manifest,"files")){
+ if(record(manifest)&&(manifest.schemaVersion===5||manifest.schemaVersion===6)&&Object.hasOwn(manifest,"files")){
   if(Object.hasOwn(manifest,"shards")||Object.hasOwn(manifest,"termDictionary"))throw new Error("Invalid search manifest.");
   const parsed=readSearchManifest(manifest,language);
   if(searchUtf8(manifestText).byteLength+parsed.files.reduce((sum,file)=>sum+file.bytes,0)>SEARCH_RAW_LIMIT)throw new Error("Invalid search transport.");
