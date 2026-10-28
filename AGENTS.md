@@ -90,6 +90,10 @@ Rules:
 - Do not use CPC, HS, ISIC, NAICS, or another external classification system as the canonical PCR directory tree.
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
 - If a classification leaf maps to an existing PCR, update the mapping file instead of duplicating the PCR.
+- The 14 CPC 04 PCRs delivered by merged PR #26 retain their original ids and semantic directories from the
+  CPC 3.0 leaf-slug inventory; PR #28 now carries only their repairs, not new methods. Keep narrower product,
+  route, state and gate boundaries in methodology and mapping relations rather than replacement ids.
+  See `docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md`.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.

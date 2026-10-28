@@ -33,6 +33,10 @@ lastReviewedNote: "PCR #152: reviewed the exact @types/node >=25.0.0 ceiling in 
 
 # PCR 资料库架构
 
+已合并 PR #26 的 14 份 CPC 04 方法学沿用原有 PCR id 与语义目录；PR #28 现仅交付这 14 份的修复，
+不新增方法。恢复身份不扩大产品、路线、状态或交付边界，也不改变 `narrower` 关系。范围和验证记录见
+[两个 PR 的旧 ID 恢复记录](reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)。
+
 ## 项目定位
 
 本仓库是 TianGong LCA 的 PCR 方法学资料库。它负责存储 canonical PCR 内容，
