@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: 42ec3ae0b97a8cbf3a482cf1411d1765ccd5734a
-lastReviewedNote: "PCR #152: reviewed the exact @types/node >=25.0.0 ceiling in both existing npm updater entries and the Node 24 LTS revisit condition. Dependency/runtime pins, graph ownership, canonical authoring and full qualification/publication boundaries are unchanged; static checks do not claim hosted activation."
+lastReviewedAt: 2026-10-27
+lastReviewedCommit: 874470a017a4e7172b96674cca39e82a7028954e
+lastReviewedNote: "PCR #154: reviewed the single site mdast-util-to-markdown 2.1.2 to 2.2.0 lock resolution and existing incoming ranges. Paired standalone serialization probes preserve the new AST and reproduce upstream fixes; six actual PCR/guide sources retain identical inventories, HTML and source context, with no toMarkdown calls. Root graph, canonical content, methodology/translation states, runtime pins, product 0.4.9 and production pointer remain unchanged. Focused checks are not full current-source Linux, corpus, sealed-product or hosted qualification; independent review and exact workspace integration remain required."
 ---
 
 # TianGong LCA PCR Library
