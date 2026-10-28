@@ -23,11 +23,16 @@ system_boundary:
       source_ids:
         - fao-whiteleg-shrimp-2009
         - fao-peru-shrimp-2025
-    - rule_id: b_nodes
-      applies_to: "foreground"
-      rule: "Separate managed production, physical harvest, whole-product washing, grading, killing/chilling, conditional packaging and delivery/receipt responsibilities. Match all physical transfers; require whole-product washing before independent grading/sorting, with early visual removal of incidental material owned by harvest. Another node ordering requires methodology review. No deheading, peeling, cooking or freezing is included before reference receipt."
+    - rule_id: b_route_evidence
+      applies_to: "route_eligibility"
+      rule: "Before treating a lot as eligible or finalizing its foreground dataset, obtain the named farm/crop and lot-linked operation log: actual wash and independent sorting event ids, start/end times, incoming/outgoing state and measured mass, paired handoff ids and responsible-operator confirmation. Show that washing precedes independent grading for this lot. FAO 2009 instead describes sorting before washing; neither cited FAO source proves the selected local order. An unknown order is incomplete eligibility, not an assumed match. A contrary order is outside this selected route and requires methodology review; never relabel an actual grading operation as incidental removal to force a match."
       source_ids:
         - fao-whiteleg-shrimp-2009
+        - fao-peru-shrimp-2025
+    - rule_id: b_nodes
+      applies_to: "foreground"
+      rule: "Separate managed production, physical harvest, whole-product washing, grading, killing/chilling, conditional packaging and delivery/receipt responsibilities. Match all physical transfers; the selected washing-before-independent-grading order applies only when evidenced under b_route_evidence, with early visual removal of incidental material owned by harvest. Another node ordering requires methodology review. No deheading, peeling, cooking or freezing is included before reference receipt."
+      source_ids: []
     - rule_id: b_periods
       applies_to: "crop_and_assets"
       rule: "Include preparation/fallow, seed receipt/stocking, all growout and harvest attempts, crop failures, idle/cleaning/changeover, actual holding and delivery over declared periods. Include land occupation/history, pond/levee, pumps, aerators, nets, chill equipment, boxes and vehicles with installation, service life, maintenance, replacement and termination ownership."
@@ -1081,7 +1086,7 @@ dataset_production:
       process_id: "wash"
       flow_role: "Actual whole-product washing inputs, transfers, services, residues and releases"
       record_type: "event, meter, invoice, sampling, asset and acceptance records"
-      raw_fields: "harvest lot/transfer; actual wash position in sequence; incoming and washed whole mass; wash source/provider/volume/renewals; corrections for free water; rejects and wastewater load/destination; node/crop/event/date/site and reporting-window ids; transfer/custody; each actual instance property/unit/substance/provider; direct utility/fuel and full-service coverage flags; meter/invoice/asset id, service-life/replacement/maintenance and consumer-period shares; actual pollutant/substance/basis/medium, model factor/source and uncertainty; native measured amount, attributable share and receipt denominator A"
+      raw_fields: "harvest lot/transfer; lot-linked wash and independent-sorting event ids and start/end times; responsible-operator confirmation and paired handoff ids under b_route_evidence; actual wash position in sequence; incoming and washed whole mass; wash source/provider/volume/renewals; corrections for free water; rejects and wastewater load/destination; node/crop/event/date/site and reporting-window ids; transfer/custody; each actual instance property/unit/substance/provider; direct utility/fuel and full-service coverage flags; meter/invoice/asset id, service-life/replacement/maintenance and consumer-period shares; actual pollutant/substance/basis/medium, model factor/source and uncertainty; native measured amount, attributable share and receipt denominator A"
       collection_method: "Collect physical lot/event observations with calibrated scales/meters, representative biological/water samples, matched invoices and signed custody/acceptance records; for unmeasured releases use documented models/factors applicable to the actual activity, substance and receiving medium (species-specific when biological), retaining factor provenance, chemistry/medium and uncertainty. Match quantities to this process and actual timing; reconcile upstream service and asset coverage before attribution."
       unit: "kg; m3; count; kWh or actual native unit"
       frequency: "each crop/event/lot; meter interval; each replacement and receipt"
@@ -1093,7 +1098,7 @@ dataset_production:
       process_id: "sort"
       flow_role: "Whole-product grading and destination sorting inputs, transfers, services, residues and releases"
       record_type: "event, meter, invoice, sampling, asset and acceptance records"
-      raw_fields: "wash lot/transfer and actual event order; incoming whole mass; every selected and other intended sale lot's species/state/size/quality/mass/recipient/handoff; prices/revenue for sensitivity; rejected fraction/fate; node/crop/event/date/site and reporting-window ids; transfer/custody; each actual instance property/unit/substance/provider; direct utility/fuel and full-service coverage flags; meter/invoice/asset id, service-life/replacement/maintenance and consumer-period shares; actual pollutant/substance/basis/medium, model factor/source and uncertainty; native measured amount, attributable share and receipt denominator A"
+      raw_fields: "wash lot/transfer and actual event order; independent-sorting event id and start/end times paired with cp_wash for the same lot, with responsible-operator confirmation under b_route_evidence; incoming whole mass; every selected and other intended sale lot's species/state/size/quality/mass/recipient/handoff; prices/revenue for sensitivity; rejected fraction/fate; node/crop/event/date/site and reporting-window ids; transfer/custody; each actual instance property/unit/substance/provider; direct utility/fuel and full-service coverage flags; meter/invoice/asset id, service-life/replacement/maintenance and consumer-period shares; actual pollutant/substance/basis/medium, model factor/source and uncertainty; native measured amount, attributable share and receipt denominator A"
       collection_method: "Collect physical lot/event observations with calibrated scales/meters, representative biological/water samples, matched invoices and signed custody/acceptance records; for unmeasured releases use documented models/factors applicable to the actual activity, substance and receiving medium (species-specific when biological), retaining factor provenance, chemistry/medium and uncertainty. Match quantities to this process and actual timing; reconcile upstream service and asset coverage before attribution."
       unit: "kg; m3; count; kWh or actual native unit"
       frequency: "each crop/event/lot; meter interval; each replacement and receipt"
@@ -1331,7 +1336,7 @@ validation_rules:
     source_ids: []
   - rule_id: v_transfer
     applies_to: "node_links"
-    rule: "Reconcile every node transfer id, crop/event/date, state and own quantity. Check washing-before-independent-grading order and packaging activation or bypass; early incidental removal remains harvest-owned. Do not impose seed/live/chilled/final mass equality; explain losses, other grades, rejection/returns and measurement uncertainty."
+    rule: "Reconcile every node transfer id, crop/event/date, state and own quantity. Require the paired cp_wash/cp_sort lot-linked records specified by b_route_evidence to verify washing-before-independent-grading; missing or unknown sequence evidence prevents eligibility completion. Check packaging activation or bypass; early incidental removal remains harvest-owned. Do not impose seed/live/chilled/final mass equality; explain losses, other grades, rejection/returns and measurement uncertainty."
     source_ids: []
   - rule_id: v_ownership
     applies_to: "completeness"
@@ -1366,7 +1371,7 @@ data_sources:
   - id: "fao-whiteleg-shrimp-2009"
     type: "official_guidance"
     reference: "FAO 2009. Briggs M. Penaeus vannamei. Cultured aquatic species fact sheets. https://www.fao.org/fishery/docs/CDrom/aquaculture/I1129m/file/en/en_whitelegshrimp.htm; retrieved 2026-10-12"
-    used_for: "Technical context for hatchery seed, semi-intensive ponds, outlet bag-net harvest and wash/sort/ice-water killing/insulated delivery; no proof of every local farm practice or quantity defaults."
+    used_for: "Technical context for hatchery seed, semi-intensive ponds, outlet bag-net harvest and handling/ice-water killing/insulated delivery. Handling and processing describes sorting before washing; this is not evidence for the selected washing-before-independent-grading order or a specific local farm practice, and supplies no quantity default."
   - id: "fao-peru-shrimp-2025"
     type: "official_guidance"
     reference: "FAO 2025-06-03. Boosting biosecurity in Peru’s shrimp farming industry for sustainable livelihoods. https://www.fao.org/in-action/kofap/news-and-events/news/detail/Boosting-biosecurity-in-Peru-s-shrimp-farming-industry-for-sustainable-livelihoods-/en; retrieved 2026-10-12"
@@ -1377,21 +1382,21 @@ data_sources:
     used_for: "Only final reference output 1..1; no evidence for any nonfinal amount or yield."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c23e8b9fd95a5c82055180fe77acc218e14f814e1b62ef805358f8ead1efa88c"
+  source_sha256: "sha256:0349599b5e8b54019f80a7711a05168930146d430e7e094d0f3e734c97d78fa0"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5673"
+    - unit_id: "normative_5949"
       family: "system_boundary"
       span:
         start:
-          offset: 5673
+          offset: 5949
           line: 55
           column: 1
         end:
-          offset: 9869
-          line: 79
+          offset: 10950
+          line: 80
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased hatchery postlarvae physically received for stocking, existing coastal brackish earthen pond and declared prior land/pond history; source-batch and preparation records required. |\n| starting_condition_role | Foreground entry, not a zero-burden origin: seed carries hatchery, transport and prior biological production upstream; pond land/assets carry declared history and period attribution. |\n| product_classification_scope | One species/route/state/gate semantic subset; broader external leaf does not authorize another shrimp species or live/frozen state. |\n| recursive_input_rule | A same-species shrimp input is still an evidenced seed or transfer lot with its own prior gate; attach the upstream dataset once and terminate recursion at the disclosed acquisition boundary. Do not reuse this final-product PCR as a zero-burden hatchery. |\n| upstream_dataset_requirement | Identify provider, geography, technology, period, gate, property/unit, background coverage and exclusions for seed, feeds, management materials, energy, water, ice, capital, packaging and external services; unresolved upstream coverage prevents finalization. |\n| disclosure | Disclose farm/crops/failed duty, route eligibility, actual operation sequence and optional packaging bypass, product handoffs, resource sources, releases/fates, capital life/history, service ownership, allocation evidence, unmeasured quantities and unresolved identities. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `b_route` | route | Require foreground proof of hatchery seed, Tumbes brackish semi-intensive earthen-pond mode and actual outlet bag-net drain harvest. FAO's global technical description and Peru corroboration alone do not prove any farm's harvest configuration. | `fao-whiteleg-shrimp-2009`; `fao-peru-shrimp-2025` |\n| `b_nodes` | foreground | Separate managed production, physical harvest, whole-product washing, grading, killing/chilling, conditional packaging and delivery/receipt responsibilities. Match all physical transfers; require whole-product washing before independent grading/sorting, with early visual removal of incidental material owned by harvest. Another node ordering requires methodology review. No deheading, peeling, cooking or freezing is included before reference receipt. | `fao-whiteleg-shrimp-2009` |\n| `b_periods` | crop_and_assets | Include preparation/fallow, seed receipt/stocking, all growout and harvest attempts, crop failures, idle/cleaning/changeover, actual holding and delivery over declared periods. Include land occupation/history, pond/levee, pumps, aerators, nets, chill equipment, boxes and vehicles with installation, service life, maintenance, replacement and termination ownership. |  |\n| `b_services` | ownership | For each node/period, choose full supplier service or separately owned materials/fuels/electricity/assets/direct releases for that same activity; prohibit overlap. Shared pumps, generators, chill facilities, boxes and vehicles must identify all consumers and use once-only attribution. Onsite electricity already represented by fuel/assets/releases is an internal transfer. |  |\n| `b_fates` | environment | Classify every intended sale product, downgraded lot, returned product, mortality, escape, incidental animal, sludge, wastewater and discarded material by actual fate. Direct measured/modelled pollutant substance/basis/medium is elementary; treatment transfer is waste with treatment upstream/downstream ownership. Never turn biomass disposal into automatic elemental emissions, burden-free input or ecological credit. |  |\n| `b_gate` | reference_gate | End at first processor physical acceptance before deheading/freezing; include all actual transport and cold-chain through that gate, regardless of producer/buyer/service-provider legal ownership; declare the model owner and supplier-service coverage to avoid duplicates. A farm dispatch invoice alone is not physical acceptance evidence. Packaging bypass transfers chilled product directly; one final accepted output only. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased hatchery postlarvae physically received for stocking, existing coastal brackish earthen pond and declared prior land/pond history; source-batch and preparation records required. |\n| starting_condition_role | Foreground entry, not a zero-burden origin: seed carries hatchery, transport and prior biological production upstream; pond land/assets carry declared history and period attribution. |\n| product_classification_scope | One species/route/state/gate semantic subset; broader external leaf does not authorize another shrimp species or live/frozen state. |\n| recursive_input_rule | A same-species shrimp input is still an evidenced seed or transfer lot with its own prior gate; attach the upstream dataset once and terminate recursion at the disclosed acquisition boundary. Do not reuse this final-product PCR as a zero-burden hatchery. |\n| upstream_dataset_requirement | Identify provider, geography, technology, period, gate, property/unit, background coverage and exclusions for seed, feeds, management materials, energy, water, ice, capital, packaging and external services; unresolved upstream coverage prevents finalization. |\n| disclosure | Disclose farm/crops/failed duty, route eligibility, actual operation sequence and optional packaging bypass, product handoffs, resource sources, releases/fates, capital life/history, service ownership, allocation evidence, unmeasured quantities and unresolved identities. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `b_route` | route | Require foreground proof of hatchery seed, Tumbes brackish semi-intensive earthen-pond mode and actual outlet bag-net drain harvest. FAO's global technical description and Peru corroboration alone do not prove any farm's harvest configuration. | `fao-whiteleg-shrimp-2009`; `fao-peru-shrimp-2025` |\n| `b_route_evidence` | route_eligibility | Before treating a lot as eligible or finalizing its foreground dataset, obtain the named farm/crop and lot-linked operation log: actual wash and independent sorting event ids, start/end times, incoming/outgoing state and measured mass, paired handoff ids and responsible-operator confirmation. Show that washing precedes independent grading for this lot. FAO 2009 instead describes sorting before washing; neither cited FAO source proves the selected local order. An unknown order is incomplete eligibility, not an assumed match. A contrary order is outside this selected route and requires methodology review; never relabel an actual grading operation as incidental removal to force a match. | `fao-whiteleg-shrimp-2009`; `fao-peru-shrimp-2025` |\n| `b_nodes` | foreground | Separate managed production, physical harvest, whole-product washing, grading, killing/chilling, conditional packaging and delivery/receipt responsibilities. Match all physical transfers; the selected washing-before-independent-grading order applies only when evidenced under b_route_evidence, with early visual removal of incidental material owned by harvest. Another node ordering requires methodology review. No deheading, peeling, cooking or freezing is included before reference receipt. |  |\n| `b_periods` | crop_and_assets | Include preparation/fallow, seed receipt/stocking, all growout and harvest attempts, crop failures, idle/cleaning/changeover, actual holding and delivery over declared periods. Include land occupation/history, pond/levee, pumps, aerators, nets, chill equipment, boxes and vehicles with installation, service life, maintenance, replacement and termination ownership. |  |\n| `b_services` | ownership | For each node/period, choose full supplier service or separately owned materials/fuels/electricity/assets/direct releases for that same activity; prohibit overlap. Shared pumps, generators, chill facilities, boxes and vehicles must identify all consumers and use once-only attribution. Onsite electricity already represented by fuel/assets/releases is an internal transfer. |  |\n| `b_fates` | environment | Classify every intended sale product, downgraded lot, returned product, mortality, escape, incidental animal, sludge, wastewater and discarded material by actual fate. Direct measured/modelled pollutant substance/basis/medium is elementary; treatment transfer is waste with treatment upstream/downstream ownership. Never turn biomass disposal into automatic elemental emissions, burden-free input or ecological credit. |  |\n| `b_gate` | reference_gate | End at first processor physical acceptance before deheading/freezing; include all actual transport and cold-chain through that gate, regardless of producer/buyer/service-provider legal ownership; declare the model owner and supplier-service coverage to avoid duplicates. A farm dispatch invoice alone is not physical acceptance evidence. Packaging bypass transfers chilled product directly; one final accepted output only. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1408,11 +1413,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5673
+              offset: 5949
               line: 55
               column: 1
             end:
-              offset: 5694
+              offset: 5970
               line: 55
               column: 22
           text: "## 5. System Boundary"
@@ -1428,16 +1433,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_60706"
+    - unit_id: "normative_61787"
       family: "allocation"
       span:
         start:
-          offset: 60706
-          line: 942
+          offset: 61787
+          line: 943
           column: 1
         end:
-          offset: 63167
-          line: 952
+          offset: 64248
+          line: 953
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `a_direct` | all_outputs | First subdivide by measured crop, operation, grade, destination and exclusive equipment/service. Assign seed/feed/pond management to its crop, washing/sorting/chilling to actually treated lots and transport to actually carried lots; identify every sale product and handoff before residual allocation. |  |\n| `a_residual` | joint_shrimp_lots | For inseparable residual burdens of one pond crop or joint sorting event, allocate across intended shrimp sale lots by measured whole wet mass at a common pre-divergence handoff, excluding free water/ice and tare. Retain grade/state-specific masses and justify biomass production/handling causality; test realized first-sale revenue shares as sensitivity when grades differ materially in price. Do not use final accepted mass to disguise omitted other products. |  |\n| `a_failure` | periods | Include nonproductive/failed crop and maintenance duty in the declared reporting-window pond burden pool; attribute to the same pond's intended sale output over that window using the residual rule. Disclose failure timing and reasons. If no intended sale output exists, retain an unnormalized failed-operation record and widen only an evidenced reporting window; never divide by zero or delete failed duty. |  |\n| `a_assets` | shared_assets | For shared infrastructure enumerate pond, harvest, wash, sort, chill, pack and receipt consumers actually using each asset over its service periods. Prefer meters for energy/water; use measured pump hydraulic work or equipment-hours for residual operation, occupied pond-area-time for pond land/levees, and loaded tonne-kilometres with assigned empty/return travel for vehicle services. Allocate capital/repair using documented actual lifetime service shares, including replacement/termination; once-only ledger reconciles all shares. |  |\n| `a_waste` | losses | Retain mortality, rejected/discarded biomass and associated treatment within the responsible crop/node burden pool; assign actual treatment once. Other intended products remain products; no automatic substitution/ecological credits. Receipt rejection/return fate keeps its original burden ownership; no default zero-burden replacement. Reprocessing or return-to-upstream loops are outside this declared route; an actual loop requires methodology review before inclusion. |  |\n\n"
       headings:
@@ -1456,12 +1461,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 60706
-              line: 942
+              offset: 61787
+              line: 943
               column: 1
             end:
-              offset: 60746
-              line: 942
+              offset: 61827
+              line: 943
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1476,18 +1481,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_156194"
+    - unit_id: "normative_157577"
       family: "validation"
       span:
         start:
-          offset: 156194
-          line: 1019
+          offset: 157577
+          line: 1020
           column: 1
         end:
-          offset: 159479
-          line: 1032
+          offset: 161017
+          line: 1033
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_scope` | eligibility | Check species/synonym, actual hatchery postlarvae and semi-intensive Tumbes brackish earthen-pond/outlet bag-net route against records; another route or final state requires another methodology or explicit review. |  |\n| `v_reference` | reference | Require one accepted_whole_shrimp final output, matching reference name and same-lot denominator A > 0 at first processor receipt; free ice/water and tare excluded, head/organs/shell included, never frozen and before deheading/freezing documented. |  |\n| `v_transfer` | node_links | Reconcile every node transfer id, crop/event/date, state and own quantity. Check washing-before-independent-grading order and packaging activation or bypass; early incidental removal remains harvest-owned. Do not impose seed/live/chilled/final mass equality; explain losses, other grades, rejection/returns and measurement uncertainty. |  |\n| `v_ownership` | completeness | Review all crop phases including failed/nonproductive duty, utilities/materials, land/history, assets/replacement, service coverage and direct combustion/leakage/discharge by node. Check every shared consumer, period and burden ledger for omissions/duplicates; exclude separately listed fossil CO2 from other-release instances. |  |\n| `v_native` | quantity_and_identity | Each applicable collection obligation expands into zero, one or multiple actual native-unit instances with independent identity, verified support and quantity evidence. A missing actual substance/provider/gate/property/unit is unresolved, never a generic fixed UUID; final TIDAS exchanges require concrete verified identities. |  |\n| `v_ranges` | range_evidence | All 0..U_row/U_instance ranges below are provisional unresolved evidence markers with independently determined upper bounds, not empirical ranges, zero defaults or hard validation limits. For multi-formulation or multi-lot rows, each actual formulation/lot independently owns its U_row upper bound, including U_formulated_feed; there is no shared cap or mixed-identity total. Replace with reviewed data; exact 1..1 applies only to same accepted-lot A/A normalization. | `same-lot-normalization` |\n| `v_disclosure` | finalization | Disclose performed/skipped checks, uncertainty, source age/applicability, unresolved quantities/identities, output allocation rationale/sensitivity and all qualifiers. Checker pass does not verify UUID detail or prove publication readiness; unresolved reference/support identities block final concrete datasets. |  |\n| `validate_atomic_completion` | all applicable per-flow collection obligations and final exchanges | Final dataset completion and validation require every actual exchange to have an independent atomic card and its own quantity, property/native unit, collection or calculation evidence, range/uncertainty evidence, normalization, actual destination and verified UUID. Unknown identity, activity state, quantity, range evidence or fate blocks completion; it is never zero, a presumed bypass or permission to omit an obligation. Every important concrete flow retains its own range/uncertainty evidence collection duty; a symbolic upper bound is not an empirical range. | |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_scope` | eligibility | Check species/synonym, actual hatchery postlarvae and semi-intensive Tumbes brackish earthen-pond/outlet bag-net route against records; another route or final state requires another methodology or explicit review. |  |\n| `v_reference` | reference | Require one accepted_whole_shrimp final output, matching reference name and same-lot denominator A > 0 at first processor receipt; free ice/water and tare excluded, head/organs/shell included, never frozen and before deheading/freezing documented. |  |\n| `v_transfer` | node_links | Reconcile every node transfer id, crop/event/date, state and own quantity. Require the paired cp_wash/cp_sort lot-linked records specified by b_route_evidence to verify washing-before-independent-grading; missing or unknown sequence evidence prevents eligibility completion. Check packaging activation or bypass; early incidental removal remains harvest-owned. Do not impose seed/live/chilled/final mass equality; explain losses, other grades, rejection/returns and measurement uncertainty. |  |\n| `v_ownership` | completeness | Review all crop phases including failed/nonproductive duty, utilities/materials, land/history, assets/replacement, service coverage and direct combustion/leakage/discharge by node. Check every shared consumer, period and burden ledger for omissions/duplicates; exclude separately listed fossil CO2 from other-release instances. |  |\n| `v_native` | quantity_and_identity | Each applicable collection obligation expands into zero, one or multiple actual native-unit instances with independent identity, verified support and quantity evidence. A missing actual substance/provider/gate/property/unit is unresolved, never a generic fixed UUID; final TIDAS exchanges require concrete verified identities. |  |\n| `v_ranges` | range_evidence | All 0..U_row/U_instance ranges below are provisional unresolved evidence markers with independently determined upper bounds, not empirical ranges, zero defaults or hard validation limits. For multi-formulation or multi-lot rows, each actual formulation/lot independently owns its U_row upper bound, including U_formulated_feed; there is no shared cap or mixed-identity total. Replace with reviewed data; exact 1..1 applies only to same accepted-lot A/A normalization. | `same-lot-normalization` |\n| `v_disclosure` | finalization | Disclose performed/skipped checks, uncertainty, source age/applicability, unresolved quantities/identities, output allocation rationale/sensitivity and all qualifiers. Checker pass does not verify UUID detail or prove publication readiness; unresolved reference/support identities block final concrete datasets. |  |\n| `validate_atomic_completion` | all applicable per-flow collection obligations and final exchanges | Final dataset completion and validation require every actual exchange to have an independent atomic card and its own quantity, property/native unit, collection or calculation evidence, range/uncertainty evidence, normalization, actual destination and verified UUID. Unknown identity, activity state, quantity, range evidence or fate blocks completion; it is never zero, a presumed bypass or permission to omit an obligation. Every important concrete flow retains its own range/uncertainty evidence collection duty; a symbolic upper bound is not an empirical range. | |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1504,12 +1509,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 156194
-              line: 1019
+              offset: 157577
+              line: 1020
               column: 1
             end:
-              offset: 156216
-              line: 1019
+              offset: 157599
+              line: 1020
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1528,298 +1533,311 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "b_route"
       identity_kind: "explicit"
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 7313
+          offset: 7589
           line: 72
           column: 1
         end:
-          offset: 7633
+          offset: 7909
           line: 72
           column: 321
     - pointer: "/system_boundary/rules/1"
+      rule_id: "b_route_evidence"
+      identity_kind: "explicit"
+      unit_id: "normative_5949"
+      source_span:
+        start:
+          offset: 7910
+          line: 73
+          column: 1
+        end:
+          offset: 8700
+          line: 73
+          column: 791
+    - pointer: "/system_boundary/rules/2"
       rule_id: "b_nodes"
       identity_kind: "explicit"
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 7634
-          line: 73
+          offset: 8701
+          line: 74
           column: 1
         end:
-          offset: 8144
-          line: 73
-          column: 511
-    - pointer: "/system_boundary/rules/2"
+          offset: 9225
+          line: 74
+          column: 525
+    - pointer: "/system_boundary/rules/3"
       rule_id: "b_periods"
       identity_kind: "explicit"
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 8145
-          line: 74
+          offset: 9226
+          line: 75
           column: 1
         end:
-          offset: 8549
-          line: 74
+          offset: 9630
+          line: 75
           column: 405
-    - pointer: "/system_boundary/rules/3"
+    - pointer: "/system_boundary/rules/4"
       rule_id: "b_services"
       identity_kind: "explicit"
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 8550
-          line: 75
+          offset: 9631
+          line: 76
           column: 1
         end:
-          offset: 8957
-          line: 75
+          offset: 10038
+          line: 76
           column: 408
-    - pointer: "/system_boundary/rules/4"
+    - pointer: "/system_boundary/rules/5"
       rule_id: "b_fates"
       identity_kind: "explicit"
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 8958
-          line: 76
+          offset: 10039
+          line: 77
           column: 1
         end:
-          offset: 9409
-          line: 76
+          offset: 10490
+          line: 77
           column: 452
-    - pointer: "/system_boundary/rules/5"
+    - pointer: "/system_boundary/rules/6"
       rule_id: "b_gate"
       identity_kind: "explicit"
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 9410
-          line: 77
+          offset: 10491
+          line: 78
           column: 1
         end:
-          offset: 9867
-          line: 77
+          offset: 10948
+          line: 78
           column: 458
     - pointer: "/allocation_rules/0"
       rule_id: "a_direct"
       identity_kind: "explicit"
-      unit_id: "normative_60706"
+      unit_id: "normative_61787"
       source_span:
         start:
-          offset: 60819
-          line: 946
+          offset: 61900
+          line: 947
           column: 1
         end:
-          offset: 61153
-          line: 946
+          offset: 62234
+          line: 947
           column: 335
     - pointer: "/allocation_rules/1"
       rule_id: "a_residual"
       identity_kind: "explicit"
-      unit_id: "normative_60706"
+      unit_id: "normative_61787"
       source_span:
         start:
-          offset: 61154
-          line: 947
+          offset: 62235
+          line: 948
           column: 1
         end:
-          offset: 61657
-          line: 947
+          offset: 62738
+          line: 948
           column: 504
     - pointer: "/allocation_rules/2"
       rule_id: "a_failure"
       identity_kind: "explicit"
-      unit_id: "normative_60706"
+      unit_id: "normative_61787"
       source_span:
         start:
-          offset: 61658
-          line: 948
+          offset: 62739
+          line: 949
           column: 1
         end:
-          offset: 62095
-          line: 948
+          offset: 63176
+          line: 949
           column: 438
     - pointer: "/allocation_rules/3"
       rule_id: "a_assets"
       identity_kind: "explicit"
-      unit_id: "normative_60706"
+      unit_id: "normative_61787"
       source_span:
         start:
-          offset: 62096
-          line: 949
+          offset: 63177
+          line: 950
           column: 1
         end:
-          offset: 62666
-          line: 949
+          offset: 63747
+          line: 950
           column: 571
     - pointer: "/allocation_rules/4"
       rule_id: "a_waste"
       identity_kind: "explicit"
-      unit_id: "normative_60706"
+      unit_id: "normative_61787"
       source_span:
         start:
-          offset: 62667
-          line: 950
+          offset: 63748
+          line: 951
           column: 1
         end:
-          offset: 63165
-          line: 950
+          offset: 64246
+          line: 951
           column: 499
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 156289
-          line: 1023
+          offset: 157672
+          line: 1024
           column: 1
         end:
-          offset: 156535
-          line: 1023
+          offset: 157918
+          line: 1024
           column: 247
     - pointer: "/validation_rules/1"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 156536
-          line: 1024
+          offset: 157919
+          line: 1025
           column: 1
         end:
-          offset: 156818
-          line: 1024
+          offset: 158201
+          line: 1025
           column: 283
     - pointer: "/validation_rules/2"
       rule_id: "v_transfer"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 156819
-          line: 1025
+          offset: 158202
+          line: 1026
           column: 1
         end:
-          offset: 157189
-          line: 1025
-          column: 371
+          offset: 158727
+          line: 1026
+          column: 526
     - pointer: "/validation_rules/3"
       rule_id: "v_ownership"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 157190
-          line: 1026
+          offset: 158728
+          line: 1027
           column: 1
         end:
-          offset: 157555
-          line: 1026
+          offset: 159093
+          line: 1027
           column: 366
     - pointer: "/validation_rules/4"
       rule_id: "v_native"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 157556
-          line: 1027
+          offset: 159094
+          line: 1028
           column: 1
         end:
-          offset: 157926
-          line: 1027
+          offset: 159464
+          line: 1028
           column: 371
     - pointer: "/validation_rules/5"
       rule_id: "v_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 157927
-          line: 1028
+          offset: 159465
+          line: 1029
           column: 1
         end:
-          offset: 158455
-          line: 1028
+          offset: 159993
+          line: 1029
           column: 529
     - pointer: "/validation_rules/6"
       rule_id: "v_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 158456
-          line: 1029
+          offset: 159994
+          line: 1030
           column: 1
         end:
-          offset: 158806
-          line: 1029
+          offset: 160344
+          line: 1030
           column: 351
     - pointer: "/validation_rules/7"
       rule_id: "validate_atomic_completion"
       identity_kind: "explicit"
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 158807
-          line: 1030
+          offset: 160345
+          line: 1031
           column: 1
         end:
-          offset: 159477
-          line: 1030
+          offset: 161015
+          line: 1031
           column: 671
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 5673
+          offset: 5949
           line: 55
           column: 1
         end:
-          offset: 5694
+          offset: 5970
           line: 55
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5673"
+      unit_id: "normative_5949"
       source_span:
         start:
-          offset: 5722
+          offset: 5998
           line: 59
           column: 1
         end:
-          offset: 7220
+          offset: 7496
           line: 66
           column: 289
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_60706"
+      unit_id: "normative_61787"
       source_span:
         start:
-          offset: 60706
-          line: 942
+          offset: 61787
+          line: 943
           column: 1
         end:
-          offset: 60746
-          line: 942
+          offset: 61827
+          line: 943
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_156194"
+      unit_id: "normative_157577"
       source_span:
         start:
-          offset: 156194
-          line: 1019
+          offset: 157577
+          line: 1020
           column: 1
         end:
-          offset: 156216
-          line: 1019
+          offset: 157599
+          line: 1020
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1828,5 +1846,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c23e8b9fd95a5c82055180fe77acc218e14f814e1b62ef805358f8ead1efa88c"
-  generated_content_sha256: "sha256:5a1151ebc5551bb8f4aa56399fd33239eefcff19bc469601e47ea236a895fa2a"
+    sha256: "sha256:0349599b5e8b54019f80a7711a05168930146d430e7e094d0f3e734c97d78fa0"
+  generated_content_sha256: "sha256:99c1e31c455bf0e1cf30f0dec63868f25fd66bc2f571567d8979cc149e089954"
