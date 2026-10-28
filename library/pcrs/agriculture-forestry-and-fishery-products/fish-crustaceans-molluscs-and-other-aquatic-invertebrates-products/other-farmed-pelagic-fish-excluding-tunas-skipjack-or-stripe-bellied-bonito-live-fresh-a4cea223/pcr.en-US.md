@@ -52,7 +52,7 @@ Declare every required qualifier in data package metadata, process notes, refere
 | --- | --- | --- | --- | --- |
 | reference_mass | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Obtain accepted net whole live fish mass A by calibrated weighing or traceable weighing records, excluding free carrier water, containers and all tare; use cp_deliver. The same A is every node’s per 1 kg reference flow denominator. |
 | count_mass | live fish and juveniles | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Count is not mass. Retain raw lot counts and independent representative body-mass samples with uncertainty; multiply the applicable count by actual sampled mean body mass, never a universal fish weight. |
-| feed_basis | grow_feed | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Keep actual as-fed mass, moisture and dry-matter conversion evidence separately; raw fish, moist feed and formulated feed have no shared fixed FCR or default share. |
+| feed_basis | collect_grow_feed | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Keep actual as-fed mass, moisture and dry-matter conversion evidence separately; raw fish, moist feed and formulated feed have no shared fixed FCR or default share. |
 | native_units | service and environmental instances | Actual instance property | native unit | Preserve kWh, MJ, L, m3, t km, equipment hours or supplier service units; convert only with metering, density, heating value or service-boundary evidence. Declare formulated medicine versus active ingredient, nutrient species versus elemental mass, and respiration versus fossil carbon separately; do not invent a mass identity for an unknown unit. |
 
 ## 5. System Boundary

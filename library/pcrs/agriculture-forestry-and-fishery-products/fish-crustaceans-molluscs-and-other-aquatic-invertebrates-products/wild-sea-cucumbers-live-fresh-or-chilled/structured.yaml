@@ -316,7 +316,7 @@ process_inventory:
           name: "Directly returned carrier seawater"
           flow_type: "elementary"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Record separately the actual returned carrier-water mass and marine receiving site; exclude viscera, animal mass and pollutant substances. Water not collected or added is not invented as an input."
+          description: "Record separately the actual returned carrier-water mass and marine receiving site; exclude viscera, animal mass and pollutant substances. Water not collected or added is not invented as an input. Apply release_evidence_mode: the foreground_record/collected_record metadata below is only the measured branch; calculated instances require calculated_value/calculated_from_collection and the evidence specified by that rule."
           amount:
             expression: "Actual directly returned carrier-water mass / A"
             value_mode: "foreground_record"
@@ -826,7 +826,7 @@ dataset_production:
   calculation_rules:
     - id: normalise_lot
       applies_to: "all inventory rows"
-      rule: "For each row/instance divide its attributable measured native-unit quantity by positive A from cp_deliver; final accepted animal mass divided by itself is 1. Preserve native numerator units and independent internal transfer amounts."
+      rule: "For each row/instance divide its attributable native-unit quantity by positive A from cp_deliver; final accepted animal mass divided by itself is 1. Preserve native numerator units and independent internal transfer amounts. For derived direct releases, establish the raw release quantity and evidence under release_evidence_mode before this division."
       inputs:
         - "attributable quantity"
         - A
@@ -845,6 +845,16 @@ dataset_production:
       output: "closed balances and attributable quantities"
       source_ids:
         - mass-balance-identity
+    - id: release_evidence_mode
+      applies_to: "condition_water_return; collect_capture_air_releases; collect_condition_marine_releases; collect_sort_returns; collect_hold_releases; collect_present_releases; collect_delivery_releases"
+      rule: "For each actual direct-release instance, retain foreground_record/collected_record only when the raw release quantity is directly measured. If derived from fuel, concentrations, carbon composition or another activity record, use calculated_value/calculated_from_collection for that instance. Under its own collection protocol retain the explicit formula, factor and source/version where applicable, measured input records, substance/receiving-medium basis and uncertainty. Apply the stated attribution and reference-flow normalization once. Resolve the evidence branch before finalizing; missing method or supporting evidence remains incomplete, not zero. Existing foreground/collected metadata is the measured-branch template, not certification of calculated releases; no universal emission factor is supplied."
+      inputs:
+        - "Instance-specific measured records"
+        - "formula and factor/source/version if calculated"
+        - "node protocol"
+        - "attribution and accepted A"
+      output: "Release instance with method-consistent value/evidence metadata and traceable quantity"
+      source_ids: []
   data_quality_requirements:
     - id: traceable_state
       applies_to: "all_nodes"
@@ -884,7 +894,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_capture_air_releases
       applies_to: "capture; Outputs; Elementary flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Capture fuel-related and other direct air releases. Instantiate each measured or factor-calculated substance and air compartment. CO2 fossil and CO2 biogenic require separate carbon inventories; NOx species/basis, particles by size and refrigerants by chemical remain distinct. Factors need named method/version, fuel quantity and uncertainty; no default factors. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Actual mass of each released substance / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_capture <br> - Range: Evidence-gap interval; U_capture_air_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_capture_air_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Capture fuel-related and other direct air releases. Instantiate each measured or factor-calculated substance and air compartment. CO2 fossil and CO2 biogenic require separate carbon inventories; NOx species/basis, particles by size and refrigerants by chemical remain distinct. Factors need named method/version, fuel quantity and uncertainty; no default factors. Apply release_evidence_mode: the foreground_record/collected_record metadata below is only the measured branch; calculated instances require calculated_value/calculated_from_collection and the evidence specified by that rule. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Actual mass of each released substance / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_capture <br> - Range: Evidence-gap interval; U_capture_air_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_capture_air_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_condition_supplies
       applies_to: "condition; Inputs; Product flows"
@@ -908,7 +918,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_condition_marine_releases
       applies_to: "condition; Outputs; Elementary flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual substances directly released during evisceration. Only for actual direct release: instantiate every identified substance from viscera/body fluid or other discharge to marine water, with chemical identity, wet/dry basis, measured concentration/volume and receiving medium. Organic matter is not automatically biogenic CO2; unknown composition remains a data gap rather than a generic pollutant UUID. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Measured or documented calculated mass of each marine-water substance / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_condition <br> - Range: Evidence-gap interval; U_condition_marine_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_condition_marine_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual substances directly released during evisceration. Only for actual direct release: instantiate every identified substance from viscera/body fluid or other discharge to marine water, with chemical identity, wet/dry basis, measured concentration/volume and receiving medium. Organic matter is not automatically biogenic CO2; unknown composition remains a data gap rather than a generic pollutant UUID. Apply release_evidence_mode: the foreground_record/collected_record metadata below is only the measured branch; calculated instances require calculated_value/calculated_from_collection and the evidence specified by that rule. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Measured or documented calculated mass of each marine-water substance / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_condition <br> - Range: Evidence-gap interval; U_condition_marine_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_condition_marine_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_sort_supplies
       applies_to: "sort; Inputs; Product flows"
@@ -928,7 +938,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_sort_returns
       applies_to: "sort; Outputs; Elementary flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Direct environmental returns from sorting. Instantiate actual live incidental-organism return, substrate return, carrier seawater and each chemical pollutant to the named marine site separately. Exclude treated waste and do not assign benefits to returned organisms. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Each actual returned material or released substance mass / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_sort <br> - Range: Evidence-gap interval; U_sort_returns must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_sort_returns <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Direct environmental returns from sorting. Instantiate actual live incidental-organism return, substrate return, carrier seawater and each chemical pollutant to the named marine site separately. Exclude treated waste and do not assign benefits to returned organisms. Apply release_evidence_mode: the foreground_record/collected_record metadata below is only the measured branch; calculated instances require calculated_value/calculated_from_collection and the evidence specified by that rule. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Each actual returned material or released substance mass / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_sort <br> - Range: Evidence-gap interval; U_sort_returns must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_sort_returns <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_hold_supplies
       applies_to: "hold; Inputs; Product flows"
@@ -944,7 +954,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_hold_releases
       applies_to: "hold; Outputs; Elementary flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Preservation direct environmental releases. Instantiate each actual refrigerant by chemical to air and each pollutant to marine water; record returned carrier water separately from chemical mass. Exclude quantities sent to treatment. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Actual mass of each released constituent / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_hold <br> - Range: Evidence-gap interval; U_hold_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_hold_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Preservation direct environmental releases. Instantiate each actual refrigerant by chemical to air and each pollutant to marine water; record returned carrier water separately from chemical mass. Exclude quantities sent to treatment. Apply release_evidence_mode: the foreground_record/collected_record metadata below is only the measured branch; calculated instances require calculated_value/calculated_from_collection and the evidence specified by that rule. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Actual mass of each released constituent / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_hold <br> - Range: Evidence-gap interval; U_hold_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_hold_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_tote_service
       applies_to: "present; Inputs; Product flows"
@@ -964,7 +974,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_present_releases
       applies_to: "present; Outputs; Elementary flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual presentation direct water and chemical releases. Instantiate directly returned carrier seawater and every identified pollutant by receiving medium separately; no untreated-release default is assigned. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Each actual directly released constituent mass / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_present <br> - Range: Evidence-gap interval; U_present_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_present_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Actual presentation direct water and chemical releases. Instantiate directly returned carrier seawater and every identified pollutant by receiving medium separately; no untreated-release default is assigned. Apply release_evidence_mode: the foreground_record/collected_record metadata below is only the measured branch; calculated instances require calculated_value/calculated_from_collection and the evidence specified by that rule. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Each actual directly released constituent mass / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_present <br> - Range: Evidence-gap interval; U_present_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_present_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_delivery_service
       applies_to: "deliver; Inputs; Product flows"
@@ -984,7 +994,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_delivery_releases
       applies_to: "deliver; Outputs; Elementary flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Own-operated delivery direct environmental releases. Instantiate each own-operation chemical/particle emission to its medium, separating fossil/biogenic carbon and returned carrier water from pollutants. Exclude releases already included in complete-service background inventory. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Actual mass of each released substance / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_deliver <br> - Range: Evidence-gap interval; U_delivery_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_delivery_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Own-operated delivery direct environmental releases. Instantiate each own-operation chemical/particle emission to its medium, separating fossil/biogenic carbon and returned carrier water from pollutants. Exclude releases already included in complete-service background inventory. Apply release_evidence_mode: the foreground_record/collected_record metadata below is only the measured branch; calculated instances require calculated_value/calculated_from_collection and the evidence specified by that rule. <br> - Flow property / unit: Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg <br> - Amount rule: Actual mass of each released substance / A <br> - Value mode: foreground_record <br> - Specificity: site_specific <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: collected_record <br> - Collection protocol: cp_deliver <br> - Range: Evidence-gap interval; U_delivery_releases must be established for each actual instance; not an empirical range, universal cap or substitute for collection <br> - Range role: qa_guardrail <br> - Lower: 0 <br> - Upper: U_delivery_releases <br> - Unit: kg <br> - Basis: per 1 kg reference flow <br> - Basis kind: reference_flow <br> - Evidence kind: reasoned_estimate"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: dq_logistics_water_balance
       applies_to: "logistics, services and water/nutrient balances"
@@ -1039,7 +1049,7 @@ data_sources:
     used_for: "Physical reconciliation and final A/A=1 identity only"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a26caa85f4a8cef148da6d81ae70c9e7eb34a54201ff7f7d5402a5f83b546464"
+  source_sha256: "sha256:ec0a93e4c01cce8676148a5fc77910586296d894bfeb5c143476b5cb06a9a7cf"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4270"
@@ -1090,15 +1100,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33194"
+    - unit_id: "normative_33422"
       family: "allocation"
       span:
         start:
-          offset: 33194
+          offset: 33422
           line: 637
           column: 1
         end:
-          offset: 35414
+          offset: 35642
           line: 646
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| subdivision | intended_outputs | First subdivide directly measured node, leg and lot burdens. For inseparable shared capture/conditioning burdens among animal grades, assign by measured same-state animal mass; never compare whole intake with eviscerated output without the measured material balance. Useful viscera or other unlike products require an explicit justified causal rule; if unavailable use documented contemporaneous net revenue shares at the actual handoff and test sensitivity against mass attribution where physically meaningful. No output is presumed valuable. |  |\n| period_attribution | reporting_season | Carry actual failed trips/batches, mortality, unsuccessful delivery, idle capacity, stock and cleanup through the declared season/service pool. Assign direct events to their lots; allocate unavoidable common trip/season burdens to supported intended outputs, with open stock carrying attributable burden forward. Do not divide zero-output periods by zero or drop them; link them to the supported service period and test that linkage. Reconcile opening plus additions minus outputs/losses equals closing stock by state. |  |\n| shared_service | assets_and_services | List vessel, deck, bags, SCUBA cylinders, compressor, holding equipment, scales and totes with all consuming nodes and periods. Attribute measured operating burden by logged use, load or causal service, and embodied/replacement/retirement burden by evidenced total service throughput with explicit remaining-life assumptions and sensitivity. One asset/event owner reconciles shares to 100%; complete purchased service excludes its component fuel/electricity/assets/releases. Do not double count reusable tote manufacture at return. |  |\n| no_credit | waste_and_returns | Assign waste handling and actual releases to their generating lot/service; reusable returns are service loops. No substitution credit for live returns, recovered viscera, discarded organic material or seawater is allowed by this PCR. Report allocation method, denominator and counterfactual sensitivity separately from observed exchanges. |  |\n\n"
@@ -1118,11 +1128,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 33194
+              offset: 33422
               line: 637
               column: 1
             end:
-              offset: 33234
+              offset: 33462
               line: 637
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1138,16 +1148,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_104922"
+    - unit_id: "normative_107884"
       family: "validation"
       span:
         start:
-          offset: 104922
-          line: 709
+          offset: 107884
+          line: 710
           column: 1
         end:
-          offset: 107314
-          line: 719
+          offset: 110276
+          line: 720
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| eligible_reference | reference_output | Verify A>0, species and wild Alaska SCUBA origin, observed live status at actual first physical shore-processor receipt, eviscerated raw never-frozen state, scale/tare/drain method and pre-separation gate. Any dead, whole, frozen or skin/muscle-only output is ineligible for A, though its burdens and fate remain accounted. | adfg-dive-sea-cucumber |\n| reconcile_transfers | all_nodes | Reconcile every paired transfer by lot, state, time and quantity; prove the holding activation/bypass state, account for incidental matter and free water, enumerate all intended destinations and distinguish treatment from direct release. Reject unexplained mass losses and duplicate final/internal exchanges. Unknown actual conditions remain incomplete rather than zero. |  |\n| complete_reporting_pool | season_and_assets | Reconcile all trip/season inputs, failed batches, mortality, stocks, shared assets, tote cycles, replacement/retirement and cleanup with output allocation and sensitivity. Each complete service has a documented component-exclusion map; shares reconcile and no discarded material earns a credit. |  |\n| identities_and_ranges | all_rows | Verify each final exchange concrete flow/property/unit against actual identity and role. collection scope rows must expand into actual instances; no inferred top-hit identity or generic pollutant match. Symbolic 0..U intervals explicitly lack empirical bounds; collect row/instance-specific observations and uncertainty before final data production. Checker pass does not establish identity verification or publication readiness. |  |\n| `validate_atomic_completion` | all applicable per-flow collection obligations and final exchanges | Final dataset completion and validation require every actual exchange to have an independent atomic card and its own quantity, property/native unit, collection or calculation evidence, range/uncertainty evidence, normalization, actual destination and verified UUID. Unknown identity, activity state, quantity, range evidence or fate blocks completion; it is never zero, a presumed bypass or permission to omit an obligation. Every important concrete flow retains its own range/uncertainty evidence collection duty; a symbolic upper bound is not an empirical range. | |\n\n"
       headings:
@@ -1166,12 +1176,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 104922
-              line: 709
+              offset: 107884
+              line: 710
               column: 1
             end:
-              offset: 104944
-              line: 709
+              offset: 107906
+              line: 710
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1255,119 +1265,119 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_33194"
+      unit_id: "normative_33422"
       source_span:
         start:
-          offset: 33307
+          offset: 33535
           line: 641
           column: 1
         end:
-          offset: 33890
+          offset: 34118
           line: 641
           column: 584
     - pointer: "/allocation_rules/1"
       rule_id: "period_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_33194"
+      unit_id: "normative_33422"
       source_span:
         start:
-          offset: 33891
+          offset: 34119
           line: 642
           column: 1
         end:
-          offset: 34456
+          offset: 34684
           line: 642
           column: 566
     - pointer: "/allocation_rules/2"
       rule_id: "shared_service"
       identity_kind: "explicit"
-      unit_id: "normative_33194"
+      unit_id: "normative_33422"
       source_span:
         start:
-          offset: 34457
+          offset: 34685
           line: 643
           column: 1
         end:
-          offset: 35034
+          offset: 35262
           line: 643
           column: 578
     - pointer: "/allocation_rules/3"
       rule_id: "no_credit"
       identity_kind: "explicit"
-      unit_id: "normative_33194"
+      unit_id: "normative_33422"
       source_span:
         start:
-          offset: 35035
+          offset: 35263
           line: 644
           column: 1
         end:
-          offset: 35412
+          offset: 35640
           line: 644
           column: 378
     - pointer: "/validation_rules/0"
       rule_id: "eligible_reference"
       identity_kind: "explicit"
-      unit_id: "normative_104922"
+      unit_id: "normative_107884"
       source_span:
         start:
-          offset: 105017
-          line: 713
+          offset: 107979
+          line: 714
           column: 1
         end:
-          offset: 105409
-          line: 713
+          offset: 108371
+          line: 714
           column: 393
     - pointer: "/validation_rules/1"
       rule_id: "reconcile_transfers"
       identity_kind: "explicit"
-      unit_id: "normative_104922"
+      unit_id: "normative_107884"
       source_span:
         start:
-          offset: 105410
-          line: 714
+          offset: 108372
+          line: 715
           column: 1
         end:
-          offset: 105821
-          line: 714
+          offset: 108783
+          line: 715
           column: 412
     - pointer: "/validation_rules/2"
       rule_id: "complete_reporting_pool"
       identity_kind: "explicit"
-      unit_id: "normative_104922"
+      unit_id: "normative_107884"
       source_span:
         start:
-          offset: 105822
-          line: 715
+          offset: 108784
+          line: 716
           column: 1
         end:
-          offset: 106169
-          line: 715
+          offset: 109131
+          line: 716
           column: 348
     - pointer: "/validation_rules/3"
       rule_id: "identities_and_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_104922"
+      unit_id: "normative_107884"
       source_span:
         start:
-          offset: 106170
-          line: 716
+          offset: 109132
+          line: 717
           column: 1
         end:
-          offset: 106641
-          line: 716
+          offset: 109603
+          line: 717
           column: 472
     - pointer: "/validation_rules/4"
       rule_id: "validate_atomic_completion"
       identity_kind: "explicit"
-      unit_id: "normative_104922"
+      unit_id: "normative_107884"
       source_span:
         start:
-          offset: 106642
-          line: 717
+          offset: 109604
+          line: 718
           column: 1
         end:
-          offset: 107312
-          line: 717
+          offset: 110274
+          line: 718
           column: 671
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -1396,27 +1406,27 @@ normative_context:
           column: 194
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33194"
+      unit_id: "normative_33422"
       source_span:
         start:
-          offset: 33194
+          offset: 33422
           line: 637
           column: 1
         end:
-          offset: 33234
+          offset: 33462
           line: 637
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_104922"
+      unit_id: "normative_107884"
       source_span:
         start:
-          offset: 104922
-          line: 709
+          offset: 107884
+          line: 710
           column: 1
         end:
-          offset: 104944
-          line: 709
+          offset: 107906
+          line: 710
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1425,5 +1435,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a26caa85f4a8cef148da6d81ae70c9e7eb34a54201ff7f7d5402a5f83b546464"
-  generated_content_sha256: "sha256:a7840cd4c37216de4b1c5e9d967f9b9cce6af281f3a36b0a8049200c819480ae"
+    sha256: "sha256:ec0a93e4c01cce8676148a5fc77910586296d894bfeb5c143476b5cb06a9a7cf"
+  generated_content_sha256: "sha256:ac2cb534d401f2c62553e6602cf077b98e9a51dfec19e927d95a79185cc7f193"

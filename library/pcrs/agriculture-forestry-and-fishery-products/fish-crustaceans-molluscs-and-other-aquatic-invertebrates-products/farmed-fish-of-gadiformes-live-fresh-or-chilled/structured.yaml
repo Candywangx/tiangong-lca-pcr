@@ -40,12 +40,12 @@ system_boundary:
       source_ids:
         - cod-accounting-method
     - rule_id: boundary_shared
-      applies_to: "growout_services; harvest_services; sort_services; delivery_services"
+      applies_to: "collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services"
       rule: "Maintain one shared ledger for cages/moorings, feeding systems, craft, wellboats and utilities, naming all consuming nodes, cohorts and service periods. Each node owns only its documented share; exclusive inclusive-provider and direct component ownership applies."
       source_ids:
         - cod-accounting-method
     - rule_id: boundary_generation
-      applies_to: "growout_electricity; growout_fuel; harvest_electricity; harvest_fuel; sort_electricity; sort_services; collect_sort_direct_releases; delivery_electricity; delivery_fuel"
+      applies_to: "growout_electricity; collect_growout_fuel; harvest_electricity; collect_harvest_fuel; sort_electricity; collect_sort_services; collect_sort_direct_releases; delivery_electricity; collect_delivery_fuel"
       rule: "For on-site generation inventoried with its fuel and direct emissions, generated electricity is an internal energy transfer only: do not add purchased-electricity upstream burdens. Purchased electricity includes its supplier generation upstream once. Meter and distinguish imports, self-generation and transfers, with one generator owner and explicit fuel/electricity boundaries."
       source_ids:
         - cod-accounting-method
@@ -720,12 +720,12 @@ allocation_rules:
     source_ids:
       - cod-accounting-method
   - rule_id: allocation_outputs
-    applies_to: "sort_secondary; delivery_returns; cod_processor_receipt"
+    applies_to: "collect_sort_secondary; collect_delivery_returns; cod_processor_receipt"
     rule: "Enumerate actual intended accepted grades, separately sold live downgraded fish and any other intentional outputs with physical handoffs. Use subdivision first; distribute remaining homogeneous live-cod joint burdens by accepted net live mass across intended sold grades, documenting why the mass driver fits this route. Different functions/states need a separate reviewed attribution decision. No default substitution credit."
     source_ids:
       - cod-accounting-method
   - rule_id: allocation_rejects
-    applies_to: "growout_waste; harvest_waste; sort_waste; delivery_waste"
+    applies_to: "collect_growout_waste; collect_harvest_waste; collect_sort_waste; collect_delivery_waste"
     rule: "Rejects, mortalities and wastes are not automatically co-products. Their accountable production and treatment burdens remain with the responsible cohort/output; returned live stock carries its assigned burden once and is not counted as final sold mass."
     source_ids:
       - cod-accounting-method
@@ -735,7 +735,7 @@ allocation_rules:
     source_ids:
       - cod-accounting-method
   - rule_id: allocation_assets
-    applies_to: "growout_services; harvest_services; sort_services; delivery_services"
+    applies_to: "collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services"
     rule: "Use actual asset inventories, supported service lives, maintenance/replacement and service-use shares across named consumers/periods; shares exhaust the included burden once. No default lifetime. Inclusive purchased services and explicit fuel/power/capital/direct-emission components are mutually exclusive."
     source_ids:
       - cod-accounting-method
@@ -973,7 +973,7 @@ validation_rules:
     source_ids:
       - cod-accounting-method
   - rule_id: validate_shared
-    applies_to: "growout_services; harvest_services; sort_services; delivery_services"
+    applies_to: "collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services"
     rule: "Check every named asset/service consumer and period, causal driver, total shares, supported asset life/replacement and exclusive service/direct component ownership."
     source_ids:
       - cod-accounting-method
@@ -1014,7 +1014,7 @@ data_sources:
     used_for: "Net live-mass normalization, conditional exchange/range resolution, node/cohort/period/service ownership and explicit attribution; not an external empirical factor or measured range"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:25033377e123d78d5f57b7c843db3ab8bc5a964f647ec2dfc61a64c57de37d20"
+  source_sha256: "sha256:fa200fe65d3a2ec36c832d5c55e5bcff0d2c67e9fd4530a07ea6a28aa33913cd"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5282"
@@ -1025,10 +1025,10 @@ normative_context:
           line: 58
           column: 1
         end:
-          offset: 9134
+          offset: 9198
           line: 83
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased live Gadus morhua juveniles from identified hatchery and nursery suppliers at farm receipt, with complete upstream burdens |\n| starting_condition_role | Biological input boundary; not a burden-free origin |\n| product_classification_scope | Selected hatchery-origin marine-cage Atlantic cod route within CPC 04242; the leaf also covers excluded products |\n| recursive_input_rule | A same-category juvenile or live cod input retains species/state/gate and upstream dataset lineage; use a complete supplier dataset or explicit upstream submodel once, with cycle/duplicate checks |\n| upstream_dataset_requirement | Hatchery, nursery, feed, energy, consumables, services, assets and delivery inputs require geography/technology/state-compatible upstream coverage; missing coverage is a disclosed data gap |\n| disclosure | Declare actual hatchery origin, receipt gate, farm/cage/cohort and reporting years, service inclusions, asset boundaries, losses, stock carryover, allocations, uncertainty and all exclusions |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | cod_growout; cod_harvest; cod_sort; cod_live_delivery | Keep hatchery/nursery upstream on purchased juveniles. Foreground growout produces live fish in cages; independent harvest removes them alive; sorting separates accepted/downgraded/rejected destinations; preservation maintains live usability through wellboat delivery. | fao-cod-2010; norcod-sea-route |\n| boundary_gate | cod_live_delivery | End at evidenced live physical processor receipt before any bleeding, gutting or slaughter; missing live gate evidence cannot default to this reference. | fao-cod-2010; cod-accounting-method |\n| boundary_support | all inventory rows | Include actual growout equipment cleaning, support boats, harvest handling, live preservation and logistics. Do not invent a separate fish conditioning or product packaging operation for live tanks. Instantiate each actual support exchange at its consuming node. | cod-accounting-method |\n| boundary_periods | cod_growout; cod_harvest; cod_sort; cod_live_delivery | Index juvenile receipt, marine cohort growth, partial harvests, deliveries, fallow/cleaning, failures, asset replacement and termination across all relevant reporting years. Opening/closing cohort inventories carry burdens forward without repeated allocation. | cod-accounting-method |\n| boundary_shared | growout_services; harvest_services; sort_services; delivery_services | Maintain one shared ledger for cages/moorings, feeding systems, craft, wellboats and utilities, naming all consuming nodes, cohorts and service periods. Each node owns only its documented share; exclusive inclusive-provider and direct component ownership applies. | cod-accounting-method |\n| boundary_generation | growout_electricity; growout_fuel; harvest_electricity; harvest_fuel; sort_electricity; sort_services; collect_sort_direct_releases; delivery_electricity; delivery_fuel | For on-site generation inventoried with its fuel and direct emissions, generated electricity is an internal energy transfer only: do not add purchased-electricity upstream burdens. Purchased electricity includes its supplier generation upstream once. Meter and distinguish imports, self-generation and transfers, with one generator owner and explicit fuel/electricity boundaries. | cod-accounting-method |\n| boundary_losses | all inventory rows | Reconcile counts/biomass/feed with biological growth, intentional transfers, deaths, escapes and stocks; do not force juvenile mass to equal final mass. Ledger losses are not automatically waste or elementary exchanges. No ecological or nutrient-removal credit is assumed. | cod-accounting-method |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased live Gadus morhua juveniles from identified hatchery and nursery suppliers at farm receipt, with complete upstream burdens |\n| starting_condition_role | Biological input boundary; not a burden-free origin |\n| product_classification_scope | Selected hatchery-origin marine-cage Atlantic cod route within CPC 04242; the leaf also covers excluded products |\n| recursive_input_rule | A same-category juvenile or live cod input retains species/state/gate and upstream dataset lineage; use a complete supplier dataset or explicit upstream submodel once, with cycle/duplicate checks |\n| upstream_dataset_requirement | Hatchery, nursery, feed, energy, consumables, services, assets and delivery inputs require geography/technology/state-compatible upstream coverage; missing coverage is a disclosed data gap |\n| disclosure | Declare actual hatchery origin, receipt gate, farm/cage/cohort and reporting years, service inclusions, asset boundaries, losses, stock carryover, allocations, uncertainty and all exclusions |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | cod_growout; cod_harvest; cod_sort; cod_live_delivery | Keep hatchery/nursery upstream on purchased juveniles. Foreground growout produces live fish in cages; independent harvest removes them alive; sorting separates accepted/downgraded/rejected destinations; preservation maintains live usability through wellboat delivery. | fao-cod-2010; norcod-sea-route |\n| boundary_gate | cod_live_delivery | End at evidenced live physical processor receipt before any bleeding, gutting or slaughter; missing live gate evidence cannot default to this reference. | fao-cod-2010; cod-accounting-method |\n| boundary_support | all inventory rows | Include actual growout equipment cleaning, support boats, harvest handling, live preservation and logistics. Do not invent a separate fish conditioning or product packaging operation for live tanks. Instantiate each actual support exchange at its consuming node. | cod-accounting-method |\n| boundary_periods | cod_growout; cod_harvest; cod_sort; cod_live_delivery | Index juvenile receipt, marine cohort growth, partial harvests, deliveries, fallow/cleaning, failures, asset replacement and termination across all relevant reporting years. Opening/closing cohort inventories carry burdens forward without repeated allocation. | cod-accounting-method |\n| boundary_shared | collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services | Maintain one shared ledger for cages/moorings, feeding systems, craft, wellboats and utilities, naming all consuming nodes, cohorts and service periods. Each node owns only its documented share; exclusive inclusive-provider and direct component ownership applies. | cod-accounting-method |\n| boundary_generation | growout_electricity; collect_growout_fuel; harvest_electricity; collect_harvest_fuel; sort_electricity; collect_sort_services; collect_sort_direct_releases; delivery_electricity; collect_delivery_fuel | For on-site generation inventoried with its fuel and direct emissions, generated electricity is an internal energy transfer only: do not add purchased-electricity upstream burdens. Purchased electricity includes its supplier generation upstream once. Meter and distinguish imports, self-generation and transfers, with one generator owner and explicit fuel/electricity boundaries. | cod-accounting-method |\n| boundary_losses | all inventory rows | Reconcile counts/biomass/feed with biological growth, intentional transfers, deaths, escapes and stocks; do not force juvenile mass to equal final mass. Ledger losses are not automatically waste or elementary exchanges. No ecological or nutrient-removal credit is assumed. | cod-accounting-method |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1065,18 +1065,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_35423"
+    - unit_id: "normative_35487"
       family: "allocation"
       span:
         start:
-          offset: 35423
+          offset: 35487
           line: 651
           column: 1
         end:
-          offset: 37682
+          offset: 37826
           line: 661
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | all inventory rows | First attribute independently metered inputs and events to their node, cohort, lot and period. For this live-cod route, unresolved common operating burdens are assigned by documented causal service usage (metered power, vessel hours, cage occupancy/biomass-time as supported); disclose the selected driver and alternatives. | cod-accounting-method |\n| allocation_outputs | sort_secondary; delivery_returns; cod_processor_receipt | Enumerate actual intended accepted grades, separately sold live downgraded fish and any other intentional outputs with physical handoffs. Use subdivision first; distribute remaining homogeneous live-cod joint burdens by accepted net live mass across intended sold grades, documenting why the mass driver fits this route. Different functions/states need a separate reviewed attribution decision. No default substitution credit. | cod-accounting-method |\n| allocation_rejects | growout_waste; harvest_waste; sort_waste; delivery_waste | Rejects, mortalities and wastes are not automatically co-products. Their accountable production and treatment burdens remain with the responsible cohort/output; returned live stock carries its assigned burden once and is not counted as final sold mass. | cod-accounting-method |\n| allocation_period | all inventory rows | Carry accumulated juvenile/growout burdens with surviving cohort stocks across year boundaries, assign partial harvests consistently and reconcile remaining stocks. Include failed cohorts, fallow support, cleaning and nonproductive services in the accountable ledger; disclose redistribution/terminal treatment rather than deleting them or allocating twice. | cod-accounting-method |\n| allocation_assets | growout_services; harvest_services; sort_services; delivery_services | Use actual asset inventories, supported service lives, maintenance/replacement and service-use shares across named consumers/periods; shares exhaust the included burden once. No default lifetime. Inclusive purchased services and explicit fuel/power/capital/direct-emission components are mutually exclusive. | cod-accounting-method |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | all inventory rows | First attribute independently metered inputs and events to their node, cohort, lot and period. For this live-cod route, unresolved common operating burdens are assigned by documented causal service usage (metered power, vessel hours, cage occupancy/biomass-time as supported); disclose the selected driver and alternatives. | cod-accounting-method |\n| allocation_outputs | collect_sort_secondary; collect_delivery_returns; cod_processor_receipt | Enumerate actual intended accepted grades, separately sold live downgraded fish and any other intentional outputs with physical handoffs. Use subdivision first; distribute remaining homogeneous live-cod joint burdens by accepted net live mass across intended sold grades, documenting why the mass driver fits this route. Different functions/states need a separate reviewed attribution decision. No default substitution credit. | cod-accounting-method |\n| allocation_rejects | collect_growout_waste; collect_harvest_waste; collect_sort_waste; collect_delivery_waste | Rejects, mortalities and wastes are not automatically co-products. Their accountable production and treatment burdens remain with the responsible cohort/output; returned live stock carries its assigned burden once and is not counted as final sold mass. | cod-accounting-method |\n| allocation_period | all inventory rows | Carry accumulated juvenile/growout burdens with surviving cohort stocks across year boundaries, assign partial harvests consistently and reconcile remaining stocks. Include failed cohorts, fallow support, cleaning and nonproductive services in the accountable ledger; disclose redistribution/terminal treatment rather than deleting them or allocating twice. | cod-accounting-method |\n| allocation_assets | collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services | Use actual asset inventories, supported service lives, maintenance/replacement and service-use shares across named consumers/periods; shares exhaust the included burden once. No default lifetime. Inclusive purchased services and explicit fuel/power/capital/direct-emission components are mutually exclusive. | cod-accounting-method |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1093,11 +1093,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 35423
+              offset: 35487
               line: 651
               column: 1
             end:
-              offset: 35463
+              offset: 35527
               line: 651
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1113,18 +1113,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_88353"
+    - unit_id: "normative_88497"
       family: "validation"
       span:
         start:
-          offset: 88353
+          offset: 88497
           line: 714
           column: 1
         end:
-          offset: 91058
+          offset: 91234
           line: 727
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | cod_processor_receipt | Reject wild-origin growout juveniles, other species/route, or fish slaughtered before receipt from this reference; require all qualifiers and upstream juvenile coverage. | fao-cod-2010; cod-accounting-method |\n| validate_measurement | all inventory rows | Verify same 1 kg accepted net live mass basis, native-unit conversions, lot-specific count samples, water/tare exclusions and node-owned collection links. Final 1..1 is normalization identity only. | cod-accounting-method |\n| validate_outputs | cod_sort; cod_live_delivery | Enumerate every grade/destination, accepted output, independently intended secondary product, return, reject and waste with handoff; reconcile transfers and prevent two final claims for one fish. | cod-accounting-method |\n| validate_mode_period | all inventory rows | Check actual cohort/batch and overlapping reporting periods, input/output/cleaning/changeover events, partial harvests, failed cycles and opening/closing burden carryover once. | cod-accounting-method |\n| validate_shared | growout_services; harvest_services; sort_services; delivery_services | Check every named asset/service consumer and period, causal driver, total shares, supported asset life/replacement and exclusive service/direct component ownership. | cod-accounting-method |\n| validate_environment | all elementary rows | Require actual substance and receiving medium/basis, distinguish direct fossil carbon from respiration, and avoid waste/constituent or service-emission duplication; ambient seawater exposure and lost biomass are not automatic elementary exchanges or credits. | cod-accounting-method |\n| validate_ranges | all inventory rows | Resolve independent U_instance bounds before treating ranges as empirical acceptance limits; missing quantity evidence or identities remains a gap even if structural checks pass. | cod-accounting-method |\n| `validate_atomic_completion` | all applicable collection requirements and concrete inventory exchanges | Resolve every applicable section-8 collection requirement into individual physical/chemical exchanges with their own quantities, native units, composition/state, range basis or explicit uncertainty evidence, raw records, normalization, actual destinations/receiving media and verified compatible UUIDs. Any unresolved applicable requirement makes the final dataset incomplete and validation fails; unknown is not zero. Never copy aggregate amounts onto components or duplicate inclusive services with owned fuel/electricity/direct releases. Internal transfers are not fixed to the final 1 kg. | |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | cod_processor_receipt | Reject wild-origin growout juveniles, other species/route, or fish slaughtered before receipt from this reference; require all qualifiers and upstream juvenile coverage. | fao-cod-2010; cod-accounting-method |\n| validate_measurement | all inventory rows | Verify same 1 kg accepted net live mass basis, native-unit conversions, lot-specific count samples, water/tare exclusions and node-owned collection links. Final 1..1 is normalization identity only. | cod-accounting-method |\n| validate_outputs | cod_sort; cod_live_delivery | Enumerate every grade/destination, accepted output, independently intended secondary product, return, reject and waste with handoff; reconcile transfers and prevent two final claims for one fish. | cod-accounting-method |\n| validate_mode_period | all inventory rows | Check actual cohort/batch and overlapping reporting periods, input/output/cleaning/changeover events, partial harvests, failed cycles and opening/closing burden carryover once. | cod-accounting-method |\n| validate_shared | collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services | Check every named asset/service consumer and period, causal driver, total shares, supported asset life/replacement and exclusive service/direct component ownership. | cod-accounting-method |\n| validate_environment | all elementary rows | Require actual substance and receiving medium/basis, distinguish direct fossil carbon from respiration, and avoid waste/constituent or service-emission duplication; ambient seawater exposure and lost biomass are not automatic elementary exchanges or credits. | cod-accounting-method |\n| validate_ranges | all inventory rows | Resolve independent U_instance bounds before treating ranges as empirical acceptance limits; missing quantity evidence or identities remains a gap even if structural checks pass. | cod-accounting-method |\n| `validate_atomic_completion` | all applicable collection requirements and concrete inventory exchanges | Resolve every applicable section-8 collection requirement into individual physical/chemical exchanges with their own quantities, native units, composition/state, range basis or explicit uncertainty evidence, raw records, normalization, actual destinations/receiving media and verified compatible UUIDs. Any unresolved applicable requirement makes the final dataset incomplete and validation fails; unknown is not zero. Never copy aggregate amounts onto components or duplicate inclusive services with owned fuel/electricity/direct releases. Internal transfers are not fixed to the final 1 kg. | |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1141,11 +1141,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 88353
+              offset: 88497
               line: 714
               column: 1
             end:
-              offset: 88375
+              offset: 88519
               line: 714
               column: 23
           text: "## 9. Validation Rules"
@@ -1224,202 +1224,202 @@ normative_context:
           line: 79
           column: 1
         end:
-          offset: 8191
+          offset: 8223
           line: 79
-          column: 381
+          column: 413
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_generation"
       identity_kind: "explicit"
       unit_id: "normative_5282"
       source_span:
         start:
-          offset: 8192
+          offset: 8224
           line: 80
           column: 1
         end:
-          offset: 8792
+          offset: 8856
           line: 80
-          column: 601
+          column: 633
     - pointer: "/system_boundary/rules/6"
       rule_id: "boundary_losses"
       identity_kind: "explicit"
       unit_id: "normative_5282"
       source_span:
         start:
-          offset: 8793
+          offset: 8857
           line: 81
           column: 1
         end:
-          offset: 9132
+          offset: 9196
           line: 81
           column: 340
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_35423"
+      unit_id: "normative_35487"
       source_span:
         start:
-          offset: 35536
+          offset: 35600
           line: 655
           column: 1
         end:
-          offset: 35931
+          offset: 35995
           line: 655
           column: 396
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_35423"
+      unit_id: "normative_35487"
       source_span:
         start:
-          offset: 35932
+          offset: 35996
           line: 656
           column: 1
         end:
-          offset: 36465
+          offset: 36545
           line: 656
-          column: 534
+          column: 550
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_rejects"
       identity_kind: "explicit"
-      unit_id: "normative_35423"
+      unit_id: "normative_35487"
       source_span:
         start:
-          offset: 36466
+          offset: 36546
           line: 657
           column: 1
         end:
-          offset: 36826
+          offset: 36938
           line: 657
-          column: 361
+          column: 393
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_period"
       identity_kind: "explicit"
-      unit_id: "normative_35423"
+      unit_id: "normative_35487"
       source_span:
         start:
-          offset: 36827
+          offset: 36939
           line: 658
           column: 1
         end:
-          offset: 37253
+          offset: 37365
           line: 658
           column: 427
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_assets"
       identity_kind: "explicit"
-      unit_id: "normative_35423"
+      unit_id: "normative_35487"
       source_span:
         start:
-          offset: 37254
+          offset: 37366
           line: 659
           column: 1
         end:
-          offset: 37680
+          offset: 37824
           line: 659
-          column: 427
+          column: 459
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 88448
+          offset: 88592
           line: 718
           column: 1
         end:
-          offset: 88700
+          offset: 88844
           line: 718
           column: 253
     - pointer: "/validation_rules/1"
       rule_id: "validate_measurement"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 88701
+          offset: 88845
           line: 719
           column: 1
         end:
-          offset: 88970
+          offset: 89114
           line: 719
           column: 270
     - pointer: "/validation_rules/2"
       rule_id: "validate_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 88971
+          offset: 89115
           line: 720
           column: 1
         end:
-          offset: 89243
+          offset: 89387
           line: 720
           column: 273
     - pointer: "/validation_rules/3"
       rule_id: "validate_mode_period"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 89244
+          offset: 89388
           line: 721
           column: 1
         end:
-          offset: 89492
+          offset: 89636
           line: 721
           column: 249
     - pointer: "/validation_rules/4"
       rule_id: "validate_shared"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 89493
+          offset: 89637
           line: 722
           column: 1
         end:
-          offset: 89774
+          offset: 89950
           line: 722
-          column: 282
+          column: 314
     - pointer: "/validation_rules/5"
       rule_id: "validate_environment"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 89775
+          offset: 89951
           line: 723
           column: 1
         end:
-          offset: 90106
+          offset: 90282
           line: 723
           column: 332
     - pointer: "/validation_rules/6"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 90107
+          offset: 90283
           line: 724
           column: 1
         end:
-          offset: 90352
+          offset: 90528
           line: 724
           column: 246
     - pointer: "/validation_rules/7"
       rule_id: "validate_atomic_completion"
       identity_kind: "explicit"
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 90353
+          offset: 90529
           line: 725
           column: 1
         end:
-          offset: 91056
+          offset: 91232
           line: 725
           column: 704
   diagnostics:
@@ -1449,26 +1449,26 @@ normative_context:
           column: 208
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_35423"
+      unit_id: "normative_35487"
       source_span:
         start:
-          offset: 35423
+          offset: 35487
           line: 651
           column: 1
         end:
-          offset: 35463
+          offset: 35527
           line: 651
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_88353"
+      unit_id: "normative_88497"
       source_span:
         start:
-          offset: 88353
+          offset: 88497
           line: 714
           column: 1
         end:
-          offset: 88375
+          offset: 88519
           line: 714
           column: 23
 projection_metadata:
@@ -1478,5 +1478,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:25033377e123d78d5f57b7c843db3ab8bc5a964f647ec2dfc61a64c57de37d20"
-  generated_content_sha256: "sha256:def14e1cadaf7419ac3c9424de4950d78341329bd19df244201d3ce4ea8e9da8"
+    sha256: "sha256:fa200fe65d3a2ec36c832d5c55e5bcff0d2c67e9fd4530a07ea6a28aa33913cd"
+  generated_content_sha256: "sha256:2a61e5ad8400efcb61cac050794b9cc0bc52dbb45422f8ca4d8c7c84e20047f7"

@@ -53,7 +53,7 @@ translation_status: aligned
 | --- | --- | --- | --- | --- |
 | reference_mass | reference product | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 用经校准称重或可追溯称量记录取得验收净完整活体鱼质量 A；排除游离承载水、容器和全部皮重；使用 cp_deliver。同一 A 为各节点每 1 kg 参考流归一化分母。 |
 | count_mass | live fish and juveniles | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 数量不得直接等同质量。保留同批次原始计数和独立代表性鱼体质量样本及不确定性；实际样本平均体质量乘对应计数，不采用通用尾重。 |
-| feed_basis | grow_feed | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 分别保留实际饲喂态质量、水分及干物质换算证据；生鲜鱼、湿料和配合料不共享固定饲料系数或默认比例。 |
+| feed_basis | collect_grow_feed | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | 分别保留实际饲喂态质量、水分及干物质换算证据；生鲜鱼、湿料和配合料不共享固定饲料系数或默认比例。 |
 | native_units | service and environmental instances | 实际实例流属性 | 原生单位 | 保留 kWh、MJ、L、m3、t km、设备时或供应服务单位；仅在有计量、密度、热值或服务边界证据时换算。药剂产品质量与有效成分、营养物质与元素质量、呼吸与化石碳分别声明，不给未知单位补质量身份。 |
 
 ## 5. 系统边界

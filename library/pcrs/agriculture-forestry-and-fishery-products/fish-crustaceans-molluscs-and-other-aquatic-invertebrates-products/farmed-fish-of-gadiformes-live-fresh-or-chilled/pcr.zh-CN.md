@@ -77,8 +77,8 @@ translation_status: aligned
 | boundary_gate | cod_live_delivery | 终点为有证据的加工方实物活体接收，先于放血、去内脏和屠宰；缺少活体场门证据不能默认采用本参考。 | fao-cod-2010; cod-accounting-method |
 | boundary_support | all inventory rows | 纳入实际养成设备清洁、辅助工作船、收获搬运、保活及物流。不得为活鱼水舱虚构独立鱼体预处理或产品包装作业。实际辅助交换在使用节点逐项展开。 | cod-accounting-method |
 | boundary_periods | cod_growout; cod_harvest; cod_sort; cod_live_delivery | 对幼鱼接收、海水群体生长、分批收获、交付、空置清洁、失败、资产更换及终止按全部相关报告年索引。期初期末群体库存结转负荷，不重复分配。 | cod-accounting-method |
-| boundary_shared | growout_services; harvest_services; sort_services; delivery_services | 为网箱系泊、投喂系统、工作船、活鱼运输船及公用设施建立唯一共享账，列明使用节点、群体及服务时期。每节点仅承担有证据份额；综合供应商和直接组成项实行独占归属。 | cod-accounting-method |
-| boundary_generation | growout_electricity; growout_fuel; harvest_electricity; harvest_fuel; sort_electricity; sort_services; collect_sort_direct_releases; delivery_electricity; delivery_fuel | 现场发电已列燃料及直接排放时，所发电力仅作内部能量转移，不再增加购电上游负荷。外购电的供应商发电上游仅计一次。计量并区分外购、自发电和转移，确定唯一发电机归属及明确燃料电力边界。 | cod-accounting-method |
+| boundary_shared | collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services | 为网箱系泊、投喂系统、工作船、活鱼运输船及公用设施建立唯一共享账，列明使用节点、群体及服务时期。每节点仅承担有证据份额；综合供应商和直接组成项实行独占归属。 | cod-accounting-method |
+| boundary_generation | growout_electricity; collect_growout_fuel; harvest_electricity; collect_harvest_fuel; sort_electricity; collect_sort_services; collect_sort_direct_releases; delivery_electricity; collect_delivery_fuel | 现场发电已列燃料及直接排放时，所发电力仅作内部能量转移，不再增加购电上游负荷。外购电的供应商发电上游仅计一次。计量并区分外购、自发电和转移，确定唯一发电机归属及明确燃料电力边界。 | cod-accounting-method |
 | boundary_losses | all inventory rows | 结合生物生长、有意转移、死亡、逃逸及库存核对尾数、生物量和饲料；不得强迫幼鱼质量等于最终质量。账目损失不自动成为废物或基本流交换。不设生态或营养物移除信用。 | cod-accounting-method |
 
 ## 6. 过程清单结构
@@ -654,10 +654,10 @@ translation_status: aligned
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | allocation_subdivide | all inventory rows | 首先将独立计量投入及事件归属节点、群体、批次和时期。本活鳕路线未能细分的共同作业负荷按有证据的因果服务使用量分配，例如计量电力、船时或有依据的网箱占用及生物量时间；披露选择依据及替代方法。 | cod-accounting-method |
-| allocation_outputs | sort_secondary; delivery_returns; cod_processor_receipt | 列明实际有意验收等级、单独销售降级活鱼和其他有意输出及实物交接。先细分；剩余同质活鳕共同负荷按有意销售等级的验收活鱼净质量分配，说明质量驱动适用理由。不同功能或状态须另行审查分配决策。不设默认替代信用。 | cod-accounting-method |
-| allocation_rejects | growout_waste; harvest_waste; sort_waste; delivery_waste | 拒收、死鱼和废物不自动成为共产品。其应计生产及处理负荷保留在责任群体或输出；退回活体库存仅携带一次所分配负荷，不计最终销售质量。 | cod-accounting-method |
+| allocation_outputs | collect_sort_secondary; collect_delivery_returns; cod_processor_receipt | 列明实际有意验收等级、单独销售降级活鱼和其他有意输出及实物交接。先细分；剩余同质活鳕共同负荷按有意销售等级的验收活鱼净质量分配，说明质量驱动适用理由。不同功能或状态须另行审查分配决策。不设默认替代信用。 | cod-accounting-method |
+| allocation_rejects | collect_growout_waste; collect_harvest_waste; collect_sort_waste; collect_delivery_waste | 拒收、死鱼和废物不自动成为共产品。其应计生产及处理负荷保留在责任群体或输出；退回活体库存仅携带一次所分配负荷，不计最终销售质量。 | cod-accounting-method |
 | allocation_period | all inventory rows | 随存活群体库存跨年结转累计幼鱼及养成负荷，一致分配分批收获并核对剩余库存。失败群体、空置辅助、清洁及非生产服务须留在应计账中；披露再分配或终止处理，不得删除或重复分配。 | cod-accounting-method |
-| allocation_assets | growout_services; harvest_services; sort_services; delivery_services | 使用实际资产清单、有依据的服务寿命、维护更换及各使用节点时期的服务份额；全部份额仅耗尽一次纳入负荷。不设默认寿命。综合外购服务与显式燃料、电力、资本及直接排放组成项相互排斥。 | cod-accounting-method |
+| allocation_assets | collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services | 使用实际资产清单、有依据的服务寿命、维护更换及各使用节点时期的服务份额；全部份额仅耗尽一次纳入负荷。不设默认寿命。综合外购服务与显式燃料、电力、资本及直接排放组成项相互排斥。 | cod-accounting-method |
 
 ## 8. 前景数据采集、计算与质量规则
 
@@ -720,7 +720,7 @@ translation_status: aligned
 | validate_measurement | all inventory rows | 验证统一1 kg验收活鱼净质量基准、本征单位换算、批次尾数样本、载水皮重扣除及节点专属采集链接。最终1..1仅为归一化恒等关系。 | cod-accounting-method |
 | validate_outputs | cod_sort; cod_live_delivery | 列明每项等级去向、验收输出、独立有意次级产品、退回、拒收和废物及交接；核对转移，防止同一条鱼两次最终声明。 | cod-accounting-method |
 | validate_mode_period | all inventory rows | 检查实际群体批次及重叠报告期、进出和清洁换批事件、分批收获、失败周期及期初期末负荷只结转一次。 | cod-accounting-method |
-| validate_shared | growout_services; harvest_services; sort_services; delivery_services | 检查各命名资产服务使用节点及时期、因果驱动、总份额、有依据资产寿命更换及综合服务与直接组成项独占归属。 | cod-accounting-method |
+| validate_shared | collect_growout_services; collect_harvest_services; collect_sort_services; collect_delivery_services | 检查各命名资产服务使用节点及时期、因果驱动、总份额、有依据资产寿命更换及综合服务与直接组成项独占归属。 | cod-accounting-method |
 | validate_environment | all elementary rows | 要求实际物质、接收介质及基准；区分直接化石碳与呼吸，避免废物成分或服务排放重复；自然海水接触和损失生物量不自动成为基本流或信用。 | cod-accounting-method |
 | validate_ranges | all inventory rows | 独立解决U_instance后才能将范围作为经验验收限；数量证据或身份缺失仍是缺口，即使结构检查通过。 | cod-accounting-method |
 | `validate_atomic_completion` | 所有适用采集义务与具体清单交换 | 必须逐一落实第8节每项适用采集义务的具体物理/化学交换及其独立数量、原生单位、组成/状态、范围依据或明确的不确定性证据、原始记录、归一化、实际去向/接收环境及兼容的核实 UUID。未落实任何适用项则最终数据包不完整且验证失败；未知不等于零。集合总量不得复制给各项，完整服务与自有燃料/电力/直接释放不得重复。内部转移不固定为最终1 kg。 | |
