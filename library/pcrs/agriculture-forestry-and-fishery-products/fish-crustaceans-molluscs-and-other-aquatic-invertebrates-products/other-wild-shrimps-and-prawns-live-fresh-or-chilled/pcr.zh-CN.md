@@ -932,7 +932,7 @@ Litopenaeus setiferus，美国墨西哥湾近海底网板拖网，生鲜未冻�
 | --- | --- | --- | --- |
 | `reference_validation` | accepted_white_shrimp | 核实物种、野生美国墨西哥湾近海底网板拖网路线、带头带壳生鲜冰鲜未冻结整虾验收状态及首次接收方实物门；A 为正且排除实测游离冰/水和皮重。其他物种/状态不得作为参考分母。 | |
 | `handoff_validation` | process map and transfers | 核实实际可选节点状态和转移编号。各真实转移按实测质量配对一个输出/输入；仅 accepted_white_shrimp 为归一化最终输出。清洗/浸渍/呈现状态未知须审查，不能默认未激活。 | |
-| `mixed_output_validation` | capture sorting and receipt | 核对所有物种/等级/状态去向、计划出售输出、活体放归、弃料和丢弃物。检查直接归属、观测价值剩余混合航次份额及可比质量份额敏感性；不得重复最终交接门或向废物分配销售份额。 | |
+| `mixed_output_validation` | capture sorting and receipt | 核对所有物种/等级/状态去向、计划出售输出、活体放归、拒收物和丢弃物。检查直接归属、观测价值剩余混合航次份额及可比质量份额敏感性；不得重复最终交接门或向废物分配销售份额。 | |
 | `period_shared_validation` | operations assets and periods | 检查所有生产性/非生产性航次覆盖、事件归属、消费者/期间份额、实际寿命/更换证据及资本/服务排除。同批次归一化前份额须与单个总量核对。 | |
 | `release_validation` | each direct-operation node | 在实际存在时，核实捕获、分选、调理、冰藏、包装和接收的直接燃料与 CO2 以及实际非 CO2 燃烧/泄漏/排水覆盖。CO2 与其他释放分开；确认污染物身份/基准/介质、实测/因子证据及无完整服务重复。现场自发电不构成额外电网需求。 | |
 | `evidence_validation` | all amounts and bindings | 检查节点专属采集链接、实际自身单位及不确定性、实例上限独立证据、最新投影和双语一致。暂定符号范围和未解决身份不能证明经验数量或最终 UUID 就绪；未解决最终参考产品阻断 active/发布。 | |
