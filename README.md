@@ -26,16 +26,16 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-27
-lastReviewedCommit: 874470a017a4e7172b96674cca39e82a7028954e
-lastReviewedNote: "PCR #154: reviewed the single site mdast-util-to-markdown 2.1.2 to 2.2.0 lock resolution and existing incoming ranges. Paired standalone serialization probes preserve the new AST and reproduce upstream fixes; six actual PCR/guide sources retain identical inventories, HTML and source context, with no toMarkdown calls. Root graph, canonical content, methodology/translation states, runtime pins, product 0.4.9 and production pointer remain unchanged. Focused checks are not full current-source Linux, corpus, sealed-product or hosted qualification; independent review and exact workspace integration remain required."
+lastReviewedAt: 2026-10-29
+lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
+lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
 ---
 
 # TianGong LCA PCR Library
 
 This repository stores TianGong LCA product category rules and data production methodology assets.
 
-Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The workspace's retained local directory is `tiangong-lca-pcr`; repository renaming does not change PCR identifiers, package names, or release history.
+Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The integration workspace's physical checkout directory is `pcr`; its retained submodule metadata name is `tiangong-lca-pcr`. Repository renaming does not change PCR identifiers, package names, or release history.
 
 PCR records are canonical methodology documents. Classification systems such as CPC, HS, ISIC, and NAICS are entry points that map to canonical PCR records; they do not own the PCR directory structure.
 

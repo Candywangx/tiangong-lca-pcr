@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-27
-lastReviewedNote: "PCR #154: reviewed the single site mdast-util-to-markdown 2.1.2 to 2.2.0 lock resolution and existing incoming ranges. Paired standalone serialization probes preserve the new AST and reproduce upstream fixes; six actual PCR/guide sources retain identical inventories, HTML and source context, with no toMarkdown calls. Root graph, canonical content, methodology/translation states, runtime pins, product 0.4.9 and production pointer remain unchanged. Focused checks are not full current-source Linux, corpus, sealed-product or hosted qualification; independent review and exact workspace integration remain required."
-lastReviewedCommit: 874470a017a4e7172b96674cca39e82a7028954e
+lastReviewedAt: 2026-10-29
+lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
+lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -152,7 +152,7 @@ redundant worker input without changing source bytes, reading routes or download
 
 `meta[name="description"]`, the Open Graph description and the search-record description are one
 bounded projection of text that already exists in the rendered source, produced by
-`scripts/summaries.mjs`:
+`packages/pcr-docs/scripts/summaries.ts`:
 
 - the page's own title, followed by up to two paragraphs from that page's own source scope;
 - for a chapter, only nodes inside that chapter's `sourceNodeIds`, so a record and each of its
@@ -162,7 +162,7 @@ bounded projection of text that already exists in the rendered source, produced 
 - for a domain or subdomain catalog page, its actual category title, its position in the tree and
   the real record count;
 - bounded to 170 Unicode code points, cut on a source sentence or word boundary, and never inside a
-  surrogate pair. `verify.mjs` fails a page that exceeds the bound.
+  surrogate pair. `packages/pcr-docs/scripts/verify.ts` fails a page that exceeds the bound.
 
 A page whose retained summary is the title alone publishes no reader-facing context. That residual is
 counted in `.generated/report.json` under `summaries.title_only` and printed by the generation stage.
