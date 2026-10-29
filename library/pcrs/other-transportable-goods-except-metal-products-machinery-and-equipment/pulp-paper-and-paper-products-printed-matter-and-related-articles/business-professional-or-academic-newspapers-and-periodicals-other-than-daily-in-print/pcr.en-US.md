@@ -3,7 +3,7 @@ pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipm
 language: en-US
 sync_with: pcr.zh-CN.md
 status: candidate
-content_maturity: draft_methodology
+content_maturity: authored_methodology
 ---
 
 # Business, professional or academic newspapers and periodicals, other than daily, in print

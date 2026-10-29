@@ -3,7 +3,7 @@ pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipm
 language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
-content_maturity: draft_methodology
+content_maturity: authored_methodology
 ---
 
 # 非每日出版的商业、专业或学术报纸及期刊（印刷版）
