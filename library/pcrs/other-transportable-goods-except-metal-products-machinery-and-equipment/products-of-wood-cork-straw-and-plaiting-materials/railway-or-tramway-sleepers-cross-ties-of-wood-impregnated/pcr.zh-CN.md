@@ -3,7 +3,7 @@ pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipm
 language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
-content_maturity: draft_methodology
+content_maturity: authored_methodology
 ---
 
 # 煤焦油杂酚油压力浸渍实木铁路枕木
