@@ -65,6 +65,12 @@ This package adds 34 candidate methods by promoting their existing empty templat
 
 ## Qualification
 
-The first full run found a missing Chinese presentation label for the newly material furniture category. One display-dictionary entry fixes it; the existing focused test now passes. [Initial failure and correction evidence](superseded-validation/category-label-repair.json) is retained, and complete gates are rerun on the corrected source.
+Complete local `npm run validate` **passed** on `678fc0484335507f1cd742ba29533a4c1c175746` (Node 24.19.0 / npm 12.2.0): 3343 tests, 3338 passed, zero failed, 5 skipped. The complete corpus contains 3107 physical PCRs, 1541 material PCRs and 1567 aliases; two independent SQLite builds reproduce identical bytes. [Full log](validation/validate.log), [source/tree-bound receipt](validation/validate.json).
 
-[Qualification status](qualification-status.json) separates current target checks from pending fresh complete local/hosted gates. Earlier smaller-source validation and documentation results are historical, not qualification of this 69-record source. No search budget increase, omitted material content, release/tag, methodology publication or deployment is part of this PR.
+Complete `npm run docs:build` **failed** on the same source: en-US search gzip 4,196,228 / 4,000,000 bytes (excess 196,228). No search-size result was produced for zh-CN after the earlier failure; earlier smaller-source measurements are not substituted. Complete static export, full-site SEO and sealed-product acceptance did not finish. [Full documentation log](validation/docs-build.log) and [receipt with verified pack manifests](validation/docs-build.json) retain the actual outcome.
+
+The PR remains draft pending full current product/hosted qualification. No budget increase, dropped material content or runtime workaround was applied. The final evidence-only commit preserves all tested canonical/classification/runtime bytes; [current status](qualification-status.json) distinguishes the actual tested source from the later PR head.
+
+The first complete validation on `06fdd379` failed one existing Chinese category-label test. The newly material furniture category now has its Chinese presentation label; the existing focused test changed from failure to pass. [Original failure and fix evidence](superseded-validation/category-label-repair.json) is retained; it is not reported as a successful full run.
+
+The [public evidence review](final-package-review.json) and [category-label delta review](category-label-delta-review.json) retain their actual inspected sources.
