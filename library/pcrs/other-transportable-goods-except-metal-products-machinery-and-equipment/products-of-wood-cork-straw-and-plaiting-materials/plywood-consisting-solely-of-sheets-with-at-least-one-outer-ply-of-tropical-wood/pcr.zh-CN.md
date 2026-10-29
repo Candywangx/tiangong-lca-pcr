@@ -3,7 +3,7 @@ schema_version: 1
 pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.plywood-consisting-solely-of-sheets-with-at-least-one-outer-ply-of-tropical-wood
 language: zh-CN
 status: candidate
-content_maturity: draft_methodology
+content_maturity: authored_methodology
 translation_status: aligned
 sync_with: pcr.en-US.md
 ---
