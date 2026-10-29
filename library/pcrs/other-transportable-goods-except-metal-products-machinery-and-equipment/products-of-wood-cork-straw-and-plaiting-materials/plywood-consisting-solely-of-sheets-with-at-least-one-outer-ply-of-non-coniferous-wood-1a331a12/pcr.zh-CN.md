@@ -8,29 +8,31 @@ translation_status: aligned
 sync_with: pcr.en-US.md
 ---
 
-# 木质全单板胶合板——一体化水性甲阶 PF 制造
+# 非热带非针叶木外层全单板胶合板——一体化水性甲阶 PF 制造
 
 ## 1. 范围与适用性
 
-适用于所有层均为木单板、层间纹理交错的平面未涂饰且未经化学处理胶合板，外层及内层可为针叶木、热带或非热带阔叶木，包括真实混合树种层构；保留此前已接受的非热带阔叶外层子集。路线仍限定为未处理原木入厂后调质、旋切或刨切、单板干燥及返干、水性甲阶酚醛（PF）树脂配胶/涂胶、交错组坯、热压固化、冷却、裁边、按等级砂光、验收和出厂包装的一体化制造。热源限定为厂内天然气或洁净未处理木片，供水为外购自来水，废水送外部处理。外购单板组装、其他胶型、直接取水、外购蒸汽/热量、树脂废料燃烧或厂内污水处理须另行扩充原子清单与证据，不能宣称被本方法覆盖。
+适用于所有层均为木单板、层间纹理交错的平面未涂饰且未经化学处理胶合板，至少一外层为非热带非针叶木，且两个外层均不得为热带木材；排除两个外层均为针叶木的板材。分别记录面板与背板，另一外层可为非热带非针叶木或针叶木。内层单板可为实际针叶木、热带木、非热带非针叶木或混合树种，但须有逐层证据及胶合验收；外层判据不构成全板材种禁令。路线仍限定为未处理原木入厂后调质、旋切或刨切、单板干燥及返干、水性甲阶酚醛（PF）树脂配胶/涂胶、交错组坯、热压固化、冷却、裁边、按等级砂光、验收和出厂包装的一体化制造。热源限定为厂内天然气或洁净未处理木片，供水为外购自来水，废水送外部处理。外购单板组装、其他胶型、直接取水、外购蒸汽/热量、树脂废料燃烧或厂内污水处理须另行扩充原子清单与证据，不能宣称被本方法覆盖。
 
-排除细木工板/实木条芯板、蜂窝板、刨花板或 MDF 芯贴面板、竹板、LVL、平行纹理单板结构材、胶合木、涂层/覆膜/浸渍防腐或阻燃板及曲面成品。湿的未固化组坯、压制中间物及未验收或未整理板材不能作为最终参考输出。CPC 31411/31412/31413 仅贡献符合限定的一体化 PF 全单板子范围，不表示覆盖全叶、所有胶型/芯构或湿干交付状态；树种标签本身不产生新的方法身份。[wood-handbook-2021; epa-plywood-2002]
+排除细木工板/实木条芯板、蜂窝板、刨花板或 MDF 芯贴面板、竹板、LVL、平行纹理单板结构材、胶合木、涂层/覆膜/浸渍防腐或阻燃板及曲面成品。湿的未固化组坯、压制中间物及未验收或未整理板材不能作为最终参考输出。本保留方法身份仅限 CPC 31413 中匹配的一体化 PF 全单板子范围，不表示覆盖全叶、所有胶型/芯构或湿干交付状态。[wood-handbook-2021; epa-plywood-2002; unsd-cpc3-2025]
 
-适用性须按实际逐层树种和采伐/供应来源、切削缺陷、调质、进出含水、干燥/返干及表面历史、完整 PF 配方和压制固化程序建立。按声明等级的验收方法，对真实层构测试胶合强度/耐久性及木破率或脱层，保留不合格批次与返工记录。松类树脂、热带油脂/酸性抽提物和过干表面会影响润湿或固化；任何树种或混合层构都不能自动合格。不能暗改胶型、涂层或化学处理来把胶合失败的板纳入本方法。历史热带材观察仅支持这些采集问题，不提供配方或全部树种适用批准。[wood-handbook-2021; fao-tropical-timber]
+官方 CPC 3.0 层级将 31413 置于竹材以外的木单板胶合板之下，并以外层区分；解释性注释描述相邻层交错纹理，也列出更宽的中心芯构。这些宽泛例项不将本 PCR 扩至全单板以外。采用上述外层条件，使本类别与双针叶外层及热带外层产品分开；须核验实际树种和层位，不能用商品名或供应地区推定植物学类别。[unsd-cpc3-2025]
+
+适用性须按实际逐层树种和采伐/供应来源、切削缺陷、调质、进出含水、干燥/返干及表面历史、完整 PF 配方和压制固化程序建立。按声明等级的验收方法，对真实层构测试胶合强度/耐久性及木破率或脱层，保留不合格批次与返工记录。松类树脂、热带油脂/酸性抽提物和过干表面会影响润湿或固化；任何树种或混合层构都不能自动合格。不能暗改胶型、涂层或化学处理来把胶合失败的板纳入本方法。历史热带材观察作为反对树种自动迁移的证据，支持实际内层单板的采集问题；不把它当作非热带外层工厂实测，不提供配方或全部树种适用批准。[wood-handbook-2021; fao-tropical-timber]
 
 唯一的通用胶合板流描述交错胶合木单板、工厂胶合/压制和建筑材料半成品用途。满足下述固化/冷却/整理/等级及供方门点检查的已验收工厂板材可作为以后进入建筑的材料；该定义不证明湿的未固化在制品已经可交付。流身份不能推定供方/背景门点或体积约定。EPA 和 FAO 支持热压后的整理，CORRIM 针叶案例使用立方米出厂声明单位，不提供跨树种默认密度。[epa-plywood-2002; fao-plywood-manufacture; corrim-western-plywood-2025]
 
-CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、7 月 22 日编辑；原始工厂调查为 2022/2023 年。它们是同一调查计划的区域案例，不是独立方法批准。其外购单板和混合锅炉燃料超出本 PCR 的原木一体化/洁净燃料边界。区域配方、密度、能耗、收率、排放和全生命周期情景仅作案例检查线索。没有预设数值配方、压制温度/时间、含水率、密度或排放因子；这些由匹配场址和产品的记录产生。[corrim-western-plywood-2025; corrim-southern-plywood-2025]
+CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、7 月 22 日编辑；原始工厂调查为 2022/2023 年。它们是同一调查计划的区域案例，不是独立方法批准。其针叶外层板材不属于本 PCR 的外层目标，外购单板和混合锅炉燃料也超出本 PCR 的原木一体化/洁净燃料边界。区域配方、密度、能耗、收率、排放和全生命周期情景仅作案例检查线索。没有预设数值配方、压制温度/时间、含水率、密度或排放因子；这些由匹配场址和产品的记录产生。[corrim-western-plywood-2025; corrim-southern-plywood-2025]
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.plywood-consisting-solely-of-sheets-with-at-least-one-outer-ply-of-non-coniferous-wood-1a331a12 |
-| classification_refs | CPC 3.0:31411; 31412; 31413; narrower 子范围；接受映射另行裁定 |
-| covered_products | 原木一体化水性甲阶 PF 全单板交错平板；实际针叶/热带/非热带或混合单板层构须符合树种特定胶合及交付验收 |
-| excluded_products | 其他芯构；其他胶型；外购单板组装；涂饰或化学处理板；湿的未固化或未验收最终输出状态 |
-| representative_product | 实测层构与胶型的 PF 全单板未涂饰出厂板，不规定某树种配比或胶量 |
+| classification_refs | CPC 3.0 31413；narrower；当前接受关系及决定以`classifications/mappings/cpc-3.0-to-pcr.yaml`及其引用ADR为准，不表示整类覆盖或科学/翻译批准 |
+| covered_products | 原木一体化水性甲阶 PF 全单板交错平板，至少一外层为非热带非针叶木且无热带外层；实际内层树种/混合层构须符合树种特定胶合及交付验收 |
+| excluded_products | 双针叶外层或任一热带外层；其他芯构；其他胶型；外购单板组装；涂饰或化学处理板；湿的未固化或未验收最终输出状态 |
+| representative_product | 至少一外层为非热带非针叶木且无热带外层、实测内层树种/层构与胶型的 PF 全单板未涂饰出厂板，不规定某树种配比或胶量 |
 | production_route | 调质—旋切/刨切—干燥—PF 配胶/涂胶/组坯—热压/固化—冷却—裁边/按等级砂光—验收/包装；厂内供热合并计量 |
 | market_state | 已固化、冷却、裁边、按等级需要砂光并验收的工厂出厂未涂饰平板；建筑材料半成品，不是未固化中间物 |
 
@@ -38,9 +40,9 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 
 | 字段 | 值 |
 | --- | --- |
-| What | 提供已声明强度/胶合耐久等级的胶合板板材 |
+| What | 提供已声明强度/胶合耐久等级的非热带非针叶木外层全单板胶合板板材 |
 | How much | 1 m3 验收净几何板材体积；按实测交付含水和温度状态 |
-| How well | 逐层实际树种/来源；全单板交错层构；水性甲阶 PF；未涂饰/未化学处理；已固化/冷却/裁边并按等级砂光/验收；实测尺寸、净体积、配对净质量、含水、密度和胶合/强度等级 |
+| How well | 逐层实际树种/来源；至少一外层为非热带非针叶木且无热带外层；全单板交错层构；水性甲阶 PF；未涂饰/未化学处理；已固化/冷却/裁边并按等级砂光/验收；实测尺寸、净体积、配对净质量、含水、密度和胶合/强度等级 |
 | How long or cycle | 一次制造出厂批次；声明单位，无假定使用寿命 |
 | reference_flow_link | finished_panel |
 
@@ -51,7 +53,7 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 | 参考流属性 | 体积 `93a60a56-a3c8-22da-a746-0800200c9a66` |
 | 参考单位组 | 体积 `93a60a57-a3c8-12da-a746-0800200c9a66` |
 | 参考单位 | m3 |
-| 必需限定信息 | 逐层树种/采伐和供应来源；外层类别和混合层构；全单板芯构；单板/层数及纹理/厚度；调质和表面历史；实测进出/交付含水及测法；实际净尺寸/体积/孔缺陷约定；同状态配对净质量/密度；完整水性甲阶 PF 配方/固形物/水；强度/胶合等级及真实验收试验；固化/冷却/裁边/砂光门点；无涂层/化学处理；切削/干燥/返干/压制程序；能源/供水/废水路线；场址/期间/起点；分配/治理；实际供方门点、体积约定及地域/时间/配方兼容 |
+| 必需限定信息 | 逐层树种/采伐和供应来源；面板/背板分别记录树种和类别，至少一外层为非热带非针叶木且无热带外层；实际内层树种和混合层构；全单板芯构；单板/层数及纹理/厚度；调质和表面历史；实测进出/交付含水及测法；实际净尺寸/体积/孔缺陷约定；同状态配对净质量/密度；完整水性甲阶 PF 配方/固形物/水；强度/胶合等级及真实验收试验；固化/冷却/裁边/砂光门点；无涂层/化学处理；切削/干燥/返干/压制程序；能源/供水/废水路线；场址/期间/起点；分配/治理；实际供方门点、体积约定及地域/时间/配方兼容 |
 
 限定信息须载于元数据或等效字段，缺证则适用性未定。所需数量是验收板材本身 1 m3，不是堆垛/包件体积、名义板体积或绝干木体积。实测实际净平面材料面积和最终厚度，扣除贯穿孔/切口；内部单板缺陷按等级记录，不暗扣木材微观孔隙。排除包装、垫条、空气间隙、不合格板及未跨交付门点存量。净质量含木材、固化 PF 和留存水，保留为原始实物证据；同状态配对密度给出 1 m3 所需质量，不假定实物重量。声明单位不证明各树种、等级或寿命功能等价。
 
@@ -73,7 +75,7 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 | --- | --- |
 | declared_starting_condition | 未处理原木和所需外购材料入厂；含厂内调质、制单板和锅炉/治理设施 |
 | starting_condition_role | 前景原料接收截面，并非上游零负荷 |
-| product_classification_scope | CPC 31411/31412/31413 中匹配的一体化 PF 全单板子范围；须有外/内层实际树种和验收试验；不声称全叶覆盖 |
+| product_classification_scope | 仅 CPC 31413 中匹配的一体化 PF 全单板子范围；至少一外层为非热带非针叶木且无热带外层；须有实际内层树种和验收试验；不声称全叶覆盖 |
 | recursive_input_rule | 同类胶合板或返工板若来自厂外必须单独记录入厂状态及上游数据，扩充方法后使用；本路线不默认接受。内部返工、木片燃料与循环水只在内部实物流账记录。 |
 | upstream_dataset_requirement | 为原木、树脂和每项投入链接匹配来源/时空/状态的上游生产及入厂运输；每项废物链接外部处理，避免厂内燃烧重复。 |
 | disclosure | 明确入厂/出厂截面、现场阶段、供应数据缺口、治理设施、分配、内外部转移；不得把只有前景活动量的包声称为完整从摇篮到大门数据。 |
@@ -260,7 +262,7 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 
 只有供应规格符合天然碱加工的 95% 纯碱时才按条件纳入，记录到货质量与有效比例；其他浓度或路线需另行核验身份，不推定催化剂组成。
 
-- 选定流：碳酸钠（95%） `2099dae8-ad14-4496-87eb-d339b26e09f7`
+- 选定流：碳酸钠 `2099dae8-ad14-4496-87eb-d339b26e09f7`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：采用 cp_recipe 采集每 1 m3 参考流的数量；保留原始量与相同验收净体积分母。
 - 数值来源模式：`foreground_record`
@@ -382,7 +384,7 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 
 ###### 胶合板（`finished_panel`）
 
-制造/包装合并前景单元只输出一种已验收工厂板材身份，具备真实逐层树种/来源、PF 配方及胶合验收，已固化/冷却/裁边，并按等级需要砂光。采用 cp_product 实测交付状态净几何体积。湿的未固化组坯、未整理/不合格板及包装不作此最终参考；内部阶段转移仍完整记录。实际供方门点/状态/净体积约定必须匹配，身份本身不完成背景链接。
+制造/包装合并前景单元只输出一种已验收工厂板材身份，具备真实逐层树种/来源、至少一外层为非热带非针叶木且无热带外层、PF 配方及胶合验收，已固化/冷却/裁边，并按等级需要砂光。采用 cp_product 实测交付状态净几何体积。湿的未固化组坯、未整理/不合格板及包装不作此最终参考；内部阶段转移仍完整记录。实际供方门点/状态/净体积约定必须匹配，身份本身不完成背景链接。
 
 - 选定流：胶合板 `8b239d58-5fc2-40a5-8003-33f4082bc995`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66` / 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
@@ -879,7 +881,7 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_product | manufacturing | 成品胶合板 | 验收/尺寸/称重 | 批次；逐层树种/采伐和供应来源；交错全单板层构/层厚；PF 完整配方；胶合/强度等级和试验结果；固化/冷却/裁边/砂光/验收门点；配对 P_net；实际长宽厚/净面积/贯穿孔；V_net；交付含水/温度；无涂层/化学处理；供方门点/体积约定 | 固化/冷却/整理后按记录的交付状态，用经校准仪器测验收净尺寸；核对数量和实际净材料面积乘最终厚度，排除孔/切口、包装、空气间隙、不合格板和未出厂存量。对同批排除包装净称重；逐层检查树种/层构及真实胶合验收；采用适合树脂的含水测试并记录抽提物/挥发物局限。供方门点和数量约定独立核验。验收批次须有 V_net>0、同状态配对 P_net 及不确定度记录；取走试样从验收交付体积排除并保留实际物料/废物去向。 | kg; m3; moisture fraction; dimensions | 每批次和验收出厂 | 含废品/启动/返工的连续代表期间 | 同场址和声明配置，不合并不兼容层构/等级 | 每 1 m3 参考流 | 尺寸仪/秤校准；尺寸/孔记录；批次验收及树种/配方/等级证明 |
+| cp_product | manufacturing | 成品胶合板 | 验收/尺寸/称重 | 批次；逐层树种/采伐和供应来源；面板/背板分别记录树种和类别；实际内层树种；交错全单板层构/层厚；PF 完整配方；胶合/强度等级和试验结果；固化/冷却/裁边/砂光/验收门点；配对 P_net；实际长宽厚/净面积/贯穿孔；V_net；交付含水/温度；无涂层/化学处理；供方门点/体积约定 ；唯一首次对外发运ID；制造批群；逐交换期初期末原料/在制/未发运成品向量；原外发/退回ID；后续服务废物；分配历史 | 固化/冷却/整理后按记录的交付状态，用经校准仪器测验收净尺寸；核对数量和实际净材料面积乘最终厚度，排除孔/切口、包装、空气间隙、不合格板和未出厂存量。对同批排除包装净称重；逐层检查树种/层构及真实胶合验收；确认至少一外层为非热带非针叶木且无热带外层，不将外层限制套用于内层单板；采用适合树脂的含水测试并记录抽提物/挥发物局限。供方门点和数量约定独立核验。验收批次须有 V_net>0、同状态配对 P_net 及不确定度记录；取走试样从验收交付体积排除并保留实际物料/废物去向。  归一前按shipment_cohort_vectors确认唯一首次发运成员与完整继承向量。V_net>0仅为单位结果的必要条件；零或未知发运保留绝对活动及结转向量，不相除。| kg; m3; moisture fraction; dimensions | 每批次和验收出厂 | 含废品/启动/返工的连续代表期间 | 同场址和声明配置，不合并不兼容层构/等级 | 每 1 m3 参考流 | 尺寸仪/秤校准；尺寸/孔记录；批次验收及树种/配方/等级证明 |
 | cp_wood | manufacturing | 原木/单板 | 秤/实验室/阶段账 | 逐层树种/采伐和供应来源；调质和表面/抽提物历史；湿质量；绝干质量；树皮；体积；单板厚度；进出含水；旋切/刨切；干燥/返干路线 | 对代表性未施胶木样立即称量、烘至恒重；在线含水测法按树种校准并核对单板取样；阶段转移体积/质量分别计量。 | kg; m3; percent dry basis | 每批原料及干燥/压制生产批 | 与 cp_product 相同生产期间 | 场址树种/路线/批次 | 每 1 m3 参考流 | 样品编号；秤/烘箱校准；存量与内部转移核对 |
 | cp_recipe | manufacturing | PF 与各配方组分 | 供应/配方/批次 | 组分身份/状态；树脂批次；到货及投料质量；液体固形物/水；游离甲醛/苯酚；填料；碱；混胶损失；固化时间/温度/压力 | 各化学品分别称量；核对供应配方、混胶批、单板涂胶与留存固化物；记录真实树种/层构特定的热压固化/冷却程序及胶合试验验收，不套用区域配方。按供方化学及实测阶段平衡记录真实固化反应生成/消耗与挥发损失；交付固形物不自动等于留存固化树脂质量。 | kg; fraction; time; temperature; pressure | 每次配方与批次 | 与 cp_product 相同期间，含配方变更 | 相同 PF 板材配置 | 每 1 m3 参考流 | 供应证明；固形物实验；批次秤；压制日志 |
 | cp_energy | manufacturing | 各燃料/电力/阶段热量 | 分表/燃料/热平衡 | 表起止读数；阶段；运行/闲置；燃料质量/体积；天然气温压；木片含水/堆积密度；高/低位热值；碳；蒸汽流量/温压/凝结水；锅炉效率  供应/背景 A 身份与截面；实体/堆积定义；配对 V_s/V_b/k；气体绝对温压；干/湿气；组成/Z；表计标准与供方确认换算； | 分别读调质、切削、干燥/返干、压机、整理、包装及治理表；核对燃气/燃料发票和存量；在厂内计量蒸汽与凝结水焓差和损失，不推定交付热 UUID。  只有匹配真实 A 的体积基准并证明换算后才能链接 m3；供应条件未知保持未决，不从流属性值推定质量体积密度。 | MJ; kWh; m3; kg | 连续计量，每生产批核对 | 与 cp_product 相同期间，含启动/闲置 | 相同场址与热网 | 每 1 m3 参考流 | 仪表校准；发票；燃料检测；阶段/锅炉平衡 |
@@ -893,12 +895,13 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| normalize_campaign | all inventory rows | a_i = Q_i / V_net；V_net 是同配置/期间/交付状态实测验收净几何板材体积，单位 m3；a_i 按每 1 m3 参考流，finished_panel 为 1 m3。保留原始 Q_i、配对净板质量 P_net 和存量/废品账。先建立全量实物交换，负荷分配另账，实物共产品不按份额缩小。 | Q_i; V_net; P_net; cp_product; respective row protocol | a_i | corrim-western-plywood-2025 |
+| normalize_campaign | all inventory rows | 仅在shipment_cohort_vectors完成后，按选定首次发运批群计算a_i=Q_i/V_net。此处Q_i是追溯至这些板材的相容广延实物来源分子，含前期历史，不是未匹配的当期收货、表计总量或采购。独立保留归属负荷分子A_i及其A_i/V_net模型视图，与毛实物账分开；不得按负荷份额缩小真实共产品或废物流。V_net仍为原出厂门点实测验收净几何板材体积m3，配对同状态P_net，finished_panel为1m3。全部原始记录、期末结转向量与真实损失/服务保留。V_net为零或未知、或所需历史未知时不输出归一结果；分子为零仅在其他条件有效且有实证的批群中使用。 | Q_i; V_net; P_net; cp_product; respective row protocol ; shipment_cohort_vectors; inherited_physical_and_burden_vectors; A_i | a_i | corrim-western-plywood-2025 |
+| shipment_cohort_vectors | all inventory rows | 保留原有验收出厂门点。V_net为选定交付批群中唯一首次对外发运板材、按其记录交付状态实测的净几何体积；本期首次发运的期初成品连同继承历史纳入，未出厂期末成品及先前已发运物件的退回/再发运不产生额外制造V_net。记录板材/批次、制造批群、首次放行与首次发运事件、退回同件的原外发记录和真实状态。逐交换保留完整广延实物来源向量及独立已归属负荷/供方向量，在原料、各在制阶段与未发运成品间结转，包括前期及实际失败、启动、返工活动归属其制造批群的部分。逐相容向量核对：期初继承历史+真实新增活动+有证转入=分配至本次首次发运板材的向量+期末原料/在制/未发运成品继承历史+另有依据的其他批群/功能转出。本出厂门方法下，已放行但未发运成品仍为结转存量；废品、试样、废物或销售不会自动转出其形成及处理负荷。原始收货只作一次存量调整。分配或拆分须有真实批群/配置证据，不自动按当期发货比例，也不把缺失历史作零。保留源过程、载体、单位、状态、供方与此前分配，继承上游负荷不改作直接厂内排放，也不与已含它的供方重复相加。当期完整实物关口量与批群归属分账。同件退回保留原制造批群和首次发运历史；后续储存、搬运、修理/再发运及真实失败/未经授权作业另记实测服务增量，采用明确声明的原批群或服务基准，不形成第二份制造产出。实际新增退回/服务/废物流须在数据完整前具备具体卡和协议。V_net为零或未知时保留绝对活动与全部未归属向量，不相除、不遗漏、不编造产量；历史或批群归属未完整时不能给出完整归一结果。 | cp_product; respective row protocol; original_cohort_records; opening_history; closing_history; actual_activity; traceable_transfers; original_dispatch_returns; service_records | compatible_shipment_numerators_and_preserved_stock_vectors | wood-handbook-2021; corrim-western-plywood-2025 |
 | wood_dry_basis | roundwood; wood_fuel; bark; chips; sawdust | MC_db = 100 * (m_wet - m_od) / m_od；m_od = m_wet / (1 + MC_db / 100)，限未施胶木材的实测含水。对板材和胶合残余物单独核对水、固化树脂及非水挥发物，不把干板质量叫作绝干木质量。 | m_wet; m_od; cp_wood; cp_residue | dry wood mass and moisture | wood-handbook-2021 |
 | volume_and_density | finished_panel; chips; wood_fuel | 板材 V_net = sum(实际净材料面积 * 实际最终厚度)，按验收交付状态；扣贯穿孔/切口，不扣微观孔隙。板材 rho_state = P_net / V_net，采用同批/同状态配对实测；1 m3 所需质量 = rho_state * 1 m3。既有每 kg 数量保留为原始证据；仅对同一实测批次可用 a_i_volume = a_i_mass * rho_state。木片/燃料另保留实测实体/堆积/装填约定，不套板材或区域密度。 | cp_product; cp_wood; cp_residue; cp_energy; P_net; V_net | measured state density; actual reference volume and required net mass | wood-handbook-2021 |
 | recipe_solids | pf_resin; wheat_flour; sodium_carbonate; sodium_hydroxide | 各组分干固形物 = 到货净质量 * 实测固形物比例；胶液水 = 各液体实际水质量 + 配胶加水。只计跨界的实际原料；树脂内含水与 tap_water 追加水不重复。固化后损失结合废水、逸散及返工记录核对。 | cp_recipe; cp_water | recipe dry solids and water ledger | corrim-western-plywood-2025 |
 | physical_balances | manufacturing | 按组坯配置建立独立干木、水、树脂固形物和生物/化石碳平衡：收货/转入 + 期初存量 = 留存成品 + 随货包装 + 全量共产品/废物/排放外移 + 对外未用退料 + 期末存量。统一收货与存量变化，不把库存调整后消耗与同一存量再计一次。留存木材/PF/水是实测板质量的组分，不是追加成品输出。H2O 物种平衡含经核反应生成/消耗；元素 C/H/O 平衡在固化/燃烧中重分配原子，不编造产率。对全燃烧气体质量作比较时纳入真实进/排气基准及氧/湿度项，不把燃料质量单独等同气体产出。未知组成、反应和载气项保留明确的不完整平衡。内部转移两端同量并消去，偏差和测量不确定度分别报告，不以分配后负荷账充当质量闭合。 | cp_product; cp_wood; cp_recipe; cp_residue; cp_air; cp_water | physical balance residuals | wood-handbook-2021; corrim-western-plywood-2025 |
-| stage_heat | natural_gas; wood_fuel; electricity | 燃料输入能量 = 燃料量 * 同状态实测热值；阶段蒸汽热 = 蒸汽质量 * (入口比焓 - 返回凝结水比焓)，实际损失另列；热量是内部分配与平衡记录，外部燃料/电力及排放不重复计量。 | cp_energy | stage thermal and fuel balance | epa-plywood-2002; epa-wood-boiler-2022 |
+| stage_heat | natural_gas; wood_fuel; electricity | 燃料输入能量=燃料量×同状态实测热值。逐阶段边界分别积分供汽质量×入口比焓与实际返回凝结水质量×回流比焓。确定阶段有效热前，在同边界同区间核对每条实际补水、未回凝结水、排污或泄漏腿、其他热输出、损失与热储量变化；质量或焓未知时不能给出完整结果。单一蒸汽质量×焓差简式仅限已证明供回质量相等的情形。热仍为内部平衡/分配记录，外部燃料、电力及排放只计一次。 | cp_energy ; actual_supply_mass; actual_return_mass; actual_carrier_state; other_mass_heat_legs; thermal_stock_change | stage thermal and fuel balance | epa-plywood-2002; epa-wood-boiler-2022 |
 | air_test_mass | all elementary output rows | 物种排放质量 = 对各出口相容质量浓度 * 标准气流 * 运行小时求和，单位相应换算；识别干湿基/温压与启停。PM2.5–10 = PM10 累计量 - PM2.5 累计量、PM>10 = 同法总量 - PM10，仅在同出口/同时间/同测试方法条件下允许非负差分；可凝结组分不可重复。 | cp_air | individual species and disjoint particle masses | epa-plywood-2002; epa-wood-boiler-2022 |
 | causal_allocation | shared operations | 只有 allocation_physical 的因果关系成立时，s_j = D_j / sum(D_k)，各 s_j 求和为 1；B_j = B_shared * s_j + B_direct_j。D 是已论证的物理驱动，B 为相应负荷；销售物理流不乘 s。包装与产品专属负荷直接归属成品。 | cp_energy; cp_residue; cp_product; documented physical driver | separate allocated burden ledger | corrim-western-plywood-2025 |
 | chip_provider_conversion | wood_fuel; chips | V_s = k * V_b；k = 实测 V_s / 实测 V_b，限同批、同含水及装填状态。A 若用实体体积取 V_s，若用堆积体积取与 A 状态匹配的 V_b；需实测状态转换。未知 A、k 或状态则不完成链接。内部木片使用实物质量/热账，不复制外部供应输入。 | cp_energy; cp_residue; matched V_s; matched V_b; actual A definition | provider-matched volume with pending status where unknown | fao-ubet-volume |
@@ -918,13 +921,13 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| validate_product_boundary | 参考产品 | 核验 cp_product 逐层实际树种/来源及交错全单板层构、完整水性甲阶 PF 配方、无涂层/化学处理和树种/层构特定胶合验收。最终输出必须固化/冷却/裁边、按等级需要砂光并在交付门点验收。其他芯构/胶型、未固化湿坯或缺门点/等级证明则不适用或未定。 | wood-handbook-2021; epa-plywood-2002; fao-tropical-timber |
+| validate_product_boundary | 参考产品 | 核验 cp_product 逐层实际树种/来源及交错全单板层构；须至少一外层为非热带非针叶木且无热带外层，排除双针叶外层，保留真实内层树种而不全面禁止某类内层材。核验完整水性甲阶 PF 配方、无涂层/化学处理和树种/层构特定胶合验收。最终输出必须固化/冷却/裁边、按等级需要砂光并在交付门点验收。其他芯构/胶型、未固化湿坯或缺门点/等级证明则不适用或未定。 | wood-handbook-2021; epa-plywood-2002; fao-tropical-timber; unsd-cpc3-2025 |
 | validate_denominator | all inventory rows | 参考 1 m3，清单分母及采集合计/计算均用同一交付状态实测验收 V_net。恰有一个 finished_panel 参考输出，中间物不重复使用参考 UUID。核对真实尺寸/孔约定及配对 P_net/rho_state，排除包装/堆垛空气/名义尺寸/废品；不编造密度或每板重量。 | corrim-western-plywood-2025; wood-handbook-2021 |
 | validate_balance_allocation | manufacturing | 检查分配前木/水/树脂/碳平衡、内部转移两端同量、实物共产品全量及独立分配后负荷账；因果关系不足或闭合偏差不能用数值调平掩盖。 | wood-handbook-2021; corrim-western-plywood-2025 |
 | validate_air | all elementary output rows | 检查物种/介质/生物化石归属及测试条件、治理前后/共用出口重复、可过滤可凝结颗粒与非重叠粒径；保留生物 CO2。无测量或未分物种/粒径不能报通过。 | epa-plywood-2002; epa-wood-boiler-2022 |
 | validate_completeness | dataset | 报告已核输入、执行/跳过的检查、发现及完整性；空 UUID、供应背景缺口、未知配方/排放或仅前景数据不能声称已完成从摇篮到大门或已科学审核。 | corrim-western-plywood-2025 |
 | validate_provider_volume | wood_fuel; chips; natural_gas | 核验实际 A、供方体积截面、木片配对 V_s/V_b/k 和含水，及气体温压/干湿/组成/Z/转换；任一未知时具体链接未完成，不能凭已核 UUID 报告完整背景数据。 | fao-ubet-volume |
-| validate_panel_provider | finished_panel | 流身份不证明实际供方数据集。核对同一交错全单板/PF/未涂饰物料、固化/冷却/裁边/等级门点、交付含水和实际净几何 m3 约定、树种/地域/年份/配方及链接阶段覆盖。湿的未固化压制中间物或缺少供方定义不能作为兼容的出厂背景；源分类未决另行披露。 | epa-plywood-2002; fao-plywood-manufacture |
+| validate_panel_provider | finished_panel | 流身份不证明实际供方数据集。核对同一交错全单板/PF/未涂饰物料，至少一外层为非热带非针叶木且无热带外层、实际内层树种、固化/冷却/裁边/等级门点、交付含水和实际净几何 m3 约定、树种/地域/年份/配方及链接阶段覆盖。湿的未固化压制中间物或缺少供方定义不能作为兼容的出厂背景；源分类未决另行披露。 | epa-plywood-2002; fao-plywood-manufacture |
 
 ## 10. 发布数据集画像
 
@@ -932,8 +935,8 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 | --- | --- |
 | dataset_role | secondary_dataset; background_dataset |
 | downstream_use | 所声明树种/胶型/状态/路线的胶合板背景制造输入；若仅有前景则明确说明 |
-| allowed_use | 在门点、身份、供方状态/数量及处理核验后，按 1 m3 实际出厂净几何体积，对声明 PF 全单板树种/层构/等级作来源特定制造建模；不合并宣称树种等价 |
-| excluded_use | CPC31411/31412/31413 全叶、其他胶型/芯构/路线、湿的未固化或未验收板材的默认代理；通用树种密度/配方或热带排放推断；无支持的比较、全生命周期/碳中和声明 |
+| allowed_use | 在门点、身份、供方状态/数量及处理核验后，按 1 m3 实际出厂净几何体积，对至少一外层为非热带非针叶木且无热带外层的声明 PF 全单板树种/层构/等级作来源特定制造建模；不合并宣称树种等价 |
+| excluded_use | 双针叶外层或任一热带外层；CPC31413 全叶、其他胶型/芯构/路线、湿的未固化或未验收板材的默认代理；通用树种密度/配方或热带排放推断；无支持的比较、全生命周期/碳中和声明 |
 | required_metadata | 参考身份/原生 Volume/m3；全部限定信息；逐层树种/来源及胶合试验；场址/期间/层构/配方；V_net/尺寸/孔约定/交付状态及配对 P_net/rho_state；原子流；供方门点/体积/地域/年份/配方兼容、运输/处理；控制/方法/不确定度；全量实物及独立分配负荷账 |
 | required_quality_disclosure | 实测/计算/缺失值分别标识；未决身份/物种；边界和漏项；因果分配依据；误差与测试范围；不把文献案例当场址调查 |
 | update_trigger | 树种、层构、胶配方、来源、热源、干燥/压制设备或程序、治理/测试/废水路线、包装和供方变化 |
@@ -950,3 +953,4 @@ CORRIM 西部、南部报告封面均为 2025 年 3 月提交、4/5 月修订、
 | fao-ubet-volume | official_guidance | FAO, Unified Bioenergy Terminology (UBET), Section 5.1.1 and 5.1.3, online original. https://www.fao.org/4/j4504e/j4504e08.htm | 只采用含水、实体/堆积体积区分的概念；不采用表中通用转换系数、密度或热值，不能代替实际供方定义。 |
 | fao-plywood-manufacture | official_guidance | FAO Forestry Paper 93, Energy conservation in the mechanical forest industries, §1.3.1–1.3.6，原出版网页。https://www.fao.org/4/t0269e/t0269e03.htm | 定性调质/旋切/干燥/施胶/热固化/裁边/砂光顺序；历史通用工序，不采用数值条件、尺寸、配方或供热因子 |
 | fao-tropical-timber | literature | K.F.S. King, The utilization of low-quality tropical timber, FAO Unasylva 118，Wood-based panels；出版页称源自 1977 年演讲。https://www.fao.org/4/l2015e/l2015e04.htm | 历史定性证据支持实际热带单板缺陷、含水不均/返干及化学胶合干扰检查；不作全部树种 PF 批准，不纳入涂层/其他胶型或数值默认 |
+| unsd-cpc3-2025 | official_guidance | United Nations Statistics Division, CPC Version 3.0 explanatory notes, 30 June 2025, printed p.139 (PDF page 139), class 3141 and subclass 31413; read with the adjacent outer-ply categories. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 官方层级、外层区分及交错纹理定义；不采用更宽芯构例项。唯一目标为一体化全单板 PF 子范围，不构成全叶方法批准。 |
