@@ -35,7 +35,7 @@ lastReviewedNote: "PCR #154: reviewed the single site mdast-util-to-markdown 2.1
 
 This repository stores TianGong LCA product category rules and data production methodology assets.
 
-Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The workspace's retained local directory is `tiangong-lca-pcr`; repository renaming does not change PCR identifiers, package names, or release history.
+Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The integration workspace's physical checkout directory is `pcr`; its retained submodule metadata name is `tiangong-lca-pcr`. Repository renaming does not change PCR identifiers, package names, or release history.
 
 PCR records are canonical methodology documents. Classification systems such as CPC, HS, ISIC, and NAICS are entry points that map to canonical PCR records; they do not own the PCR directory structure.
 

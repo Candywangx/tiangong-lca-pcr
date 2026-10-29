@@ -152,7 +152,7 @@ redundant worker input without changing source bytes, reading routes or download
 
 `meta[name="description"]`, the Open Graph description and the search-record description are one
 bounded projection of text that already exists in the rendered source, produced by
-`scripts/summaries.mjs`:
+`packages/pcr-docs/scripts/summaries.ts`:
 
 - the page's own title, followed by up to two paragraphs from that page's own source scope;
 - for a chapter, only nodes inside that chapter's `sourceNodeIds`, so a record and each of its
@@ -162,7 +162,7 @@ bounded projection of text that already exists in the rendered source, produced 
 - for a domain or subdomain catalog page, its actual category title, its position in the tree and
   the real record count;
 - bounded to 170 Unicode code points, cut on a source sentence or word boundary, and never inside a
-  surrogate pair. `verify.mjs` fails a page that exceeds the bound.
+  surrogate pair. `packages/pcr-docs/scripts/verify.ts` fails a page that exceeds the bound.
 
 A page whose retained summary is the title alone publishes no reader-facing context. That residual is
 counted in `.generated/report.json` under `summaries.title_only` and printed by the generation stage.
