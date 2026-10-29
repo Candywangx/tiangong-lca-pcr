@@ -2,8 +2,8 @@
 pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.plywood-consisting-solely-of-sheets-with-both-outer-plies-of-coniferous-wood
 language: zh-CN
 status: candidate
-content_maturity: draft_methodology
-translation_status: draft_translation
+content_maturity: authored_methodology
+translation_status: aligned
 sync_with: pcr.en-US.md
 ---
 
