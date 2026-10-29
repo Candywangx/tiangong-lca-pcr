@@ -2,7 +2,7 @@
 pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.wastes-from-chemical-or-allied-industries
 language: en-US
 status: candidate
-content_maturity: draft_methodology
+content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
