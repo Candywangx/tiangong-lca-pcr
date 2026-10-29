@@ -1,10 +1,2194 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "31109"
-  title: "Railway or tramway sleepers (cross-ties) of wood, not impregnated"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.railway-or-tramway-sleepers-cross-ties-of-wood-not-impregnated"
+  classification_refs: "CPC 3.0 31109; narrower; current accepted association and decision: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADR; no whole-leaf or scientific/translation approval implied"
+  covered_products: "New solid sawn untreated cross-ties; declared green/air-dried/indirect kiln-dried state"
+  excluded_products: "Impregnated CPC 31320; engineered composites; reused ties; fastened track assemblies"
+  representative_product: "One declared species/geometry/grade sleeper configuration; no invented mass"
+  production_route: "Received sawn stock → sizing/drilling if applicable → actual drying or bypass → inspection/dispatch"
+  market_state: "Bare unimpregnated sleeper at factory gate, moisture and intended subsequent treatment disclosed"
+functional_unit:
+  what: "Supply a specification-qualified untreated sleeper for later track construction or further treatment"
+  how_much: "1 kg accepted net sleeper at dispatch moisture"
+  how_well: "Declared species, section, length, defects/grade and drilling specification; retain buyer acceptance, not universal load capacity"
+  how_long_or_cycle: "One production campaign to factory gate; railway service life, replacement and end of life are outside this reference and require a separate scenario"
+  reference_flow_link: "finishing_finished_out"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_actual: Include actual reception, shaping/drilling, drying and inspection plus attributable utilities, wastes and emissions. Omit absent impregnation and its chemicals, baths, fixation or post-treatment drying; supplier treatment evidence inconsistent with untreated identity blocks use. [usda-wood-handbook-2021]"
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_lifetime: Factory-gate manufacturing is a declared-unit basis, not a track-service functional comparison. Track installation, ballast/fastenings, railway service life, maintenance, replacement and end of life are excluded; add explicit performance-equivalent service scenarios downstream. No lifetime, carbon-neutrality or durability credit is assumed. [usda-wood-handbook-2021]"
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Untreated solid sawn sleeper blanks received at factory; inherited forestry/sawmilling/drying recorded"
+  starting_condition_role: "foreground_gate_to_gate"
+  product_classification_scope: "CPC 3.0 31109; narrower; excludes CPC 31320"
+  recursive_input_rule: "Same-category incoming sleeper stock is an upstream intermediate; retain supplier manufacturing burdens once and model only actual remaining operations"
+  upstream_dataset_requirement: "Link supplier species/moisture/state-matched forestry and sawmilling datasets for cradle-to-gate use; gate-only data must disclose missing upstream burdens"
+  disclosure: "Starting gate, actual route and transport, inherited operations, supplied utilities and omitted downstream life stages"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Wood material"
+    uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Species and provenance"
+    - "sawn solid construction"
+    - dimensions
+    - "grade and defects"
+    - "machining/drilling state"
+    - "moisture on dry basis and method"
+    - "net mass"
+    - "drying route"
+    - "no impregnation evidence"
+    - "starting gate"
+    - "upstream coverage and campaign"
+    - "intended subsequent treatment"
+    - "actual supplier and receiving acceptance"
+    - "broad wood-material foreground locator with no inferred supplier/background match or railway strength/compliance or service life or measured quantity. Declare each in dataset metadata or equivalent records."
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use accepted net wood mass at measured dispatch moisture; packaging is separate."
+  - id: count_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "M is the measured net mass of one sleeper of the same species, geometry, grade, machining and dispatch-moisture configuration. Weigh each accepted sleeper with a calibrated scale and identify its record using cp_mass. The primary collection basis is calibrated accepted batch net mass B kg, directly weighed or summed from the individually weighed accepted masses M_i; N is a configuration/quantity check and cannot establish B. A downstream count-based conversion would require measured same-configuration M and convert a per-sleeper amount a to a / M per kg; this is not a supported primary collection path in this edition and requires measurement-contract applicability review. No universal sleeper mass or assumed density is permitted. All inventory below uses measured B kg, never a count denominator."
+  - id: wood_state
+    applies_to: "all wood streams"
+    required_property_ref:
+      name: "Mass and volume"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Dry-basis moisture u = water mass / oven-dry wood mass; dry mass = wet mass / (1+u). Record percent versus fraction. Solid volume and density must share species, moisture and geometry; bulk chips need their own measured bulk density. Do not replace solid volume with stack volume. [usda-wood-handbook-2021]"
+  - id: utility_units
+    applies_to: "energy and gas rows"
+    required_property_ref:
+      name: "Energy; volume"
+      uuid: ""
+    required_unit: "MJ; m3"
+    rule: "Preserve verified reference units. Electricity kWh × 3.6 = MJ. For steam, Gross calorific value/MJ in the referenced flow establishes an energy-property/unit identity only; it does not establish received net heat, fuel HHV or boiler gross thermal output. Before adopting the steam exchange, require supplier and linked background-process documentation of the same supply/delivery boundary, steam state, condensate reference enthalpy, return/makeup handling and transmission losses as cp_energy_drying and cp_energy_boiler. Measure the applicable enthalpy difference at that matched boundary; a boiler gross-output meter cannot substitute for receiver-net heat without a verified reconciliation. Unknown boundary or reference enthalpy leaves both heat rows pending methodological compatibility, even though their UUID is known. Gas volume requires actual reference temperature, pressure and compressibility; convert to mass only with traceable density at those conditions."
+process_map:
+  - id: receiving
+    name: "Wood reception and yard handling"
+    inclusion: "required"
+    inclusion_condition: "Always; squared solid sawn stock received"
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: machining
+    name: "Sizing, adzing and drilling"
+    inclusion: "required"
+    inclusion_condition: "Sizing and inspection always; adzing/drilling only where specified and performed"
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: drying
+    name: "Drying and moisture control"
+    inclusion: "conditional"
+    inclusion_condition: "Air or kiln drying actually occurs; for already conditioned stock retain a same-mass bypass and reception moisture verification"
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: finishing
+    name: "Final inspection and dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging only if used"
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: boiler
+    name: "On-site process heat generation"
+    inclusion: "conditional"
+    inclusion_condition: "A non-CHP on-site boiler supplies indirect drying heat; absent for purchased heat, passive air drying or electric-only drying"
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: receiving
+    label: "Wood reception and yard handling"
+    inputs:
+      product:
+        - row_id: receiving_blank_in
+          role: "Untreated solid sawn sleeper blank"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual new bare unimpregnated solid-sawn sleeper blanks received at the declared supplier gate, with actual species/provenance, sawn section/length, grade/defects, machining state and measured moisture/net mass. No glued/laminated/composite, coating, preservative or attached rail hardware. The broad wood-material locator does not establish an exact supplier/background or dry/green state; document inherited forestry/sawmilling/drying burdens once."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receiving
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: receiving_electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Customer-side grid-average supply below 1 kV only. Source supply location CN is recorded metadata, not the foreground country. Require actual site/year/supplier/voltage/grid-mix compatibility before linking a background."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_energy_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_diesel_in
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual diesel yard equipment; exclude road freight already represented by transport service."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_fuel_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_freight_in
+          role: "Road Transport"
+          name: "Road Transport"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9425f2bf-e734-4884-be1b-645473a3e82d"
+          property_unit: "mass*distance 118f2a40-50ec-457c-aa60-9bc6b6af9931; unit group 3620148f-c5db-48ce-9065-a10092089aca / kg*km"
+          description: "Actual 30-ton diesel lorry road service only, matching this flow; only if not already included in supplier delivery. Other truck configurations require separate exact rows."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_transport."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: receiving_blank_out
+          role: "Untreated solid sawn sleeper blank"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal link receiving_blank_out to machining_blank_in; same unallocated amount. Explicit internal wood-material stage handoff only, with the actual blank/machined/conditioned sawn sleeper form, species, machining and untreated state specified independently. Match the paired sending/receiving IDs on campaign, wet/dry wood mass, water/carbon, moisture and stocks, including actual drying/no-drying bypass and losses. Same broad UUID does not establish identical state or interchangeable supplier datasets. Preserve original physical quantities before burden allocation; this is not a second external sale, purchase or final sleeper output."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receiving
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: receiving_co2_fossil_out
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_co_fossil_out
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_ch4_fossil_out
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_n2o_out
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_nox_out
+          role: "Nitrogen oxides"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed. Mass/kg and CAS11104-93-1 do not establish a NO2-equivalent monitoring/LCI/LCIA amount. Prove the actual NO/NO2 or NO2-equivalent basis; retain pending basis if unconfirmed and prevent N2O or individual-NO/NO2 duplication."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_so2_out
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids: []
+            ranges: []
+        - row_id: receiving_pm25_out
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids:
+                - epa-sawmill-pm-2014
+            ranges: []
+        - row_id: receiving_pm_between_out
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids:
+                - epa-sawmill-pm-2014
+            ranges: []
+        - row_id: receiving_pm_coarse_out
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Only actual yard release to outdoor air; diesel species are separate from purchased freight burdens. PM bins are disjoint; include road/handling dust where observed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_receiving."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_receiving
+              source_ids:
+                - epa-sawmill-pm-2014
+            ranges: []
+  - id: machining
+    label: "Sizing, adzing and drilling"
+    inputs:
+      product:
+        - row_id: machining_blank_in
+          role: "Untreated solid sawn sleeper blank"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same physical handoff as receiving_blank_out. Explicit internal wood-material stage handoff only, with the actual blank/machined/conditioned sawn sleeper form, species, machining and untreated state specified independently. Match the paired sending/receiving IDs on campaign, wet/dry wood mass, water/carbon, moisture and stocks, including actual drying/no-drying bypass and losses. Same broad UUID does not establish identical state or interchangeable supplier datasets. Preserve original physical quantities before burden allocation; this is not a second external sale, purchase or final sleeper output."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_machining
+              source_ids: []
+            ranges: []
+        - row_id: machining_electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter saw, adzer, drill and dust-extraction electricity; absent operations have no consumption. Source supply location CN is recorded metadata, not the foreground country. Require actual site/year/supplier/voltage/grid-mix compatibility before linking a background."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_energy_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_machining
+              source_ids: []
+            ranges: []
+        - row_id: machining_lubricant_in
+          role: "lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only PAO fully synthetic lubricating oil matching this identity, if actually used; other grades require separate exact rows. Verify actual supplier PAO grade and full additive/SDS composition; the generic petroleum-derived-oil comment does not demonstrate this fully synthetic background route."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_machining
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: machining_machined_out
+          role: "Machined unimpregnated solid wood sleeper"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure original physical output before allocation; classify saleable material separately from discarded waste. Explicit internal wood-material stage handoff only, with the actual blank/machined/conditioned sawn sleeper form, species, machining and untreated state specified independently. Match the paired sending/receiving IDs on campaign, wet/dry wood mass, water/carbon, moisture and stocks, including actual drying/no-drying bypass and losses. Same broad UUID does not establish identical state or interchangeable supplier datasets. Preserve original physical quantities before burden allocation; this is not a second external sale, purchase or final sleeper output."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_machining
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: machining_sawdust_product_out
+          role: "Untreated wood sawdust coproduct"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately collected saleable untreated wood sawdust product, with measured particle-size distribution, species, moisture/dry solids, contaminants, actual product status and receiver specification. Fine sawdust is a physical wood-material subset; it is not a coarse offcut, agglomerated board/pellet, prescribed fuel blend or Waste-flow substitution. Retain its independently measured external mass and unallocated dry matter/water/carbon ledger; actual nonfuel uses remain possible. No generic locator establishes recovery benefits, market/grade equivalence or a matched background."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_machining
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: machining_offcut_product_out
+          role: "Untreated solid wood offcut coproduct"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately collected saleable coarse solid untreated wood offcut product, with individual form/geometry, species, measured moisture/net mass, contamination, actual product status and receiver acceptance. Non-agglomerated, unglued, uncoated and unimpregnated wood pieces are the stated physical subset, not sawdust or unprocessed forest roundwood. Preserve its independent external quantity and original dry-matter/water/carbon and burden-allocation accounts. A broad wood-material identity does not prescribe remanufacturing, fuel use, credits or background match."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_machining
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+      waste:
+        - row_id: machining_waste_sawdust_out
+          role: "sawdust waste"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only this actual discarded stream; include captured dust in sawdust waste, never again as air release. Oil waste has its own row. The selected sawdust-waste record explicitly states untreated combustion/recovery; require the actual receiver route to match before linking it. A different disposal route needs its own compatible waste identity/provider review, not a presumed recovery benefit."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_machining
+              source_ids: []
+            ranges: []
+        - row_id: machining_offcut_out
+          role: "Offcut"
+          name: "Offcut"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "acc22294-8e77-4784-988f-2499be3c60eb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only this actual discarded stream; include captured dust in sawdust waste, never again as air release. Oil waste has its own row. Actual non-agglomerated unglued/uncoated/unimpregnated solid wood only, with measured form/composition/moisture and receiver acceptance. The source CPC39282 agglomerated classification conflicts with concordant woodworking-remnant name/comment and empty treatment route; retain unresolved source/provider classification clarification."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_machining
+              source_ids: []
+            ranges: []
+        - row_id: machining_waste_oil_out
+          role: "Spent PAO lubricating oil for disposal"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately collected spent PAO synthetic lubricating oil, including its measured oil/additive/water/solid contamination and stock changes. Used lubricating oil explicitly includes synthetic used oils without prescribing treatment. Require actual liquid state, supplier SDS, waste classification and receiver acceptance; no fresh oil/product substitution, assumed recycling, hazard status or treatment credit."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_machining
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: machining_pm25_out
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Residual outdoor-air discharge after capture; do not treat captured dust as emitted."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_machining
+              source_ids:
+                - epa-sawmill-pm-2014
+            ranges: []
+        - row_id: machining_pm_between_out
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Residual outdoor-air discharge after capture; do not treat captured dust as emitted."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_machining
+              source_ids:
+                - epa-sawmill-pm-2014
+            ranges: []
+        - row_id: machining_pm_coarse_out
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Residual outdoor-air discharge after capture; do not treat captured dust as emitted."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_machining."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_machining
+              source_ids:
+                - epa-sawmill-pm-2014
+            ranges: []
+  - id: drying
+    label: "Drying and moisture control"
+    inputs:
+      product:
+        - row_id: drying_machined_in
+          role: "Machined unimpregnated solid wood sleeper"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same physical handoff as machining_machined_out; if no drying, bypass unchanged to finishing. Explicit internal wood-material stage handoff only, with the actual blank/machined/conditioned sawn sleeper form, species, machining and untreated state specified independently. Match the paired sending/receiving IDs on campaign, wet/dry wood mass, water/carbon, moisture and stocks, including actual drying/no-drying bypass and losses. Same broad UUID does not establish identical state or interchangeable supplier datasets. Preserve original physical quantities before burden allocation; this is not a second external sale, purchase or final sleeper output."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_drying
+              source_ids: []
+            ranges: []
+        - row_id: drying_electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Conditional actual indirect drying utility. Heat input equals boiler heat output, or is purchased once; passive air drying has no purchased heat. Tap water only if actually used. Source supply location CN is recorded metadata, not the foreground country. Require actual site/year/supplier/voltage/grid-mix compatibility before linking a background."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_energy_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_drying
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: drying_heat_energy_in
+          role: "Process heat from steam"
+          name: "Process heat from steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fcf9e128-688f-42f0-9dca-85d2319cfac5"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Retain the verified UUID as a steam-process-heat identity candidate; its Gross calorific value/MJ record does not independently establish receiver-net enthalpy difference. Adopt only after supplier/background heat boundary, steam state and condensate reference enthalpy match cp_energy_drying, with return/makeup and transmission losses reconciled. Unknown heat basis remains pending; MJ alone does not equate HHV, boiler gross output and receiver-net heat. Paired handoffs must have equal quantities at the same verified delivery boundary; purchased heat is counted once and passive air drying has no purchased heat. No CHP/export heat."
+          amount:
+            expression: "After heat-boundary and reference-enthalpy verification, divide actual unallocated campaign delivered heat by accepted B kg using cp_energy_drying. Unknown basis has no verified amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_drying
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: drying_water_in
+          role: "Water, tap"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c6fb2442-d527-4e3d-bf01-4c94ea2b71ec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual indirect drying utility. Heat input equals boiler heat output, or is purchased once; passive air drying has no purchased heat. Tap water only if actually used."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_drying
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: drying_dried_out
+          role: "Moisture-conditioned unimpregnated solid wood sleeper"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal same-quantity link to finishing_dried_in at measured outlet moisture; dry mass and water loss are distinguished. Explicit internal wood-material stage handoff only, with the actual blank/machined/conditioned sawn sleeper form, species, machining and untreated state specified independently. Match the paired sending/receiving IDs on campaign, wet/dry wood mass, water/carbon, moisture and stocks, including actual drying/no-drying bypass and losses. Same broad UUID does not establish identical state or interchangeable supplier datasets. Preserve original physical quantities before burden allocation; this is not a second external sale, purchase or final sleeper output."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_drying
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        - row_id: drying_effluent_out
+          role: "Condensate wastewater from wood drying"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately collected liquid wood-drying condensate sent to an external treatment receiver only, not clean internally returned steam condensate or water-vapour release. Preserve measured whole-liquid mass, temperature, composition/water fraction, dissolved/entrained wood constituents and receiver acceptance; metered volume converts only with actual mixture density or weighing, never 1000 kg/m3 by default. The broad industrial-liquid identity establishes no treatment/hazard class or matched background. Direct discharge to an actual environmental medium requires independently compatible elementary identities and measured constituent loads."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_drying
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: drying_vapour_out
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual species-resolved outdoor discharge when present. Screen species/wood condition and drying route; no softwood-survey default for hardwood sleepers. Separate condensable PM and other identified species before complete dataset delivery."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_drying
+              source_ids:
+                - usda-wood-handbook-2021
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: drying_formaldehyde_out
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual species-resolved outdoor discharge when present. Screen species/wood condition and drying route; no softwood-survey default for hardwood sleepers. Separate condensable PM and other identified species before complete dataset delivery."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_drying
+              source_ids:
+                - usda-wood-handbook-2021
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: drying_methanol_out
+          role: "methanol"
+          name: "methanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual species-resolved outdoor discharge when present. Screen species/wood condition and drying route; no softwood-survey default for hardwood sleepers. Separate condensable PM and other identified species before complete dataset delivery."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_drying
+              source_ids:
+                - usda-wood-handbook-2021
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: drying_acetaldehyde_out
+          role: "acetaldehyde"
+          name: "acetaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a7a5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual species-resolved outdoor discharge when present. Screen species/wood condition and drying route; no softwood-survey default for hardwood sleepers. Separate condensable PM and other identified species before complete dataset delivery."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_drying
+              source_ids:
+                - usda-wood-handbook-2021
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: drying_alpha_pinene_out
+          role: "pin-2(3)-ene"
+          name: "pin-2(3)-ene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0a701083-c7e6-43d1-8ae5-e62050edc5dc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual species-resolved outdoor discharge when present. Screen species/wood condition and drying route; no softwood-survey default for hardwood sleepers. Separate condensable PM and other identified species before complete dataset delivery. The adopted pin-2(3)-ene record is CAS80-56-8 alpha-pinene only; measure this actual species, not beta-pinene CAS127-91-3 or an unspecified terpene/VOC sum."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_drying
+              source_ids:
+                - usda-wood-handbook-2021
+                - corrim-northern-lumber-2025
+            ranges: []
+  - id: finishing
+    label: "Final inspection and dispatch preparation"
+    inputs:
+      product:
+        - row_id: finishing_dried_in
+          role: "Moisture-conditioned unimpregnated solid wood sleeper"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same handoff as drying_dried_out, or the unchanged machined stock on documented no-drying bypass. Explicit internal wood-material stage handoff only, with the actual blank/machined/conditioned sawn sleeper form, species, machining and untreated state specified independently. Match the paired sending/receiving IDs on campaign, wet/dry wood mass, water/carbon, moisture and stocks, including actual drying/no-drying bypass and losses. Same broad UUID does not establish identical state or interchangeable supplier datasets. Preserve original physical quantities before burden allocation; this is not a second external sale, purchase or final sleeper output."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_finishing
+              source_ids: []
+            ranges: []
+        - row_id: finishing_electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual inspection/dispatch preparation electricity. Source supply location CN is recorded metadata, not the foreground country. Require actual site/year/supplier/voltage/grid-mix compatibility before linking a background."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_energy_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_finishing
+              source_ids: []
+            ranges: []
+        - row_id: finishing_strap_in
+          role: "Steel baling band"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only actual recycled steel baling band with the verified composition/route; other packaging gets separate exact rows. Match the recorded 99%Fe/1%C composition and recycled reprocessing route to actual supplier evidence; this is a record constraint, not an invented factory alloy recipe."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finishing_finished_out
+          role: "Accepted unimpregnated solid wood railway or tramway sleeper"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Exactly 1 kg of accepted net new bare solid-sawn unimpregnated railway/tramway sleeper at actual dispatch moisture, excluding all packaging and hardware. Require actual species/provenance, dimensions, grade/defects, machining/adzing/boring state, green/air/indirect-kiln route, buyer acceptance and evidence of absent preservation/coating/binder. This is one shaped wood material, not a track assembly. Wood material is only a qualified foreground physical locator; it does not prove railway strength, durability, service life, compliance, an exact supplier/background or measured amounts."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        - row_id: finishing_offcut_out
+          role: "Offcut"
+          name: "Offcut"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "acc22294-8e77-4784-988f-2499be3c60eb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Rejected untreated solid sleeper sent to disposal; rework is an internal handoff, not a second terminal waste. Actual non-agglomerated unglued/uncoated/unimpregnated solid wood only, with measured form/composition/moisture and receiver acceptance. The source CPC39282 agglomerated classification conflicts with concordant woodworking-remnant name/comment and empty treatment route; retain unresolved source/provider classification clarification."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_finishing
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: boiler
+    label: "On-site process heat generation"
+    inputs:
+      product:
+        - row_id: boiler_gas_in
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Only the actual boiler input; record fuel origin, moisture, calorific basis and gas temperature/pressure. No fuel is required merely because it is listed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_fuel_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: boiler_wood_fuel_in
+          role: "Untreated wood chips for boiler fuel"
+          name: "Wood Chip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Actual unimpregnated, unglued, uncoated wood chips for the stated boiler, with measured size/species/moisture, contamination, carbon and calorific basis. Preserve the selected Volume/m3 reference. Establish actual supplier/reference solid versus bulk-volume convention and measure compatible density and mass before converting original weighed fuel records; secondary coefficients or generic wood density do not establish it. Unknown convention/density leaves amount/background linkage pending, not zero. Distinguish purchased chips from actual internally transferred residues; the latter remain paired physical fuel accounts without duplicate purchase/export or credit."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_fuel_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: boiler_water_in
+          role: "Water, tap"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c6fb2442-d527-4e3d-bf01-4c94ea2b71ec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only the actual boiler input; record fuel origin, moisture, calorific basis and gas temperature/pressure. No fuel is required merely because it is listed."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_material_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: boiler_electricity_in
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only the actual boiler input; record fuel origin, moisture, calorific basis and gas temperature/pressure. No fuel is required merely because it is listed. Source supply location CN is recorded metadata, not the foreground country. Require actual site/year/supplier/voltage/grid-mix compatibility before linking a background."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_energy_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: boiler_heat_energy_out
+          role: "Process heat from steam"
+          name: "Process heat from steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fcf9e128-688f-42f0-9dca-85d2319cfac5"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Retain the verified UUID as a steam-process-heat identity candidate; its Gross calorific value/MJ record does not independently establish receiver-net enthalpy difference. Adopt only after supplier/background heat boundary, steam state and condensate reference enthalpy match cp_energy_boiler, with return/makeup and transmission losses reconciled. Unknown heat basis remains pending; MJ alone does not equate HHV, boiler gross output and receiver-net heat. Paired handoffs must have equal quantities at the same verified delivery boundary; purchased heat is counted once and passive air drying has no purchased heat. No CHP/export heat."
+          amount:
+            expression: "After heat-boundary and reference-enthalpy verification, divide actual unallocated campaign delivered heat by accepted B kg using cp_energy_boiler. Unknown basis has no verified amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+      waste:
+        - row_id: boiler_ash_out
+          role: "Bottom ash from untreated wood combustion"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately collected solid bottom ash from this untreated wood-fuel boiler only. Measure wet/dry mass, moisture, residual unburnt carbon/mineral/fuel-contaminant composition and actual receiver acceptance. The broad industrial-solid identity permits this physical subset but does not prescribe landfilling, reuse, hazard status or background; keep fly ash and other actual fuel ash independently identified."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_fly_ash_out
+          role: "Fly ash from untreated wood combustion"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately captured solid fly ash from this untreated wood-fuel boiler only. Preserve capture device/source, independent wet/dry mass, mineral/carbon/contaminant composition, conditioning and receiver acceptance. It is not bottom ash, aqueous alkaline liquor or airborne PM after controls. No treatment, hazard state, allocation credit or provider background is implied by this broad solid-waste locator."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_blowdown_out
+          role: "Boiler blowdown wastewater"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separately collected liquid boiler blowdown sent to an external treatment receiver only. Measure bulk liquid mass, temperature, dissolved/suspended salts and actual boiler-water treatment constituents, water fraction, stock changes and receiving acceptance. Keep distinct from dryer condensate, clean return condensate and direct discharge; density conversions require actual mixture evidence, no pure-water default. No receiver route/hazard status or environmental credit follows from the broad industrial-liquid identity."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_waste_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+      elementary:
+        - row_id: boiler_co2_bio_out
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_co2_fossil_out
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_co_bio_out
+          role: "carbon monoxide (biogenic)"
+          name: "carbon monoxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "8a313a02-e251-11e6-bf01-fe55135034f3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_co_fossil_out
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_ch4_bio_out
+          role: "methane (biogenic)"
+          name: "methane (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a8e8-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_ch4_fossil_out
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_n2o_out
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_nox_out
+          role: "Nitrogen oxides"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention. Mass/kg and CAS11104-93-1 do not establish a NO2-equivalent monitoring/LCI/LCIA amount. Prove the actual NO/NO2 or NO2-equivalent basis; retain pending basis if unconfirmed and prevent N2O or individual-NO/NO2 duplication."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_so2_out
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_pm25_out
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_pm_between_out
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_pm_coarse_out
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+        - row_id: boiler_vapour_out
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg; outdoor air, unspecified subcompartment"
+          description: "Actual outdoor-air boiler release; split fossil/biogenic carbon by measured fuel provenance and carbon balance. Preserve biogenic CO2 in LCI regardless of GHG reporting convention."
+          amount:
+            expression: "Actual unallocated campaign exchange in its stated unit divided by accepted B kg; use cp_emission_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_boiler
+              source_ids:
+                - epa-ap42-wood-boilers-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_separate: Avoid allocation through subdivision and dedicated measurements first. Packaging and final sleeper-only inspection burdens go entirely to the sleeper. For unavoidable joint machining burdens with saleable untreated sawdust/offcuts, use measured oven-dry product mass shares across the primary machined sleeper material and every actual saleable wood coproduct of that joint step, excluding internal duplicate links and discarded waste, when dry mass represents the physical relationship; disclose a justified alternative and sensitivity where it does not. CORRIM is a regional softwood precedent, not a universal sleeper allocation factor. [corrim-northern-lumber-2025]"
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_physical: Apply burden shares only to environmental burdens of the relevant joint step. Do not multiply physical coproduct output or internal transfer quantity by a share. Waste gets no saleable-product allocation share. Internal fuel use is a matched handoff with actual boiler emissions; do not also claim exported fuel or avoided-product credit. Preserve physical quantities V separately from attributable burdens A, including the complete inherited provider/exchange vector and original owner/cohort. Pair each actual internal_out with internal_in at the same boundary and cancel both only when consolidating that boundary; a real transformation consumes the incoming material and creates measured outputs, not a fictitious external receipt. Carry each vector component through actual stock, transfer, loss and product attribution without replacing it by the material mass or a new generic provider. Normalize the applicable physical or burden numerator once by B after attribution. [corrim-northern-lumber-2025]"
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "finishing"
+      flow_role: "Accepted sleeper mass"
+      record_type: "foreground_record"
+      raw_fields: "species; configuration; campaign; batch net B; item id and net M_i where individually weighed; moisture; count check; packaging tare; calibration; one new final acceptance event; accepted production separate from dispatch/returns/reacceptance; opening/closing WIP/finished stocks and carried quantities/burdens"
+      collection_method: "Weigh the accepted batch net mass B on a calibrated scale excluding packaging, or sum individual accepted net weighings M_i; match configuration, moisture and acceptance records. Count alone is not a mass measurement; do not infer M from a generic density. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_material_receiving
+      process_id: "receiving"
+      flow_role: "receiving_blank_in; receiving_blank_out"
+      record_type: "foreground_record"
+      raw_fields: "stream and item identity; raw mass; moisture; solid/bulk volume; stock change; paired links; batch"
+      collection_method: "Calibrated weighing and representative oven-dry tests with moisture gradients, sampling protection, constant-mass criterion, volatile/extractive loss limitations and validated species-specific meter checks retained; measure each distinct product, lubricant and water stream; preserve dry-matter/water balances. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_material_machining
+      process_id: "machining"
+      flow_role: "machining_blank_in; machining_lubricant_in; machining_machined_out; machining_sawdust_product_out; machining_offcut_product_out"
+      record_type: "foreground_record"
+      raw_fields: "stream and item identity; raw mass; moisture; solid/bulk volume; stock change; paired links; batch"
+      collection_method: "Calibrated weighing and representative oven-dry tests with moisture gradients, sampling protection, constant-mass criterion, volatile/extractive loss limitations and validated species-specific meter checks retained; measure each distinct product, lubricant and water stream; preserve dry-matter/water balances. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_material_drying
+      process_id: "drying"
+      flow_role: "drying_machined_in; drying_water_in; drying_dried_out"
+      record_type: "foreground_record"
+      raw_fields: "stream and item identity; raw mass; moisture; solid/bulk volume; stock change; paired links; batch"
+      collection_method: "Calibrated weighing and representative oven-dry tests with moisture gradients, sampling protection, constant-mass criterion, volatile/extractive loss limitations and validated species-specific meter checks retained; measure each distinct product, lubricant and water stream; preserve dry-matter/water balances. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_material_finishing
+      process_id: "finishing"
+      flow_role: "finishing_dried_in"
+      record_type: "foreground_record"
+      raw_fields: "stream and item identity; raw mass; moisture; solid/bulk volume; stock change; paired links; batch"
+      collection_method: "Calibrated weighing and representative oven-dry tests with moisture gradients, sampling protection, constant-mass criterion, volatile/extractive loss limitations and validated species-specific meter checks retained; measure each distinct product, lubricant and water stream; preserve dry-matter/water balances. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_material_boiler
+      process_id: "boiler"
+      flow_role: "boiler_water_in"
+      record_type: "foreground_record"
+      raw_fields: "stream and item identity; raw mass; moisture; solid/bulk volume; stock change; paired links; batch"
+      collection_method: "Calibrated weighing and representative oven-dry tests with moisture gradients, sampling protection, constant-mass criterion, volatile/extractive loss limitations and validated species-specific meter checks retained; measure each distinct product, lubricant and water stream; preserve dry-matter/water balances. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_energy_receiving
+      process_id: "receiving"
+      flow_role: "receiving_electricity_in"
+      record_type: "foreground_record"
+      raw_fields: "meter id; reading; kWh/MJ; supplier/background heat boundary; steam state/mass/enthalpy; condensate reference enthalpy; return/makeup handling; transmission losses; boiler fuel HHV/LHV basis; allocation meter scope"
+      collection_method: "Read calibrated submeters per campaign; obtain supplier/background boundary and condensate-reference-enthalpy evidence, match it to the receiving point, steam state, return/makeup handling and transmission losses, then measure the applicable same-boundary enthalpy difference. Separate on-site generation from purchased heat; HHV, gross thermal output and receiver-net heat are not interchangeable without verified reconciliation. Any unknown basis leaves heat methodological compatibility unconfirmed. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "MJ"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_energy_machining
+      process_id: "machining"
+      flow_role: "machining_electricity_in"
+      record_type: "foreground_record"
+      raw_fields: "meter id; reading; kWh/MJ; supplier/background heat boundary; steam state/mass/enthalpy; condensate reference enthalpy; return/makeup handling; transmission losses; boiler fuel HHV/LHV basis; allocation meter scope"
+      collection_method: "Read calibrated submeters per campaign; obtain supplier/background boundary and condensate-reference-enthalpy evidence, match it to the receiving point, steam state, return/makeup handling and transmission losses, then measure the applicable same-boundary enthalpy difference. Separate on-site generation from purchased heat; HHV, gross thermal output and receiver-net heat are not interchangeable without verified reconciliation. Any unknown basis leaves heat methodological compatibility unconfirmed. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "MJ"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_energy_drying
+      process_id: "drying"
+      flow_role: "drying_electricity_in; drying_heat_energy_in"
+      record_type: "foreground_record"
+      raw_fields: "meter id; reading; kWh/MJ; supplier/background heat boundary; steam state/mass/enthalpy; condensate reference enthalpy; return/makeup handling; transmission losses; boiler fuel HHV/LHV basis; allocation meter scope"
+      collection_method: "Read calibrated submeters per campaign; obtain supplier/background boundary and condensate-reference-enthalpy evidence, match it to the receiving point, steam state, return/makeup handling and transmission losses, then measure the applicable same-boundary enthalpy difference. Separate on-site generation from purchased heat; HHV, gross thermal output and receiver-net heat are not interchangeable without verified reconciliation. Any unknown basis leaves heat methodological compatibility unconfirmed. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "MJ"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_energy_finishing
+      process_id: "finishing"
+      flow_role: "finishing_electricity_in"
+      record_type: "foreground_record"
+      raw_fields: "meter id; reading; kWh/MJ; supplier/background heat boundary; steam state/mass/enthalpy; condensate reference enthalpy; return/makeup handling; transmission losses; boiler fuel HHV/LHV basis; allocation meter scope"
+      collection_method: "Read calibrated submeters per campaign; obtain supplier/background boundary and condensate-reference-enthalpy evidence, match it to the receiving point, steam state, return/makeup handling and transmission losses, then measure the applicable same-boundary enthalpy difference. Separate on-site generation from purchased heat; HHV, gross thermal output and receiver-net heat are not interchangeable without verified reconciliation. Any unknown basis leaves heat methodological compatibility unconfirmed. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "MJ"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_energy_boiler
+      process_id: "boiler"
+      flow_role: "boiler_electricity_in; boiler_heat_energy_out"
+      record_type: "foreground_record"
+      raw_fields: "meter id; reading; kWh/MJ; supplier/background heat boundary; steam state/mass/enthalpy; condensate reference enthalpy; return/makeup handling; transmission losses; boiler fuel HHV/LHV basis; allocation meter scope"
+      collection_method: "Read calibrated submeters per campaign; obtain supplier/background boundary and condensate-reference-enthalpy evidence, match it to the receiving point, steam state, return/makeup handling and transmission losses, then measure the applicable same-boundary enthalpy difference. Separate on-site generation from purchased heat; HHV, gross thermal output and receiver-net heat are not interchangeable without verified reconciliation. Any unknown basis leaves heat methodological compatibility unconfirmed. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "MJ"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_fuel_receiving
+      process_id: "receiving"
+      flow_role: "receiving_diesel_in"
+      record_type: "foreground_record"
+      raw_fields: "fuel identity; kg or m3; T/P; density; moisture; carbon origin/fraction; heating value; stocks"
+      collection_method: "Reconcile calibrated meters or scales and invoices; retain actual gas volume conditions and measured solid/bulk fuel convention before conversion. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg; m3"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_fuel_boiler
+      process_id: "boiler"
+      flow_role: "boiler_gas_in; boiler_wood_fuel_in"
+      record_type: "foreground_record"
+      raw_fields: "fuel identity; kg or m3; T/P; density; moisture; carbon origin/fraction; heating value; stocks; actual fuel hydrogen/composition and water-formation basis"
+      collection_method: "Reconcile calibrated meters or scales and invoices; retain actual gas volume conditions and measured solid/bulk fuel convention before conversion. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg; m3"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_transport
+      process_id: "receiving"
+      flow_role: "Inbound lorry service"
+      record_type: "foreground_record"
+      raw_fields: "load net mass; distance; mode; empty return; supplier coverage"
+      collection_method: "Weigh load and record route distance/load factors; use mass×distance with no duplicate supplier transport. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg*km"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_packaging
+      process_id: "finishing"
+      flow_role: "Steel band component"
+      record_type: "foreground_record"
+      raw_fields: "band grade; recycled route; net mass; tare; stock; dispatch batches; component id; P; N_ext; ER and prior outward event; EO; internal_in; internal_out; actual transformation consumption; original owner/cohort; complete inherited provider/exchange vector; whole-supply provider coverage; gross dispatch; transport; waste"
+      collection_method: "Weigh each actual packaging component and reconcile purchases/stocks; identify steel route and composition. P is purchased component receipt, including components paid for in a whole-supply price; N_ext is first non-purchased external receipt, not a previously dispatched component returning. ER requires the same component's prior external outward event; EO records external return to its owner. Reconcile opening stock, P, N_ext, ER and paired internal receipts against closing stock, gross dispatch, EO, paired internal issues, actual transformation consumption and separate waste, without inventing a receipt for consumption. Preserve owner/cohort and the complete inherited burden vector for returns and stocks. Apply upstream component supply once: either verified whole-supply coverage or its component provider, with actual coverage gaps disclosed; free supply or missing invoice does not establish zero burden. Do not net returns against gross dispatch, transport or waste. Attribute reuse and later packaging service to its evidenced cohort; it cannot silently enter current new production. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_waste_machining
+      process_id: "machining"
+      flow_role: "machining_waste_sawdust_out; machining_offcut_out; machining_waste_oil_out"
+      record_type: "foreground_record"
+      raw_fields: "waste identity; source; mass; moisture; destination; rework/stock; manifest"
+      collection_method: "Measure separate captured sawdust, offcuts, waste oil, condensate, bottom ash, fly ash and blowdown when present; retain treatment records. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_waste_drying
+      process_id: "drying"
+      flow_role: "drying_effluent_out"
+      record_type: "foreground_record"
+      raw_fields: "waste identity; source; mass; moisture; destination; rework/stock; manifest"
+      collection_method: "Measure separate captured sawdust, offcuts, waste oil, condensate, bottom ash, fly ash and blowdown when present; retain treatment records. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_waste_finishing
+      process_id: "finishing"
+      flow_role: "finishing_offcut_out"
+      record_type: "foreground_record"
+      raw_fields: "waste identity; source; mass; moisture; destination; rework/stock; manifest"
+      collection_method: "Measure separate captured sawdust, offcuts, waste oil, condensate, bottom ash, fly ash and blowdown when present; retain treatment records. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_waste_boiler
+      process_id: "boiler"
+      flow_role: "boiler_ash_out; boiler_fly_ash_out; boiler_blowdown_out"
+      record_type: "foreground_record"
+      raw_fields: "waste identity; source; mass; moisture; destination; rework/stock; manifest"
+      collection_method: "Measure separate captured sawdust, offcuts, waste oil, condensate, bottom ash, fly ash and blowdown when present; retain treatment records. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_emission_receiving
+      process_id: "receiving"
+      flow_role: "receiving_co2_fossil_out; receiving_co_fossil_out; receiving_ch4_fossil_out; receiving_n2o_out; receiving_nox_out; receiving_so2_out; receiving_pm25_out; receiving_pm_between_out; receiving_pm_coarse_out"
+      record_type: "foreground_record"
+      raw_fields: "species/CAS; carbon origin; actual medium/submedium; release point; PM filterable/condensable/aerodynamic definition; flow/concentration; reference T/P/oxygen/wet-dry basis; NOx species/equivalent basis; duration; control; detection; factor scope; distinguish gas volume rate from already integrated volume; inlet/outlet humidity and compatible gas quantity when determining net water"
+      collection_method: "Sum matched species concentration × already integrated compatible gas volume with unit conversions; only a volume flow rate is integrated with time, with no second duration multiplier. Preserve reference T/P, oxygen and wet/dry bases and include actual fugitive sources. If estimated, retain independently verified route-specific factor/activity and uncertainty; no unverified industry or PTE default. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_emission_machining
+      process_id: "machining"
+      flow_role: "machining_pm25_out; machining_pm_between_out; machining_pm_coarse_out"
+      record_type: "foreground_record"
+      raw_fields: "species/CAS; carbon origin; actual medium/submedium; release point; PM filterable/condensable/aerodynamic definition; flow/concentration; reference T/P/oxygen/wet-dry basis; NOx species/equivalent basis; duration; control; detection; factor scope; distinguish gas volume rate from already integrated volume; inlet/outlet humidity and compatible gas quantity when determining net water"
+      collection_method: "Sum matched species concentration × already integrated compatible gas volume with unit conversions; only a volume flow rate is integrated with time, with no second duration multiplier. Preserve reference T/P, oxygen and wet/dry bases and include actual fugitive sources. If estimated, retain independently verified route-specific factor/activity and uncertainty; no unverified industry or PTE default. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_emission_drying
+      process_id: "drying"
+      flow_role: "drying_vapour_out; drying_formaldehyde_out; drying_methanol_out; drying_acetaldehyde_out; drying_alpha_pinene_out"
+      record_type: "foreground_record"
+      raw_fields: "species/CAS; carbon origin; actual medium/submedium; release point; PM filterable/condensable/aerodynamic definition; flow/concentration; reference T/P/oxygen/wet-dry basis; NOx species/equivalent basis; duration; control; detection; factor scope; distinguish gas volume rate from already integrated volume; inlet/outlet humidity and compatible gas quantity when determining net water"
+      collection_method: "Sum matched species concentration × already integrated compatible gas volume with unit conversions; only a volume flow rate is integrated with time, with no second duration multiplier. Preserve reference T/P, oxygen and wet/dry bases and include actual fugitive sources. If estimated, retain independently verified route-specific factor/activity and uncertainty; no unverified industry or PTE default. Determine actual net vapour independently from matched phase/humidity/gas measurements or an independently evidenced species account: separate inlet moisture, condensation/internal recovery and any actual reaction-water formation/consumption; do not fit evaporation to an unexplained balance residual. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+    - protocol_id: cp_emission_boiler
+      process_id: "boiler"
+      flow_role: "boiler_co2_bio_out; boiler_co2_fossil_out; boiler_co_bio_out; boiler_co_fossil_out; boiler_ch4_bio_out; boiler_ch4_fossil_out; boiler_n2o_out; boiler_nox_out; boiler_so2_out; boiler_pm25_out; boiler_pm_between_out; boiler_pm_coarse_out; boiler_vapour_out"
+      record_type: "foreground_record"
+      raw_fields: "species/CAS; carbon origin; actual medium/submedium; release point; PM filterable/condensable/aerodynamic definition; flow/concentration; reference T/P/oxygen/wet-dry basis; NOx species/equivalent basis; duration; control; detection; factor scope; distinguish gas volume rate from already integrated volume; inlet/outlet humidity and compatible gas quantity when determining net water"
+      collection_method: "Sum matched species concentration × already integrated compatible gas volume with unit conversions; only a volume flow rate is integrated with time, with no second duration multiplier. Preserve reference T/P, oxygen and wet/dry bases and include actual fugitive sources. If estimated, retain independently verified route-specific factor/activity and uncertainty; no unverified industry or PTE default. Determine actual net vapour independently from matched phase/humidity/gas measurements or an independently evidenced species account: separate inlet moisture, condensation/internal recovery and any actual reaction-water formation/consumption; do not fit evaporation to an unexplained balance residual. Fuel moisture and combustion-formed water are distinct; the latter needs actual fuel hydrogen/composition and reaction evidence or direct gas-water measurement, not carbon closure. Retain raw period totals and the compatible attributable numerator for this process without division; document attribution of physical quantities and burdens to common final B through stocks/handoffs. After verified native-unit conversion, campaign_mass is the sole normalization step using positive B. Card formulas and aggregation_rule describe this same final reporting operation, not another division. No stage-output denominator or success-only average is allowed; B=0 retains the full pool without a normalized result."
+      unit: "kg"
+      frequency: "Each campaign and route change"
+      temporal_coverage: "Same complete reporting period and final acceptance cohort as positive B, including failed/zero-output events and matched WIP/stock burdens"
+      site_scope: "One declared site and configuration"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, signed logs, reconciliation and uncertainty retained"
+  calculation_rules:
+    - id: campaign_mass
+      applies_to: "all inventory rows"
+      rule: "B is new accepted final sleeper mass counted once from calibrated net batch weighing or sum(M_i); distinguish dispatch, old/purchased stocks and returns/reacceptance, with documented WIP/stock physical and burden carryover. For each exchange, x = attributable complete raw-period Q / the same positive terminal B once in its native unit, including failed/zero-output events; counts only cross-check. B=0 retains totals without normalization."
+      inputs:
+        - Q
+        - N
+        - M_i
+        - cp_mass
+      output: "x"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: dry_wood
+      applies_to: "wood streams"
+      rule: "u = (wet specimen mass − oven-dry specimen mass) / oven-dry specimen mass; dry mass = wet mass / (1+u)."
+      inputs:
+        - "wet mass"
+        - "dry mass"
+        - cp_material_receiving
+        - cp_material_machining
+        - cp_material_drying
+        - cp_material_finishing
+        - cp_material_boiler
+      output: "u; dry wood mass"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: particle_bins
+      applies_to: "PM rows"
+      rule: "Use cumulative tests only for the same source, period, controls and filterable basis: fine = PM2.5; middle = PM10 − PM2.5; coarse = total filterable PM − PM10. Never add PM10 or total again. Preserve condensable PM separately; missing fractions remain unknown, not zero."
+      inputs:
+        - cp_emission_receiving
+        - cp_emission_machining
+        - cp_emission_drying
+        - cp_emission_boiler
+      output: "three disjoint PM bins"
+      source_ids:
+        - epa-sawmill-pm-2014
+    - id: joint_burden
+      applies_to: "joint machining burdens"
+      rule: "a_j = dry product mass j / sum of measured dry product masses of the primary sleeper material and actual saleable coproducts at the same joint step; assigned burden j = a_j × joint burden. These equations do not change physical outputs or internal handoffs."
+      inputs:
+        - cp_material_machining
+        - "joint burdens"
+      output: "assigned LCI"
+      source_ids:
+        - corrim-northern-lumber-2025
+  data_quality_requirements:
+    - id: quality_configuration
+      applies_to: "all"
+      requirement: "Same species/geometry/grade/moisture and campaign denominator in both languages and all linked records; no invented M, yield, moisture target or lifetime."
+      evidence: "cp_mass; cp_material_receiving; cp_material_machining; cp_material_drying; cp_material_finishing; cp_material_boiler"
+    - id: quality_completeness
+      applies_to: "all"
+      requirement: "Screen all actual chemicals, fuels, packaging, emissions and wastes; add individual exact rows for identified missing exchanges. Absent operations require records; unknown is not zero. Blank UUIDs preclude claims of fully resolved LCI."
+      evidence: "route records; cp_emission_receiving; cp_emission_machining; cp_emission_drying; cp_emission_boiler"
+    - id: quality_balance
+      applies_to: "all"
+      requirement: "Close original dry matter, water and carbon balances with uncertainty before burden allocation; retain stock/rework and carbon stored in product, residue, emissions and ash. Use measured carbon fractions, not generic carbon neutrality. Keep total-mass/conserved-carbon accounts separate from molecular-water and dry-component accounts: actual volatile losses and fuel consumption change dry species, and independently measured water/actual reaction evidence is required for any formation or consumption. A closure residual or COD does not establish species carbon, reaction water or evaporation."
+      evidence: "raw balance and allocated burden ledgers"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_identity: Reject impregnated/coated/reclaimed or engineered composite inputs/outputs under this scope; confirm sawn sleeper geometry and buyer acceptance. No automatic CPC mapping acceptance."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_mass: Require measured M for any count-to-mass conversion, same-state B and 1 kg terminal output; inspect bilingual denominator, raw count/weight records and scale calibration. B includes each new lot's first quality release once, including newly accepted closing finished goods. Old finished goods, previously accepted production and genuine customer-return rework/reacceptance do not create new B. Preserve their original acceptance cohort and inherited quantities/burdens; later service requires evidenced attribution and cannot be assigned to current new B merely because it occurred in the reporting period. Retain idle, failed, start/stop and cleanup events and the B=0 pool without fabricating a normalized result."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_inventory: Each row is one exchange with verified flow type, species, carbon origin, medium, property and unit. Resolve applicable blank identities and screen additional species before claiming complete dataset quality. No correction flow substitutes."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_ledgers: Equal internal handoff amounts, unchanged physical coproduct outputs and separate burden allocation must reconcile. Check disjoint PM intervals, retained biogenic CO2, supplier/transport/heat duplication and actual drying/preservation evidence. For cp_energy_drying and cp_energy_boiler, m × (h_s − h_r) is valid only for matched supply/return mass m at the same boundary and period with compatible specific enthalpies. Otherwise measure supply and return masses and enthalpies independently, sum their actual enthalpy inflows/outflows and reconcile useful heat with actual leakage, other losses, makeup and stored-energy change; no assumed equal return mass or unrecorded storage term. Keep the original heat-identity/provider compatibility requirement pending until evidenced. Check component P/N_ext/ER/EO, original cohort/vector carryover and gross movements under cp_packaging. No arbitrary balance tolerance or invented factor."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "State/specification-matched gate-to-gate inventory; cradle-to-gate only with explicit verified upstream links"
+  excluded_use: "Whole-track service comparison; presumed untreated durability; CPC 31320 substitution; EPD approval; fully resolved LCI without actual quantity/provider/basis and finite-check qualification"
+  required_metadata: "Site/campaign, configuration, measured M/B/moisture, raw graph, starting gate, actual drying/heat/transport, unallocated balances and separate burden shares, unresolved identities and downstream exclusions"
+  required_quality_disclosure: "Measurement uncertainty, site representativeness, estimated species, absent versus unknown operations, upstream gaps and unreviewed adaptations"
+  update_trigger: "Changed wood/geometry/grade/moisture, treatment status, drying/fuel/control route, supplier boundaries or flow identities"
+data_sources:
+  - id: "usda-wood-handbook-2021"
+    type: "handbook"
+    reference: "USDA FPL, Wood handbook—wood as an engineering material, FPL-GTR-282 (2021), Ch.4 pp.4-1/4-11; Ch.6 pp.6-20–6-22; Ch.13 pp.13-2/13-5–13-7; Ch.15 p.15-15. [ Original ](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf)"
+    used_for: "Species/geometry, moisture and density measurement, drying/adzing/boring, durability limitations; no default density, sleeper mass or lifetime."
+  - id: "corrim-northern-lumber-2025"
+    type: "literature"
+    reference: "CORRIM, Life Cycle Assessment of Softwood Lumber Production—Northern Region, revised July 22 2025, §§3.2.4,3.2.6,3.3,4.6–4.7. [ Original ](https://corrim.org/wp-content/uploads/2025/07/LCA-Report-Northern-Lumber-Report-07222025.pdf)"
+    used_for: "Regional softwood process/allocation and emission-screening precedent only; no numerical survey transfer to all timber or hardwood sleepers."
+  - id: "epa-sawmill-pm-2014"
+    type: "official_guidance"
+    reference: "US EPA Region10, Particulate Matter Potential to Emit Emission Factors for Activities at Sawmills, Excluding Boilers, Located in Pacific Northwest Indian Country (May8 2014), cover and activity table. [ Original ](https://www.epa.gov/sites/default/files/2016-09/documents/spmpteef_memo.pdf)"
+    used_for: "Activity/particle-definition screening only; nested PM and control conditions. PTE maximum capacity is not actual LCA emissions; boiler factors excluded."
+  - id: "epa-ap42-wood-boilers-2022"
+    type: "official_guidance"
+    reference: "US EPA AP-42 §1.6, Wood Residue Combustion In Boilers (March2022), §§1.6.1–1.6.4 and Table1.6-1 footnotes. [ Original ](https://www.epa.gov/system/files/documents/2022-03/c1s6_final.pdf)"
+    used_for: "Actual wood-fired boiler route/species and control screening; retain biogenic CO2 LCI despite statistical convention. No numeric boiler factor adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:ebef73bd8aff6a24bd54df430bef3804a1d3cd0ce647a6e7c89d505d83a05131"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6457"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6457
+          line: 57
+          column: 1
+        end:
+          offset: 8035
+          line: 73
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Untreated solid sawn sleeper blanks received at factory; inherited forestry/sawmilling/drying recorded |\n| starting_condition_role | foreground_gate_to_gate |\n| product_classification_scope | CPC 3.0 31109; narrower; excludes CPC 31320 |\n| recursive_input_rule | Same-category incoming sleeper stock is an upstream intermediate; retain supplier manufacturing burdens once and model only actual remaining operations |\n| upstream_dataset_requirement | Link supplier species/moisture/state-matched forestry and sawmilling datasets for cradle-to-gate use; gate-only data must disclose missing upstream burdens |\n| disclosure | Starting gate, actual route and transport, inherited operations, supplied utilities and omitted downstream life stages |\n\n- `boundary_actual`: Include actual reception, shaping/drilling, drying and inspection plus attributable utilities, wastes and emissions. Omit absent impregnation and its chemicals, baths, fixation or post-treatment drying; supplier treatment evidence inconsistent with untreated identity blocks use. [usda-wood-handbook-2021]\n- `boundary_lifetime`: Factory-gate manufacturing is a declared-unit basis, not a track-service functional comparison. Track installation, ballast/fastenings, railway service life, maintenance, replacement and end of life are excluded; add explicit performance-equivalent service scenarios downstream. No lifetime, carbon-neutrality or durability credit is assumed. [usda-wood-handbook-2021]\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 304
+              line: 9
+              column: 1
+            end:
+              offset: 358
+              line: 9
+              column: 55
+          text: "# Unimpregnated solid wood railway or tramway sleepers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6457
+              line: 57
+              column: 1
+            end:
+              offset: 6478
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_71319"
+      family: "allocation"
+      span:
+        start:
+          offset: 71319
+          line: 1098
+          column: 1
+        end:
+          offset: 73089
+          line: 1103
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n- `allocation_separate`: Avoid allocation through subdivision and dedicated measurements first. Packaging and final sleeper-only inspection burdens go entirely to the sleeper. For unavoidable joint machining burdens with saleable untreated sawdust/offcuts, use measured oven-dry product mass shares across the primary machined sleeper material and every actual saleable wood coproduct of that joint step, excluding internal duplicate links and discarded waste, when dry mass represents the physical relationship; disclose a justified alternative and sensitivity where it does not. CORRIM is a regional softwood precedent, not a universal sleeper allocation factor. [corrim-northern-lumber-2025]\n- `allocation_physical`: Apply burden shares only to environmental burdens of the relevant joint step. Do not multiply physical coproduct output or internal transfer quantity by a share. Waste gets no saleable-product allocation share. Internal fuel use is a matched handoff with actual boiler emissions; do not also claim exported fuel or avoided-product credit. Preserve physical quantities V separately from attributable burdens A, including the complete inherited provider/exchange vector and original owner/cohort. Pair each actual internal_out with internal_in at the same boundary and cancel both only when consolidating that boundary; a real transformation consumes the incoming material and creates measured outputs, not a fictitious external receipt. Carry each vector component through actual stock, transfer, loss and product attribution without replacing it by the material mass or a new generic provider. Normalize the applicable physical or burden numerator once by B after attribution. [corrim-northern-lumber-2025]\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 304
+              line: 9
+              column: 1
+            end:
+              offset: 358
+              line: 9
+              column: 55
+          text: "# Unimpregnated solid wood railway or tramway sleepers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 71319
+              line: 1098
+              column: 1
+            end:
+              offset: 71359
+              line: 1098
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_111817"
+      family: "validation"
+      span:
+        start:
+          offset: 111817
+          line: 1150
+          column: 1
+        end:
+          offset: 114003
+          line: 1157
+          column: 1
+      markdown: "## 9. Validation Rules\n\n- `validate_identity`: Reject impregnated/coated/reclaimed or engineered composite inputs/outputs under this scope; confirm sawn sleeper geometry and buyer acceptance. No automatic CPC mapping acceptance.\n- `validate_mass`: Require measured M for any count-to-mass conversion, same-state B and 1 kg terminal output; inspect bilingual denominator, raw count/weight records and scale calibration. B includes each new lot's first quality release once, including newly accepted closing finished goods. Old finished goods, previously accepted production and genuine customer-return rework/reacceptance do not create new B. Preserve their original acceptance cohort and inherited quantities/burdens; later service requires evidenced attribution and cannot be assigned to current new B merely because it occurred in the reporting period. Retain idle, failed, start/stop and cleanup events and the B=0 pool without fabricating a normalized result.\n- `validate_inventory`: Each row is one exchange with verified flow type, species, carbon origin, medium, property and unit. Resolve applicable blank identities and screen additional species before claiming complete dataset quality. No correction flow substitutes.\n- `validate_ledgers`: Equal internal handoff amounts, unchanged physical coproduct outputs and separate burden allocation must reconcile. Check disjoint PM intervals, retained biogenic CO2, supplier/transport/heat duplication and actual drying/preservation evidence. For cp_energy_drying and cp_energy_boiler, m × (h_s − h_r) is valid only for matched supply/return mass m at the same boundary and period with compatible specific enthalpies. Otherwise measure supply and return masses and enthalpies independently, sum their actual enthalpy inflows/outflows and reconcile useful heat with actual leakage, other losses, makeup and stored-energy change; no assumed equal return mass or unrecorded storage term. Keep the original heat-identity/provider compatibility requirement pending until evidenced. Check component P/N_ext/ER/EO, original cohort/vector carryover and gross movements under cp_packaging. No arbitrary balance tolerance or invented factor.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 304
+              line: 9
+              column: 1
+            end:
+              offset: 358
+              line: 9
+              column: 55
+          text: "# Unimpregnated solid wood railway or tramway sleepers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 111817
+              line: 1150
+              column: 1
+            end:
+              offset: 111839
+              line: 1150
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6457"
+      source_span:
+        start:
+          offset: 7315
+          line: 70
+          column: 1
+        end:
+          offset: 7641
+          line: 70
+          column: 327
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_6457"
+      source_span:
+        start:
+          offset: 7642
+          line: 71
+          column: 1
+        end:
+          offset: 8033
+          line: 71
+          column: 392
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_71319"
+      source_span:
+        start:
+          offset: 71361
+          line: 1100
+          column: 1
+        end:
+          offset: 72055
+          line: 1100
+          column: 695
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_71319"
+      source_span:
+        start:
+          offset: 72056
+          line: 1101
+          column: 1
+        end:
+          offset: 73087
+          line: 1101
+          column: 1032
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_111817"
+      source_span:
+        start:
+          offset: 111841
+          line: 1152
+          column: 1
+        end:
+          offset: 112045
+          line: 1152
+          column: 205
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_111817"
+      source_span:
+        start:
+          offset: 112046
+          line: 1153
+          column: 1
+        end:
+          offset: 112780
+          line: 1153
+          column: 735
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_111817"
+      source_span:
+        start:
+          offset: 112781
+          line: 1154
+          column: 1
+        end:
+          offset: 113045
+          line: 1154
+          column: 265
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_111817"
+      source_span:
+        start:
+          offset: 113046
+          line: 1155
+          column: 1
+        end:
+          offset: 114001
+          line: 1155
+          column: 956
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6457"
+      source_span:
+        start:
+          offset: 6457
+          line: 57
+          column: 1
+        end:
+          offset: 6478
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6457"
+      source_span:
+        start:
+          offset: 6506
+          line: 61
+          column: 1
+        end:
+          offset: 7313
+          line: 68
+          column: 136
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_71319"
+      source_span:
+        start:
+          offset: 71319
+          line: 1098
+          column: 1
+        end:
+          offset: 71359
+          line: 1098
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_111817"
+      source_span:
+        start:
+          offset: 111817
+          line: 1150
+          column: 1
+        end:
+          offset: 111839
+          line: 1150
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ebef73bd8aff6a24bd54df430bef3804a1d3cd0ce647a6e7c89d505d83a05131"
+  generated_content_sha256: "sha256:e1657a959c473ee890c6289b49f358c9f551429204dcb4cc3a87d845a836e2c5"
