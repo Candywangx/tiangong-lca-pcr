@@ -13,7 +13,7 @@ lastReviewedNote: "Bounded per-record factual review, exact source selection, na
 
 # 35 CPC3 candidate records: factual review and intake
 
-This contribution imports only the pinned 35 candidate methods, repairs concrete measurement/applicability inconsistencies, and integrates their selected classification edges. Every record remains candidate/authored_methodology; aligned Chinese is not independent translation approval.
+This package documents the original 35 candidate methods, repairs concrete measurement/applicability inconsistencies, and integrates their selected classification edges. Every record remains candidate/authored_methodology; aligned Chinese is not independent translation approval.
 
 ## Exact scope and reviewer access
 
@@ -75,11 +75,15 @@ These are bounded content/engineering findings, not proof of exhaustive scientif
 
 ## Retained scaffold promotion
 
-At the owner's request, all 15 previously new candidate directories are replaced by in-place promotion of their matching retained empty scaffolds. The PR now contains **31 empty-scaffold promotions, four existing material revisions and zero new PCR directories**. Original scaffold IDs and paths are preserved; route-specific titles, scope, exclusions and `narrower` mappings remain unchanged. [Promotion evidence](scaffold-promotion.json) binds prior candidate bytes, fork-base scaffold bytes and the new identity-only content. The former draft IDs were never published; no historical release is rewritten.
+At the owner's request, all 15 previously new candidate directories are replaced by in-place promotion of their matching retained empty scaffolds. This original35 subset contains **31 empty-scaffold promotions, four existing material revisions and zero new PCR directories**. Original scaffold IDs and paths are preserved; route-specific titles, scope, exclusions and `narrower` mappings remain unchanged. [Promotion evidence](scaffold-promotion.json) binds prior candidate bytes, fork-base scaffold bytes and the new identity-only content. The former draft IDs were never published; no historical release is rewritten.
 
 Historical independent assessments keep their original source paths/hashes. Current record locators and final hashes live in review-scope.json, records/ and target-validation.json; identity-only equivalence preserves the earlier substantive review without pretending it ran against different bytes.
 
-## Qualification boundaries
+## Current PR extension
+
+The PR now adds [34 further retained-template promotions](../cpc3-additional34-20261029/README.md), for69PCRs:65scaffold promotions and4existing material revisions, zero new directories. Current31413 now restores the accepted no-tropical-plies scope; its exact record/check hashes above are refreshed. The full updated PR qualification is in the new package.
+
+## Historical qualification of the initial35 source
 
 All 35 target checks match current four-file hashes; the 15 changed identities have fresh passing checks and deterministic repeated syncs. [Independent identity review](scaffold-promotion-independent-review.json) confirms retained scaffold identities, unchanged methodology scope and coherent mappings/aliases/catalog.
 
