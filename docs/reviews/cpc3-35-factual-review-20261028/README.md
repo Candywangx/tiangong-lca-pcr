@@ -81,4 +81,10 @@ Historical independent assessments keep their original source paths/hashes. Curr
 
 ## Qualification boundaries
 
-All 35 per-record checks are bound to current four-file hashes; the 15 changed identities have fresh passing checks and deterministic repeated syncs. Full validation and documentation build must be rerun for the amended source. The earlier validation pass and Chinese search budget failure are retained as historical evidence only in [qualification status](qualification-status.json); they do not qualify this changed source. No methodology or translation approval, merge, publication or deployment is implied.
+All 35 target checks match current four-file hashes; the 15 changed identities have fresh passing checks and deterministic repeated syncs. [Independent identity review](scaffold-promotion-independent-review.json) confirms retained scaffold identities, unchanged methodology scope and coherent mappings/aliases/catalog.
+
+Complete local `npm run validate` **passed** on `3cfe47acf29c53674afc78f59946c905a5583584`: 3343 tests, 3338 passed, zero failed and 5 skipped. The complete corpus has 3107 physical PCRs, 1507 material PCRs and 1601 aliases; two independent SQLite builds reproduce identical bytes. Read the [full log](validation/validate.log) and [source-bound receipt](validation/validate.json).
+
+Complete `npm run docs:build` **failed** on that source. Chinese search gzip is **4,078,737 / 4,000,000 bytes**, an excess of 78,737 bytes. Complete static export, full-site SEO and sealed-product acceptance did not finish. The PR remains draft and not merge/publication-qualified. Read the [complete documentation build log](validation/docs-build.log) and [receipt](validation/docs-build.json). No threshold increase, material-record omission or runtime workaround was applied.
+
+The final evidence-only descendant preserves the tested canonical, classification and runtime bytes. [Qualification status](qualification-status.json) separates current local observations, historical pre-amendment gates and pending fresh hosted qualification. No scientific, translation, publication or deployment approval is implied.
