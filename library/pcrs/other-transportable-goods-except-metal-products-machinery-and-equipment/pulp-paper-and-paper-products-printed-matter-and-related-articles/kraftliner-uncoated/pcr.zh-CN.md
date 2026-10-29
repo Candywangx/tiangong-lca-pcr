@@ -2,7 +2,7 @@
 pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.kraftliner-uncoated
 language: zh-CN
 status: candidate
-content_maturity: draft_methodology
+content_maturity: authored_methodology
 translation_status: aligned
 sync_with: pcr.en-US.md
 ---
