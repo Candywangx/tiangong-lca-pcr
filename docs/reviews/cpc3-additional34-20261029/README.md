@@ -65,4 +65,6 @@ This package adds 34 candidate methods by promoting their existing empty templat
 
 ## Qualification
 
+The first full run found a missing Chinese presentation label for the newly material furniture category. One display-dictionary entry fixes it; the existing focused test now passes. [Initial failure and correction evidence](superseded-validation/category-label-repair.json) is retained, and complete gates are rerun on the corrected source.
+
 [Qualification status](qualification-status.json) separates current target checks from pending fresh complete local/hosted gates. Earlier smaller-source validation and documentation results are historical, not qualification of this 69-record source. No search budget increase, omitted material content, release/tag, methodology publication or deployment is part of this PR.

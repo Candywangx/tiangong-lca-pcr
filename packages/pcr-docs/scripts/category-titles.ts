@@ -40,6 +40,7 @@ const zh: Readonly<Record<string,string>> = {
   "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products":
     "食品、饮料、烟草、纺织、服装和皮革产品",
   "forestry-and-logging-products": "林业和采伐产品",
+  "furniture-other-transportable-goods-n-e-c": "家具及其他未另分类的可运输货物",
   "general-purpose-machinery": "通用机械",
   "glass-and-glass-products-and-other-non-metallic-products-n-e-c":
     "玻璃及玻璃制品和其他未分类非金属产品",
