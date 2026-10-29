@@ -2,7 +2,7 @@
 pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.directories-in-print
 language: zh-CN
 status: candidate
-content_maturity: draft_methodology
+content_maturity: authored_methodology
 sync_with: pcr.en-US.md
 ---
 
