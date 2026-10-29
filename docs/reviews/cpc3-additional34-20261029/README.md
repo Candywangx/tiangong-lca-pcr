@@ -1,0 +1,76 @@
+---
+title: 34 additional CPC3 retained-scaffold promotions and shared-mapping audit
+docType: report
+scope: repo
+status: draft
+authoritative: false
+owner: tiangong-lca-pcr
+language: en
+lastReviewedAt: 2026-10-29
+lastReviewedCommit: null
+lastReviewedNote: "Exact selected-source review and retained-scaffold intake; methodology and product qualification remain distinct."
+---
+
+# 34 additional CPC3 methods; current PR scope: 69
+
+This package adds 34 candidate methods by promoting their existing empty templates, preserving original PCR IDs/paths. Together with the [original 35](../cpc3-35-factual-review-20261028/README.md), PR #30 contains **65 scaffold promotions and 4 existing material revisions, 69 PCRs / 276 canonical files, zero new product directories**. All remain candidate/authored_methodology with aligned Chinese; no scientific/translation status is promoted.
+
+## Evidence and changes
+
+- [Exact 34 sources and final hashes](review-scope.json), [combined 69-record scope](combined-pr-scope.json), individual reports below and [complete target-check stdout](target-validation.json). The 34 latest checks pass and repeated syncs are deterministic; 31413 has a separate fresh check in its original record.
+- Bounded review corrected 25 first non-purchased packaging receipt gaps and clarified 3 ambiguous definitions, preserving full physical quantities, native constraints, original cohorts and separate burden ownership. [Repairs](content-repairs.json) and [final clause closures](receipt-refinements.json) retain source-stage evidence.
+- Freshly read 246 public-state flow UUIDs; 245 remain adopted. The generic mixed-packaging identity was withdrawn from 55 carton rows across 11 PCRs; concrete carton identities are now explicitly unresolved, with no invented replacement UUID or quantity. [Native evidence](native-identity-evidence.json), [withdrawal](generic-carton-rejection.json) and [superseded failures with complete stderr](superseded-check-failures.json).
+- The 35290 redundant maturity headers now match its already-authored manifest. The 38410 self-consistent stock-symbol convention and 38330 authored row-ID casing were preserved after initial concerns were disproved. The 38150 supported secondary Volume physical ledger retains its independently measured density bridge to one native Mass provider.
+- [Independent final readbacks](independent-readbacks.json) describe actual coverage and exact inspected hashes. These are bounded method/intake and native-identity checks, not exhaustive new literature verification or factory data certification. The inherited [bot/linancn checklist](../cpc3-35-factual-review-20261028/historical-review-checklist.md) remains the review rubric.
+- [Classification intake](classification-intake.json) adds 34 previously absent codes; all 1355 existing raw mapping blocks remain byte-identical. Current material 1,541, aliases 1,567, physical PCR 3,107 and accepted mappings 1,389. [Shared-CPC audit](shared-cpc-review.md) confirms the original 3 groups / 14 codes already have distinct accepted targets; zero shared targets remain.
+
+## Per-record review
+
+| CPC | Method | Review |
+| --- | --- | --- |
+| 35290 | [无菌无针聚丙烯单丝外科缝合线制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/other-articles-for-medical-or-surgical-purposes/pcr.en-US.md) | [Corrections recorded](records/35290.json) |
+| 37610 | [整片已制备供货板加工的天然大理石台面板](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/marble-travertine-and-alabaster-worked-and-articles-thereof-except-setts-curbstones-fla-0b9f226b/pcr.en-US.md) | [Corrections recorded](records/37610.json) |
+| 37690 | [切割磨抛天然花岗岩台面](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/other-worked-monumental-or-building-stone-and-articles-thereof-other-artificially-colou-30628d6c/pcr.en-US.md) | [Corrections recorded](records/37690.json) |
+| 37910 | [陶瓷结合剂白刚玉平形砂轮制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/millstones-grindstones-grinding-wheels-and-the-like-without-frameworks-for-working-ston-040b6b79/pcr.en-US.md) | [Corrections recorded](records/37910.json) |
+| 37920 | [压延温石棉–SBR压缩密封板制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/fabricated-asbestos-fibres-mixtures-with-a-basis-of-asbestos-or-with-a-basis-of-asbesto-7ba52ef9/pcr.en-US.md) | [Corrections recorded](records/37920.json) |
+| 37930 | [玻纤胎矿物粒面沥青屋面卷材制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/articles-of-asphalt-or-of-similar-material/pcr.en-US.md) | [Corrections recorded](records/37930.json) |
+| 37940 | [原生矿料间歇热拌沥青混合料制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/bituminous-mixtures-based-on-natural-and-artificial-stone-materials-and-bitumen-natural-3861b4d5/pcr.en-US.md) | [Corrections recorded](records/37940.json) |
+| 37950 | [未涂碳焦基人工石墨粉](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/artificial-graphite-colloidal-or-semi-colloidal-graphite-preparations-based-on-graphite-ffa8522f/pcr.en-US.md) | [Corrections recorded](records/37950.json) |
+| 37960 | [白色电熔氧化铝磨粒制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/artificial-corundum/pcr.en-US.md) | [Corrections recorded](records/37960.json) |
+| 37990 | [焦炭冲天炉熔融酚醛结合岩棉隔热整板制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/glass-and-glass-products-and-other-non-metallic-products-n-e-c/non-metallic-mineral-products-n-e-c-including-mineral-wool-expanded-mineral-materials-w-e71f8436/pcr.en-US.md) | [Corrections recorded](records/37990.json) |
+| 38111 | [完整粉末涂层点焊冲压钢制椅制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/seats-primarily-with-metal-frames/pcr.en-US.md) | [Corrections recorded](records/38111.json) |
+| 38112 | [未软包山毛榉框架整椅制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/seats-primarily-with-wooden-frames/pcr.en-US.md) | [Corrections recorded](records/38112.json) |
+| 38119 | [单次注塑聚丙烯整体椅制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-seats/pcr.en-US.md) | [Corrections recorded](records/38119.json) |
+| 38121 | [已装配粉末涂层钢制多抽屉办公文件柜](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-metal-furniture-of-a-kind-used-in-offices/pcr.en-US.md) | [Corrections recorded](records/38121.json) |
+| 38122 | [完整平包 MFC 板式桌端办公桌制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-wooden-furniture-of-a-kind-used-in-offices/pcr.en-US.md) | [Corrections recorded](records/38122.json) |
+| 38149 | [完整粉末涂层钢排条床架套件制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-furniture-n-e-c-not-made-of-wood/pcr.en-US.md) | [Corrections recorded](records/38149.json) |
+| 38150 | [采购泡块转换制造完整柔性聚氨酯泡沫床垫](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/mattress-supports-mattresses-fitted-with-springs-or-stuffed-or-internally-fitted-with-a-c24c2f8e/pcr.en-US.md) | [Corrections recorded](records/38150.json) |
+| 38161 | [未涂饰车削单块实心榉木家具腿制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/parts-of-furniture-made-from-wood/pcr.en-US.md) | [Corrections recorded](records/38161.json) |
+| 38169 | [粉末涂层焊接钢制桌腿组件制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/parts-of-furniture-not-made-from-wood/pcr.en-US.md) | [Corrections recorded](records/38169.json) |
+| 38170 | [未涂饰实心松木完整床架套件制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/wooden-furniture-of-a-kind-used-in-the-bedroom/pcr.en-US.md) | [Corrections recorded](records/38170.json) |
+| 38210 | [淡水组织植入未加工珍珠生产](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/pearls-natural-or-cultured-and-unworked/pcr.en-US.md) | [Corrections recorded](records/38210.json) |
+| 38220 | [天然紫水晶未镶嵌裸刻面宝石](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/cultured-pearls-precious-or-semi-precious-stones-and-synthetic-or-reconstructed-preciou-8873c01c/pcr.en-US.md) | [Corrections recorded](records/38220.json) |
+| 38230 | [外购磨粒加工的未涂覆HPHT单晶金刚石微粉](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/industrial-diamonds-worked-dust-and-powder-of-natural-or-synthetic-precious-or-semi-pre-0e8458e7/pcr.en-US.md) | [Corrections recorded](records/38230.json) |
+| 38240 | [无镀覆无镶嵌铸造银合金戒指制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/jewellery-and-other-articles-of-precious-metal-or-of-metal-clad-with-precious-metal-art-1c2fed3b/pcr.en-US.md) | [No additional confirmed blocking finding in reviewed scope](records/38240.json) |
+| 38250 | [单金属铜镍合金流通硬币](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/coin/pcr.en-US.md) | [Corrections recorded](records/38250.json) |
+| 38310 | [木质弯壳声学三角钢琴制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/pianos-and-other-keyboard-stringed-musical-instruments/pcr.en-US.md) | [Corrections recorded](records/38310.json) |
+| 38320 | [全实木钢弦声学吉他制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-string-musical-instruments/pcr.en-US.md) | [Corrections recorded](records/38320.json) |
+| 38330 | [漆饰活塞阀黄铜小号制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/wind-musical-instruments-including-pipe-organs-accordians-and-brass-wind-instruments/pcr.en-US.md) | [Corrections recorded](records/38330.json) |
+| 38340 | [被动实心琴体螺栓连接琴颈电吉他制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/musical-instruments-the-sound-of-which-is-produced-or-must-be-amplified-electrically/pcr.en-US.md) | [No additional confirmed blocking finding in reviewed scope](records/38340.json) |
+| 38350 | [层压枫木壳声学小军鼓制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-musical-instruments-including-percussion-instruments-musical-boxes-and-fairground-0b000707/pcr.en-US.md) | [Corrections recorded](records/38350.json) |
+| 38360 | [发条驱动机械节拍器制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/parts-and-accessories-of-musical-instruments-metronomes-tuning-forks-and-pitch-pipes/pcr.en-US.md) | [Corrections recorded](records/38360.json) |
+| 38410 | [木芯玻纤/环氧湿法层压高山滑雪板制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/snow-skis-and-other-snow-ski-equipment-ice-skates-and-roller-skates/pcr.en-US.md) | [No additional confirmed blocking finding in reviewed scope](records/38410.json) |
+| 38420 | [EPS芯玻纤环氧冲浪板制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/water-skis-surf-boards-sailboards-and-other-water-sport-equipment/pcr.en-US.md) | [Corrections recorded](records/38420.json) |
+| 38440 | [手工缝制 PU 表皮充气足球制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-articles-and-equipment-for-sports-or-outdoor-games/pcr.en-US.md) | [Corrections recorded](records/38440.json) |
+
+## Qualification
+
+Complete local `npm run validate` **passed** on `678fc0484335507f1cd742ba29533a4c1c175746` (Node 24.19.0 / npm 12.2.0): 3343 tests, 3338 passed, zero failed, 5 skipped. The complete corpus contains 3107 physical PCRs, 1541 material PCRs and 1567 aliases; two independent SQLite builds reproduce identical bytes. [Full log](validation/validate.log), [source/tree-bound receipt](validation/validate.json).
+
+Complete `npm run docs:build` **failed** on the same source: en-US search gzip 4,196,228 / 4,000,000 bytes (excess 196,228). No search-size result was produced for zh-CN after the earlier failure; earlier smaller-source measurements are not substituted. Complete static export, full-site SEO and sealed-product acceptance did not finish. [Full documentation log](validation/docs-build.log) and [receipt with verified pack manifests](validation/docs-build.json) retain the actual outcome.
+
+The PR remains draft pending full current product/hosted qualification. No budget increase, dropped material content or runtime workaround was applied. The final evidence-only commit preserves all tested canonical/classification/runtime bytes; [current status](qualification-status.json) distinguishes the actual tested source from the later PR head.
+
+The first complete validation on `06fdd379` failed one existing Chinese category-label test. The newly material furniture category now has its Chinese presentation label; the existing focused test changed from failure to pass. [Original failure and fix evidence](superseded-validation/category-label-repair.json) is retained; it is not reported as a successful full run.
+
+The [public evidence review](final-package-review.json) and [category-label delta review](category-label-delta-review.json) retain their actual inspected sources.

@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-26
-lastReviewedNote: "Added the lossless v6 numeric-column transport, bounded decoder, v5 compatibility and same-wire corpus comparison without changing content, ranking or resource budgets. PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
+lastReviewedAt: 2026-10-27
+lastReviewedNote: "Retained the fork lossless v6 numeric-column transport, bounded decoder and v5 compatibility contract while merging upstream PCR #154. PCR #154: reviewed the single site mdast-util-to-markdown 2.1.2 to 2.2.0 lock resolution and existing incoming ranges. Paired standalone serialization probes preserve the new AST and reproduce upstream fixes; six actual PCR/guide sources retain identical inventories, HTML and source context, with no toMarkdown calls. Root graph, canonical content, methodology/translation states, runtime pins, product 0.4.9 and production pointer remain unchanged. Focused checks are not full current-source Linux, corpus, sealed-product or hosted qualification; independent review and exact workspace integration remain required."
+lastReviewedCommit: 874470a017a4e7172b96674cca39e82a7028954e
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

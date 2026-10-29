@@ -1,10 +1,1486 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "32420"
-  title: "Business, professional or academic newspapers and periodicals, other than daily, in print"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.business-professional-or-academic-newspapers-and-periodicals-other-than-daily-in-print"
+  classification_refs: "CPC 3.0 32420; narrower; current accepted association and decision: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADR; no whole-leaf or scientific/translation approval implied"
+  covered_products: "Physical non-daily professional/academic serial issues matching the monochrome coated-sheet self-cover wet-offset and wire-saddle-stitched construction"
+  excluded_products: "General reference books including serial instalments, directories, monographs, blank notebooks, online-only content, general-interest/other periodicals and the other constructions in section 1"
+  representative_product: "A declared professional or academic serial issue with black text/grayscale figures, self-cover, nested signatures and wire stitches; no default pagination, format, grammage, run length or frequency within the category"
+  production_route: "Supplied coated paper and prepared plates; wet sheetfed offset, pile setting, folding/nesting, issue/sequence control, saddle stitching, trim, first acceptance and packing"
+  market_state: "Complete readable issue at printer gate; net mass includes self-cover, retained ink/powder, stitches and moisture; excludes transport packaging"
+functional_unit:
+  what: "Manufacture complete professional/academic serial issues of the declared title, volume, issue and physical construction"
+  how_much: "1 kg net newly accepted complete issues"
+  how_well: "Contracted legibility, grayscale reproduction, edition/issue identity, complete correct page sequence, signature nesting, trim and stitch integrity; declare actual acceptance criteria, not universal thresholds"
+  how_long_or_cycle: "A fixed reporting period for this title/issue/construction and site through first quality release; no assumed reading life or reading-service equivalence"
+  reference_flow_link: "finished"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacture
+      applies_to: "journal"
+      rule: "Include receipt/tare, issue/forme preflight, make-ready and plate changes, both-side sheet printing, wet dampening, pile setting, cleaning, folding/nesting, stitching/trim, first release and packing. Keep imposition/plate-preparation burdens at the actual provider once."
+      source_ids:
+        - epa-printing-eiip-2002
+        - chicago-journal-production
+        - newman-saddle-stitching
+    - rule_id: boundary_utilities
+      applies_to: "journal"
+      rule: "Account for drives, compressors, extraction, pile drying/ventilation, folders/stitchers/trimmers, cleaning and common services over run, idle, failed lots and shutdown. Verify no combustion, purchased process heat or refrigeration in this case; if present, extend reviewed atomic input/emission/stock records before completeness."
+      source_ids:
+        - epa-offset-ctg-2006
+    - rule_id: boundary_transfers
+      applies_to: "journal"
+      rule: "Aggregate physical stages into one foreground node while retaining paired equal mass/state/time transfers and stage stocks. Count a material, provider service or waste crossing once; internal circulation is neither a fresh purchase nor a disposal credit."
+      source_ids:
+        - epa-printing-eiip-2002
+boundary_abstraction:
+  declared_starting_condition: "Unprinted coated sheet paper, ready-to-print imaged/coated aluminium plates and supplied consumables received at printer gate"
+  starting_condition_role: "intermediate_input"
+  product_classification_scope: "Sole CPC 3.0 32420 identity; representative monochrome sheetfed self-cover saddle-stitched subset, not all technologies in the leaf"
+  recursive_input_rule: "Internal signatures, return sheets, rework and recirculating fountain liquid stay internal. Externally supplied printed sections need explicit supplier/history and a reviewed boundary extension, not recursive reuse of the finished-issue reference."
+  upstream_dataset_requirement: "Compatible paper manufacture including pulp/coating, complete plate preparation including imaging/development, every actual material/utility, inbound transport and receiving waste treatment; match physical state, provider gate, geography, time and reference quantity"
+  disclosure: "Declare outsourcing and shared services, installed equipment, utility boundaries, exclusions, missing evidence, opening/closing stock and actual operating modes; supplier identity is not proof of full route coverage"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Business, professional or academic newspapers and periodicals, other than daily, in print"
+    uuid: "40eab261-c65d-482a-8a05-d13cfa6f35f8"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Title/ISSN if assigned"
+    - "business/professional/academic purpose"
+    - "actual frequency less than four weekly"
+    - "volume/issue/edition and page map"
+    - "site/period"
+    - "coated sheet stock"
+    - "fibre/coating/grammage/moisture"
+    - "monochrome oil-based wet sheetfed route and prepared-plate provider"
+    - "sheet imposition/formes/signatures/duplex passes"
+    - self-cover
+    - "measured accepted net mass/tare"
+    - "wire alloy/coating/diameter and stitch count"
+    - "complete ink/fountain/wash/powder formulas"
+    - "actual utilities"
+    - "first-release/rework/WIP/FG ledgers"
+    - "packing ownership/returns"
+    - "waste receivers"
+    - "actual emitted species"
+    - "allocation and uncertainty"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "finished"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "cp_acceptance measures Q, net complete issues first released in the period; include their stitches, self-cover, retained constituents and actual moisture. Exclude shipping tare, inserts outside this construction, rejects, opening finished stock and repeat release of the same item."
+  - id: sheet_mass
+    applies_to: "paper; paper_waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "cp_materials records net sheet mass. Area times measured grammage may cross-check it only for the same grade/moisture and measured sheets; page count is not sheet count, and imposed blank/trim areas remain material."
+  - id: electricity_units
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the native electrical-energy convention and compatible supply boundary; 1 kWh = 3.6 MJ. This property does not turn electricity into fuel or purchased useful heat."
+  - id: mixture_basis
+    applies_to: "ink; fountain; wash; powder; maintenance_oil; maintenance_grease"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain whole supplied-mixture mass and complete measured/certified constituent fractions separately; water, solids and active substance are distinct bases. Components of one purchase are not additional purchases."
+  - id: air_species
+    applies_to: "ipa_air; ethanol_air; pm25; pm2510; pm10; water_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report actual species/size-interval mass to outdoor air. Match concentration and volume conditions; do not equate TVOC carbon mass with a solvent, indoor exposure with emission, or nested PM totals with disjoint fractions."
+process_map:
+  - id: journal
+    name: "Professional/academic issue sheetfed printing and saddle-stitch finishing"
+    inclusion: "required"
+    inclusion_condition: "Selected section 1 construction; conditional cards require actual occurrence evidence"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: journal
+    label: "Professional/academic issue sheetfed printing and saddle-stitch finishing"
+    inputs:
+      product:
+        - row_id: paper
+          role: "Coated sheet stock including self-cover"
+          name: "coated printing, writing and packaging paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "faaae1a8-97af-4a26-bdb2-198abfc0d8e4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Unprinted coated sheets of one actual stock; retain supplier pulp/fibre, coating, sheet size, grammage and moisture, net receipt mass and pallet/wrap tare. Broad coated-paper identity does not require on-press varnish or establish a mill recipe. Paper manufacture/coating remains in its compatible upstream node."
+          amount:
+            expression: "X_paper/Q for the fixed reporting period; net stock use reconciled by cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - chicago-journal-production
+            ranges: []
+        - row_id: ink
+          role: "Black sheetfed offset paste ink"
+          name: "Solvent-based planographic printing ink"
+          flow_type: "product"
+          flow_ref:
+            uuid: "38e48719-f415-4f0f-a3e7-2893d2fbaffd"
+          property_unit: "Mass / kg"
+          description: "One purchased black oil-based paste formulation, suitable for absorption/oxidation setting. Native flat-ink identity is broad, not a colour/SKU or complete formulation. Record pigment, petroleum/vegetable vehicles, binder/resin, driers, waxes and other actual ingredients with CAS/UVCB and carbon origin. Whole ink is one purchase; constituent balances do not duplicate it as chemical purchases. No colour coverage or retention percentage is prescribed."
+          amount:
+            expression: "X_ink/Q for the fixed reporting period; cp_formulas includes all starts, washups and failed formes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulas
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: plate
+          role: "Supplied prepared aluminium printing plate"
+          name: "Prepared imaged aluminium wet-offset printing plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One imaged/coated, ready-to-print wet-offset plate received from the actual prepress provider. Record dimensions, coating, net mass and issue/forme/side reuse. Include substrate, coating, imaging, developer/rinse where used and their wastes at that supplier once. Bare aluminium, polystyrene PS plate and a combined files/plate service cannot replace this physical assembly."
+          amount:
+            expression: "X_plate/Q for the fixed reporting period; weighed issue/forme changes and consumed stock under cp_consumables."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - chicago-journal-production
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: fountain
+          role: "Fountain concentrate"
+          name: "Wet-offset fountain-solution concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One supplied wet-offset concentrate SKU with full water/gum/resin/acid/buffer/wetting-agent and other actual constituents. Record dilution, additions, pan/loop stocks and purge. No assumed IPA or glycol recipe; any separately purchased dosing chemical requires its own audited card. Premix water/solvent is not a second purchased exchange."
+          amount:
+            expression: "X_fountain/Q for the fixed reporting period using cp_formulas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulas
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: wash
+          role: "Blanket/roller wash"
+          name: "Hydrocarbon-based offset blanket and roller wash formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One actual hydrocarbon-based supplied cleaning formulation; require full solvent/UVCB/additive/water composition, batch and blanket compatibility. Capture manual and automatic cycles, colour/forme changes and shutdown. Inkjet printhead cleaner is incompatible; an unidentified oil fraction is not pure heptane or a zero emission."
+          amount:
+            expression: "X_wash/Q for the fixed reporting period using cp_formulas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulas
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: water
+          role: "Purchased process water"
+          name: "Process water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d8ad9111-4304-46fb-bc23-9a2f36d65a83"
+          property_unit: "Mass / kg"
+          description: "External liquid water for dampening dilution and washing; retain supplier treatment/quality and measured density/temperature if converting volume. This Mass/kg product is not elementary abstraction, a Hong Kong tap-water provider, or an assumed universal water density. Internal pan circulation and water already in a formulation are not new receipts."
+          amount:
+            expression: "X_water/Q for the fixed reporting period using cp_utilities; reconcile formulation and paper water in cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: electricity
+          role: "Delivered grid electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Native identity is China grid-average 1-35 kV consumption supply, Net calorific value/MJ. Use only compatible site supply; other countries/voltages need another verified identity. Meter run/make-ready/idle/cleaning, compressor/extraction and all finishing/packing loads; internal compressed air is not also purchased air. No UK technical source establishes a Chinese factory quantity."
+          amount:
+            expression: "X_electricity/Q for the fixed reporting period after kWh-to-MJ conversion; cp_utilities retains kWh and supply boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: wire
+          role: "Saddle-stitch steel wire"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass / kg"
+          description: "Actual iron/non-alloy steel wire formed through the nested signature fold. Measure wire mass/length with actual diameter/coating/alloy, retained staples, offcuts and rejected stitches. The generic steel-wire record does not select a coated-wire supplier or a staple mass; other alloys are outside this conditional identity."
+          amount:
+            expression: "X_wire/Q for the fixed reporting period using cp_consumables; no count-only mass default."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - newman-saddle-stitching
+            ranges: []
+        - row_id: blanket
+          role: "Composite transfer blanket"
+          name: "Composite rubber-textile offset printing blanket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One purchased rubber/textile-backed offset blanket assembly, conditional on actual replacement/consumption. Record construction and any metal backing, net mass, opening/closing installed stock and reuse. No bedding or paper-machine-felt proxy; no assumed lifetime."
+          amount:
+            expression: "X_blanket/Q for the fixed reporting period using cp_consumables, including stock/service reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: cloth
+          role: "Cotton wiping fabric"
+          name: "Cotton fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dd9f2248-bc28-43b9-8d57-d77756754f4d"
+          property_unit: "Mass / kg"
+          description: "Conditional confirmed cotton textile makeup for press cleaning; record dry fabric mass, laundering and returns separately from retained solvent. No raw-cotton or water-treatment-cloth substitute. A different fibre/composite requires its own card."
+          amount:
+            expression: "X_cloth/Q for the fixed reporting period using cp_consumables; reused cloth is not a fresh purchase every cycle."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: powder
+          role: "Anti-setoff powder"
+          name: "Starch-based sheetfed anti-setoff spray-powder preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional one starch-based supplied spray-powder preparation for sheet piles. Establish actual composition/particle size, additions, product retention, collected dust and airborne loss; do not impose use or substitute pure starch for a formulated product. Absence needs installed-press and product records. Verify compatibility with actual duplex/multiple passes: the manufacturer's hydrophobic starch variant is not suitable for multiple passes; sugar and calcium-carbonate alternatives do not inherit this selected material identity."
+          amount:
+            expression: "X_powder/Q for the fixed reporting period using cp_formulas and actual fate records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulas
+              source_ids:
+                - heidelberg-powder-2010
+            ranges: []
+        - row_id: box
+          role: "Dispatch box"
+          name: "Corrugated paperboard dispatch box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional whole corrugated box for dispatch, excluded from net journal mass. Record actual fibre recipe/grade, tare, stock, receipt, issue, return, retained packing on closing FG and loss. No fibre-ratio-specific box UUID is adopted without a match. Customer-owned packaging is physically recorded with ownership rather than silently omitted or charged twice. Apply cp_packaging and packaging_balance to distinguish first purchased entry P (including paid bundled supply without a separate invoice), first external non-purchased entry N_ext and evidenced same-item external return ER. Free or borrowed supply is not zero burden or internal reuse. Follow normalize_period for later packing of old FG; retain its original cohort rather than assigning that service to current new output."
+          amount:
+            expression: "X_box/Q for the fixed reporting period using cp_packaging; distinguish purchased contents/tare, opening stock and supplier-included packaging burdens."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - chicago-journal-production
+            ranges: []
+        - row_id: maintenance_oil
+          role: "Maintenance oil"
+          name: "Formulated printing-machine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional one actually supplied machine lubricating oil formulation; retain petroleum/synthetic base, additives, grade, installed charge and measured service use. A hard calorific-value or route restriction is not waived by recording mass. No automatic combustion or oil-loss fraction."
+          amount:
+            expression: "X_maintenance_oil/Q for the fixed reporting period using cp_consumables; separate installed stock and exported used oil."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: maintenance_grease
+          role: "Maintenance grease"
+          name: "Formulated printing-machine lubricating grease"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional one actual machine grease, including base oil, thickener and additives. Grease is not liquid oil; weigh application and replacement against installed stocks and retained/removed fates without a universal maintenance interval."
+          amount:
+            expression: "X_maintenance_grease/Q for the fixed reporting period using cp_consumables."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished
+          role: "Newly accepted complete issues"
+          name: "Business, professional or academic newspapers and periodicals, other than daily, in print"
+          flow_type: "product"
+          flow_ref:
+            uuid: "40eab261-c65d-482a-8a05-d13cfa6f35f8"
+          property_unit: "Mass / kg"
+          description: "Exactly one reference output: the complete correct professional/academic issue after page/issue, stitch and print acceptance, including self-cover, retained constituents and wire. Net first-release output Q includes accepted issues still in closing FG and excludes opening FG dispatch. This category-specific finished-product identity does not supply a journal-production background or approve its classification mapping. Internal signatures/rework are not additional reference outputs."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - un-cpc3-32420
+                - chicago-journal-production
+            ranges: []
+      waste:
+        - row_id: paper_waste
+          role: "Exported paper spoilage and trim"
+          name: "waste paper (unspecified)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f140a5a2-5318-4d06-956f-a87b9c6fda25"
+          property_unit: "Mass / kg"
+          description: "One separately weighed outgoing paper-waste stream, including actual imposition/trim loss and rejected signatures, with ink/coating/moisture. Remove separately sorted wire and keep collected dust separate. Different recipients or compositions require separate exchanges; internal reusable sheets remain stocks, not outgoing waste. There is no default recycling credit."
+          amount:
+            expression: "X_paper_waste/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - newman-saddle-stitching
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: spent_plate
+          role: "Spent coated plate"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass / kg"
+          description: "Whole spent aluminium plate with measured retained coating/ink/water and receiver acceptance. Bare aluminium scrap does not automatically identify this contaminated assembly; plate preparation waste at the provider is not duplicated here."
+          amount:
+            expression: "X_spent_plate/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: spent_fountain
+          role: "Spent fountain liquid"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass / kg"
+          description: "One actual externally removed aqueous fountain-purge mixture, including dissolved additives, ink and solvent. Keep wet whole-liquid mass, density/temperature, water-specific fraction and independently assessed solids. Internal recirculation is not purge. If it joins another liquid before exit, use one outgoing combined-stream card and retain internal constituent records, not two external quantities."
+          amount:
+            expression: "X_spent_fountain/Q for the fixed reporting period using cp_residues; off-site receiving treatment is required."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: spent_wash
+          role: "Spent cleaning liquid"
+          name: "Waste liquid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bdfc32cf-8028-40a8-a2e4-2d73422ece34"
+          property_unit: "Mass / kg"
+          description: "One physically liquid hydrocarbon wash stream with its whole ink/solvent/water/solids mass, measured density/temperature and actual receiver. Retained wash in cloth, separately removed ink and emitted solvent are disjoint fates. This is not direct river discharge or a dry-solids quantity."
+          amount:
+            expression: "X_spent_wash/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: spent_blanket
+          role: "Spent composite blanket"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass / kg"
+          description: "Conditional whole worn rubber/textile blanket with coating/metal/ink/solvent contamination actually present, reused or sent to a named receiver. Not pure rubber waste, and not an assumed replacement every issue."
+          amount:
+            expression: "X_spent_blanket/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: spent_cloth
+          role: "Contaminated cotton cloth"
+          name: "Waste solid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "851fd235-5a89-4cf9-b7da-5c278ed1dcbb"
+          property_unit: "Mass / kg"
+          description: "Conditional whole exported solid cotton wipe with absorbed ink/wash/water; record clean textile and retained liquid independently inside the whole stream. Laundry/return is a service loop with actual makeup and receiver, not one-way disposal on every use."
+          amount:
+            expression: "X_spent_cloth/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: collected_dust
+          role: "Collected paper/powder dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass / kg"
+          description: "One actual captured solid dust stream with measured fibre/coating/ink/powder/moisture composition, stock/return and external receiver. This physically collected mixture is not an airborne elementary emission or kiln ash. If collectors export different streams, split them rather than assume one composition."
+          amount:
+            expression: "X_collected_dust/Q for the fixed reporting period using cp_dust."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: wire_waste
+          role: "Stitch-wire offcuts"
+          name: "Segregated saddle-stitch steel-wire scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual segregated wire/offcut and rejected staple stream, with alloy/coating, contamination and receiver. Retained staples in rejected whole journals must be sorted/weighed or retained in that composite waste, never counted in both."
+          amount:
+            expression: "X_wire_waste/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - newman-saddle-stitching
+            ranges: []
+        - row_id: waste_ink
+          role: "Collected black ink residue"
+          name: "Waste ink"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "468ac05a-00a0-4153-a4ba-4084ef981e4c"
+          property_unit: "Mass / kg"
+          description: "Only separately collected residual black paste; measure composition/physical state and receiver. Ink already on paper, in liquid/cloth or on the spent plate is not this additional exchange."
+          amount:
+            expression: "X_waste_ink/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: waste_box
+          role: "Discarded corrugated box"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass / kg"
+          description: "Conditional actual discarded corrugated box after return/reuse decisions. Record contamination and receiver, and distinguish incoming supplier wrap from dispatch boxes and packaging on closing FG. Returned boxes are paired custody/stock transfers, not waste."
+          amount:
+            expression: "X_waste_box/Q for the fixed reporting period using cp_packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - chicago-journal-production
+            ranges: []
+        - row_id: spent_oil
+          role: "Removed used oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass / kg"
+          description: "Conditional separately collected liquid maintenance oil with actual water/contamination and receiver. Oil retained in cloth, installed equipment or grease is excluded from this stream; no automatic energy-recovery route."
+          amount:
+            expression: "X_spent_oil/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: spent_grease
+          role: "Removed used grease"
+          name: "Separately collected used printing-machine lubricating grease"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional separately collected spent grease including thickener/oil and contamination. It is distinct from liquid oil and grease retained on wiping material or machinery."
+          amount:
+            expression: "X_spent_grease/Q for the fixed reporting period using cp_residues."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol to outdoor air"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional CAS 67-63-0 emission only when actual formulation/analysis confirms it; no separate IPA purchase is assumed. Outdoor air, unspecified subcompartment, species mass; occupational indoor concentration is insufficient. Other actual solvents need independent atomic cards, not total VOC allocated to IPA."
+          amount:
+            expression: "X_ipa_air/Q for the fixed reporting period after species-resolved concentration/volume calculation using cp_species."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: ethanol_air
+          role: "Ethanol to outdoor air"
+          name: "ethanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9349-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional CAS 64-17-5 only when actual concentrate/wash composition or analysis identifies ethanol. Species mass to outdoor air, unspecified subcompartment, not an assumed ingredient or total organic-carbon emission. Record fossil/biogenic origin for any transformation ledger."
+          amount:
+            expression: "X_ethanol_air/Q for the fixed reporting period after species-resolved concentration/volume calculation using cp_species."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-offset-ctg-2006
+            ranges: []
+        - row_id: pm25
+          role: "Fine outdoor particles"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual escaped particles up to 2.5 micrometres aerodynamic diameter from handling, ink mist, spray powder or finishing. Outdoor air, unspecified; measure composition, collector state and fugitive escape. Collected dust and indoor recirculating particles are separate fates."
+          amount:
+            expression: "X_pm25/Q for the fixed reporting period using cp_dust; no generic paper/wood factor."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: pm2510
+          role: "Middle outdoor particle interval"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual escaped particles above 2.5 and up to 10 micrometres aerodynamic diameter to outdoor air, unspecified. Compatible cumulative PM10 minus PM2.5 may establish this interval with uncertainty; do not also add cumulative PM10 as another exchange."
+          amount:
+            expression: "X_pm2510/Q for the fixed reporting period using cp_dust and nonoverlapping aerodynamic-size calculation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: pm10
+          role: "Coarse outdoor particles"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual escaped particles above 10 micrometres aerodynamic diameter to outdoor air, unspecified. A total-minus-PM10 difference requires identical monitoring conditions; unknown coarse fraction is not zero."
+          amount:
+            expression: "X_pm10/Q for the fixed reporting period using cp_dust and nonoverlapping aerodynamic-size calculation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+        - row_id: water_air
+          role: "Process-added water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "CAS 7732-18-5 water vapour reaching outdoor air, unspecified; reconcile water in paper/formulations, dilution, product moisture, residues, stocks and measured air humidity. Retain gross inlet/outlet moisture separately; unchanged ambient humidity is not generated process water. Liquid effluent is not vapour. These are specific starter exchanges, not a closed catalogue of every possible factory material or pollutant. Record every actual additional supply wrapping/core/pallet, chemical container/filter/part, fuel/heat/refrigerant, separate dosing chemical, adhesive/colour, wastewater stream and emitted species as its own reviewed card before claiming completeness. Track composition and ownership at receipt; returned containers retain paired stock/return records. A supplier background may already include packaging manufacture: reconcile that boundary once while preserving the actual foreground packaging/waste mass. Direct environmental discharges require actual receiving medium/species, not a waste-treatment transfer label."
+          amount:
+            expression: "X_water_air/Q for the fixed reporting period using cp_water; uncertainty and unresolved reaction/stock terms remain explicit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - epa-printing-eiip-2002
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_cause
+    applies_to: "journal"
+    rule: "First subdivide by issue/forme/stage and attribute measured paper, ink, plates, cleaning and wire to actual jobs. For shared electricity/extraction/maintenance use measured load-time, actual impressions/passes, wash cycles or demonstrated causal service use before a justified allocation; no default revenue/copy/mass share. Record evidence and sensitivity when causality cannot be resolved."
+    source_ids:
+      - epa-printing-eiip-2002
+  - rule_id: allocation_ledgers
+    applies_to: "journal"
+    rule: "Maintain gross physical material/water/carbon/energy balances, stocks and equal internal links separately from attributed/allocated environmental burdens. Do not multiply physical waste or transfer quantities by burden shares. Apply the selected burden attribution once, then the sole applicable cohort-denominator normalization under normalize_period, including original Qc for later old-FG service; do not successively divide each stage/lot."
+    source_ids:
+      - epa-printing-eiip-2002
+  - rule_id: allocation_residuals
+    applies_to: "journal"
+    rule: "Paper, wire or plate resale is not automatic co-product status or an avoided-virgin credit. Internal return and recovered service remain internal; require explicit receiver, method and study-boundary evidence for any separately reviewed allocation/system expansion."
+    source_ids:
+      - epa-printing-eiip-2002
+  - rule_id: allocation_rule_4
+    applies_to: "foreground_burden_allocation"
+    rule: "These are author-designed LCA accounting requirements informed by physical process and material-balance evidence; the sources do not prescribe journal-specific LCA allocation shares."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_acceptance
+      process_id: "journal"
+      flow_role: "finished"
+      record_type: "foreground_record"
+      raw_fields: "title/ISSN; frequency; volume/issue/edition; lot/item identity; first-release date; gross/tare/net kg; moisture; copies; page/signature map; print/trim/stitch acceptance; opening/closing FG; dispatch/returns; original owner/cohort/Qc/basis; complete prior exchange V/A/provider/gate/state/phase/medium/period vectors; actual later services and attribution"
+      collection_method: "Calibrated net weighing or traceable weighed lots of complete accepted issues. Reconcile first-release identifiers against stocks and dispatch; copy sampling requires actual same-configuration mass and uncertainty. Wrong issue/sequence or incomplete binding cannot pass by mass alone. Trace all later old-FG service, including unreturned packing/inspection, to original Qc and complete prior foreground/background vectors; distinguish service-only increment from continued-cohort view without new manufacture or first release."
+      unit: "kg"
+      frequency: "each lot and first release"
+      temporal_coverage: "complete fixed period including zero-output lots and rework"
+      site_scope: "same title/issue/construction and printer"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "signed acceptance, calibrated weighings, issue/page checks, original-cohort/Qc/vector evidence, later-service attribution and FG ledger"
+    - protocol_id: cp_materials
+      process_id: "journal"
+      flow_role: "paper"
+      record_type: "foreground_record"
+      raw_fields: "supplier/grade; coated sheet size; fibre/coating; grammage/moisture; receipt gross/tare; opening/closing unused and stage WIP; sheets issued/returned; forme/side/pass; trim/blank area; rejects/rework; provider"
+      collection_method: "Weigh net stock and stage transfers; reconcile count-area-grammage against actual moisture and imposition. Include all makeup and failed runs. Distinguish stage transformation from a new receipt; same self-cover stock crosses purchase boundary once."
+      unit: "kg; m2; sheets"
+      frequency: "receipt/forme and period boundaries"
+      temporal_coverage: "complete same period"
+      site_scope: "receipt, press, pile setting, folding and finishing"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale and grammage/moisture tests, supplier specification, imposed sheet/page map"
+    - protocol_id: cp_formulas
+      process_id: "journal"
+      flow_role: "ink; fountain; wash; powder"
+      record_type: "foreground_record"
+      raw_fields: "actual SKU/lot; full constituent CAS/UVCB/mass fractions/water/solids/carbon origin; density/T; receipt/stock/return; measured dose; pan/wash/powder stocks; retention/residue/emission"
+      collection_method: "Weigh supplied mixtures and dose records; obtain full formulas including nonhazardous constituents omitted from SDS. Reconcile complete fractions, stock and disjoint fates; do not invent generic acid/solvent/powder recipes."
+      unit: "kg"
+      frequency: "each batch/change/wash"
+      temporal_coverage: "make-ready, runs, failed lots, idle, cleanup and shutdown"
+      site_scope: "actual press and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "full composition certificates, balance records, analytical methods/uncertainty"
+    - protocol_id: cp_consumables
+      process_id: "journal"
+      flow_role: "plate; wire; blanket; cloth; maintenance_oil; maintenance_grease"
+      record_type: "foreground_record"
+      raw_fields: "assembly/grade; issue/forme/side; plate area/net mass/coating/imaging provider; wire alloy/coating/diameter/length/mass/stitches; replacement/service/installed stock; oil/grease full grade/formula; fabric reuse/laundry"
+      collection_method: "Weigh assemblies and actual consumed/replaced makeup, retain installed and stores stocks, paired reuse/laundry and receiver records. Wire counts/length convert only with actual measured compatible mass data. Record outsourced plate preparation once."
+      unit: "kg; m; count"
+      frequency: "receipt/change/service and period"
+      temporal_coverage: "complete same period and attributed service interval"
+      site_scope: "press, fold/stitch/trim and actual supplier/laundry"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scales, component specifications, service logs, plate-provider boundary and uncertainty"
+    - protocol_id: cp_utilities
+      process_id: "journal"
+      flow_role: "electricity; water"
+      record_type: "foreground_record"
+      raw_fields: "meters/boundaries; kWh; country/voltage/grid/provider; run/idle/makeup/cleanup loads; compressor/extraction; water kg/volume/density/T/source/treatment; actual heat/fuel/refrigeration presence"
+      collection_method: "Read calibrated supply/stage meters at matched boundaries. Preserve raw kWh and water basis. Meter or causally attribute common services with full run/idle/failed/cleanup coverage; rated power times advertised output is not measurement."
+      unit: "kWh; MJ; kg"
+      frequency: "matched readings and interval modes"
+      temporal_coverage: "complete same period"
+      site_scope: "whole journal node and actual shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated meters, equipment/supply diagrams, source/voltage/provider evidence"
+    - protocol_id: cp_packaging
+      process_id: "journal"
+      flow_role: "box; waste_box"
+      record_type: "foreground_record"
+      raw_fields: "component/item identity; actual material/grade/state; owner/custodian/cohort; original unit and measured quantity conversion; acquisition/payment/bundled-paid evidence; P/N_ext/ER classification; same-item prior outward record; complete prior V/A/provider/gate/state/phase/medium/period vectors; supplier-included burden; gross/tare/net contents; mutually exclusive opening/closing empty/raw/WIP/FG/reusable/waste stocks; all gross new/old-FG dispatch; EO owner-return/service outward; external waste; each actual transport/wash/repair/loss leg"
+      collection_method: "Weigh each actual packing component. P is first procured entry, including packaging paid within a bundle even without a separate packaging invoice. N_ext is first actual external non-purchased supply, including loan, lease, customer/entrusted or goods-accompanying packaging; it is incoming, never an outgoing term. ER requires the same item's prior evidenced outward leg, owner/cohort continuity and prior vectors; a loan/lease/entrusted receipt without that prior outward is N_ext, not ER. P/N_ext/ER are mutually exclusive per entry event; opening stock and internal movement are not new entries. Reconcile ownership/custody, all stock states and gross movements under packaging_balance. Retain complete prior foreground/background vectors and unknown history as unresolved, never zero because free. Count manufacture/provider burden once at its actual boundary, including supplier-included supply; charge actual later washing/repair/transport/loss once to the applicable cohort without invented reuse cycles, lifetime or credit."
+      unit: "kg"
+      frequency: "receipt/pack/dispatch/return"
+      temporal_coverage: "complete same period"
+      site_scope: "receiving, packing and FG stores"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "measured tare/conversion and stock records; acquisition/bundled payment and ownership/custody evidence; same-item prior outward/cohort/vector records; all gross transfer/transport and receiver evidence"
+    - protocol_id: cp_residues
+      process_id: "journal"
+      flow_role: "paper_waste; spent_plate; spent_fountain; spent_wash; spent_blanket; spent_cloth; wire_waste; waste_ink; spent_oil; spent_grease"
+      record_type: "foreground_record"
+      raw_fields: "stream/stage; whole mass/state; water-specific fraction; independently assessed solids; density/T for liquids; actual contamination; opening/closing waste; internal return; receiver/transport/treatment"
+      collection_method: "Weigh disjoint outgoing streams and waste stocks; sample whole mixtures. Distinguish water from nonwater and dry solids from volatile organic mass. Count merged outlet once, retain internal transfers/composition. Capture all rejects and cleanup residues; no arbitrary drying of waste quantities."
+      unit: "kg"
+      frequency: "generation/consignment and stocks"
+      temporal_coverage: "complete same period including stored waste"
+      site_scope: "each actual stream and receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale records, samples, manifests, compatible receiver basis and uncertainty"
+    - protocol_id: cp_species
+      process_id: "journal"
+      flow_role: "ipa_air; ethanol_air"
+      record_type: "foreground_record"
+      raw_fields: "actual CAS/species/formulation; c in species mg/m3; matched volume/flow-time/T/P/wet-dry/oxygen basis; outlet/fugitive/control state; blanks/detection; retained/waste/stock/transformations; carbon origin ; matched inlet/background species concentration and independent inlet/outlet integrated volumes; gross legs; background-correction ownership; uncertainty"
+      collection_method: "Validated species-resolved sampling with simultaneous flow and representative operating-mode coverage, reconciled with material/species balance. Do not treat total FID carbon as a pure solvent, or a workplace concentration/rated fan capacity as boundary mass. Additional actual species need separate cards.  Measure matched ventilation inlet and final outdoor outlet/fugitive boundaries in the same operating intervals and compatible gas states. Retain both gross species masses and calculate the net contribution under species_mass; concentration already corrected for inlet background must not receive that correction again. Missing inlet/boundary coverage remains an explicit evidence gap, not assumed zero background."
+      unit: "mg/m3; m3; kg"
+      frequency: "matched monitoring intervals"
+      temporal_coverage: "complete period modes including cleanup and fugitive losses"
+      site_scope: "final outdoor boundary, not internal circulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "analytical calibration, sampling chain, flow/basis, coverage and uncertainty"
+    - protocol_id: cp_dust
+      process_id: "journal"
+      flow_role: "collected_dust; pm25; pm2510; pm10"
+      record_type: "foreground_record"
+      raw_fields: "source/collector; fibre/coating/ink/starch/moisture; capture/return/export/stocks; matched air volumes/concentrations and aerodynamic cuts; fugitive/bypass; uncertainty"
+      collection_method: "Weigh captured/exported dust separately; measure outdoor disjoint size intervals or compatible cumulative differences, with matching flow/conditions. Retain missing size fractions and monitoring modes as gaps. Do not use a wood-dust emission factor."
+      unit: "kg; mg/m3; m3"
+      frequency: "collection and matched air intervals"
+      temporal_coverage: "complete same period and finishing/cleanup modes"
+      site_scope: "press/powder/folding/trim and outdoor boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "collector/bin weights, composition, size-resolved tests and uncertainty"
+    - protocol_id: cp_water
+      process_id: "journal"
+      flow_role: "water_air"
+      record_type: "foreground_record"
+      raw_fields: "paper/formulation/supply water; pan/stock/WIP/product moisture; liquid/cloth/waste water; inlet/outlet humidity/flow/T/P; reaction water and uncertainty"
+      collection_method: "Reconcile measured water and stocks with net process-added vapour, retaining separate gross inlet/outlet moisture. Validate any oxidation-related reactant/product water and oxygen terms before physical closure; no assumed supply-to-evaporation fraction."
+      unit: "kg"
+      frequency: "period and matched monitoring"
+      temporal_coverage: "complete same period"
+      site_scope: "all material/water stocks and final air boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "water-specific analysis, moisture tests, humidity/flow records and residual uncertainty"
+  calculation_rules:
+    - id: accepted_period
+      applies_to: "finished"
+      rule: "Q = sum(net kg of complete lots/items first quality-released in the fixed period). Include newly accepted closing FG; exclude opening FG dispatch and duplicate rework release. Reconcile closing FG = opening FG + new release + returned accepted stock - dispatch - scrapped/other removals, with internal rework traced separately. Q must be positive to normalize."
+      inputs:
+        - cp_acceptance
+      output: "Q in kg and FG reconciliation"
+      source_ids:
+        - chicago-journal-production
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For the matched new-manufacture pool, x_i = X_i / Q for the complete issue/route/site/period; Q is accepted_period first release, including new closing FG once. Sum raw exchange totals, including zero-output failures, WIP stock movements, internal rework and cleanup, before the sole division. For every actual later service to old FG, including unreturned/unreworked packing or inspection, use service_increment_i = actual cohort-attributable added exchange / original valid Qc, in its original numerator unit and kg basis, never current unrelated new Q. A continued view carries each complete original V/A/provider/background/foreground/gate/state/phase/medium/period vector once and adds the increment; a service-only view references that vector and reports the increment alone. Neither creates new manufacture or Q. An explicitly justified reviewed service basis must be disclosed separately. Unresolved Q/Qc/history/attribution stays absolute for review, not zero; positive original Qc remains usable when current Q = 0. Never average lot ratios or divide intermediates independently; finished = 1 kg. Keep gross physical V and attributed burden A separately, with one evidenced attribution before burden normalization and no burden share applied to physical V."
+      inputs:
+        - cp_acceptance
+        - "applicable row protocol"
+        - "period and allocation ledgers"
+      output: "each numerator unit per 1 kg reference flow"
+      source_ids:
+        - epa-printing-eiip-2002
+    - id: stock_reconcile
+      applies_to: "journal material/component/species accounts"
+      rule: "For each stage and same-state account: S_close = S_open + R_external + T_in + F - T_out - O_external - C. Paired T_out = T_in in identity/state/unit/time; internal receipts are T, never external receipts or formation. Sum stages only after matching legs: sum(S_close - S_open) = sum(R_external - O_external + F - C). R/O cross the whole foreground gate once; F/C are evidenced paired transformations, zero for conserved total material mass. Retain WIP/rework/failed lots, actual boundary reactants and uncertainty. Keep original provider vectors, burden attribution and Q separate from this physical balance."
+      inputs:
+        - cp_materials
+        - cp_formulas
+        - cp_consumables
+        - cp_residues
+        - cp_acceptance
+      output: "unallocated stage and combined-node physical ledger"
+      source_ids:
+        - epa-printing-eiip-2002
+    - id: electricity_conversion
+      applies_to: "electricity"
+      rule: "X_electricity in MJ = metered attributable kWh * 3.6, with raw gross and attributed service totals retained; normalize_period performs the sole applicable Q or original-Qc division for that cohort, including later old-FG service."
+      inputs:
+        - cp_utilities
+      output: "MJ period amount"
+      source_ids:
+        - epa-printing-eiip-2002
+    - id: constituent_ledger
+      applies_to: "ink; fountain; wash; powder; maintenance_oil; maintenance_grease"
+      rule: "constituent kg = whole supplied-mixture kg * actual wet mass fraction; fractions close the whole mixture with uncertainty. Track water/solids/carbon separately; constituent accounts do not add purchases to the whole-mixture exchange."
+      inputs:
+        - cp_formulas
+        - cp_consumables
+      output: "constituent physical masses and fate ledger"
+      source_ids:
+        - epa-offset-ctg-2006
+    - id: species_mass
+      applies_to: "ipa_air; ethanol_air"
+      rule: "X_j = sum(c_out,k × V_out,k - c_in,k × V_in,k) × 0.000001 for independently identified species concentrations in mg/m3 and independently integrated volumes in m3 on matched time, temperature/pressure and wet/dry/reference bases. Retain gross inlet and outlet/fugitive masses separately and disjointly; integrate an actual flow rate over time once, not an already integrated volume. If c is already a validated background-corrected result on the same measured boundary, apply no second inlet subtraction. Reconcile stocks, retained product, liquids/cloth, recovered fates and real reaction/abatement; total FID carbon/TVOC or response equivalents require species-specific conversion and never become additional solvent mass. A negative or uncertainty-dominated balance is retained for investigation or a separately justified actual uptake model, not clamped to zero or relabelled as a positive emission. Missing inlet or outlet coverage prevents a complete net-release claim. Pass the supported period kg to normalize_period once."
+      inputs:
+        - cp_species
+        - cp_formulas
+        - cp_residues
+        - matched_inlet_concentration
+        - matched_outlet_concentration
+        - integrated_inlet_volume
+        - integrated_outlet_volume
+        - gas_state_and_time
+        - prior_background_correction
+      output: "species period kg before normalize_period"
+      source_ids:
+        - epa-printing-eiip-2002
+        - epa-offset-ctg-2006
+    - id: particle_intervals
+      applies_to: "pm25; pm2510; pm10"
+      rule: "Same-condition cumulative PM10 minus PM2.5 gives only 2.5-10 micrometre mass; total particulate minus PM10 gives only >10 mass. Propagate uncertainty and retain negative conflicts for investigation; do not clip them or invent size shares."
+      inputs:
+        - cp_dust
+      output: "disjoint outdoor particle period kg"
+      source_ids:
+        - epa-printing-eiip-2002
+    - id: packaging_balance
+      applies_to: "box; waste_box"
+      rule: "For each component/item in matched state/unit: Opening + P + N_ext + ER = Closing + Ship + EO + W. P/N_ext/ER use the mutually exclusive cp_packaging entry tests; ER requires same-item prior outward/cohort/vector evidence. Opening/Closing each sum mutually exclusive on-site empty/raw, WIP, packed FG, reusable and waste-awaiting-removal stocks; moving between those states is internal, not a fresh entry or external discard. Ship is every gross outward dispatch packing leg on both new and old FG; EO is every disjoint owner-return/service/other evidenced outward leg, and W is external waste removal, not waste merely generated into closing stock. Correct for packing released from opening FG and incoming returns through the matched stocks and ER, without duplicating either. Retain all gross legs and each actual transport, wash, repair and loss; never net repeated outward/return legs. Keep owner/custody/cohort, complete inherited V/A and provider vectors, upstream-included manufacture once and actual added service separately. Unknown prior non-purchased burdens are not zero; no assumed reuse cycles, credits or box mass in journal Q."
+      inputs:
+        - cp_packaging
+        - cp_acceptance
+      output: "packaging physical ledger before normalize_period"
+      source_ids:
+        - chicago-journal-production
+  data_quality_requirements:
+    - id: product_purpose
+      applies_to: "journal"
+      requirement: "Establish professional/academic serial purpose and less-than-four-weekly frequency. A blank journal, directory, encyclopedia instalment or technical monograph fails this boundary even if printed identically."
+      evidence: "Publisher masthead, title/issue records, page content category and actual frequency"
+    - id: issue_integrity
+      applies_to: "finished"
+      requirement: "Verify correct issue/edition, page/signature sequence, self-cover, stitch integrity and actual print acceptance; mass alone cannot detect mixed/duplicate/missing signatures."
+      evidence: "Signed page/forme/imposition map and release/reject records"
+    - id: quantity_chain
+      applies_to: "all inventory rows"
+      requirement: "Reference kg, raw numerator unit, applicable new-manufacture Q or original-cohort Qc, collection aggregation and formulas agree. All later old-FG services retain complete prior V/A/foreground/background/provider/gate/state/phase/medium/period vectors and only actual added services; service-only/continued views do not repeat manufacture or shift burdens to new output. Counts/area/length use actual measured conversion; no factory quantity follows from identity. Unknown quantities/history remain absolute unresolved accounts."
+      evidence: "Raw weighing/meter/stock records, calibration, original Qc/vector and service-attribution evidence and matched bases"
+    - id: composition_and_identity
+      applies_to: "all inventory rows"
+      requirement: "Confirm native type/form/route/CAS/medium/property and actual provider boundary. Full formulas and contaminated waste state are required, including nonhazardous constituents; adjacent chemistry/grade or an unrelated waste route cannot fill a gap."
+      evidence: "Native and supplier originals, full composition and receiver specifications"
+    - id: period_completeness
+      applies_to: "journal"
+      requirement: "Include failed Q0 lots, all makeup/cleanup/idle energy, WIP/rework/FG stocks, packaging returns and actual maintenance. Include unreturned old-FG services under original cohorts even when current Q = 0. Verify packaging P including bundled-paid supply, first external non-purchased N_ext, and ER only with same-item prior outward/owner/cohort/vectors; retain mutually exclusive gross stocks, all new/old-FG Ship, EO owner-return/service, W and every actual transport leg. Free/history-unknown supply is not zero; manufacture/provider once and actual added service remain separate, without invented reuse counts or credits. Explain stock/burden carryover; no yield-based sample selection."
+      evidence: "Fixed period plan, complete job logs, acquisition/prior-outward/cohort/vector/transport records and physical/allocated ledgers"
+    - id: emissions_and_balances
+      applies_to: "journal"
+      requirement: "Maintain separate dry solids, water, fossil/biogenic carbon and energy balances including actual oxidation/oxygen, stocks and residues. Require actual additional species and missing particle intervals; non-detect is method-limited, not true zero."
+      evidence: "Supplier/analytical data, measured outdoor/collector records and residual uncertainty"
+    - id: evidence_limits
+      applies_to: "journal"
+      requirement: "Distinguish primary technical facts, author accounting rules and site data requirements. Historical retention/thresholds, advertised capacities and a source's equipment options are not measured site defaults or complete LCI."
+      evidence: "Source sections/limitations, site configuration and disclosed unresolved scope"
+validation_rules:
+  - rule_id: validate_product
+    applies_to: "journal"
+    rule: "Confirm the sole classification and product purpose/frequency, then the declared monochrome coated-sheet self-cover wet-offset/saddle-stitch route. Other products and unreviewed configurations cannot inherit this method."
+    source_ids:
+      - un-cpc3-32420
+      - epa-printing-eiip-2002
+  - rule_id: validate_reference
+    applies_to: "finished"
+    rule: "Require exactly one product output linked by finished with 1 kg accepted complete issues. Check net mass/tare, first-release Q and page/issue/stitch integrity; opening FG dispatch and internal rework never create another denominator."
+    source_ids:
+      - chicago-journal-production
+      - newman-saddle-stitching
+  - rule_id: validate_ledgers
+    applies_to: "all inventory rows"
+    rule: "Check positive manufacturing Q or retained unnormalized Q0 inventory; failed/cleanup/WIP/FG coverage, paired internal transfers, complete receipts/ownership/returns/wastes and single provider charging. Trace every later old-FG service, including unreturned packing/inspection, to original valid Qc or separately justified reviewed service basis and complete prior V/A/foreground/background/provider/gate/state/phase/medium/period vectors. Check actual service increments and distinct service-only/continued views without new Q, duplicate manufacture, or assignment to another new lot; unresolved history/quantity is not zero. Check packaging P including bundled-paid supply, incoming first non-purchased N_ext, and ER only with same-item prior outward and owner/cohort/vector continuity. Verify mutually exclusive gross stock states, all new/old-FG dispatch, EO owner-return/service, external waste and each actual transport/wash/repair/loss leg; no netting of cycles, invented reuse life/credit or packaging in journal Q. Separate physical and allocated ledgers and normalize once by the applicable cohort denominator."
+    source_ids:
+      - epa-printing-eiip-2002
+  - rule_id: validate_species
+    applies_to: "journal"
+    rule: "Verify actual CAS/phase/receiving medium, species mass/air conditions and disjoint PM intervals. Captured dust, retained solvent, wastes and outdoor emissions are not duplicate fates. Unknown recipes/species, major quantities, providers or receivers prevent a complete dataset claim."
+    source_ids:
+      - epa-offset-ctg-2006
+      - epa-printing-eiip-2002
+  - rule_id: validate_projection
+    applies_to: "journal"
+    rule: "EN/ZH must preserve ordered row/rule/protocol ids, amount objects, units, qualifiers, formulas and ancestor context. Empty auxiliary UUIDs remain explicit review debts; reference/primary hard conflicts require a specific applicability decision. Tool checks do not approve methodology or translation."
+    source_ids:
+      - un-cpc3-32420
+published_dataset_profile:
+  dataset_role: "unit_process_dataset"
+  downstream_use: "secondary_dataset; background_dataset after actual site/upstream/receiver verification"
+  allowed_use: "Manufacturing inventory of the declared professional/academic non-daily issue and representative construction at printer gate"
+  excluded_use: "Whole-leaf technology coverage, other CPC identities, blank writing journals, books/directories, online publishing, reading-service equivalence and complete LCI inferred from UUID success"
+  required_metadata: "All reference qualifiers; actual Q/first-release/period; issue/forme/signature map; material/formula/provider boundaries; WIP/FG/rework/failed lots; packaging ownership/returns; utility modes; residues/species; allocation and physical ledgers"
+  required_quality_disclosure: "Scientific and translation review state; unresolved identities/current native freshness; actual measured, calculated, missing and excluded exchanges; source limits, uncertainty, performed/skipped checks and incompleteness"
+  update_trigger: "Title-purpose/frequency boundary or route change; colour/cover/plate/binding/stock/formula/provider change; new equipment/utilities/emitted species; revised receiver, supply basis or stock/allocation method; retain this unique category identity"
+data_sources:
+  - id: "un-cpc3-32420"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 explanatory notes, printed pp148-150 (PDF pp148-150), subclasses 32220/32230 and 32420/32490; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Product-purpose distinction and 32420 frequency less than four weekly, including scientific/medical journals; excludes online periodicals. Classification evidence only, no quantity, physical recipe or technology prevalence."
+  - id: "chicago-journal-production"
+    type: "handbook"
+    reference: "University of Chicago Press, How Books and Journals Are Produced, Print Technologies: Printing and Binding, https://www.chicagomanualofstyle.org/help-tools/production-technologies.html (accessed 2026-10-27)"
+    used_for: "Plate/blanket transfer, sheet/web distinction, imposition and signatures. Production overview, not a named factory's route, stock choice, yield or energy evidence; numerical examples are not defaults."
+  - id: "epa-printing-eiip-2002"
+    type: "official_guidance"
+    reference: "US EPA, EIIP Volume II Chapter 15, Preferred and Alternative Methods for Estimating Air Emissions from Printing, Packaging, and Graphic Arts, May 2002, section 2.1.1 printed pp15.2-4/5 (PDF14/15), section 4.1 printed pp15.4-1/2 (PDF31/32); https://www.epa.gov/sites/default/files/2015-08/documents/ii15_may2002.pdf"
+    used_for: "Sheetfed offset physical diagram, penetration/oxidation versus heatset distinction, material-balance/record method context. Author selects collection/accounting requirements; no default recipe, emission/retention factor or site throughput."
+  - id: "epa-offset-ctg-2006"
+    type: "official_guidance"
+    reference: "US EPA, Control Techniques Guidelines for Offset Lithographic Printing and Letterpress Printing, EPA-453/R-06-002, September 2006, IV.A and VOC-source overview, printed pp6-9 (PDF12-15); https://www3.epa.gov/airquality/ctg_act/200609_voc_epa453_r-06-002_litho_letterpress_printing.pdf"
+    used_for: "Paste ink constituent families, sheetfed setting, fountain/wash chemistry and separate VOC sources. Historical US control guidance; retention percentages, doses, thresholds and efficiencies are not site defaults or current legal advice."
+  - id: "newman-saddle-stitching"
+    type: "handbook"
+    reference: "Newman Thomson, Saddle Stitching, process and artwork/creep sections; https://www.newmanthomson.com/service/saddle-stitching/ (accessed 2026-10-27)"
+    used_for: "First-party fold/wire/nesting and trim-creep explanation; self-cover is an available construction. Does not establish a particular academic title, wire grade, universal page limit or quantities."
+  - id: "heidelberg-powder-2010"
+    type: "handbook"
+    reference: "Heidelberger Druckmaschinen, Heidelberg News 270 (2010), Small Grains that Have a Big Effect, printed/PDF p53; https://www.heidelberg.com/global/media/en/global_media/company___publications/heidelberg_news/editorial/pdf_10/hn_270.pdf"
+    used_for: "First-party anti-setoff function, starch/sugar/calcium-carbonate alternatives and hydrophobic-starch multiple-pass restriction. Selected starch preparation needs actual specification; no recommended grain size, humidity, grade, dose or performance claim becomes a default."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:a1eb393f4f1d13c8a0990e0bb5d124d0edbb88b52b6a42120016ab45653b66da"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8171"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8171
+          line: 62
+          column: 1
+        end:
+          offset: 10599
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Unprinted coated sheet paper, ready-to-print imaged/coated aluminium plates and supplied consumables received at printer gate |\n| starting_condition_role | intermediate_input |\n| product_classification_scope | Sole CPC 3.0 32420 identity; representative monochrome sheetfed self-cover saddle-stitched subset, not all technologies in the leaf |\n| recursive_input_rule | Internal signatures, return sheets, rework and recirculating fountain liquid stay internal. Externally supplied printed sections need explicit supplier/history and a reviewed boundary extension, not recursive reuse of the finished-issue reference. |\n| upstream_dataset_requirement | Compatible paper manufacture including pulp/coating, complete plate preparation including imaging/development, every actual material/utility, inbound transport and receiving waste treatment; match physical state, provider gate, geography, time and reference quantity |\n| disclosure | Declare outsourcing and shared services, installed equipment, utility boundaries, exclusions, missing evidence, opening/closing stock and actual operating modes; supplier identity is not proof of full route coverage |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_manufacture | journal | Include receipt/tare, issue/forme preflight, make-ready and plate changes, both-side sheet printing, wet dampening, pile setting, cleaning, folding/nesting, stitching/trim, first release and packing. Keep imposition/plate-preparation burdens at the actual provider once. | epa-printing-eiip-2002; chicago-journal-production; newman-saddle-stitching |\n| boundary_utilities | journal | Account for drives, compressors, extraction, pile drying/ventilation, folders/stitchers/trimmers, cleaning and common services over run, idle, failed lots and shutdown. Verify no combustion, purchased process heat or refrigeration in this case; if present, extend reviewed atomic input/emission/stock records before completeness. | epa-offset-ctg-2006 |\n| boundary_transfers | journal | Aggregate physical stages into one foreground node while retaining paired equal mass/state/time transfers and stage stocks. Count a material, provider service or waste crossing once; internal circulation is neither a fresh purchase nor a disposal credit. | epa-printing-eiip-2002 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 343
+              line: 9
+              column: 1
+            end:
+              offset: 434
+              line: 9
+              column: 92
+          text: "# Business, professional or academic newspapers and periodicals, other than daily, in print"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8171
+              line: 62
+              column: 1
+            end:
+              offset: 8192
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43928"
+      family: "allocation"
+      span:
+        start:
+          offset: 43928
+          line: 612
+          column: 1
+        end:
+          offset: 45508
+          line: 622
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_cause | journal | First subdivide by issue/forme/stage and attribute measured paper, ink, plates, cleaning and wire to actual jobs. For shared electricity/extraction/maintenance use measured load-time, actual impressions/passes, wash cycles or demonstrated causal service use before a justified allocation; no default revenue/copy/mass share. Record evidence and sensitivity when causality cannot be resolved. | epa-printing-eiip-2002 |\n| allocation_ledgers | journal | Maintain gross physical material/water/carbon/energy balances, stocks and equal internal links separately from attributed/allocated environmental burdens. Do not multiply physical waste or transfer quantities by burden shares. Apply the selected burden attribution once, then the sole applicable cohort-denominator normalization under normalize_period, including original Qc for later old-FG service; do not successively divide each stage/lot. | epa-printing-eiip-2002 |\n| allocation_residuals | journal | Paper, wire or plate resale is not automatic co-product status or an avoided-virgin credit. Internal return and recovered service remain internal; require explicit receiver, method and study-boundary evidence for any separately reviewed allocation/system expansion. | epa-printing-eiip-2002 |\n\nThese are author-designed LCA accounting requirements informed by physical process and material-balance evidence; the sources do not prescribe journal-specific LCA allocation shares.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 343
+              line: 9
+              column: 1
+            end:
+              offset: 434
+              line: 9
+              column: 92
+          text: "# Business, professional or academic newspapers and periodicals, other than daily, in print"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43928
+              line: 612
+              column: 1
+            end:
+              offset: 43968
+              line: 612
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67303"
+      family: "validation"
+      span:
+        start:
+          offset: 67303
+          line: 666
+          column: 1
+        end:
+          offset: 69921
+          line: 676
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_product | journal | Confirm the sole classification and product purpose/frequency, then the declared monochrome coated-sheet self-cover wet-offset/saddle-stitch route. Other products and unreviewed configurations cannot inherit this method. | un-cpc3-32420; epa-printing-eiip-2002 |\n| validate_reference | finished | Require exactly one product output linked by finished with 1 kg accepted complete issues. Check net mass/tare, first-release Q and page/issue/stitch integrity; opening FG dispatch and internal rework never create another denominator. | chicago-journal-production; newman-saddle-stitching |\n| validate_ledgers | all inventory rows | Check positive manufacturing Q or retained unnormalized Q0 inventory; failed/cleanup/WIP/FG coverage, paired internal transfers, complete receipts/ownership/returns/wastes and single provider charging. Trace every later old-FG service, including unreturned packing/inspection, to original valid Qc or separately justified reviewed service basis and complete prior V/A/foreground/background/provider/gate/state/phase/medium/period vectors. Check actual service increments and distinct service-only/continued views without new Q, duplicate manufacture, or assignment to another new lot; unresolved history/quantity is not zero. Check packaging P including bundled-paid supply, incoming first non-purchased N_ext, and ER only with same-item prior outward and owner/cohort/vector continuity. Verify mutually exclusive gross stock states, all new/old-FG dispatch, EO owner-return/service, external waste and each actual transport/wash/repair/loss leg; no netting of cycles, invented reuse life/credit or packaging in journal Q. Separate physical and allocated ledgers and normalize once by the applicable cohort denominator. | epa-printing-eiip-2002 |\n| validate_species | journal | Verify actual CAS/phase/receiving medium, species mass/air conditions and disjoint PM intervals. Captured dust, retained solvent, wastes and outdoor emissions are not duplicate fates. Unknown recipes/species, major quantities, providers or receivers prevent a complete dataset claim. | epa-offset-ctg-2006; epa-printing-eiip-2002 |\n| validate_projection | journal | EN/ZH must preserve ordered row/rule/protocol ids, amount objects, units, qualifiers, formulas and ancestor context. Empty auxiliary UUIDs remain explicit review debts; reference/primary hard conflicts require a specific applicability decision. Tool checks do not approve methodology or translation. | un-cpc3-32420 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 343
+              line: 9
+              column: 1
+            end:
+              offset: 434
+              line: 9
+              column: 92
+          text: "# Business, professional or academic newspapers and periodicals, other than daily, in print"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67303
+              line: 666
+              column: 1
+            end:
+              offset: 67325
+              line: 666
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_manufacture"
+      identity_kind: "explicit"
+      unit_id: "normative_8171"
+      source_span:
+        start:
+          offset: 9510
+          line: 77
+          column: 1
+        end:
+          offset: 9895
+          line: 77
+          column: 386
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_8171"
+      source_span:
+        start:
+          offset: 9896
+          line: 78
+          column: 1
+        end:
+          offset: 10282
+          line: 78
+          column: 387
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_transfers"
+      identity_kind: "explicit"
+      unit_id: "normative_8171"
+      source_span:
+        start:
+          offset: 10283
+          line: 79
+          column: 1
+        end:
+          offset: 10597
+          line: 79
+          column: 315
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_cause"
+      identity_kind: "explicit"
+      unit_id: "normative_43928"
+      source_span:
+        start:
+          offset: 44041
+          line: 616
+          column: 1
+        end:
+          offset: 44490
+          line: 616
+          column: 450
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_43928"
+      source_span:
+        start:
+          offset: 44491
+          line: 617
+          column: 1
+        end:
+          offset: 44994
+          line: 617
+          column: 504
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residuals"
+      identity_kind: "explicit"
+      unit_id: "normative_43928"
+      source_span:
+        start:
+          offset: 44995
+          line: 618
+          column: 1
+        end:
+          offset: 45322
+          line: 618
+          column: 328
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_43928"
+      source_span:
+        start:
+          offset: 45324
+          line: 620
+          column: 1
+        end:
+          offset: 45506
+          line: 620
+          column: 183
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_product"
+      identity_kind: "explicit"
+      unit_id: "normative_67303"
+      source_span:
+        start:
+          offset: 67398
+          line: 670
+          column: 1
+        end:
+          offset: 67691
+          line: 670
+          column: 294
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_67303"
+      source_span:
+        start:
+          offset: 67692
+          line: 671
+          column: 1
+        end:
+          offset: 68015
+          line: 671
+          column: 324
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_67303"
+      source_span:
+        start:
+          offset: 68016
+          line: 672
+          column: 1
+        end:
+          offset: 69204
+          line: 672
+          column: 1189
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_67303"
+      source_span:
+        start:
+          offset: 69205
+          line: 673
+          column: 1
+        end:
+          offset: 69567
+          line: 673
+          column: 363
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_projection"
+      identity_kind: "explicit"
+      unit_id: "normative_67303"
+      source_span:
+        start:
+          offset: 69568
+          line: 674
+          column: 1
+        end:
+          offset: 69919
+          line: 674
+          column: 352
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8171"
+      source_span:
+        start:
+          offset: 8171
+          line: 62
+          column: 1
+        end:
+          offset: 8192
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8171"
+      source_span:
+        start:
+          offset: 8220
+          line: 66
+          column: 1
+        end:
+          offset: 9437
+          line: 73
+          column: 233
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43928"
+      source_span:
+        start:
+          offset: 43928
+          line: 612
+          column: 1
+        end:
+          offset: 43968
+          line: 612
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67303"
+      source_span:
+        start:
+          offset: 67303
+          line: 666
+          column: 1
+        end:
+          offset: 67325
+          line: 666
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a1eb393f4f1d13c8a0990e0bb5d124d0edbb88b52b6a42120016ab45653b66da"
+  generated_content_sha256: "sha256:32e5bc967bf8cfe1b6798fe3d7d9d471f41c859204af14555853403cfe9df32f"
