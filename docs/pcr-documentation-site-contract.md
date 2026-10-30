@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-10-27
-lastReviewedNote: "Retained the fork lossless v6 numeric-column transport, bounded decoder and v5 compatibility contract while merging upstream PCR #154. PCR #154: reviewed the single site mdast-util-to-markdown 2.1.2 to 2.2.0 lock resolution and existing incoming ranges. Paired standalone serialization probes preserve the new AST and reproduce upstream fixes; six actual PCR/guide sources retain identical inventories, HTML and source context, with no toMarkdown calls. Root graph, canonical content, methodology/translation states, runtime pins, product 0.4.9 and production pointer remain unchanged. Focused checks are not full current-source Linux, corpus, sealed-product or hosted qualification; independent review and exact workspace integration remain required."
+lastReviewedAt: 2026-10-30
+lastReviewedNote: "PR #30 capacity repair adds lossless v7 numeric channels and score-slot first-posting predictors, retaining complete logical wires, all old readers and unchanged resource limits. Captured-wire comparisons remain separate from final combined-source product qualification. Retained the fork lossless v6 numeric-column transport, bounded decoder and v5 compatibility contract while merging upstream PCR #154. PCR #154: reviewed the single site mdast-util-to-markdown 2.1.2 to 2.2.0 lock resolution and existing incoming ranges. Paired standalone serialization probes preserve the new AST and reproduce upstream fixes; six actual PCR/guide sources retain identical inventories, HTML and source context, with no toMarkdown calls. Root graph, canonical content, methodology/translation states, runtime pins, product 0.4.9 and production pointer remain unchanged. Focused checks are not full current-source Linux, corpus, sealed-product or hosted qualification; independent review and exact workspace integration remain required."
 lastReviewedCommit: 874470a017a4e7172b96674cca39e82a7028954e
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -149,7 +149,7 @@ Module and guide page metadata keeps its existing download fields. This removes
 redundant worker input without changing source bytes, reading routes or downloads.
 
 After a complete export, `node packages/pcr-docs/scripts/search-v5-corpus-audit.ts`
-checks shipped bytes, exact native/record restoration, same-corpus v4/v5/v6 sizes and
+checks shipped bytes, exact native/record restoration, same-corpus v4/v5/v6/v7 sizes and
 ordered query comparisons. An explicit assets-root argument permits the same
 search-only audit after generation, without claiming complete static-export or
 browser qualification. Historical audits do not qualify a new corpus or commit.
@@ -529,6 +529,34 @@ before import. Complete records and search behavior remain unchanged; v1–5
 readers remain available. The unchanged raw/gzip budgets include the full manifest.
 Corpus auditing compares v6 with repacked v5 over the exact same logical wires,
 source commit, language and pack membership, including both manifests.
+
+Search manifest version 7 uses envelope `schemaVersion: 3` and
+`encoding: "v4-columnar-channels-score-posting-vlq"`. Supported numeric maps
+reference one row of four shared channels: term deltas, score headers, posting
+lengths, and posting values. Grouping each channel across the same physical pack
+improves gzip locality. The first value of each posting list is predicted from
+the previous nonempty list in the same one of nine score slots; subsequent values
+retain their original deltas. Predictors reset for each map. This transport never
+reorders terms, postings, engine exports, logical shards or result records.
+
+The decoder authenticates physical bytes and checks unique, complete channel
+ownership before numeric expansion. Shortest-form VLQs, encoded counts, score
+masks, posting-length sums, predictor arithmetic and the shared 20 MB numeric
+expansion budget are checked before logical hashes and engine import. Unsupported
+shapes, large deltas or ineligible expansion retain native columns. Readers for
+versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buckets,
+complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
+including the manifest, remain unchanged.
+
+`node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
+compares captured physical assets with repacked v7 files over the exact same
+logical wires, source identity, language and pack membership. It retains physical,
+logical, native-export and complete-record hashes and both full manifest costs.
+A baseline may be over budget; that diagnostic does not qualify it for browser
+use. Generation measures every language before failing a search-budget violation,
+retains `search-budget-diagnostics.json` in its unpromoted stage, and preserves the
+previous generated artifact set. Final combined-source generation, complete
+export/browser verification and product resource gates remain mandatory.
 
 ### Bounded native downloads
 

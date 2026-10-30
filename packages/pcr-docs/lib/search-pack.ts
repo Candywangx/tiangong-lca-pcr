@@ -4,6 +4,7 @@ export const SEARCH_RAW_LIMIT = 20_000_000;
 export const SEARCH_GZIP_LIMIT = 4_000_000;
 const encoding = "v4-columnar-term-dictionary-delta";
 const numericEncoding = "v4-columnar-term-dictionary-vlq";
+const channelEncoding = "v4-columnar-channels-score-posting-vlq";
 const digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 const integerLimit = 0x3fffffff;
 const utf8 = new TextEncoder();
@@ -16,11 +17,12 @@ export interface SearchLogicalIdentity { wireBytes: number; wireSha256: string; 
 export interface SearchPhysicalFile { url: string; bytes: number; gzipBytes: number; sha256: string; firstLogicalShard: number; logicalShardCount: number; records: number; logicalShards: SearchLogicalIdentity[] }
 export interface SearchManifestV5 { schemaVersion: 5; sourceCommit: string; language: string; logicalShardCount: number; files: SearchPhysicalFile[] }
 export interface SearchManifestV6 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 6 }
-export type SearchManifest = SearchManifestV5 | SearchManifestV6;
+export interface SearchManifestV7 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 7 }
+export type SearchManifest = SearchManifestV5 | SearchManifestV6 | SearchManifestV7;
 export type SearchDigest = (bytes: Uint8Array) => string | Promise<string>;
 export function searchUtf8(text: string): Uint8Array { return utf8.encode(text); }
 export function readSearchManifest(value: unknown, language: string): SearchManifest {
- if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
+ if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6 && value.schemaVersion !== 7) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
  let next = 0, raw = 0, gzip = 0;
  const urls = new Set<string>();
  for (const file of value.files) {
@@ -56,9 +58,7 @@ function numericColumns(columns: unknown[], budget: {remaining: number}): unknow
  return packed;
 }
 /** Counts and shortest-form unsigned VLQs are checked before expanding bounded integer arrays. */
-function restoreNumericColumns(columns: unknown[], budget: {remaining: number}): unknown[] {
- if (columns.length !== 3 || !columns.every(value => typeof value === "string")) return fail();
- function reader(text: string) {
+function numericReader(text: string, budget: {remaining: number}) {
   let offset = 0;
   function read(): number {
    let value = 0, factor = 1;
@@ -87,12 +87,84 @@ function restoreNumericColumns(columns: unknown[], budget: {remaining: number}):
   function end() { if (offset !== text.length) return fail(); }
   return {values, length, end};
  }
- const terms = reader(columns[0] as string), headers = reader(columns[1] as string), postings = reader(columns[2] as string);
+function restoreNumericColumns(columns: unknown[], budget: {remaining: number}): unknown[] {
+ if (columns.length !== 3 || !columns.every(value => typeof value === "string")) return fail();
+ const terms = numericReader(columns[0] as string, budget), headers = numericReader(columns[1] as string, budget), postings = numericReader(columns[2] as string, budget);
  const termValues = terms.values(true), headerValues = headers.values(false), count = postings.length(), postingValues: number[][] = [];
  terms.end(); headers.end();
  for (let i = 0; i < count; i++) postingValues.push(postings.values(true));
  postings.end();
  return [termValues, headerValues, postingValues];
+}
+/** Score slots provide independent, reversible first-posting predictors. */
+function postingSlots(headers: readonly number[], maximum: number): number[] | undefined {
+ const slots: number[] = [];
+ for (const header of headers) {
+  if (!natural(header) || header > 9 * 512 + 511) return;
+  const length = Math.floor(header / 512), mask = header % 512;
+  if (mask >= 2 ** length) return;
+  for (let position = 0; position < length; position++) if (mask & 2 ** position) {
+   if (slots.length >= maximum) return;
+   slots.push(position);
+  }
+ }
+ return slots;
+}
+function channelColumns(columns: unknown[], budget: {remaining: number}): string[] | undefined {
+ if (columns.length !== 3 || !columns.every(Array.isArray)) return;
+ const numbers = (value: unknown): value is number[] => Array.isArray(value) && value.every(n => typeof n === "number" && Number.isSafeInteger(n) && Math.abs(n) <= integerLimit);
+ const [terms, headers, postings] = columns;
+ if (!numbers(terms) || !numbers(headers) || terms.length !== headers.length || !Array.isArray(postings) || !postings.every(numbers)) return;
+ const slots = postingSlots(headers, postings.length);
+ if (!slots || slots.length !== postings.length) return;
+ const previous = Array<number>(9).fill(0), values: number[] = [];
+ for (const [index, posting] of postings.entries()) {
+  const slot = slots[index]!;
+  for (const [offset, n] of posting.entries()) {
+   const value = offset ? n : n - previous[slot]!;
+   if (Math.abs(value) > integerLimit) return;
+   values.push(value);
+  }
+  if (posting.length) previous[slot] = posting[0]!;
+ }
+ const packed = [sequence(terms, true), sequence(headers, false), sequence(postings.map(posting => posting.length), false), sequence(values, true)];
+ const nativeBytes = JSON.stringify(columns).length;
+ let expandedBytes = [terms, headers, postings.map(posting => posting.length), values].reduce((sum, column) => sum + JSON.stringify(column).length, 0);
+ let valueOffset = 0;
+ for (const posting of postings) {
+  expandedBytes += 2 + Math.max(0, posting.length - 1);
+  if (posting.length) expandedBytes += Math.max(0, String(posting[0]).length - String(values[valueOffset]).length);
+  valueOffset += posting.length;
+ }
+ if (JSON.stringify(packed).length >= nativeBytes || expandedBytes > budget.remaining) return;
+ budget.remaining -= expandedBytes;
+ return packed;
+}
+function restoreChannelColumns(columns: unknown[], budget: {remaining: number}): unknown[] {
+ if (columns.length !== 4 || !columns.every((value): value is string => typeof value === "string")) return fail();
+ const readers = columns.map(text => numericReader(text, budget));
+ const terms = readers[0]!.values(true), headers = readers[1]!.values(false), lengths = readers[2]!.values(false), values = readers[3]!.values(true);
+ readers.forEach(reader => reader.end());
+ if (terms.length !== headers.length) return fail();
+ const slots = postingSlots(headers, lengths.length);
+ if (!slots || slots.length !== lengths.length || lengths.reduce((sum, length) => sum + length, 0) !== values.length) return fail();
+ const previous = Array<number>(9).fill(0), postings: number[][] = [];
+ let offset = 0;
+ for (const [index, length] of lengths.entries()) {
+  // The values and length arrays have already been charged; charge each restored nested array.
+  budget.remaining -= 2 + Math.max(0, length - 1);
+  if (budget.remaining < 0) return fail();
+  const posting = values.slice(offset, offset + length), slot = slots[index]!;
+  if (length) {
+   posting[0] = posting[0]! + previous[slot]!;
+   if (!Number.isSafeInteger(posting[0]) || Math.abs(posting[0]) > integerLimit) return fail();
+   budget.remaining -= Math.max(0, String(posting[0]).length - String(values[offset]).length);
+   if (budget.remaining < 0) return fail();
+   previous[slot] = posting[0];
+  }
+  postings.push(posting); offset += length;
+ }
+ return [terms, headers, postings];
 }
 function columnMaps(shard: unknown): { shard: Record<string, unknown>; entries: Record<string, unknown>; keys: string[] } {
  if (!object(shard) || !object(shard.entries) || !Array.isArray(shard.records)) return fail();
@@ -102,9 +174,10 @@ function columnMaps(shard: unknown): { shard: Record<string, unknown>; entries: 
  return { shard, entries: shard.entries, keys };
 }
 /** Copies through JSON so neither transport compression nor restoration mutates its input. */
-export function packSearchShards(wires: readonly string[], sourceCommit: string, language: string, firstLogicalShard: number, version: 5 | 6 = 5): string {
- if (!wires.length || wires.length > SEARCH_PACK_MEMBERS || !commit(sourceCommit) || !natural(firstLogicalShard) || (version !== 5 && version !== 6)) return fail();
+export function packSearchShards(wires: readonly string[], sourceCommit: string, language: string, firstLogicalShard: number, version: 5 | 6 | 7 = 5): string {
+ if (!wires.length || wires.length > SEARCH_PACK_MEMBERS || !commit(sourceCommit) || !natural(firstLogicalShard) || (version !== 5 && version !== 6 && version !== 7)) return fail();
  const dictionary: string[] = [], ids = new Map<string, number>(), numericBudget = {remaining: SEARCH_RAW_LIMIT};
+ const channels: string[][] = [[], [], [], []];
  const shards: unknown[] = wires.map(wire => {
   const value: unknown = JSON.parse(wire), { shard, entries, keys } = columnMaps(value);
   for (const key of keys) {
@@ -117,17 +190,46 @@ export function packSearchShards(wires: readonly string[], sourceCommit: string,
     const delta = id - previous; previous = id; return delta;
    });
    if (version === 6) entries[key] = numericColumns(columns, numericBudget);
+   if (version === 7) {
+    const packed = channelColumns(columns, numericBudget);
+    if (packed) {
+     entries[key] = [channels[0]!.length];
+     packed.forEach((text, column) => channels[column]!.push(text));
+    }
+   }
   }
   return shard;
  });
- return JSON.stringify({ schemaVersion: version === 6 ? 2 : 1, encoding: version === 6 ? numericEncoding : encoding, sourceCommit, language, firstLogicalShard, dictionary, shards });
+ return JSON.stringify({ schemaVersion: version === 7 ? 3 : version === 6 ? 2 : 1, encoding: version === 7 ? channelEncoding : version === 6 ? numericEncoding : encoding, sourceCommit, language, firstLogicalShard, dictionary, shards, ...(version === 7 ? {numericColumns: channels} : {}) });
 }
 /** Validates actual physical bytes and each restored logical wire before a caller imports indexes. */
 export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhysicalFile, bytes: Uint8Array, digest: SearchDigest): Promise<Record<string, unknown>[]> {
  if (bytes.byteLength !== file.bytes || bytes.byteLength > SEARCH_RAW_LIMIT || await digest(bytes) !== file.sha256) return fail();
  let value: unknown;
  try { value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); } catch { return fail(); }
- if (!object(value) || value.schemaVersion !== (manifest.schemaVersion === 6 ? 2 : 1) || value.encoding !== (manifest.schemaVersion === 6 ? numericEncoding : encoding) || value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language || value.firstLogicalShard !== file.firstLogicalShard || !Array.isArray(value.dictionary) || value.dictionary.length > 1_000_000 || !value.dictionary.every((term: unknown): term is string => typeof term === "string") || new Set(value.dictionary).size !== value.dictionary.length || !Array.isArray(value.shards) || value.shards.length !== file.logicalShardCount || value.shards.length > SEARCH_PACK_MEMBERS) return fail();
+ if (!object(value) || value.schemaVersion !== (manifest.schemaVersion === 7 ? 3 : manifest.schemaVersion === 6 ? 2 : 1) || value.encoding !== (manifest.schemaVersion === 7 ? channelEncoding : manifest.schemaVersion === 6 ? numericEncoding : encoding) || value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language || value.firstLogicalShard !== file.firstLogicalShard || !Array.isArray(value.dictionary) || value.dictionary.length > 1_000_000 || !value.dictionary.every((term: unknown): term is string => typeof term === "string") || new Set(value.dictionary).size !== value.dictionary.length || !Array.isArray(value.shards) || value.shards.length !== file.logicalShardCount || value.shards.length > SEARCH_PACK_MEMBERS) return fail();
+ const channels: unknown = value.numericColumns;
+ if (manifest.schemaVersion === 7 ? !Array.isArray(channels) || channels.length !== 4 || !channels.every(column => Array.isArray(column) && column.every(text => typeof text === "string")) || !channels.every(column => column.length === channels[0]!.length) : Object.hasOwn(value, "numericColumns")) return fail();
+ const usedChannels = new Set<number>();
+ if (manifest.schemaVersion === 7 && Array.isArray(channels)) {
+  // Validate complete ownership before numeric expansion or any logical digest/import.
+  for (const packed of value.shards) {
+   if (!object(packed) || !object(packed.entries) || !Array.isArray(packed.columnarMaps ?? [])) return fail();
+   const keys = (packed.columnarMaps ?? []) as unknown[];
+   if (new Set(keys).size !== keys.length) return fail();
+   for (const key of keys) {
+    if (typeof key !== "string" || !Object.hasOwn(packed.entries, key)) return fail();
+    const columns: unknown = packed.entries[key];
+    if (!Array.isArray(columns)) return fail();
+    if (columns.length === 1) {
+     const id: unknown = columns[0];
+     if (!natural(id) || id >= channels[0]!.length || usedChannels.has(id)) return fail();
+     usedChannels.add(id);
+    }
+   }
+  }
+  if (usedChannels.size !== channels[0]!.length) return fail();
+ }
  const dictionary: string[] = value.dictionary;
  const termBytes = dictionary.map(term => utf8.encode(JSON.stringify(term)).byteLength);
  const restored: Record<string, unknown>[] = [];
@@ -135,6 +237,18 @@ export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhy
  for (const [offset, packed] of value.shards.entries()) {
   const identity = file.logicalShards[offset];
   if (!identity) return fail();
+  if (manifest.schemaVersion === 7 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
+   for (const key of packed.columnarMaps) {
+    if (typeof key !== "string" || !Object.hasOwn(packed.entries, key)) return fail();
+    const columns: unknown = packed.entries[key];
+    if (!Array.isArray(columns)) return fail();
+    if (columns.length === 1) {
+     const id: unknown = columns[0];
+     if (!natural(id) || !Array.isArray(channels) || id >= channels[0]!.length) return fail();
+     packed.entries[key] = restoreChannelColumns(channels.map(column => column[id]), numericBudget);
+    }
+   }
+  }
   if (manifest.schemaVersion === 6 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
    for (const key of packed.columnarMaps) {
     if (typeof key !== "string" || !Object.hasOwn(packed.entries, key)) return fail();

@@ -34,7 +34,7 @@ for(const scenario of ["source","raw-total","gzip-total","physical-bytes","missi
  }finally{fs.rmSync(f.out,{recursive:true,force:true});}
 });
 
-for(const format of ["files-v5","files-v6","shards"] as const)test("corpus audit authenticates "+format+" exports and rejects corrupt bytes",()=>{
+for(const format of ["files-v5","files-v6","files-v7","shards"] as const)test("corpus audit authenticates "+format+" exports and rejects corrupt bytes",()=>{
  const root=fs.mkdtempSync(path.join(tmpdir(),"pcr-search-audit-"));
  try{
   const output=path.join(root,"packages/pcr-docs/out"),sourceCommit="a".repeat(40);
@@ -45,7 +45,7 @@ for(const format of ["files-v5","files-v6","shards"] as const)test("corpus audit
    fs.mkdirSync(directory,{recursive:true});
    let payload:string,manifest:unknown;
    if(format!=="shards"){
-    const version=format==="files-v6"?6:5;
+    const version=format==="files-v7"?7:format==="files-v6"?6:5;
     const wire=JSON.stringify({...encodeSearchEntries(native,4),records});
     payload=packSearchShards([wire],sourceCommit,language,0,version);
     const file:SearchPhysicalFile={url,bytes:Buffer.byteLength(payload),gzipBytes:gzipSync(payload,{level:9}).length,sha256:sha256(payload),firstLogicalShard:0,logicalShardCount:1,records:1,logicalShards:[{wireBytes:Buffer.byteLength(wire),wireSha256:sha256(wire),records:1}]};
@@ -62,6 +62,15 @@ for(const format of ["files-v5","files-v6","shards"] as const)test("corpus audit
   const success=run();assert.equal(success.status,0,success.stdout+success.stderr);
   const explicitRoot=spawnSync(process.execPath,[audit,output],{cwd:root,encoding:"utf8",timeout:30_000});
   assert.equal(explicitRoot.status,0,explicitRoot.stdout+explicitRoot.stderr);
+  if(format==="files-v6"){
+   const capacity=fileURLToPath(new URL("./search-capacity-audit.ts",import.meta.url));
+   const result=spawnSync(process.execPath,[capacity,path.join(output,"generated/search"),path.join(root,"comparison")],{cwd:root,encoding:"utf8",timeout:30_000});
+   assert.equal(result.status,0,result.stdout+result.stderr);
+   const comparison:unknown=JSON.parse(fs.readFileSync(path.join(root,"comparison/comparison.json"),"utf8"));
+   assert.ok(comparison&&typeof comparison==="object"&&"reports"in comparison&&Array.isArray(comparison.reports)&&comparison.reports.length===2);
+   const candidateAudit=spawnSync(process.execPath,[audit,path.join(root,"comparison")],{cwd:root,encoding:"utf8",timeout:30_000});
+   assert.equal(candidateAudit.status,0,candidateAudit.stdout+candidateAudit.stderr);
+  }
   const report:unknown=JSON.parse(fs.readFileSync(path.join(root,".reports/search-v5-corpus.json"),"utf8"));
   assert.ok(Array.isArray(report)&&report.length===2);
   fs.appendFileSync(path.join(output,"generated/search/en-US/pack-000.json")," ");
