@@ -74,3 +74,7 @@ The PR remains draft pending full current product/hosted qualification. No budge
 The first complete validation on `06fdd379` failed one existing Chinese category-label test. The newly material furniture category now has its Chinese presentation label; the existing focused test changed from failure to pass. [Original failure and fix evidence](superseded-validation/category-label-repair.json) is retained; it is not reported as a successful full run.
 
 The [public evidence review](final-package-review.json) and [category-label delta review](category-label-delta-review.json) retain their actual inspected sources.
+
+## Evidence navigation added 2026-10-30
+
+[Per-UUID readable index and lossless chunks](native-identity-access/README.md) preserve the original evidence file and disclose exact item byte ranges and hashes. [Current combined-source qualification](../pr30-requalification-20261030/README.md) supersedes status claims for the historical source above.

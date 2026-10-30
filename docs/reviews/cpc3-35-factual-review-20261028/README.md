@@ -92,3 +92,7 @@ Complete local `npm run validate` **passed** on `3cfe47acf29c53674afc78f59946c90
 Complete `npm run docs:build` **failed** on that source. Chinese search gzip is **4,078,737 / 4,000,000 bytes**, an excess of 78,737 bytes. Complete static export, full-site SEO and sealed-product acceptance did not finish. The PR remains draft and not merge/publication-qualified. Read the [complete documentation build log](validation/docs-build.log) and [receipt](validation/docs-build.json). No threshold increase, material-record omission or runtime workaround was applied.
 
 The final evidence-only descendant preserves the tested canonical, classification and runtime bytes. [Qualification status](qualification-status.json) separates current local observations, historical pre-amendment gates and pending fresh hosted qualification. No scientific, translation, publication or deployment approval is implied.
+
+## Evidence navigation added 2026-10-30
+
+[Per-UUID readable index and lossless chunks](native-identity-access/README.md) preserve the original evidence file and disclose exact item byte ranges and hashes. [Current combined-source qualification](../pr30-requalification-20261030/README.md) supersedes status claims for the historical source above.
