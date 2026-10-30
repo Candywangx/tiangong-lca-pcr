@@ -155,7 +155,7 @@ The original [complete evidence](../native-identity-evidence.json) remains byte-
 | [4d9a8790-3ddd-11dd-8e3b-0050c2490048](flows-009.json#L246) | 二甲基硫 | 32132 | adopted_in_original35_package |
 | [fe0acd60-3ddc-11dd-ac1e-0050c2490048](flows-009.json#L356) | 二甲基二硫化物 | 32132 | adopted_in_original35_package |
 | [5e50fc01-19c6-4377-a1cc-bc65a12498ea](flows-009.json#L458) | 水 | 32132 | adopted_in_original35_package |
-| [08a91e70-3ddc-11dd-97ed-0050c2490048](flows-009.json#L552) |  | 32132 | adopted_in_original35_package |
+| [08a91e70-3ddc-11dd-97ed-0050c2490048](flows-009.json#L552) | chemical oxygen demand | 32132 | adopted_in_original35_package |
 | [e1716164-e906-48e4-ad77-8f2ec4a9a4c5](flows-009.json#L634) | 总氮（不含N₂） | 32132 | adopted_in_original35_package |
 | [08a91e70-3ddc-11dd-97de-0050c2490048](flows-009.json#L738) | 生物需氧量 | 32132 | adopted_in_original35_package |
 | [f9df3107-6b59-4067-b920-3c61cf3630c7](flows-009.json#L836) | 总磷 | 32132 | adopted_in_original35_package |
