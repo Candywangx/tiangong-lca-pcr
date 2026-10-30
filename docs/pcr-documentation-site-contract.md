@@ -603,8 +603,32 @@ intact. Inspector packing itself requires no rewrite; the separate exact Next
 navigation alias profile above preserves every supported navigation URL and byte.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
-continuations retain their chapter context. Chapter URLs use source heading
-identities, with content-derived continuation suffixes. Tables remain whole, and
+continuations retain their chapter context. The existing renderer uses a 180,000-byte
+soft target, prefers chapter boundaries after 65% of that target, and allows up to
+three times that target when retaining complete source units. Indivisible oversized
+units remain whole. These target and ceiling values are unchanged.
+
+A final fragment below the same 65% target may be appended to its predecessor only
+when their complete serialized nodes fit the existing three-times ceiling. Tail
+packing runs before deriving part metadata and preserves the predecessor's start
+context. Every original node remains once and in source order, including tables,
+headings, footnotes and code whitespace; no canonical source or native download is
+changed. All heading anchors, source ownership, ToCs and internal fragment links
+are rebuilt against the resulting parts. An old-to-new part and anchor routing
+audit makes affected documents reviewable.
+
+This layout optimization changes chapter partitioning and can remove continuation
+URLs from a newly generated site. Source anchors remain available on their new
+owning page; generated links resolve to those owners. It does not establish
+compatibility for an older continuation URL. Search records are page-scoped, so
+record count and query granularity can also change; the codec's same-wire
+restoration guarantee is separate from layout changes. Complete fresh generation,
+both-language search measurements and the actual final export file count and
+browser/product gates must qualify the combined source. Projected file savings are
+diagnostics, not a complete product result.
+
+Chapter URLs use source heading identities, with content-derived continuation
+suffixes. Tables remain whole, and
 ragged GFM tables preserve source cells beyond the header width by adding empty
 header cells. Source spelling, including a literal `undefined` cell, is retained.
 
