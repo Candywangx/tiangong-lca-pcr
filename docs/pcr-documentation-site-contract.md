@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-29
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration. Retained fork review: Added the lossless v6 numeric-column transport, bounded decoder, v5 compatibility and same-wire corpus comparison without changing content, ranking or resource budgets. PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
+lastReviewedAt: 2026-10-30
+lastReviewedNote: "PCR #159: reviewed stable product 0.4.10 preparation at 56e91285. Authority, three package mirrors and docs lock root metadata advance together; dependency resolutions, canonical content, methodology/translation state, reader minimum and runtime pins remain unchanged. Current preparation notes distinguish verified public 0.4.9 from pending new tag qualification, coordinated npm/site publication and exact workspace integration."
+lastReviewedCommit: 56e912858aa769ff13075fa852a344d0b730a3b9
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
