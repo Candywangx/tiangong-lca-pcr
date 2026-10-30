@@ -39,21 +39,46 @@ This diagnostic's English v6 total differs from the historical 4,196,228-byte lo
 
 ## Reproduce the captured-wire comparison
 
-From this directory, restore the exact JSON payloads in a separate scratch copy:
-
-```python
-from pathlib import Path
-import gzip
-for archive in Path("assets").rglob("*.json.gz"):
-    archive.with_suffix("").write_bytes(gzip.decompress(archive.read_bytes()))
-```
-
-From the repository root, use the unchanged captured baseline and a new output directory:
+Run the following from the repository root. It creates a new directory under
+`/tmp`, restores the 18 retained assets there (**14 gzip pack archives and four
+manifests**), verifies stored and restored hashes, and runs both audit commands
+with their working directory and all outputs outside the repository. Source
+assets remain untouched.
 
 ```sh
-node packages/pcr-docs/scripts/search-capacity-audit.ts docs/reviews/pr30-search-capacity-20261030/assets/baseline /tmp/pr30-captured-search-comparison
-node packages/pcr-docs/scripts/search-v5-corpus-audit.ts /tmp/pr30-captured-search-comparison
+PR30_SEARCH_REPLAY_REPO="$(pwd -P)"
+PR30_SEARCH_REPLAY_DIR="$(mktemp -d /tmp/pr30-search-replay.XXXXXX)"
+export PR30_SEARCH_REPLAY_REPO PR30_SEARCH_REPLAY_DIR
+python3 - <<'PYTHON'
+from pathlib import Path
+import gzip
+import hashlib
+import json
+import os
+
+source = Path(os.environ["PR30_SEARCH_REPLAY_REPO"]) / "docs/reviews/pr30-search-capacity-20261030"
+scratch = Path(os.environ["PR30_SEARCH_REPLAY_DIR"])
+for asset in json.loads((source / "asset-index.json").read_text())["assets"]:
+    stored = (source / asset["path"]).read_bytes()
+    assert len(stored) == asset["storedBytes"]
+    assert "sha256:" + hashlib.sha256(stored).hexdigest() == asset["storedSha256"]
+    original = gzip.decompress(stored) if asset["encoding"] == "gzip-level-9" else stored
+    assert len(original) == asset["originalBytes"]
+    assert "sha256:" + hashlib.sha256(original).hexdigest() == asset["originalSha256"]
+    target = scratch / "assets" / asset["variant"] / asset["language"] / asset["originalName"]
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(original)
+print(scratch)
+PYTHON
+(
+  cd "$PR30_SEARCH_REPLAY_DIR" || exit 1
+  node "$PR30_SEARCH_REPLAY_REPO/packages/pcr-docs/scripts/search-capacity-audit.ts" "$PR30_SEARCH_REPLAY_DIR/assets/baseline" "$PR30_SEARCH_REPLAY_DIR/comparison" &&
+  node "$PR30_SEARCH_REPLAY_REPO/packages/pcr-docs/scripts/search-v5-corpus-audit.ts" "$PR30_SEARCH_REPLAY_DIR/comparison"
+)
 ```
+
+The physical comparison is written to `$PR30_SEARCH_REPLAY_DIR/comparison/comparison.json`.
+The engine query report is written to `$PR30_SEARCH_REPLAY_DIR/.reports/search-v5-corpus.json`.
 
 The first command verifies actual physical identities and all restored logical hashes before comparing transports; the second imports the exact exports and repeats the finite ordered query comparisons. [Evidence file hashes](evidence-files.json) cover this package except that index itself.
 
