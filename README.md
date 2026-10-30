@@ -26,16 +26,16 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-26
-lastReviewedCommit: 42ec3ae0b97a8cbf3a482cf1411d1765ccd5734a
-lastReviewedNote: "PCR #152: reviewed the exact @types/node >=25.0.0 ceiling in both existing npm updater entries and the Node 24 LTS revisit condition. Dependency/runtime pins, graph ownership, canonical authoring and full qualification/publication boundaries are unchanged; static checks do not claim hosted activation."
+lastReviewedAt: 2026-10-29
+lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
+lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
 ---
 
 # TianGong LCA PCR Library
 
 This repository stores TianGong LCA product category rules and data production methodology assets.
 
-Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The workspace's retained local directory is `tiangong-lca-pcr`; repository renaming does not change PCR identifiers, package names, or release history.
+Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The integration workspace's physical checkout directory is `pcr`; its retained submodule metadata name is `tiangong-lca-pcr`. Repository renaming does not change PCR identifiers, package names, or release history.
 
 PCR records are canonical methodology documents. Classification systems such as CPC, HS, ISIC, and NAICS are entry points that map to canonical PCR records; they do not own the PCR directory structure.
 
