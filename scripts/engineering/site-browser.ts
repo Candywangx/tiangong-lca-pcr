@@ -215,6 +215,12 @@ function observeSiteRequests(page:Page,context:{engine:SiteBrowserEngine;viewpor
  return {setPhase(value:string){phase=value;},stop(){page.off('request',started);page.off('response',response);page.off('requestfailed',failed);}};
 }
 interface BrowserEvidence {engine:string;engineVersion:string;viewport:string;route:SiteRoute;assertions:string[];errors:string[];ignoredPrefetchAborts:string[];requestFailures:CancelledRequest[];prefetchUrls:string[];screenshot:string;screenshots?:string[];diagnosticError?:string;search?:{query:string;hits:number;workerUrls:string[]};failure?:string}
+/** Apply the unchanged fatal-error policy to the complete observed case evidence. */
+export function assertSiteBrowserErrors(evidence:BrowserEvidence,consoleErrors:readonly {text:string;url:string}[]):void {
+ for(const request of evidence.requestFailures){if(isCancelledSitePrefetch(request,evidence.prefetchUrls))evidence.ignoredPrefetchAborts.push(request.url);else evidence.errors.push(`requestfailed: ${request.reason}: ${request.method} ${request.url}`);}
+ for(const error of consoleErrors){if(!(error.text.includes('net::ERR_ABORTED')&&evidence.ignoredPrefetchAborts.includes(error.url)))evidence.errors.push('console: '+error.text+' '+error.url);}
+ assert.deepEqual(evidence.errors,[],'Browser reported errors');
+}
 interface LanguagePreferenceEvidence {engine:SiteBrowserEngine;viewport:string;checks:string[];ignoredPrefetchAborts:string[];requestFailures:CancelledRequest[];prefetchUrls:string[]}
 function message(error:unknown){return error instanceof Error?error.message:String(error);}
 async function captureSiteEvidence(page:Page,report:string,file:string):Promise<string[]> {
@@ -282,7 +288,8 @@ async function openLanguageSelector(page:Page):Promise<void> {
  await page.waitForFunction(()=>Array.from(document.querySelectorAll<HTMLElement>('[data-pcr-language-trigger]')).some(button=>button.getBoundingClientRect().width>0));
  assert.ok(await clickVisible(),'Language selector must be visible');
 }
-async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evidence:BrowserEvidence,setPhase:(phase:string)=>void):Promise<void> {
+export async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evidence:BrowserEvidence,setPhase:(phase:string)=>void):Promise<void> {
+ const waitForCurrentRequests=currentNetworkIdle(page);
  const counterpart=gettingStartedGuide(route.locale==='zh'?'en':'zh');
  setPhase('guide-counterpart-entry');await page.goto(origin+route.path+'?from=getting-started',{waitUntil:'networkidle'});
  setPhase('guide-counterpart-select');await openLanguageSelector(page);
@@ -297,6 +304,7 @@ async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evi
  await page.getByRole('button',{name:counterpart.locale==='zh'?'复制 Agent 提示词':'Copy Agent prompt',exact:true}).waitFor({state:'visible'});
  assert.ok((await page.locator('#getting-started-content pre code').first().textContent())?.includes(counterpart.rawUrl));
  evidence.assertions.push('language selector loads HTTP 200 HTML document for authored guide counterpart and preserves query');
+ await waitForCurrentRequests();
  setPhase('guide-counterpart-return');await page.goto(origin+route.path,{waitUntil:'networkidle'});
 }
 async function settleLanguage(page:Page,language:string):Promise<void> {
@@ -334,7 +342,7 @@ export function browserLanguageScenarios(languageCodes:Readonly<Record<string,st
   return {...scenario,expected:route==='zh'?'/':`/${route}/`,htmlLanguage:language};
  });
 }
-/** SPA navigation can retain Playwright's old networkidle lifecycle. Observe current requests. */
+/** Lifecycle idle can precede later resource work. Observe current requests before leaving. */
 function currentNetworkIdle(page:Page):()=>Promise<void> {
  const active=new Set<Request>();let lastActivity=Date.now();
  page.on('request',request=>{active.add(request);lastActivity=Date.now();});
@@ -419,7 +427,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
      const trace=observeSiteRequests(page,{engine:name,viewport},failedRequests,prefetchUrls);
      page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});
      page.on('response',response=>{if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});
-     try {await checkPage(page,origin,route,viewport,evidence,exported);evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);if(route.kind==='home'){trace.setPhase('home-guide-navigation');const guide=gettingStartedGuide(route.locale==='default'?'zh':route.locale);await page.locator('.pcr-hero-actions a[href="'+guide.url+'"]').click();await page.locator('#getting-started-content').waitFor();assert.equal(new URL(page.url()).pathname,guide.url);evidence.assertions.push('home entry navigates to corresponding documentation language');}if(route.kind==='guide')await checkGuideCounterpart(page,origin,route,evidence,trace.setPhase);if(route.kind==='pcr'||route.kind==='guide'){trace.setPhase('search');await checkSearch(page,route,evidence);}trace.setPhase('request-error-check');for(const request of failedRequests){if(isCancelledSitePrefetch(request,prefetchUrls))evidence.ignoredPrefetchAborts.push(request.url);else evidence.errors.push(`requestfailed: ${request.reason}: ${request.method} ${request.url}`);}for(const error of consoleErrors){if(!(error.text.includes('net::ERR_ABORTED')&&evidence.ignoredPrefetchAborts.includes(error.url)))evidence.errors.push('console: '+error.text+' '+error.url);}assert.deepEqual(evidence.errors,[],'Browser reported errors');}
+     try {await checkPage(page,origin,route,viewport,evidence,exported);evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);if(route.kind==='home'){trace.setPhase('home-guide-navigation');const guide=gettingStartedGuide(route.locale==='default'?'zh':route.locale);await page.locator('.pcr-hero-actions a[href="'+guide.url+'"]').click();await page.locator('#getting-started-content').waitFor();assert.equal(new URL(page.url()).pathname,guide.url);evidence.assertions.push('home entry navigates to corresponding documentation language');}if(route.kind==='guide')await checkGuideCounterpart(page,origin,route,evidence,trace.setPhase);if(route.kind==='pcr'||route.kind==='guide'){trace.setPhase('search');await checkSearch(page,route,evidence);}trace.setPhase('request-error-check');assertSiteBrowserErrors(evidence,consoleErrors);}
      catch(error){evidence.failure=message(error);try{writeFileSync(path.join(report,evidence.screenshot+'.html'),await page.content());}catch(diagnostic){evidence.diagnosticError=message(diagnostic);}}
      finally {try{if(!existsSync(path.join(report,evidence.screenshot)))evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);}catch(diagnostic){evidence.diagnosticError=message(diagnostic);if(!evidence.failure)throw diagnostic;}finally{trace.stop();await page.close();}}
     }}finally{await context.close();}
