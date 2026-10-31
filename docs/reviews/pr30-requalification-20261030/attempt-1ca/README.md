@@ -1,0 +1,9 @@
+# Frozen source 1ca: complete local results and retained browser failure
+
+[Status and scope](status.json) records the actual result on `1ca1c00418271410ec0cc2b86805194cd528f03a`. Complete validation (3391 pass, 0 fail, 5 skipped), bilingual website build (19,777 files), full SEO, sealed product verification and offline Linux x64 consumer checks passed. The sealed web has 19,778 files including its routing configuration. English search is 3,702,560 gzip bytes and Chinese 3,802,336, under unchanged 4,000,000-byte limits.
+
+**The complete sealed-browser gate failed.** Its [full report](sealed-web/browser/report.json) records 60 cases, one WebKit desktop English-guide failure, and nine completed native downloads. A normal JavaScript-enabled script request was cancelled during the test's guide-counterpart return. It is not classified as an expected disabled-script preload; the original failure remains fatal. [Outer immutable-bundle qualification receipt](sealed-web/qualification.json), all screenshots/diagnostic HTML, raw request phases and gate logs are retained. A later repair requires new source-bound acceptance.
+
+[Evidence index](evidence-index.json) gives original and published hashes for every copied artifact. Original text logs remain private and complete; only local home/repository prefixes are replaced in the published copies. Images, native source bytes and product hashes are unchanged. [Product manifest](product/release.json) and [checksums](product/SHA256SUMS) bind the complete locally retained binary bundle.
+
+The earlier concurrent build attempt lost resource measurement under local memory pressure and was stopped after repeated sampler failures; its [complete failed log](gates/resource-failure.log) and [receipt](gates/resource-failure.json) are retained. The passing website was freshly regenerated separately, with every original resource gate retained.
