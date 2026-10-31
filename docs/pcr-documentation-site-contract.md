@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-30
-lastReviewedNote: "PR #30 adds lossless v7 numeric channels and score-slot first-posting predictors, retaining complete logical wires, old readers and unchanged resource limits. Integrated with upstream ee3178ac product 0.4.10 preparation, preserving its dependency and runtime pins. Captured-wire comparisons and focused checks do not replace fresh combined-source product qualification, publication or integration."
-lastReviewedCommit: 5a93da72650fb16f988c5c0306f61784aa31732d
+lastReviewedAt: 2026-11-01
+lastReviewedNote: "Reviewed physical-only generation and retained inline compatibility at source 1ca1c004. This clarification changes no runtime, canonical content, pins or resource gates; product receipts remain bound to their tested source."
+lastReviewedCommit: 1ca1c00418271410ec0cc2b86805194cd528f03a
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -558,29 +558,27 @@ retains `search-budget-diagnostics.json` in its unpromoted stage, and preserves 
 previous generated artifact set. Final combined-source generation, complete
 export/browser verification and product resource gates remain mandatory.
 
-### Bounded native downloads
+### Historical bounded native downloads
 
-Current unpublished `candidate/authored_methodology` records without release
-history may embed their required-language Markdown originals as native downloads
-through 80 KiB per file; manifest downloads retain their separate 16 KiB limit.
-This bounded transport preserves original filenames, bytes and hashes. Larger,
-published, optional-language and release artifacts remain physical downloads.
-Both languages, original content and search coverage remain complete. Increasing
-inline eligibility reduces the independent export file count while increasing
-page payload; it does not reduce total exported storage. The complete export
-still must satisfy fewer than 20,000 files, less than 25 MB per file and the
-existing measured memory/build gates; browser qualification verifies native
-downloads against canonical bytes.
+Older retained artifacts may contain inline originals under the former
+`candidate/authored_methodology` eligibility policy: no release history, up to
+80 KiB per required-language Markdown file and a separate 16 KiB manifest limit.
+The eligibility encoder and bounded decoder remain compatibility/verification
+helpers. Those thresholds describe retained historical transport, not current
+export eligibility. New generation always stores physical originals under
+`/generated/raw/<sourcePath>` as specified above. Inline eligibility is not a
+current file-capacity control. The unchanged file-count, per-file, memory/build
+and browser gates still apply.
 
-The internal `.generated/site.json` transport stores each repeated inline
-download URL once in a versioned `downloadTransport` table. Only download `url`
-values use bounded integer references; `parseSiteManifest` restores complete URLs
-before validating the unchanged site DTO. Legacy uncompressed metadata remains
-readable. Duplicate/invalid tables, out-of-range references and conflicting
-transport fields fail closed. This internal deduplication avoids constructing a
-single expanded JSON string beyond the JavaScript runtime limit; it does not
-remove page content, original bytes, downloads or required context. Emitted page
-links remain ordinary native download URLs and are verified against source.
+The internal `.generated/site.json` format retains the versioned
+`downloadTransport` table for compatibility with metadata containing repeated
+inline URLs. Only download `url` values use bounded integer references;
+`parseSiteManifest` restores complete URLs before validating the unchanged site
+DTO. Current physical-only exports leave the table's `urls` array empty. Legacy
+uncompressed metadata remains readable. Duplicate/invalid tables, out-of-range
+references and conflicting transport fields fail closed. This compatibility
+preserves original bytes, native filenames, complete page content and required
+context; it does not enable inline emission in current generation.
 
 ### Inspector data transport
 
