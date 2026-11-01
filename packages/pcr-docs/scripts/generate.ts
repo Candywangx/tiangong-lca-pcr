@@ -1,3 +1,5 @@
+import {createProviderRuntime} from './provider-runtime.ts';
+import {serializeSiteMetadata} from "../lib/site-wire.ts";
 import {isUnknownRecord,unknownField,errorMessage} from "../../pcr-core/src/types.ts";
 import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResult} from "../lib/types.ts";
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
@@ -978,6 +980,7 @@ async function generate() {
     }
     fs.writeFileSync(file, document.body.innerHTML);
   }
+  const searchBudgetFailures: string[] = [];
   for (const [language, docs] of searches) {
     docs.forEach((doc, i) => {
       doc.record.id = String(i);
@@ -988,7 +991,7 @@ async function generate() {
     async function flushPack() {
       if (!pending.length) return;
       const firstLogicalShard = logicalShardCount - pending.length;
-      const payload = packSearchShards(pending, commit, language, firstLogicalShard);
+      const payload = packSearchShards(pending, commit, language, firstLogicalShard, 7);
       const url = `/generated/search/${language}/pack-${String(shards.length).padStart(3, "0")}.json`;
       const logicalShards = pending.map(wire => {
         const data: unknown = JSON.parse(wire);
@@ -996,7 +999,7 @@ async function generate() {
         return {wireBytes: Buffer.byteLength(wire), wireSha256: sha256(wire), records: data.records.length};
       });
       const descriptor: SearchPhysicalFile = {url, bytes: Buffer.byteLength(payload), gzipBytes: gzipSync(payload, {level: 9}).length, sha256: sha256(payload), firstLogicalShard, logicalShardCount: pending.length, records: logicalShards.reduce((sum, item) => sum + item.records, 0), logicalShards};
-      const restored = await unpackSearchFile({schemaVersion: 5, sourceCommit: commit, language, logicalShardCount, files: [descriptor]}, descriptor, Buffer.from(payload), sha256);
+      const restored = await unpackSearchFile({schemaVersion: 7, sourceCommit: commit, language, logicalShardCount, files: [descriptor]}, descriptor, Buffer.from(payload), sha256);
       if (restored.some((data, index) => JSON.stringify(data) !== pending[index])) throw new Error("Search transport does not restore exact logical bytes");
       write("public" + url.slice("/generated".length), payload);
       shards.push(descriptor);
@@ -1006,13 +1009,9 @@ async function generate() {
       bytes = 0;
     async function flush() {
       if (!bucket.length) return;
-      const index = new Index({
-        tokenize: "strict",
-        resolution: SEARCH_SCORE_SLOTS,
-        encode: (value: unknown) => searchTerms(value, language),
-      });
+      const index = new Index({tokenize: "strict", resolution: SEARCH_SCORE_SLOTS, encode: (value: unknown) => searchTerms(value, language)});
       for (const doc of bucket) index.add(Number(doc.record.id), doc.text);
-      const entries: Record<string,unknown[]> = {};
+      const entries: Record<string, unknown[]> = {};
       await index.export((key, value) => {
         const parsed: unknown = JSON.parse(value);
         if (!Array.isArray(parsed) || JSON.stringify(parsed) !== value)
@@ -1034,22 +1033,19 @@ async function generate() {
     for (const doc of docs) {
       const size = Buffer.byteLength(doc.text);
       if (bytes + size > 2_000_000) await flush();
-      bucket.push(doc);
-      bytes += size;
+      bucket.push(doc); bytes += size;
     }
     await flush();
     await flushPack();
-    const searchManifest = JSON.stringify({schemaVersion: 5, sourceCommit: commit, language, logicalShardCount, files: shards});
+    const searchManifest = JSON.stringify({schemaVersion: 7, sourceCommit: commit, language, logicalShardCount, files: shards});
     write("public/search/" + language + "/manifest.json", searchManifest);
     const manifestAsset = {url: `/generated/search/${language}/manifest.json`, bytes: Buffer.byteLength(searchManifest), gzipBytes: gzipSync(searchManifest, {level: 9}).length, records: 0, sha256: sha256(searchManifest)};
     const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, manifestAsset.bytes);
     const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, manifestAsset.gzipBytes);
     console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: logicalShardCount, physicalFiles: shards.length, records: docs.length}));
     if (rawBytes > 20_000_000 || gzipBytes > 4_000_000)
-      throw new Error(
-        "Search exceeds the per-language browser budget: " + language + " (raw " + rawBytes + "/20000000; gzip " + gzipBytes + "/4000000)",
-      );
-    readSearchManifest(JSON.parse(searchManifest), language);
+      searchBudgetFailures.push("Search exceeds the per-language browser budget: " + language + " (raw " + rawBytes + "/20000000; gzip " + gzipBytes + "/4000000)");
+    else readSearchManifest(JSON.parse(searchManifest), language);
     report.search.push({
       language,
       records: docs.length,
@@ -1059,6 +1055,10 @@ async function generate() {
       manifest: manifestAsset,
       logicalShardCount,
     });
+  }
+  if (searchBudgetFailures.length) {
+    json("search-budget-diagnostics.json", {sourceCommit: commit, search: report.search});
+    throw new Error(searchBudgetFailures.join("; "));
   }
   for (const page of manifest.pages) {
     if (!page.indexable || page.kind === "pcr") continue;
@@ -1086,7 +1086,7 @@ async function generate() {
   const recordDataPacking = writeRecordDataPacks(stage, [...manifest.records, ...manifest.historicalRecords]);
   json("record-data-packing.json", recordDataPacking);
   console.log(JSON.stringify({event: "record-data-packing", ...recordDataPacking}));
-  json("site.json", manifest);
+  write("site.json", serializeSiteMetadata(manifest));
   json("report.json", report);
   json("public/version.json", {
     sourceCommit: commit,
@@ -1102,6 +1102,8 @@ async function generate() {
       : {}),
   });
   if (productIdentity) json("public/product-release.json", productIdentity);
+  const providerRuntime = createProviderRuntime(root, commit);
+  if (providerRuntime) json("public/provider-runtime.json", providerRuntime);
   compileDocsBrowserAssets({outputRoot:path.join(stage,"public")});
   write(
     "public/search-engine.mjs",

@@ -66,7 +66,7 @@ network calls or implicit content downloads are used.
 
 ## Combined batch and provider repair
 
-The six original PRs #134–#139 and preparation #147 merged on main at product
+On upstream main, the six original PRs #134–#139 and preparation #147 merged at product
 0.4.8, preserving 1,457 material PCRs, 1,306 accepted classification edges and
 1,647 legacy aliases. The exact 0.4.8 source qualified fully and its npm pair was
 accepted, but provider staging failed because the complete 4.31 GB web export
@@ -85,6 +85,10 @@ Reader compatibility stays at minimum 0.4.1; Node 24.19.0/npm 12.2.0 remain pinn
 and the dependency-free provider importer retains Node 24.18.0. This patch makes
 no dependency or runtime upgrade, raises no resource limit and permits no retry
 of unchanged failed artifacts.
+
+These counts describe the upstream batch. A fork retaining additional records
+reads its current inventory from the catalog and classification coverage; the
+upstream batch counts do not replace those source-derived totals.
 
 ## Product 0.4.10 preparation
 
@@ -305,12 +309,14 @@ the unified source or move any existing tag.
 environment. It binds canonical owner/repository IDs, tag/event/workflow/checkout
 SHAs and `main` ancestry. Its reusable qualification workflow runs complete Linux
 validation, documentation/source/SEO checks and offline distribution on Linux,
-Windows and macOS. The documentation job builds and verifies the website once.
-A source/run/attempt-bound complete-file checkpoint transfers that exact export
-by artifact ID to the required product job, which verifies it before SEO and
-sealing the two npm packages and web archive from the same source. The intermediate
-export cannot be published. All sealed consumers and the reusable workflow output
-select the product job's one final bundle. The publish job downloads
+Windows and macOS. `web-build` builds the complete website once and transports its
+verified bytes in a source/run/attempt/qualification-bound archive. A separate
+`documentation` job safely materializes that exact artifact, runs the vendored
+SEO checker and seals the two npm packages and the identical web archive. Build,
+handoff and SEO audit evidence accompanies the immutable product artifact; it
+does not replace its existing release manifest or checksum contract. Both jobs
+retain their 120-minute limits and are required in both qualification lanes.
+The public product artifact output and publication guards remain unchanged. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.
 

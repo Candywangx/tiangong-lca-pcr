@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const root='/home/wangxuan/projects/tiangong-lca-pcr-1005';
+const original=root+'/.worktrees/pr30-combined-20261030',fixed=root+'/.worktrees/pr30-compat-hardening-20261101';
+const {withSiteExportServer}=await import(original+'/scripts/engineering/site-browser.ts');
+const {checkPublishedChapters}=await import(fixed+'/scripts/engineering/site-browser.ts');
+const {webkit}=await import(original+'/node_modules/playwright/index.mjs');
+const report=root+'/.reports/pr30-followup-20261101/a201-fixed-checker-diagnostic';fs.mkdirSync(report);
+const proof=JSON.parse(fs.readFileSync(original+'/packages/pcr-docs/out/generated/provider-runtime.json','utf8'));
+const browser=await webkit.launch();
+try{const results=await withSiteExportServer(original+'/packages/pcr-docs/out',async(origin:string)=>checkPublishedChapters(browser,'webkit',origin,proof,report));fs.writeFileSync(report+'/result.json',JSON.stringify({operation:'diagnostic-only revised checker over immutable a201 export',exportSource:proof.sourceCommit,providerRuntimeBytes:'verified by original source server',results},null,2)+'\n');console.log(JSON.stringify({passed:true,cases:results.length,exportSource:proof.sourceCommit}));}finally{await browser.close();}

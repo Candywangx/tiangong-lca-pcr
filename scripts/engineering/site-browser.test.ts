@@ -195,3 +195,14 @@ test('HTTP 200 RSC aliases use verified encoded routes with queries and exact ta
   await assert.rejects(withSiteExportServer(f.root,async()=>assert.fail('Tampered target must fail before listening')));
  }finally{f.close();}
 });
+
+test('sealed server executes source-bound provider middleware for published chapter paths',async()=>{
+ const {createProviderRuntime,PROVIDER_RUNTIME_FILE,providerRuntimeSourceRoot}=await import('../../packages/pcr-docs/scripts/provider-runtime.ts');
+ const sourceRoot=providerRuntimeSourceRoot(import.meta.url),f=fixture();
+ try{const proof=createProviderRuntime(sourceRoot,'a'.repeat(40))!;assert.ok(proof);f.put(PROVIDER_RUNTIME_FILE,JSON.stringify(proof));
+  const targets=new Map<string,Set<string>>();for(const row of proof.routes){const anchors=targets.get(row.to)??new Set<string>();anchors.add(row.anchor);targets.set(row.to,anchors);}
+  for(const [url,anchors]of targets)f.put(decodeURIComponent(url.slice(1))+'index.html','<html><h1>Target</h1>'+[...anchors].map(anchor=>'<h2 id="'+anchor+'">Section</h2>').join('')+'</html>');
+  await withSiteExportServer(f.root,async origin=>{for(const language of ['en','zh']){const row=proof.routes.find(route=>route.from.startsWith('/'+language+'/'))!;const response=await fetch(origin+row.from+'?q=a+b&q=%E4%B8%AD');assert.equal(response.status,200);assert.equal(await response.text(),await(await fetch(origin+row.to)).text());assert.equal((await fetch(origin+row.from,{method:'POST'})).status,404);}});
+  proof.files[0]!.sha256='sha256:'+'0'.repeat(64);f.put(PROVIDER_RUNTIME_FILE,JSON.stringify(proof));await assert.rejects(withSiteExportServer(f.root,async()=>assert.fail('Unbound provider code must not run')));
+ }finally{f.close();}
+});

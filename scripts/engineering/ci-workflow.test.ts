@@ -69,7 +69,7 @@ test('full-lane tests are complete, isolated, receipt-bound and include uninstru
  assert.equal(job('test-shards').if,"needs.plan.outputs.mode == 'full'");
  const command=text(step('test-shards','Execute exactly the frozen shard').run);
  assert.match(command,/if \[ "\$SHARD" = corpus \]/u);assert.match(command,/--qualification-plan .* --selection "\$SHARD" -- node/u);
- const docs=text(step('documentation','Build and verify the full static library').run);
+ const docs=text(step('web-build','Build and verify the full static library').run);
  assert.match(docs,/if \[ "\$\{\{ needs.plan.outputs.mode \}\}" = full \]/u);assert.match(docs,/--selection documentation -- npm --prefix packages\/pcr-docs run build/u);
  const browser=step('test-shards','Install browser runtimes for the consumer shard');assert.equal(browser.if,"matrix.shard == 'consumer'");
 });
@@ -80,41 +80,12 @@ test('data path retains global checks, exact generated content and sealed cross-
  assert.match(text(step('contracts','Verify changed canonical records').run),/ci-content.ts/u);
  assert.equal(object(step('contracts','Preserve content qualification evidence').with).path,'${{ runner.temp }}/pcr-content-contracts/');
  assert.match(text(step('test-shards','Bind the actual pinned npm entry for direct shard children').run),/npm_execpath=/u);
- for(const name of ['sealed-distribution','sealed-web']){assert.equal(job(name).needs,'product');assert.equal(job(name).if,undefined);}
+ for(const name of ['sealed-distribution','sealed-web']){assert.equal(job(name).needs,'documentation');assert.equal(job(name).if,undefined);}
  assert.equal(object(object(job('sealed-distribution').strategy).matrix).include instanceof Array,true);
  assert.match(text(step('sealed-distribution','Qualify real offline installation of the sealed packages').run),/--expected-source "\$\{\{ github.sha \}\}"/u);
  assert.ok(!steps('documentation').some(value=>text(value.run??'').includes('npm run product:test')));
  assert.ok(!steps('documentation').some(value=>text(value.run??'').includes('npm --prefix packages/pcr-docs test')));
  assert.equal(step('offline-distribution','Verify compact real offline distribution and reproducibility').run,'npm run test:offline:portable');
-});
-test('the required product job authenticates the exact export and owns the one final sealed artifact',()=>{
- assert.deepEqual(job('product').needs,['plan','documentation']);assert.equal(job('product').if,undefined);
- assert.equal(job('documentation')['timeout-minutes'],60);assert.equal(job('product')['timeout-minutes'],60);
- assert.equal(object(job('documentation').outputs).product_artifact_id,undefined);
- const capture=text(step('documentation','Capture the exact verified web export').run);
- for(const required of ['web-export-handoff.ts capture','pcr-plan','packages/pcr-docs/out','build-metrics.json','pcr-documentation-coverage'])assert.ok(capture.includes(required));
- const upload=object(step('documentation','Preserve the exact web export for product sealing').with);
- assert.equal(upload.name,'pcr-web-export-${{ github.run_id }}-${{ github.run_attempt }}');
- assert.equal(upload['include-hidden-files'],true);assert.equal(upload['compression-level'],1);assert.equal(upload['if-no-files-found'],'error');
- const transfer=object(step('product','Download the exact verified web export').with);
- assert.equal(transfer['artifact-ids'],'${{ needs.documentation.outputs.web_export_artifact_id }}');
- assert.equal(transfer.name,undefined);assert.equal(transfer.pattern,undefined);
- const productSteps=steps('product');
- const authenticate=productSteps.findIndex(value=>value.name==='Authenticate the complete export before product sealing');
- const seo=productSteps.findIndex(value=>value.name==='Verify shared SEO invariants without rebuilding');
- const seal=productSteps.findIndex(value=>value.name==='Build and verify the two packages and sealed web artifact');
- assert.ok(authenticate>=0&&authenticate<seo&&seo<seal);
- assert.match(text(productSteps[authenticate]!.run),/web-export-handoff\.ts verify/u);
- assert.match(text(productSteps[seo]!.run),/pcr-web-export\/out/u);
- assert.match(text(productSteps[seal]!.run),/pcr-web-export\/out/u);
- assert.ok(!steps('documentation').some(value=>text(value.run??'').includes('product:build')));
- assert.ok(!productSteps.some(value=>text(value.run??'').includes('packages/pcr-docs run build')));
- for(const name of ['sealed-distribution','sealed-web']){
-  const download=steps(name).find(value=>object(value.with??{})['artifact-ids']==='${{ needs.product.outputs.product_artifact_id }}');
-  assert.ok(download,name+' must consume the sole product artifact ID');
- }
- const outputs=object(object(object(workflow.on).workflow_call).outputs);
- assert.equal(object(outputs.product_artifact_id).value,'${{ jobs.product.outputs.product_artifact_id }}');
 });
 test('coverage receives same-attempt isolated raw artifacts and verifies membership before aggregation',()=>{
  assert.deepEqual(job('source-coverage').needs,['plan','test-shards','documentation']);
@@ -126,4 +97,24 @@ test('coverage receives same-attempt isolated raw artifacts and verifies members
  assert.notEqual(raw.path,doc.path);assert.equal(doc['artifact-ids'],'${{ needs.documentation.outputs.coverage_artifact_id }}');
  assert.match(text(step('source-coverage','Enforce complete shard membership and source-accounted coverage').run),/^node scripts\/engineering\/coverage-ci.ts /u);
  for(const name of ['offline-distribution','provider-importer','source-coverage'])assert.equal(job(name).if,"needs.plan.outputs.mode == 'full'");
+});
+
+test('verified web construction and product sealing have separate mandatory bounded jobs',()=>{
+ const producer=job('web-build');assert.equal(producer['timeout-minutes'],120);
+ assert.deepEqual(job('documentation').needs,['plan','web-build']);assert.equal(job('documentation')['timeout-minutes'],120);
+ assert.ok(CI_JOBS.includes('web-build' as typeof CI_JOBS[number]));
+ assert.equal(object(object(object(workflow.on).workflow_call).outputs).product_artifact_id!==undefined,true);
+ const publicOutput=object(object(object(object(workflow.on).workflow_call).outputs).product_artifact_id);
+ assert.equal(publicOutput.value,'${{ jobs.documentation.outputs.product_artifact_id }}');
+ const transfer=object(step('documentation','Download the exact verified web build').with);
+ assert.equal(transfer['artifact-ids'],'${{ needs.web-build.outputs.web_artifact_id }}');assert.equal(transfer['digest-mismatch'],'error');
+ assert.match(text(step('web-build','Freeze the complete verified web handoff').run),/product-web-build-artifact\.ts create/u);
+ assert.match(text(step('documentation','Verify and materialize the same-source web build').run),/product-web-build-artifact\.ts materialize/u);
+ assert.match(text(step('documentation','Verify shared SEO invariants on the materialized build').run),/product-web-build-artifact\.ts accept/u);
+ assert.match(text(step('documentation','Bind sealed product to complete web and SEO evidence').run),/product-web-build-artifact\.ts bind-product/u);
+ const upload=object(step('web-build','Preserve the immutable full web build').with);assert.match(text(upload.name),/github\.run_id.*github\.run_attempt/u);
+ assert.equal(upload['include-hidden-files'],true);assert.equal(upload['compression-level'],0);
+ assert.equal(object(job('documentation').outputs).coverage_artifact_id,'${{ needs.web-build.outputs.coverage_artifact_id }}');
+ assert.ok(!steps('documentation').some(s=>text(s.run??'').includes('packages/pcr-docs run build')));
+ assert.ok(!steps('web-build').some(s=>text(s.run??'').includes('npm run product:build')));
 });

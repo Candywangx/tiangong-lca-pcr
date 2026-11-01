@@ -129,6 +129,10 @@ acceptance; its full code coverage is explicitly unmeasured. Every reusable
 release qualification selects full mode, even with an empty product tag. See
 [CI qualification lanes](docs/typescript-engineering.md#ci-qualification-lanes)
 for allowed changes, evidence binding and complete-attempt retry requirements.
+The required `web-build` and `documentation` jobs separate the complete instrumented
+website export from product sealing without increasing either job limit. An exact
+source/run/attempt-bound archive preserves all web bytes and build/SEO evidence;
+both lanes retain the same sealed-product and coverage obligations.
 All first-party implementation, scripts and tests use strict TypeScript/TSX; installed packages and browsers receive compiled JavaScript. The shared SEO checker remains Python. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
 migration boundaries and final qualification requirements. The Python SEO checker
 is retained. Projection v2 now preserves normative source context; see the [semantic contract](docs/semantic-projection-contract.md). Authored JavaScript inventory is zero; final production qualification and cutover remain tracked under #69/#79 until live acceptance.

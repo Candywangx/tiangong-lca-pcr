@@ -22,15 +22,16 @@ checkPaths:
   - product-release.json
   - builder/**
   - packages/**
+  - middleware.ts
   - skills/**
   - .github/workflows/**
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-30
-lastReviewedCommit: 56e912858aa769ff13075fa852a344d0b730a3b9
-lastReviewedNote: "PCR #159: reviewed stable product 0.4.10 preparation at 56e91285. Authority, three package mirrors and docs lock root metadata advance together; dependency resolutions, canonical content, methodology/translation state, reader minimum and runtime pins remain unchanged. Current preparation notes distinguish verified public 0.4.9 from pending new tag qualification, coordinated npm/site publication and exact workspace integration."
+lastReviewedAt: 2026-11-01
+lastReviewedCommit: f5fff32b75921454f7e0e89be6963c08f9d43733
+lastReviewedNote: "PR30: reviewed exact published-chapter compatibility, root runtime ownership and sealed source verification. Canonical content, scientific/translation states, runtime pins and deployment authority remain unchanged; final exact-source qualification is separate."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -283,6 +284,11 @@ bundles and the shared Builder history verifier; it cannot mutate canonical PCR
 content or promote methodology/translation status. English and Chinese remain
 required; declared optional language artifacts are verified and preserved.
 
+Published chapter aliases use the exact source-owned root `middleware.ts` profile. The sealed
+`generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
+anchors and the importer rechecks actual source bytes before atomic handoff. Native history normalization
+and provider compilation do not authorize deployment or promote methodology states.
+
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
 not authoring sources. Use `npm run docs:build` for the complete static publication
 gate. Production uses the existing EdgeOne Git project and the `release/production` deployment
@@ -323,6 +329,12 @@ npm run validate
 
 Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
 Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.
+
+CI requires both the instrumented `web-build` producer and the separate
+`documentation` product sealer in full and data lanes. Their complete archive/tree
+handoff binds the actual source, current run/attempt and applicable qualification
+plan, preserving original web bytes and build/SEO evidence without raising budgets.
+The public reusable product artifact output and downstream sealed checks remain.
 
 CI uses the stable `validate` aggregate gate under
 [the engineering qualification contract](docs/typescript-engineering.md#ci-qualification-lanes).

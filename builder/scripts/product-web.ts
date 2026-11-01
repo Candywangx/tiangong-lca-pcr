@@ -1,3 +1,4 @@
+import {PROVIDER_RUNTIME_FILE,verifyProviderRuntimeExport,parseProviderRuntime,htmlAnchors} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import { createHash, type BinaryLike } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { constants, closeSync, fstatSync, lstatSync, openSync, readSync, realpathSync, writeFileSync } from "node:fs";
@@ -13,7 +14,7 @@ export interface WebCounts extends Record<string, number> { pcrs: number; pages:
 export interface WebProbe { path: string; bytes: number; sha256: string }
 export interface StaticRouteAliasProbe { source: string; target: string; bytes: number; sha256: string }
 export interface StaticRouteAliasWebProof { schemaVersion: 1; sourceCommit: string; manifest: WebProbe; pairs: StaticRouteAliasProbe[] }
-export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe; staticRouteAliases?: StaticRouteAliasWebProof }
+export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe; staticRouteAliases?: StaticRouteAliasWebProof; providerRuntime?: WebProbe }
 export interface WebRequestOptions { method: "GET"; redirect: "manual"; credentials: "omit"; headers: Record<string, string>; signal: AbortSignal }
 export type WebFetch = (url: string, options: WebRequestOptions) => Promise<Response>;
 export interface LiveWebsiteOptions { origin: string; identity: unknown; counts: unknown; probes: unknown; fetcher?: WebFetch; timeoutMs?: number; maxBytes?: number }
@@ -218,7 +219,9 @@ export function createWebProbes({ webDir, includeHomes = true, requireAliases }:
     staticRouteAliases = validateStaticRouteAliasWebProof({ schemaVersion: 1, sourceCommit: identity.sourceCommit,
       manifest: describe("/" + STATIC_ROUTE_ALIASES_FILE, STATIC_ROUTE_ALIASES_FILE), pairs }, identity);
   }
+  const providerRuntime = verifyProviderRuntimeExport(webDir, identity.sourceCommit);
   return { identity: identityFields(identity), counts,
+    ...(providerRuntime ? {providerRuntime: describe("/" + PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_FILE)} : {}),
     ...(staticRouteAliases ? { staticRouteAliases } : {}),
     routes: (includeHomes ? WEB_PROBE_ROUTES : LEGACY_WEB_PROBE_ROUTES).map(urlPath => describe(urlPath, `${urlPath.slice(1)}index.html`)),
     rawDownload: describe(RAW_PATH, RAW_PATH.slice(1)) };
@@ -362,6 +365,18 @@ export async function verifyLiveWebsite({ origin, identity, counts, probes, fetc
         if (contentType !== undefined && observed !== contentType) fail("PCR_WEB_ALIAS_HEADERS", "Alias, target and query responses disagree on MIME type.", { path: urlPath });
         contentType = observed;
       }
+    }
+  }
+  if (probes.providerRuntime !== undefined) {
+    const descriptor = probes.providerRuntime; validateProbe(descriptor, '/' + PROVIDER_RUNTIME_FILE);
+    const bytes = await request(descriptor.path, {limit: descriptor.bytes, fresh: true, mediaType: 'application/json'});
+    if (!bytes || bytes.length !== descriptor.bytes || sha256(bytes) !== descriptor.sha256) fail('PCR_WEB_PROVIDER_HASH', 'Live provider profile differs from sealed bytes.');
+    const runtime = parseProviderRuntime(JSON.parse(bytes.toString('utf8')), identity.sourceCommit);
+    const representatives = ['en','zh'].flatMap(language => {const row = runtime.routes.find(route => route.from.startsWith('/' + language + '/'));return row ? [row] : [];});
+    for (const row of representatives) for (const query of ['', '?pcr-legacy=' + identity.sourceCommit.slice(0,12) + '&q=a+b&q=%2F']) {
+      const target = await request(row.to + query, {mediaType:'text/html'});
+      const old = await request(row.from + query, {mediaType:'text/html'});
+      if (!target || !old || !target.equals(old) || !htmlAnchors(old.toString('utf8')).has(row.anchor)) fail('PCR_WEB_PROVIDER_ROUTE', 'Published chapter rewrite differs from its current page or lost its default anchor.', {path:row.from+query});
     }
   }
   // Detect a release cutover while the route/download probes were being inspected.

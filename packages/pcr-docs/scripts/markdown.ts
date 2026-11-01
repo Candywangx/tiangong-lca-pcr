@@ -373,6 +373,16 @@ export function renderMarkdown(
     if (node.type === "element") previousHeading = isHeading;
   }
   flush();
+  // The existing 65% chapter target and 3x whole-unit ceiling also bound tail packing.
+  // Merge before deriving identities so every anchor and source link has one current owner.
+  while (groups.length > 1) {
+    const tail = groups[groups.length - 1]!, previous = groups[groups.length - 2]!;
+    if (Buffer.byteLength(html(tail.nodes)) >= maxHtmlBytes * 0.65) break;
+    const combined = [...previous.nodes, ...tail.nodes];
+    if (Buffer.byteLength(html(combined)) > maxHtmlBytes * 3) break;
+    previous.nodes = combined;
+    groups.pop();
+  }
   if (!groups.length) throw new Error(fileKey + ": source body is empty.");
   const parts = groups.map((group, index) => {
     const toc: {title:string;url:string;depth:number}[] = [];
