@@ -1,0 +1,624 @@
+---
+pcr_id: pcr.ambient-own-account-wholesale-of-full-reel-brown-kraftliner
+language: en-US
+status: candidate
+sync_with: pcr.zh-CN.md
+---
+
+# Ambient own-account wholesale of full-reel brown kraftliner
+
+## 1. Scope and Applicability
+
+Original FULLREELS of UNCOATED BROWN KRAFTLINER,actual gradeSKU/fibreBOM/fullreel-netpaper versus core/wrap tare,width-length/count,representative conditionedgrammage/moisture and condition,owned/purchased/resold ambientB2B. Exclude white-top/coated/wetstrength/testliner/partialcutlength,merchant convert/slit/print/corrugate/repack/activeclimate,retail/agency. No catalogue typical numerical or foodcontact/strength/life claim is imposed;actual extra duties require reviewed complete scope.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.ambient-own-account-wholesale-of-full-reel-brown-kraftliner |
+| classification_refs | CPC3.0:61094;narrower32132 |
+| covered_products | Completed original-full-reel uncoated brown kraftliner own-account wholesale consignment service |
+| excluded_products | White-top/coated/wetstrength/testliner/partialgoods;merchantconvert/slit/print/corrugate/climate/retailagency |
+| representative_product | Actual uncoatedbrownfullreelSKU/BOM/nativepaper-corewrap/widthlength/grammage-waterstate finalB2Bconsignment |
+| production_route | Released originalfullreel receipt -> ambientstock/orderhandling -> dispatch -> finalbusinessacceptance |
+| market_state | Physical wholesale add-on;paper/water/core/wrap nonexchange merchandise |
+
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Completed original-full-reel uncoated brown kraftliner own-account wholesale consignment service |
+| How much | 1 Item(s),one FINAL commercialconsignment,not reel/kg/area/value |
+| How well | Actual SKU/fibreBOM/fullreel/widthlength/netpaper-corewrap/grammagewatercondition/finalgate |
+| How long or cycle | Actual receipt/storage/return/dispatch/acceptance timestamp-timezone/cutoffs and all asset phases |
+| reference_flow_link | `accepted_service` |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Completed original-full-reel uncoated brown kraftliner own-account wholesale consignment service |
+| Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| Reference unit | Item(s) |
+| Required qualifiers | merchant_ownership_resale; final_business_buyer_gate; uncoated_brown_fullreel_sku; grade_fibre_bom; unique_reel_lot_hierarchy; width_length_area_count; netpaper_corewrap_tare; grammage_water_sample_condition; period_timezone_condition; source_gate_completed_integration; provider_asset_freight_scope; receiver_fates |
+
+Actual sourceownership/resale and postreversal finalB2B gate establish N;receipt alone insufficient. Failed/unfinished duties retain resources,N0no division.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| commercial_count | accepted_service | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | Item(s) | Reference1 Item(s) completed commercial service,reel/mass/area not multiplier. |
+| reel_basis | nonexchange merchandise | Count; Mass; Area | actual native count; kg; m2 | Net asreceived paper mass=sum unique packed reels(gross-core tare-wrap tare-outerpack/support tare),EACH actual sourcedrepeat once/TOTALunchanged,parent/child exclusive. Paper area=actual compatible width*length for unique fullreels;area*actual representative grammage converts to paper mass ONLY same paper/conditioning/water state and supported native units/factors. Conditioned grammage not dry-fibre mass,Cobbabsorption not waterfraction,nominal thickness*density not measured reel mass. No merchant unwinding/measurement prescribed;traceable supplier records accepted. |
+| water_basis | actual stock and fates | Mass; mass fraction | kg; actual fraction unit | Convert native percentages first. w_wet=water/asreceived,w_dry=water/matching drynonwater;dry_nonwater=asreceived*(1-w_wet),w_wet=w_dry/(1+w_dry) ONLY same sample/state/definitions. LOD may include other volatiles,not automatically water. Drynonwater is not automatically dryfibre without actual BOM/composition. Water change/conditionedgrammage/Cobb do not prove fibre loss or vapour. |
+| native_identity | actual exchanges | actual native property | actual native unit | Verify actual SKU/provider/asset/receiver/species-medium and native property/unit. Generic electricityEnergy cannot use fuel-specific NCV/GCV factors or Count substitute. Verified electricity using an ILCD reference property named Net calorific value is allowed on its independently confirmed electrical-energy basis and unit group; the label does not authorize fuel heating-value factors. |
+
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Actual released originalfullreel uncoatedbrown kraftlinerSKU/BOM/netpaper-corewrap/water/condition |
+| starting_condition_role | Finishedpaper/water/corewrap nonexchange stock/throughflow |
+| product_classification_scope | Narrower32132 within321/61094,paper321except32194 |
+| recursive_input_rule | Only complete disjoint actual provider/receiver gates,no repeated samewholesale/resource/asset/carrier |
+| upstream_dataset_requirement | Physical ambient owned-resold wholesale only;actual receipt/order/dispatch/housekeeping inside. Original fullreel paper/water/core/wrap and complete source forest-fibre/pulp/papermaking/actual drying/winding/release/originalpacking including lost commodity upstream remain outside as nonexchange stock. Raw pulp alone incomplete;this add-on is not standalone paper LCA. Require actual original/assigned/loss/baseline-covered/additional finished-gate quantities with native state conversions and stage/loss owner/coverage. ACTUAL missing stages/additional demand must be integrated outsideonce with COMPLETED status/link/time/timezone/source/owner/nativequantity/result before complete-chain use;pending record insufficient. Actual service loss handling/receiver treatment insideonce. |
+| disclosure | All qualifiers/native stock-water-corewrap/BOM/grammageconditions/sourceallterminal baselineadditional actualcompletedintegration/fullresources-fates |
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| service | actual trade duties | Physical ambient owned-resold wholesale only;actual receipt/order/dispatch/housekeeping inside. Original fullreel paper/water/core/wrap and complete source forest-fibre/pulp/papermaking/actual drying/winding/release/originalpacking including lost commodity upstream remain outside as nonexchange stock. Raw pulp alone incomplete;this add-on is not standalone paper LCA. |  |
+| source | actual trade duties | Require actual original/assigned/loss/baseline-covered/additional finished-gate quantities with native state conversions and stage/loss owner/coverage. ACTUAL missing stages/additional demand must be integrated outsideonce with COMPLETED status/link/time/timezone/source/owner/nativequantity/result before complete-chain use;pending record insufficient. Actual service loss handling/receiver treatment insideonce. |  |
+| operations | actual trade duties | Exclude white-top/coated/wetstrength/testliner,partial/cut-length goods,merchant conversion/slitting/printing/corrugating/repacking or active climate conditioning,retail/agency. Actual extra operation requires separate complete review. Supplier test climate is not merchant climate operation. |  |
+| fates | actual trade duties | Actual grade/BOM/condition and water state govern accepted/return/closing/useful/waste exits. Wetness/dent/moisture or mass residual is not automatic whole discard,fibre loss or species. Retained paper/core/wrap/fluid in whole/mixed carrier nonadditive;actual independent outlets and receiver treatment once,no default recyclingcredit. |  |
+| resources | actual trade duties | Complete actual merchant/provider resources,full-life shared facility/handling/support manufacture-maintenance-cleaning-replacement-EOL and all users/periods with native causal drivers. Provider coverage replaces covered direct duties only;carrier/empty legs/support one owner. |  |
+
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| brown_kraftliner_full_reel_trade | Brown kraftliner full-reel stock trade | required | Actual originalfullreel uncoatedbrown ownaccountB2B | Receipt/order/dispatch and actualcleanup batches,stock/carry/returns and sharedinfrastructure acrossperiods | `accepted_service` |
+
+No papermaking/drying/winding or converting nodes activated. Actual duty/event/period/source/reject links connect useful retained or actual receiver paths;unresolved rejects cannot count accepted service. Actual variable configurations expand from records,unknown notzero.
+
+### Process: Brown kraftliner full-reel stock trade (`brown_kraftliner_full_reel_trade`)
+
+#### Inputs
+
+##### Product flows
+
+###### Actual alternating-current electricity at point of use (`warehouse_power_ac`)
+
+Only actual alternating-current electricity crossing this node boundary and not already inside a complete provider. The identity leaves provider, voltage, generation mix and delivery-loss allocation unspecified; collect them where required. Its ILCD reference property is named Net calorific value but the verified electricity flow defines an electrical-energy basis of 1 MJ; native kWh uses exactly 3.6 MJ per kWh, never a fuel heating-value factor. Direct-current or another unmatched electricity state stays in the residual requirement.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Assigned actual native physical quantity / N; cp_power.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_power`
+
+Range evidence need: Need meters/equipment/provider periods and all-consumer physical attribution,not paper strength or test-climate energy factors.
+
+###### Actual liquid treated tap-water supply (`housekeeping_water_liquid_tap`)
+
+Applicable only when the actual source is treated tap water supplied for the declared use. Preserve actual supplier, quality, temperature/state and provider boundary; do not assume that every water supply is tap water. Ice, bottled/mineral/reclaimed/untreated water and direct environmental withdrawal stay in their actual separate identities. Keep the parent native mass or volume basis. For any final mass-reference conversion, require actual compatible density/state evidence; the catalogue secondary-volume relationship is not a default site density.
+
+- Selected flow: Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- Flow property / unit: Volume / m3
+- Amount rule: Assigned actual native physical quantity / N; cp_water.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+
+Range evidence need: Need supply,retained/free-liquid/direct fates with source/receiver evidence;Cobb absorption and moisture residual do not quantify service water.
+
+###### Actual independently recorded synthetic detergent supply (`housekeeping_materials_synthetic_detergent`)
+
+Only actual synthetic surfactant detergent identified by product/formulation, supplied state and use records. Measure net supplied material excluding package tare; retain concentrate/dilution-water distinctions and never count whole formulation and components additively. Soap, disinfectants, wipes, filters and other materials remain under their separate actual identities; no cleaning recipe, dose or occurrence is assumed.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual native supply SKU/formulation/carrier/stock and conversion provenance,no universal cleaning agent or dose.
+
+###### Actual separately recorded polyethylene packaging film (`added_shipping_material_pe_film`)
+
+Only actual independently supplied polyethylene film used as additional service-owned wrapping or lining, verified by actual polymer/formulation and net film mass. This identity is generic production mix at plant; retain actual supply gate, provider and separately owned delivery burdens. It does not prescribe LDPE/HDPE grade, recycled content, film thickness or dose. PVC/PET/PP, multilayer composites, adhesive labels, filled packs and inherited merchandise packaging remain separate residual identities. Whole supply and components must not be counted twice; no occurrence is assumed.
+
+- Selected flow: Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need native material/count/area/length/mass/tare and stock records,distinguishing original and added pack from paper net mass.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Completed original-full-reel uncoated brown kraftliner own-account wholesale consignment service (`accepted_service`)
+
+One unique FINAL business-accepted commercial consignment of original FULL REELS of UNCOATED BROWN KRAFTLINER,owned/purchased/resold by merchant in ambient trade. Actual gradeSKU/fibre-BOM,full-reel/lot,width-length/count,net paper versus core-wrap tare,representative grammage/moisture conditions,condition/time and buyer gate qualify service. Reel,paper kg or area is not N.
+
+- Selected flow: Completed original-full-reel uncoated brown kraftliner own-account wholesale consignment service
+- Flow property / unit: Count / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: `fixed_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_reels`
+
+Range evidence need: Need final owned-resold B2B gate/reversals and actual uncoatedbrown-fullreelSKU/BOM/netmass-core-wrap/water/grammage evidence,no typical catalogue value as actual.
+
+##### Waste flows
+
+###### Discarded original full brown-kraftliner reel (`whole_reel_waste_atomic_case`)
+
+Conditional on independently recorded actual Discarded original full brown-kraftliner reel. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `whole_reel_waste`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+
+- Selected flow: Discarded original full brown-kraftliner reel
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_reels.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_reels`
+
+Range evidence need: Need actual gross/net/tare/water state,receiver treatment and original finished-gate loss conversion/coverage owner,no wetgross as dryfibre loss.
+
+###### Actual independently collected non-packaging waste paper (`nonusable_separated_material_paper`)
+
+Only an actually independent collected paper/cardboard waste stream whose paper identity and as-collected composition are established at the receiver. Non-paper laminates, composite debris, wire/plastic mixtures and contaminated cleanup solids retain their own residual identities. Whole book/reel, packaging and this independent paper outlet are physically exclusive; retained paper components are non-additive audits. No pulping, shredding, sorting, recovery credit or occurrence is assumed.
+
+- Selected flow: waste paper (unspecified) `f140a5a2-5318-4d06-956f-a87b9c6fda25`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need native mixture/netmass/moisture/source-state conversion and receiver/exclusion evidence,not all wet kg as fibre.
+
+###### Actual separately collected paper packaging waste (`packing_waste_paper_pack`)
+
+Only actual independently discarded and separately collected paper packaging at this node, with its actual wet/as-collected composition, receiver and treatment/transport responsibility. A contaminated or co-collected mixed stream must use its own verified identity; its material components are non-additive audits. Returnable packaging still in use is not this waste; no composition, quantity, recycling or treatment is assumed.
+
+- Selected flow: Packaging waste, paper `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/area/mass/tare/retainedpaper-water and real receiver/carrier/treatment links,no recycling-mark credit.
+
+
+###### Actual separately collected metal packaging waste (`packing_waste_metal_pack`)
+
+Only actual independently discarded and separately collected metal packaging at this node, with its actual wet/as-collected composition, receiver and treatment/transport responsibility. A contaminated or co-collected mixed stream must use its own verified identity; its material components are non-additive audits. Returnable packaging still in use is not this waste; no composition, quantity, recycling or treatment is assumed.
+
+- Selected flow: packaging waste (metal) `cdda6013-c0c5-4c72-990a-f5668fe71069`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/area/mass/tare/retainedpaper-water and real receiver/carrier/treatment links,no recycling-mark credit.
+
+
+###### Actual separately collected plastic packaging waste (`packing_waste_plastic_pack`)
+
+Only actual independently discarded, separately collected empty plastic packaging with its actual composition, moisture and receiver. Retained merchandise, contaminated mixed packs, foam inside appliances, disposable wipes and composite packaging do not use this case. Components retained in a whole mixed stream are non-additive audits; retain actual transport/treatment ownership once. No emptying, recycling, occurrence or quantity is assumed.
+
+- Selected flow: packaging waste (plastic) `919351c4-3e25-4092-9934-73ecec021a3b`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/area/mass/tare/retainedpaper-water and real receiver/carrier/treatment links,no recycling-mark credit.
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| finalN | actual trade duties | Verify actual ownership/resale,buyer and unique FINAL acceptance after reversals;receipt/reel/kg/area/value not serviceN. Failed/canceled/unfinished duties retain actual resources/cohort/period,N0no division. |  |
+| sourcecohort | actual trade duties | Directtrace OR original_gate_quantity*numerator_driver/positive complete source_all_exit_driver. Same compatible complete source cohort includes every accepted,closing/unsold/damaged retained,useful-other,return and real whole/fragment/mixed/liquid loss driver,each native metadata/owner/source-link/exclusivity/numerator membership;no accepted-only denominator. Priorclosing→currentopening samequantity/state/sourcegate owner is one carry,not new purchase/upstream/N or two terminal demands. Match baseline/additional stages/loss coverage owner and ACTUALLY completed missingstage/additional-demand integration outsideonce. |  |
+| stocklife | actual trade duties | S=opening+net_receipts-closing,NET material excludes container tare,real recovery/retainedclosing once. Gross INPUT S with separate matched unused OUTPUT ORconsumedS-return INPUT OMIToutput,no numericS+return or doublecredit. Full-life asset attribution uses compatible cohort/complete all-user lifetime,observed+sourced remainder/termination,uncertainty/update. Inherited core/paper returns do not net unrelated supplies. |  |
+| exclusive | actual trade duties | Whole/part/mixed/pack/free-liquid/useful/direct transfers retain source/receiver owners,contents nonadditive,no avoided-production credit by collection. Unique freight record share inside each summand,N once. |  |
+
+
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| source_scope_normalization | nonexchange commodity and service combination | Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division. |  |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_reels | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | merchant_id;ownership_purchase_resale_evidence;business_buyer_id;acceptance_gate;acceptance_gate_source;final_acceptance_record_id;reversal_record_ids;unfinished_event_ids;supplier_id;manufacturer_id;source_grade_sku;source_lot;reel_id;parent_package_id;original_full_reel_evidence;uncoated_brown_identity_source;fibre_bom_records;component_composition_basis;component_composition_method;component_composition_source;core_material_source;wrap_material_source;count_extent_EACH_or_TOTAL;count_extent_source;condition_source;receipt_timestamp;storage_start;storage_end;dispatch_timestamp;acceptance_timestamp;timestamp_timezone;time_source;sample_id;sample_time;sample_state;grammage_condition_definition;grammage_condition_source;grammage_representativeness;width_length_source;moisture_definition;moisture_method;moisture_source;water_species_method_scope;matching_nonwater_definition;cobb_definition_source;source_gate_dataset_id;source_gate_reference;source_gate_state;baseline_stage_coverage;baseline_loss_coverage;missing_actual_stage_records;loss_owner;already_included_coverage;source_all_exit_driver_records;prior_period_closing_link;current_period_opening_link;terminal_exit_id;terminal_exit_kind;terminal_source_link;driver_owner;driver_exclusivity_key;numerator_record_links;direct_assignment_evidence;allocation_method;allocation_source;source_state_conversion_evidence;integration_status;integration_link;integration_timestamp;integration_timezone;integration_source;integration_owner;completed_integration_result;receiver_id;receiver_decision;treatment_scope;transfer_id;stream_exclusion_ids;opening_carried_quantity;opening_carried_quantity_unit;opening_carried_quantity_basis;opening_carried_quantity_method;opening_carried_quantity_state;opening_carried_quantity_sample_time;opening_carried_quantity_source;opening_carried_quantity_conversion_factor;opening_carried_quantity_conversion_unit;opening_carried_quantity_conversion_source;reel_count;reel_count_unit;reel_count_basis;reel_count_method;reel_count_state;reel_count_sample_time;reel_count_source;reel_count_conversion_factor;reel_count_conversion_unit;reel_count_conversion_source;reels_per_parent;reels_per_parent_unit;reels_per_parent_basis;reels_per_parent_method;reels_per_parent_state;reels_per_parent_sample_time;reels_per_parent_source;reels_per_parent_conversion_factor;reels_per_parent_conversion_unit;reels_per_parent_conversion_source;repeat_count;repeat_count_unit;repeat_count_basis;repeat_count_method;repeat_count_state;repeat_count_sample_time;repeat_count_source;repeat_count_conversion_factor;repeat_count_conversion_unit;repeat_count_conversion_source;width;width_unit;width_basis;width_method;width_state;width_sample_time;width_source;width_conversion_factor;width_conversion_unit;width_conversion_source;length;length_unit;length_basis;length_method;length_state;length_sample_time;length_source;length_conversion_factor;length_conversion_unit;length_conversion_source;paper_area;paper_area_unit;paper_area_basis;paper_area_method;paper_area_state;paper_area_sample_time;paper_area_source;paper_area_conversion_factor;paper_area_conversion_unit;paper_area_conversion_source;grammage;grammage_unit;grammage_basis;grammage_method;grammage_state;grammage_sample_time;grammage_source;grammage_conversion_factor;grammage_conversion_unit;grammage_conversion_source;conditioning_temperature;conditioning_temperature_unit;conditioning_temperature_basis;conditioning_temperature_method;conditioning_temperature_state;conditioning_temperature_sample_time;conditioning_temperature_source;conditioning_temperature_conversion_factor;conditioning_temperature_conversion_unit;conditioning_temperature_conversion_source;conditioning_relative_humidity;conditioning_relative_humidity_unit;conditioning_relative_humidity_basis;conditioning_relative_humidity_method;conditioning_relative_humidity_state;conditioning_relative_humidity_sample_time;conditioning_relative_humidity_source;conditioning_relative_humidity_conversion_factor;conditioning_relative_humidity_conversion_unit;conditioning_relative_humidity_conversion_source;packed_gross_mass;packed_gross_mass_unit;packed_gross_mass_basis;packed_gross_mass_method;packed_gross_mass_state;packed_gross_mass_sample_time;packed_gross_mass_source;packed_gross_mass_conversion_factor;packed_gross_mass_conversion_unit;packed_gross_mass_conversion_source;core_tare;core_tare_unit;core_tare_basis;core_tare_method;core_tare_state;core_tare_sample_time;core_tare_source;core_tare_conversion_factor;core_tare_conversion_unit;core_tare_conversion_source;wrap_tare;wrap_tare_unit;wrap_tare_basis;wrap_tare_method;wrap_tare_state;wrap_tare_sample_time;wrap_tare_source;wrap_tare_conversion_factor;wrap_tare_conversion_unit;wrap_tare_conversion_source;outer_pack_support_tare;outer_pack_support_tare_unit;outer_pack_support_tare_basis;outer_pack_support_tare_method;outer_pack_support_tare_state;outer_pack_support_tare_sample_time;outer_pack_support_tare_source;outer_pack_support_tare_conversion_factor;outer_pack_support_tare_conversion_unit;outer_pack_support_tare_conversion_source;net_asreceived_paper_mass;net_asreceived_paper_mass_unit;net_asreceived_paper_mass_basis;net_asreceived_paper_mass_method;net_asreceived_paper_mass_state;net_asreceived_paper_mass_sample_time;net_asreceived_paper_mass_source;net_asreceived_paper_mass_conversion_factor;net_asreceived_paper_mass_conversion_unit;net_asreceived_paper_mass_conversion_source;water_mass;water_mass_unit;water_mass_basis;water_mass_method;water_mass_state;water_mass_sample_time;water_mass_source;water_mass_conversion_factor;water_mass_conversion_unit;water_mass_conversion_source;wet_basis_water_fraction;wet_basis_water_fraction_unit;wet_basis_water_fraction_basis;wet_basis_water_fraction_method;wet_basis_water_fraction_state;wet_basis_water_fraction_sample_time;wet_basis_water_fraction_source;wet_basis_water_fraction_conversion_factor;wet_basis_water_fraction_conversion_unit;wet_basis_water_fraction_conversion_source;dry_basis_water_ratio;dry_basis_water_ratio_unit;dry_basis_water_ratio_basis;dry_basis_water_ratio_method;dry_basis_water_ratio_state;dry_basis_water_ratio_sample_time;dry_basis_water_ratio_source;dry_basis_water_ratio_conversion_factor;dry_basis_water_ratio_conversion_unit;dry_basis_water_ratio_conversion_source;dry_nonwater_mass;dry_nonwater_mass_unit;dry_nonwater_mass_basis;dry_nonwater_mass_method;dry_nonwater_mass_state;dry_nonwater_mass_sample_time;dry_nonwater_mass_source;dry_nonwater_mass_conversion_factor;dry_nonwater_mass_conversion_unit;dry_nonwater_mass_conversion_source;component_mass;component_mass_unit;component_mass_basis;component_mass_method;component_mass_state;component_mass_sample_time;component_mass_source;component_mass_conversion_factor;component_mass_conversion_unit;component_mass_conversion_source;component_fraction;component_fraction_unit;component_fraction_basis;component_fraction_method;component_fraction_state;component_fraction_sample_time;component_fraction_source;component_fraction_conversion_factor;component_fraction_conversion_unit;component_fraction_conversion_source;duration;duration_unit;duration_basis;duration_method;duration_state;duration_sample_time;duration_source;duration_conversion_factor;duration_conversion_unit;duration_conversion_source;original_gate_quantity;original_gate_quantity_unit;original_gate_quantity_basis;original_gate_quantity_method;original_gate_quantity_state;original_gate_quantity_sample_time;original_gate_quantity_source;original_gate_quantity_conversion_factor;original_gate_quantity_conversion_unit;original_gate_quantity_conversion_source;assigned_source_quantity;assigned_source_quantity_unit;assigned_source_quantity_basis;assigned_source_quantity_method;assigned_source_quantity_state;assigned_source_quantity_sample_time;assigned_source_quantity_source;assigned_source_quantity_conversion_factor;assigned_source_quantity_conversion_unit;assigned_source_quantity_conversion_source;source_loss_quantity;source_loss_quantity_unit;source_loss_quantity_basis;source_loss_quantity_method;source_loss_quantity_state;source_loss_quantity_sample_time;source_loss_quantity_source;source_loss_quantity_conversion_factor;source_loss_quantity_conversion_unit;source_loss_quantity_conversion_source;baseline_covered_source_quantity;baseline_covered_source_quantity_unit;baseline_covered_source_quantity_basis;baseline_covered_source_quantity_method;baseline_covered_source_quantity_state;baseline_covered_source_quantity_sample_time;baseline_covered_source_quantity_source;baseline_covered_source_quantity_conversion_factor;baseline_covered_source_quantity_conversion_unit;baseline_covered_source_quantity_conversion_source;additional_uncovered_source_quantity;additional_uncovered_source_quantity_unit;additional_uncovered_source_quantity_basis;additional_uncovered_source_quantity_method;additional_uncovered_source_quantity_state;additional_uncovered_source_quantity_sample_time;additional_uncovered_source_quantity_source;additional_uncovered_source_quantity_conversion_factor;additional_uncovered_source_quantity_conversion_unit;additional_uncovered_source_quantity_conversion_source;missing_stage_quantity;missing_stage_quantity_unit;missing_stage_quantity_basis;missing_stage_quantity_method;missing_stage_quantity_state;missing_stage_quantity_sample_time;missing_stage_quantity_source;missing_stage_quantity_conversion_factor;missing_stage_quantity_conversion_unit;missing_stage_quantity_conversion_source;integrated_source_quantity;integrated_source_quantity_unit;integrated_source_quantity_basis;integrated_source_quantity_method;integrated_source_quantity_state;integrated_source_quantity_sample_time;integrated_source_quantity_source;integrated_source_quantity_conversion_factor;integrated_source_quantity_conversion_unit;integrated_source_quantity_conversion_source;numerator_driver;numerator_driver_unit;numerator_driver_basis;numerator_driver_method;numerator_driver_state;numerator_driver_sample_time;numerator_driver_source;numerator_driver_conversion_factor;numerator_driver_conversion_unit;numerator_driver_conversion_source;source_all_exit_driver;source_all_exit_driver_unit;source_all_exit_driver_basis;source_all_exit_driver_method;source_all_exit_driver_state;source_all_exit_driver_sample_time;source_all_exit_driver_source;source_all_exit_driver_conversion_factor;source_all_exit_driver_conversion_unit;source_all_exit_driver_conversion_source;driver_quantity;driver_quantity_unit;driver_quantity_basis;driver_quantity_method;driver_quantity_state;driver_quantity_sample_time;driver_quantity_source;driver_quantity_conversion_factor;driver_quantity_conversion_unit;driver_quantity_conversion_source;accepted_quantity;accepted_quantity_unit;accepted_quantity_basis;accepted_quantity_method;accepted_quantity_state;accepted_quantity_sample_time;accepted_quantity_source;accepted_quantity_conversion_factor;accepted_quantity_conversion_unit;accepted_quantity_conversion_source;return_quantity;return_quantity_unit;return_quantity_basis;return_quantity_method;return_quantity_state;return_quantity_sample_time;return_quantity_source;return_quantity_conversion_factor;return_quantity_conversion_unit;return_quantity_conversion_source;closing_quantity;closing_quantity_unit;closing_quantity_basis;closing_quantity_method;closing_quantity_state;closing_quantity_sample_time;closing_quantity_source;closing_quantity_conversion_factor;closing_quantity_conversion_unit;closing_quantity_conversion_source;useful_other_exit_quantity;useful_other_exit_quantity_unit;useful_other_exit_quantity_basis;useful_other_exit_quantity_method;useful_other_exit_quantity_state;useful_other_exit_quantity_sample_time;useful_other_exit_quantity_source;useful_other_exit_quantity_conversion_factor;useful_other_exit_quantity_conversion_unit;useful_other_exit_quantity_conversion_source;whole_loss_quantity;whole_loss_quantity_unit;whole_loss_quantity_basis;whole_loss_quantity_method;whole_loss_quantity_state;whole_loss_quantity_sample_time;whole_loss_quantity_source;whole_loss_quantity_conversion_factor;whole_loss_quantity_conversion_unit;whole_loss_quantity_conversion_source;fragment_loss_quantity;fragment_loss_quantity_unit;fragment_loss_quantity_basis;fragment_loss_quantity_method;fragment_loss_quantity_state;fragment_loss_quantity_sample_time;fragment_loss_quantity_source;fragment_loss_quantity_conversion_factor;fragment_loss_quantity_conversion_unit;fragment_loss_quantity_conversion_source;mixed_loss_quantity;mixed_loss_quantity_unit;mixed_loss_quantity_basis;mixed_loss_quantity_method;mixed_loss_quantity_state;mixed_loss_quantity_sample_time;mixed_loss_quantity_source;mixed_loss_quantity_conversion_factor;mixed_loss_quantity_conversion_unit;mixed_loss_quantity_conversion_source;liquid_loss_quantity;liquid_loss_quantity_unit;liquid_loss_quantity_basis;liquid_loss_quantity_method;liquid_loss_quantity_state;liquid_loss_quantity_sample_time;liquid_loss_quantity_source;liquid_loss_quantity_conversion_factor;liquid_loss_quantity_conversion_unit;liquid_loss_quantity_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; source_assignment_scope_id; source_assignment_scope_kind; source_quantity_basis; source_target_scope_id; source_same_scope_N; source_same_scope_N_unit; source_same_scope_N_basis; source_same_scope_N_method; source_same_scope_N_state; source_same_scope_N_sample_time; source_same_scope_N_source; source_same_scope_acceptance_ids; source_already_per_reference; raw_integration_scope_link; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation | Verify source merchant ownership/purchase/resale,B2B buyer and unique FINAL acceptance after reversals;N counts commercial consignments,not receipt/reels/kg/area/value. Failed/canceled/reversed/unfinished duties retain actual resource/cohort/period,N0 no division. Actual gradeSKU/uncoatedbrown/fullreel lot/BOM and width-length/grammage test-state versus actual paper-water/core-wrap tare require native evidence,not catalogue typicals. No merchant unwind/slit/condition/test prescribed. Prior closing becomes current opening at same native quantity/state/source-gate owner via closing/opening links,not new purchase/repeated source burden/FINALN or two terminal demands in one source cohort. Direct trace ORpositive complete compatible all-terminal source drivers include accepted,closing/unsold/damagedretained,useful-other,return and real whole/fragment/mixed/liquid losses,each native metadata/owner/source-link/exclusivity/numerator membership. Complete forest/fibre/pulp/papermaking/actual drying/winding/release/originalpack gate incllost upstream outsideonce,rawpulp incomplete. Native original/assigned/loss/baseline/additional and actual missing-stage quantities require matched state conversions/coverage-owner and ACTUALLY COMPLETED external integration link,time/timezone,source,owner,native integrated quantities/result before wholechainuse,not pending. Actual service handling/treatment insideonce.  Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division. Attribute only the individually identified physical case; retain other source-linked actual fates separately. Each native record belongs to exactly one exchange and any whole total is a non-additive audit. | Item(s); actual reel/area/mass/grammage/water/time units | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_power | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | meter_id;equipment_id;period_start;period_end;timezone;all_consumers;calibration_source;provider_coverage;coverage_owner;meter_opening;meter_opening_unit;meter_opening_basis;meter_opening_method;meter_opening_state;meter_opening_sample_time;meter_opening_source;meter_opening_conversion_factor;meter_opening_conversion_unit;meter_opening_conversion_source;meter_closing;meter_closing_unit;meter_closing_basis;meter_closing_method;meter_closing_state;meter_closing_sample_time;meter_closing_source;meter_closing_conversion_factor;meter_closing_conversion_unit;meter_closing_conversion_source;electricity;electricity_unit;electricity_basis;electricity_method;electricity_state;electricity_sample_time;electricity_source;electricity_conversion_factor;electricity_conversion_unit;electricity_conversion_source;power;power_unit;power_basis;power_method;power_state;power_sample_time;power_source;power_conversion_factor;power_conversion_unit;power_conversion_source;duration;duration_unit;duration_basis;duration_method;duration_state;duration_sample_time;duration_source;duration_conversion_factor;duration_conversion_unit;duration_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Collect actual meter change or sourced power-duration and native conversions,complete all-consumer drivers,idle/housekeeping. Complete provider coverage replaces covered direct electricity/assets only. Source papermaking/test climate is not merchant consumption. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | kWh | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_water | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | water_source_identity;composition;composition_method;composition_source;receiver_id;collection_id;transfer_id;treatment_scope;stream_exclusion_ids;supplied_volume;supplied_volume_unit;supplied_volume_basis;supplied_volume_method;supplied_volume_state;supplied_volume_sample_time;supplied_volume_source;supplied_volume_conversion_factor;supplied_volume_conversion_unit;supplied_volume_conversion_source;retained_fluid;retained_fluid_unit;retained_fluid_basis;retained_fluid_method;retained_fluid_state;retained_fluid_sample_time;retained_fluid_source;retained_fluid_conversion_factor;retained_fluid_conversion_unit;retained_fluid_conversion_source;free_liquid_volume;free_liquid_volume_unit;free_liquid_volume_basis;free_liquid_volume_method;free_liquid_volume_state;free_liquid_volume_sample_time;free_liquid_volume_source;free_liquid_volume_conversion_factor;free_liquid_volume_conversion_unit;free_liquid_volume_conversion_source;free_liquid_mass;free_liquid_mass_unit;free_liquid_mass_basis;free_liquid_mass_method;free_liquid_mass_state;free_liquid_mass_sample_time;free_liquid_mass_source;free_liquid_mass_conversion_factor;free_liquid_mass_conversion_unit;free_liquid_mass_conversion_source;direct_water;direct_water_unit;direct_water_basis;direct_water_method;direct_water_state;direct_water_sample_time;direct_water_source;direct_water_conversion_factor;direct_water_conversion_unit;direct_water_conversion_source;density;density_unit;density_basis;density_method;density_state;density_sample_time;density_source;density_conversion_factor;density_conversion_unit;density_conversion_source;temperature;temperature_unit;temperature_basis;temperature_method;temperature_state;temperature_sample_time;temperature_source;temperature_conversion_factor;temperature_conversion_unit;temperature_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Measure actual supplied and retained/free-collected/direct water separately with native basis/state/source. Convert volume/mass only using matching composition,density,temperature units/sources. Paper moisture is inherited stock;retained carrier fluid nonadditive,unknown residual not evaporation. Actual receiver/direct medium evidence required. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | m3; actual density/temperature/composition units | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_supplies | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | supply_sku;formulation;carrier_identity;composition_basis;composition_method;composition_source;stock_convention;same_scope_supply_match;return_id;receiver_id;opening;opening_unit;opening_basis;opening_method;opening_state;opening_sample_time;opening_source;opening_conversion_factor;opening_conversion_unit;opening_conversion_source;receipt_gross;receipt_gross_unit;receipt_gross_basis;receipt_gross_method;receipt_gross_state;receipt_gross_sample_time;receipt_gross_source;receipt_gross_conversion_factor;receipt_gross_conversion_unit;receipt_gross_conversion_source;receipt_container_tare;receipt_container_tare_unit;receipt_container_tare_basis;receipt_container_tare_method;receipt_container_tare_state;receipt_container_tare_sample_time;receipt_container_tare_source;receipt_container_tare_conversion_factor;receipt_container_tare_conversion_unit;receipt_container_tare_conversion_source;net_receipts;net_receipts_unit;net_receipts_basis;net_receipts_method;net_receipts_state;net_receipts_sample_time;net_receipts_source;net_receipts_conversion_factor;net_receipts_conversion_unit;net_receipts_conversion_source;closing;closing_unit;closing_basis;closing_method;closing_state;closing_sample_time;closing_source;closing_conversion_factor;closing_conversion_unit;closing_conversion_source;unused_out;unused_out_unit;unused_out_basis;unused_out_method;unused_out_state;unused_out_sample_time;unused_out_source;unused_out_conversion_factor;unused_out_conversion_unit;unused_out_conversion_source;used;used_unit;used_basis;used_method;used_state;used_sample_time;used_source;used_conversion_factor;used_conversion_unit;used_conversion_source;density;density_unit;density_basis;density_method;density_state;density_sample_time;density_source;density_conversion_factor;density_conversion_unit;density_conversion_source;temperature;temperature_unit;temperature_basis;temperature_method;temperature_state;temperature_sample_time;temperature_source;temperature_conversion_factor;temperature_conversion_unit;temperature_conversion_source;unit_mass;unit_mass_unit;unit_mass_basis;unit_mass_method;unit_mass_state;unit_mass_sample_time;unit_mass_source;unit_mass_conversion_factor;unit_mass_conversion_unit;unit_mass_conversion_source;unit_length;unit_length_unit;unit_length_basis;unit_length_method;unit_length_state;unit_length_sample_time;unit_length_source;unit_length_conversion_factor;unit_length_conversion_unit;unit_length_conversion_source;unit_area;unit_area_unit;unit_area_basis;unit_area_method;unit_area_state;unit_area_sample_time;unit_area_source;unit_area_conversion_factor;unit_area_conversion_unit;unit_area_conversion_source;component_fraction;component_fraction_unit;component_fraction_basis;component_fraction_method;component_fraction_state;component_fraction_sample_time;component_fraction_source;component_fraction_conversion_factor;component_fraction_conversion_unit;component_fraction_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | S=opening+net_receipts-closing with actual recoveries/retainedclosing once. NET receipts exclude container tare. Gross INPUT S with separate matched same-scope unused outward OUTPUT ORconsumed S-return INPUT OMIToutput,never numericS+return/doublecredit. Only matched standalone supply netting,not inherited core/wrap/paper/asset returns. Waste-producing use retains complete supply upstream. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | kg; actual native supply/fraction/density/temperature units | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_provider | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | provider_id;job_id;completion_evidence;scope_start;scope_end;electricity_coverage;asset_life_coverage;transport_empty_coverage;receiver_treatment_coverage;coverage_owner;exclusion_links;native_job_quantity;native_job_quantity_unit;native_job_quantity_basis;native_job_quantity_method;native_job_quantity_state;native_job_quantity_sample_time;native_job_quantity_source;native_job_quantity_conversion_factor;native_job_quantity_conversion_unit;native_job_quantity_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Confirm completed physical native job quantity/property/unit and actual full resources/assets/carrier-empty/receiver gates. Complete provided service replaces covered direct responsibilities only;partial duty retains real uncovered inventory. No fee,reel/area or grammage conversion. | Item(s); actual provider native units | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_assets | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | asset_id;asset_bom_scope;manufacture_coverage;maintenance_cleaning_records;replacement_records;eol_scope;all_users_periods;remaining_use_evidence;termination_evidence;uncertainty;sensitivity;update_source;provider_coverage;full_life_burden;full_life_burden_unit;full_life_burden_basis;full_life_burden_method;full_life_burden_state;full_life_burden_sample_time;full_life_burden_source;full_life_burden_conversion_factor;full_life_burden_conversion_unit;full_life_burden_conversion_source;asset_equivalent;asset_equivalent_unit;asset_equivalent_basis;asset_equivalent_method;asset_equivalent_state;asset_equivalent_sample_time;asset_equivalent_source;asset_equivalent_conversion_factor;asset_equivalent_conversion_unit;asset_equivalent_conversion_source;cohort_used_driver;cohort_used_driver_unit;cohort_used_driver_basis;cohort_used_driver_method;cohort_used_driver_state;cohort_used_driver_sample_time;cohort_used_driver_source;cohort_used_driver_conversion_factor;cohort_used_driver_conversion_unit;cohort_used_driver_conversion_source;all_user_used_driver;all_user_used_driver_unit;all_user_used_driver_basis;all_user_used_driver_method;all_user_used_driver_state;all_user_used_driver_sample_time;all_user_used_driver_source;all_user_used_driver_conversion_factor;all_user_used_driver_conversion_unit;all_user_used_driver_conversion_source;observed_history_driver;observed_history_driver_unit;observed_history_driver_basis;observed_history_driver_method;observed_history_driver_state;observed_history_driver_sample_time;observed_history_driver_source;observed_history_driver_conversion_factor;observed_history_driver_conversion_unit;observed_history_driver_conversion_source;remaining_driver;remaining_driver_unit;remaining_driver_basis;remaining_driver_method;remaining_driver_state;remaining_driver_sample_time;remaining_driver_source;remaining_driver_conversion_factor;remaining_driver_conversion_unit;remaining_driver_conversion_source;complete_lifetime_driver;complete_lifetime_driver_unit;complete_lifetime_driver_basis;complete_lifetime_driver_method;complete_lifetime_driver_state;complete_lifetime_driver_sample_time;complete_lifetime_driver_source;complete_lifetime_driver_conversion_factor;complete_lifetime_driver_conversion_unit;complete_lifetime_driver_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Every actual native asset/job equivalent and used/all-user/observed/remaining/lifetime driver has independent unit/basis/method/state/time/source/conversion. Full denominator=observed history+sourced compatible remainder OR evidenced termination across all users/periods. Include manufacture,maintenance-cleaning,replacements/EOL and uncertainty/sensitivity/update,not accepted-only period or paper storage-life. Reusable/provider-covered supports one owner;inherited cores not new operating assets by assumption. | Item(s); actual compatible driver equivalents | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_freight | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | load_id;leg_id;unique_load_leg_key;load_extent_EACH_or_TOTAL;carrier_id;actual_cargo_pack_support;tare_exclusion_evidence;empty_return_coverage;provider_coverage;repeat_count;repeat_count_unit;repeat_count_basis;repeat_count_method;repeat_count_state;repeat_count_sample_time;repeat_count_source;repeat_count_conversion_factor;repeat_count_conversion_unit;repeat_count_conversion_source;gross_load;gross_load_unit;gross_load_basis;gross_load_method;gross_load_state;gross_load_sample_time;gross_load_source;gross_load_conversion_factor;gross_load_conversion_unit;gross_load_conversion_source;noncargo_tare;noncargo_tare_unit;noncargo_tare_basis;noncargo_tare_method;noncargo_tare_state;noncargo_tare_sample_time;noncargo_tare_source;noncargo_tare_conversion_factor;noncargo_tare_conversion_unit;noncargo_tare_conversion_source;direct_payload;direct_payload_unit;direct_payload_basis;direct_payload_method;direct_payload_state;direct_payload_sample_time;direct_payload_source;direct_payload_conversion_factor;direct_payload_conversion_unit;direct_payload_conversion_source;distance;distance_unit;distance_basis;distance_method;distance_state;distance_sample_time;distance_source;distance_conversion_factor;distance_conversion_unit;distance_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Native independent gross/noncargo-tare/direct-payload,distance and repeatcount require own units,bases,methods,state/time/sources/conversions. Retain ascarried paper/water/core/wrap/outerpack/cargo support. EACH repeats actual sourced count once,TOTAL unchanged;THAT unique load-leg physical share from compatible cohort/all-user drivers inside each summand,divide total by positiveN once. Parent/child/provider/empty legs exclusive;conditioned dry-paper estimate not actual cargo by default. | kg*km; actual native mass/distance/count units | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_fates | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | parent_reel_id;material_identity;source_lot_link;composition_basis;composition_method;composition_source;source_gate_link;state_change_conversion_evidence;receiver_id;receiver_classification;decision_source;treatment_scope;carrier_id;transfer_id;content_transfer_link;stream_exclusion_ids;sample_id;sample_time;sample_state;moisture_definition;moisture_method;moisture_source;water_species_method_scope;matching_nonwater_definition;gross_waste;gross_waste_unit;gross_waste_basis;gross_waste_method;gross_waste_state;gross_waste_sample_time;gross_waste_source;gross_waste_conversion_factor;gross_waste_conversion_unit;gross_waste_conversion_source;tare;tare_unit;tare_basis;tare_method;tare_state;tare_sample_time;tare_source;tare_conversion_factor;tare_conversion_unit;tare_conversion_source;net_material;net_material_unit;net_material_basis;net_material_method;net_material_state;net_material_sample_time;net_material_source;net_material_conversion_factor;net_material_conversion_unit;net_material_conversion_source;paper_fraction;paper_fraction_unit;paper_fraction_basis;paper_fraction_method;paper_fraction_state;paper_fraction_sample_time;paper_fraction_source;paper_fraction_conversion_factor;paper_fraction_conversion_unit;paper_fraction_conversion_source;dry_cleanup_carrier;dry_cleanup_carrier_unit;dry_cleanup_carrier_basis;dry_cleanup_carrier_method;dry_cleanup_carrier_state;dry_cleanup_carrier_sample_time;dry_cleanup_carrier_source;dry_cleanup_carrier_conversion_factor;dry_cleanup_carrier_conversion_unit;dry_cleanup_carrier_conversion_source;retained_fluid;retained_fluid_unit;retained_fluid_basis;retained_fluid_method;retained_fluid_state;retained_fluid_sample_time;retained_fluid_source;retained_fluid_conversion_factor;retained_fluid_conversion_unit;retained_fluid_conversion_source;retained_paper;retained_paper_unit;retained_paper_basis;retained_paper_method;retained_paper_state;retained_paper_sample_time;retained_paper_source;retained_paper_conversion_factor;retained_paper_conversion_unit;retained_paper_conversion_source;retained_core;retained_core_unit;retained_core_basis;retained_core_method;retained_core_state;retained_core_sample_time;retained_core_source;retained_core_conversion_factor;retained_core_conversion_unit;retained_core_conversion_source;retained_wrap;retained_wrap_unit;retained_wrap_basis;retained_wrap_method;retained_wrap_state;retained_wrap_sample_time;retained_wrap_source;retained_wrap_conversion_factor;retained_wrap_conversion_unit;retained_wrap_conversion_source;actual_source_paper_equivalent;actual_source_paper_equivalent_unit;actual_source_paper_equivalent_basis;actual_source_paper_equivalent_method;actual_source_paper_equivalent_state;actual_source_paper_equivalent_sample_time;actual_source_paper_equivalent_source;actual_source_paper_equivalent_conversion_factor;actual_source_paper_equivalent_conversion_unit;actual_source_paper_equivalent_conversion_source;actual_non_source_added_material;actual_non_source_added_material_unit;actual_non_source_added_material_basis;actual_non_source_added_material_method;actual_non_source_added_material_state;actual_non_source_added_material_sample_time;actual_non_source_added_material_source;actual_non_source_added_material_conversion_factor;actual_non_source_added_material_conversion_unit;actual_non_source_added_material_conversion_source;water_mass;water_mass_unit;water_mass_basis;water_mass_method;water_mass_state;water_mass_sample_time;water_mass_source;water_mass_conversion_factor;water_mass_conversion_unit;water_mass_conversion_source;wet_basis_water_fraction;wet_basis_water_fraction_unit;wet_basis_water_fraction_basis;wet_basis_water_fraction_method;wet_basis_water_fraction_state;wet_basis_water_fraction_sample_time;wet_basis_water_fraction_source;wet_basis_water_fraction_conversion_factor;wet_basis_water_fraction_conversion_unit;wet_basis_water_fraction_conversion_source;dry_basis_water_ratio;dry_basis_water_ratio_unit;dry_basis_water_ratio_basis;dry_basis_water_ratio_method;dry_basis_water_ratio_state;dry_basis_water_ratio_sample_time;dry_basis_water_ratio_source;dry_basis_water_ratio_conversion_factor;dry_basis_water_ratio_conversion_unit;dry_basis_water_ratio_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Actual whole/independent useful/nonusable/core-wrap/mixed/free-liquid/direct transfer needs native quantity/unit/basis/method/state/sampletime/source/conversion and receiver decision. Retained paper/water/core/wrap in whole or mixed Waste are content audits,not additional outlets;no routine removal/repulping assumed. Source-paper equivalent requires actual original/ascollected water/BOM/contamination states,not wetgross as dryfibre. Same-sample water definitions and native percentage factors only,LOD not automatically water. Unknown discrepancy blocks closure,no inferred decay/VOC/species or automatic recoverycredit;actual receiver treatment once. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | kg; actual native paper/core/wrap/water units | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+| cp_species | brown_kraftliner_full_reel_trade | Actual duty/stock/state/fate ledger | Source-linked native physical records | species_identity;receiving_medium;particle_size_basis;measurement_source;factor_source;factor_complete;composition_basis;composition_method;composition_source;fate_basis;fate_source;coverage_owner;contained_receiver_exclusion;species_mass;species_mass_unit;species_mass_basis;species_mass_method;species_mass_state;species_mass_sample_time;species_mass_source;species_mass_conversion_factor;species_mass_conversion_unit;species_mass_conversion_source;activity;activity_unit;activity_basis;activity_method;activity_state;activity_sample_time;activity_source;activity_conversion_factor;activity_conversion_unit;activity_conversion_source;factor;factor_unit;factor_basis;factor_method;factor_state;factor_sample_time;factor_conversion_factor;factor_conversion_unit;factor_conversion_source;component_fraction;component_fraction_unit;component_fraction_basis;component_fraction_method;component_fraction_state;component_fraction_sample_time;component_fraction_source;component_fraction_conversion_factor;component_fraction_conversion_unit;component_fraction_conversion_source;fate_fraction;fate_fraction_unit;fate_fraction_basis;fate_fraction_method;fate_fraction_state;fate_fraction_sample_time;fate_fraction_source;fate_fraction_conversion_factor;fate_fraction_conversion_unit;fate_fraction_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Use actual named species/particle-medium measurement or compatible evidenced chemistry/activity-factor,with every operand native metadata/coverage. Complete factors already covering composition/fate fraction do not multiply that fraction again. Captured fibres/retained liquid are contained material,not direct release;no emissions from stock/moisture deficit or paper carbon content alone. | kg; actual compatible activity/fraction units | Each actual event/sample/period | Complete duty/source/cohort cutoffs and assetphases | Actual merchant duties and every sharedconsumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source/conversion/calibration/uncertainty/coverage |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| normalize | all exchanges | Per reference=actual assigned native physical quantity/positive N,unique source-verified FINAL owned-resold B2Bacceptances after reversals. N0 retains actual duties with no normalized result,not zero burden. | native quantity;final gate/reversal records | native quantity per1 Item(s) service |  |
+| reel_mass_area | nonexchange merchandise | Net asreceived paper mass=sum unique packed reels(gross-core tare-wrap tare-outerpack/support tare),EACH actual sourcedrepeat once/TOTALunchanged,parent/child exclusive. Paper area=actual compatible width*length for unique fullreels;area*actual representative grammage converts to paper mass ONLY same paper/conditioning/water state and supported native units/factors. Conditioned grammage not dry-fibre mass,Cobbabsorption not waterfraction,nominal thickness*density not measured reel mass. No merchant unwinding/measurement prescribed;traceable supplier records accepted. | cp_reels;native width-length/count/grammage/gross-core-wrap-tare evidence | exclusive netpaper/area and core-wrap audit |  |
+| water_basis | actual stock and fates | Convert native percentages first. w_wet=water/asreceived,w_dry=water/matching drynonwater;dry_nonwater=asreceived*(1-w_wet),w_wet=w_dry/(1+w_dry) ONLY same sample/state/definitions. LOD may include other volatiles,not automatically water. Drynonwater is not automatically dryfibre without actual BOM/composition. Water change/conditionedgrammage/Cobb do not prove fibre loss or vapour. | cp_reels;cp_fates;same-sample water/BOM evidence | compatible native paper-water-state audit |  |
+| original_source | commodity outside service | Directtrace OR assigned_source=original_gate_quantity*numerator_driver/positive complete source_all_exit_driver. Record each compatible exclusive terminal demand inclclosing/unsold/damaged retained,useful-other,returns and actual whole/fragment/mixed/liquid losses,own native metadata/source-link/owner/exclusivity/numerator membership,not accepted-only denominator. Linked closing→opening sameqty-state-sourceowner carry is not new upstream/purchase/FINALN/two terminal demands. Match original/assigned/loss/baseline/additional finished-state conversions and stage/loss coverage owner. Missing actual stages/additional demand MUST ACTUALLY integrate outsideonce with COMPLETEDstatus/link/time/timezone/source/owner/native integrated quantities/result before completechainuse. | cp_reels;complete native source/coverage/conversion/integration records | completed external originalgate/stage/loss integration |  |
+| physical_closure | actual stock and fates | Source paper/water/core/wrap audits close to retained accepted/returned/closing/wholeWaste/mixedWaste and independent useful/nonusable/packing/free-liquid/direct species plus explicit unknown. Every term own native unit/basis/method/state/time/source/conversion,retained content no extra outlet. Actual added water/contamination distinguished from originalpaper equivalent;unknown deficit not emission/disposal/decay. Actual receiver treatment once,no automatic credit. | cp_reels;cp_fates;cp_water;cp_species;linked carriers | exclusive physical source/receiver closure |  |
+| supplies_assets | independent supplies and assets | S=opening+net_receipts-closing,NET receipts exclude container tare and retainedclosing/recovery once. GrossSINPUT with separate matched-unusedOUTPUT ORconsumedS-returnINPUT OMIToutput. Asset burden=full_life_burden*compatible cohort_used_driver/complete_lifetime_driver;life=observed_history_driver+sourced remaining_driver OR evidenced termination allusers/periods. Every burden/equivalent/driver ownnative metadata/units/conversions;positive compatible denominator,uncertainty/sensitivity/update. | cp_supplies;cp_assets;native stock and complete histories | assigned supplies and full-life assets |  |
+| freight_sum | packed_freight | Freight=sum unique load+leg[(converted actual payload OR converted gross-noncargo tare,retaining cargo paper-water/core/wrap/pack/support)*(actual sourcedcount onlyEACH;TOTALunchanged)*converted actual distance*THATrecord physical causal share]/positiveN. Each independent operand own nativeunit/basis/method/state/time/source/conversion. ShareINSIDEeach summand,N once,parent-child/provider/emptyleg exclusive. | cp_freight;native unique load-leg drivers | actual kg*km per1 Item(s) service |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| identity | all exchanges | Actual concrete gates/native property/unit verified before finaldata;catalogue brand/value not identity proof. | Full actual flow/support and foreground records |
+| reel_state | stock and fates | Actual SKU/BOM/netpaper-corewrap/widthlength/representativegrammagecondition/water sample definition,not typicalannualaverages/Cobb/thicknessdensity defaults. | Actual supplierreel/weigh/BOM/testsample and receiver evidence |
+| complete_chain | source and service | Actual completed sourcegate/stage/loss baselineadditional integration outsideonce with native quantity/coverageowner/link-time-source-result,not pending;full actualservice/provider/asset/carrier/receiver duties insideonce. | Native allterminal conversion/owner/completedintegration;resource-life-stock-carrier-receiver records |
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| warehouse_power | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `warehouse_power` under `cp_power`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_power`; actual source-linked native records |
+| housekeeping_water | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `housekeeping_water` under `cp_water`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_water`; actual source-linked native records |
+| housekeeping_materials | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `housekeeping_materials` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| added_shipping_material | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `added_shipping_material` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| external_physical_jobs | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `external_physical_jobs` under `cp_provider`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_provider`; actual source-linked native records |
+| shared_full_life_assets | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `shared_full_life_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
+| packed_freight | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `packed_freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
+| unused_supply_return | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `unused_supply_return` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| useful_separated_material | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `useful_separated_material` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| whole_reel_waste | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `whole_reel_waste` under `cp_reels`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `whole_reel_waste_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_reels`; actual source-linked native records |
+| nonusable_separated_material | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `nonusable_separated_material` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| packing_waste | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `packing_waste` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| spent_housekeeping_solids | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `spent_housekeeping_solids` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| free_liquid_waste | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `free_liquid_waste` under `cp_water`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_water`; actual source-linked native records |
+| direct_species | brown_kraftliner_full_reel_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `direct_species` under `cp_species`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_species`; actual source-linked native records |
+
+
+### Mandatory Inventory Completion Records
+
+These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
+
+#### warehouse_power
+
+Actual lighting,lifting and record-equipment,idle/housekeeping duty. Supplier paper drying/winding and downstream printing/corrugating are not merchant operations;no active climate control is assumed.
+
+Residual inventory requirement after the independently identified cases `warehouse_power_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual reel-store and order electricity
+- Flow property / unit: Energy / kWh
+- Amount rule: Assigned actual native physical quantity / N; cp_power.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_power`
+
+Range evidence need: Need meters/equipment/provider periods and all-consumer physical attribution,not paper strength or test-climate energy factors.
+
+#### housekeeping_water
+
+Actual premises/handling-equipment water only. Paper moisture is inherited merchandise content,not a new water input or prescribed merchant conditioning/washing.
+
+Residual inventory requirement after the independently identified cases `housekeeping_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual warehouse-housekeeping supplied water
+- Flow property / unit: Volume / m3
+- Amount rule: Assigned actual native physical quantity / N; cp_water.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+
+Range evidence need: Need supply,retained/free-liquid/direct fates with source/receiver evidence;Cobb absorption and moisture residual do not quantify service water.
+
+#### housekeeping_materials
+
+Only actual independent warehouse supplies and filters/absorbents. Paper fibres/fillers/sizing agents and inherited core/wrap are commodity content,not service manufacture inputs.
+
+Residual inventory requirement after the independently identified cases `housekeeping_materials_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual cleaning preparations,wipes and capture carriers
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual native supply SKU/formulation/carrier/stock and conversion provenance,no universal cleaning agent or dose.
+
+#### added_shipping_material
+
+Only real added outerwrap,straps,labels or guards for dispatch. Original reel core and supplier wrap production remain inherited commodity scope;no core replacement,unwinding or repacking is prescribed. Reusable supports follow full life.
+
+Residual inventory requirement after the independently identified cases `added_shipping_material_pe_film`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual new outer shipping protection
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need native material/count/area/length/mass/tare and stock records,distinguishing original and added pack from paper net mass.
+
+#### external_physical_jobs
+
+Real native storage/loading tasks with complete resource/asset/carrier/receiver coverage. Paper conversion,slitting,printing,corrugating or drying cannot be hidden in unspecified handling service.
+
+- Identity requirement: Actual completed external physical handling jobs
+- Flow property / unit: Count / Item(s)
+- Amount rule: Assigned actual native physical quantity / N; cp_provider.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_provider`
+
+Range evidence need: Need actual completion quantity/unit and exclusive provider scope,not price,reel count,area or grammage.
+
+#### shared_full_life_assets
+
+Actual facility,racks,clamps/lifts,record devices and reusable supports across all users/periods include manufacture,maintenance-cleaning,replacements/EOL. Traded full reels and inherited cores are merchandise scope,not new merchant asset inputs by default.
+
+- Identity requirement: Complete-life shared reel-store,handling and support assets
+- Flow property / unit: Count / Item(s)
+- Amount rule: Assigned actual native physical quantity / N; cp_assets.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_assets`
+
+Range evidence need: Need native equivalent/driver histories,observed plus evidenced remaining life or termination and all-user coverage;no storage-life/warranty default.
+
+#### packed_freight
+
+Actual payload retains as-carried paper/water,core,wrap,outer packing and cargo supports. Only vehicle/noncargo tare deducted;conditioned area*grammage or dry fibre is not automatically as-shipped payload.
+
+- Identity requirement: Actual full-reel,supply and waste freight
+- Flow property / unit: Mass * distance / kg*km
+- Amount rule: Assigned actual native physical quantity / N; cp_freight.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_freight`
+
+Range evidence need: Need unique native load-leg,EACH/TOTAL count,gross/tare/payload/distance and THAT-record share inside sum/N once.
+
+#### unused_supply_return
+
+Only actual same-scope unused cleaning/added-pack supplies in gross-input convention. Useful intact reels remain stock;inherited core/wrap is not current standalone supply. Consumed-only input omits matched output,no automatic credit.
+
+- Identity requirement: Actual matched unused independent supply outward return
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual same-SKU supply match/native units/source/receiver and stock convention,no unrelated core return netting.
+
+#### useful_separated_material
+
+Only actual useful independent incident material or separated original core/wrap with receiver evidence and actual scope. No routine merchant core removal,unwinding or conversion is assumed. Retained contents follow intact/rejected carrier.
+
+- Identity requirement: Actual independently exported useful paper,core or wrap
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual composition/native mass/state/source-coverage owner/receiver and exclusions,no virgin-fibre or recovery-credit assumption.
+
+#### whole_reel_waste
+
+Only evidenced nonusable whole-reel transfer. State actual wet paper,core,wrap and contamination in that physical stream;wetness,dent or uncertain test result does not automatically discard the whole reel.
+
+- Identity requirement: Actual whole-reel waste with declared retained core and wrap
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_reels.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_reels`
+
+Range evidence need: Need actual gross/net/tare/water state,receiver treatment and original finished-gate loss conversion/coverage owner,no wetgross as dryfibre loss.
+
+#### nonusable_separated_material
+
+Actual separate paper fragments/cores/wrap or incident-contained material only,excluding whole/mixed retained contents. No slit-trim yield,repulping or disposal method is assumed;actual receiver classification and treatment once.
+
+Residual inventory requirement after the independently identified cases `nonusable_separated_material_paper`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual independent nonusable paper,core or contained residues
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need native mixture/netmass/moisture/source-state conversion and receiver/exclusion evidence,not all wet kg as fibre.
+
+#### packing_waste
+
+Actual separated packing exits only. Retained core/wrap in whole/mixed waste are contents,not extra outlets;reusable intact supports do not become waste automatically.
+
+Residual inventory requirement after the independently identified cases `packing_waste_paper_pack`; `packing_waste_metal_pack`; `packing_waste_plastic_pack`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual independently discarded wrapping and dispatch protection
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/area/mass/tare/retainedpaper-water and real receiver/carrier/treatment links,no recycling-mark credit.
+
+#### spent_housekeeping_solids
+
+Only actual wipes,absorbents,filters and captured cleanup residues,with real retained paper/fluid/pack. One gross physical carrier is audited by contents,without duplicate independent paper/liquid outputs.
+
+- Identity requirement: Actual spent cleaning carriers and captured mixtures
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need every carrier/fluid/paper/pack native quantity-unit-basis-method-state-time-source,measurement closure and receiver evidence.
+
+#### free_liquid_waste
+
+Actual incident/housekeeping free liquid with measured composition and receiver only. Paper moisture,core/wrap moisture and retained wet wipes are not an extra free-water exchange;Cobb is not collected water.
+
+- Identity requirement: Actual independently collected free liquid
+- Flow property / unit: Volume / m3
+- Amount rule: Assigned actual native physical quantity / N; cp_water.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+
+Range evidence need: Need native volume/density/temperature/source and collection/treatment/exclusion links;unknown moisture balance not evaporation.
+
+#### direct_species
+
+Only actual measurement or supported compatible chemistry/activity factors. Paper damage,dry-mass deficit,water balance and dust label do not identify fibre particles,VOC,water vapour or biogeniccarbon release. Retained waste treatment scope is separate once.
+
+- Identity requirement: Actual named direct species or particle release and medium
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_species.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_species`
+
+Range evidence need: Need exact species/particle-medium and native activity-factor/composition/fate/source/coverage;no default decomposition or carbon credit.
+
+## 9. Validation Rules
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| service_count | actual trade duties | Verify merchant owned-resold B2B final gate/reversals/uniqueN,not reel/kg/area/value. Failed/unfinished resources retained,N0no division. |  |
+| paper_state | actual trade duties | Actual uncoatedbrownfullreelSKU/fibreBOM/netpaper-corewrap/widthlength/conditionedgrammage/water sample basis required;typical annual values/testclimate/core size not actualreel/defaults,Cobb not waterfraction,drynonwater not automatically fibre. No merchant conversion/climate presumed. |  |
+| complete_source | actual trade duties | Actual complete forest-fibre/pulp/papermaking/dry-wind/releaseoriginalpack stage-loss coverage/owner,allterminal native original/baseline/additional quantities/conversions and ACTUALLY COMPLETED missingstage/demand integration outsideonce before wholechainuse;rawpulp or pending link incomplete. Actual service handling/receiver treatment insideonce,whole/corewrap/mixed/free-liquid/species exclusive/nonadditive. |  |
+| native_coverage | actual trade duties | Complete actual provider/resource/fullall-user assetlife/native stock/freight operands and coverage owners,NETreceipts/grossORconsumedOMIT,EACH/TOTALperrecordshareINSIDEsum/N once. Actual quantities, compatible native units/state/basis/method/time/source, verified concrete identities and applicable acceptance/coverage evidence remain mandatory; unknown is not zero. A missing generic numerical Range alone is disclosed and does not block an otherwise evidenced actual package; never invent bounds. A claimed source-backed interval needs a traceable source and compatible basis; only an empirical plausibility guardrail additionally needs independent comparable reference evidence, not the same batch maximum validating itself. Preserve applicable actual source-specific acceptance intervals and uncertainty requirements. |  |
+
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | secondary_dataset; background_dataset after actualidentity/quantityreview |
+| downstream_use | Physical fullreelbrownkraftliner wholesaleadd-on within actuallycomplete finishedsourcechain |
+| allowed_use | Actual uncoatedbrownfullreelSKU/BOM/netpaper-corewrap/widthlength/grammage-waterstate/period/finalgate |
+| excluded_use | Standalonepaperfootprint;whitecoatedwetstrengthtestliner/partialgoods;merchantconversion/climate/retailagency;reelkgareavalue serviceproxy or pendingchain |
+| required_metadata | Allqualifiers/nativeBOM-paper-corewrap/water/samplegrammageconditions/stockfates/sourceallterminal original-baseline-additional completedactualintegration/full duties |
+| required_quality_disclosure | Unresolvedidentity/support/Range and SKUcomposition-water-grammage-source-receiver-life uncertainty/integrationstatus |
+| update_trigger | ChangedSKU/BOM/reel-corewrap/water/teststate/source/operations/providers/assets/carriers/receivers/finalgatecoverage |
+
+
+## 11. Data Sources
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| unsd-paper-trade | official_guidance | UNSD CPC3.0 printed30961094paper321except32194;32132Kraftlineruncoated: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Narrow papertrade scope only,no material recipe or service conversion. |
+| sca-kraftliner-context | handbook | SCAKraftlinerproduct: https://www.sca.com/scakraftliner ; SCAKraftlinerspecificationApril2026: https://www.sca.com/siteassets/containerboard/produktblad/sca-kraftliner.pdf | Qualitative grade/fibre-layer and conditioning questions only;mainlyfreshbase/unbleachedsurface not universal100percentvirginrecipe. April2026longtermannualtypicals/testclimate/core example not actual reel/default. No universal gsm/thickness/Cobb/core/climate/strength/foodcontact/life/failurefactor. PCRnative source-stock-water-grammage/full-life/freight math independentlydeclared foregroundmethods,not supplierquantitativefactors. |

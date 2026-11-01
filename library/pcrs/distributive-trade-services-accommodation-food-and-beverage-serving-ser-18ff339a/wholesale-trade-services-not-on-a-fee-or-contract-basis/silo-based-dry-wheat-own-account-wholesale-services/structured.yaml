@@ -1,0 +1,986 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.silo-based-dry-wheat-own-account-wholesale-services"
+  classification_refs: "CPC 3.0 61011; narrower semantic subset"
+  covered_products: "Own-account silo-based wholesale service for already-dry cleaned non-seed wheat grain"
+  excluded_products: "All grain production and deliberate processing; seed; other grains/oilseeds/feed; agency; retail; standalone storage service"
+  representative_product: "Completed silo-based dry wheat wholesale consignment service to a business buyer"
+  production_route: "Ownership receipt and quality verification; silo holding/handling/ambient aeration; contracted resale handover"
+  market_state: "Commercial wholesale service, with separate memorandum grain-stock and ownership ledgers"
+functional_unit:
+  what: "Completed silo-based dry wheat own-account wholesale consignment service"
+  how_much: "1 completed wholesale consignment service"
+  how_well: "Actual non-seed wheat identity, condition/quality acceptance, ownership resale and business-buyer handover; actual mass, moisture and storage time disclosed"
+  how_long_or_cycle: "Actual receipt-to-commercial-handover period; reporting-period stock carry and asset lifecycle handled separately"
+  reference_flow_link: "accepted_service"
+system_boundary:
+  rules:
+    - rule_id: boundary_service
+      applies_to: "wholesale"
+      rule: "Inventory the wholesale operation, its actual consumed supplies, energy, attributable assets, actual support and owned transport/waste-treatment scope once. Successful through-traded wheat and its lost fraction have no production exchange in this service; maintain a separate physical grain ledger and mandatory linked upstream commodity adjustment."
+      source_ids: []
+    - rule_id: boundary_gate
+      applies_to: "wholesale"
+      rule: "Declare actual receipt state and commercial handover; reject or cancelled dispatch is not accepted service output. Maintain ownership, physical custody and accounting periods separately. Fee agency and commodity processing are excluded."
+      source_ids:
+        - unsd-cpc3-wholesale-2025
+    - rule_id: boundary_grain
+      applies_to: "wholesale"
+      rule: "Track initial dry usable wheat, actual silo residence, handling, monitoring and ambient aeration; existing quality is preserved without a default drying, fumigation or cleaning recipe. Record any actual corrective outsourced scope explicitly and avoid hidden processing."
+      source_ids:
+        - fao-bulk-storage
+        - fao-grain-aeration
+boundary_abstraction:
+  declared_starting_condition: "Already-dry cleaned wheat accepted into merchant ownership at declared supplier gate; actual stock/quality/moisture and any prior transport coverage stated"
+  starting_condition_role: "Declared input-state fact for a service add-on, not a zero-burden claim about wheat"
+  product_classification_scope: "Own-account business-buyer dry wheat wholesale subset of CPC 61011"
+  recursive_input_rule: "Upstream wheat stock remains a memorandum; do not recurse wholesale service into its own turnover. Actual outsourced support uses separate provider result and explicit non-overlap."
+  upstream_dataset_requirement: "Verified appropriate upstream supplies/providers/asset lifecycle data; linked commodity-production and attributable-loss demand resolved outside this service before complete-chain claims"
+  disclosure: "Actual starting/ending grain stock; receipts/returns/dispatch/losses; agreed commercial gate; scope of freight, waste treatment and assets; exclusions and all unknown coverage"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed silo-based dry wheat own-account wholesale consignment service"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - consignment_id
+    - ownership_and_resale_risk
+    - buyer_business_role
+    - contract_handover_gate
+    - actual_net_mass
+    - mass_unit
+    - moisture_wet_basis
+    - grain_class_grade
+    - accepted_quality_criteria
+    - silo_route
+    - storage_start_end
+    - geography
+    - period
+    - transport_coverage
+    - linked_commodity_loss_adjustment
+reference_flows:
+  []
+measurement_rules:
+  - id: service_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: ""
+    required_unit: "Item(s)"
+    rule: "Use actual accepted consignment IDs; reconcile ownership and handover/cancellation, record N > 0 and all comparability qualifiers. Count is not tonnes, truckloads or monetary turnover."
+  - id: grain_stock_basis
+    applies_to: "grain memorandum stock and waste grain"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record as-is mass and wet-basis moisture fraction for each lot/state; dry mass equals as-is mass times (1 - moisture fraction). Harmonize actual units and sampling periods before reconciliation; water change is not dry-matter loss."
+  - id: native_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Native compatible property"
+      uuid: ""
+    required_unit: "Actual native unit"
+    rule: "Keep measured native units for actual fuel, packaging, assets and provider services. Any conversion requires explicit source state, density/composition if needed, factor, unit and uncertainty; non-additive mass views are audit-only."
+process_map:
+  - id: wholesale
+    name: "Integrated ownership-based dry-wheat wholesale operation"
+    inclusion: "required"
+    inclusion_condition: "Actual own-account dry wheat receipt, silo holding and business-buyer resale handover"
+    role: "Integrated service responsibility including failed handling/reject routes; no commodity production output"
+    quantitative_reference: "accepted_service"
+process_inventory:
+  - id: wholesale
+    label: "Integrated ownership-based dry-wheat wholesale operation"
+    inputs:
+      product:
+        - row_id: electricity_ac
+          role: "Actual alternating-current electricity at point of use"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy / kWh"
+          description: "Only actual alternating-current electricity crossing this node boundary and not already inside a complete provider. The identity leaves provider, voltage, generation mix and delivery-loss allocation unspecified; collect them where required. Its ILCD reference property is named Net calorific value but the verified electricity flow defines an electrical-energy basis of 1 MJ; native kWh uses exactly 3.6 MJ per kWh, never a fuel heating-value factor. Direct-current or another unmatched electricity state stays in the residual requirement. Range evidence need: Metered kWh by operation interval, actual aeration/handling hours, consignment residence and all-consumer attribution are needed. An empirical kWh guardrail needs independent comparable silo climate/load/quality evidence; missing generic Energy support and supplier identity remain separate gaps."
+          amount:
+            expression: "Actual attributed electricity per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: fuel_supply_diesel_supply
+          role: "Actual separately identified supplied diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Volume / L"
+          description: "Only actual independently identified diesel within this operating-fuel requirement. The generic identity is Mass/kg; record actual fuel formulation, supplier, supply gate and native stock scope. When native quantity is litres, final kg conversion requires actual compatible density, temperature/state, mass-per-volume unit and source; no catalogue default density or heating value. Supplied stock and burned fuel are separate records. Other fuels remain residual and neither fuel purchase nor unexplained imbalance proves combustion or emissions. Range evidence need: Use actual grade and native litres or mass, opening/receipts/closing and matched usable returns; any density/temperature conversion needs traceable basis. The supplied-to-burn relationship requires measured burn or complete disjoint fates, not a presumed combustion fraction."
+          amount:
+            expression: "Actual attributed fuel supply per reference flow; cp_supplies."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supplies
+              source_ids: []
+            ranges: []
+        - row_id: water_supplied_liquid_tap
+          role: "Actual liquid treated tap-water supply"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Volume / m3"
+          description: "Applicable only when the actual source is treated tap water supplied for the declared use. Preserve actual supplier, quality, temperature/state and provider boundary; do not assume that every water supply is tap water. Ice, bottled/mineral/reclaimed/untreated water and direct environmental withdrawal stay in their actual separate identities. Keep the parent native mass or volume basis. For any final mass-reference conversion, require actual compatible density/state evidence; the catalogue secondary-volume relationship is not a default site density. Range evidence need: Retain actual metered purchased volume, cleaning/sanitary purpose, service period and supplier coverage. Any per-consignment water guardrail requires the same actual cleaning scope and allocation; it does not validate grain moisture or imply direct abstraction."
+          amount:
+            expression: "Actual attributed water supplied per reference flow; cp_supplies."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supplies
+              source_ids: []
+            ranges: []
+        - row_id: operating_supplies_synthetic_detergent
+          role: "Actual independently recorded synthetic detergent supply"
+          name: "Detergent"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1c57d123-df57-49ab-b9d4-957403beb8a5"
+          property_unit: "Mass / kg"
+          description: "Only actual synthetic surfactant detergent identified by product/formulation, supplied state and use records. Measure net supplied material excluding package tare; retain concentrate/dilution-water distinctions and never count whole formulation and components additively. Soap, disinfectants, wipes, filters and other materials remain under their separate actual identities; no cleaning recipe, dose or occurrence is assumed. Range evidence need: Collect actual SKU, formulation and concentration, native unit, stock-adjusted consumption, usable returns and separately measured waste/release fates. A chemical-application or maintenance guardrail needs current actual route and product evidence; no generic fumigant dose or direct-release fraction is provided."
+          amount:
+            expression: "Actual attributed operating supplies per reference flow; cp_supplies."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supplies
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_service
+          role: "Completed silo-based dry wheat own-account wholesale consignment service"
+          name: "Completed silo-based dry wheat own-account wholesale consignment service"
+          flow_type: "product"
+          property_unit: "Count / Item(s)"
+          description: "One actual unique consignment with ownership-based resale to a business buyer and recorded dispatch, quality/state, agreed commercial handover and accepted net grain quantity. This output is the wholesale service, not the wheat commodity. Range evidence need: The fixed count defines normalization only. Actual consignment mass, moisture, quality, storage time and ownership/handover evidence are required; there is no universal tonne equivalent or generic lot size."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consignment
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_grain_atomic_case
+          role: "Discarded dry wheat grain"
+          name: "Discarded dry wheat grain"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on independently recorded actual Discarded dry wheat grain. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under waste_grain; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately. Range evidence need: Measure actual contained waste net mass and representative moisture, lot and receiving route; reconcile its dry matter against actual grain stock and linked lost-commodity demand. Do not impose historical FAO loss percentages, infer spoilage from water loss, or use captured dust as airborne-release quantity."
+          amount:
+            expression: "Actual attributed waste grain per reference flow; cp_grain."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grain
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: species_releases_co2_fossil_air
+          role: "Actual separately evidenced fossil carbon dioxide emitted to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual records establish fossil origin, carbon dioxide substance and direct air release. Preserve the reported carbon/CO2 basis; any carbon-to-CO2 calculation requires its own supported stoichiometry and no inferred factor or occurrence. This is a direct actual node release, not purchased-electricity/upstream/provider-covered emissions. The UUID denotes air with no finer subcompartment; resolve a different applicable compartment/origin under the residual requirement rather than relabelling it. Missing data is not zero. Range evidence need: For each actual identified species or particle fraction and medium retain measured release or compatible measured activity and species factor, with composition/fate basis and sources if applicable. Dry-matter stock residual, dust captured as waste, safety limits or total formulated supply cannot establish a species release; complete factors are applied once."
+          amount:
+            expression: "Actual attributed species releases per reference flow; cp_environment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: species_releases_methane_fossil_air
+          role: "Actual separately evidenced fossil methane emitted to air"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual records establish fossil origin, methane substance and direct air release. Biogenic or unknown-origin methane stays under the residual actual-species requirement and is never relabelled fossil. No leakage occurrence, gas fraction, quantity or emission factor is inferred. This is a direct actual node release, not purchased-electricity/upstream/provider-covered emissions. The UUID denotes air with no finer subcompartment; resolve a different applicable compartment/origin under the residual requirement rather than relabelling it. Missing data is not zero. Range evidence need: For each actual identified species or particle fraction and medium retain measured release or compatible measured activity and species factor, with composition/fate basis and sources if applicable. Dry-matter stock residual, dust captured as waste, safety limits or total formulated supply cannot establish a species release; complete factors are applied once."
+          amount:
+            expression: "Actual attributed species releases per reference flow; cp_environment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+        - row_id: species_releases_nitrous_oxide_air
+          role: "Actual separately evidenced nitrous oxide emitted to air"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual records establish nitrous oxide substance and direct air release. Native quantity is mass of N2O, not nitrogen mass or molecular nitrogen; no emission factor or occurrence assumed. This is a direct actual node release, not purchased-electricity/upstream/provider-covered emissions. The UUID denotes air with no finer subcompartment; resolve a different applicable compartment/origin under the residual requirement rather than relabelling it. Missing data is not zero. Range evidence need: For each actual identified species or particle fraction and medium retain measured release or compatible measured activity and species factor, with composition/fate basis and sources if applicable. Dry-matter stock residual, dust captured as waste, safety limits or total formulated supply cannot establish a species release; complete factors are applied once."
+          amount:
+            expression: "Actual attributed species releases per reference flow; cp_environment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_environment
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_meter
+    applies_to: "wholesale"
+    rule: "Prefer actual submeter and event assignments. Allocate remaining documented common operating burdens to all actual consumers by an evidenced compatible physical driver, such as handling mass for conveying or occupied grain-volume-time for space-related holding. Choose driver by causal use, keep total-consumer denominator and failed/rejected attempts, explain idle-capacity treatment; invoice value and equal consignment count are not default drivers. Divide attributable totals by N once."
+    source_ids: []
+  - rule_id: alloc_assets
+    applies_to: "shared_assets"
+    rule: "Identify asset and every consuming lot/site/period. Attribute its complete manufacture, actual maintenance, replacements and end-of-life burden by driver_used / driver_lifetime. Establish lifetime driver from observed use or observed history plus evidenced remaining use, replacement and termination assumptions, uncertainty and sensitivity. Use either asset-equivalent fraction / N OR lifecycle-complete provider quantity in native units / N, never both and never normalize twice."
+    source_ids: []
+  - rule_id: alloc_supplies
+    applies_to: "operating supplies"
+    rule: "For one actual native-unit SKU/state, S = attributed opening stock + external receipts - closing stock. Choose gross-with-outlets S / N and retain usable external returns, or consumed-only (S - usable external returns) / N with matched return omitted from credited exchange. Closing stock includes usable recovered closing stock; wastage and uncontained loss are not usable returns and retain upstream supply burden. Internal issues/returns do not create external purchases."
+    source_ids: []
+  - rule_id: alloc_commodity_loss
+    applies_to: "grain memorandum"
+    rule: "Keep all wheat-production burdens outside this service. Send attributed irrecoverable grain dry-matter loss L, accepted outbound grain dry matter G and existing commodity-dataset loss coverage to the linked commodity system. If G > 0 and its commodity baseline excludes this loss, upstream dry-wheat demand = G + L (factor (G + L) / G). Convert at the actual upstream reference moisture; for service linkage provide L / N. If matching losses are already included, reconcile instead of multiplying again. Waste treatment included here must not be repeated there. Unknown loss or attribution blocks complete-chain claims, never defaults to zero."
+    source_ids: []
+  - rule_id: alloc_outlets
+    applies_to: "wholesale"
+    rule: "No substitution credit from unusable grain, usable supply returns or unsold merchandise. Downgraded but usable sold grain retains actual state and receiving transaction; it is a documented physical merchandise exit, not an automatically burden-free coproduct. If genuinely independent intended co-products or processing appear, declare and review a new attribution boundary before final dataset use."
+    source_ids: []
+  - rule_id: allocation_rule_6
+    applies_to: "foreground_burden_allocation"
+    rule: "Here G is net completed accepted outbound grain after actual cancellations and buyer-return reversals, not all physical dispatches. The physical stock balance separately retains gross physical dispatch and actual return receipts. Buyer-returned grain that remains merchant stock is not irrecoverable L. Storage-water changes must be reconciled at the actually measured state, including moisture sampling uncertainty."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_consignment
+      process_id: "wholesale"
+      flow_role: "accepted_service"
+      record_type: "Ownership and handover ledger"
+      raw_fields: "site_id; campaign_id; period_id; consignment_id; seller_id; buyer_id; buyer_business_role; contract_id; ownership_start; resale_risk; dispatch_id; handover_gate; handover_date; time_zone; storage_start; storage_end; residence_duration; residence_duration_unit; accepted_net_mass; mass_unit; moisture_fraction_wet_basis; grain_grade; quality_criteria; acceptance_record; cancellation_id; N"
+      collection_method: "Reconcile unique actual commercial consignments against dispatch, acceptance, cancellation and ownership records; exclude duplicate invoice/truck splits."
+      unit: "Item(s)"
+      frequency: "Every consignment and cancellation"
+      temporal_coverage: "Actual receipt-to-handover and relevant reporting periods"
+      site_scope: "Merchant silo and linked business-buyer gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Ownership/acceptance record and calibrated weighing evidence"
+    - protocol_id: cp_grain
+      process_id: "wholesale"
+      flow_role: "grain stock and waste_grain"
+      record_type: "Lot-linked physical stock and loss ledger"
+      raw_fields: "site_id; silo_id; campaign_id; period_id; lot_id; consignment_id; transfer_id; state; event_date; time_zone; storage_start; storage_end; residence_duration; residence_duration_unit; moisture_basis; moisture_source; gross_mass; tare_mass; mass_unit; moisture_fraction_wet_basis; moisture_method; temperature; temperature_unit; opening_mass; receipts_mass; buyer_returns_mass; supplier_returns_mass; physical_dispatch_mass; net_accepted_dispatch_mass; useful_other_exit_mass; closing_mass; contained_waste_mass; measured_direct_loss_mass; loss_method; residual; loss_receiver; commodity_dataset_id; commodity_loss_coverage; linked_loss_adjustment_owner; linked_loss_adjustment_status; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation"
+      collection_method: "Use calibrated net weighing and representative moisture sampling at each actual state; pair internal transfers, reconcile dry matter, investigate unknown residual and preserve actual waste receiver proof. Attribute only the individually identified physical case; retain other source-linked actual fates separately. Each native record belongs to exactly one exchange and any whole total is a non-additive audit."
+      unit: "kg"
+      frequency: "Each receipt, transfer, return, stocktake and dispatch"
+      temporal_coverage: "All stock periods and actual silo residence"
+      site_scope: "Actual silo lots and their actual external handoffs"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrated scale/moisture method, grain stock reconciliation and linked commodity-loss interface"
+    - protocol_id: cp_energy
+      process_id: "wholesale"
+      flow_role: "electricity and actual fuel burn"
+      record_type: "Submeter and combustion ledger"
+      raw_fields: "site_id; campaign_id; period_id; consignment_id; asset_id; event_id; event_date; time_zone; duration; duration_unit; energy_type; meter_id; opening_reading; closing_reading; reading_unit; attribution_driver; all_consumer_driver; actual_burn; burn_unit; burn_method; nonburned_return; nonburned_waste; unrecovered_loss; carried_closing; provider_coverage; uncertainty; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero"
+      collection_method: "Meter actual energy and measured burn; if burn is reconstructed, require a complete disjoint native-unit fate ledger with uncertainty and unknown-loss investigation. Fuel delivered is not burn. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero."
+      unit: "Native energy or fuel unit"
+      frequency: "Meter interval and each burn/handling event"
+      temporal_coverage: "Entire attributed campaign and relevant periods"
+      site_scope: "Direct silo, handling and support assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Meter calibration, burn evidence and complete coverage reconciliation"
+    - protocol_id: cp_supplies
+      process_id: "wholesale"
+      flow_role: "fuel, water, supplies, packaging and returns"
+      record_type: "Native-unit stock and consumption ledger"
+      raw_fields: "site_id; campaign_id; period_id; consignment_id; event_id; event_date; time_zone; SKU; composition; concentration; state; native_unit; opening_quantity; external_receipts; receipt_gross_quantity; receipt_tare_quantity; receipt_net_quantity; receipt_quantity_unit; closing_quantity; recovered_closing; usable_external_return; contained_waste; uncontained_loss; gross_or_consumed_convention; conversion_factor; factor_unit; factor_source; density; density_unit; temperature; temperature_unit; uncertainty; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero"
+      collection_method: "Use invoices plus physical stock/issue/return records; distinguish products, wastes, environmental inputs and direct release; retain actual state-specific conversion evidence. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. Any litre-to-kg diesel conversion requires actual compatible density, temperature/state, mass-per-volume unit and source; no default conversion."
+      unit: "Actual native SKU unit"
+      frequency: "Each external event and period stocktake"
+      temporal_coverage: "Complete attributed reporting periods"
+      site_scope: "One SKU/state and actual silo activities"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Matched returns, inventory reconciliation and conversion provenance"
+    - protocol_id: cp_providers
+      process_id: "wholesale"
+      flow_role: "provider_services"
+      record_type: "Completed service and coverage ledger"
+      raw_fields: "site_id; campaign_id; period_id; consignment_id; provider_id; service_id; event_date; duration; duration_unit; actual_result; quantity; native_unit; completion_record; upstream_dataset_id; included_energy; included_material; included_asset_lifecycle; included_freight; included_waste_treatment; coverage_gap; attribution_driver; all_consumer_driver"
+      collection_method: "Verify actual delivered provider result and upstream dataset coverage; reconcile against direct ledgers so each burden appears once. Missing physical quantity or necessary coverage remains a data gap."
+      unit: "Actual provider-native unit"
+      frequency: "Each actual provider result"
+      temporal_coverage: "Actual service period"
+      site_scope: "All included provider responsibilities"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Completion evidence and explicit burden coverage matrix"
+    - protocol_id: cp_assets
+      process_id: "wholesale"
+      flow_role: "shared_assets"
+      record_type: "Lifecycle and consuming-driver ledger"
+      raw_fields: "site_id; campaign_id; period_id; consignment_id; asset_id; asset_configuration; event_date; phase_id; acquisition_record; manufacture_dataset; maintenance_record; replacement_id; end_of_life_record; consumer_id; driver_unit; driver_used; driver_lifetime; observed_driver; evidenced_remaining_driver; lifetime_source; termination_assumption; attribution_view; uncertainty; sensitivity; update_trigger"
+      collection_method: "Identify all consumers and periods; reconcile driver use against full lifecycle burden and support evidenced remaining use/replacements/termination; retain one allocation view."
+      unit: "Item(s) or actual lifecycle-service native unit"
+      frequency: "Each asset event and period review"
+      temporal_coverage: "All actual and evidenced remaining asset life"
+      site_scope: "All consumers, jobs and periods of the actual asset"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Lifecycle-complete coverage, observed service records and evidenced remaining-use scenarios"
+    - protocol_id: cp_freight
+      process_id: "wholesale"
+      flow_role: "freight"
+      record_type: "Leg and load ledger"
+      raw_fields: "site_id; campaign_id; period_id; consignment_id; leg_id; event_date; provider_id; route; transport_mode; net_load; load_unit; load_conversion_factor; load_conversion_factor_unit; load_conversion_source; distance; distance_unit; distance_conversion_factor; distance_conversion_factor_unit; distance_conversion_source; native_service_unit; attribution_driver; attribution_driver_unit; all_consumer_driver; attribution_share; empty_return_method; upstream_coverage; duplicate_leg_check; uncertainty"
+      collection_method: "Record actual leg loads and distances; convert to compatible kg*km using explicit conversion, preserve mode/load/empty-return and upstream coverage before attribution."
+      unit: "kg*km"
+      frequency: "Each transport leg"
+      temporal_coverage: "All included legs and returns"
+      site_scope: "Declared transport responsibility boundary"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Transport documents, load/distance provenance and coverage check"
+    - protocol_id: cp_environment
+      process_id: "wholesale"
+      flow_role: "environmental_water, other_wastes, contained_wastewater, water_outfalls, species_releases"
+      record_type: "Measured fate and receiver ledger"
+      raw_fields: "site_id; campaign_id; period_id; consignment_id; event_id; event_date; time_zone; source_id; material_state; collected_wastewater_volume; received_wastewater_volume; wastewater_volume_unit; concentration; concentration_unit; concentration_basis; concentration_source; species; particle_fraction; receiving_medium; temperature; temperature_unit; measured_quantity; native_unit; measurement_method; waste_receiver; treatment_dataset_id; treatment_coverage; water_source; outfall_id; combustion_activity; activity_unit; species_factor; factor_unit; factor_basis; factor_source; composition_fraction; composition_basis; composition_source; release_fraction; fate_basis; fate_source; uncertainty; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero"
+      collection_method: "Expand actual material, species/particle fraction and receiver; use direct measurement or actual compatible activity times species-specific factor. Whole-fluid release times measured composition/fate is an alternative only when it does not duplicate an already complete species factor. Carrier water, contained waste and substance views remain non-additive where appropriate. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero."
+      unit: "Actual native unit"
+      frequency: "Each release, waste movement and relevant measured interval"
+      temporal_coverage: "Whole attributed operation and events"
+      site_scope: "Actual direct boundaries and contracted treatment receiver"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Actual receiver proof, measurement/factor provenance and non-overlap check"
+  calculation_rules:
+    - id: count_and_attribution
+      applies_to: "all inventory rows"
+      rule: "Collect actual operational totals using actual consignment, campaign and period keys. Attribute shared burdens with documented all-consumer physical drivers, then divide the attributed quantity by N once. Rejected/cancelled attempts retain attributable burdens but do not increase N."
+      inputs:
+        - cp_consignment
+        - cp_energy
+        - cp_supplies
+        - cp_providers
+        - cp_assets
+        - cp_freight
+        - cp_environment
+      output: "Operational exchange quantity per reference flow"
+      source_ids: []
+    - id: grain_dry_balance
+      applies_to: "grain memorandum and waste_grain; waste_grain_atomic_case"
+      rule: "For each actual state D = net as-is mass times (1 - wet-basis moisture fraction). Dry opening + dry external receipts + dry buyer returns - dry closing - dry physical dispatch - dry supplier returns - dry useful other exits - dry contained waste - independently measured dry direct loss = unexplained residual. Internal transfers cancel. Investigate residual with uncertainty; do not label it emission or loss automatically. Water gain/loss is tracked separately and never equated with dry matter."
+      inputs:
+        - cp_grain
+      output: "Stock reconciliation and identified dry-matter loss L per linked commodity consignment"
+      source_ids: []
+    - id: commodity_link
+      applies_to: "grain memorandum"
+      rule: "For actual attributed irrecoverable dry-grain loss L and accepted outbound dry-grain quantity G, send L / N to the commodity model. If G > 0 and the same loss is not already included upstream, commodity dry-grain demand is G + L, or multiplier (G + L) / G. Convert using actual upstream reference moisture and preserve responsibility/coverage. Treatment already in this service stays excluded from this production-only adjustment. Unknown loss, receiver or coverage blocks complete-chain finalization."
+      inputs:
+        - cp_grain
+        - cp_consignment
+      output: "Linked upstream commodity-loss adjustment, outside service exchanges"
+      source_ids: []
+    - id: fuel_and_species
+      applies_to: "fuel_supply and species_releases; fuel_supply_diesel_supply; species_releases_co2_fossil_air; species_releases_methane_fossil_air; species_releases_nitrous_oxide_air"
+      rule: "Upstream supply follows stock-adjusted input convention. Actual burn is measured or reconstructed from a complete disjoint fate ledger: carried closing, usable external return, contained nonburned waste, unrecovered nonburned loss and actual burn. A total spill tally is audit-only when its recovered/remaining fates already appear. Species release equals actual compatible activity times a species/medium-specific factor, or actual whole-fluid release times evidenced composition and fate. Do not multiply composition/fate again into a complete species factor."
+      inputs:
+        - cp_energy
+        - cp_supplies
+        - cp_environment
+      output: "Actual supply, burn and identified species release views with once-only coverage"
+      source_ids: []
+    - id: freight_service
+      applies_to: "freight"
+      rule: "For each actual leg use net load in kg times distance in km; convert actual mass and length units before multiplication. Attribute included empty returns and provider coverage once; total attributable kg*km is expressed per reference flow."
+      inputs:
+        - cp_freight
+        - cp_consignment
+      output: "Actual kg*km per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify actual material/service/species identity, property and unit before final exchange binding. A candidate semantic label and verified Count support are not a flow UUID."
+      evidence: "Concrete identity/detail/support evidence"
+    - id: quality_grain
+      applies_to: "grain ledger"
+      requirement: "Preserve representative moisture sampling, scale calibration and actual stock states; resolve unexplained dry-matter residual, segregation and lot links. No universal loss, moisture, residence or aeration factor."
+      evidence: "cp_grain; uncertainty and investigation records"
+    - id: quality_coverage
+      applies_to: "wholesale"
+      requirement: "Reconcile direct, provider, freight, assets, waste-treatment and linked commodity-loss boundaries; unknowns stay explicit. Quantitative guards require independent comparable evidence, not the maximum of the batch being validated."
+      evidence: "Coverage matrix and missing-data register"
+    - id: quality_period
+      applies_to: "wholesale"
+      requirement: "Link stock, energy, assets, service handovers and actual returns/replacements/termination to all relevant periods; avoid duplication between opening/closing stock and another reporting period."
+      evidence: "Period/asset/consignment trace ledger"
+    - id: electricity
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in electricity under cp_energy; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_energy; actual source-linked native records"
+    - id: fuel_supply
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in fuel_supply under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: water_supplied
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in water_supplied under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: operating_supplies
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in operating_supplies under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: packaging
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in packaging under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: provider_services
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in provider_services under cp_providers; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_providers; actual source-linked native records"
+    - id: shared_assets
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in shared_assets under cp_assets; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_assets; actual source-linked native records"
+    - id: freight
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in freight under cp_freight; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_freight; actual source-linked native records"
+    - id: environmental_water
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in environmental_water under cp_environment; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_environment; actual source-linked native records"
+    - id: usable_returns
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in usable_returns under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: waste_grain
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in waste_grain under cp_grain; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case waste_grain_atomic_case covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_grain; actual source-linked native records"
+    - id: other_wastes
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in other_wastes under cp_environment; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_environment; actual source-linked native records"
+    - id: contained_wastewater
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in contained_wastewater under cp_environment; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_environment; actual source-linked native records"
+    - id: water_outfalls
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in water_outfalls under cp_environment; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_environment; actual source-linked native records"
+    - id: species_releases
+      applies_to: "wholesale"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in species_releases under cp_environment; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_environment; actual source-linked native records"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "accepted_service"
+    rule: "Confirm actual own-account B2B resale, unique accepted consignment, N > 0, actual mass/moisture/quality/storage time and agreed gate. Rejected/cancelled output is excluded and invoice splits cannot inflate count."
+    source_ids: []
+  - rule_id: validate_grain
+    applies_to: "grain memorandum"
+    rule: "Reconcile all grain dry-matter and water states, actual usable returns, downgrades, waste and independently identified loss; do not convert unexplained residual to an elementary emission. Record linked commodity production-only loss adjustment and its coverage once before complete-chain claims."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "all inventory rows"
+    rule: "Every actual exchange has native unit, node-owned protocol and quantity/fate evidence. Expand actual provider, supply, waste and species umbrellas; missing coverage cannot be assumed absent. Direct/provider and commodity/service boundaries must not overlap."
+    source_ids: []
+  - rule_id: validate_assets_periods
+    applies_to: "shared_assets"
+    rule: "Check all asset consumers and lifecycle phases, observed plus evidenced remaining driver, maintenance/replacement/end-of-life, period linkage, idle treatment, uncertainty and one attribution view. An unsupported lifetime is a data gap."
+    source_ids: []
+  - rule_id: validate_species
+    applies_to: "species_releases; species_releases_co2_fossil_air; species_releases_methane_fossil_air; species_releases_nitrous_oxide_air"
+    rule: "Verify actual species/particle fraction, receiving medium, compatible activity and factor/composition/fate sources. Captured dust or container contents are not direct emissions; measured fuel supply is not burn; no duplication of carrier-water and species views."
+    source_ids: []
+  - rule_id: validate_reject_mode
+    applies_to: "wholesale"
+    rule: "Link each batch/campaign/period, failed attempt, cleaning/changeover, reject return and disposal to the originating lot and one owner. Internal transfers and grain returns must reconcile stock and cancellation without creating new production or multiple accepted service counts."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after concrete identity and foreground completeness review"
+  downstream_use: "Wholesale-service add-on combined with separately matched commodity production and commodity-loss adjustment"
+  allowed_use: "Declared own-account dry wheat wholesale consignment route with matching physical/commercial gate and actual mass/storage qualifiers"
+  excluded_use: "Standalone delivered-wheat footprint; wheat cultivation or processing; all-grains average; fee agency; retail; monetary factor; a complete-chain claim without linked upstream commodity loss"
+  required_metadata: "Actual consignment/lot, merchant/site, period, wheat class/grade, mass/moisture/state, ownership, buyer role, gate, residence time, transport and treatment coverage, linked commodity adjustment owner and status"
+  required_quality_disclosure: "Concrete identities and unresolved gaps; sampling/measurement and stock uncertainty; shared drivers and complete asset lifecycle assumptions; omitted coverage; independent range evidence and linked loss accounting"
+  update_trigger: "Changed supplier/route/gate or grain quality; new drying/processing; changed assets, provider scope, loss coverage, monitoring method, period or data-quality evidence"
+data_sources:
+  - id: "unsd-cpc3-wholesale-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 explanatory notes (30 June 2025), division 61 and subclass 61011. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification only: own-account wholesale is distinguished from agency and commodity production; wheat service is a narrower subset."
+  - id: "fao-bulk-storage"
+    type: "official_guidance"
+    reference: "FAO, Agricultural engineering in development: Bulk storage. https://www.fao.org/4/t0522e/t0522e0d.htm"
+    used_for: "Commercial bulk receipt/handling, silo storage monitoring and dispatch roles; qualitative route evidence, not a numeric recipe or mandatory treatment."
+  - id: "fao-grain-aeration"
+    type: "official_guidance"
+    reference: "FAO, Grain storage techniques: Bulk storage, Aeration. https://www.fao.org/4/t1838e/T1838E1b.htm"
+    used_for: "Ambient aeration and moisture/temperature monitoring; cooling and moisture changes differ. No airflow, hours, temperature or loss factor transferred as default."
+  - id: "fao-wheat-storage"
+    type: "official_guidance"
+    reference: "T. S. Payne, Harvest and storage management of wheat, FAO Bread wheat improvement and production. https://www.fao.org/4/y4011e/y4011e0u.htm"
+    used_for: "Wheat storage deterioration depends on physical, biological and technical conditions; no reported historical loss rate is a universal guardrail."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:83e111e78d0b0d3cf6fc8d9f20ff4494e48786953102fe9068be8ce04d7eea75"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5683"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5683
+          line: 61
+          column: 1
+        end:
+          offset: 7894
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Already-dry cleaned wheat accepted into merchant ownership at declared supplier gate; actual stock/quality/moisture and any prior transport coverage stated |\n| starting_condition_role | Declared input-state fact for a service add-on, not a zero-burden claim about wheat |\n| product_classification_scope | Own-account business-buyer dry wheat wholesale subset of CPC 61011 |\n| recursive_input_rule | Upstream wheat stock remains a memorandum; do not recurse wholesale service into its own turnover. Actual outsourced support uses separate provider result and explicit non-overlap. |\n| upstream_dataset_requirement | Verified appropriate upstream supplies/providers/asset lifecycle data; linked commodity-production and attributable-loss demand resolved outside this service before complete-chain claims |\n| disclosure | Actual starting/ending grain stock; receipts/returns/dispatch/losses; agreed commercial gate; scope of freight, waste treatment and assets; exclusions and all unknown coverage |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_service | wholesale | Inventory the wholesale operation, its actual consumed supplies, energy, attributable assets, actual support and owned transport/waste-treatment scope once. Successful through-traded wheat and its lost fraction have no production exchange in this service; maintain a separate physical grain ledger and mandatory linked upstream commodity adjustment. |  |\n| boundary_gate | wholesale | Declare actual receipt state and commercial handover; reject or cancelled dispatch is not accepted service output. Maintain ownership, physical custody and accounting periods separately. Fee agency and commodity processing are excluded. | unsd-cpc3-wholesale-2025 |\n| boundary_grain | wholesale | Track initial dry usable wheat, actual silo residence, handling, monitoring and ambient aeration; existing quality is preserved without a default drying, fumigation or cleaning recipe. Record any actual corrective outsourced scope explicitly and avoid hidden processing. | fao-bulk-storage; fao-grain-aeration |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 131
+              line: 8
+              column: 1
+            end:
+              offset: 184
+              line: 8
+              column: 54
+          text: "# Silo-based dry wheat own-account wholesale services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5683
+              line: 61
+              column: 1
+            end:
+              offset: 5704
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21399"
+      family: "allocation"
+      span:
+        start:
+          offset: 21399
+          line: 257
+          column: 1
+        end:
+          offset: 24623
+          line: 269
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| alloc_meter | wholesale | Prefer actual submeter and event assignments. Allocate remaining documented common operating burdens to all actual consumers by an evidenced compatible physical driver, such as handling mass for conveying or occupied grain-volume-time for space-related holding. Choose driver by causal use, keep total-consumer denominator and failed/rejected attempts, explain idle-capacity treatment; invoice value and equal consignment count are not default drivers. Divide attributable totals by N once. |  |\n| alloc_assets | shared_assets | Identify asset and every consuming lot/site/period. Attribute its complete manufacture, actual maintenance, replacements and end-of-life burden by driver_used / driver_lifetime. Establish lifetime driver from observed use or observed history plus evidenced remaining use, replacement and termination assumptions, uncertainty and sensitivity. Use either asset-equivalent fraction / N OR lifecycle-complete provider quantity in native units / N, never both and never normalize twice. |  |\n| alloc_supplies | operating supplies | For one actual native-unit SKU/state, S = attributed opening stock + external receipts - closing stock. Choose gross-with-outlets S / N and retain usable external returns, or consumed-only (S - usable external returns) / N with matched return omitted from credited exchange. Closing stock includes usable recovered closing stock; wastage and uncontained loss are not usable returns and retain upstream supply burden. Internal issues/returns do not create external purchases. |  |\n| alloc_commodity_loss | grain memorandum | Keep all wheat-production burdens outside this service. Send attributed irrecoverable grain dry-matter loss L, accepted outbound grain dry matter G and existing commodity-dataset loss coverage to the linked commodity system. If G > 0 and its commodity baseline excludes this loss, upstream dry-wheat demand = G + L (factor (G + L) / G). Convert at the actual upstream reference moisture; for service linkage provide L / N. If matching losses are already included, reconcile instead of multiplying again. Waste treatment included here must not be repeated there. Unknown loss or attribution blocks complete-chain claims, never defaults to zero. |  |\n| alloc_outlets | wholesale | No substitution credit from unusable grain, usable supply returns or unsold merchandise. Downgraded but usable sold grain retains actual state and receiving transaction; it is a documented physical merchandise exit, not an automatically burden-free coproduct. If genuinely independent intended co-products or processing appear, declare and review a new attribution boundary before final dataset use. |  |\n\nHere G is net completed accepted outbound grain after actual cancellations and buyer-return reversals, not all physical dispatches. The physical stock balance separately retains gross physical dispatch and actual return receipts. Buyer-returned grain that remains merchant stock is not irrecoverable L. Storage-water changes must be reconciled at the actually measured state, including moisture sampling uncertainty.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 131
+              line: 8
+              column: 1
+            end:
+              offset: 184
+              line: 8
+              column: 54
+          text: "# Silo-based dry wheat own-account wholesale services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21399
+              line: 257
+              column: 1
+            end:
+              offset: 21439
+              line: 257
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_69428"
+      family: "validation"
+      span:
+        start:
+          offset: 69428
+          line: 579
+          column: 1
+        end:
+          offset: 71450
+          line: 591
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | accepted_service | Confirm actual own-account B2B resale, unique accepted consignment, N > 0, actual mass/moisture/quality/storage time and agreed gate. Rejected/cancelled output is excluded and invoice splits cannot inflate count. |  |\n| validate_grain | grain memorandum | Reconcile all grain dry-matter and water states, actual usable returns, downgrades, waste and independently identified loss; do not convert unexplained residual to an elementary emission. Record linked commodity production-only loss adjustment and its coverage once before complete-chain claims. |  |\n| validate_coverage | all inventory rows | Every actual exchange has native unit, node-owned protocol and quantity/fate evidence. Expand actual provider, supply, waste and species umbrellas; missing coverage cannot be assumed absent. Direct/provider and commodity/service boundaries must not overlap. |  |\n| validate_assets_periods | shared_assets | Check all asset consumers and lifecycle phases, observed plus evidenced remaining driver, maintenance/replacement/end-of-life, period linkage, idle treatment, uncertainty and one attribution view. An unsupported lifetime is a data gap. |  |\n| validate_species | species_releases; species_releases_co2_fossil_air; species_releases_methane_fossil_air; species_releases_nitrous_oxide_air | Verify actual species/particle fraction, receiving medium, compatible activity and factor/composition/fate sources. Captured dust or container contents are not direct emissions; measured fuel supply is not burn; no duplication of carrier-water and species views. |  |\n| validate_reject_mode | wholesale | Link each batch/campaign/period, failed attempt, cleaning/changeover, reject return and disposal to the originating lot and one owner. Internal transfers and grain returns must reconcile stock and cancellation without creating new production or multiple accepted service counts. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 131
+              line: 8
+              column: 1
+            end:
+              offset: 184
+              line: 8
+              column: 54
+          text: "# Silo-based dry wheat own-account wholesale services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 69428
+              line: 579
+              column: 1
+            end:
+              offset: 69450
+              line: 579
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_service"
+      identity_kind: "explicit"
+      unit_id: "normative_5683"
+      source_span:
+        start:
+          offset: 6865
+          line: 76
+          column: 1
+        end:
+          offset: 7252
+          line: 76
+          column: 388
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5683"
+      source_span:
+        start:
+          offset: 7253
+          line: 77
+          column: 1
+        end:
+          offset: 7548
+          line: 77
+          column: 296
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_grain"
+      identity_kind: "explicit"
+      unit_id: "normative_5683"
+      source_span:
+        start:
+          offset: 7549
+          line: 78
+          column: 1
+        end:
+          offset: 7891
+          line: 78
+          column: 343
+    - pointer: "/allocation_rules/0"
+      rule_id: "alloc_meter"
+      identity_kind: "explicit"
+      unit_id: "normative_21399"
+      source_span:
+        start:
+          offset: 21512
+          line: 261
+          column: 1
+        end:
+          offset: 22035
+          line: 261
+          column: 524
+    - pointer: "/allocation_rules/1"
+      rule_id: "alloc_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_21399"
+      source_span:
+        start:
+          offset: 22036
+          line: 262
+          column: 1
+        end:
+          offset: 22555
+          line: 262
+          column: 520
+    - pointer: "/allocation_rules/2"
+      rule_id: "alloc_supplies"
+      identity_kind: "explicit"
+      unit_id: "normative_21399"
+      source_span:
+        start:
+          offset: 22556
+          line: 263
+          column: 1
+        end:
+          offset: 23075
+          line: 263
+          column: 520
+    - pointer: "/allocation_rules/3"
+      rule_id: "alloc_commodity_loss"
+      identity_kind: "explicit"
+      unit_id: "normative_21399"
+      source_span:
+        start:
+          offset: 23076
+          line: 264
+          column: 1
+        end:
+          offset: 23768
+          line: 264
+          column: 693
+    - pointer: "/allocation_rules/4"
+      rule_id: "alloc_outlets"
+      identity_kind: "explicit"
+      unit_id: "normative_21399"
+      source_span:
+        start:
+          offset: 23769
+          line: 265
+          column: 1
+        end:
+          offset: 24203
+          line: 265
+          column: 435
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_rule_6"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_21399"
+      source_span:
+        start:
+          offset: 24205
+          line: 267
+          column: 1
+        end:
+          offset: 24621
+          line: 267
+          column: 417
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_69428"
+      source_span:
+        start:
+          offset: 69523
+          line: 583
+          column: 1
+        end:
+          offset: 69782
+          line: 583
+          column: 260
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_grain"
+      identity_kind: "explicit"
+      unit_id: "normative_69428"
+      source_span:
+        start:
+          offset: 69783
+          line: 584
+          column: 1
+        end:
+          offset: 70121
+          line: 584
+          column: 339
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_69428"
+      source_span:
+        start:
+          offset: 70122
+          line: 585
+          column: 1
+        end:
+          offset: 70427
+          line: 585
+          column: 306
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_assets_periods"
+      identity_kind: "explicit"
+      unit_id: "normative_69428"
+      source_span:
+        start:
+          offset: 70428
+          line: 586
+          column: 1
+        end:
+          offset: 70712
+          line: 586
+          column: 285
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_species"
+      identity_kind: "explicit"
+      unit_id: "normative_69428"
+      source_span:
+        start:
+          offset: 70713
+          line: 587
+          column: 1
+        end:
+          offset: 71126
+          line: 587
+          column: 414
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_reject_mode"
+      identity_kind: "explicit"
+      unit_id: "normative_69428"
+      source_span:
+        start:
+          offset: 71127
+          line: 588
+          column: 1
+        end:
+          offset: 71447
+          line: 588
+          column: 321
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5683"
+      source_span:
+        start:
+          offset: 5683
+          line: 61
+          column: 1
+        end:
+          offset: 5704
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5683"
+      source_span:
+        start:
+          offset: 5732
+          line: 65
+          column: 1
+        end:
+          offset: 6792
+          line: 72
+          column: 193
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21399"
+      source_span:
+        start:
+          offset: 21399
+          line: 257
+          column: 1
+        end:
+          offset: 21439
+          line: 257
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_69428"
+      source_span:
+        start:
+          offset: 69428
+          line: 579
+          column: 1
+        end:
+          offset: 69450
+          line: 579
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:83e111e78d0b0d3cf6fc8d9f20ff4494e48786953102fe9068be8ce04d7eea75"
+  generated_content_sha256: "sha256:e648c4b06afd7b98c325cca22f4fdcd4ee561e2d54848a83412cae2a63913274"
