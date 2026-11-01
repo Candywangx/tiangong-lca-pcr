@@ -419,24 +419,24 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
  }finally{await blocked.close();}
 }
 interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
-async function checkPublishedChapters(browser:Browser,engine:SiteBrowserEngine,origin:string,proof:ProviderRuntime,report:string):Promise<ChapterCompatibilityEvidence[]>{
+export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserEngine,origin:string,proof:ProviderRuntime,report:string):Promise<ChapterCompatibilityEvidence[]>{
  const results:ChapterCompatibilityEvidence[]=[];
  for(const language of ['en','zh']){
   const row=proof.routes.find(route=>route.from.startsWith('/'+language+'/'));assert.ok(row,'Published compatibility requires both languages');
   for(const fragment of ['', '#'+encodeURIComponent(row.anchor)]){
-   const context=await browser.newContext({viewport:{width:1440,height:1000},locale:language==='zh'?'zh-CN':'en-US'}),page=await context.newPage();
+   const context=await browser.newContext({viewport:{width:1440,height:1000},locale:language==='zh'?'zh-CN':'en-US'}),page=await context.newPage();const settled=currentNetworkIdle(page);
    const evidence:BrowserEvidence={engine,engineVersion:browser.version(),viewport:'desktop',route:{kind:'pcr',locale:language==='zh'?'zh':'en',path:row.from},assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${engine}-chapter-${language}-${fragment?'fragment':'default'}.png`};
    const consoleErrors:{text:string;url:string}[]=[],documents:string[]=[];const trace=observeSiteRequests(page,{engine,viewport:'desktop'},evidence.requestFailures,evidence.prefetchUrls);
    page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});page.on('response',response=>{if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});page.on('request',request=>{if(request.isNavigationRequest()&&request.resourceType()==='document'&&request.frame()===page.mainFrame())documents.push(request.url());});
    const query:string='?compat=%E7%AB%A0%E8%8A%82&repeat=a+b&repeat=%2F&empty=';const expected:string=origin+row.to+query+(fragment||'#'+encodeURIComponent(row.anchor));
    try{
-    trace.setPhase('published-chapter-entry');const response=await page.goto(origin+row.from+query+fragment,{waitUntil:'networkidle'});assert.equal(response?.status(),200);await page.waitForURL(expected);await currentNetworkIdle(page);
+    trace.setPhase('published-chapter-entry');const response=await page.goto(origin+row.from+query+fragment,{waitUntil:'networkidle'});assert.equal(response?.status(),200);await page.waitForURL(expected);await settled();
     assert.equal(documents.length,1,'Normalizing a rewritten chapter must not load another document');assert.equal(await page.locator('html').getAttribute('lang'),language==='zh'?'zh-CN':'en-US');assert.equal(new URL(page.url()).search,query);
     await page.waitForFunction(anchor=>{const element=document.getElementById(anchor);if(!element)return false;const box=element.getBoundingClientRect();return box.bottom>0&&box.top<innerHeight;},row.anchor);
-    evidence.assertions.push('exact query and fragment/default location','one document request','published chapter anchor visible');
-    trace.setPhase('published-chapter-reload');await page.reload({waitUntil:'networkidle'});assert.equal(page.url(),expected);await currentNetworkIdle(page);
-    trace.setPhase('published-chapter-navigation');const catalog='/'+language+'/docs/pcr/';await page.locator('a[href="'+catalog+'"]').filter({visible:true}).first().click();await page.waitForURL(origin+catalog);await currentNetworkIdle(page);
-    await page.goBack({waitUntil:'networkidle'});await page.waitForURL(expected);await currentNetworkIdle(page);await page.goForward({waitUntil:'networkidle'});await page.waitForURL(origin+catalog);await currentNetworkIdle(page);
+    evidence.assertions.push('exact query and fragment/default location','one document request','published chapter anchor visible');await settled();
+    trace.setPhase('published-chapter-reload');await page.reload({waitUntil:'networkidle'});assert.equal(page.url(),expected);await settled();
+    trace.setPhase('published-chapter-navigation');const catalog='/'+language+'/docs/pcr/';await page.locator('a[href="'+catalog+'"]').filter({visible:true}).first().click();await page.waitForURL(origin+catalog);await settled();
+    trace.setPhase('published-chapter-back');await page.goBack({waitUntil:'networkidle'});await page.waitForURL(expected);await settled();trace.setPhase('published-chapter-forward');await page.goForward({waitUntil:'networkidle'});await page.waitForURL(origin+catalog);await settled();
     evidence.assertions.push('reload and actual catalog navigation','back and forward retain canonical path/query/fragment');assertSiteBrowserErrors(evidence,consoleErrors);await page.screenshot({path:path.join(report,evidence.screenshot)});
     results.push({javascriptEnabled:true,engine,language,oldPath:row.from,target:row.to,fragment,checks:evidence.assertions,documentRequests:documents,screenshot:evidence.screenshot});
    }catch(error){writeFileSync(path.join(report,evidence.screenshot+'.json'),JSON.stringify({source:proof.sourceCommit,evidence,consoleErrors,documentRequests:documents,error:message(error)},null,2)+'\n');try{await page.screenshot({path:path.join(report,evidence.screenshot)});}catch{}throw error;}finally{trace.stop();await context.close();}
