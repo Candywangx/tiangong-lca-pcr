@@ -63,7 +63,7 @@ sys.exit(1 if failed else 0)
   for(const p of ['index.txt','__next._tree.txt','__next._full.txt','en/docs/pcr/very-long-'+ 'a'.repeat(130)+'/__next.__PAGE__.txt','generated/search/shard.json','generated/data/records.json','generated/search-worker.mjs','generated/raw/classifications/indexes/cpc-3.0-coverage.json','.well-known/complete.bin'])put(path.join(webDirectory,p),Buffer.from([0,1,2,255,23]));
   const before=inventory(webDirectory),buildLog=path.join(parent,'build.log');
   const verification={pcrs:1,pages:2,sourceDocuments:2,sourceDownloads:4,sourceCommit:head,files:before.files.length,bytes:before.bytes,treeSha256:before.treeSha256};
-  const metrics={status:'passed',buildMs:123,peakResidentBytes:1024,memoryMeasurement:'process-tree-rss',stages:['scripts/generate.ts','node_modules/next/dist/bin/next build','scripts/verify.ts'].map(command=>({command,durationMs:1,status:'passed',exitCode:0,peakResidentBytes:1024,memoryMeasurement:'process-tree-rss'})),relocation:{sourceCommit:head}};
+  const metrics={status:'passed',buildMs:123,peakResidentBytes:1024,memoryMeasurement:'process-tree-rss',stages:['scripts/generate.ts','node_modules/next/dist/bin/next build','scripts/static-route-aliases.ts','scripts/verify.ts'].map(command=>({command,durationMs:1,status:'passed',exitCode:0,peakResidentBytes:1024,memoryMeasurement:'process-tree-rss'})),relocation:{sourceCommit:head}};
   put(buildLog,'Synthetic successful build evidence, not full corpus qualification\n'+JSON.stringify(verification)+'\n'+JSON.stringify(metrics)+'\n');
   const output=path.join(parent,'artifact'),materialized=path.join(parent,'materialized'),seoReport=path.join(parent,'seo.json');
   return {parent,root,webDirectory,planDirectory,env,buildLog,output,materialized,seoReport,git,before};
@@ -248,5 +248,17 @@ test('product binding rejects modified SEO receipt fields and a newly failing SE
   const a=json(acceptance);if(mutation==='checker')a.checker={...a.checker as object,sha256:'a'.repeat(64)};if(mutation==='extra-field')a.scientificApproval=true;
   if(mutation==='seo-errors'){save(f.seoReport,{schema:1,origin:'https://pcr.tiangong.earth',mode:'artifact',complete:true,counts:{error:1},findings:[{severity:'error'}]});const bytes=readFileSync(f.seoReport);a.seo={filename:path.basename(f.seoReport),bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')};}
   save(acceptance,a);await assert.rejects(bind({...f,input:f.output,acceptance,productDirectory}),/SEO|acceptance/i);assert.equal(existsSync(path.join(productDirectory,'web-build-acceptance.json')),false);
+ });
+});
+
+test('the required alias stage cannot be missing, duplicated, reordered or unsuccessful',async t=>{
+ const m=await api();
+ for(const kind of ['missing','duplicate','reordered','failed']as const)await t.test(kind,async t=>{
+  const f=fixture(t),lines=readFileSync(f.buildLog,'utf8').trimEnd().split('\n'),metrics=JSON.parse(lines.at(-1)!)as {stages:Record<string,unknown>[]};
+  if(kind==='missing')metrics.stages.splice(2,1);
+  if(kind==='duplicate')metrics.stages.splice(2,0,{...metrics.stages[2]});
+  if(kind==='reordered')[metrics.stages[1],metrics.stages[2]]=[metrics.stages[2]!,metrics.stages[1]!];
+  if(kind==='failed'){metrics.stages[2]!.status='failed';metrics.stages[2]!.exitCode=1;}
+  lines[lines.length-1]=JSON.stringify(metrics);put(f.buildLog,lines.join('\n')+'\n');await assert.rejects(m.createWebBuildArtifact(f));assert.equal(existsSync(f.output),false);
  });
 });

@@ -144,3 +144,12 @@ export function assertBuildResources({
   if (peakResidentBytes > 6_000_000_000)
     throw new Error("PCR build exceeded the 6 GB process memory budget.");
 }
+
+/** One ordered contract for the actual producer and both source-bound handoff validators. */
+export const WEB_BUILD_STAGE_ARGS:readonly (readonly string[])[] = Object.freeze([
+ Object.freeze(['scripts/generate.ts']),
+ Object.freeze(['node_modules/next/dist/bin/next','build']),
+ Object.freeze(['scripts/static-route-aliases.ts']),
+ Object.freeze(['scripts/verify.ts']),
+]);
+export const WEB_BUILD_COMMANDS:readonly string[] = Object.freeze(WEB_BUILD_STAGE_ARGS.map(args=>args.join(' ')));

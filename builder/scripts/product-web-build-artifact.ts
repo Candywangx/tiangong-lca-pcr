@@ -6,7 +6,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {verifyCiPlan, isReusableContext} from '../../scripts/engineering/ci-plan.ts';
 import {readCurrentQualificationPlan} from '../../scripts/engineering/qualification-plan.ts';
-import {assertBuildResources} from '../../packages/pcr-docs/scripts/resource-budget.ts';
+import {assertBuildResources, WEB_BUILD_COMMANDS} from '../../packages/pcr-docs/scripts/resource-budget.ts';
 import {assertProductIdentity, readProductIdentity, readProductVersion, productSha256} from './product-identity.ts';
 import type {ProductIdentity} from './product-identity.ts';
 import {createWebProbes, writePrebuiltConfig} from './product-web.ts';
@@ -60,8 +60,8 @@ function buildEvidence(filename:string,expected:Binding) {
   if(v.sourceCommit!==expected.identity.sourceCommit||relocation.sourceCommit!==expected.identity.sourceCommit||!positive(v.pcrs)||!positive(v.pages)||!positive(v.files)||v.files>=20000||!positive(v.bytes)||typeof v.treeSha256!=='string'||!/^sha256:[a-f0-9]{64}$/u.test(v.treeSha256))throw new Error('Build verification source, inventory or tree hash differs.');
   if(typeof m.peakResidentBytes!=='number'||typeof m.memoryMeasurement!=='string')throw new Error('Missing measured build resources.');
   assertBuildResources({peakResidentBytes:m.peakResidentBytes,memoryMeasurement:m.memoryMeasurement});
-  if(m.status!=='passed'||Object.hasOwn(m,'failure')||!positive(m.buildMs)||!Array.isArray(m.stages)||m.stages.length!==3)throw new Error('Incomplete successful build stages.');
-  const commands=['scripts/generate.ts','node_modules/next/dist/bin/next build','scripts/verify.ts'];
+  if(m.status!=='passed'||Object.hasOwn(m,'failure')||!positive(m.buildMs)||!Array.isArray(m.stages)||m.stages.length!==WEB_BUILD_COMMANDS.length)throw new Error('Incomplete successful build stages.');
+  const commands=WEB_BUILD_COMMANDS;
   let duration=0;
   for(const [i,value]of m.stages.entries()){
     const s=record(value,'build stage');
