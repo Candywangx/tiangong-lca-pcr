@@ -1,0 +1,593 @@
+---
+pcr_id: pcr.own-account-boxed-partial-bicycle-kit-wholesale
+language: en-US
+status: candidate
+sync_with: pcr.zh-CN.md
+---
+
+# Own-account wholesale of manufacturer-boxed partially assembled nonmotorized bicycle kits
+
+## 1. Scope and Applicability
+
+Applies to actual own-account B2B ambient wholesale of manufacturer-complete boxed PARTIALLY-ASSEMBLED nonmotorized two-wheel bicycle kits. Complete means the actual supplier-release kit/BOM and package are complete, not that the bicycle is assembled or ride-ready. Preserve actual frame/model/serial/size, included attached/detached wheels/pedals/accessories/tools, kit/carton counts and native net/tare/state.
+
+The manufacturer delivery example distinguishes boxed partial delivery from later professional assembly (`trek-delivery`). It supports the state-boundary question, not an assumed wholesale assembly/PDI/ride, generic configuration, tool/pressure/torque/duration or electrical route. Ordinary ambient holding needs no forced preservation module.
+
+All manufacture, supplier partial assembly, inherited tires/lubricant/pack and their embodied actual lost-commodity burdens stay outside this service. Match and quantify original actual packedPARTIAL supplier-gate assigned demand and exclusive loss coverage in a linked commodity system before complete-chain use.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.own-account-boxed-partial-bicycle-kit-wholesale |
+| classification_refs | CPC 3.0:61055 (narrower); actual goods49921 nonmotorized cycles |
+| covered_products | Actual ambient own-account wholesale of complete manufacturer-boxed partially assembled nonmotorized two-wheel bicycle kits. |
+| excluded_products | Motorized/electric bicycles, other sports goods/boats, loose aftermarket parts trade, factory manufacture, merchant final assembly/PDI/adjustment/ride/repair/wash/repack, retail/fee agency/standalone storage. |
+| representative_product | Actual supplier model/frame serial/size and packed partial configuration with supplied wheel/pedal/accessory BOM, not a hypothetical ready-to-ride bicycle. |
+| production_route | Manufacturer releases complete packed partial kit; merchant receives/verifies actual records/carton condition, holds ambient and electrically handles, then actual business buyer accepts. |
+| market_state | Completed service; all actual purchased/resold kit and inherited pack/content remains a nonexchange merchandise audit, not consumed service input. |
+
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Receipt, ordinary ambient holding/handling and actual accepted commercial handover for a declared boxed partial bicycle kit consignment. |
+| How much | 1 completed business-buyer accepted consignment; declare actual kit/carton/component counts and compatible net/packaged mass separately. |
+| How well | Actual supplier release partial-state/BOM and box/configuration records, observed condition and real buyer criteria. No universal unpacking, ready-to-ride certification, PDI or test ride. Expected detached assembly parts need not be missing goods. |
+| How long or cycle | Actual supplier release, receipt, holding, dispatch and buyer acceptance times/time zones/durations/native units. Crossperiod open/rejected attempts retain resource attribution. |
+| reference_flow_link | `accepted_service` |
+
+| Field | Value |
+| --- | --- |
+| reference_amount | 1 |
+| reference_product_flow | Completed own-account wholesale consignment of manufacturer-boxed partially assembled nonmotorized bicycle kits |
+| reference_flow_property | Count `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| reference_unit_group | Count `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| reference_unit | Item(s) |
+| required_qualifiers | consignment_id; supplier_release_gate; manufacturer; model; frame_serial_or_lot; frame_size; nonmotorized_two_wheel_configuration; manufacturer_partial_assembly_state; kit_BOM_completeness; wheel_pedal_accessory_membership; actual_kit_count; net_kit_mass_basis; inherited_pack_tare; inherited_tire_lubricant_state; warehouse_site; receipt_dispatch_acceptance_times; buyer_acceptance; reporting_period |
+
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| commercial_count | accepted_service | Count | Item(s) | N counts unique actual buyer-accepted commercial consignment IDs once at declared final gate. Kit/frame/wheel/pedal/carton counts and financial amounts are separate audit quantities. |
+| received_configuration | merchandise audit | Count; Mass; Length | Item(s);kg; actual native size unit | Record actual manufacturer partial assembly and complete supplied kit BOM, attached versus expected detached parts, accessory/tool scope and original pack tare. Preserve frame/model/serial/size/source; no universal ready-to-ride or raw-parts equivalence. |
+| mass_reporting_extent | merchandise, supplies and freight | Mass; Count | kg;Item(s) | Distinguish body/kit/components/pack/support net mass from whole cargo. Retain actual EACH/TOTAL extent and compatible item count: multiply per-item mass once only; total mass is not multiplied again. Carrier/container scale tare is excluded from cargo unless explicitly actual carried packing/support. Published mass needs same actual model/configuration/state/method evidence. |
+| native_conversion | all physical amounts | Actual required property | native and target units | Each native operand needs unit/state/basis/method/source/time; piece-mass needs actual per-piece scope/source; volume-mass needs density/unit/temperature-unit/source and conversion units/source. Component lubricant/retained fluid/moisture have independent units/basis and representative method/sample time. |
+| species_and_content | conditional content/release | Mass; actual native content | kg;explicit native units | Inherited tire/lubricant/coating stays commodity, including retained contents of actual discarded whole kit/part. Actual composition does not establish release; substance/particle and medium plus independent quantity/fate evidence required. Unknown difference is not zero/loss/emission. |
+
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Actual manufacturer-complete BOXED PARTIALLY-ASSEMBLED nonmotorized two-wheel kit at original supplier release, matching model/frame serial/size and supplied BOM/pack/accessory/tire-lubricant state. |
+| starting_condition_role | Original supplier-release input condition for merchant add-on; complete manufactured kit is not assembled-ready-to-ride. |
+| product_classification_scope | CPC 3.0:61055 narrower bicycle own-account merchant service; goods49921 contextual, not service Count. |
+| recursive_input_rule | Purchased/resold kit is nonexchange merchandise stock. Link original actual packed partial-state commodity demand outside service; do not recursively substitute another wholesale service or a different assembled product for the whole kit. |
+| upstream_dataset_requirement | Separate commodity system covers every actual material/frame/wheel/tire/drivetrain/accessory manufacture, finish, supplier partial assembly/lubrication and inherited packing through actual received original gate once. A raw-parts basket or unmatched ready-to-ride/use-phase dataset is inadequate; reconcile state and missing real stages outside service. |
+| disclosure | Declare original gate/configuration/BOM/state/unit/source, assigned original quantity and compatible conversion/all-exit allocation, exclusive real loss owner/adjustment/existing coverage and omitted stages. No full product-chain claim from service alone. |
+
+### Boundary Rules
+
+| rule_id | Rule | source_ids |
+| --- | --- | --- |
+| merchant_physical_scope | Include actual record/carton/condition checks, ambient holding and electric handling, actual warehouse hygiene/containment and new external transit protection, shared infrastructure, assigned freight and real receiver waste handling/treatment. Manufacturer box/partialassembly/inherited contents do not create merchant preservation/assembly. |  |
+| no_pdi_or_assembly | No final assembly, wheel/pedal fitting, torque/pressure adjustment, lubrication, PDI, safety certification, ride, repair/wash/repack or battery/motor use is prescribed. Actual such work, including contracted work, requires separately reviewed scope. | trek-delivery |
+| matched_partial_gate | Merchant input/output state is actual manufacturer-complete boxed partial kit; a source describing later professional assembly/consumer steps does not move this supplier gate. Kit completeness refers actual supplied BOM, not attachment of all parts or ride readiness. | trek-delivery |
+| commodity_outside_once | All merchandise/inherited pack/content upstream including embodied actual lost commodity remains outside this add-on. Quantified complete original partial-gate assigned demand and exclusive loss adjustment/owner/coverage must be linked once before complete-chain use; actual service disposal/treatment remains here once. Unknown loss blocks completion, not default zero. |  |
+| stream_content_exclusivity | Actual whole-kit/part/pack/cleanup/liquid transfers, retained tire/lubricant/coating/component views and independently evidenced species are exclusive. Inherited oil/tire is not purchased operating supply or automatic release; actual missing parts, stock residual or pressure difference is unresolved until evidence establishes identity/quantity/fate. |  |
+
+
+## 6. Process Inventory Structure
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| ambient_wholesale | Ambient boxed partial bicycle kit wholesale | required | Actual specified nonmotorized two-wheel kit own-account consignment | final_service | accepted_service |
+
+
+### Process: Ambient boxed partial bicycle kit wholesale (`ambient_wholesale`)
+
+#### Inputs
+
+##### Product flows
+
+###### Actual alternating-current electricity at point of use (`electricity_ac`)
+
+Only actual alternating-current electricity crossing this node boundary and not already inside a complete provider. The identity leaves provider, voltage, generation mix and delivery-loss allocation unspecified; collect them where required. Its ILCD reference property is named Net calorific value but the verified electricity flow defines an electrical-energy basis of 1 MJ; native kWh uses exactly 3.6 MJ per kWh, never a fuel heating-value factor. Direct-current or another unmatched electricity state stays in the residual requirement.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: native_interval_quantity*service_driver_share/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_utilities`
+
+Range evidence need: Metered period, all-consumer causal native driver and actual delivered electricity supplier/property support are required; no warehouse power or per-bicycle energy benchmark is supplied.
+
+###### Actual liquid treated tap-water supply (`cleaning_water_liquid_tap`)
+
+Applicable only when the actual source is treated tap water supplied for the declared use. Preserve actual supplier, quality, temperature/state and provider boundary; do not assume that every water supply is tap water. Ice, bottled/mineral/reclaimed/untreated water and direct environmental withdrawal stay in their actual separate identities. Keep the parent native mass or volume basis. For any final mass-reference conversion, require actual compatible density/state evidence; the catalogue secondary-volume relationship is not a default site density.
+
+- Selected flow: Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- Flow property / unit: Volume / m3
+- Amount rule: actual_utility_quantity*service_driver_share/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_utilities`
+
+Range evidence need: Actual utility meter or documented density conversion, cleaning interval and shared-consumer allocation are required; no per-kit wash volume is inferred.
+
+###### Actual independently recorded synthetic detergent supply (`hygiene_supplies_synthetic_detergent`)
+
+Only actual synthetic surfactant detergent identified by product/formulation, supplied state and use records. Measure net supplied material excluding package tare; retain concentrate/dilution-water distinctions and never count whole formulation and components additively. Soap, disinfectants, wipes, filters and other materials remain under their separate actual identities; no cleaning recipe, dose or occurrence is assumed.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: selected_supply_input/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual material SKU/formulation and each-versus-total native amounts, stock and return pairing, composition and conversion evidence must precede a quantitative guardrail.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Completed own-account wholesale consignment of manufacturer-boxed partially assembled nonmotorized bicycle kits (`accepted_service`)
+
+One actual completed commercial wholesale consignment at business-buyer acceptance for declared manufacturer-complete boxed partially assembled nonmotorized two-wheel kits. Complete kit BOM is distinct from final assembly; actual detached wheels/pedals expected by supplier are not automatically missing. Service count is not bicycle piece, carton, kilogram or margin.
+
+- Selected flow: Completed own-account wholesale consignment of manufacturer-boxed partially assembled nonmotorized bicycle kits
+- Flow property / unit: Count / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_bicycle`
+
+Range evidence need: Actual accepted consignment, frame/model/serial/size and supplier packed partial-state BOM, actual kit counts/net/tare and periods qualify this count; no fixed bikes or boxes per consignment.
+
+##### Waste flows
+
+###### Discarded complete boxed partial-bicycle kit (`whole_kit_waste_atomic_case`)
+
+Conditional on independently recorded actual Discarded complete boxed partial-bicycle kit. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `whole_kit_waste`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+
+- Selected flow: Discarded complete boxed partial-bicycle kit
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual parent frame/kit identity, whole-stream boundary/native mass/state, included accessories/pack/retained contents and receiver acceptance/treatment are required; no whole-kit waste rate is assumed.
+
+###### Actual separately collected paper packaging waste (`packaging_waste_paper_pack`)
+
+Only actual independently discarded and separately collected paper packaging at this node, with its actual wet/as-collected composition, receiver and treatment/transport responsibility. A contaminated or co-collected mixed stream must use its own verified identity; its material components are non-additive audits. Returnable packaging still in use is not this waste; no composition, quantity, recycling or treatment is assumed.
+
+- Selected flow: Packaging waste, paper `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual separated material and net mass/state, contamination or retained components, receiver and source packing ownership are needed; factory box damage is not a fresh box purchase by assumption.
+
+
+###### Actual separately collected metal packaging waste (`packaging_waste_metal_pack`)
+
+Only actual independently discarded and separately collected metal packaging at this node, with its actual wet/as-collected composition, receiver and treatment/transport responsibility. A contaminated or co-collected mixed stream must use its own verified identity; its material components are non-additive audits. Returnable packaging still in use is not this waste; no composition, quantity, recycling or treatment is assumed.
+
+- Selected flow: packaging waste (metal) `cdda6013-c0c5-4c72-990a-f5668fe71069`
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual separated material and net mass/state, contamination or retained components, receiver and source packing ownership are needed; factory box damage is not a fresh box purchase by assumption.
+
+
+###### Actual separately collected plastic packaging waste (`packaging_waste_plastic_pack`)
+
+Only actual independently discarded, separately collected empty plastic packaging with its actual composition, moisture and receiver. Retained merchandise, contaminated mixed packs, foam inside appliances, disposable wipes and composite packaging do not use this case. Components retained in a whole mixed stream are non-additive audits; retain actual transport/treatment ownership once. No emptying, recycling, occurrence or quantity is assumed.
+
+- Selected flow: packaging waste (plastic) `919351c4-3e25-4092-9934-73ecec021a3b`
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual separated material and net mass/state, contamination or retained components, receiver and source packing ownership are needed; factory box damage is not a fresh box purchase by assumption.
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Rule | source_ids |
+| --- | --- | --- |
+| stocks_and_attempts | Reconcile model/frame/kit/component-BOM/carton records by actual period: opening/receipts/closing, useful commercial returns/other exits, retained rejects and actual receiver discard. Expected detached parts do not equal missing components. Internal movements/retained recovery are not exports; unfinished/rejected attempts carry real resource attribution while N counts accepted services only. |  |
+| original_source_assignment | Trace original supplier-gate input to target by evidenced direct assignment OR complete compatible cohort: assigned_source_gate_quantity=cohort_source_quantity*target_exit_driver/sum_exit_drivers. Native all competing exit records/units/bases/sources/equivalence include useful other exits, closing stock, returns and actual loss. Never divide whole source stock only by accepted target kits/consignments or infer original kits from part counts. |  |
+| linked_commodity_demand | commodity_source_gate_demand=assigned_source_gate_quantity at actual manufacturer-packed partial configuration, including its evidenced state-change share. Original quantity/unit/state/source/allocation/conversion and actual loss adjustment/native basis/source/owner/already-included coverage are mandatory. Final dispatch mass+discard is not original demand; source dataset coverage checked before once-only adjustment outside service.  Record assignment_scope_ids, quantity_basis=raw_target_cohort or per_reference, same_target_scope_N and source. Keep raw original-gate stock and actual external stage/loss integration at its actual physical scope once. ONLY for combination with 1 Item(s) service, derive q_per_reference=raw_assigned_to_that_same_scope/positive same_target_scope_N. Already per-reference quantities are not divided again; single-case raw scope has N=1, N=0 has no normalized result. Never use that derived normalized view to close raw cohort stock or integrate actual missing stages/loss. |  |
+| supply_return_convention | S=opening+net_receipts-closing includes retained recovered unused material. Choose gross S/N input with separately recorded real matched unused outward return OR consumed-only (S-usable_outward_return)/N input and OMIT its return exchange. Pair same independently burdened supply identity/scope; never net inherited kit oil/pack or reusable asset against unrelated supply, and no extra avoided production credit. |  |
+| all_consumer_resources | Actual direct meters or evidenced same-unit causal space-time/handling/native drivers cover all users/periods and relevant idle/hygiene/open-attempt resources. Declare actual share numerator/denominator/unit/basis/source and uncertainty; weight/kit-count/equal-service split needs evidence. No price/margin as physical resource driver. |  |
+| complete_asset_life | Use one matched asset lifecycle with manufacture, actual maintenance/replacements, retirement and end-of-life. Lifetime denominator contains compatible all-user observed history+sourced remaining driver, native units/equivalence/source/uncertainty/sensitivity/update; allocate job_driver/lifetime_all_user_driver once, then divide by N. Do not count rental/provider/carrier-owned assets again or purchase one support per turn. |  |
+| one_physical_owner | Maintain direct/provider/carrier/asset/receiver treatment event matrix and one burden owner. Freight cargo includes actual carried pack/support without making it new consumed material; truck/container tare not cargo. Whole/component/content stream views do not add duplicate exchanges or treatment and useful transfer gives no automatic substitution credit. |  |
+
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_bicycle | ambient_wholesale | Kit merchandise and accepted service | Manufacturer/BOM/stock/buyer records | consignment_id; supplier_release_gate; manufacturer; model; frame_serial_or_lot; frame_size; frame_size_unit; frame_size_source; nonmotorized_two_wheel_configuration; supplier_partial_assembly_state; state_source; kit_BOM_id; kit_BOM_source; attached_parts; expected_detached_parts; wheel_pedal_accessory_membership; included_tool_scope; part_parent_ids; part_count; part_count_unit; part_count_source; actual_kit_count; kit_count_unit; kit_count_source; carton_count; carton_count_unit; carton_count_source; body_mass; net_kit_mass; mass_unit; mass_basis; mass_method; mass_source; mass_reporting_extent; mass_count_multiplier; count_multiplier_unit; count_multiplier_source; inherited_pack_tare; pack_tare_unit; pack_tare_source; whole_pack_mass; whole_pack_mass_unit; whole_pack_mass_source; tire_lubricant_state; content_identity; content_quantity; content_unit; content_basis; content_method; content_source; content_sample_time; content_conversion_factor; content_conversion_unit; content_conversion_source; content_density; content_density_unit; content_density_temperature; content_density_temperature_unit; content_density_source; composition; composition_unit; composition_basis; composition_method; composition_source; composition_sample_time; content_fate; content_unknowns; condition_observation; actual_shortage_evidence; acceptance_criterion_source; buyer_acceptance_id; supplier_release_time; receipt_time; dispatch_time; acceptance_time; time_zone; duration; duration_unit; duration_source; opening_stock; receipts; closing_stock; stock_unit; stock_state; stock_source; return_ids; return_quantity; return_unit; return_state; return_owner; return_method; return_source; useful_other_exit_ids; useful_other_exit_quantity; useful_other_exit_unit; useful_other_exit_state; useful_other_exit_owner; useful_other_exit_method; useful_other_exit_source; actual_loss_quantity; actual_loss_unit; actual_loss_state; actual_loss_basis; actual_loss_method; actual_loss_source; actual_loss_fate; unfinished_resource_attribution; carried_resource_link; source_gate_input_quantity; source_gate_input_unit; source_gate_input_state; source_gate_quantity_source; source_gate_allocation_mode; direct_assignment_source_ids; direct_assignment_quantity; direct_assignment_unit; direct_assignment_source; allocation_cohort_id; cohort_source_quantity; cohort_source_unit; cohort_source_state; cohort_source_record; target_exit_driver; sum_exit_drivers; exit_driver_unit; exit_driver_basis; exit_driver_source; all_exit_ids; all_exit_driver_records; exit_original_partial_kit_equivalent; exit_equivalence_unit; exit_equivalence_source; assigned_source_gate_quantity; assigned_source_gate_unit; assigned_source_gate_state; source_gate_allocation_basis; source_gate_allocation_source; source_gate_conversion; source_gate_conversion_unit; source_gate_conversion_source; exclusive_other_exit_coverage; loss_adjustment_quantity; loss_adjustment_unit; loss_adjustment_basis; loss_adjustment_source; loss_owner; already_included_loss_coverage; upstream_missing_stages; upstream_stage_owner; assignment_scope_ids; quantity_basis; same_target_scope_N; same_scope_N_source | Match actual manufacturer complete packedPARTIAL gate, frame/model/serial/size and BOM expected detached parts. Check actual recorded kit/carton condition without prescribing final assembly/PDI/ride. Measure native net/tare/each-total scopes; reconcile crossperiod exits and direct source assignment OR compatible all-exit cohort including actual loss/coverage.  Record assignment_scope_ids, quantity_basis=raw_target_cohort or per_reference, same_target_scope_N and source. Keep raw original-gate stock and actual external stage/loss integration at its actual physical scope once. ONLY for combination with 1 Item(s) service, derive q_per_reference=raw_assigned_to_that_same_scope/positive same_target_scope_N. Already per-reference quantities are not divided again; single-case raw scope has N=1, N=0 has no normalized result. Never use that derived normalized view to close raw cohort stock or integrate actual missing stages/loss. | Item(s),kg and declared native size/content/driver/time units | Each receipt/state/movement/dispatch/acceptance and period close | Original packed partial release through all exits and crossed unfinished periods | Actual merchant and supplier/buyer gates, one real node | per reference flow | Manufacturer BOM/release, calibrated measurement scope, traceable stock/all-exit allocation and real buyer acceptance Record actual N once; assign source quantity by complete native evidence and preserve unresolved state/shortage/content, not residual=loss. |
+| cp_supplies | ambient_wholesale | Actual new materials and unused returns | Standalone stock and outward transfer | supply_id; material_SKU; formulation; composition; composition_unit; composition_basis; composition_source; opening; net_receipts; closing; stock_unit; stock_source; retained_recovery; unused_outward_return; return_unit; return_receiver; same_supply_pairing; supply_convention; native_quantity; quantity_unit; quantity_source; reporting_extent; count_multiplier; count_multiplier_unit; count_multiplier_source; per_piece_mass; per_piece_mass_unit; per_piece_mass_source; density; density_unit; density_temperature; density_temperature_unit; density_source; conversion_factor; conversion_unit; conversion_source; service_driver; all_user_driver; driver_unit; driver_basis; driver_source; service_driver_share; period; owner; embedded_provider_coverage; N; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Collect actual SKU/formulation and opening/receipts/closing, actual EACH/TOTAL extent and units; retain source-paired usable outward transfers. Gross S input plus actual paired return OR consumed-only minus matched return and omit return exchange. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | Native material units with supported target conversions | Each real receipt/use/outward transfer and period close | Actual supply interval and retained recovered closing stock | Merchant new supply and actual external receiver | per reference flow | Native stock receipts, method/conversion/density-temperature source and same-scope pairing Actual physical share and native quantity converted once, no inherited part/box/oil or asset credit. |
+| cp_utilities | ambient_wholesale | Actual allocated warehouse utilities | Meter and all-user causal record | utility_id; provider; geography; meter_id; native_interval_quantity; quantity_unit; quantity_source; interval_start; interval_end; time_zone; service_driver; all_user_driver; driver_unit; driver_basis; driver_source; service_driver_share; actual_utility_quantity; density; density_unit; density_temperature; density_temperature_unit; density_source; conversion_factor; conversion_unit; conversion_source; included_provider_scope; overlap_exclusions; N; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Obtain native metered intervals and actual service/all-user same-unit driver, convert explicitly then divide by N; distinguish measured and allocated scope, exclude covered provider resources. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | kWh,m3 and native time/driver/conversion units | Each utility/driver interval | Full actual interval including attributed idle/open attempts | Real warehouse/handling utility meters and all users | per reference flow | Meter/source units and actual all-user causal allocation basis Only matching interval resources and evidenced service share, no consumer assembly/ride utility. |
+| cp_provider | ambient_wholesale | Disjoint actual contracted package | Physical service/equivalence coverage record | package_id; provider; physical_scope; actual_native_package_quantity; package_unit; quantity_source; physical_equivalence; equivalence_unit; equivalence_source; documented_share; share_numerator; share_denominator; share_driver_unit; share_driver_basis; share_driver_source; covered_events; covered_energy; covered_materials; covered_assets; covered_transport; covered_treatment; excluded_scope; direct_resource_owner; service_period; all_users; evidence_record; N | Obtain real physical unit and equivalent events, share numerator/denominator and complete energy/material/asset/carrier/treatment exclusions; no hidden final assembly/PDI. | Native physical equivalent and compatible share units | Each actual contract service/event and scope change | Actual provider event period | Actual merchant-linked provider scope | per reference flow | Provider native equivalent, covered events/resource matrix and source Quantity times real same-basis share/N, no fee conversion or duplicate direct resource. |
+| cp_assets | ambient_wholesale | Complete lifecycle shared asset | Asset and all-user service-history register | asset_id; asset_dataset_scope; manufacture_coverage; maintenance; replacement_events; retirement; end_of_life; event_quantity; event_unit; event_source; job_driver; job_driver_unit; job_driver_basis; job_driver_source; observed_all_user_driver; observed_driver_unit; observed_driver_basis; observed_driver_source; remaining_driver; remaining_driver_unit; remaining_basis; remaining_source; lifetime_all_user_driver; lifetime_driver_unit; lifetime_driver_basis; lifetime_driver_source; driver_equivalence; equivalence_unit; equivalence_source; all_consumers; all_periods; idle_and_open_use; uncertainty; sensitivity; update_trigger; provider_carrier_overlap; N | Trace matched manufacture, actual maintenance/replacements, retirement/EOL and all-user history plus sourced remaining driver, native equivalence, uncertainty/sensitivity/update. Allocate actual job/life ratio then /N; one owner with provider/carrier. | Native asset equivalent and compatible job/life drivers | Each asset event and period update | Observed all-user life plus evidenced remainder and end-of-life | Actual shared building/equipment/carrier support consumers | per reference flow | Full dataset boundary, actual history and sourced remaining use/units/uncertainty Complete full-life burden share, not new support each use; record actual idle/open users. |
+| cp_freight | ambient_wholesale | Real carrier cargo work | Payload/route/scale boundary record | segment_id; mode; carrier; origin; destination; route_scope; actual_kit_count; count_unit; count_source; cargo_mass_quantity; cargo_mass_unit; cargo_mass_reporting_extent; cargo_mass_count_multiplier; multiplier_unit; multiplier_source; kit_BOM_configuration; inherited_packing_mass; inherited_packing_mass_unit; inherited_packing_mass_basis; inherited_packing_mass_method; inherited_packing_mass_source; added_packing_mass; added_packing_mass_unit; added_packing_mass_basis; added_packing_mass_method; added_packing_mass_source; actual_carried_support_mass; actual_carried_support_mass_unit; actual_carried_support_mass_basis; actual_carried_support_mass_method; actual_carried_support_mass_source; noncargo_vehicle_container_tare; tare_unit; tare_source; payload_scope_source; whole_pack_payload; payload_unit; payload_source; payload_conversion; payload_conversion_unit; payload_conversion_source; distance; distance_unit; distance_source; distance_conversion; distance_conversion_unit; distance_conversion_source; actual_transport_work; work_unit; work_source; documented_service_share; share_numerator; share_denominator; share_driver_unit; share_driver_basis; share_driver_source; empty_return_coverage; carrier_fuel_assets; warehouse_overlap; N | Use cargo kit+shippedpack/support mass, exclude noncargo vehicle/container scale tare. EACH compatible mass times actual count once OR TOTAL mass unchanged. Convert payload/distance to actual work, apply documented native service share and /N once; carrier empty/fuel/assets disjoint. | Native cargo mass/count/distance/work and converted t*km | Each actual segment and relevant return | Actual included route intervals | Actual carrier/route, warehouse overlap excluded | per reference flow | Scale/pack list/BOM boundary, route/conversions/native share and carrier dataset scope Declare EACH/TOTAL extent, actual cargo/support/tare inclusion, transport work and share/N separate; no payload double multiplication. |
+| cp_outlets | ambient_wholesale | Actual receiver transfers | Accepted transfer with whole/content measurement | transfer_id; receiver; receiver_classification; treatment_boundary; treatment_owner; source_frame_kit_ids; parent_part_ids; kit_BOM_state; stream_identity; physical_state; native_quantity; quantity_unit; quantity_basis; quantity_method; quantity_source; reporting_extent; count_multiplier; multiplier_unit; multiplier_source; transfer_time; whole_kit_exclusion; separate_part_exclusion; separate_pack_exclusion; retained_content_identity; retained_content_quantity; retained_content_unit; retained_content_state; retained_content_basis; retained_content_method; retained_content_source; retained_content_sample_time; retained_content_fate; component_identity; component_quantity; component_unit; component_basis; component_method; component_source; component_sample_time; retained_moisture; retained_moisture_unit; retained_moisture_basis; retained_moisture_method; retained_moisture_source; retained_moisture_sample_time; retained_fluid; retained_fluid_unit; retained_fluid_basis; retained_fluid_source; density; density_unit; density_temperature; density_temperature_unit; density_source; conversion_factor; conversion_unit; conversion_source; usable_transfer_record; waste_acceptance_record; source_stock_pairing; no_double_credit; N; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation | Measure actual whole kit/independentpart/pack/mixedcleanup/liquid at receiver gate; preserve parent frame/BOM lineage and EACH/TOTAL scope. Actual native retained tire/lubricant/component/moisture/fluid audits include method/source/time and compatible density conversion. Net transfer/N once; contained contents not additional waste/release. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. Attribute only the individually identified physical case; retain other source-linked actual fates separately. Each native record belongs to exactly one exchange and any whole total is a non-additive audit. | Native stream Item(s),kg,m3 plus independent component/content units | Each external receiver transfer and incident | Actual transfer interval; retained closing stock separate | Merchant actual outlet and receiver/treatment boundary | per reference flow | Actual receiver acceptance, net/tare extent/state and native content/fate/owner evidence Physical views exclusive, real useful return versus waste classification; no automatic substitution credit. |
+| cp_environment | ambient_wholesale | Conditional actual direct release | Species/receptor measurement or justified factor | event_id; species_identity; particle_basis; receiving_medium; direct_measurement; measurement_unit; measurement_method; measurement_source; sample_time; activity; activity_unit; activity_source; factor; factor_unit; factor_basis; factor_source; factor_scope_complete; composition; composition_unit; composition_basis; composition_source; release_fraction; fate_basis; fate_source; whole_stream_quantity; whole_stream_unit; whole_stream_source; density; density_unit; density_temperature; density_temperature_unit; density_source; conversion_factor; conversion_unit; conversion_source; retained_captured_quantity; retained_captured_unit; retained_captured_basis; retained_captured_source; contained_transfer_exclusion; inherited_content_provenance; stock_unknowns; provider_overlap; N | Identify real substance/particle and medium, obtain actual measurement or applicable activity/factor and needed composition/fate/native conversions. Captured/contained/retained content excluded; factor already complete not multiplied again. | kg species plus actual native activity/factor/composition/temperature units | Each real measured or evidenced release | Actual event/sample period and representativeness | Actual receiving medium beyond merchant boundary | per reference flow | Measurement/analysis or factor applicability source, real activity and independent receptor/fate Measured actual species/N OR compatible activity*factor*requiredcomposition*requiredfate/N only; no tirewear/ride/stockgap default. |
+
+### Calculation Rules
+
+| rule_id | Applies to | Rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| completed_count | accepted_service | N=count unique actual commercial consignment IDs with buyer acceptance at declared gate, not kit/frame/carton/component count. | cp_bicycle consignment/acceptance/time/state records | N and 1 Item(s) service reference |  |
+| kit_and_pack_mass | merchandise nonexchange | whole_pack_mass=actual_net_partial_kit_mass+actual_included_pack_tare on identical state/configuration/method. Body/wheels/pedals/accessories and contents decompose the kit nonadditively, not extra current service inputs. | cp_bicycle BOM/configuration/native mass/count/extent/source | Actual partial-kit and pack audit; no hypothetical assembled mass |  |
+| source_gate_demand | commodity outside | commodity_source_gate_demand=assigned_source_gate_quantity; use evidenced direct mapping OR assigned_source_gate_quantity=cohort_source_quantity*target_exit_driver/sum_exit_drivers with all competing compatible exit records/units/equivalence. Include evidenced state-change share, reconcile real loss ownership/existing coverage once outside.  Record assignment_scope_ids, quantity_basis=raw_target_cohort or per_reference, same_target_scope_N and source. Keep raw original-gate stock and actual external stage/loss integration at its actual physical scope once. ONLY for combination with 1 Item(s) service, derive q_per_reference=raw_assigned_to_that_same_scope/positive same_target_scope_N. Already per-reference quantities are not divided again; single-case raw scope has N=1, N=0 has no normalized result. Never use that derived normalized view to close raw cohort stock or integrate actual missing stages/loss. | cp_bicycle source quantity/gate/native all-exit drivers/coverage | Quantified original complete boxedPARTIAL-kit gate demand/loss interface |  |
+| supply_stocks | actual new supplies | S=opening+net_receipts-closing; choose gross S/N plus real same-scope usable_outward_return/N output OR consumed-only (S-usable_outward_return)/N and OMIT paired return exchange. | cp_supplies native stock/extent/quantity/conversion/pairing | Exclusive supply and actual outward return convention |  |
+| utility_allocation | utilities | service_driver_share=service_driver/all_user_driver on matching native causal basis; allocated_utility=native_interval_quantity*service_driver_share/N after compatible conversion. | cp_utilities native interval/meter/driver units/source | Actual measured or allocated utility per service |  |
+| provider_allocation | provider_packages | provider_quantity=actual_native_package_quantity*documented_share/N after real physical equivalence and exclusive resource coverage; documented_share=share_numerator/share_denominator on matching same-unit driver basis. | cp_provider native physical equivalent/share drivers/owner | Disjoint actual provider service per consignment |  |
+| full_asset_share | shared_assets | asset_equivalent=job_driver/lifetime_all_user_driver/N; lifetime_all_user_driver=compatible_observed_all_user_driver+compatible_sourced_remaining_driver. Actual complete-life dataset includes maintenance/replacements/retirement/EOL, with uncertainty/sensitivity/update. | cp_assets matched lifecycle/job-lifetime native units/history/remainder source | All-consumer complete-life asset burden per service |  |
+| cargo_transport_work | freight | For EACH, cargo_total=actual_each_compatible_cargo_mass*actual_compatible_count; for TOTAL, cargo_total=actual_total_compatible_cargo_mass with no count multiplier. actual_transport_work=cargo_total_tonnes*actual_distance_km, or evidenced equivalent native carrier work; freight_quantity=actual_transport_work*documented_service_share/N. Exclude noncargo vehicle/container tare; carried pack/support remains cargo. | cp_freight native extent/cargo-count/distance/conversion/share/coverage | Actual freight work per service, extent/count/share/N each once |  |
+| outlet_transfers | actual outlets | outlet_quantity=actual_compatible_net_quantity/N; EACH measurement multiplies matching count once, TOTAL remains total. Whole streams include retained content; independent components/parts/pack/liquid/species views are exclusive. | cp_outlets native whole net/tare/extent/content/fate/receiver records | Actual compatible receiver transfer quantity, no duplicate content |  |
+| actual_release | direct_species | release_quantity=actual_measured_species_quantity/N OR compatible_activity*applicable_factor*required_composition*required_release_fraction/N. Omit composition/fate multipliers already included in complete species-release factor. | cp_environment native measurement/activity/factor/composition/fate/receptor sources | Actual species and medium quantity, no inherited lubricant/tire default |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| native_operands | All actual records | Retain quantity/unit/state/extent/basis/method/source/sample time, density and temperature-unit/source, conversion units/source. Unknown stock/condition/content is unresolved, not assumed zero. | Node-owned CP raw records and traceable conversions |
+| representative_gate | Actual configuration | Supplier-packed partially assembled complete kit BOM must match original baseline; no ready-to-ride/rawparts substitute, generic pressure/torque/weight or consumer final-assembly factor. | Actual manufacturer release/BOM/frame/model/serial/state records |
+| complete_chain | Linked commodity | Complete received partial-gate manufacture/inherited pack/content and native assigned demand/real loss coverage once outside service before complete-chain claim. | cp_bicycle source/all-exit/owner system readback |
+| final_actual_exchange | Every expanded row | Actual SKU/provider/asset/outlet/species identity and supported property/unit must be concretely verified before final data exchange; semantic candidate is not a bound TIDAS exchange. | Actual detail/support and foreground quantity evidence |
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| electricity | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `electricity` under `cp_utilities`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_utilities`; actual source-linked native records |
+| cleaning_water | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `cleaning_water` under `cp_utilities`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_utilities`; actual source-linked native records |
+| hygiene_supplies | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `hygiene_supplies` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| added_outer_packing | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `added_outer_packing` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| provider_packages | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `provider_packages` under `cp_provider`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_provider`; actual source-linked native records |
+| shared_assets | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `shared_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
+| freight | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
+| unused_count_returns | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `unused_count_returns` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| unused_mass_returns | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `unused_mass_returns` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| whole_kit_waste | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `whole_kit_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `whole_kit_waste_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
+| part_waste | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `part_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
+| packaging_waste | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `packaging_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
+| hygiene_waste | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `hygiene_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
+| contained_liquid | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `contained_liquid` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
+| direct_species | ambient_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `direct_species` under `cp_environment`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_environment`; actual source-linked native records |
+
+
+### Mandatory Inventory Completion Records
+
+These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
+
+#### electricity
+
+Record actual warehouse lighting/handling utility scope and causal share. No cycle motor, battery charging, product demonstration, assembly/PDI or test-ride energy is prescribed; exclude energy already owned by actual provider or carrier.
+
+Residual inventory requirement after the independently identified cases `electricity_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual ambient warehouse and electric handling electricity
+- Flow property / unit: Energy / kWh
+- Amount rule: native_interval_quantity*service_driver_share/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_utilities`
+
+Range evidence need: Metered period, all-consumer causal native driver and actual delivered electricity supplier/property support are required; no warehouse power or per-bicycle energy benchmark is supplied.
+
+#### cleaning_water
+
+Actual utility water for warehouse surfaces only when used. It is not bicycle washing, tire treatment, inherited fluid or a prescribed maintenance operation. Native source/meter/treatment and provider coverage must be explicit.
+
+Residual inventory requirement after the independently identified cases `cleaning_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual warehouse surface hygiene water
+- Flow property / unit: Volume / m3
+- Amount rule: actual_utility_quantity*service_driver_share/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_utilities`
+
+Range evidence need: Actual utility meter or documented density conversion, cleaning interval and shared-consumer allocation are required; no per-kit wash volume is inferred.
+
+#### hygiene_supplies
+
+Expand actual agent/wipe/absorbent/filter materials using real formulation and standalone stock. Factory tire rubber/lubricant/coating/consumer assembly tools are merchandise constituents, not current supplies. No lubricant dose, desiccant or solvent use is required.
+
+Residual inventory requirement after the independently identified cases `hygiene_supplies_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual warehouse hygiene and incident containment materials
+- Flow property / unit: Mass / kg
+- Amount rule: selected_supply_input/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual material SKU/formulation and each-versus-total native amounts, stock and return pairing, composition and conversion evidence must precede a quantitative guardrail.
+
+#### added_outer_packing
+
+Only actual new outer transit protection/seals crossing service boundary. Original manufacturer box, wheel separators, tools/accessory bag and kit supports remain inherited merchandise; reusable merchant support belongs to full-life service assets. No kit opening/repacking is assumed.
+
+- Identity requirement: Actual new external transport protection
+- Flow property / unit: Count / Item(s)
+- Amount rule: selected_supply_input/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual new outer protection unit/material/per-piece mass and reporting extent are needed; no one-box-per-bike or packaging-count factor is assumed.
+
+#### provider_packages
+
+Use real physical native equivalents and actual resource/asset/transport/treatment coverage, not money. Contracted assembly, adjustments, PDI, repair or ride remains an actual route extension, not an invisible provider service.
+
+- Identity requirement: Actual physically disjoint contracted warehouse package
+- Flow property / unit: Count / Item(s)
+- Amount rule: actual_native_package_quantity*documented_share/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_provider`
+
+Range evidence need: Actual provider unit, equivalent physical events, native share basis and exclusive coverage are required; no generic logistics package or price factor is fixed.
+
+#### shared_assets
+
+Attribute real building/racks/electric handlers/reusable pallets and cages/scales/monitors across all users and periods, using complete manufacture/maintenance/replacement/retirement/end-of-life. Factory kit parts and packaging are not assets newly purchased each service.
+
+- Identity requirement: Complete-life shared warehouse and handling assets
+- Flow property / unit: Count / Item(s)
+- Amount rule: job_driver/lifetime_all_user_driver/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_assets`
+
+Range evidence need: Matched complete asset dataset, job/life native driver units, observed all-user use plus sourced remaining service and sensitivity are needed; no lifetime or per-turn asset count is invented.
+
+#### freight
+
+Include only actual assigned carrier segments. Cargo payload is actual partial kits with shipped accessories, inherited/added packing and actual carried support; separate vehicle/container tare not cargo. EACH mass is multiplied once by compatible actual count; TOTAL mass is never multiplied by kit count again. Carrier fuel/assets and empty legs have one owner.
+
+- Identity requirement: Actual transport service for boxed partial bicycle kits
+- Flow property / unit: Freight transport / t*km
+- Amount rule: actual_transport_work*documented_service_share/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_freight`
+
+Range evidence need: Actual gross cargo/net/tare ticket boundary, kit count and EACH/TOTAL mass scope, route distance, conversions/shares/empty coverage are required; no ready-to-ride mass, payload or journey default.
+
+#### unused_count_returns
+
+Actual usable unused material units exported from the same standalone new-supply stock only. Retained recovery/closing stock is not export. Factory box/kit return to supplier is a merchandise ledger event. Omit this exchange if the matched same-stock return was deducted in consumed-only input.
+
+- Identity requirement: Actual matched unused added outer packing outward return
+- Flow property / unit: Count / Item(s)
+- Amount rule: actual_matched_unused_outward_units/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual original supply unit/state and outward receiver pairing are needed; no material credit from inherited cartons, useful bicycle returns or a reusable pallet is automatic.
+
+#### unused_mass_returns
+
+Actual usable unused warehouse material exported from the same independently burdened supply stock with original identity and net mass. Keep gross input with this output OR consumed-only input without this output, never both deductions or avoided production credit by default.
+
+- Identity requirement: Actual matched unused hygiene supply outward return
+- Flow property / unit: Mass / kg
+- Amount rule: actual_matched_unused_outward_mass/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual material product/state/receiver and source-stock quantity unit/density pairing are required; inherited bicycle lubricant is not a current supply return.
+
+#### whole_kit_waste
+
+Only real receiver-accepted whole kit discard at its actual supplier partial configuration, including parts/accessories/packing/retained lubricant or tire contents only as actually included. Expected detached component is not by itself loss. Damage/shortage/commercial rejection/return alone is not actual discard.
+
+- Identity requirement: Actual discarded whole partial bicycle kit stream
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual parent frame/kit identity, whole-stream boundary/native mass/state, included accessories/pack/retained contents and receiver acceptance/treatment are required; no whole-kit waste rate is assumed.
+
+#### part_waste
+
+Record actual separately transferred damaged/incident-detached or separately received part linked to parent kit/frame and original BOM. No routine dismantling/replacement/repair is prescribed. Exclude parts/retained tire or lubricant already inside whole-kit waste; useful separately transferred component is not automatically waste.
+
+- Identity requirement: Actual independently transferred bicycle part stream
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Part identity/material, parent genealogy, native quantity/unit/state and actual receiver classification/fate are required; missing expected parts or counted fragments do not become whole original bicycles.
+
+#### packaging_waste
+
+Actual independently transferred carton/film/separator/protection waste, distinguishing inherited pack, new outer material and retained reusable support. Physical material already included in whole-kit/part/mixed hygiene stream is excluded from this card.
+
+Residual inventory requirement after the independently identified cases `packaging_waste_paper_pack`; `packaging_waste_metal_pack`; `packaging_waste_plastic_pack`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual separate packaging waste
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual separated material and net mass/state, contamination or retained components, receiver and source packing ownership are needed; factory box damage is not a fresh box purchase by assumption.
+
+#### hygiene_waste
+
+Actually collected spent wipes/absorbents/filters with retained incident material/fluid, measured as whole stream. Purchased dry supply, retained tire/lubricant/component content and spent wet stream are different nonadditive views, not separate duplicated wastes or emissions.
+
+- Identity requirement: Actual spent warehouse hygiene or containment solids
+- Flow property / unit: Mass / kg
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual spent wet/net amount, retained fluid/solid quantity native units/basis/method/source/sample time and receiver evidence must support the stream, not a material receipt alone.
+
+#### contained_liquid
+
+Actual collected warehouse surface hygiene or incident liquid to a documented receiver/treatment boundary, not bicycle washing or automatic drain outfall. Retained lubricant/solids composition needs actual compatible source/fate evidence.
+
+- Identity requirement: Actual contained warehouse hygiene liquid
+- Flow property / unit: Volume / m3
+- Amount rule: actual_compatible_outlet_net_quantity/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Actual contained volume or compatible mass-density-temperature conversion and receiver loads/composition are needed; intake water, tire pressure change or visible wetness alone does not establish whether or how much liquid is discharged. Actual collection/receiver evidence is required; assume neither discharge nor zero.
+
+#### direct_species
+
+Expand only identified substance/particle and actual receiving medium with independent quantity evidence. Inherited lubricant/tire/coating, SDS, visible damage or stock/pressure difference does not establish emission. Captured residues and contained cleanup remain transfers; no consumer tire wear, ride or maintenance release assumed.
+
+- Identity requirement: Actual identified direct substance or particle release
+- Flow property / unit: Mass / kg
+- Amount rule: actual_measured_species_quantity/N OR actual_activity*applicable_factor*required_composition*required_release_fraction/N
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_environment`
+
+Range evidence need: Actual species/receptor and measurement or compatible activity-factor with required composition/fate/source/native conversions are needed; complete species release factors must not receive duplicate composition/fate multipliers.
+
+## 9. Validation Rules
+
+| rule_id | Rule | source_ids |
+| --- | --- | --- |
+| reference_check | Match output/reference name/link, Count amount, unique real N and actual buyer gate with partial-kit BOM/state/frame/model/size/serial/count/nettare/period qualifiers. |  |
+| original_gate_check | Require actual manufacturer-complete boxedPARTIAL gate and every actual missing commodity stage outsideonce; native direct assignment OR complete compatible competing exits inclclosing/usefulothers/returns/loss and unique loss owner/coverage. No ready-to-ride/rawparts proxy or unknown loss=zero.  Record assignment_scope_ids, quantity_basis=raw_target_cohort or per_reference, same_target_scope_N and source. Keep raw original-gate stock and actual external stage/loss integration at its actual physical scope once. ONLY for combination with 1 Item(s) service, derive q_per_reference=raw_assigned_to_that_same_scope/positive same_target_scope_N. Already per-reference quantities are not divided again; single-case raw scope has N=1, N=0 has no normalized result. Never use that derived normalized view to close raw cohort stock or integrate actual missing stages/loss. |  |
+| physical_scope_check | No hidden finalassembly/PDI/adjustment/ride/repair/wash/repack/motor/battery/lubrication operation including outsourced work; real added operation needs reviewed extension. |  |
+| extent_content_check | Check EACH/TOTAL quantity units/count compatibility, cargo versus noncargo tare, actual whole/part/pack/content/cleanup/receiver/species exclusivity. Unknown shortage/damage/pressure/stock difference is not actual loss/discard/release. |  |
+| resource_owner_check | Check native same-basis all-consumer shares and /N once, full asset all-user history+sourced remainder/EOL/units/uncertainty, provider/carrier/treatment disjointness and supply gross+return OR net omitreturn. |  |
+| actual_identity_check | Final exchange requires actual native quantity evidence, verified concrete identity and property/unit support; unresolved identities/empirical ranges remain candidate gaps, not publication readiness. |  |
+
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Foreground add-on service for actual accepted commercial own-account boxed partial bicycle-kit consignment. |
+| downstream_use | Combine with matched original manufacturer-complete boxedPARTIAL-kit commodity system and quantified exclusive assigned demand/loss outside service once. |
+| allowed_use | Actual declared nonmotorized two-wheel supplier-packed partial-kit ambient wholesale with traceable BOM/state and resources/receivers. |
+| excluded_use | Full bicycle product footprint alone; ready-to-ride/consumer assembly/PDI/ride/use-phase, motorized/electric route, unreviewed processing or fee agency. |
+| required_metadata | Actual supplier original partial gate/BOM/frame/model/serial/size/wheel-pedal-accessory membership/nettare/extent/count/content, accepted consignment/time/site/period, native source allocation/loss coverage, causal resource/lifetime/provider/carrier/treatment ownership. |
+| required_quality_disclosure | Unresolved actual identity/support/quantity/range, same-state conversion/each-total/tare evidence, source competing-exit reconciliation, content unknowns, measured versus allocated utility and full-life asset remainder uncertainty. |
+| update_trigger | Actual received configuration/BOM/gate, merchant operation, source allocation/loss coverage, provider/asset/carrier/receiver/species changes or revised verified actual identity/source. |
+
+
+## 11. Data Sources
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| trek-delivery | literature | Trek Bicycle customer service, Shipping & pickup / Direct to home shipping and retailer assembly. https://www.trekbikes.com/us/en_US/customer_service/ | Qualitative existence of manufacturer-boxed partial-assembly delivery gate distinct from later professional/consumer final assembly only. Actual nonmotorized configuration must be evidenced separately; no price/time/return-policy/tools/steps/pressure/torque/energy/default wholesale factor. |

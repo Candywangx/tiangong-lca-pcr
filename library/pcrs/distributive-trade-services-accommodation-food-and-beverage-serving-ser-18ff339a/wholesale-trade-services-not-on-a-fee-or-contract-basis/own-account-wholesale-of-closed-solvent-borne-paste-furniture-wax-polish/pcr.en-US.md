@@ -1,0 +1,574 @@
+---
+pcr_id: pcr.own-account-wholesale-of-closed-solvent-borne-paste-furniture-wax-polish
+language: en-US
+status: candidate
+sync_with: pcr.zh-CN.md
+---
+
+# Own-account wholesale of solvent-borne paste furniture wax polish in original closed retail packs
+
+## 1. Scope and Applicability
+
+Applies to actual factory-finished SOLVENT-BORNE PASTE furniture wax polish in ORIGINAL CLOSED retail packs, merchant-owned/resold through ambient physical B2B wholesale. Actual SKU/shade/batch/formulation/closure/retained contents/headspace/net-gross-tare/condition/time control. No universal beeswax/carnauba/neat-wax assumption: actual wax/solvent/water/additives and native composition basis require evidence. Exclude aqueous cleaners/dishwashing preparations, liquid/emulsion/aerosol/refill products and wax raw material alone; no merchant mixing/thinning/opening/repack/application/buffing/forced evaporation/recovery recipe, end-use furniture service, retail, fee agency or storage-only.
+
+All complete wax/solvent/additive supply, formulation/manufacture/fill/closure/original-pack production including upstream associated with actual losses remains outside this service. Quantify/link actual complete original finished-gate assigned demand with matching native unit/state/conversions, exclusive terminal allocation and identical baseline stage/loss coverage outside once before whole-chain readiness. Actual merchant resources and declared receiver transport/treatment count once. Container count, paste/wax kg, applied surface area or product performance is not reference service.
+
+Manufacturer product evidence and aged Tudor Oak SDS support qualitative current configuration questions only. The partial hazardous-ingredient table is not full formulation or a recipe; no ranges/midpoints, density inequality, flashpoint, shade, capacity, application/cleanup/exposure or legal/health guarantee is adopted.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.own-account-wholesale-of-closed-solvent-borne-paste-furniture-wax-polish |
+| classification_refs | CPC3 61076 classes3531/3533 only; narrower finished furniture polish35333 within3533, not dishwashing35322/3532 |
+| covered_products | Actual original-closed-retail-pack solvent-borne paste furniture-wax-polish ambient own-account FINAL B2B consignment service |
+| excluded_products | Dishwashing/aqueous cleaning, liquid/emulsion/aerosol/refill products or neat wax raw material; merchant mixing/opening/thinning/repack/application/forced evaporation/recovery; retail/agency/storage-only |
+| representative_product | Actual factoryfinished SKU/shade/batch/formulation, wax-solvent-water/component basis, original container/lid/seal/headspace and retained-content/net-gross-tare at FINAL gate |
+| production_route | Complete factoryformulated-filled-closed original retail-pack supplier gate -> merchant ownership receiving/ambient stock/condition handling -> FINAL business acceptance/resale |
+| market_state | Counted physical wholesale service; actual pack/paste/wax/solvent/water/headspace/container quantities remain nonexchange commodity audits |
+
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Completed own-account solvent-borne paste furniture-wax-polish wholesale consignment in original closed retail packs |
+| How much | 1 Item(s) |
+| How well | Actual complete closed-pack solvent-borne paste furniture polish with sourced SKU/formulation/quantity/retained state and FINAL business acceptance; no application/performance/health-law assurance |
+| How long or cycle | Actual receipt-to-FINAL-acceptance; separate stock/reporting periods and full asset phases, retaining no-acceptance event resources |
+| reference_flow_link | `accepted_service` |
+
+| Field | Value |
+| --- | --- |
+| reference_amount | 1 |
+| reference_product_flow | Completed own-account solvent-borne paste furniture-wax-polish wholesale consignment in original closed retail packs |
+| reference_flow_property | Count `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| reference_unit_group | Count unit group `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| reference_unit | Item(s) |
+| required_qualifiers | consignment_id; merchant_purchase_ownership_resale; actual_business_buyer; FINAL_gate_time_source_reversals; actual_SKU_shade_batch_formulation; solvent_borne_paste_furniture_polish; actual_wax_solvent_water_component_basis; original_closed_retail_pack_BOM; container_lid_seal_condition_source; native_pack_count_net_gross_tare_basis; paste_volume_density_temperature_method_source; retained_headspace_contents_fate_basis; independent_component_method_state_time_source; complete_formulated_filled_closed_supplier_gate; actual_start_end_timezone_duration_unit_source; site_period_source_assignment_coverage_owner |
+
+N is unique actual FINAL business-accepted consignments after reversals, not supplier receipts/invoices/tin counts/product volume/applied area. Divide once only for N>0; N=0 retains cancelled/failed/quarantined/unfinished resource-period-cohort evidence without division or dropped burdens.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| paste_mass_volume | commodity native quantities | Mass; Volume; Count | Actual native pack counts, kg and compatible native paste volume/density units | Use actual SKU/shade/formulation and same-state paste volume×density with explicit dimensioned conversion/method/temperature/unit/source. Label capacity is not actual fill; aged SDS density inequality without complete native unit/method/temperature is not a numeric conversion factor. Gross-minus-validated clean package tare gives that declared retained-content scope, not automatically paste-only mass if headspace/other contents remain. | liberon-paste-polish-sds-2022 |
+| component_basis | independent wax/solvent/water/pack records | Mass; actual mass-or-volume composition or measured native property | Actual component unit; explicit fraction/ratio mass-or-volume basis | Every independent wax/solvent/water/additive/container/closure/headspace value has native unit/basis/method/state/sampletime/source and representative scope. Partial SDS hazardous bands are not complete BOM or midpoint recipe; nonvolatile residue is not automatically wax, loss-on-drying is not automatically water/solvent or actual emission. Compatible water-only wet/dry ratio conversion requires same definitions/sample and percent-to-ratio first; do not apply it to undifferentiated volatiles. | liberon-paste-polish-sds-2022 |
+| retained_contents | product/package state | Mass; Volume; actual species/composition | Native paste/package/headspace quantities with compatible converted units | Closed-package retained solvent/vapour is stock, not direct emission or zero by assumption. Independently evidence headspace/retained residue and fate; alleged empty-pack tare containing paste is not clean tare. No routine opening/evaporation test is prescribed; changed operations require scope review. Gas conversion, if actually required, needs actual chemical/composition/temperature-pressure/unit/basis/method/source, no default gas state. |  |
+| FINAL_reference | reference and inventory | Count for FINAL denominator; each row actual physical native property | Item(s) denominator; row native physical unit per Item(s) | Verify actual merchant purchase/ownership/resale, named B2B buyer, FINAL gate/time/source/reversals. Attribute complete actual events/clients/periods then assigned total/positive FINAL N once; N=0 resources retained without division. Count chain support does not identify polish or wholesale service. |  |
+
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Actual factoryfinished formulated-filled-closed solvent-borne paste furniture wax polish in original retail packs, real SKU/shade/batch/formula/retained-content/closure/headspace/native quantity-state |
+| starting_condition_role | Inherited complete paste formulation and closed-pack merchandise for physical wholesale, not neat wax/solvent feedstock, new application or evaporation route |
+| product_classification_scope | Narrower61076/35333 within3533;61076 relates3531and3533 only, not dishwashing35322/3532 or all products titled cleaning |
+| recursive_input_rule | Traded paste/wax/solvent/water/additives/original container/lid/seal/headspace and actual returns/closing remain nonexchange commodity stock, not service-consumed chemicals or packaging. |
+| upstream_dataset_requirement | Separate matched complete supplier gate includes actual constituent supply and formulation/manufacture, filling/closure and original retail-pack manufacture/release. Raw wax/solvent or neat-wax/finished applied-film dataset alone does not reach actual paste+pack gate. |
+| disclosure | Actual SKU/shade/batch/formula and evidence age, mass/volume/composition/density-temperature/native component basis, clean-versus-residual tare/retained headspace/closure/condition, FINAL gate/time, full original demand/baseline coverage and service/asset/provider/freight/receiver owners/unknowns |
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| commodity_once | commodity interface | All complete wax/solvent/additive/formulation/manufacture/fill/closure/original-pack production including actual lost upstream stays outside service. Original-gate demand and identical baseline stage/loss coverage separately quantified/linked once; actual service/receiver transport/treatment once. |  |
+| aged_source_limits | paste_polish_wholesale | Current manufacturer product page and aged shade-specific SDS are qualitative configuration evidence only. Old SDS paraffin/hydrocarbon wax plus solvent does not establish current whole-lot recipe or law; partial hazardous table is not completed to full BOM or converted to midpoints. No source application/steel-wool/thinner/cleanup/flashpoint/density/volume/health-law defaults. | liberon-paste-product; liberon-paste-polish-sds-2022 |
+| state_fate_not_residual | commodity state | Softening/leakage/closure loss/quarantine/return/whole-pack retained-paste discard, absorbed residues/free liquid and actual species each need records. Headspace/stock deficit or LOD proves neither solvent emission/water nor zero; no forced evaporation/recovery/drying to fit a metric. |  |
+
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| paste_polish_wholesale | Closed-pack paste furniture-wax-polish merchant receiving and FINAL handover | required | Actual original-closed-retail-pack solvent-borne paste furniture-wax-polish owned/resold FINAL B2B handover | Physical receipt/closure-condition/stock/handling/commercial acceptance without opening/mix/thin/application/forced evaporation | `accepted_service` |
+
+Actual commercial consignments overlap warehouse batches/continuous support periods. Link receiving/document-visual SKU/shade/batch/closure-retained-state checks, existing measurement sources, real facility cleanup/ventilation-support/changeover/idle/cancelled/failed/rejected/quarantined/unfinished/dispatch/FINAL events to lots/periods. No every-pack opening or evaporation test. Real leakage/closure damage/quarantine/return/pending/whole-pack retained-paste discard versus separate paste/residual pack, mixed absorbed solids, free organic/aqueous liquid and direct medium releases need exclusive actual fate/receiver decisions. No default emptying/washing/drying/recovery or product application; real new work including contracted work needs scope review. N=0 retains resource-period-evidenced-cohort ownership without division/drop; normalize once only at positive FINAL N.
+
+### Process: Closed-pack paste furniture-wax-polish merchant receiving and FINAL handover (`paste_polish_wholesale`)
+
+#### Inputs
+
+##### Product flows
+
+###### Actual alternating-current electricity at point of use (`electricity_ac`)
+
+Only actual alternating-current electricity crossing this node boundary and not already inside a complete provider. The identity leaves provider, voltage, generation mix and delivery-loss allocation unspecified; collect them where required. Its ILCD reference property is named Net calorific value but the verified electricity flow defines an electrical-energy basis of 1 MJ; native kWh uses exactly 3.6 MJ per kWh, never a fuel heating-value factor. Direct-current or another unmatched electricity state stays in the residual requirement.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Actual exclusively assigned physical amount / N under cp_energy
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+Range evidence need: Need actual meter intervals/native source and complete all-user/event assignment including idle/incident/failed periods with provider scope; no application energy or generic kWh per container.
+
+###### Actual liquid treated tap-water supply (`facility_water_liquid_tap`)
+
+Applicable only when the actual source is treated tap water supplied for the declared use. Preserve actual supplier, quality, temperature/state and provider boundary; do not assume that every water supply is tap water. Ice, bottled/mineral/reclaimed/untreated water and direct environmental withdrawal stay in their actual separate identities. Keep the parent native mass or volume basis. For any final mass-reference conversion, require actual compatible density/state evidence; the catalogue secondary-volume relationship is not a default site density.
+
+- Selected flow: Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual source/purpose/native volume/interval and independent fates; measured water in polish or supplied water does not quantify contained liquid waste or outfall.
+
+###### Actual separately recorded polyethylene packaging film (`new_outer_protection_pe_film`)
+
+Only actual independently supplied polyethylene film used as additional service-owned wrapping or lining, verified by actual polymer/formulation and net film mass. This identity is generic production mix at plant; retain actual supply gate, provider and separately owned delivery burdens. It does not prescribe LDPE/HDPE grade, recycled content, film thickness or dose. PVC/PET/PP, multilayer composites, adhesive labels, filled packs and inherited merchandise packaging remain separate residual identities. Whole supply and components must not be counted twice; no occurrence is assumed.
+
+- Selected flow: Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need added-versus-original levels/SKU/net mass or actual count/area conversion and stock provenance; no default complete new tin, lid or pallet each consignment.
+
+###### Actual independently recorded synthetic detergent supply (`operating_supplies_synthetic_detergent`)
+
+Only actual synthetic surfactant detergent identified by product/formulation, supplied state and use records. Measure net supplied material excluding package tare; retain concentrate/dilution-water distinctions and never count whole formulation and components additively. Soap, disinfectants, wipes, filters and other materials remain under their separate actual identities; no cleaning recipe, dose or occurrence is assumed.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual incident/use, net supply stock/composition and spent carrier/absorbed liquid/captured paste sources; ingredient presence and SDS response examples are not measured service inputs.
+
+###### Actual separately identified supplied diesel fuel (`fuel_supply_diesel_supply`)
+
+Only actual independently identified diesel within this operating-fuel requirement. The generic identity is Mass/kg; record actual fuel formulation, supplier, supply gate and native stock scope. When native quantity is litres, final kg conversion requires actual compatible density, temperature/state, mass-per-volume unit and source; no catalogue default density or heating value. Supplied stock and burned fuel are separate records. Other fuels remain residual and neither fuel purchase nor unexplained imbalance proves combustion or emissions.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Volume / L
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual native opening/net receipts/closing and disjoint fates with density/temperature/conversion sources where required; receipts or product solvent content do not quantify burned fuel.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Completed own-account solvent-borne paste furniture-wax-polish wholesale consignment in original closed retail packs (`accepted_service`)
+
+One unique FINAL actual owned/resold B2B accepted commercial consignment of factory-finished solvent-borne paste furniture wax polish in actual original closed retail packs. Actual SKU/shade/formulation/wet mass-volume-density/state/closure/headspace/time qualify the service, not container count, wax content, applied area or cleaning performance.
+
+- Selected flow: Completed own-account solvent-borne paste furniture-wax-polish wholesale consignment in original closed retail packs
+- Flow property / unit: Count / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: `fixed_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_consignment`
+
+Range evidence need: Need actual merchant purchase/ownership/resale/buyer/FINAL gate/source/reversals, batch/SKU/shade/formulation and original closure/retained contents/net-gross-tare/density-temperature evidence. No universal brand/shade/volume/wax identity/recipe/expiry or application/health-law claim.
+
+##### Waste flows
+
+###### Discarded closed retail pack containing solvent-borne paste furniture wax polish (`discarded_polish_packs_atomic_case`)
+
+Conditional on independently recorded actual Discarded closed retail pack containing solvent-borne paste furniture wax polish. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `discarded_polish_packs`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+
+- Selected flow: Discarded closed retail pack containing solvent-borne paste furniture wax polish
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_polish
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_polish`
+
+Range evidence need: Need actual incident/receiver fate/native amount/state/net-tare/retained residue and original finished-gate correspondence with treatment coverage; paste retained in a discarded container is not extra wax/solvent waste or empty-container tare.
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| actual_event_all_users | all service resources | Trace real direct events OR quantity×compatible target_driver/positive COMPLETE all_consumer_driver with native unit/basis/method/state/time/source and exclusive all-client/period owners. Include idle/changeover/incident/cancelled/failed/quarantined/unfinished burdens. FINAL N is unique actual business acceptance after reversals; assigned total/N once only N>0, N=0 retains burden-period-cohort evidence without division. No price/applied-area default driver. |  |
+| complete_terminal_source | commodity interface | For each complete actual source lot/state choose direct actual measured/traced assigned_gate_demand with quantity/unit/basis/method/state/time/source/direct proof/exclusive terminal links OR actual_source_gate_quantity×target_driver/source_all_terminal_driver. Positive COMPLETE denominator sums compatible competing FINALaccepted/usefulother/returns/closingcarry/proven actual-loss records, each quantity/unit/basis/method/state/time/source/link/owner. No accepted-only or direct-driver overlay, unknown loss is not zero. Source/assigned/baseline/additional native quantities, original state conversions and exclusive loss ownership match actual complete formulated-filled-closed product+pack; required additional demand links outside once after identical baseline stage/loss coverage. |  |
+| operating_supply_convention | service supplies | S=assigned opening+NET external receipts-closing including retained recoveries. Choose exactly one: (1) gross S/N as INPUT and actual matched unused external return/N as a separate OUTPUT; (2) consumed-only (S-return)/N as INPUT and OMIT that matched return OUTPUT. Do not add return quantity to input or deduct it twice. Internal loops/retained recoveries remain closing. Actual waste/consumption retains supply burden; no inherited polish/solvent/pack against unrelated current input, negative netting or automatic credits. |  |
+| full_life_shared_assets | assets/providers | Assign complete manufacture/maintenance/real replacement/EOL with actual used_driver/COMPLETE lifetime_all_consumer_driver in compatible native unit/basis/method/state/time/source. Include observed history plus sourced remaining/termination, uncertainty/sensitivity/update and every consumer/period. Use one asset-equivalent OR lifecycle-complete provider; never both or repeated N. |  |
+| exclusive_retained_fates | commodity/service fates | Whole closed/discarded packs retaining paste/headspace, separate paste/residual packaging, wax/solvent/water/components, absorbed cleanup mixture, free contained organic/aqueous liquid and direct species are exclusive/non-additive views. Actual receiver transport/treatment has one scope owner after provider coverage. Damaged/quarantined/returned/pending stock is not automatically waste or release. No recovery credit or forced evaporation; no-acceptance resources remain outside FINAL N. |  |
+| commodity_link_scope | nonexchange commodity interface | Keep actual original-gate stock and completed external integration at their recorded raw quantities. Declare source_assignment_scope_id, actual target_consignment_ids/target_cohort_id and source_assignment_quantity_basis: single_consignment_case, target_cohort_total or already_per_reference. For a raw target-cohort total, source_link_per_service_quantity=source_link_assigned_raw_quantity/same_target_scope_N ONLY when the positive N covers exactly that assigned target scope, with actual native units/state/source and acceptance-reversal evidence; use that interface once when combining with 1 accepted_service. A single-consignment case with N=1 and an already-per-reference quantity are not divided again. Do not divide actual external stock/stage-integration records by service N or use whole-source-cohort N for a narrower assigned target; preserve raw quantities and an explicit once-only link. |  |
+
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_consignment | paste_polish_wholesale | accepted_service | actual merchant FINAL acceptance | consignment_id; merchant_id; purchase_evidence; ownership_evidence; resale_evidence; business_buyer_id; acceptance_gate; acceptance_time; acceptance_source; reversal_ids; reversal_status_source; unique_FINAL_accepted_ids; N; N_period_cohort; model_SKU_lot_ids; retail_pack_paste_component_genealogy; actual_BOM; completeness_condition_evidence; buyer_criteria_source; start_time; start_time_source; end_time; end_time_source; time_zone; time_unit; duration; duration_unit; duration_method; duration_source; site_id; campaign_id; reporting_period; cancelled_failed_rejected_unfinished_ids; no_acceptance_resource_owner; attribution_owner | Trace actual merchant purchase/ownership/resale, named B2B buyer, FINAL gate/time/source and resolved reversal IDs. Count only unique real FINAL accepted commercial consignments for stated period/cohort, not receipts/invoices/tins/volume/applied area. Preserve cancellation/incident/quarantine/failed/unfinished resource ownership and timestamp/timezone/duration method/unit/source; N=0 retains burden/evidence without division. | Actual FINAL Count Item(s), actual timestamp/native duration | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_polish | paste_polish_wholesale | nonexchange polish/pack stock and discarded_polish_packs | actual paste/component/retained-pack audit | source_lot_id; model_SKU; shade; batch_id; formulation_version; formulation_evidence_date; complete_formulation_source; solvent_borne_paste_furniture_evidence; pack_ids; pack_count; pack_count_unit; pack_count_basis; pack_count_method; pack_count_state; pack_count_sample_time; pack_count_source; actual_BOM; wax_identity; solvent_identity; water_identity; additive_identity; component_identity_source; composition_value; composition_value_unit; composition_value_basis; composition_value_method; composition_value_state; composition_value_sample_time; composition_value_source; composition_mass_or_volume; composition_scope; partial_SDS_coverage; original_container_identity; lid_identity; seal_identity; original_pack_inclusions; closure_condition; condition_method; condition_time; condition_source; clean_tare_validation; retained_paste_residue; residue_scope_source; m_closed_pack_gross; m_closed_pack_gross_unit; m_closed_pack_gross_basis; m_closed_pack_gross_method; m_closed_pack_gross_state; m_closed_pack_gross_sample_time; m_closed_pack_gross_source; m_clean_pack_tare; m_clean_pack_tare_unit; m_clean_pack_tare_basis; m_clean_pack_tare_method; m_clean_pack_tare_state; m_clean_pack_tare_sample_time; m_clean_pack_tare_source; m_retained_contents; m_retained_contents_unit; m_retained_contents_basis; m_retained_contents_method; m_retained_contents_state; m_retained_contents_sample_time; m_retained_contents_source; m_paste; m_paste_unit; m_paste_basis; m_paste_method; m_paste_state; m_paste_sample_time; m_paste_source; V_paste; V_paste_unit; V_paste_basis; V_paste_method; V_paste_state; V_paste_sample_time; V_paste_source; rho_paste; density_unit; density_basis; density_method; density_state; density_sample_time; density_temperature; density_temperature_unit; density_temperature_source; density_source; volume_mass_conversion_factor; volume_mass_conversion_unit; volume_mass_conversion_basis; volume_mass_conversion_method; volume_mass_conversion_state; volume_mass_conversion_time; volume_mass_conversion_source; headspace_quantity; headspace_quantity_unit; headspace_quantity_basis; headspace_quantity_method; headspace_quantity_state; headspace_quantity_sample_time; headspace_quantity_source; headspace_species_identity; headspace_composition; headspace_composition_unit; headspace_composition_basis; headspace_composition_method; headspace_composition_state; headspace_composition_sample_time; headspace_composition_source; headspace_temperature; headspace_temperature_unit; headspace_temperature_source; headspace_pressure; headspace_pressure_unit; headspace_pressure_source; gas_conversion_factor; gas_conversion_unit; gas_conversion_basis; gas_conversion_method; gas_conversion_state; gas_conversion_time; gas_conversion_source; water_definition; nonwater_definition; m_as_received; m_as_received_unit; m_as_received_basis; m_as_received_method; m_as_received_state; m_as_received_sample_time; m_as_received_source; water_fraction; water_fraction_unit; water_fraction_basis; water_fraction_method; water_fraction_state; water_fraction_sample_time; water_fraction_source; dry_water_ratio; dry_water_ratio_unit; dry_water_ratio_basis; dry_water_ratio_method; dry_water_ratio_state; dry_water_ratio_sample_time; dry_water_ratio_source; percent_conversion_factor; percent_conversion_unit; percent_conversion_basis; percent_conversion_method; percent_conversion_state; percent_conversion_time; percent_conversion_source; LOD_value; LOD_value_unit; LOD_value_basis; LOD_value_method; LOD_value_state; LOD_value_sample_time; LOD_value_source; LOD_other_volatiles_evidence; receiver_disposition_decision; receiver_decision_source; buyer_criteria_source; actual_native_quantity; native_unit; quantity_basis; quantity_method; quantity_state; quantity_sample_time; quantity_source; gross_mass; gross_unit; gross_basis; gross_method; gross_state; gross_sample_time; gross_source; packaging_tare; packaging_unit; packaging_basis; packaging_method; packaging_state; packaging_sample_time; packaging_source; net_finished_mass; net_mass_unit; net_mass_basis; net_mass_method; net_mass_state; net_mass_sample_time; net_mass_source; component_identity; component_quantity; component_unit; component_basis; component_method; component_state; component_sample_time; component_source; sample_representativeness; temperature; temperature_unit; temperature_source; opening; supplier_external_receipts; buyer_returns; closing; business_buyer_dispatch; supplier_returns; useful_other_exits; actual_discard; net_sample_removal; unknown_residual; stock_unit; stock_basis; stock_method; stock_state; stock_sample_time; stock_source; disposition_ids; receiver; treatment_coverage; actual_source_gate_quantity; source_gate_unit; source_gate_basis; source_gate_method; source_gate_state; source_gate_sample_time; source_gate_quantity_source; source_complete_stage_evidence; assignment_view; assigned_gate_demand; assigned_gate_demand_unit; assigned_gate_demand_basis; assigned_gate_demand_method; assigned_gate_demand_state; assigned_gate_demand_sample_time; assigned_gate_demand_source; direct_assignment_evidence; exclusive_terminal_links; target_driver; target_driver_unit; target_driver_basis; target_driver_method; target_driver_state; target_driver_sample_time; target_driver_source; source_all_terminal_driver; source_all_terminal_driver_unit; source_all_terminal_driver_basis; source_all_terminal_driver_method; source_all_terminal_driver_state; source_all_terminal_driver_sample_time; source_all_terminal_driver_source; competing_terminal_driver_records; terminal_record_quantity; terminal_record_unit; terminal_record_basis; terminal_record_method; terminal_record_state; terminal_record_sample_time; terminal_record_source; terminal_record_link; terminal_record_owner; original_gate_conversion_method; original_gate_conversion_factor; original_gate_conversion_unit; original_gate_conversion_basis; original_gate_conversion_state; original_gate_conversion_time; original_gate_conversion_source; baseline_demand; baseline_demand_unit; baseline_demand_basis; baseline_demand_method; baseline_demand_state; baseline_demand_sample_time; baseline_demand_source; baseline_stage_loss_coverage; additional_gate_demand; additional_gate_demand_unit; additional_gate_demand_basis; additional_gate_demand_method; additional_gate_demand_state; additional_gate_demand_sample_time; additional_gate_demand_source; exclusive_loss_assignment; commodity_adjustment_owner; source_assignment_scope_id; source_assignment_quantity_basis; target_consignment_ids; target_cohort_id; source_quantity_already_per_reference; external_raw_integration_quantity_preserved; once_only_service_link_evidence; source_link_assigned_raw_quantity; source_link_assigned_raw_quantity_unit; source_link_assigned_raw_quantity_basis; source_link_assigned_raw_quantity_method; source_link_assigned_raw_quantity_state; source_link_assigned_raw_quantity_source; source_link_assigned_raw_quantity_sample_time; same_target_scope_N; same_target_scope_N_unit; same_target_scope_N_basis; same_target_scope_N_method; same_target_scope_N_state; same_target_scope_N_source; same_target_scope_N_sample_time; source_link_per_service_quantity; source_link_per_service_quantity_unit; source_link_per_service_quantity_basis; source_link_per_service_quantity_method; source_link_per_service_quantity_state; source_link_per_service_quantity_source; source_link_per_service_quantity_sample_time; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation | Trace actual SKU/shade/batch/formulation and evidence date, solvent-borne paste identity, native pack/BOM/closure/retained contents. Every independently measured whole-pack/clean-tare/retained-content/paste-volume-density/wax-solvent-water/additive/pack/headspace value has unit/basis/method/state/sampletime/source and representative scope. Gross minus validated clean tare yields only that retained-content scope; headspace/other contents cannot default zero or be called pure paste. Volume×density conversion matches actual formulation/state and density temperature/unit/source; partial old SDS bands or density inequality cannot substitute. Retained vapour and actual emission require separate evidence, gas conversion actual species/composition/temperature/pressure/native factor only when used. Water-only sample definitions/percent conversion are distinct from LOD other volatiles/nonvolatile residue, no wax/drymass inference. Use existing compatible sources; no routine opening/evaporation/assay is prescribed. Shared stock metadata covers compatible opening/supplier receipt/buyer return/closing/buyer dispatch/supplierreturn/usefulother/discard/sample amounts: external receipts exclude buyerreturns/internalmoves, business dispatch excludes separate exits, internal moves cancel. Actual receiver decisions/unknown residual remain. Source/assigned/baseline/additional native quantities-state metadata, direct actual trace OR positive COMPLETE competing allterminal records inclclosing/returns/usefulothers/provenloss eachqty/unit/basis/method/state/time/source/link/owner, sourced conversions/exclusive loss and identical baseline stage/loss coverage link outside once. Attribute only the individually identified physical case; retain other source-linked actual fates separately. Each native record belongs to exactly one exchange and any whole total is a non-additive audit. | Actual pack counts, native gross/tare/retained/paste/component mass/volume/composition and density-temperature units | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_energy | paste_polish_wholesale | electricity and actual burn | actual meter/burn interval | meter_id; energy_quantity; energy_unit; meter_start; meter_end; interval; source; operation_purpose; burn_quantity; burn_unit; burn_basis; burn_source; fuel_identity; conversion_factor; conversion_unit; conversion_basis; conversion_source; event_ids; period_ids; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; attribution_share; provider_coverage; target_driver_basis; all_consumer_driver_basis; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Read actual warehouse meter intervals and independently established burn with native units/bases/methods/states/times/sources/conversions. Include actual lighting/handling/ventilation support/incident/idle/failed/unfinished users and periods with complete physical drivers. No application, solvent evaporation or manufacturing energy is inferred from product state. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | Actual kWh and native fuel-burn quantities | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_supplies | paste_polish_wholesale | facility_water; new_outer_protection; operating_supplies; fuel_supply; usable_supply_returns | native supplies and matched returns | supply_SKU; purpose; composition; composition_basis; composition_source; provenance_owner; period; opening; external_receipts_net; closing_including_retained_recovery; native_unit; quantity_basis; quantity_source; usable_external_return; return_unit; return_recipient; matched_input_id; matched_state_scope; internal_loop; retained_recovery; waste_quantity; waste_unit; burn_quantity; burn_unit; actual_fate_source; accounting_view; conversion_factor; conversion_unit; conversion_basis; conversion_source; density; density_unit; density_temperature; temperature_unit; density_source; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; attribution_share; provider_coverage; target_driver_basis; all_consumer_driver_basis; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | External receipts are NET supplies excluding container tare. Shared native unit/basis/method/state/time/source covers each compatible opening/receipt/closing/recovery/return/fate operand; different components keep own units. Actual SKU/purpose/composition and incident cleanup only, no source-prescribed material or dose. S=opening+netreceipts-closing including retained recovery: gross+matched unused outlet OR consumed-only and OMIT matching outlet. Preserve provenance/recipient/density-temperature/conversions/complete all-user drivers; merchandise polish solvent is not current service supply. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. Any litre-to-kg diesel conversion requires actual compatible density, temperature/state, mass-per-volume unit and source; no default conversion. | Actual supply native mass/volume or supported physical unit | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_assets | paste_polish_wholesale | shared_assets | all-user complete asset life | asset_id; manufacture_scope; maintenance_scope; replacement_events; end_of_life_scope; provider_scope; consumers; periods; used_driver; used_driver_unit; used_driver_basis; used_driver_source; observed_life_driver; observed_driver_unit; observed_history_source; remaining_life_driver; remaining_driver_unit; remaining_evidence_source; termination_evidence; lifetime_all_consumer_driver; lifetime_driver_unit; lifetime_driver_basis; lifetime_driver_source; conversion_factor; conversion_unit; conversion_source; uncertainty; sensitivity; update_trigger; attribution_owner; already_per_reference; observed_driver_basis; remaining_driver_basis; conversion_basis; target_driver; target_driver_unit; target_driver_basis; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_basis; all_consumer_driver_source; attribution_share; used_driver_method; used_driver_state; used_driver_sample_time; observed_driver_method; observed_driver_state; observed_driver_sample_time; remaining_driver_method; remaining_driver_state; remaining_driver_sample_time; lifetime_driver_method; lifetime_driver_state; lifetime_driver_sample_time | Document actual shared assets/every consuming client-node-period through manufacture/maintenance/real replacement/EOL. Used/observed/remaining/lifetime drivers retain native unit/basis/method/state/time/source and compatible conversion; observed+sourced remainder/termination, uncertainty/sensitivity/update. Assign one asset-equivalent OR lifecycle-complete provider and N once, not universal years. | Actual compatible used/observed/remaining/lifetime units; supported asset-equivalent Item(s) | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_providers | paste_polish_wholesale | provider_services | actual physical result and coverage | provider_id; event_id; native_result; result_unit; result_basis; result_source; service_scope; measurement_method; sample_ids; sample_representativeness; sample_removed; sample_return; sample_fate; material_coverage; energy_coverage; asset_coverage; freight_coverage; receiver_treatment_coverage; excluded_testing_scope; period; conversion_factor; conversion_unit; conversion_source; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; attribution_owner; target_driver_basis; all_consumer_driver_basis; attribution_share; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time | Verify performed physical result/unit/basis/method/state/time/source and included materials/energy/assets/freight/receiver treatment. Document-visual closure/condition checks or reading manufacturer data do not establish opening/assay/formulation/application/forced drying/recovery work. Real added work including contracted work needs reviewed scope, with sample/removed-stock return/fate/owner explicit rather than hidden supplier recipes. | Actual provider-native physical-result unit | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_freight | paste_polish_wholesale | freight | unique load-leg with that-record share | load_id; leg_id; cargo_ids; load_quantity; load_unit; load_basis_each_or_total; load_source; repeated_load_count; repetition_source; actual_packed_payload; payload_unit; payload_state; payload_source; vehicle_gross; vehicle_gross_unit; gross_source; vehicle_noncargo_tare; noncargo_tare_unit; tare_source; original_cargo_pack; added_cargo_pack; retained_moisture_finish; load_conversion_factor; load_conversion_unit; load_conversion_basis; load_conversion_source; distance; distance_unit; distance_source; distance_conversion_factor; distance_conversion_unit; distance_conversion_basis; distance_conversion_source; empty_return_coverage; delivered_provider_coverage; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; that_record_share; unique_scope_owner; already_per_reference; gross_conversion_factor; gross_conversion_unit; gross_conversion_basis; gross_conversion_source; tare_conversion_factor; tare_conversion_unit; tare_conversion_basis; tare_conversion_source; target_driver_basis; all_consumer_driver_basis; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; payload_basis; payload_method; payload_sample_time; gross_method; gross_state; gross_sample_time; tare_basis; tare_method; tare_state; tare_sample_time; distance_basis; distance_method; distance_state; distance_sample_time; that_record_share_basis; that_record_share_source; gross_basis | Use real packed cargo OR same-state measured vehicle gross minus ONLY vehicle/noncargo tare. Keep actual paste/retained contents/headspace scope/all original-added cargo packs; no duplicate component views. gross_basis/tare_basis/tare_source are native vehicle-cargo and noncargo-only mass scopes separate from EACH/TOTAL repetition. Native payload/gross/tare/distance/factors carry unit/basis/method/state/time/source. EACH multiplies evidenced actual count once, TOTAL unchanged. Sum unique load-leg(actual_packed_payload_kg×actual_distance_km×that_record_share), THAT-record complete compatible all-user share INSIDE sum, then /positive FINAL N once unless already normalized. Reconcile empty/return/delivered/provider scope; N=0 freight retained without division. | Actual native packed mass/distance compatibly converted to kg*km | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_fates | paste_polish_wholesale | environmental_water; other_wastes; contained_liquid_wastes; water_outfalls | actual source/receiver/mixed and free-liquid state | event_id; source_location; receiving_location; receiving_medium; flow_identity; native_quantity; native_unit; quantity_basis; quantity_source; interval; composition; composition_basis; composition_source; fate_basis; fate_source; mixed_receiver_mass; mixed_mass_unit; mixed_mass_basis; mixed_mass_source; carrier_mass; carrier_unit; carrier_basis; carrier_source; absorbed_liquid_mass; absorbed_liquid_unit; absorbed_liquid_basis; absorbed_liquid_source; collected_fragment_mass; collected_fragment_unit; collected_fragment_basis; collected_fragment_source; free_liquid_volume; liquid_volume_unit; liquid_volume_source; density; density_unit; density_temperature; temperature_unit; density_source; conversion_factor; conversion_unit; conversion_basis; conversion_source; receiver; receiver_transport_scope; receiver_treatment_scope; provider_coverage; nonadditive_view; attribution_owner; target_driver; target_driver_unit; target_driver_basis; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_basis; all_consumer_driver_source; attribution_share; record_method; record_state; record_sample_time; record_source; carrier_method; carrier_state; carrier_sample_time; absorbed_liquid_method; absorbed_liquid_state; absorbed_liquid_sample_time; collected_fragment_method; collected_fragment_state; collected_fragment_sample_time; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time | Independently measure actual source water, receiver mixed solids, EACH separate free organic/aqueous contained liquid or direct water outfall. Carrier/absorbed liquid/captured paste-pack particles each native unit/basis/method/state/time/source, whole mixture/component/commodity views non-additive. Each free liquid has actual identity/volume/composition/state/source/receiver transport-treatment; semi-solid paste stays actual mass state, not liquid by default. Apply relevant density-temperature/conversions only with compatible evidence; supplied water/product solvent/LOD does not measure collected liquid volume or release. | Actual native mixed mass/free-liquid volume/withdrawal-outfall units compatibly converted | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+| cp_releases | paste_polish_wholesale | direct_species | actual species/medium and factor coverage | event_id; species_identity; particle_size; receiving_medium; measurement; measurement_unit; measurement_basis; measurement_source; activity; activity_unit; activity_basis; activity_source; factor; factor_unit; factor_basis; factor_source; factor_coverage; burn_fraction; burn_fraction_source; composition; composition_unit; composition_basis; composition_source; fate_fraction; fate_basis; fate_source; conversion_factor; conversion_unit; conversion_basis; conversion_source; temperature; temperature_unit; temperature_source; pressure; pressure_unit; pressure_source; time_interval; period; provider_coverage; nonadditive_owner; target_driver; target_driver_unit; target_driver_basis; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_basis; all_consumer_driver_source; attribution_share; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; measurement_method; measurement_state; measurement_sample_time; activity_method; activity_state; activity_sample_time; factor_method; factor_state; factor_reference_time; composition_method; composition_state; composition_sample_time; fate_method; fate_state; fate_time; conversion_method; conversion_state; conversion_time | Establish actual species/chemical/particle/medium with measurement or compatible real event activity-factor method and native unit/basis/method/state/time/source. Identify exact chemical or reported basis rather than selecting from a broad SDS group/partial range. Complete species factors already covering composition/fate fractions are not multiplied again; required fraction/gas-concentration conversion only once with actual temperature-pressure/unit/source. Retained paste/headspace solvent or deficit/LOD/odour proves neither release nor zero. | Actual species native quantity compatibly converted to kg | Each actual event/meter interval with traceable originals | Actual receipt-to-FINAL-acceptance, stock/reporting periods and applicable full asset life | Actual merchant facility/all consumers and declared providers/receivers | per reference flow | Original quantity/unit/basis/method/state/sampletime/source, calibration/representativeness/coverage and uncertainty |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| final_actual_resources | all service cards | N=unique actual FINAL business acceptance after reversals for real merchant purchase/ownership/resale. Direct actual trace OR quantity×compatible target_driver/positive COMPLETE all_consumer_driver retains cancelled/incident/failed/quarantined/unfinished/idle/other-client/period burdens and native metadata. Assigned total/N once only N>0; N=0 keeps burden-period-cohort evidence without division. | cp_consignment; cp_energy; cp_supplies; cp_assets; cp_providers; cp_freight; cp_fates; cp_releases | Actual per-reference physical service inventory |  |
+| closed_paste_stock | commodity audit | Compatible native stock: opening+supplier_external_receipts+buyer_returns-closing-business_buyer_dispatch-supplier_returns-useful_other_exits-actual_discard-net_sample_removal=unknown_residual. Supplier receipts exclude buyerreturns/internalmoves; buyer dispatch excludes other exits; internal moves cancel. Actual pack/paste/component/headspace genealogy and receiver decisions govern. Whole retained-paste packs/components/mixed absorbed/free liquid are non-additive, stock deficit or LOD is not evaporation/water/whole-pack loss or zero. | cp_polish | Actual stock/status/exclusive exits and explicit unknown state |  |
+| paste_retained_measurement | nonexchange contents audit | m_paste=V_paste*rho_paste*volume_mass_conversion_factor only for matched actual formulation/state/native density-volume units and measured temperature/method/source. m_retained_contents=m_closed_pack_gross-m_clean_pack_tare only with validated actual clean-tare scope. Retained headspace/other contents cannot default zero or be inferred from container capacity; gross-minus-tare is not automatically paste-only. Wax/solvent/water mass-or-volume composition uses actual measured basis, no partial SDS midpoint/full-recipe or residue=wax inference. | cp_polish | Separate paste/retained-content/component audit, not additive to whole pack |  |
+| water_definition_only | nonexchange water audit | Only for actual same sample water-only w_wet=m_water/m_as_received: m_water=m_as_received*w_wet and m_nonwater=m_as_received*(1-w_wet), where nonwater still includes any solvents/other components. If r_dry=m_water/m_nonwater matches actual definitions/sample, w_wet=r_dry/(1+r_dry), percent converted first through recorded factor. LOD other volatiles is not water/solvent emission or wax; incompatible/unknown definitions block this calculation, not zero. | cp_polish | Actual water/nonwater audit only, not dry-wax/applied-film output |  |
+| complete_original_source | commodity interface | Choose actual sourced direct measured/traced original-gate assigned quantity with exclusive terminal proof OR Qsource_actual×Dtarget/Dall_terminal. Dall_terminal>0 equals COMPLETE compatible competing FINALaccepted/usefulother/returns/closingcarry/provenloss records each quantity/unit/basis/method/state/time/source/link/owner, never accepted-only/direct-driver overlay. Source/assigned/baseline/additional native quantity-state metadata and sourced conversions match actual formulated-filled-closed paste+pack; exclusive loss owner and identical already-covered baseline stage/loss demand precede outside once-only required additional complete demand link. | cp_polish; cp_consignment | Separate complete original-gate demand/loss adjustment |  |
+| that_record_freight | freight | Unique load-leg measured packedcargo OR same-state gross minus ONLY vehicle/noncargo tare retains paste/retained contents/all cargo packs without component duplication. EACH multiplies evidenced actual repetition once, TOTAL unchanged. After native conversion assigned kg*km=sum(unique load-leg: actual_packed_payload_kg×actual_distance_km×that_record_share), THAT-record complete compatible all-user share INSIDE sum then /positive FINAL N once unless already normalized; N=0 freight retained without division. | cp_freight; cp_consignment | Actual unique per-reference freight |  |
+| actual_specific_species | direct_species | Actual species/particle/medium quantity=measurement OR compatible actual activity×factor with native unit/basis/method/state/time/source and complete factor coverage. Species factors already including composition/fate fractions are not multiplied again; only required compatible fraction/gas-concentration conversions once with actual temperature-pressure/units/sources. Ingredient group/partial range, retained solvent or deficit/LOD/odour is not release or zero proof. | cp_releases; cp_energy; cp_polish | Actual evidenced per-reference species |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| real_product_identity | all roles | Resolve actual solvent-borne paste SKU/shade/formula/wax-solvent-water/pack and each physical service/material/provider/source/receiver/species identity/support before final exchanges. Partial dated SDS is not complete/current lot formula; cached Count support is measurement chain, not flow identity or fresh remote proof. | Actual current SKU/formulation/native records, declared evidence age and verified support/detail scope |
+| all_native_views | all measured operands | Each source/assigned/baseline/additional quantity, paste-volume-density/clean-tare/retained-content/headspace/composition/fate, asset-used-observed-remaining-lifetime and freight cargo-gross-tare-distance-share needs compatible native unit/basis/method/state/time/source and conversions. Water-only wet/dry definitions/percent first/LOD other-volatiles explicit; no partial SDS density/recipe or closed-pack unknown-zero shortcut. | cp_polish; cp_assets; cp_freight; cp_fates; cp_supplies; cp_releases |
+| actual_coverage_unknowns | all interfaces | Disclose FINAL/reversal/cohort and closure/retained-content/condition uncertainty, source evidence date/SKU applicability, unknown stock/loss/fates or terminal/baseline gaps, actual receiver/asset-life/provider assumptions and row-specific evidence needs. N=0 resources retained. Method does not establish current law/health/application or final-chain readiness. | Actual native coverage records/source/lifetime evidence and sensitivity/update |
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| electricity | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `electricity` under `cp_energy`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_energy`; actual source-linked native records |
+| facility_water | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `facility_water` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| new_outer_protection | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `new_outer_protection` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| operating_supplies | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `operating_supplies` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| fuel_supply | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `fuel_supply` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| provider_services | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `provider_services` under `cp_providers`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_providers`; actual source-linked native records |
+| shared_assets | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `shared_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
+| freight | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
+| environmental_water | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `environmental_water` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| usable_supply_returns | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `usable_supply_returns` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| discarded_polish_packs | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `discarded_polish_packs` under `cp_polish`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `discarded_polish_packs_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_polish`; actual source-linked native records |
+| other_wastes | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `other_wastes` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| contained_liquid_wastes | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `contained_liquid_wastes` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| water_outfalls | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `water_outfalls` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| direct_species | paste_polish_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `direct_species` under `cp_releases`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_releases`; actual source-linked native records |
+
+
+### Mandatory Inventory Completion Records
+
+These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
+
+#### electricity
+
+Use real metered warehouse lighting, handling and actual facility support/ventilation where operated. No wax/solvent manufacture, formulation/filling, application/buffing, forced evaporation or universal ventilation/cooling rate is introduced.
+
+Residual inventory requirement after the independently identified cases `electricity_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual paste-polish wholesale facility electricity
+- Flow property / unit: Energy / kWh
+- Amount rule: Actual exclusively assigned physical amount / N under cp_energy
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+Range evidence need: Need actual meter intervals/native source and complete all-user/event assignment including idle/incident/failed periods with provider scope; no application energy or generic kWh per container.
+
+#### facility_water
+
+Record actual hygiene/support supply separately from product water and manufacturer processing. No merchant paste dilution, washing/application, residue-drying or thinner-cleaning recipe is assumed.
+
+Residual inventory requirement after the independently identified cases `facility_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual purchased facility support water
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual source/purpose/native volume/interval and independent fates; measured water in polish or supplied water does not quantify contained liquid waste or outfall.
+
+#### new_outer_protection
+
+Only real service-added cartons, pads, wraps, straps and labels enter here. Original retail container/lid/seal/label and inherited pack belong to the complete finished commodity gate; reusable transport supports use full-life service.
+
+Residual inventory requirement after the independently identified cases `new_outer_protection_pe_film`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual added dispatch protection and shipment labels
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need added-versus-original levels/SKU/net mass or actual count/area conversion and stock provenance; no default complete new tin, lid or pallet each consignment.
+
+#### operating_supplies
+
+Expand actual equipment lubricants, facility cleaners, wipes, absorbents, filters and office consumables by native SKU/purpose. Traded wax/solvent/pigment/retained contents are not service-consumed chemicals. No source application cloth/steel-wool/thinner dose or mandatory cleanup material is imported.
+
+Residual inventory requirement after the independently identified cases `operating_supplies_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual maintenance and conditional spill-capture consumables
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual incident/use, net supply stock/composition and spent carrier/absorbed liquid/captured paste sources; ingredient presence and SDS response examples are not measured service inputs.
+
+#### fuel_supply
+
+Keep real fuel grade/native supply stock distinct from measured burn/usable return/nonburned waste and hired handling/freight coverage. Polish solvent is commodity content, not automatically handling fuel.
+
+Residual inventory requirement after the independently identified cases `fuel_supply_diesel_supply`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual owned handling-fuel stock
+- Flow property / unit: Volume / L
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual native opening/net receipts/closing and disjoint fates with density/temperature/conversion sources where required; receipts or product solvent content do not quantify burned fuel.
+
+#### provider_services
+
+Use performed handling/storage/document-visual identity/closure/condition checks and facility/business support in actual physical results. Existing manufacturer/SDS records are not new merchant opening, mixing, thinning, assay, application or disposal work.
+
+- Identity requirement: Actual physical polish-wholesale support results
+- Flow property / unit: Count / Item(s)
+- Amount rule: Actual exclusively assigned physical amount / N under cp_providers
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_providers`
+
+Range evidence need: Need performed result/unit/method/source and included materials/energy/assets/freight/receiver treatment; real additional operations, including contracted ones, need route review rather than hidden scope or source cleanup recipes.
+
+#### shared_assets
+
+Include actual facilities/racks/handling/meters/ICT/reusable cases/pallets and actual support systems across all users/periods with full manufacture/maintenance/replacement/EOL. Retail product packs are not automatically service capital.
+
+- Identity requirement: Full-life shared warehouse and reusable handling assets
+- Flow property / unit: Count / Item(s)
+- Amount rule: Actual exclusively assigned physical amount / N under cp_assets
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_assets`
+
+Range evidence need: Need used/observed/remaining/lifetime drivers each native unit/basis/method/state/time/source with observed+sourced remainder/termination and uncertainty/sensitivity/update; no generic life or full new asset every delivery.
+
+#### freight
+
+Cargo includes actual paste/retained solvent/headspace scope and original plus added cargo packs in their actual state. Measured same-state vehicle gross subtracts ONLY vehicle/noncargo tare; cargo tins/lids/support remain cargo.
+
+- Identity requirement: Actual closed-pack paste-polish and service freight
+- Flow property / unit: Mass*distance / kg*km
+- Amount rule: Actual exclusively assigned physical amount / N under cp_freight
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_freight`
+
+Range evidence need: Need unique load-leg native payload/gross/tare/distance, EACH/TOTAL and THAT-record share inside sum with factors/sources; nominal capacity, partial SDS density or wax-only mass does not supply cargo kg.
+
+#### environmental_water
+
+Only actual merchant-operated environmental abstraction belongs here, distinct from purchased water, product water or manufacturer formulation supply.
+
+- Identity requirement: Actual direct source-specific warehouse water withdrawal
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical amount / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual source/location/interval/native volume/method/source and extraction scope; product water or damp packaging is no withdrawal proxy.
+
+#### usable_supply_returns
+
+Only actual same-scope standalone supply SKU/state returns are service outlets. Consumed-only input OMITs the matched return exchange. Internal loops/retained recoveries are closing; product/solvent/retail-pack returns remain nonexchange merchandise stock.
+
+- Identity requirement: Actual matched unused operating-supply external returns
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual recipient/native transfer and matching input/provenance; no inherited product solvent recovery against unrelated current supplies, negative inputs or automatic recovery credits.
+
+#### discarded_polish_packs
+
+Use real receiver decisions/quantities/states for whole discarded packs retaining paste/headspace, real separately collected paste or packaging residue. Whole pack/paste/wax/solvent/water/container/lid/seal views are non-additive. A leak, softened paste or unknown deficit does not establish whole-pack disposal, solvent emission or replacement product.
+
+- Identity requirement: Actual discarded retail packs with retained paste, separate paste or pack residues
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_polish
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_polish`
+
+Range evidence need: Need actual incident/receiver fate/native amount/state/net-tare/retained residue and original finished-gate correspondence with treatment coverage; paste retained in a discarded container is not extra wax/solvent waste or empty-container tare.
+
+#### other_wastes
+
+Capture actual spent wipes/absorbents/filters/service-added packs and mixed residues. Carrier/absorbed solvent-containing fluid/captured paste-pack particles belong to the measured received mixture, not duplicate commodity/free-liquid streams. No forced drying/settling or solvent-recovery recipe is prescribed.
+
+- Identity requirement: Actual spent supplies and mixed absorbed-paste cleanup solids
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need received mixed mass and each carrier/absorbed-liquid/fragment native unit/basis/method/state/time/source, actual composition and treatment owner; SDS examples and new absorbent receipts are not spent-waste quantity.
+
+#### contained_liquid_wastes
+
+Measure each actual separately collected free organic liquid or aqueous facility wastewater by its own native identity/state/volume and receiver. Keep separate from semi-solid paste, absorbed liquid in cleanup solids, original product/headspace and direct environmental release; no product application/tool-wash process is assumed.
+
+- Identity requirement: Actual free contained liquid wastes to receivers
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical amount / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual collected/received native volume/composition/method/state/time/source and transport/treatment scope for each distinct liquid. Purchased water, paste net volume or solvent content alone is not collected liquid-waste volume.
+
+#### water_outfalls
+
+Only actual direct water crossing to a known receiving medium is represented. Contained organic/aqueous transfers are Waste; manufacturer/applicator discharge is outside this service. Chemical species require their own actual evidence.
+
+- Identity requirement: Actual direct warehouse-water outfall to environment
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical amount / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual source/location/medium/interval/native volume/composition/fate and conversions; spill, partial SDS composition or supplied water does not demonstrate a water outfall.
+
+#### direct_species
+
+Expand actual chemical/species/particle/receiving-medium measurement or compatible event method from real burn, maintenance or incidents. Solvent retained in paste/headspace, wax identity, partial SDS hazardous-ingredient bands, LOD, odour or stock deficit prove neither actual emission nor zero.
+
+- Identity requirement: Actual identified species releases to a documented medium
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical amount / N under cp_releases
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_releases`
+
+Range evidence need: Need actual substance/medium and native measurement or activity-factor unit/basis/method/state/time/source with complete factor coverage; specific composition/fate/gas conversion only when required once. Complete species factors already including fractions are not multiplied again; generic VOC or mixture range is not fixed species identity.
+
+## 9. Validation Rules
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| actual_final_merchant | accepted_service | Require actual merchant_id/purchase/ownership/resale, named B2B buyer, FINAL gate/time/source/resolved reversals, unique FINAL N and all sixteen qualifiers. Supplier receipt/invoice/tin count/area insufficient; normalize only N>0, N=0 cancelled/failed/quarantined/unfinished resources retain period/cohort evidence. |  |
+| actual_closed_paste | commodity | Verify real solvent-borne PASTE furniture polish SKU/shade/batch/formula/closure/original container-lid-seal-headspace and native contents/net-gross-tare/volume-density-temperature evidence. No dishwashing35322 scope, universal beeswax/carnauba/neatwax, partial hazard table=complete recipe/midpoints, old density inequality/default application/health-law claims. | liberon-paste-product; liberon-paste-polish-sds-2022 |
+| content_fate_compatibility | component audit | Gross-minus-validated clean pack tare is declared retained-content scope, not automatically pure paste; headspace/residual contents not zero by default. Actual formulation/state density×volume conversions need native unit/temperature/method/source. Water wetfraction is water/asreceived; compatible drywater/nonwater ratio only same definitions/sample after percent-to-ratio. LOD other volatiles/residue is not water/wax/solvent emission. |  |
+| actual_routes_receiver | paste_polish_wholesale | Link actual batch/period receipt/check/cleanup/ventilation support/changeover/idle/cancelled/failed/rejected/quarantined/unfinished/dispatch/FINAL events and closure/leak/return/pending/discard/sample to unique actual receiver/fate/scope. No hidden opening/mix/thin/repack/application/forced evaporation/drying/recovery, deficit=release/waste/zero or automatic credit. |  |
+| complete_terminal_original | commodity interface | Verify source/assigned/baseline/additional native quantity-unit-basis-method-state-time-source, sourced original equivalence and direct trace OR positive COMPLETE competing allterminal records inclclosing/returns/usefulother/provenloss eachquantity/unit/basis/method/state/time/source/link/owner. No accepted-only/direct-driver overlay; exclusive loss owner and identical baseline stage/loss coverage, required complete formulated-filled-closed paste+pack demand outside once. |  |
+| assets_stock_freight_fates | all resources | Check all-user/period full assets with each used-observed-remaining-lifetime native driver, observed+sourced remainder/termination/uncertainty/update, one provider/asset/N scope. Supplies grossS+matched unused return OR consumed-only OMIT outlet, no unrelated negatives/credits. Whole retained-paste pack/component/mixed absorbed/free organic-aqueous liquid/direct species nonadditive receiver transport/treatment once. Packed freight retains contents/all cargo packs, ONLY vehicle/noncargo tare, unique EACH/TOTAL/native factors and THAT-record share INSIDE sum then positive FINAL N once; species factors already covering fractions not multiplied again. |  |
+
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | secondary_dataset; background_dataset after actual identity/completeness review |
+| downstream_use | Original-closed-retail-pack solvent-borne paste furniture-wax-polish physical wholesale add-on separately linked to complete formulated-filled-closed original-source demand/loss coverage |
+| allowed_use | Actual factoryfinished solvent-borne paste furniture wax polish in original closed retail packs through ambient own-account FINAL B2B handover with compatible SKU/formula/contents/headspace/closure/native measurement evidence |
+| excluded_use | Standalone polish/application/health-law claim; dishwashing/aqueous cleaners/liquid-emulsion-aerosol/refill/neatwax products; merchant mix/thin/open/repack/apply/forced evaporate/recovery; retail/agency/storage-only |
+| required_metadata | Actual merchant purchase/ownership/resale/B2Bbuyer/FINALgate-source/reversals/N, SKU/shade/batch/formulation/evidence-date/wax-solvent-water-component basis/original container-lid-seal/closure/clean-residual tare/retained paste-headspace/native volume-density-temperature/method-state-time-source, site/period, complete original terminal demand/baseline coverage and service/asset/provider/freight/receiver owners |
+| required_quality_disclosure | Identity/support/evidence age/SKU-applicability/FINAL/reversal/formula/measurement/retained-content/headspace/closure uncertainty, partial recipe/unknown stock/loss/fates or source-terminal-baseline gaps, all-user lifetime and per-record freight-share assumptions, row-specific evidence needs |
+| update_trigger | Changed actual wax/solvent/formulation/shade/paste-state/pack/closure/headspace/measurement/acceptance or actual opening/application/processing/recovery route; source assignment/coverage, provider/asset/freight/receiver/native conversion/evidence applicability |
+
+
+## 11. Data Sources
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| unsd-cpc3-polish-wholesale | official_guidance | UNSD CPC3 explanatory notes (30 June2025),35333 furniture polishes and61076 classes3531/3533 only. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Classification only; furniture paste polish narrower61076, dishwashing35322 in3532 does not belong to this leaf. |
+| liberon-paste-product | official_guidance | Liberon Wax Polish Black Bison Paste current manufacturer product page. https://liberon.co.uk/product/wax-polish-black-bison-paste/ | Qualitative finished furniture paste/SKU-shade/pack questions only; no capacity/coverage/drytime/application cloth-steelwool/thinner/cleanup/health-law defaults or furniture performance guarantee. |
+| liberon-paste-polish-sds-2022 | official_guidance | Liberon Wax Polish Black Bison Paste Tudor Oak SDS, version1.1 dated19December2022, retrieval imprint12April2023. https://liberon.co.uk/wp-content/uploads/2016/11/LIBERON-WAX-POLISH-BLACK-BISON-PASTE-TUDOR-OAK-SDS.pdf | Aged shade-specific qualitative paraffin/hydrocarbon-wax-plus-solvent mixture/paste/closure/retained-content context, not current law or whole-lot recipe. Partial hazard bands/density inequality/flashpoint/response examples are not numerical inventory, speciation, midpoint recipe or merchant operation defaults. |
