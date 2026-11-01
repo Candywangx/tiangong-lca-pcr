@@ -22,15 +22,16 @@ checkPaths:
   - product-release.json
   - builder/**
   - packages/**
+  - middleware.ts
   - skills/**
   - .github/workflows/**
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-29
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
+lastReviewedAt: 2026-11-01
+lastReviewedCommit: f5fff32b75921454f7e0e89be6963c08f9d43733
+lastReviewedNote: "PR30: reviewed exact published-chapter compatibility, root runtime ownership and sealed source verification. Canonical content, scientific/translation states, runtime pins and deployment authority remain unchanged; final exact-source qualification is separate."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -286,6 +287,11 @@ policy, source mapping, SEO or EdgeOne deployment. It consumes complete core
 bundles and the shared Builder history verifier; it cannot mutate canonical PCR
 content or promote methodology/translation status. English and Chinese remain
 required; declared optional language artifacts are verified and preserved.
+
+Published chapter aliases use the exact source-owned root `middleware.ts` profile. The sealed
+`generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
+anchors and the importer rechecks actual source bytes before atomic handoff. Native history normalization
+and provider compilation do not authorize deployment or promote methodology states.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
 not authoring sources. Use `npm run docs:build` for the complete static publication

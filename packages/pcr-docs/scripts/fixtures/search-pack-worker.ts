@@ -11,8 +11,8 @@ import type {SearchResult} from "../../lib/types.ts";
 const output=process.argv[2],scenario=process.argv[3];assert.ok(output&&scenario);
 const language=scenario==="chinese"?"zh-CN":"en-US";
 const root=`/generated/search/${language}/`,sourceCommit="a".repeat(40);
-const requestedVersion=Number(process.argv[4]??6);assert.ok(requestedVersion===5||requestedVersion===6);
-const version:5|6=requestedVersion;
+const requestedVersion=Number(process.argv[4]??6);assert.ok(requestedVersion===5||requestedVersion===6||requestedVersion===7);
+const version:5|6|7=requestedVersion;
 const digest=(bytes:Uint8Array)=>"sha256:"+createHash("sha256").update(bytes).digest("hex");
 const responses=new Map<string,string>(),requests:string[]=[],imported:[string,string][]=[];
 type Reply={id?:number;results?:SearchResult[];error?:string};
@@ -29,18 +29,21 @@ const doc=(id:number,content:string,url="/fixture/"+id,description="scope"):Sear
 const nativeEntries:[string,string][]=[];
 async function wire(records:SearchResult[]):Promise<string>{
  const index=new Index({tokenize:"strict",resolution:9,encode:(value:unknown)=>searchTerms(value,language)});
- for(const record of records)index.add(Number(record.id),language==="zh-CN"?"运输 仓储 劳务":"wheat");
+ for(const record of records)index.add(Number(record.id),language==="zh-CN"?"运输 仓储 劳务":scenario==="channels"?"wheat "+Array.from({length:200},(_,i)=>"channelterm"+i).join(" "):"wheat");
  const entries:Record<string,unknown[]>={};await index.export((key,payload)=>{nativeEntries.push([key,payload]);entries[key]=JSON.parse(payload) as unknown[];});
  return JSON.stringify({...encodeSearchEntries(entries,4),records});
 }
 async function install(groups:SearchResult[][]){
  nativeEntries.length=0;const wires=await Promise.all(groups.map(wire));
  const payload=packSearchShards(wires,sourceCommit,language,0,version),bytes=searchUtf8(payload);
+ if(version===7&&scenario==="channels"){
+  const packed:unknown=JSON.parse(payload);assert.ok(packed&&typeof packed==="object"&&"numericColumns"in packed&&Array.isArray(packed.numericColumns)&&Array.isArray(packed.numericColumns[0])&&packed.numericColumns[0].length>0,"real FlexSearch cutoff corpus must exercise v7 channels");
+ }
  const file:SearchPhysicalFile={url:root+"pack-000.json",bytes:bytes.length,gzipBytes:gzipSync(bytes,{level:9}).length,sha256:digest(bytes),firstLogicalShard:0,logicalShardCount:wires.length,records:groups.reduce((sum,records)=>sum+records.length,0),logicalShards:wires.map((wire,i)=>({wireBytes:searchUtf8(wire).length,wireSha256:digest(searchUtf8(wire)),records:groups[i]!.length}))};
  const manifest:SearchManifest={schemaVersion:version,sourceCommit,language,logicalShardCount:wires.length,files:[file]};responses.set(file.url,payload);responses.set(root+"manifest.json",JSON.stringify(manifest));return{payload,manifest};
 }
 if(scenario==="chinese")await install([[doc(0,"仓储服务", "/运输/仓储", "完整中文边界😀")],[doc(0,"劳务", "/劳务", "状态、单位和说明保持完整")]]);
-else if(scenario==="cutoff")await install([Array.from({length:30},(_,i)=>doc(i,"Wheat product "+i)),[doc(0,"Wheat","/exact")]]);
+else if(scenario==="cutoff"||scenario==="channels")await install([Array.from({length:30},(_,i)=>doc(i,"Wheat product "+i)),[doc(0,"Wheat","/exact")]]);
 else if(scenario==="duplicates")await install([[doc(0,"Wheat earlier","/same","first full record"),doc(1,"Wheat local","/first")],[doc(0,"Wheat","/same","later exact must not replace"),doc(1,"Wheat second","/second")]]);
 else if(scenario.startsWith("legacy-")){
  const version=Number(scenario.slice(-1)),records=[doc(0,"Wheat")];
@@ -61,7 +64,7 @@ let sequence=0;
 async function query():Promise<Reply>{assert.ok(scope.onmessage);await scope.onmessage(new MessageEvent("message",{data:{id:++sequence,query:language==="zh-CN"?"仓储":"wheat",language}}));return replies.at(-1)!;}
 function valid(reply:Reply){assert.equal(reply.error,undefined);assert.ok(reply.results);return reply.results;}
 if(scenario==="chinese"){const result=valid(await query());assert.equal(result.length,2);assert.equal(result.find(record=>record.url==="/运输/仓储")!.description,"完整中文边界😀");assert.deepEqual(imported,nativeEntries);}
-else if(scenario==="cutoff"){const result=valid(await query());assert.equal(result.length,30);assert.equal(result[0]!.url,"/exact");assert.deepEqual(imported,nativeEntries);}
+else if(scenario==="cutoff"||scenario==="channels"){const result=valid(await query());assert.equal(result.length,30);assert.equal(result[0]!.url,"/exact");assert.deepEqual(imported,nativeEntries);}
 else if(scenario==="duplicates"){const result=valid(await query());assert.equal(result.length,3);assert.equal(result.find(record=>record.url==="/same")!.description,"first full record");assert.ok(result.some(record=>record.url==="/first"));assert.ok(result.some(record=>record.url==="/second"));assert.deepEqual(imported,nativeEntries);}
 else if(scenario==="late-retry"||scenario==="late-import-retry"||scenario==="identity"){
  const manifest=JSON.parse(responses.get(root+"manifest.json")!) as SearchManifest;const originalManifest=JSON.stringify(manifest),payload=responses.get(root+"pack-000.json")!;

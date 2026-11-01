@@ -3,14 +3,14 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.heatset-web-offset-saddle-stitched-magazines"
-  classification_refs: "CPC 3.0 32410; 32420; 32490; narrower; scope and accepted decisions: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADRs"
-  covered_products: "Coated-paper heatset web-offset saddle-stitched magazines with declared self/separate paper cover"
-  excluded_products: "Other printing/binding/substrate routes listed in section 1; no full-classification-leaf coverage"
-  representative_product: "PGM heatset saddle-stitched magazine product family; actual format, page count and grade collected"
+  classification_refs: "CPC 3.0 32410; narrower; current accepted association and decision: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADR; no whole-leaf or scientific/translation approval implied"
+  covered_products: "General-interest print magazines issued less than four times a week, on coated paper by heatset web offset and saddle stitching, with declared self/separate paper cover"
+  excluded_products: "CPC 32420 business/professional/academic and CPC 32490 other specific-subject periodicals; online editions; publications issued four or more times a week; other routes in section 1; no full-leaf coverage"
+  representative_product: "General-interest news/current-affairs print magazine; The Week illustrates content and weekly delivery only, PGM the heatset saddle-stitch route only; actual issue and physical specifications verified separately"
   production_route: "Purchased coated paper; process-free plate imaging; wet heatset print/dry/abatement/chill; folded signatures; wire saddle stitching; trim; conditional packing"
   market_state: "Accepted complete magazine at printer gate; transport packaging excluded from net reference mass"
 functional_unit:
-  what: "Supply a complete readable printed magazine of the declared physical construction"
+  what: "Supply a complete readable general-interest non-daily printed magazine of the declared physical construction"
   how_much: "1 kg accepted net complete magazines, including retained ink, paper cover, moisture and metal stitches"
   how_well: "Declared trim size, page sequence, print/colour acceptance and stitch integrity; this mass unit is not a claim of equal reading service across titles"
   how_long_or_cycle: "One declared production campaign through gate acceptance; reading life, distribution and disposal reported only in a separate downstream model"
@@ -45,7 +45,7 @@ system_boundary:
 boundary_abstraction:
   declared_starting_condition: "Purchased unprinted coated paper and complete plate/chemicals enter the printer gate."
   starting_condition_role: "Paper/pulp/coating manufacture remains upstream; foreground is printing and finishing."
-  product_classification_scope: "Only actual magazines matching this route; 32410/32420/32490 require separately determined non-daily content category."
+  product_classification_scope: "Only CPC 32410 general-interest print magazines published less than four times a week that also match this physical route; CPC 32420 and 32490 are excluded."
   recursive_input_rule: "A same-category purchased printed input keeps its measured state and distinct supplier; never use this full PCR again on an internal signature or self-linked output."
   upstream_dataset_requirement: "Link route/grade-compatible paper, plate, each ink/additive, wire, electricity, gas, water, packaging and each waste treatment; identity UUID alone is insufficient."
   disclosure: "Site, dates, meters, moisture, capture/control/bypass, internal circulation, outsourcing, exclusions and unresolved actual evidence."
@@ -60,7 +60,10 @@ reference_flow_definition:
     uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
   reference_unit: "kg"
   required_qualifiers:
-    - "title/content category and frequency"
+    - "actual general-interest contents and intended readership/editorial/distribution purpose"
+    - title
+    - edition
+    - "issue number/date and schedule proving publication less than four times a week"
     - "site/geography/period"
     - "accepted net kg and moisture"
     - "format/page count"
@@ -82,7 +85,7 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Use cp_mass accepted net kg of complete magazines, excluding boxes/wrap and rejected copies. Denominator is identical for every inventory and protocol. Declare product moisture; do not replace accepted mass with gross paper input or copy count."
+    rule: "Use cp_mass accepted net kg of complete magazines, excluding boxes/wrap and rejected copies. Denominator is identical for every inventory and protocol in the same manufacturing view: Q_acc counts only unique first manufacturing releases, including new closing FG once. Old FG dispatch, reinspection and same-item return/rework retain original Qc and create no new Q_acc; later services have a separate original-cohort view. Declare product moisture; do not replace accepted mass with gross paper input or copy count."
   - id: gas_basis
     applies_to: "natural_gas"
     required_property_ref:
@@ -466,7 +469,7 @@ process_inventory:
           flow_ref:
             uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Conditional corrugated dispatch box; measure box mass separately from accepted magazine net mass and link upstream box manufacture. This UUID is limited to 16.6% primary and 83.4% recycled fibre. Link it only if actual fibre composition and supplier technology/basis match; otherwise retain a box identity gap and resolve a compatible record before dataset completion. These source fractions are compatibility conditions, never a factory recipe or quantity default."
+          description: "Conditional corrugated dispatch box; measure box mass separately from accepted magazine net mass and link upstream box manufacture. This UUID is limited to 16.6% primary and 83.4% recycled fibre. Link it only if actual fibre composition and supplier technology/basis match; otherwise retain a box identity gap and resolve a compatible record before dataset completion. These source fractions are compatibility conditions, never a factory recipe or quantity default. Apply the controlled packaging direction ledger to each actual box: P/N_ext/ER entry and EO/other gross outward purposes, owner/custody/cohort, inherited provider/V/A and disjoint empty/attached/reusable stocks. Include every new/old-FG accompanying box, empty return, service/waste leg and actual transport outside net magazine Q_acc; first provision once and actual later increments once, including bundled-paid and nonpurchased boxes."
           amount:
             expression: "Measured campaign amount under cp_material divided by accepted campaign net kg; conditional absence requires recorded applicability evidence."
             value_mode: "foreground_record"
@@ -487,7 +490,7 @@ process_inventory:
           flow_ref:
             uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Conditional actual polyethylene wrapping film CAS 9002-88-4; retain thickness, recycled content and supplier. Physical name/CAS/comment identify film despite a conflicting CPC29220 field; supplier clarification remains required."
+          description: "Conditional actual polyethylene wrapping film CAS 9002-88-4; retain thickness, recycled content and supplier. Physical name/CAS/comment identify film despite a conflicting CPC29220 field; supplier clarification remains required. Apply the same component-specific P/N_ext/ER/EO, stock, inherited provider/V/A and complete gross direction/transport ledger to actual film. Distinguish film attached to raw/WIP/new or old FG, empty/reusable stock, accompanying dispatch/return, service and waste; preserve first provision once and later actual increments, never free nonpurchase provision or netting of gross legs."
           amount:
             expression: "Measured campaign amount under cp_material divided by accepted campaign net kg; conditional absence requires recorded applicability evidence."
             value_mode: "foreground_record"
@@ -1369,90 +1372,90 @@ dataset_production:
       process_id: "p_magazine"
       flow_role: "reference acceptance"
       record_type: "foreground_record"
-      raw_fields: "job id, period, accepted copies, net accepted kg, moisture, covers, stitches, box/wrap tare, rejected kg"
-      collection_method: "Weigh accepted complete magazines on calibrated scales or reconcile traceable net weighing records. Representative copy sampling needs a measured count-to-mass record; no generic copy mass. Preserve batch totals."
+      raw_fields: "job id, period, accepted copies, net accepted kg, moisture, covers, stitches, box/wrap tare, rejected kg; title/edition/issue, lot/cohort, unique first manufacturing release event/date, original Qc, opening/closing raw/WIP/new and old FG, real return/rework and dispatch IDs"
+      collection_method: "Weigh accepted complete magazines on calibrated scales or reconcile traceable net weighing records. Representative copy sampling needs a measured count-to-mass record; no generic copy mass. Preserve batch totals. Establish Q_acc from unique first manufacturing quality releases only; count newly released closing FG once, opening unreleased WIP only at its first completed release, and never add old FG dispatch/reinspection/repacking or same-item returned/reworked released product. Retain original Qc and release lineage for later services under quantity preparation."
       unit: "kg"
-      frequency: "each campaign"
-      temporal_coverage: "Matched production campaign including startup/cleaning/control outages"
+      frequency: "each campaign and release/return event"
+      temporal_coverage: "Matched production campaign including startup/cleaning/control outages; linked prior and later cohort periods"
       site_scope: "Declared printer and actual equipment/stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions"
+      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions; unique release register and complete stock/cohort bridge"
     - protocol_id: cp_material
       process_id: "p_magazine"
       flow_role: "material input"
       record_type: "foreground_record"
-      raw_fields: "purchase/stock/return kg, job and colour, grade, CAS, formulation, dry/wet basis, coating, wire length/mass, reuse, supplier dataset"
-      collection_method: "Use opening + receipts - closing - returns by product/colour and stage; weigh waste/retained fractions. Preserve formulation mass and separate active-species mass. Reconcile paper and cover, plate, cotton and wire; include startup. Preserve the unnormalized attributable campaign total in its native unit; campaign_normalization performs the sole division by accepted net kg."
+      raw_fields: "purchase/stock/return kg, job and colour, grade, CAS, formulation, dry/wet basis, coating, wire length/mass, reuse, supplier dataset; exchange/event and original cohort/release IDs, complete opening/closing raw/WIP/FG/return V/A/provider/gate/phase/medium/period; each packaging component P/N_ext/ER/EO, prior outward ID, owner/custody, state, mass/count conversion and all gross direction/recipient/transport/service records"
+      collection_method: "Use opening + receipts - closing - returns by product/colour and stage; weigh waste/retained fractions. Preserve formulation mass and separate active-species mass. Reconcile paper and cover, plate, cotton and wire; include startup. This net-use bridge does not replace complete gross external legs or inherited vectors. Apply quantity preparation and the controlled packaging direction ledger, including paid bundles and first nonpurchase provision; carry raw/WIP/FG/real-return vectors without recharging manufacture. Keep complete unnormalized physical V and separately supported A in native units; campaign_normalization alone divides the selected manufacturing numerator by its Q_acc, with old-cohort services separately on original Qc."
       unit: "kg"
-      frequency: "each receipt/job"
-      temporal_coverage: "Matched production campaign including startup/cleaning/control outages"
+      frequency: "each receipt/job/stock and packaging movement"
+      temporal_coverage: "Matched production campaign including startup/cleaning/control outages; linked prior and later cohort periods"
       site_scope: "Declared printer and actual equipment/stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions"
+      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions; complete exchange vectors, component stocks, entry/prior-outward and recipient/transport evidence"
     - protocol_id: cp_energy
       process_id: "p_magazine"
       flow_role: "power and fuel"
       record_type: "foreground_record"
-      raw_fields: "stage meter readings, voltage, gas m3, T/P, wet/dry, composition, Z, provider m3, run/idle/cleaning, integrated/separate dryer/control, recovery and bypass"
-      collection_method: "Read calibrated electricity and gas meters at matched campaign boundaries. Separate equipment and idle/make-ready where measurable; integrated common meter counted once. Preserve gas supplier-volume conversion evidence and kWh/MJ conversion. Preserve the unnormalized attributable campaign total in its native unit; campaign_normalization performs the sole division by accepted net kg."
+      raw_fields: "stage meter readings, voltage, gas m3, T/P, wet/dry, composition, Z, provider m3, run/idle/cleaning, integrated/separate dryer/control, recovery and bypass; complete exchange V/A/provider/gate/phase/medium/period and raw/WIP/FG/return cohort vectors, actual service and embedded closing-WIP quantities"
+      collection_method: "Read calibrated electricity and gas meters at matched campaign boundaries. Separate equipment and idle/make-ready where measurable; integrated common meter counted once. Preserve gas supplier-volume conversion evidence and kWh/MJ conversion. Keep every gross period meter reading; attribute actual released-cohort use separately from measured embedded closing WIP and old-cohort later services using quantity preparation. Carry prior energy vectors once, not all period energy onto current new Q_acc. Preserve unnormalized V/A in native units; campaign_normalization divides only the selected manufacturing numerator once."
       unit: "MJ; m3"
-      frequency: "continuous and campaign"
-      temporal_coverage: "Matched production campaign including startup/cleaning/control outages"
+      frequency: "continuous and campaign/service"
+      temporal_coverage: "Matched production campaign including startup/cleaning/control outages; linked prior and later cohort periods"
       site_scope: "Declared printer and actual equipment/stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions"
+      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions; meter-to-cohort/closing-WIP and original-Qc service bridge"
     - protocol_id: cp_water
       process_id: "p_magazine"
       flow_role: "water balance"
       record_type: "foreground_record"
-      raw_fields: "input m3, fountain dilution, washing, cooling makeup/blowdown, emulsion carrier, paper moisture in/out, condensate, vapour, combustion-generated water, stores"
-      collection_method: "Meter each fresh water use and weigh/assay actual water in paper/liquids. Retain liquid/water-vapour output and reaction-water records; internal loop water is not new input. Harmonize measured density. Preserve the unnormalized attributable campaign total in its native unit; campaign_normalization performs the sole division by accepted net kg."
+      raw_fields: "input m3, fountain dilution, washing, cooling makeup/blowdown, emulsion carrier, paper moisture in/out, condensate, vapour, combustion-generated water, stores; exchange/event and original cohort/release IDs, complete inherited V/A/provider/gate/phase/medium/source-period vectors"
+      collection_method: "Meter each fresh water use and weigh/assay actual water in paper/liquids. Retain liquid/water-vapour output and reaction-water records; internal loop water is not new input. Harmonize measured density. Apply quantity preparation to complete exchange-indexed V/A/provider/gate/phase/medium/period and raw/WIP/FG/real-return cohort carryover. Keep gross native totals, closing embedded burdens and actual later original-Qc services separately; campaign_normalization divides only the supported new-manufacturing numerator once."
       unit: "m3; kg"
       frequency: "campaign and monitoring"
-      temporal_coverage: "Matched production campaign including startup/cleaning/control outages"
+      temporal_coverage: "Matched production campaign including startup/cleaning/control outages; linked prior/later cohort periods"
       site_scope: "Declared printer and actual equipment/stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions"
+      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions; complete vector/stock and original-cohort service evidence"
     - protocol_id: cp_waste
       process_id: "p_magazine"
       flow_role: "external residuals"
       record_type: "foreground_record"
-      raw_fields: "stream id, net kg, ink/solvent/moisture/coating, dust bins, sorted wire, receiver, waste code, treatment, containers/tare, internal return"
-      collection_method: "Weigh each outgoing stream and obtain acceptance/transfer records. Distinguish entrained liquid from cloth and ink-on-paper from separate ink residue. Collected dust is not air emission. Track returned material internally. Preserve the unnormalized attributable campaign total in its native unit; campaign_normalization performs the sole division by accepted net kg."
+      raw_fields: "stream id, net kg, ink/solvent/moisture/coating, dust bins, sorted wire, receiver, waste code, treatment, containers/tare, internal return; exchange/event and original cohort/release IDs, complete inherited V/A/provider/gate/phase/medium/source-period vectors; per-component gross accompanying/empty/EO/service/waste directions, owner/custody, recipient and actual transport"
+      collection_method: "Weigh each outgoing stream and obtain acceptance/transfer records. Distinguish entrained liquid from cloth and ink-on-paper from separate ink residue. Collected dust is not air emission. Track returned material internally. Apply quantity preparation to complete exchange-indexed V/A/provider/gate/phase/medium/period and raw/WIP/FG/real-return cohort carryover. Keep gross native totals, closing embedded burdens and actual later original-Qc services separately; campaign_normalization divides only the supported new-manufacturing numerator once. Apply the component-specific controlled packaging direction ledger; chemical residue and container tare remain disjoint."
       unit: "kg"
       frequency: "each consignment/campaign"
-      temporal_coverage: "Matched production campaign including startup/cleaning/control outages"
+      temporal_coverage: "Matched production campaign including startup/cleaning/control outages; linked prior/later cohort periods"
       site_scope: "Declared printer and actual equipment/stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions"
+      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions; complete vector/stock and original-cohort service evidence"
     - protocol_id: cp_emission
       process_id: "p_magazine"
       flow_role: "species and controls"
       record_type: "foreground_record"
-      raw_fields: "species/CAS, material source fraction, stack/room/bypass id, time, actual airflow, concentration, carbon/species basis, T/P, wet/dry, capture and destruction, NO/NO2 split, particle sizes, retention/waste carbon"
-      collection_method: "Use appropriate source tests/GC speciation and flow measurements over actual operating modes, or a closed species material balance with measured retention/waste/capture/destruction. Assess uncertainty and detection limits. TVOC alone cannot supply species amounts. For each matched interval use species-mass concentration times measured exhaust volume, or integrate concentration times measured volume rate over actual duration; do not multiply an already integrated volume by duration again. Use matching wet/dry, temperature, absolute pressure and oxygen-correction conventions; a concentration or rated fan flow alone is not campaign mass. Keep startup, bypass and ventilation inlet baselines, and record carbon-to-species conversion only for an identified molecular composition. Keep unknown species as incompleteness and add verified atomic rows before dataset completion. Preserve the unnormalized attributable campaign total in its native unit; campaign_normalization performs the sole division by accepted net kg."
+      raw_fields: "species/CAS, material source fraction, stack/room/bypass id, time, actual airflow, concentration, carbon/species basis, T/P, wet/dry, capture and destruction, NO/NO2 split, particle sizes, retention/waste carbon; exchange/event and original cohort/release IDs, complete inherited V/A/provider/gate/phase/medium/source-period vectors"
+      collection_method: "Use appropriate source tests/GC speciation and flow measurements over actual operating modes, or a closed species material balance with measured retention/waste/capture/destruction. Assess uncertainty and detection limits. TVOC alone cannot supply species amounts. For each matched interval use species-mass concentration times measured exhaust volume, or integrate concentration times measured volume rate over actual duration; do not multiply an already integrated volume by duration again. Use matching wet/dry, temperature, absolute pressure and oxygen-correction conventions; a concentration or rated fan flow alone is not campaign mass. Keep startup, bypass and ventilation inlet baselines, and record carbon-to-species conversion only for an identified molecular composition. Keep unknown species as incompleteness and add verified atomic rows before dataset completion. Apply quantity preparation to complete exchange-indexed V/A/provider/gate/phase/medium/period and raw/WIP/FG/real-return cohort carryover. Keep gross native totals, closing embedded burdens and actual later original-Qc services separately; campaign_normalization divides only the supported new-manufacturing numerator once."
       unit: "kg"
       frequency: "representative modes, full campaign coverage"
-      temporal_coverage: "Matched production campaign including startup/cleaning/control outages"
+      temporal_coverage: "Matched production campaign including startup/cleaning/control outages; linked prior/later cohort periods"
       site_scope: "Declared printer and actual equipment/stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions"
+      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions; complete vector/stock and original-cohort service evidence"
     - protocol_id: cp_chiller
       process_id: "p_magazine"
       flow_role: "chiller chemical mass"
       record_type: "foreground_record"
-      raw_fields: "equipment/refrigerant CAS, charge, recovery, stock, additions, losses, service dates, actual installed route"
-      collection_method: "Reconcile service/stock charge balance on the installed chiller. Preserve the unnormalized attributable campaign total in its native unit; campaign_normalization performs the sole division by accepted net kg. Internal charge cycling is not repeated input; no leakage default. Record documented absence if not installed."
+      raw_fields: "equipment/refrigerant CAS, charge, recovery, stock, additions, losses, service dates, actual installed route; exchange/event and original cohort/release IDs, complete inherited V/A/provider/gate/phase/medium/source-period vectors"
+      collection_method: "Reconcile service/stock charge balance on the installed chiller. Apply quantity preparation to complete exchange-indexed V/A/provider/gate/phase/medium/period and raw/WIP/FG/real-return cohort carryover. Keep gross native totals, closing embedded burdens and actual later original-Qc services separately; campaign_normalization divides only the supported new-manufacturing numerator once. Internal charge cycling is not repeated input; no leakage default. Record documented absence if not installed."
       unit: "kg"
       frequency: "service and campaign"
-      temporal_coverage: "Matched production campaign including startup/cleaning/control outages"
+      temporal_coverage: "Matched production campaign including startup/cleaning/control outages; linked prior/later cohort periods"
       site_scope: "Declared printer and actual equipment/stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions"
+      quality_evidence: "Calibrated records, supplier identity/basis, raw totals, uncertainty and exclusions; complete vector/stock and original-cohort service evidence"
   calculation_rules:
     - id: campaign_normalization
       applies_to: "all inventory rows"
-      rule: "a_i = B_i / Q_acc; B_i is the attributable external campaign exchange in its stated unit, Q_acc the cp_mass accepted net kg. Keep unallocated physical totals separately; finished_magazine is 1 kg. Use one complete matched reporting-period pool for the same product, grade, route, site and reference state, including all attributable startup/shutdown, wholly failed or zero-output batches, rejects, work in progress and rework. Sum raw numerator totals before dividing once by the strictly positive accepted net output; count reworked product once only at final acceptance. Never average batch ratios or omit failed activity. A pool with no accepted output retains its absolute unnormalized inventory and requires review."
+      rule: "a_i = B_i / Q_acc; B_i is the supported attributed external exchange coordinate A for newly first-released manufacture in its stated unit, including inherited opening vectors actually used once; Q_acc is cp_mass unique first manufacturing-release net kg. Finished_magazine is 1 kg. Use one complete matched reporting-period pool for the same product, grade, route, site and reference state, retaining all startup/shutdown, wholly failed or zero-output batches, rejects, WIP and rework. Sum supported attributable numerator totals before dividing once by strictly positive Q_acc; newly released closing FG counts once, old FG dispatch/reinspection/repacking and same-item return/rework add no Q_acc. Bridge every opening/use/closing raw/WIP/FG/real-return exchange V/A/provider/gate/phase/medium/source-period and cohort under quantity preparation; measured closing-WIP embedded burden remains there until later completion, not wholly on current released Q_acc, while the full period gross meters remain. Later actual services, cleanup, transport and losses of released goods are separate incremental original-cohort views divided only by the supported original Qc, with prior vectors retained and no repeated manufacture. Keep physical V unallocated and pair/cancel internal transfers; transformation is no second receipt. Never average batch ratios, omit failed/idle/cleanup activity or invent allocation shares from EPA solvent balances. Zero/unknown Q_acc or Qc retains absolute exchanges and uncertainty without division or loss of accounts; require review of unresolved attribution."
       inputs:
         - B_i
         - Q_acc
@@ -1490,22 +1493,23 @@ dataset_production:
       evidence: "Supplier declarations and complete identity records"
     - id: full_period
       applies_to: "p_magazine"
-      requirement: "Same campaign/accepted mass across EN/ZH, meters, stock changes, waste and emissions; include rejects and bypass periods. Historical factors are not substituted for measurement."
-      evidence: "cp_mass; cp_energy; cp_emission"
+      requirement: "Same campaign/accepted mass across EN/ZH, meters, stock changes, waste and emissions; include rejects and bypass periods. Reconcile unique first releases/new closing FG, original Qc and old-FG/return later services across periods; keep every gross meter and embedded closing-WIP vector without charging it all to current released Q_acc. Zero/unknown new Q retains absolute failed/idle/cleanup and service accounts. Historical factors are not substituted for measurement."
+      evidence: "cp_mass; cp_energy; cp_emission; release/cohort registers and complete exchange carryover"
     - id: speciation_completeness
       applies_to: "elementary rows"
       requirement: "List actual species beyond the conditional starter rows and resolve every relevant CAS/medium with its own row. No assumed positive dodecane/toluene/IPA or zero unknown residue. Explain non-detects, missing speciation and NOx/PM basis gaps."
       evidence: "cp_emission"
     - id: balances
       applies_to: "physical and burden accounts"
-      requirement: "Keep paired internal transfers, unallocated material/water/carbon totals and the allocated burden ledger separately; record residual and uncertainty rather than forcing a default recipe."
-      evidence: "cp_material; cp_water; cp_emission"
+      requirement: "Keep paired internal transfers, unallocated material/water/carbon totals and the allocated burden ledger separately; record residual and uncertainty rather than forcing a default recipe. Check every raw/WIP/FG/real-return inherited V/A/provider/gate/phase/medium/period coordinate and original cohort. For each actual packaging component reconcile disjoint stocks, P including paid bundles, N_ext, proven same-item ER, EO and every gross accompanying/empty/service/waste/transport leg outside Q_acc; provision whole or components once, actual later services once, unknown/free provision never zero by assumption."
+      evidence: "cp_material; cp_water; cp_emission; cp_waste; complete stock, prior-outward, provider and direction/service evidence"
 validation_rules:
   - rule_id: validate_reference
     applies_to: "finished_magazine"
-    rule: "Require exactly one complete reference output, net mass, moisture and physical construction. Intermediate signatures and shipping packaging cannot replace it; cross-stage transfers match on both ends."
+    rule: "Require exactly one complete reference output, net mass, moisture and physical construction. Intermediate signatures and shipping packaging cannot replace it; cross-stage transfers match on both ends. Verify actual issue contents, intended readers and editorial/distribution purpose against general-interest scope, retaining title, edition, issue number/date and schedule evidence; reject excluded content categories or frequency even when the physical route matches."
     source_ids:
       - pgm-magazines
+      - un-cpc3-periodicals-2025
   - rule_id: validate_emissions
     applies_to: "elementary rows"
     rule: "Validate CAS, source carbon origin, outdoor-air receiving boundary and chemical mass. Do not combine NO/NO2 with a NOx aggregate or N2O; do not sum nested PM totals or collected dust with air releases. Missing source/speciation/detection evidence is incomplete, not a pass."
@@ -1521,14 +1525,14 @@ validation_rules:
       - epa-printing-eiip-2002
   - rule_id: validate_basis
     applies_to: "all inventory rows"
-    rule: "Every amount, collection aggregation and calculation uses the same 1 kg accepted net denominator. UUID identity does not prove complete site data. Unknown m3 basis, formulation or waste recipient remains explicit and prevents a complete dataset claim."
+    rule: "Every manufacturing amount, collection aggregation and calculation uses the same 1 kg accepted net denominator from unique first manufacturing release. Verify new closing FG once, original Qc, no extra Q from old FG dispatch/reinspection/returned rework, complete inherited exchange V/A/provider/gate/phase/medium/period through raw/WIP/FG/returns and measured closing-WIP burden carryover while gross period meters remain complete. Validate later actual services on original-cohort Qc separately, and zero/unknown-Q absolute inventories without lost failed/idle/cleanup activity. Verify per-component P/N_ext/ER/EO ownership/prior-outward tests, disjoint packaging stocks and all gross outward/return/waste/service/transport directions outside magazine Q; whole or constituent provision once, actual later increments once, no invented cycles/share/credit or free/unknown burden as zero. UUID identity does not prove complete site data. Unknown m3 basis, formulation, inherited burden or waste recipient remains explicit and prevents a complete dataset claim."
     source_ids:
       - epa-printing-eiip-2002
 published_dataset_profile:
   dataset_role: "secondary_dataset; background_dataset only after independently checked site evidence and upstream link completeness"
   downstream_use: "One declared gate-to-gate foreground inventory per accepted kg with linked upstream supply/treatment; can be embedded in a separately scoped lifecycle model"
-  allowed_use: "Manufacturing of physically matching coated heatset wire-stitched magazines; subject/frequency reuse after applicability review"
-  excluded_use: "Full 32410/32420/32490 coverage, reading-service equivalence, other excluded routes, a background inferred from an identity UUID alone"
+  allowed_use: "Manufacturing of general-interest print magazines issued less than four times a week and matching the coated-paper heatset wire-stitched route; actual publication identity and route evidence required"
+  excluded_use: "CPC 32420 or 32490 applicability, full CPC 32410 coverage, online editions, publications issued four or more times a week, reading-service equivalence, other excluded routes, a background inferred from an identity UUID alone"
   required_metadata: "Reference qualifiers, period/site, stocks and accepted mass, flows/properties/providers, capture/abatement/bypass, formulas, physical and allocated accounts, sources and actual waste routes"
   required_quality_disclosure: "Unresolved identities and basis, speciation coverage, particle-size/NOx limitations, detection limits, unmeasured scope and uncertainty; no scientific approval inferred from tooling"
   update_trigger: "Paper/cover/ink/fountain/wash/plate/wire grade change, dryer/control/fuel or chiller change, changed supplier m3/MJ basis, new species or packaging/waste route"
@@ -1569,23 +1573,35 @@ data_sources:
     type: "handbook"
     reference: "Muller Martini, Primera PRO, official snapshot 2026-10-12, saddle-stitcher, gathering and three-knife trimmer. https://mullermartini.com/en/product/primera-pro/"
     used_for: "Gathering, stitching and trimming process; no default speed/yield."
+  - id: "un-cpc3-periodicals-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Ver. 3.0 Explanatory Notes, updated 30 June 2025, printed/PDF p150, 32300 and 32410/32420/32490. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "General-interest content and publication-frequency boundary and adjacent exclusions; classification frequency is not a production or LCI default."
+  - id: "theweek-editorial-purpose"
+    type: "handbook"
+    reference: "The Week, About Us, updated 22 May 2026, opening purpose paragraphs and The Week magazine section; accessed 27 October 2026. https://theweek.com/about-us"
+    used_for: "Real general-interest world-news/current-affairs reading function; content example only, no printer, machine, binding, page-count or inventory assumption."
+  - id: "theweek-weekly-print"
+    type: "handbook"
+    reference: "The Week UK, official subscription page, PRINT + DIGITAL offer, weekly printed delivery statement; accessed 27 October 2026. https://theweek.com/uk/subscription"
+    used_for: "Real weekly print distribution; no production run, paper grade, lifespan or specific printer attribution."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:a0bc35d9679caac44cc659396b61d24f7babb5c17c638666e95d44f2425d1f6e"
+  source_sha256: "sha256:26439a50714b4e2245e7f6a73a38fe34a83feeefad92f239f4de4155071ef18d"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6061"
+    - unit_id: "normative_8128"
       family: "system_boundary"
       span:
         start:
-          offset: 6061
-          line: 61
+          offset: 8128
+          line: 65
           column: 1
         end:
-          offset: 8578
-          line: 81
+          offset: 10683
+          line: 85
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased unprinted coated paper and complete plate/chemicals enter the printer gate. |\n| starting_condition_role | Paper/pulp/coating manufacture remains upstream; foreground is printing and finishing. |\n| product_classification_scope | Only actual magazines matching this route; 32410/32420/32490 require separately determined non-daily content category. |\n| recursive_input_rule | A same-category purchased printed input keeps its measured state and distinct supplier; never use this full PCR again on an internal signature or self-linked output. |\n| upstream_dataset_requirement | Link route/grade-compatible paper, plate, each ink/additive, wire, electricity, gas, water, packaging and each waste treatment; identity UUID alone is insufficient. |\n| disclosure | Site, dates, meters, moisture, capture/control/bypass, internal circulation, outsourcing, exclusions and unresolved actual evidence. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_gate` | p_magazine | Include receipt, imaging, make-ready, wet printing, drying/oxidation, chill/remoistening when installed, folding/gathering, wire stitching, trim, waste/emissions and dispatch packing. Distribution/use/end of life are outside the foreground gate. | `eu-sts-bref-2020`; `pgm-magazines`; `kodak-sonora-2026` |\n| `boundary_upstream` | purchased paper | Paper background must actually cover pulp/furnish preparation, forming, drying and mill coating of the declared grade, with upstream emissions/waste and allocation disclosed. Woodworking/plywood surveys cannot establish papermaking. Do not duplicate mill broke or mill dust as printer emissions. | `eu-paper-bref-2015` |\n| `boundary_control` | dryer and press | Retain a stage-specific extraction/control diagram. Split stack after treatment, fugitive room loss and bypass; capture and destruction are distinct. Internal solvent incineration/heat recovery is not an external fuel/avoided-emission credit. Keep fuel and ink/additive carbon origins separate. | `eu-sts-bref-2020`; `epa-offset-ctg-2006`; `contiweb-ecoset` |\n| `boundary_aggregate` | p_magazine | Aggregate actual interstage signature/cover transfer and packaging into one foreground unit with separate stage meters. Keep transfer ledgers at identical quantity/state on both ends. Only finished_magazine is the external reference-product output. | `pgm-magazines`; `muller-primera` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased unprinted coated paper and complete plate/chemicals enter the printer gate. |\n| starting_condition_role | Paper/pulp/coating manufacture remains upstream; foreground is printing and finishing. |\n| product_classification_scope | Only CPC 32410 general-interest print magazines published less than four times a week that also match this physical route; CPC 32420 and 32490 are excluded. |\n| recursive_input_rule | A same-category purchased printed input keeps its measured state and distinct supplier; never use this full PCR again on an internal signature or self-linked output. |\n| upstream_dataset_requirement | Link route/grade-compatible paper, plate, each ink/additive, wire, electricity, gas, water, packaging and each waste treatment; identity UUID alone is insufficient. |\n| disclosure | Site, dates, meters, moisture, capture/control/bypass, internal circulation, outsourcing, exclusions and unresolved actual evidence. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_gate` | p_magazine | Include receipt, imaging, make-ready, wet printing, drying/oxidation, chill/remoistening when installed, folding/gathering, wire stitching, trim, waste/emissions and dispatch packing. Distribution/use/end of life are outside the foreground gate. | `eu-sts-bref-2020`; `pgm-magazines`; `kodak-sonora-2026` |\n| `boundary_upstream` | purchased paper | Paper background must actually cover pulp/furnish preparation, forming, drying and mill coating of the declared grade, with upstream emissions/waste and allocation disclosed. Woodworking/plywood surveys cannot establish papermaking. Do not duplicate mill broke or mill dust as printer emissions. | `eu-paper-bref-2015` |\n| `boundary_control` | dryer and press | Retain a stage-specific extraction/control diagram. Split stack after treatment, fugitive room loss and bypass; capture and destruction are distinct. Internal solvent incineration/heat recovery is not an external fuel/avoided-emission credit. Keep fuel and ink/additive carbon origins separate. | `eu-sts-bref-2020`; `epa-offset-ctg-2006`; `contiweb-ecoset` |\n| `boundary_aggregate` | p_magazine | Aggregate actual interstage signature/cover transfer and packaging into one foreground unit with separate stage meters. Keep transfer ledgers at identical quantity/state on both ends. Only finished_magazine is the external reference-product output. | `pgm-magazines`; `muller-primera` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1594,20 +1610,20 @@ normative_context:
               line: 9
               column: 1
             end:
-              offset: 353
+              offset: 380
               line: 9
-              column: 53
-          text: "# Heatset web-offset saddle-stitched paper magazines"
+              column: 80
+          text: "# General-interest non-daily heatset web-offset saddle-stitched paper magazines"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 6061
-              line: 61
+              offset: 8128
+              line: 65
               column: 1
             end:
-              offset: 6082
-              line: 61
+              offset: 8149
+              line: 65
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1622,16 +1638,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_62151"
+    - unit_id: "normative_70973"
       family: "allocation"
       span:
         start:
-          offset: 62151
-          line: 947
+          offset: 70973
+          line: 967
           column: 1
         end:
-          offset: 63370
-          line: 955
+          offset: 72192
+          line: 975
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide` | p_magazine | First use actual job/stage meters and identified materials. Separately account for make-ready, cleaning, start-up/shutdown and rejects attributable to each campaign; document causal remaining shared-service drivers. Do not allocate all ink or heat simply by sales revenue or copy count. | `eu-sts-bref-2020`; `epa-printing-eiip-2002` |\n| `allocation_physical` | physical ledgers | Keep full unallocated physical outputs, stock changes and paired internal transfers in mass/water/carbon/solvent ledgers. Apply an agreed share only to the environmental burden ledger. Do not mechanically multiply co-product physical output by that share. | `eu-sts-bref-2020`; `epa-printing-eiip-2002` |\n| `allocation_scrap` | waste and recovered heat | Declare scrap classification and actual treatment/recipient. No automatic avoided-virgin credit for paper, plate or wire waste and no credit for internally recovered heat. Any system expansion belongs to a separately justified downstream study and must not duplicate waste treatment. | `eu-sts-bref-2020`; `eu-paper-bref-2015` |\n\n"
       headings:
@@ -1642,20 +1658,20 @@ normative_context:
               line: 9
               column: 1
             end:
-              offset: 353
+              offset: 380
               line: 9
-              column: 53
-          text: "# Heatset web-offset saddle-stitched paper magazines"
+              column: 80
+          text: "# General-interest non-daily heatset web-offset saddle-stitched paper magazines"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 62151
-              line: 947
+              offset: 70973
+              line: 967
               column: 1
             end:
-              offset: 62191
-              line: 947
+              offset: 71013
+              line: 967
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1670,18 +1686,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_73379"
+    - unit_id: "normative_87711"
       family: "validation"
       span:
         start:
-          offset: 73379
-          line: 986
+          offset: 87711
+          line: 1006
           column: 1
         end:
-          offset: 74766
-          line: 995
+          offset: 90201
+          line: 1015
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | finished_magazine | Require exactly one complete reference output, net mass, moisture and physical construction. Intermediate signatures and shipping packaging cannot replace it; cross-stage transfers match on both ends. | `pgm-magazines` |\n| `validate_emissions` | elementary rows | Validate CAS, source carbon origin, outdoor-air receiving boundary and chemical mass. Do not combine NO/NO2 with a NOx aggregate or N2O; do not sum nested PM totals or collected dust with air releases. Missing source/speciation/detection evidence is incomplete, not a pass. | `eu-sts-bref-2020`; `epa-offset-ctg-2006` |\n| `validate_control` | drying and control | Check operating, startup/shutdown and bypass coverage; reconcile captured, destroyed, retained and emitted solvent/carbon. Measured stack TVOC mg C/Nm3 without speciation does not prove full LCI or zero fugitive emissions. | `eu-sts-bref-2020`; `epa-offset-ctg-2006`; `epa-printing-eiip-2002` |\n| `validate_basis` | all inventory rows | Every amount, collection aggregation and calculation uses the same 1 kg accepted net denominator. UUID identity does not prove complete site data. Unknown m3 basis, formulation or waste recipient remains explicit and prevents a complete dataset claim. | `epa-printing-eiip-2002` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_reference` | finished_magazine | Require exactly one complete reference output, net mass, moisture and physical construction. Intermediate signatures and shipping packaging cannot replace it; cross-stage transfers match on both ends. Verify actual issue contents, intended readers and editorial/distribution purpose against general-interest scope, retaining title, edition, issue number/date and schedule evidence; reject excluded content categories or frequency even when the physical route matches. | `pgm-magazines`; `un-cpc3-periodicals-2025` |\n| `validate_emissions` | elementary rows | Validate CAS, source carbon origin, outdoor-air receiving boundary and chemical mass. Do not combine NO/NO2 with a NOx aggregate or N2O; do not sum nested PM totals or collected dust with air releases. Missing source/speciation/detection evidence is incomplete, not a pass. | `eu-sts-bref-2020`; `epa-offset-ctg-2006` |\n| `validate_control` | drying and control | Check operating, startup/shutdown and bypass coverage; reconcile captured, destroyed, retained and emitted solvent/carbon. Measured stack TVOC mg C/Nm3 without speciation does not prove full LCI or zero fugitive emissions. | `eu-sts-bref-2020`; `epa-offset-ctg-2006`; `epa-printing-eiip-2002` |\n| `validate_basis` | all inventory rows | Every manufacturing amount, collection aggregation and calculation uses the same 1 kg accepted net denominator from unique first manufacturing release. Verify new closing FG once, original Qc, no extra Q from old FG dispatch/reinspection/returned rework, complete inherited exchange V/A/provider/gate/phase/medium/period through raw/WIP/FG/returns and measured closing-WIP burden carryover while gross period meters remain complete. Validate later actual services on original-cohort Qc separately, and zero/unknown-Q absolute inventories without lost failed/idle/cleanup activity. Verify per-component P/N_ext/ER/EO ownership/prior-outward tests, disjoint packaging stocks and all gross outward/return/waste/service/transport directions outside magazine Q; whole or constituent provision once, actual later increments once, no invented cycles/share/credit or free/unknown burden as zero. UUID identity does not prove complete site data. Unknown m3 basis, formulation, inherited burden or waste recipient remains explicit and prevents a complete dataset claim. | `epa-printing-eiip-2002` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1690,20 +1706,20 @@ normative_context:
               line: 9
               column: 1
             end:
-              offset: 353
+              offset: 380
               line: 9
-              column: 53
-          text: "# Heatset web-offset saddle-stitched paper magazines"
+              column: 80
+          text: "# General-interest non-daily heatset web-offset saddle-stitched paper magazines"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 73379
-              line: 986
+              offset: 87711
+              line: 1006
               column: 1
             end:
-              offset: 73401
-              line: 986
+              offset: 87733
+              line: 1006
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1722,194 +1738,194 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_gate"
       identity_kind: "explicit"
-      unit_id: "normative_6061"
+      unit_id: "normative_8128"
       source_span:
         start:
-          offset: 7148
-          line: 76
+          offset: 9253
+          line: 80
           column: 1
         end:
-          offset: 7487
-          line: 76
+          offset: 9592
+          line: 80
           column: 340
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_upstream"
       identity_kind: "explicit"
-      unit_id: "normative_6061"
+      unit_id: "normative_8128"
       source_span:
         start:
-          offset: 7488
-          line: 77
+          offset: 9593
+          line: 81
           column: 1
         end:
-          offset: 7850
-          line: 77
+          offset: 9955
+          line: 81
           column: 363
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_control"
       identity_kind: "explicit"
-      unit_id: "normative_6061"
+      unit_id: "normative_8128"
       source_span:
         start:
-          offset: 7851
-          line: 78
+          offset: 9956
+          line: 82
           column: 1
         end:
-          offset: 8251
-          line: 78
+          offset: 10356
+          line: 82
           column: 401
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_aggregate"
       identity_kind: "explicit"
-      unit_id: "normative_6061"
+      unit_id: "normative_8128"
       source_span:
         start:
-          offset: 8252
-          line: 79
+          offset: 10357
+          line: 83
           column: 1
         end:
-          offset: 8576
-          line: 79
+          offset: 10681
+          line: 83
           column: 325
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_62151"
+      unit_id: "normative_70973"
       source_span:
         start:
-          offset: 62264
-          line: 951
+          offset: 71086
+          line: 971
           column: 1
         end:
-          offset: 62639
-          line: 951
+          offset: 71461
+          line: 971
           column: 376
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_62151"
+      unit_id: "normative_70973"
       source_span:
         start:
-          offset: 62640
-          line: 952
+          offset: 71462
+          line: 972
           column: 1
         end:
-          offset: 62989
-          line: 952
+          offset: 71811
+          line: 972
           column: 350
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_scrap"
       identity_kind: "explicit"
-      unit_id: "normative_62151"
+      unit_id: "normative_70973"
       source_span:
         start:
-          offset: 62990
-          line: 953
+          offset: 71812
+          line: 973
           column: 1
         end:
-          offset: 63368
-          line: 953
+          offset: 72190
+          line: 973
           column: 379
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_73379"
+      unit_id: "normative_87711"
       source_span:
         start:
-          offset: 73474
-          line: 990
+          offset: 87806
+          line: 1010
           column: 1
         end:
-          offset: 73739
-          line: 990
-          column: 266
+          offset: 88366
+          line: 1010
+          column: 561
     - pointer: "/validation_rules/1"
       rule_id: "validate_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_73379"
+      unit_id: "normative_87711"
       source_span:
         start:
-          offset: 73740
-          line: 991
+          offset: 88367
+          line: 1011
           column: 1
         end:
-          offset: 74102
-          line: 991
+          offset: 88729
+          line: 1011
           column: 363
     - pointer: "/validation_rules/2"
       rule_id: "validate_control"
       identity_kind: "explicit"
-      unit_id: "normative_73379"
+      unit_id: "normative_87711"
       source_span:
         start:
-          offset: 74103
-          line: 992
+          offset: 88730
+          line: 1012
           column: 1
         end:
-          offset: 74441
-          line: 992
+          offset: 89068
+          line: 1012
           column: 339
     - pointer: "/validation_rules/3"
       rule_id: "validate_basis"
       identity_kind: "explicit"
-      unit_id: "normative_73379"
+      unit_id: "normative_87711"
       source_span:
         start:
-          offset: 74442
-          line: 993
+          offset: 89069
+          line: 1013
           column: 1
         end:
-          offset: 74764
-          line: 993
-          column: 323
+          offset: 90199
+          line: 1013
+          column: 1131
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6061"
+      unit_id: "normative_8128"
       source_span:
         start:
-          offset: 6061
-          line: 61
-          column: 1
-        end:
-          offset: 6082
-          line: 61
-          column: 22
-    - code: "NON_RULE_TABLE"
-      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6061"
-      source_span:
-        start:
-          offset: 6110
+          offset: 8128
           line: 65
           column: 1
         end:
-          offset: 7075
-          line: 72
+          offset: 8149
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8128"
+      source_span:
+        start:
+          offset: 8177
+          line: 69
+          column: 1
+        end:
+          offset: 9180
+          line: 76
           column: 150
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_62151"
+      unit_id: "normative_70973"
       source_span:
         start:
-          offset: 62151
-          line: 947
+          offset: 70973
+          line: 967
           column: 1
         end:
-          offset: 62191
-          line: 947
+          offset: 71013
+          line: 967
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_73379"
+      unit_id: "normative_87711"
       source_span:
         start:
-          offset: 73379
-          line: 986
+          offset: 87711
+          line: 1006
           column: 1
         end:
-          offset: 73401
-          line: 986
+          offset: 87733
+          line: 1006
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1918,5 +1934,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:a0bc35d9679caac44cc659396b61d24f7babb5c17c638666e95d44f2425d1f6e"
-  generated_content_sha256: "sha256:81ff6dbbe6db3ff2cf8532489220dca438d8d000efc637678440231dd7952b9b"
+    sha256: "sha256:26439a50714b4e2245e7f6a73a38fe34a83feeefad92f239f4de4155071ef18d"
+  generated_content_sha256: "sha256:569802558fc56f80bae3dd6de0c79e4bc23c27e95388d8977d2857897bb751d5"

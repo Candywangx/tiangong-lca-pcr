@@ -1,10 +1,1864 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "31411"
-  title: "Plywood consisting solely of sheets, with both outer plies of coniferous wood"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.plywood-consisting-solely-of-sheets-with-both-outer-plies-of-coniferous-wood"
+  classification_refs: "CPC 3.0 31411; narrower; current accepted association and decision: classifications/mappings/cpc-3.0-to-pcr.yaml and its referenced ADR; no whole-leaf or scientific/translation approval implied"
+  covered_products: "Solely veneer-sheet plywood whose face and back are independently coniferous; represented here by untreated uncoated all-coniferous PF panels"
+  excluded_products: "Non-coniferous face or back; non-veneer cores; bamboo; parallel-grain laminates; coated/treated panels; uncured or rejected reference output; unassessed alternative technology"
+  representative_product: "Flat crossed full-sheet all-coniferous plywood, purchased aqueous resole PF formulated glue, actual declared structural/bond grade and measured release-state geometry"
+  production_route: "Untreated logs → debark/condition → rotary peel/clip → indirect steam dry/redry → PF spread/full-sheet layup → hot press/cure/cool → trim/grade finish → first release → pack; gas-only boiler and electric handling"
+  market_state: "Cured, cooled, trimmed, grade-finished and quality-released factory panel; packing is accompanying material and is excluded from net panel volume"
+functional_unit:
+  what: "Supply plywood panel material of the declared structural and bond-durability grade"
+  how_much: "1 m3 net geometric panel volume at first quality release, in the measured release moisture and temperature state"
+  how_well: "Both outer plies coniferous, representative inner plies also coniferous; crossed all-veneer construction; aqueous resole PF; no coating/chemical treatment; passed the actual declared grade tests after cure/cooling/finishing"
+  how_long_or_cycle: "One manufacture and first quality-release cycle; declared unit without an assumed service lifetime or cross-grade functional equivalence"
+  reference_flow_link: "finished_panel"
+system_boundary:
+  rules:
+    - rule_id: boundary_stages
+      applies_to: "manufacturing"
+      rule: "Include conditioning/peeling/clipping, drying and redrying, glue spread/layup, cure/cooling, trim/grade finishing, testing/reject/rework, packing, gas boiler, water cleanup and actual emission controls. Site heat is fuel plus conversion/emissions once; internal steam transfers do not add a second provider."
+      source_ids:
+        - epa-plywood-2002
+    - rule_id: boundary_species
+      applies_to: "reference product"
+      rule: "Face and back each require coniferous proof; representative core requires coniferous veneers. Different outer species classes, non-sheet cores and unsupported technologies cannot enter this output by a shared process label."
+      source_ids:
+        - cpc3-31411
+    - rule_id: boundary_cohort
+      applies_to: "manufacturing"
+      rule: "Include all period startup, shutdown, idle, redrying, failed batches, cleanup and rework activity. Bridge opening/closing WIP and finished stocks to the first-release cohort with stage records; do not discard burdens or inflate Q with repeated throughput."
+      source_ids:
+        - corrim-western-2025
+    - rule_id: boundary_outlets
+      applies_to: "manufacturing"
+      rule: "Distinguish boiler stack, indirect dryer/conditioning outlet, PF press/fugitives and controls; indirect steam contains no boiler combustion gas. Count a shared final stack once. Wastewater leaves for external treatment, with no invented on-site removal or direct-discharge elementary outputs."
+      source_ids:
+        - epa-plywood-2002
+        - epa-gas-2026
+    - rule_id: boundary_extensions
+      applies_to: "dataset"
+      rule: "Include upstream production and inbound transport for cradle-to-gate use. Downstream fabrication/installation/use/end-of-life, chemical treatment, wood combustion, direct-fired drying, purchased heat and on-site wastewater treatment need explicit extensions rather than hidden proxies. No stored-carbon credit or carbon-neutrality claim follows from this factory unit."
+      source_ids:
+        - corrim-western-2025
+boundary_abstraction:
+  declared_starting_condition: "Untreated coniferous logs and actual externally supplied materials received at the integrated mill; include site boiler, utilities and controls"
+  starting_condition_role: "Foreground collection cutoff; upstream burdens are still required for cradle-to-gate coverage"
+  product_classification_scope: "Sole CPC 3.0:31411 identity; this method represents the all-coniferous full-sheet PF/indirect-steam route only"
+  recursive_input_rule: "External plywood or third-party rework is not an internal loop and is outside this representation pending separate incoming-state/upstream evidence. Internal veneer redrying, glue recovery and panel rework use matched transfers, not new purchases or repeated reference output."
+  upstream_dataset_requirement: "Link each actual external material/provider and inbound transport once, including log forestry/harvest, glue formulation supply, electricity/gas/water, consumables, packing and external waste treatment; match gate, geography, time, state, quantity and actual route"
+  disclosure: "Distinguish factory activity evidence from complete upstream-linked datasets; disclose all missing links, cohort bridges, allocation, exclusions, effluent and controls"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Plywood"
+    uuid: "8b239d58-5fc2-40a5-8003-33f4082bc995"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - "Face species and coniferous proof"
+    - "back species and coniferous proof"
+    - "each inner-ply species/origin"
+    - "ply count/grain/thickness and all-sheet core proof"
+    - "harvest/supply chain"
+    - "veneer moisture/surface/pitch/conditioning and redrying history"
+    - "ready-to-spread PF glue formulation/solids/water/free monomers"
+    - "spread/assembly/press/cure/cooling schedule"
+    - "named structural/bond grade and actual acceptance tests"
+    - "uncoated/untreated condition"
+    - "actual net panel dimensions/hole convention and release moisture/temperature"
+    - "paired net mass/density"
+    - "lot first-release identifier and Q"
+    - "period/site and opening/closing raw/WIP/rework/finished stocks"
+    - "gas/indirect-steam/electric/water/effluent/control configuration"
+    - "packaging ownership/returns"
+    - "providers and allocation evidence"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_volume
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "cp_release measures Q at first quality release. Every inventory denominator and collection aggregation is per 1 m3 reference flow; preserve raw period units."
+  - id: wood_water_basis
+    applies_to: "conifer_logs; bark_product; peeler_core; green_chips; dry_chips; sawdust"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "cp_wood and cp_residues measure wet and oven-dry wood/bark separately; MC_db uses oven-dry mass as denominator. Do not treat resin or non-water volatiles as water."
+  - id: energy_interface
+    applies_to: "electricity; natural_gas"
+    required_property_ref:
+      name: "Energy; Volume"
+      uuid: ""
+    required_unit: "MJ; m3"
+    rule: "cp_energy preserves electricity units and gas temperature/pressure/composition. 1 kWh = 3.6 MJ; use the actual provider gas-volume convention. Internal steam is measured by enthalpy difference and is not another external energy purchase."
+  - id: physical_and_burden
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "row-specific unit"
+    rule: "Preserve gross physical receipts, exports and stocks first. Determine the matching cohort and allocate attributable burdens separately; normalize each ledger once by Q after reconciliation. Q=0 forbids division and retains the failed/idle cohort for review."
+process_map:
+  - id: manufacturing
+    name: "Integrated coniferous full-sheet PF plywood manufacture, utilities and packing"
+    inclusion: "required"
+    inclusion_condition: "Declared representative technology only"
+    role: "foreground production"
+    quantitative_reference: "1 m3 reference flow"
+process_inventory:
+  - id: manufacturing
+    label: "Integrated coniferous full-sheet PF plywood manufacture, utilities and packing"
+    inputs:
+      product:
+        - row_id: conifer_logs
+          role: "Untreated coniferous veneer logs with bark"
+          name: "Untreated coniferous veneer logs with bark"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record botanical species and origin of face, back and core lots, wet received mass and measured dry wood/bark fractions. Use actual log scaling; a merchantable log scale is not geometric veneer volume. No purchased veneer enters this integrated route."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_wood; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: pf_glue
+          role: "Ready-to-spread aqueous resole phenol-formaldehyde plywood adhesive"
+          name: "Ready-to-spread aqueous resole phenol-formaldehyde plywood adhesive"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "One externally purchased formulated glue, measured as delivered wet mass. Disclose its resin, extender, alkali, water and free monomers as constituent information, not extra purchased exchanges. No on-site resin synthesis or separate filler addition is represented; add actual separately purchased ingredients before extending this route."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_glue; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glue
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Retain the native CN grid-average customer-side 35–330 kV restriction. Use this identity only for a matching actual interface; otherwise resolve the actual supply identity. Meter log handling, peeling, fans, pumps, press, finishing, battery charging and dust controls, including attributable transformer/charging losses."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_energy; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: natural_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Pipeline gas consumed by the on-site boiler and any declared gas-fired abatement burner. Native reference is Volume, not Mass: the two meanValue 1.0 entries are not gas density. Retain absolute temperature/pressure, dry/wet convention, composition, Z and supplier conversion to the actual background interface. Gas supply excludes this foreground combustion."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_energy; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: tap_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Meter purchased treated water for log conditioning, boiler makeup and water-only glue-line cleanup. Water within the purchased glue and logs is composition, not another tap-water purchase; internal condensate and recirculation cancel."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_water; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Mineral hydraulic oil for veneer lathe and hot press"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eafff56c-3487-4345-9f24-00429f61c556"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional actual mineral hydraulic oil replenishment, with grade, additives, stocks, returned oil and leaks recorded. Use this UUID only when the actual mineral-oil supplier matches its vacuum-distillation/hydrogenation/refining route; the broad native comment also permits synthetic base oil and does not establish a site's grade. Native reference is Mass/kg; its other Volume entry and two 1.0 values do not establish density. No universal kg per panel is prescribed."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_consumables; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: abrasive_belt
+          role: "Aluminium-oxide abrasive sanding belt on textile backing"
+          name: "Aluminium-oxide abrasive sanding belt on textile backing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional grade-required sanding. Record whole belt mass and service attribution; alumina grain and backing are constituent records, not additional whole-belt purchases. Identify actual abrasive chemistry rather than assuming every belt is alumina."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_consumables; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: veneer_knife
+          role: "Steel rotary veneer peeling knife"
+          name: "Steel rotary veneer peeling knife"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record actual knife alloy, mass, installation, sharpening loss, reuse and replacement interval. Attribute only the period service consumed; a new whole knife and its steel content are not separate purchases."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_consumables; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: pp_strap_in
+          role: "Polypropylene packaging strap"
+          name: "Polypropylene packaging strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure PP strapping receipts, supplier returns and opening/closing stocks separately from fitted shipment tare and scrap. Apply cp_pack intake classes to each actual component, including purchased components included in a whole-package supply price. The representative packaging uses PP straps and untreated solid-wood runners only; another packaging system needs additional atomic cards."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_pack; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: runner_in
+          role: "Untreated solid-wood packaging runner"
+          name: "Untreated solid-wood packaging runner"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record first external purchases P (including components paid for within a whole supply price), first external nonpurchase receipts N_ext (loan/rental, entrusted or accompanying supply), history-proven same-item external returns ER and returns outward EO separately by component, owner and original cohort. ER requires evidence of that item's earlier outward movement; an undocumented first receipt is not a return. Internally cut runners and internal issues/returns are matched transfers from their original ledgers, not external receipts or another purchase. Count gross physical movements and actual transport, then attribute production/repair/rental service over verified trips without an assumed lifetime; retain each exchange's original provider vector under cp_pack."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_pack; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_panel
+          role: "All-veneer plywood with both outer plies of coniferous wood"
+          name: "Plywood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8b239d58-5fc2-40a5-8003-33f4082bc995"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Exactly one final reference: cured, cooled, trimmed and grade-finished uncoated panel on first quality release. Face and back are independently verified coniferous; the representative core is also coniferous veneer. Measure actual net geometric volume, excluding packing, air gaps and removed test pieces. Release into finished-goods stock is included; later shipping is not another production output."
+          amount:
+            expression: "1 m3"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: bark_product
+          role: "Untreated coniferous bark co-product"
+          name: "Untreated coniferous bark co-product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only bark with a documented product outlet. Preserve its whole wet/dry mass before allocation; bark sent for disposal belongs in bark_waste, never both destinations."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: peeler_core
+          role: "Untreated coniferous rotary peeler core"
+          name: "Untreated coniferous rotary peeler core"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Exported residual solid core from the lathe, with actual diameter, species, moisture and buyer use. This is neither a virgin log nor a veneer sheet."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: green_chips
+          role: "Unglued green coniferous veneer chips"
+          name: "Unglued green coniferous veneer chips"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Green clipping chips sold before drying. Preserve wet mass, dry mass and volume/packing convention; do not merge with dry chips or infer a volume conversion from panel density."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: dry_chips
+          role: "Unglued dry coniferous veneer chips"
+          name: "Unglued dry coniferous veneer chips"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Dry veneer trim sold before PF spreading. Drying burdens follow the measured stage attribution; no shared default green/dry chip moisture."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: sawdust
+          role: "Unglued coniferous wood sawdust"
+          name: "Unglued coniferous wood sawdust"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only clean unglued sawdust sold as a product. PF-bonded sanding dust is a separate waste. This route burns no on-site wood residue."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: pp_strap_out
+          role: "Polypropylene packaging strap accompanying plywood"
+          name: "Polypropylene packaging strap accompanying plywood"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Gross physical shipment tare, outside the reference panel volume/mass and outside co-product allocation. Match shipment lots to first-release cohorts and finished-goods stocks; the corresponding purchased supply is linked once at pp_strap_in."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_pack; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: runner_out
+          role: "Untreated solid-wood packaging runner accompanying plywood"
+          name: "Untreated solid-wood packaging runner accompanying plywood"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Gross physical runner sent with the bundle, with ownership and return obligation. Not a sold wood co-product or a second panel reference. Returned runners retain the same cohort; trip-based service attribution does not shrink gross tare."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_pack; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+      waste:
+        - row_id: uncured_layup_waste
+          role: "Uncured PF-coated coniferous veneer layup waste"
+          name: "Uncured PF-coated coniferous veneer layup waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure externally discarded PF-coated veneer or rejected unpressed layup as one actual composite stream, with wet wood, uncured glue and water fractions. Keep it distinct from cured trim, unused pure glue waste and internal recovered veneer/glue. A failure before cure does not become a cured-panel reject or enter Q."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: bonded_trim
+          role: "Cured PF-bonded plywood trimming waste"
+          name: "Cured PF-bonded plywood trimming waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure bonded trim sent to external treatment, including its wood/resin/water composition and destination. Do not label it clean untreated fuel."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: bonded_dust
+          role: "Captured PF-bonded plywood sanding dust"
+          name: "Captured PF-bonded plywood sanding dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Collected solid sanding dust sent to treatment. It is not emitted PM and is not clean sawdust; baghouse capture and outlet emissions are separate."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: reject_panel
+          role: "Rejected cured PF-bonded plywood panel"
+          name: "Rejected cured PF-bonded plywood panel"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Whole rejected panel leaving for waste treatment, excluding rejected material still in internal rework or held in stock. Rework accepted later gets its first release once; no fictional negative reference production."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: bark_waste
+          role: "Untreated coniferous bark waste"
+          name: "Untreated coniferous bark waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only bark documented as waste, with actual receiver/treatment. Do not allocate a product credit solely because the receiver recovers energy."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_residues; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: glue_waste
+          role: "Uncured aqueous PF plywood adhesive waste"
+          name: "Uncured aqueous PF plywood adhesive waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Separate unused or expired glue sludge sent to treatment from glue retained in boards and from dilute cleanup wastewater. Record solids, water and hazardous classification; internal recovered glue is a loop."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_glue; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glue
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: wastewater
+          role: "Plywood conditioning and water-cleanup wastewater to external treatment"
+          name: "Plywood conditioning and water-cleanup wastewater to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Measure each actual transferred wastewater stream and its composition/destination. Use a separate card if conditioning blowdown and glue cleanup go to different treatment routes. Dissolved formaldehyde/phenol are constituent loads, not direct air/water emissions at this gate."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_water; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: used_oil
+          role: "Used mineral hydraulic oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Recovered oil to the external handler, with contamination, stock and leakage reconciliation. Oil remaining in equipment is closing stock, not discarded oil."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_consumables; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: spent_belt
+          role: "Spent aluminium-oxide textile sanding belt"
+          name: "Spent aluminium-oxide textile sanding belt"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Whole spent belt with captured adhered dust distinguished from separately collected bonded_dust; determine actual service period and external fate."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_consumables; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: spent_knife
+          role: "Spent steel veneer peeling knife"
+          name: "Spent steel veneer peeling knife"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual end-of-service knife transferred to recovery, excluding knives returned from sharpening and still in use. Separately characterize sharpening swarf if present."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_consumables; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: pp_scrap
+          role: "Waste polypropylene packaging strap"
+          name: "Waste polypropylene packaging strap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only measured PP strap scrap and non-reusable returned PP, with external route; exclude unused material returned to supplier as product."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_pack; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: runner_waste
+          role: "Waste untreated solid-wood packaging runner"
+          name: "Waste untreated solid-wood packaging runner"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Actual retired/broken runner leaving for treatment; record moisture, ownership and prior returns. Never count this same piece as both stock and waste."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_pack; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+      elementary:
+        - row_id: formaldehyde
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 50-00-0 emitted to outdoor air, unspecified; determine conditioning/dryer, press and control outlet contributions separately from the free monomer contained in incoming glue."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: methanol
+          role: "methanol"
+          name: "methanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 67-56-1 outdoor-air emission; measure veneer drying and pressing outlets under actual species/moisture and control conditions."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: phenol
+          role: "phenol"
+          name: "phenol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aa41-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 108-95-2 outdoor-air emission associated with the actual PF process; not the phenol content of purchased glue or wastewater."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: acetaldehyde
+          role: "Acetaldehyde emitted to air"
+          name: "acetaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a7a5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 75-07-0, one chemical released at actual dryer/press/abatement outlets. Keep measurement and identity unresolved where absent; do not replace it with total VOC."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: propanal
+          role: "Propanal emitted to air"
+          name: "propanal"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-9f05-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 123-38-6, actual outdoor-air species; preserve the report detection limit and operating hours rather than infer a fixed fraction of aldehydes."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: acrolein
+          role: "Acrolein emitted to air"
+          name: "acrolein"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-91a4-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 107-02-8, actual outdoor-air species. The representative route still requires a species screen beyond the named cards; add any other material detected species before claiming completeness."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: co2_fossil
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 124-38-9, outdoor-air fossil CO2 from gas combustion and any evidenced fossil-carbon destruction in controls. Record actual carbon inputs and other carbon outlets; do not assume complete oxidation."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: co2_bio
+          role: "Biogenic carbon dioxide emitted to air"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Conditional oxidation of wood-derived VOC in controls or other measured biogenic release; the gas-only boiler does not create wood-combustion CO2. Preserve source-specific biogenic carbon rather than omit it or invent biomass uptake within the factory."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: ch4_fossil
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 74-82-8 outdoor-air fossil methane: stack incomplete combustion plus measured on-site gas leakage, without duplicating upstream leakage. Native synonym noise is not authority for carbon black or formaldehyde substitution."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: co_fossil
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 630-08-0 emitted to outdoor air, with fossil attribution from actual fuel/controls carbon. Unknown biogenic CO cannot be hidden in this fossil row; add a separate atomic identity if present."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: no
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 10102-43-9 outdoor-air NO. NOx reported as NO2-equivalent cannot be copied as an NO mass; require actual speciation and molecular-mass conversion."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: no2
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 10102-44-0 outdoor-air NO2, separately speciated from NO; retain burner load, oxygen, controls and startup evidence."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: n2o
+          role: "nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 10024-97-2 outdoor-air N2O, including startup/shutdown test coverage; do not infer zero from a missing survey field."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: so2
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 7446-09-5 outdoor-air SO2 from actual sulfur-bearing gas/odorant; retain sulfur content and measured test basis, with no assumed gas sulfur concentration."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-2026
+            ranges: []
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Outdoor-air fine particles after controls; retain filterable/condensable method and outlet identity. Captured baghouse solids are waste, not emissions."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: pmcoarse
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Outdoor-air particles in the disjoint PM2.5–10 interval. Derive a difference only from compatible cumulative PM10 and PM2.5 tests; unresolved size evidence remains incomplete."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: pmover10
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Outdoor-air particles above PM10, not total PM added on top of nested intervals. Include measured debarking/cutting fugitive sources and avoid duplicate total/size entries."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_air; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "CAS 7732-18-5 net release to outdoor air. Reconcile veneer/conditioning evaporation, boiler losses, glue water, cure/combustion-generated water and inlet-air humidity. Total mass loss is not water; unknown reaction/air terms cannot be invented to close the balance."
+          amount:
+            expression: "Collect amount per 1 m3 reference flow using cp_water; retain gross physical amount and the separately attributable burden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - corrim-western-2025
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "manufacturing"
+    rule: "First subdivide by stage, lot and exclusive service. PF supply/pressing, finished-panel trim/sanding/testing, rework and packing belong to the relevant panel cohort; do not assign these burdens to green bark or peeler cores. Separate sold green/dry residues and their actual stage histories."
+    source_ids:
+      - epa-plywood-2002
+      - corrim-western-2025
+  - rule_id: allocation_cause
+    applies_to: "shared stages"
+    rule: "For an inseparable shared operation, document a physical driver with evidence that it explains the burden: measured delivered heat, actual machine service or measured dry-wood throughput where applicable. Calculate shares over real participating products once; waste, repeated redrying/rework and repeated shipment are not new allocation products. No default dry-mass, economic share or avoided-product credit. Unsupported causation remains specifically pending."
+    source_ids:
+      - corrim-western-2025
+  - rule_id: allocation_two_ledgers
+    applies_to: "all inventory rows"
+    rule: "Keep unallocated gross material/water/carbon and energy balances intact. Apply shares only to the corresponding burden ledger, preserve direct burdens, and normalize both ledgers once after cohort reconciliation. Never multiply physical co-product, waste, packaging tare or elementary mass-balance entries by an allocation share to obtain apparent closure."
+    source_ids:
+      - corrim-western-2025
+  - rule_id: allocation_pack_return
+    applies_to: "pp_strap_in; runner_in; pp_strap_out; runner_out"
+    rule: "Packing is attributable to plywood, not wood co-products. Record gross dispatch/return movements and ownership separately from supply/repair services. Reusable-runner service uses verified completed trips and losses; no default cycle count, new runner each trip or second upstream production for a returned runner."
+    source_ids:
+      - corrim-western-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "manufacturing"
+      flow_role: "reference panel; cohort and stock bridge"
+      record_type: "quality/geometry/lot ledger"
+      raw_fields: "face/back botanical species; inner species/origin; ply construction; PF formulation and cure record; structural/bond method and result; unique lot and first-release time; actual count/net area/thickness/holes; paired net mass; moisture/temperature; Q; removed test pieces; raw/WIP/rework/finished opening/closing stocks; shipments/returns"
+      collection_method: "Verify each outer ply independently; measure cooled finished panel geometry with calibrated instruments and same-state net weighing. Record first successful release once per lot and all failed attempts. Trace opening WIP into release and closing WIP forward, with actual stage activity carried across periods; trace released stock into later packing/shipment without another output. Mark unsupported activity bridges pending."
+      unit: "m3; kg; dimensions; moisture fraction"
+      frequency: "every lot/first release and period stock count"
+      temporal_coverage: "continuous declared production period plus traceable earlier/later cohort activity"
+      site_scope: "same mill/layup/grade/formulation; no incompatible pooling"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "species/layup certificates; grade tests; calibration; lot genealogy; stock counts; release/dispatch reconciliation"
+    - protocol_id: cp_wood
+      process_id: "manufacturing"
+      flow_role: "coniferous logs and veneer stages"
+      record_type: "receiving/scale/moisture/stage records"
+      raw_fields: "botanical species; harvest/supply location; bark inclusion; receipts/returns; log scale convention; wet/dry mass; green/dry veneer thickness; pitch/surface defects; conditioning; dryer/redryer inlet/outlet moisture; opening/closing logs/veneer/WIP"
+      collection_method: "Weigh and sample each species/lot. For unglued veneer take representative within-sheet positions, immediately weigh and oven-dry to constant mass under the validated method; calibrate online readings to species/temperature and note volatile-extractive bias. Track good veneer, clip losses, redrying and PF entry by stage; keep merchantable log scales separate from measured geometry."
+      unit: "kg; m3; percent dry basis"
+      frequency: "every incoming lot and drying/peeling campaign"
+      temporal_coverage: "same cp_release cohort with period bridges"
+      site_scope: "same actual conifer species and integrated route"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "weighbridge/calibration; moisture samples; dryer sheets; measured species/stock/transfer reconciliation"
+    - protocol_id: cp_glue
+      process_id: "manufacturing"
+      flow_role: "whole PF glue and uncured glue waste"
+      record_type: "supplier/BOM/batch/press records"
+      raw_fields: "ready-glue supplier/batch; composition including fillers/alkali/water/free phenol/formaldehyde; delivered/dosed/returned/recovered mass; solids fraction; open/close glue stocks; spread area; assembly delay; temperature/pressure/time/cure and bond results; expired glue/cleanup"
+      collection_method: "Measure purchased whole formulated glue once. Reconcile spread mass with actual glue lines and veneer area, returned unused glue, internal recovery, remaining stock, uncured waste, effluent, cured retention and emissions. Obtain supplier chemistry for cure reaction/volatile losses; constituent masses are subledgers, not added supply exchanges."
+      unit: "kg; fraction; m2; time; temperature; pressure"
+      frequency: "every glue/layup batch and formulation change"
+      temporal_coverage: "same cp_release cohort including startup/failed press/rework and cleanup"
+      site_scope: "actual ready-to-spread aqueous resole PF and coniferous layup"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "supplier formulation/solids tests; tank/scale calibration; spread and press logs; bond acceptance; waste manifests"
+    - protocol_id: cp_energy
+      process_id: "manufacturing"
+      flow_role: "electricity; gas; internal steam"
+      record_type: "meter/fuel/thermal balance"
+      raw_fields: "site/meter/stage; opening/closing electricity; voltage/provider; charging and transformer losses; pipeline gas volume/absolute T/P/dry-wet/composition/Z/heating value and HHV/LHV; gas supplier interface; each steam supply and condensate return mass/T/P/specific enthalpy; common boundary/period and enthalpy datum; makeup/leak/blowdown masses and enthalpies; storage-energy change; network/boiler heat losses; run/idle/start/stop; abatement gas"
+      collection_method: "Read dedicated stage electricity/gas meters and reconcile bills. Independently meter steam supply and return mass/enthalpy legs at conditioning, dryer/redryer and press on the same boundary/period and enthalpy datum. Use a common mass times enthalpy difference only after mass matching is verified; otherwise retain distinct legs and actual makeup, leak, blowdown, storage and heat-loss terms in the balance. Reconcile boiler fuel input, network balance and actual delivered stage heat before using heat as an allocation driver; no assumed efficiency. Indirect dryer has no boiler flue-gas inlet. Match gas volume to provider conditions; supply and foreground combustion are counted once."
+      unit: "kWh; MJ; m3; kg; T/P"
+      frequency: "continuous meters, campaign reconciliation"
+      temporal_coverage: "same cp_release cohort including failed/idle/start/stop and actual stock bridges"
+      site_scope: "same boiler and utility network; electric handling"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "calibrated meters; supplier gas specification/conversion; steam/condensate records; stage heat balance; operating logs"
+    - protocol_id: cp_water
+      process_id: "manufacturing"
+      flow_role: "water supply; combined effluent; water vapour"
+      record_type: "meters/sampling/water balance"
+      raw_fields: "external tap receipts; wood/glue water; boiler makeup/blowdown; condensate/recirculation; cleanup; moisture retained in panels/residues/stocks; effluent mass/solids/phenol/formaldehyde/COD; actual receiver; evaporation; inlet-air humidity; reaction water"
+      collection_method: "Meter added water and actual combined external effluent; sample composition and use measured density for volume-to-mass conversion. Keep whole wet effluent as one external waste and constituents as subledgers. Measure net evaporation with inlet/exhaust humidity and actual cure/combustion chemistry; unexplained mass loss is not water. Separate treatment routes if the actual plant has separate exports."
+      unit: "kg; m3; concentration; fraction"
+      frequency: "continuously where metered; each transfer and representative sample"
+      temporal_coverage: "same cp_release cohort including cleanup/boiler startup and stock bridges"
+      site_scope: "same water network; external treatment; no direct abstraction/discharge"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "meter/lab calibration; water sampling; measured density; treatment receipt; water-balance residual and uncertainty"
+    - protocol_id: cp_consumables
+      process_id: "manufacturing"
+      flow_role: "each knife, belt, oil and spent stream"
+      record_type: "maintenance/issues/service ledger"
+      raw_fields: "precise material/grade/alloy; whole item mass; receipts/returns; installed/removed times; stock; sharpening/reuse; period service; oil replenishment/leak/recovery; belt dust; waste destination; other actual equipment consumables"
+      collection_method: "Weigh whole actual items and reconcile purchases, installation, remaining service and waste. Attribute consumed knife/belt service with recorded machine hours or throughput; retain gross physical retirement separately. Screen grease, release agent, boiler chemicals, filters and sharpening swarf; add separate actual exchanges where present, never a generic consumable total or assumed default life."
+      unit: "kg; service hours; throughput"
+      frequency: "every issue/maintenance/retirement and stock count"
+      temporal_coverage: "same cp_release cohort and actual service history"
+      site_scope: "machines and controls in declared route"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "supplier specs; inventory/service logs; maintenance work orders; waste receipts; uncertainty on service attribution"
+    - protocol_id: cp_pack
+      process_id: "manufacturing"
+      flow_role: "PP strap and wood runner; gross returns/scrap"
+      record_type: "receipt/ownership/dispatch BOM"
+      raw_fields: "material/species/moisture; component/item and event IDs; supplier and original per-exchange provider vector; P purchase including whole-price components; N_ext first nonpurchase loan/rental/entrusted/accompanying receipt; ER same-item return with prior outward evidence; EO outward return; date/leg/receipt and gross mass; original owner/custodian/cohort; mutually exclusive raw/WIP/FG packing stocks at opening/closing; fitted dispatch tare; waste; actual transport legs; measured trips/repair/loss; linked first-release lot and shipment"
+      collection_method: "Weigh each component and retain gross P, N_ext, ER, dispatch, EO and waste legs without netting; ER requires the same item's earlier outward record. Reconcile opening plus external intake plus paired internal_in against closing plus dispatch/EO/waste plus paired internal_out; assign each item to one raw/WIP/FG stock only, with packed tare separate from panel net volume. Internal transfers cancel on consolidation and inherit original owner/cohort and each exchange's provider vector. Preserve actual transport for every leg. Link whole-package supply or its covered component providers once, not both; N_ext needs actual supply/service coverage, never assumed zero or a fresh manufacture merely on return. Match actual packing service to its original first-release cohort, including earlier/later dates and old FG; incremental repacking/return service does not automatically divide by new Q. Missing future packing of released stock remains a disclosed completion gap, not zero or a second Q."
+      unit: "kg; trips; m3 cohort linkage"
+      frequency: "every packing/dispatch/return and stock count"
+      temporal_coverage: "matched cp_release cohort; retain non-cohort dispatch separately"
+      site_scope: "same mill packing/ownership boundary"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "supplier/BOM/ownership records; tare weighing; trip/return evidence; finished/packing stock reconciliation"
+    - protocol_id: cp_residues
+      process_id: "manufacturing"
+      flow_role: "each product residue, reject and waste"
+      record_type: "scale/composition/destination ledger"
+      raw_fields: "source stage/lot; green/dry; unglued/PF-bonded; wet/dry mass; water/resin/carbon; test specimens; coproduct sale/waste fate; internal reuse; opening/closing residues/rework"
+      collection_method: "Weigh each stream before allocation and reconcile generation, internal reuse, exports and closing stock. Separate green chips, dry chips, unglued sawdust, cured trim, sanding dust, rejected panels and bark sale/waste by actual fate; no on-site wood combustion in this route. Samples removed from Q retain their material fate."
+      unit: "kg; composition fraction; volume where actually measured"
+      frequency: "every transfer and representative composition sample"
+      temporal_coverage: "same cp_release cohort plus actual stock bridges"
+      site_scope: "same stages and documented external receiver"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "calibrated scales; composition tests; sales/waste receipts; matched internal transfer ledger"
+    - protocol_id: cp_air
+      process_id: "manufacturing"
+      flow_role: "each individual elementary air output"
+      record_type: "source/outlet/fugitive tests"
+      raw_fields: "source/control/outlet ID; species and CAS; carbon origin; gas flow and concentration; standard T/P and dry/wet basis; O2 correction; operating/start/stop hours; particle sizes/filterable/condensable method; detection limit; controls and bypass"
+      collection_method: "Test relevant conditioning/dryer, press, boiler, final control outlet and fugitives under representative species/recipe/load. Multiply compatible species mass concentration, gas flow and hours; retain raw tests and unit conversions. Shared stack and pre/post-control measurements count once. Check total VOC/NOx/PM only as reconciliation; unknown species/size/carbon fractions remain gaps. Survey gas leaks and actual additional organic species."
+      unit: "kg; concentration; gas flow; hours"
+      frequency: "representative campaign and every species/recipe/equipment/control change"
+      temporal_coverage: "same cp_release cohort including idle/startup/shutdown and failures"
+      site_scope: "actual final air outlets and fugitives; outdoor air unspecified identities only"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "accredited/raw test reports; calibrations; hours; method and detection limits; speciation/size/carbon evidence"
+  calculation_rules:
+    - id: release_volume
+      applies_to: "finished_panel"
+      rule: "Q = sum(net material area * final measured thickness) over unique newly first-released lots in the declared cohort. Deduct through-holes/removed specimens; exclude packing, rejects, stack air and repeated reinspection/shipment. Paired release-state density = net panel mass / measured volume; no regional density or nominal-thickness conversion."
+      inputs:
+        - cp_release
+        - "net area"
+        - thickness
+        - "first-release identifiers"
+        - "paired net mass"
+      output: "Q in m3; paired release-state density"
+      source_ids:
+        - wood-handbook-2021
+        - corrim-western-2025
+    - id: cohort_bridge
+      applies_to: "all inventory rows"
+      rule: "Retain raw period receipts/returns/exports and opening/closing raw, WIP, rework, residue, packing and finished stocks. Use stage/lot genealogy to add actual pre-period activity belonging to the release cohort and remove post-period WIP activity belonging to later cohorts; match actual later packing to already released lots without new Q. Do not apply both a stock-adjusted consumption and the same stock change again. Unsupported bridges, future packing and Q=0 cohorts remain explicit incomplete records; no invented equivalent-output or smoothing factor."
+      inputs:
+        - cp_release
+        - "all row protocols"
+        - "stage activity"
+        - "stock and genealogy records"
+      output: "reconciled gross physical ledger; matched cohort activity; specific pending bridges"
+      source_ids:
+        - corrim-western-2025
+    - id: normalize_once
+      applies_to: "all inventory rows"
+      rule: "For Q>0 only, physical intensity_i = matched gross physical amount_i / Q; burden intensity_i = attributable cohort burden_i / Q. Establish gross physical records, measured cohort bridges, direct assignment and any evidenced allocation before this single division; finished_panel is 1 m3. Q is first release, never a sum of passes, shipping and rework."
+      inputs:
+        - Q
+        - cp_release
+        - cohort_bridge
+        - allocation_share
+        - "actual row amount"
+      output: "physical intensity_i; burden intensity_i; completion flags"
+      source_ids:
+        - corrim-western-2025
+    - id: wood_moisture
+      applies_to: "conifer_logs; bark_product; peeler_core; green_chips; dry_chips; sawdust"
+      rule: "MC_db = 100 * (wet mass - oven-dry mass) / oven-dry mass; dry mass = wet mass / (1 + MC_db / 100). Apply only to measured unglued wood/bark samples. For bonded panels/residues separately determine resin and volatile bias with the validated matrix-specific method."
+      inputs:
+        - cp_wood
+        - cp_residues
+        - "measured wet/dry mass"
+      output: "dry wood/bark mass; water content; uncertainty"
+      source_ids:
+        - wood-handbook-2021
+    - id: glue_components
+      applies_to: "pf_glue; glue_waste"
+      rule: "Delivered component mass_j = delivered whole-glue mass * measured/supplier component fraction_j. Reconcile actual dose/recovery/stock, cure formation/consumption, retained resin, effluent and emissions. Component supply is not added again when whole formulated glue provider is used; provider coverage must match that formulation."
+      inputs:
+        - cp_glue
+        - cp_water
+        - "supplier formulation"
+        - "actual cure/loss evidence"
+      output: "component and retained-solids/water subledgers; provider match"
+      source_ids:
+        - corrim-western-2025
+    - id: heat_balance
+      applies_to: "natural_gas; electricity"
+      rule: "Metered electricity MJ = kWh * 3.6. Actual gas energy = matched volume * measured heating value on the same T/P/dry-wet and HHV/LHV basis. Only for measured mass-matched supply/return on the same boundary/period and enthalpy datum, internal net steam heat = sum(m * (h_s - h_r)). Otherwise keep sum(m_s * h_s) and sum(m_r * h_r) as independent supply/return legs, with actual other inlet/outlet enthalpy legs (including makeup, leaks and blowdown), storage-energy change and heat losses reconciled at that boundary before identifying delivered stage heat or an allocation driver. Network losses are not silently useful stage heat; do not invent efficiency or another purchased heat input."
+      inputs:
+        - cp_energy
+        - "matched meter/provider conditions"
+      output: "external carrier inputs and internal stage heat balance"
+      source_ids:
+        - epa-plywood-2002
+        - epa-gas-2026
+    - id: allocation_share
+      applies_to: "shared stages"
+      rule: "After allocation_cause is evidenced, share_j = driver_j / sum(driver_k) for actual participating products and burden_j = direct_j + shared_burden * share_j. Preserve full physical outputs; shares sum to one for that shared burden only. Do not apply a whole-plant share to glue, panel-only finishing or packing."
+      inputs:
+        - cp_energy
+        - cp_residues
+        - cp_release
+        - "evidenced driver"
+      output: "separately allocated burden ledger"
+      source_ids:
+        - corrim-western-2025
+    - id: physical_closure
+      applies_to: "manufacturing"
+      rule: "For each conserved element or explicitly defined material/species ledger in common units, stage s obeys O_s + R_s + T_in_s + F_s = C_s + X_s + T_out_s + D_s + epsilon_s. O/C are opening/closing stocks; R/X are actual external receipts/exports; T_in/T_out are same-state internal transfers matched at both ends. F/D are evidenced chemical species formation/consumption only, never receipts or transfers; for conserved elements F=D=0. The consolidated whole-factory equation is sum(O_s) + sum(R_s) + sum(F_s) = sum(C_s) + sum(X_s) + sum(D_s) + sum(epsilon_s), because sum(T_in_s)=sum(T_out_s). Include all raw, WIP, rework, residue, packing and finished stocks. First release into finished stock is an internal transfer: Q is not added to external shipment X again. Keep wood/PF/water and fossil/biogenic carbon subledgers; reaction species formation/consumption must be paired by actual chemistry and conserve elements. Include actual inlet-air humidity and combustion oxygen where required; unknown terms remain unknown. Physical V, attributable burden A and unchanged provider vectors remain separate; no allocation-scaled closure or balancing emission."
+      inputs:
+        - "all row protocols"
+        - "raw period stocks and exchanges"
+        - "actual chemical composition"
+      output: "gross stage and consolidated balance residuals and uncertainty"
+      source_ids:
+        - wood-handbook-2021
+        - corrim-western-2025
+    - id: air_species
+      applies_to: "all elementary output rows"
+      rule: "Species mass = sum(compatible mass concentration * gas volume flow * operating time) with explicit unit conversions, plus independently supported fugitives. PM2.5–10 = cumulative PM10 minus PM2.5 and PM>10 = total minus PM10 only for same method/outlet/period and nonnegative compatible differences; retain condensables without duplicate totals. NOx-as-NO2 requires actual NO/NO2 speciation and molecular-mass conversion."
+      inputs:
+        - cp_air
+        - "actual raw tests"
+        - "carbon/source partition"
+      output: "individual species and disjoint particle masses; unresolved tests"
+      source_ids:
+        - epa-plywood-2002
+        - epa-gas-2026
+    - id: packaging_ownership
+      applies_to: "pp_strap_in; runner_in; pp_strap_out; runner_out; pp_scrap; runner_waste"
+      rule: "By component, original owner and cohort, distinguish P first purchase (whole supply price including components remains P), N_ext first nonpurchase external receipt, ER history-proven same-item return and EO return outward. Keep gross receipts, dispatch, recovery, waste and actual transport; no net-return substitution. Opening + P + N_ext + ER + internal_in = closing + dispatch + EO + waste + internal_out + residual in compatible physical units; raw/WIP/FG stocks are mutually exclusive and paired internal legs cancel. Preserve each exchange's original provider vector through all movements. Link a whole-package provider or covered component providers once, with actual supply/repair/rental coverage and losses, verified trips and no default lifetime; ER is not new production. Keep physical V separate from attributable A; match service to its original first-release product cohort, including old FG/returns, without creating Q or automatically assigning incremental service to new Q. Missing history, provider or cohort evidence remains specifically pending."
+      inputs:
+        - cp_pack
+        - ownership
+        - "measured trips"
+        - "matched cohort"
+      output: "gross packaging balance; separate once-linked supply/service burden"
+      source_ids:
+        - corrim-western-2025
+  data_quality_requirements:
+    - id: outer_ply_identity
+      applies_to: "finished_panel"
+      requirement: "Independently prove both coniferous outer plies and full-sheet core. A trade name, one softwood face or an ambiguous flow record cannot establish this."
+      evidence: "cp_release species/layup records; cpc3-31411"
+    - id: grade_and_process
+      applies_to: "cp_glue; cp_release"
+      requirement: "Retain actual species/veneer-moisture/PF/cure/grade tests. Missing acceptance is neither a successful release nor a licence to alter the product boundary."
+      evidence: "batch/bond/structural tests; supplier glue specification"
+    - id: common_cohort
+      applies_to: "all inventory rows"
+      requirement: "Capture failed/idle/cleanup/rework activity, opening/closing WIP and finished/packing stocks. Unknown is not zero; Q=0 and unsupported timing bridges remain explicit."
+      evidence: "cp_release and all row protocols; reconciled genealogy"
+    - id: identity_and_provider
+      applies_to: "all inventory rows"
+      requirement: "Check flow type, species/form/phase/route/CAS/medium, native reference property→unit group→unit and provider coverage. Blank UUIDs are specific identity gaps; a core reference mismatch blocks that reference assignment, while an auxiliary gap does not invalidate every other verified row."
+      evidence: "original native records; provider interface and composition; manifest review metadata"
+    - id: source_limits
+      applies_to: "dataset"
+      requirement: "No regional density, glue recipe, moisture target, yield, energy, emission factor or allocation share is transferred. Technical literature informs questions; actual foreground quantity requires records or an explicitly bounded evidenced calculation."
+      evidence: "cited source pages and row protocols"
+    - id: bilingual_fidelity
+      applies_to: "all inventory rows"
+      requirement: "Preserve row/rule/protocol/source IDs and complete amount objects; official Chinese names follow verified UUIDs. Scientific and translation review remain independent tasks."
+      evidence: "English/Chinese field audit; generated projection; original native names"
+validation_rules:
+  - rule_id: validate_outer_ply
+    applies_to: "reference product"
+    rule: "Verify face and back separately as coniferous and all layers as sheets; confirm the represented all-coniferous/PF/full-sheet/gas-indirect-steam configuration. Reject a non-coniferous outer ply or another core and mark an unassessed route inapplicable/incomplete."
+    source_ids:
+      - cpc3-31411
+  - rule_id: validate_release
+    applies_to: "finished_panel"
+    rule: "Verify cured/cooled/trimmed/grade-finished test acceptance, unique first-release lot, actual net geometry and paired state. Exactly one finished_panel reference output. No shipment/reinspection/rework duplication; missing grade proof does not enter Q."
+    source_ids:
+      - wood-handbook-2021
+      - corrim-western-2025
+  - rule_id: validate_cohort
+    applies_to: "all inventory rows"
+    rule: "Require the same Q denominator, complete raw/WIP/rework/reject/finished/pack stock bridges, failed/idle/start/stop and cleanup activity. Reconcile upstream activity and later packing by lot; Q=0 means no normalized result. Unsupported bridges must be disclosed, not inferred."
+    source_ids:
+      - corrim-western-2025
+  - rule_id: validate_no_double_count
+    applies_to: "manufacturing"
+    rule: "Check one actual formulated-glue supply, single external electricity/gas/water/consumable/packing providers, internal heat/loop cancellation and external treatment once. Constituents, whole items, service returns and repeated stage throughput cannot create extra supplies or reference output."
+    source_ids:
+      - corrim-western-2025
+  - rule_id: validate_balance_allocation
+    applies_to: "manufacturing"
+    rule: "Check full physical wood/water/PF/carbon/packing ledgers and real residuals before a separate burden allocation. Confirm stage causation, participating products, direct burdens and one final normalization. No share-scaled physical closure or unsupported avoided-product credit."
+    source_ids:
+      - corrim-western-2025
+      - wood-handbook-2021
+  - rule_id: validate_air_water
+    applies_to: "all elementary output rows"
+    rule: "Verify final outlet/species/CAS/medium/carbon origin, compatible concentration/flow/time and particle tests; avoid shared-stack and captured/emitted duplication. Retain actual biogenic emissions, gas leakage and water reaction/air terms; unknown speciation or effluent destination stays incomplete."
+    source_ids:
+      - epa-plywood-2002
+      - epa-gas-2026
+  - rule_id: validate_reference_provider
+    applies_to: "finished_panel"
+    rule: "Verify the selected Plywood locator's positive crossed wood-veneer/gluing/pressing/at-plant semi-finished identity and native Volume→unit group→m3 chain against the actual whole cured/cooled/finished panel. Retain its conflicting CPC31450 bamboo classification as unresolved source debt, not proof of the panel's species or a corrected classification. Independently verify every layer's species, whole-panel grade acceptance, PF formulation/retained water, first-release state and net geometry/hole convention; broad names or missing exclusion words alone are insufficient. Actual provider gate/stage, region/year and measurement compatibility require separate evidence; unknown gates, bamboo/mixed cores, uncured material and packing/stack or nominal volume cannot use this assignment."
+    source_ids:
+      - cpc3-31411
+      - epa-plywood-2002
+      - corrim-western-2025
+  - rule_id: validate_completeness
+    applies_to: "dataset"
+    rule: "Report accepted input, checks performed/skipped, findings and completeness separately. Method/projection checks do not establish factory accuracy, scientific review, translation approval, mapping acceptance or complete upstream coverage. Preserve specific identity/provider/measurement gaps."
+    source_ids:
+      - corrim-western-2025
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Matching coniferous-face-and-back all-sheet plywood manufacturing input after identity, plant records and upstream linkage are verified"
+  allowed_use: "Site/cohort/grade-specific represented PF all-coniferous route at 1 m3 first quality release, with separately matched actual packing service and disclosed stock/cohort bridges"
+  excluded_use: "Whole-leaf all-technology proxy; non-coniferous outer plies; alternative cores/adhesives/heat routes; uncured/rejected output; unsupported functional comparison, whole-life result, default carbon credit or regulatory compliance claim"
+  required_metadata: "All reference qualifiers; Q and first-release/geometry/grade evidence; native identity/property/unit and provider compatibility; stage activity/stock/WIP/rework and packing ownership; gross physical and allocated burden ledgers; tests, controls, waste destinations and upstream scope"
+  required_quality_disclosure: "Measured/calculated/missing quantities; specific identity/provider/route gaps; cohort and future-packing completion; uncertainty/residuals; source limitations; performed/skipped checks; independent scientific/translation status"
+  update_trigger: "Outer/inner species, veneer layup, glue formulation, curing/grade criteria, indirect-heat system, utility/provider, controls/effluent, service/packing ownership or production-cohort definition changes"
+data_sources:
+  - id: "cpc3-31411"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, explanatory notes, subclass 31411 and adjacent panel headings (2025 publication)."
+    used_for: "Product/classification boundary only; title/paragraph core-language tension explicitly disclosed; no quantitative or plant evidence."
+  - id: "epa-plywood-2002"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 Section 10.5 Plywood Manufacturing (January 2002), pp. 10.5-1–10.5-4, Figure 10.5-1. https://www.epa.gov/sites/default/files/2020-10/documents/c10s05.pdf"
+    used_for: "Qualitative integrated veneer/PF process and indirect/direct dryer distinction; emission sources; no numerical conditions or factors adopted."
+  - id: "corrim-western-2025"
+    type: "literature"
+    reference: "M. Puettmann, Life Cycle Assessment of Softwood Plywood Production – Western Region, edited July 22, 2025, 2022/2023 facility survey; §§3.2.3–3.2.6 (PDF14–16), §§4.3–4.8 (PDF20–22), §5.2/Table6 (PDF23), §§5.4/Table8 (PDF24–25), Tables10–13 (PDF27–29). https://corrim.org/wp-content/uploads/2025/07/LCA-Report-Western-Plywood-Report-Final-07222025.pdf"
+    used_for: "Regional primary survey informs inventory/stage, whole-glue composition, full physical versus allocated ledger and packing questions. Broader purchased-veneer/wood-fuel and other output scope is excluded; no numeric transfer or independent approval."
+  - id: "wood-handbook-2021"
+    type: "handbook"
+    reference: "USDA Forest Products Laboratory, Wood handbook—wood as an engineering material, FPL-GTR-282 (2021), Chapter 13 pp. 13-1–13-2 (PDF323–324), Chapter 4 p. 4-11 (PDF105). https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
+    used_for: "Measured wood moisture, representative veneer sampling, dry-basis formula, volatile-extractive/matrix cautions and density-state distinction; no product density or cure/recipe default."
+  - id: "epa-gas-2026"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 Section 1.4 Natural Gas Combustion, header 10/26, pp. 1.4-1–1.4-4. https://www.epa.gov/sites/default/files/2020-09/documents/1.4_natural_gas_combustion.pdf"
+    used_for: "Gas-boiler source testing, actual combustion species/controls and operating-condition questions; no default gas composition, heating value, sulfur level, emission factor or control efficiency adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d826d4e04dfa5350a3e05d948ece679f28e575496ced6fe840209bceeaa02b33"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_10872"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 10872
+          line: 68
+          column: 1
+        end:
+          offset: 14016
+          line: 89
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Untreated coniferous logs and actual externally supplied materials received at the integrated mill; include site boiler, utilities and controls |\n| starting_condition_role | Foreground collection cutoff; upstream burdens are still required for cradle-to-gate coverage |\n| product_classification_scope | Sole CPC 3.0:31411 identity; this method represents the all-coniferous full-sheet PF/indirect-steam route only |\n| recursive_input_rule | External plywood or third-party rework is not an internal loop and is outside this representation pending separate incoming-state/upstream evidence. Internal veneer redrying, glue recovery and panel rework use matched transfers, not new purchases or repeated reference output. |\n| upstream_dataset_requirement | Link each actual external material/provider and inbound transport once, including log forestry/harvest, glue formulation supply, electricity/gas/water, consumables, packing and external waste treatment; match gate, geography, time, state, quantity and actual route |\n| disclosure | Distinguish factory activity evidence from complete upstream-linked datasets; disclose all missing links, cohort bridges, allocation, exclusions, effluent and controls |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_stages | manufacturing | Include conditioning/peeling/clipping, drying and redrying, glue spread/layup, cure/cooling, trim/grade finishing, testing/reject/rework, packing, gas boiler, water cleanup and actual emission controls. Site heat is fuel plus conversion/emissions once; internal steam transfers do not add a second provider. | epa-plywood-2002 |\n| boundary_species | reference product | Face and back each require coniferous proof; representative core requires coniferous veneers. Different outer species classes, non-sheet cores and unsupported technologies cannot enter this output by a shared process label. | cpc3-31411 |\n| boundary_cohort | manufacturing | Include all period startup, shutdown, idle, redrying, failed batches, cleanup and rework activity. Bridge opening/closing WIP and finished stocks to the first-release cohort with stage records; do not discard burdens or inflate Q with repeated throughput. | corrim-western-2025 |\n| boundary_outlets | manufacturing | Distinguish boiler stack, indirect dryer/conditioning outlet, PF press/fugitives and controls; indirect steam contains no boiler combustion gas. Count a shared final stack once. Wastewater leaves for external treatment, with no invented on-site removal or direct-discharge elementary outputs. | epa-plywood-2002; epa-gas-2026 |\n| boundary_extensions | dataset | Include upstream production and inbound transport for cradle-to-gate use. Downstream fabrication/installation/use/end-of-life, chemical treatment, wood combustion, direct-fired drying, purchased heat and on-site wastewater treatment need explicit extensions rather than hidden proxies. No stored-carbon credit or carbon-neutrality claim follows from this factory unit. | corrim-western-2025 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 348
+              line: 10
+              column: 1
+            end:
+              offset: 427
+              line: 10
+              column: 80
+          text: "# Plywood consisting solely of sheets, with both outer plies of coniferous wood"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 10872
+              line: 68
+              column: 1
+            end:
+              offset: 10893
+              line: 68
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_56887"
+      family: "allocation"
+      span:
+        start:
+          offset: 56887
+          line: 835
+          column: 1
+        end:
+          offset: 58746
+          line: 844
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | manufacturing | First subdivide by stage, lot and exclusive service. PF supply/pressing, finished-panel trim/sanding/testing, rework and packing belong to the relevant panel cohort; do not assign these burdens to green bark or peeler cores. Separate sold green/dry residues and their actual stage histories. | epa-plywood-2002; corrim-western-2025 |\n| allocation_cause | shared stages | For an inseparable shared operation, document a physical driver with evidence that it explains the burden: measured delivered heat, actual machine service or measured dry-wood throughput where applicable. Calculate shares over real participating products once; waste, repeated redrying/rework and repeated shipment are not new allocation products. No default dry-mass, economic share or avoided-product credit. Unsupported causation remains specifically pending. | corrim-western-2025 |\n| allocation_two_ledgers | all inventory rows | Keep unallocated gross material/water/carbon and energy balances intact. Apply shares only to the corresponding burden ledger, preserve direct burdens, and normalize both ledgers once after cohort reconciliation. Never multiply physical co-product, waste, packaging tare or elementary mass-balance entries by an allocation share to obtain apparent closure. | corrim-western-2025 |\n| allocation_pack_return | pp_strap_in; runner_in; pp_strap_out; runner_out | Packing is attributable to plywood, not wood co-products. Record gross dispatch/return movements and ownership separately from supply/repair services. Reusable-runner service uses verified completed trips and losses; no default cycle count, new runner each trip or second upstream production for a returned runner. | corrim-western-2025 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 348
+              line: 10
+              column: 1
+            end:
+              offset: 427
+              line: 10
+              column: 80
+          text: "# Plywood consisting solely of sheets, with both outer plies of coniferous wood"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 56887
+              line: 835
+              column: 1
+            end:
+              offset: 56927
+              line: 835
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_80021"
+      family: "validation"
+      span:
+        start:
+          offset: 80021
+          line: 886
+          column: 1
+        end:
+          offset: 83473
+          line: 899
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_outer_ply | reference product | Verify face and back separately as coniferous and all layers as sheets; confirm the represented all-coniferous/PF/full-sheet/gas-indirect-steam configuration. Reject a non-coniferous outer ply or another core and mark an unassessed route inapplicable/incomplete. | cpc3-31411 |\n| validate_release | finished_panel | Verify cured/cooled/trimmed/grade-finished test acceptance, unique first-release lot, actual net geometry and paired state. Exactly one finished_panel reference output. No shipment/reinspection/rework duplication; missing grade proof does not enter Q. | wood-handbook-2021; corrim-western-2025 |\n| validate_cohort | all inventory rows | Require the same Q denominator, complete raw/WIP/rework/reject/finished/pack stock bridges, failed/idle/start/stop and cleanup activity. Reconcile upstream activity and later packing by lot; Q=0 means no normalized result. Unsupported bridges must be disclosed, not inferred. | corrim-western-2025 |\n| validate_no_double_count | manufacturing | Check one actual formulated-glue supply, single external electricity/gas/water/consumable/packing providers, internal heat/loop cancellation and external treatment once. Constituents, whole items, service returns and repeated stage throughput cannot create extra supplies or reference output. | corrim-western-2025 |\n| validate_balance_allocation | manufacturing | Check full physical wood/water/PF/carbon/packing ledgers and real residuals before a separate burden allocation. Confirm stage causation, participating products, direct burdens and one final normalization. No share-scaled physical closure or unsupported avoided-product credit. | corrim-western-2025; wood-handbook-2021 |\n| validate_air_water | all elementary output rows | Verify final outlet/species/CAS/medium/carbon origin, compatible concentration/flow/time and particle tests; avoid shared-stack and captured/emitted duplication. Retain actual biogenic emissions, gas leakage and water reaction/air terms; unknown speciation or effluent destination stays incomplete. | epa-plywood-2002; epa-gas-2026 |\n| validate_reference_provider | finished_panel | Verify the selected Plywood locator's positive crossed wood-veneer/gluing/pressing/at-plant semi-finished identity and native Volume→unit group→m3 chain against the actual whole cured/cooled/finished panel. Retain its conflicting CPC31450 bamboo classification as unresolved source debt, not proof of the panel's species or a corrected classification. Independently verify every layer's species, whole-panel grade acceptance, PF formulation/retained water, first-release state and net geometry/hole convention; broad names or missing exclusion words alone are insufficient. Actual provider gate/stage, region/year and measurement compatibility require separate evidence; unknown gates, bamboo/mixed cores, uncured material and packing/stack or nominal volume cannot use this assignment. | cpc3-31411; epa-plywood-2002; corrim-western-2025 |\n| validate_completeness | dataset | Report accepted input, checks performed/skipped, findings and completeness separately. Method/projection checks do not establish factory accuracy, scientific review, translation approval, mapping acceptance or complete upstream coverage. Preserve specific identity/provider/measurement gaps. | corrim-western-2025 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 348
+              line: 10
+              column: 1
+            end:
+              offset: 427
+              line: 10
+              column: 80
+          text: "# Plywood consisting solely of sheets, with both outer plies of coniferous wood"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 80021
+              line: 886
+              column: 1
+            end:
+              offset: 80043
+              line: 886
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_10872"
+      source_span:
+        start:
+          offset: 12262
+          line: 83
+          column: 1
+        end:
+          offset: 12626
+          line: 83
+          column: 365
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_species"
+      identity_kind: "explicit"
+      unit_id: "normative_10872"
+      source_span:
+        start:
+          offset: 12627
+          line: 84
+          column: 1
+        end:
+          offset: 12906
+          line: 84
+          column: 280
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_10872"
+      source_span:
+        start:
+          offset: 12907
+          line: 85
+          column: 1
+        end:
+          offset: 13222
+          line: 85
+          column: 316
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_outlets"
+      identity_kind: "explicit"
+      unit_id: "normative_10872"
+      source_span:
+        start:
+          offset: 13223
+          line: 86
+          column: 1
+        end:
+          offset: 13587
+          line: 86
+          column: 365
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_extensions"
+      identity_kind: "explicit"
+      unit_id: "normative_10872"
+      source_span:
+        start:
+          offset: 13588
+          line: 87
+          column: 1
+        end:
+          offset: 14014
+          line: 87
+          column: 427
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_56887"
+      source_span:
+        start:
+          offset: 57000
+          line: 839
+          column: 1
+        end:
+          offset: 57374
+          line: 839
+          column: 375
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_cause"
+      identity_kind: "explicit"
+      unit_id: "normative_56887"
+      source_span:
+        start:
+          offset: 57375
+          line: 840
+          column: 1
+        end:
+          offset: 57898
+          line: 840
+          column: 524
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_two_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_56887"
+      source_span:
+        start:
+          offset: 57899
+          line: 841
+          column: 1
+        end:
+          offset: 58327
+          line: 841
+          column: 429
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_pack_return"
+      identity_kind: "explicit"
+      unit_id: "normative_56887"
+      source_span:
+        start:
+          offset: 58328
+          line: 842
+          column: 1
+        end:
+          offset: 58744
+          line: 842
+          column: 417
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_outer_ply"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 80116
+          line: 890
+          column: 1
+        end:
+          offset: 80436
+          line: 890
+          column: 321
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_release"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 80437
+          line: 891
+          column: 1
+        end:
+          offset: 80770
+          line: 891
+          column: 334
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 80771
+          line: 892
+          column: 1
+        end:
+          offset: 81111
+          line: 892
+          column: 341
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_no_double_count"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 81112
+          line: 893
+          column: 1
+        end:
+          offset: 81473
+          line: 893
+          column: 362
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_balance_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 81474
+          line: 894
+          column: 1
+        end:
+          offset: 81843
+          line: 894
+          column: 370
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_air_water"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 81844
+          line: 895
+          column: 1
+        end:
+          offset: 82229
+          line: 895
+          column: 386
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_reference_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 82230
+          line: 896
+          column: 1
+        end:
+          offset: 83119
+          line: 896
+          column: 890
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 83120
+          line: 897
+          column: 1
+        end:
+          offset: 83471
+          line: 897
+          column: 352
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_10872"
+      source_span:
+        start:
+          offset: 10872
+          line: 68
+          column: 1
+        end:
+          offset: 10893
+          line: 68
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_10872"
+      source_span:
+        start:
+          offset: 10921
+          line: 72
+          column: 1
+        end:
+          offset: 12189
+          line: 79
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_56887"
+      source_span:
+        start:
+          offset: 56887
+          line: 835
+          column: 1
+        end:
+          offset: 56927
+          line: 835
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_80021"
+      source_span:
+        start:
+          offset: 80021
+          line: 886
+          column: 1
+        end:
+          offset: 80043
+          line: 886
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d826d4e04dfa5350a3e05d948ece679f28e575496ced6fe840209bceeaa02b33"
+  generated_content_sha256: "sha256:7b6bb311293d6a741984c8e08010efdf94280a61ea6be8e2c1f43b890cb88abb"

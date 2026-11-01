@@ -499,6 +499,22 @@ assertions use the emitted route/code mapping, including optional translations.
 Language-preference failures fail qualification and are retained in the receipt;
 completed matrices preserve their checks and specifically classified prefetch aborts.
 
+Before the guide counterpart check intentionally navigates back to its starting
+page, it waits for current requests observed from before the feature navigation.
+The existing observer crosses two animation frames and retains its existing
+500 ms quiet period and 30-second request-poll bound. A previously fired lifecycle
+`networkidle` alone does not establish that later script work has finished. This
+wait does not classify or discard any failure: the complete original request,
+HTTP, page-error and console evidence still reaches the unchanged fatal-error
+check. Ordinary JavaScript-enabled script failures remain blocking.
+
+A real WebKit regression in the browser suite starts a gated HTTP script after
+counterpart lifecycle idle, verifies that the intentional return waits for its
+completion, and keeps a real HTTP failure fatal. It runs in the consumer shard
+with installed browser runtimes, without a silent skip or an increased timeout.
+This controlled timing-class evidence and diagnostic replays of older sealed
+bytes do not replace fresh complete-source and sealed-product qualification.
+
 Browser request receipts retain engine, viewport, exact URL, method, resource
 kind, navigation flag, observed HTTP status, start/failure timestamps and phases,
 actual page URL, and an allowlist of routing/prefetch headers. Cookies and

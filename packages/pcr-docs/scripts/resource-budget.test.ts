@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { measureProcessTree, assertBuildResources, runMeasuredBuildStage, BuildStageFailure, type BuildStageMetrics } from "./resource-budget.ts";
+import { measureProcessTree, assertBuildResources, runMeasuredBuildStage, WEB_BUILD_STAGE_ARGS, WEB_BUILD_COMMANDS, BuildStageFailure, type BuildStageMetrics } from "./resource-budget.ts";
 import { buildNodeOptions } from "./build-storage.ts";
 import { isUnknownRecord } from "../../pcr-core/src/types.ts";
 import fs from "node:fs";
@@ -157,4 +157,10 @@ test("missing measurements cannot become a zero-memory successful production bui
       memoryMeasurement: "process-tree-rss",
     }),
   );
+});
+
+test('producer stage contract retains all four measured phases in fixed order',()=>{
+ assert.deepEqual(WEB_BUILD_COMMANDS,['scripts/generate.ts','node_modules/next/dist/bin/next build','scripts/static-route-aliases.ts','scripts/verify.ts']);
+ assert.deepEqual(WEB_BUILD_STAGE_ARGS.map(args=>args.join(' ')),WEB_BUILD_COMMANDS);
+ assert.ok(Object.isFrozen(WEB_BUILD_STAGE_ARGS)&&WEB_BUILD_STAGE_ARGS.every(args=>Object.isFrozen(args))&&Object.isFrozen(WEB_BUILD_COMMANDS));
 });
