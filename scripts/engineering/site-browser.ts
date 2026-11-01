@@ -1,5 +1,5 @@
 import {middleware as providerMiddleware} from '../../middleware.ts';
-import {verifyProviderRuntimeExport,verifyProviderRuntimeSource,type ProviderRuntime} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
+import {verifyProviderRuntimeExport,verifyProviderRuntimeSource,providerRuntimeSourceRoot,type ProviderRuntime} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {constants, closeSync, existsSync, fstatSync, lstatSync, mkdirSync, openSync, readFileSync, readdirSync, realpathSync, writeFileSync} from 'node:fs';
@@ -84,7 +84,7 @@ export async function withSiteExportServer<T>(root:string,callback:(origin:strin
  const canonical=realpathSync(root),aliases=new Map(verifySiteExportAliases(canonical)?.pairs.map(pair=>[pair.source,pair])??[]);
  const providerIdentity=readIdentityJson(canonical,'generated/version.json');assert.ok(object(providerIdentity)&&typeof providerIdentity.sourceCommit==='string');
  const providerRuntime=verifyProviderRuntimeExport(canonical,providerIdentity.sourceCommit);
- if(providerRuntime)verifyProviderRuntimeSource(fileURLToPath(new URL('../../',import.meta.url)),providerRuntime,providerIdentity.sourceCommit);
+ if(providerRuntime)verifyProviderRuntimeSource(providerRuntimeSourceRoot(import.meta.url),providerRuntime,providerIdentity.sourceCommit);
  const server=createServer(async(request,response)=>{try{
   const raw=(request.url??'/').split('?')[0]!;const decoded=decodeURIComponent(raw);
   if(!decoded.startsWith('/')||decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(segment=>segment==='.'||segment==='..')||/%(?:2f|5c)/iu.test(raw)){response.writeHead(403);response.end('Forbidden');return;}

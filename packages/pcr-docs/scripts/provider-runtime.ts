@@ -1,3 +1,4 @@
+import {fileURLToPath} from 'node:url';
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -56,4 +57,14 @@ export function verifyPublishedChapterAnchors(root:string,out:string,proof:Provi
  const raw=record(JSON.parse(regular(root,'packages/pcr-docs/compatibility/published-chapter-anchors.json').toString('utf8')) as unknown);exact(raw,['schemaVersion','baseline','requirements']);assert.equal(raw.schemaVersion,1);assert(typeof raw.baseline==='string'&&Array.isArray(raw.requirements));assert.equal(raw.requirements.length,proof.routes.length);
  const routes=new Map(proof.routes.map(row=>[row.from,row])),seen=new Set<string>(),targets=new Map<string,Set<string>>();
  for(const item of raw.requirements){const row=record(item);exact(row,['from','anchors']);assert(typeof row.from==='string'&&!seen.has(row.from)&&Array.isArray(row.anchors)&&row.anchors.length>0);seen.add(row.from);const route=routes.get(row.from);assert(route,'Published anchor route lacks compatibility');let anchors=targets.get(route.to);if(!anchors){anchors=htmlAnchors(regular(out,decodeURIComponent(route.to.slice(1))+'index.html').toString('utf8'));targets.set(route.to,anchors);}for(const anchor of row.anchors)assert(typeof anchor==='string'&&anchors.has(anchor),'Published chapter anchor missing: '+row.from+'#'+String(anchor));}
+}
+
+/** Resolve the authored checkout from either source modules or repository-owned compiled tests. */
+export function providerRuntimeSourceRoot(moduleUrl:string|URL):string {
+ let directory=path.dirname(fileURLToPath(moduleUrl));
+ while(true){
+  const marker=fs.lstatSync(path.join(directory,'.git'),{throwIfNoEntry:false});
+  if(marker){assert(!marker.isSymbolicLink()&&(marker.isFile()||marker.isDirectory()),'Unsafe source repository marker');return fs.realpathSync(directory);}
+  const parent=path.dirname(directory);if(parent===directory)throw new Error('Cannot locate authored provider source repository');directory=parent;
+ }
 }

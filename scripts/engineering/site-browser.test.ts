@@ -197,8 +197,8 @@ test('HTTP 200 RSC aliases use verified encoded routes with queries and exact ta
 });
 
 test('sealed server executes source-bound provider middleware for published chapter paths',async()=>{
- const {createProviderRuntime,PROVIDER_RUNTIME_FILE}=await import('../../packages/pcr-docs/scripts/provider-runtime.ts');
- const sourceRoot=path.resolve(path.dirname(new URL(import.meta.url).pathname),'../..'),f=fixture();
+ const {createProviderRuntime,PROVIDER_RUNTIME_FILE,providerRuntimeSourceRoot}=await import('../../packages/pcr-docs/scripts/provider-runtime.ts');
+ const sourceRoot=providerRuntimeSourceRoot(import.meta.url),f=fixture();
  try{const proof=createProviderRuntime(sourceRoot,'a'.repeat(40))!;assert.ok(proof);f.put(PROVIDER_RUNTIME_FILE,JSON.stringify(proof));
   const targets=new Map<string,Set<string>>();for(const row of proof.routes){const anchors=targets.get(row.to)??new Set<string>();anchors.add(row.anchor);targets.set(row.to,anchors);}
   for(const [url,anchors]of targets)f.put(decodeURIComponent(url.slice(1))+'index.html','<html><h1>Target</h1>'+[...anchors].map(anchor=>'<h2 id="'+anchor+'">Section</h2>').join('')+'</html>');
