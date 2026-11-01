@@ -19,6 +19,7 @@ checkPaths:
   - packages/pcr-core/src/languages.ts
   - packages/pcr-core/src/index.ts
   - edgeone.json
+  - middleware.ts
 related:
   - architecture.md
   - pcr-library-release-policy.md
@@ -742,3 +743,11 @@ options and appends the required 4096 MiB heap setting last. The same rule appli
 to ordinary and relocated builds. A real subprocess test proves both preload
 execution and the effective heap bound; environment diagnostics still log presence
 only. Coverage never substitutes for the actual build time/RSS/provider gates.
+
+## Published chapter compatibility
+
+Reviewed published continuation URLs remain accessible through exact GET/HEAD middleware rewrites. `middleware.ts` and the source-owned chapter mapping preserve original query strings; an existing fragment remains browser-owned. The complete target body is served under the old URL. JavaScript uses supported native history to normalize to the target and preserve an explicit fragment or select the published first anchor. Without JavaScript, explicit source fragments remain usable; fragment-free requests do not claim automatic chapter scrolling. Unknown routes, other methods and RSC assets retain their existing routing.
+
+`generated/provider-runtime.json` seals the exact middleware/import closure and routes to the product source. Export verification requires target/default anchors, and the separate published-source anchor ledger requires every retained historical content anchor. The product archive and probe bind the proof. Provider import compares the actual regular source bytes before handoff and again before the atomic swap; a missing/substituted runtime fails. Historical immutable artifacts without this profile remain readable. Raw TypeScript export remains prohibited. New root middleware belongs to strict TypeScript and measured coverage inventories.
+
+Provider CLI discovery/compilation and sealed-browser simulation are evidence for their respective scopes. They do not assert live production adoption; deployment and live acceptance still require the existing release authority.

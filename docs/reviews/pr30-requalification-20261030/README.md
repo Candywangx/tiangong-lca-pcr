@@ -49,3 +49,7 @@ The hosted event names PR head `1e67d0e3cb3023b6f310491b984390b51e891a71`; its u
 [Qualification status](qualification-status.json) distinguishes the current local source, earlier failures and hosted qualification. The latest hosted state must be read on PR #30; no local artifact grants hosted acceptance or scientific/translation approval.
 
 [Independent final evidence review](independent-final-qualification-review.json) verifies all 148 published/original artifact digests, eight source-bound gates and the overview claims without re-running tests or inferring hosted approval.
+
+## Subsequent hosted failure and compatibility follow-up
+
+The later evidence-only delivery head `714d6c023` failed hosted run 41273337865 in test discovery. Its local 003098 receipts remain valid only for their recorded source. [The follow-up package](../pr30-followup-20261101/README.md) preserves that failure, repairs the snapshot name and addresses the actual published subset of the previously retired chapter URLs. Read PR #30 and its final Actions artifacts for current qualification.

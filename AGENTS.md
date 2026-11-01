@@ -22,6 +22,7 @@ checkPaths:
   - product-release.json
   - builder/**
   - packages/**
+  - middleware.ts
   - skills/**
   - .github/workflows/**
   - .github/ISSUE_TEMPLATE/**
@@ -286,6 +287,11 @@ policy, source mapping, SEO or EdgeOne deployment. It consumes complete core
 bundles and the shared Builder history verifier; it cannot mutate canonical PCR
 content or promote methodology/translation status. English and Chinese remain
 required; declared optional language artifacts are verified and preserved.
+
+Published chapter aliases use the exact source-owned root `middleware.ts` profile. The sealed
+`generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
+anchors and the importer rechecks actual source bytes before atomic handoff. Native history normalization
+and provider compilation do not authorize deployment or promote methodology states.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
 not authoring sources. Use `npm run docs:build` for the complete static publication

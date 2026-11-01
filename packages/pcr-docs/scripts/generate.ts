@@ -1,3 +1,4 @@
+import {createProviderRuntime} from './provider-runtime.ts';
 import {serializeSiteMetadata} from "../lib/site-wire.ts";
 import {isUnknownRecord,unknownField,errorMessage} from "../../pcr-core/src/types.ts";
 import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResult} from "../lib/types.ts";
@@ -1101,6 +1102,8 @@ async function generate() {
       : {}),
   });
   if (productIdentity) json("public/product-release.json", productIdentity);
+  const providerRuntime = createProviderRuntime(root, commit);
+  if (providerRuntime) json("public/provider-runtime.json", providerRuntime);
   compileDocsBrowserAssets({outputRoot:path.join(stage,"public")});
   write(
     "public/search-engine.mjs",

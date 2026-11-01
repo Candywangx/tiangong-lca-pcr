@@ -1,3 +1,4 @@
+import {PROVIDER_RUNTIME_FILE,verifyProviderRuntimeExport} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import { createHash, type BinaryLike } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { constants, closeSync, fstatSync, lstatSync, openSync, readSync, realpathSync, writeFileSync } from "node:fs";
@@ -13,7 +14,7 @@ export interface WebCounts extends Record<string, number> { pcrs: number; pages:
 export interface WebProbe { path: string; bytes: number; sha256: string }
 export interface StaticRouteAliasProbe { source: string; target: string; bytes: number; sha256: string }
 export interface StaticRouteAliasWebProof { schemaVersion: 1; sourceCommit: string; manifest: WebProbe; pairs: StaticRouteAliasProbe[] }
-export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe; staticRouteAliases?: StaticRouteAliasWebProof }
+export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe; staticRouteAliases?: StaticRouteAliasWebProof; providerRuntime?: WebProbe }
 export interface WebRequestOptions { method: "GET"; redirect: "manual"; credentials: "omit"; headers: Record<string, string>; signal: AbortSignal }
 export type WebFetch = (url: string, options: WebRequestOptions) => Promise<Response>;
 export interface LiveWebsiteOptions { origin: string; identity: unknown; counts: unknown; probes: unknown; fetcher?: WebFetch; timeoutMs?: number; maxBytes?: number }
@@ -218,7 +219,9 @@ export function createWebProbes({ webDir, includeHomes = true, requireAliases }:
     staticRouteAliases = validateStaticRouteAliasWebProof({ schemaVersion: 1, sourceCommit: identity.sourceCommit,
       manifest: describe("/" + STATIC_ROUTE_ALIASES_FILE, STATIC_ROUTE_ALIASES_FILE), pairs }, identity);
   }
+  const providerRuntime = verifyProviderRuntimeExport(webDir, identity.sourceCommit);
   return { identity: identityFields(identity), counts,
+    ...(providerRuntime ? {providerRuntime: describe("/" + PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_FILE)} : {}),
     ...(staticRouteAliases ? { staticRouteAliases } : {}),
     routes: (includeHomes ? WEB_PROBE_ROUTES : LEGACY_WEB_PROBE_ROUTES).map(urlPath => describe(urlPath, `${urlPath.slice(1)}index.html`)),
     rawDownload: describe(RAW_PATH, RAW_PATH.slice(1)) };

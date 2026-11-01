@@ -72,3 +72,7 @@ print(scratch)
 ```
 
 [Evidence-file hashes](evidence-files.json) cover this package except that index itself. The historical sealed source remains failed. Focused controls and old-artifact probes do not replace fresh full-source, full sealed/browser, provider or publication qualification; those results must bind the actual receiving source.
+
+## Evidence path correction, 2026-11-01
+
+The [regression source snapshot](provenance/regression-source.snapshot.txt) was renamed from `provenance/regression-test.ts.txt` because the historical name matched the repository test discovery predicate. Its bytes remain exact; the real executable regression remains `tests/browser/site-guide-counterpart.browser.test.ts`, in the browser suite and consumer shard. [Path mapping](provenance/path-map.json) preserves the former locator and original source identity. Historical execution logs and receipts retain their original names and observations.
