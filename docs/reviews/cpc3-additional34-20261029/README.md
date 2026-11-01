@@ -63,13 +63,13 @@ This package adds 34 candidate methods by promoting their existing empty templat
 | 38420 | [EPS芯玻纤环氧冲浪板制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/water-skis-surf-boards-sailboards-and-other-water-sport-equipment/pcr.en-US.md) | [Corrections recorded](records/38420.json) |
 | 38440 | [手工缝制 PU 表皮充气足球制造](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/furniture-other-transportable-goods-n-e-c/other-articles-and-equipment-for-sports-or-outdoor-games/pcr.en-US.md) | [Corrections recorded](records/38440.json) |
 
-## Qualification
+## Historical qualification of the 69-PCR source
 
 Complete local `npm run validate` **passed** on `678fc0484335507f1cd742ba29533a4c1c175746` (Node 24.19.0 / npm 12.2.0): 3343 tests, 3338 passed, zero failed, 5 skipped. The complete corpus contains 3107 physical PCRs, 1541 material PCRs and 1567 aliases; two independent SQLite builds reproduce identical bytes. [Full log](validation/validate.log), [source/tree-bound receipt](validation/validate.json).
 
 Complete `npm run docs:build` **failed** on the same source: en-US search gzip 4,196,228 / 4,000,000 bytes (excess 196,228). No search-size result was produced for zh-CN after the earlier failure; earlier smaller-source measurements are not substituted. Complete static export, full-site SEO and sealed-product acceptance did not finish. [Full documentation log](validation/docs-build.log) and [receipt with verified pack manifests](validation/docs-build.json) retain the actual outcome.
 
-The PR remains draft pending full current product/hosted qualification. No budget increase, dropped material content or runtime workaround was applied. The final evidence-only commit preserves all tested canonical/classification/runtime bytes; [current status](qualification-status.json) distinguishes the actual tested source from the later PR head.
+At that historical source, complete product qualification was blocked. No budget increase, dropped material content or runtime workaround was applied. [Historical status](qualification-status.json) records the local failure and the later hosted run 139 failure, and distinguishes their source identities. The PR remains Draft; the [current combined-source result](../pr30-requalification-20261030/README.md) reports the subsequent engineering repair and fresh local qualification.
 
 The first complete validation on `06fdd379` failed one existing Chinese category-label test. The newly material furniture category now has its Chinese presentation label; the existing focused test changed from failure to pass. [Original failure and fix evidence](superseded-validation/category-label-repair.json) is retained; it is not reported as a successful full run.
 

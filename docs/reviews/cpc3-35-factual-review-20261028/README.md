@@ -91,7 +91,7 @@ Complete local `npm run validate` **passed** on `3cfe47acf29c53674afc78f59946c90
 
 Complete `npm run docs:build` **failed** on that source. Chinese search gzip is **4,078,737 / 4,000,000 bytes**, an excess of 78,737 bytes. Complete static export, full-site SEO and sealed-product acceptance did not finish. The PR remains draft and not merge/publication-qualified. Read the [complete documentation build log](validation/docs-build.log) and [receipt](validation/docs-build.json). No threshold increase, material-record omission or runtime workaround was applied.
 
-The final evidence-only descendant preserves the tested canonical, classification and runtime bytes. [Qualification status](qualification-status.json) separates current local observations, historical pre-amendment gates and pending fresh hosted qualification. No scientific, translation, publication or deployment approval is implied.
+The final evidence-only descendant preserves the tested canonical, classification and runtime bytes. [Historical qualification status](qualification-status.json) separates the initial local observations and pre-amendment gates. The [current combined-source package](../pr30-requalification-20261030/README.md) separately records the later hosted failure and fresh local qualification. No scientific, translation, publication or deployment approval is implied.
 
 ## Evidence navigation added 2026-10-30
 
