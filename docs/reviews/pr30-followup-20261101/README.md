@@ -13,7 +13,7 @@ lastReviewedNote: "Follow-up source review; final hosted result belongs to its A
 
 # PR30 discovery and published chapter follow-up
 
-Existing fork PR #30 remains Draft. [Run 41273337865, attempt 1](https://github.com/Candywangx/tiangong-lca-pcr/actions/runs/41273337865) failed in `plan` on PR head `714d6c023aa2e53ec1bba81f6ac6ed1f5a4b4984`. [Original run metadata](discovery/failed-run.json) and [complete plan log](discovery/failed-plan.log) retain the actual tested merge source. Product jobs were skipped. Historical local `003098ef` success does not qualify this head or a future source.
+Existing fork PR #30 remains Draft. [Run 41273337865, attempt 1](https://github.com/Candywangx/tiangong-lca-pcr/actions/runs/41273337865) failed in `plan` on PR head `714d6c023aa2e53ec1bba81f6ac6ed1f5a4b4984`. [Original run metadata](discovery/failed-run.json) and [complete plan log](discovery/failed-plan.log) retain the actual tested merge source. The tested merge source was `2cc933f4f505b4bbc50ce8ca0da2d037005fb7e1`. Product jobs were skipped. Historical local `003098ef` success does not qualify this head or a future source.
 
 ## Discovery repair
 
@@ -42,3 +42,13 @@ Representation decision: the runtime proof is an F3 versioned cross-consumer con
 ## Final qualification
 
 Complete evidence filenames and source changes must be frozen before the final `npm run test` and existing CI/qualification-plan entry points. Final hosted results will be recorded in Actions artifacts and PR #30's body with exact PR head, tested merge source, run and attempt. This preparation file intentionally contains no forecast success. No new PR, merge, tag, publication, deployment, branch deletion or forced history rewrite is authorized.
+
+## Intermediate a201 outcome and corrective controls
+
+Candidate `a2018877b559f6de4edcc20e94c0981e2c8bd3a7` completed its website build: 19,778 export files, 3.752 GB peak RSS. Its **full test run failed**: 3,407 tests, 3,401 pass, one failure and five skips. The dependency-free importer fixture omitted the newly imported standard-library-only provider validator from its copied source closure. The fixture now copies that real source file while retaining all assertions that installed package dependencies are unavailable. [Original failure and passing focused control](focused-followup/importer-closure-green.log) remain separate from the final all-tests run.
+
+Its **browser run also failed** after 40 baseline cases and 12 completed chapter cases, with a WebKit Chinese history-navigation access-control error. [Full browser report](attempt-a201/browser-report.json), [all original captures](attempt-a201/browser-captures.tar.gz), [member hashes](attempt-a201/capture-index.json) and [complete gate logs/receipts](attempt-a201) retain this outcome.
+
+The new chapter checker mistakenly awaited a request-observer factory instead of invoking its returned asynchronous waiter. The [controlled real WebKit baseline](focused-followup/chapter-wait-red.log) reproduces a held request being cancelled by premature history navigation; the [corrected regression](focused-followup/chapter-wait-green.log) verifies completion before proceeding. One observer is now armed before navigation and its existing waiter is called before moving on. Neither its time/quiet limits nor fatal-error policy is changed. The [six-case WebKit diagnostic](focused-followup/a201-fixed-checker-diagnostic.json) applies the corrected checker to the original a201 export; it is a diagnostic, not final-source qualification.
+
+Additional controls cover equivalent percent-encoded Chinese paths, rejecting a `data-id` false anchor, and requiring actual bilingual old/target HTTP behavior during future authorized live release acceptance. Existing live time/size limits remain unchanged; no live publication was invoked here. The [reviewed provider compiler output](provider-cli/reviewed-runtime/results.json) executes all 342 published mappings plus method, encoding and pass-through controls: 351 cases. Its source-file hashes match the reviewed runtime; earlier compiler evidence remains under its original scope. [Evidence index](followup-evidence-index.json) binds all new raw records.

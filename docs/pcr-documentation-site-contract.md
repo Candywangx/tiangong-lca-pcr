@@ -751,3 +751,9 @@ Reviewed published continuation URLs remain accessible through exact GET/HEAD mi
 `generated/provider-runtime.json` seals the exact middleware/import closure and routes to the product source. Export verification requires target/default anchors, and the separate published-source anchor ledger requires every retained historical content anchor. The product archive and probe bind the proof. Provider import compares the actual regular source bytes before handoff and again before the atomic swap; a missing/substituted runtime fails. Historical immutable artifacts without this profile remain readable. Raw TypeScript export remains prohibited. New root middleware belongs to strict TypeScript and measured coverage inventories.
 
 Provider CLI discovery/compilation and sealed-browser simulation are evidence for their respective scopes. They do not assert live production adoption; deployment and live acceptance still require the existing release authority.
+
+When an authorized product release invokes live acceptance for a sealed provider-runtime profile,
+it verifies the served profile digest and bilingual representative old/target responses with and
+without queries, including the actual default chapter anchor. This stays within the existing
+live-request deadline and size bounds. A compile-only or locally emulated result cannot replace
+that future live acceptance.

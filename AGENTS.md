@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-30
-lastReviewedCommit: 56e912858aa769ff13075fa852a344d0b730a3b9
-lastReviewedNote: "PCR #159: reviewed stable product 0.4.10 preparation at 56e91285. Authority, three package mirrors and docs lock root metadata advance together; dependency resolutions, canonical content, methodology/translation state, reader minimum and runtime pins remain unchanged. Current preparation notes distinguish verified public 0.4.9 from pending new tag qualification, coordinated npm/site publication and exact workspace integration."
+lastReviewedAt: 2026-11-01
+lastReviewedCommit: f5fff32b75921454f7e0e89be6963c08f9d43733
+lastReviewedNote: "PR30: reviewed exact published-chapter compatibility, root runtime ownership and sealed source verification. Canonical content, scientific/translation states, runtime pins and deployment authority remain unchanged; final exact-source qualification is separate."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
