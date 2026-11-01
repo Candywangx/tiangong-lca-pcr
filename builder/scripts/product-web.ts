@@ -1,4 +1,4 @@
-import {PROVIDER_RUNTIME_FILE,verifyProviderRuntimeExport} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
+import {PROVIDER_RUNTIME_FILE,verifyProviderRuntimeExport,parseProviderRuntime,htmlAnchors} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import { createHash, type BinaryLike } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { constants, closeSync, fstatSync, lstatSync, openSync, readSync, realpathSync, writeFileSync } from "node:fs";
@@ -365,6 +365,18 @@ export async function verifyLiveWebsite({ origin, identity, counts, probes, fetc
         if (contentType !== undefined && observed !== contentType) fail("PCR_WEB_ALIAS_HEADERS", "Alias, target and query responses disagree on MIME type.", { path: urlPath });
         contentType = observed;
       }
+    }
+  }
+  if (probes.providerRuntime !== undefined) {
+    const descriptor = probes.providerRuntime; validateProbe(descriptor, '/' + PROVIDER_RUNTIME_FILE);
+    const bytes = await request(descriptor.path, {limit: descriptor.bytes, fresh: true, mediaType: 'application/json'});
+    if (!bytes || bytes.length !== descriptor.bytes || sha256(bytes) !== descriptor.sha256) fail('PCR_WEB_PROVIDER_HASH', 'Live provider profile differs from sealed bytes.');
+    const runtime = parseProviderRuntime(JSON.parse(bytes.toString('utf8')), identity.sourceCommit);
+    const representatives = ['en','zh'].flatMap(language => {const row = runtime.routes.find(route => route.from.startsWith('/' + language + '/'));return row ? [row] : [];});
+    for (const row of representatives) for (const query of ['', '?pcr-legacy=' + identity.sourceCommit.slice(0,12) + '&q=a+b&q=%2F']) {
+      const target = await request(row.to + query, {mediaType:'text/html'});
+      const old = await request(row.from + query, {mediaType:'text/html'});
+      if (!target || !old || !target.equals(old) || !htmlAnchors(old.toString('utf8')).has(row.anchor)) fail('PCR_WEB_PROVIDER_ROUTE', 'Published chapter rewrite differs from its current page or lost its default anchor.', {path:row.from+query});
     }
   }
   // Detect a release cutover while the route/download probes were being inspected.

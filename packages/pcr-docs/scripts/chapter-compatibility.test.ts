@@ -38,3 +38,11 @@ test('actual EdgeOne entry point delegates exact aliases and leaves other reques
   assert.equal(rewritten,rewriteChapterRequest(new Request(origin+url,{method})));
  }
 });
+
+test('equivalent percent encodings retain published Unicode chapter access without decoding separators',()=>{
+ const row=CHAPTER_ALIASES.find(item=>/%[A-F0-9]{2}/u.test(item.from))!;assert.ok(row);
+ const lower=row.from.replace(/%[A-F0-9]{2}/gu,part=>part.toLowerCase());
+ assert.equal(rewriteChapterRequest(new Request('https://example.org'+lower+'?q=%2f')), 'https://example.org'+row.to+'?q=%2f');
+ assert.equal(compatibilityDestination('https://example.org'+lower,aliasesForTarget(row.to)),row.to+'#'+encodeURIComponent(row.anchor));
+ assert.equal(rewriteChapterRequest(new Request('https://example.org'+row.from.replace('/chapters/','/%2Fchapters/'))),undefined);
+});

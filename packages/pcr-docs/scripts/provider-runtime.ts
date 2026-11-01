@@ -42,7 +42,7 @@ export function verifyProviderRuntimeExport(out:string,sourceCommit:string,expec
 
 export function htmlAnchors(html:string):Set<string>{
  const named:Record<string,string>={amp:'&',quot:'"',apos:"'",lt:'<',gt:'>'};
- return new Set([...html.matchAll(/\bid=(["'])(.*?)\1/gu)].map(match=>match[2]!.replace(/&(#x[0-9a-f]+|#[0-9]+|amp|quot|apos|lt|gt);/giu,(_whole:string,entity:string)=>entity.startsWith('#')?String.fromCodePoint(Number.parseInt(entity.slice(entity[1]==='x'?2:1),entity[1]==='x'?16:10)):named[entity]!)));
+ return new Set([...html.matchAll(/<[a-z][^>]*?\sid=(["'])(.*?)\1/giu)].map(match=>match[2]!.replace(/&(#x[0-9a-f]+|#[0-9]+|amp|quot|apos|lt|gt);/giu,(_whole:string,entity:string)=>entity.startsWith('#')?String.fromCodePoint(Number.parseInt(entity.slice(entity[1]==='x'?2:1),entity[1]==='x'?16:10)):named[entity]!)));
 }
 export function verifyProviderRuntimeInventory(value:unknown,sourceCommit:string,files:readonly {path:string;bytes:number;sha256?:string}[]):ProviderRuntime{
  const proof=parseProviderRuntime(value,sourceCommit),paths=new Set(files.map(file=>file.path));

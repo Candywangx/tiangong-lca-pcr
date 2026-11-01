@@ -22,3 +22,8 @@ test('sealed compatibility proof checks source, safe routes, physical target and
  const changed=structuredClone(proof);changed.routes[0]!.to='https://example.com/';write(f.out,PROVIDER_RUNTIME_FILE,JSON.stringify(changed));assert.throws(()=>verifyProviderRuntimeExport(f.out,source));
  fs.unlinkSync(path.join(f.out,PROVIDER_RUNTIME_FILE));assert.throws(()=>verifyProviderRuntimeExport(f.out,source,proof));
 }finally{f.cleanup();}});
+
+test('published anchor verification cannot mistake a data-id attribute for a real HTML id',()=>{const f=fixture();try{
+ install(f.root);const proof=createProviderRuntime(f.root,source)!;write(f.out,PROVIDER_RUNTIME_FILE,JSON.stringify(proof));write(f.out,'en/docs/pcr/a/b/c/index.html','<main><h2 data-id="section">wrong anchor</h2></main>');
+ assert.throws(()=>verifyProviderRuntimeExport(f.out,source,proof));
+}finally{f.cleanup();}});
