@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
-lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -203,14 +203,18 @@ the run. Collect only from a frozen clean checkout. `test:coverage` requires fre
 results without claiming threshold success; `report` enforces the gates. Keep raw
 V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 
-PR and formal release qualification run the complete instrumented export in the
-documentation job. Its successful export is handed to a separate required product
-job through an exact artifact ID and a source/run/attempt-bound checkpoint of every
-path, byte count and SHA-256. Full mode also binds the current qualification ID,
-plan hash and successful unchanged full-build coverage command. The product job
-verifies the complete checkpoint before SEO and sealing; it builds no second website.
-Both jobs retain 60-minute limits. The intermediate export is not a release artifact.
-The product job creates the one sealed bundle. Four platform jobs download that same immutable artifact ID,
+PR and formal release qualification run one complete instrumented export in the
+`web-build` job, then create one sealed product bundle in the separate
+`documentation` job. Both jobs use 120-minute limits, increased from 60 minutes, and are mandatory in both
+lanes. A versioned handoff binds the actual checked-out source (including PR merge
+commits), product identity, current run/attempt, CI plan and full-mode qualification
+ID/plan hash to the complete archive/tree and successful build log. The verifier
+hashes every exported file before handoff. Safe materialization and fresh vendored
+SEO run on those exact bytes; the sealed archive must match the handoff hash.
+The final product artifact retains build/SEO audit files and their hashes. The
+public reusable `product_artifact_id` output remains owned by `documentation`; its
+coverage output forwards the same-run `web-build` measurement unchanged. Four
+platform jobs download that same immutable product artifact ID,
 verify its identity and checksums, install both tarballs with an empty cache and
 no network, then execute compiled bins with type stripping disabled against the
 pinned SQLite. A separate job extracts the same sealed web archive and runs the
@@ -239,8 +243,14 @@ Formal sealed artifact and live publication evidence remain separate.
 `.github/workflows/validate.yml` freezes an exact-source CI decision with
 `scripts/engineering/ci-plan.ts`. The stable `validate` job is the aggregate gate:
 `scripts/engineering/ci-gate.ts` requires every job selected by that decision to
-succeed and rejects unexpected skips, missing jobs and failed jobs. Local
+succeed and rejects unexpected skips, missing jobs and failed jobs. This includes
+both `web-build` and `documentation` in full and data lanes; transfer or sealing
+failure cannot be hidden behind a successful web render. Local
 `npm run validate`, `npm test` and `all`/`root` remain complete entrypoints.
+
+The full test-shard jobs, web build and documentation sealing each have a
+120-minute GitHub Actions job timeout. This limit applies independently to each job; dependency
+waiting time and the complete workflow duration are separate.
 
 Full qualification partitions the entire discovered test inventory into eight
 fixed shards: `harness`, `core`, `builder`, `consumer`, `docs`, `engineering`,
@@ -296,15 +306,21 @@ verification, install the exact seal on all four platforms and qualify its
 extracted web bytes in the three-browser desktop/mobile matrix. These checks
 retain scientific, translation and immutable-history boundaries.
 
-The aggregate requires the product job in both lanes, and every sealed consumer
-and reusable publication output references that job's sole final artifact ID.
-The documentation coverage artifact and exact complete-build command remain
-unchanged; source coverage may run while product sealing proceeds. Intermediate
+The aggregate requires the `web-build` producer and `documentation` sealer in both
+lanes, and every sealed consumer and reusable publication output references the
+sealer's sole final artifact ID. The complete-build coverage artifact is forwarded
+unchanged from `web-build` through `documentation`, using the same full command. Intermediate
 export transfer preserves hidden files and checks complete sorted file membership,
 identity and hashes before any existing canonical hosting transformation. Missing,
 extra, changed, stale-attempt or foreign-source files fail the handoff. A fresh
 complete run is required after a failed qualification; partial passing artifacts
 do not replace current-attempt receipts.
+
+The active archive/log handoff also checks the final and individual stage success
+states, zero child exits, absence of failure evidence, measured stage RSS within
+the unchanged guard and aggregate peak, and a total duration covering every stage.
+The incoming standalone complete-export checkpoint utility retains its tests;
+it does not replace this workflow's archive, build-log and SEO evidence bindings.
 
 The data lane omits full code-test/coverage qualification and reports
 `not-measured-data-only-lane`. It does not claim a passing full source coverage
@@ -482,6 +498,22 @@ browser language information instead. Regional expectations and HTML language
 assertions use the emitted route/code mapping, including optional translations.
 Language-preference failures fail qualification and are retained in the receipt;
 completed matrices preserve their checks and specifically classified prefetch aborts.
+
+Before the guide counterpart check intentionally navigates back to its starting
+page, it waits for current requests observed from before the feature navigation.
+The existing observer crosses two animation frames and retains its existing
+500 ms quiet period and 30-second request-poll bound. A previously fired lifecycle
+`networkidle` alone does not establish that later script work has finished. This
+wait does not classify or discard any failure: the complete original request,
+HTTP, page-error and console evidence still reaches the unchanged fatal-error
+check. Ordinary JavaScript-enabled script failures remain blocking.
+
+A real WebKit regression in the browser suite starts a gated HTTP script after
+counterpart lifecycle idle, verifies that the intentional return waits for its
+completion, and keeps a real HTTP failure fatal. It runs in the consumer shard
+with installed browser runtimes, without a silent skip or an increased timeout.
+This controlled timing-class evidence and diagnostic replays of older sealed
+bytes do not replace fresh complete-source and sealed-product qualification.
 
 Browser request receipts retain engine, viewport, exact URL, method, resource
 kind, navigation flag, observed HTTP status, start/failure timestamps and phases,

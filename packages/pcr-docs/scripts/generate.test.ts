@@ -228,7 +228,7 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 5, "physical packs preserve independent v4 logical indexes");
+      assert.equal(search.schemaVersion, 7, "physical packs preserve independent v4 logical indexes");
       assert.equal(search.language, language);
       const packed=readSearchManifest(search,language);
       assert.ok(packed.files.length > 0);
@@ -456,7 +456,11 @@ test("metadata summaries describe the page they belong to, and report title-only
       { encoding: "utf8", maxBuffer: 4 * 1024 * 1024 },
     );
     assert.equal(result.status, 0, result.stderr);
-    const site = parseSiteManifest(fs.readFileSync(path.join(output, ".generated/site.json")));
+    const siteBytes=fs.readFileSync(path.join(output, ".generated/site.json"));
+    const siteWire:unknown=JSON.parse(siteBytes.toString("utf8"));
+    assert.ok(isUnknownRecord(siteWire)&&isUnknownRecord(siteWire.downloadTransport)&&Array.isArray(siteWire.downloadTransport.urls));
+    assert.deepEqual(siteWire.downloadTransport.urls, [], "physical originals do not populate the inline download table");
+    const site = parseSiteManifest(siteBytes);
     const report = parseReport(fs.readFileSync(path.join(output, ".generated/report.json")));
 
     for (const page of site.pages) {

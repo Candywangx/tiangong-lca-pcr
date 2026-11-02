@@ -23,7 +23,7 @@ export async function verifySearchAssets(out:string, sourceCommit:string, report
    const shards=await unpackSearchFile(manifest,file,bytes,sha256);
    for(const shard of shards){
     if(!Array.isArray(shard.records)||!shard.records.every(value=>isUnknownRecord(value)&&typeof value.id==="string"&&value.type==="page"&&typeof value.url==="string"&&typeof value.content==="string"&&typeof value.description==="string"&&(value.breadcrumbs===undefined||Array.isArray(value.breadcrumbs)&&value.breadcrumbs.every((item:unknown)=>typeof item==="string"))))throw new Error("Invalid search records");
-    const entries=decodeSearchEntries(shard.entries,shard.sparseMaps,4,shard.scoreMasks,shard.postingDeltas,shard.columnarMaps);
+    const entries=decodeSearchEntries(shard.entries,shard.sparseMaps,4,shard.scoreMasks,shard.postingDeltas,shard.columnarMaps,shard.joinedTerms,undefined,shard.dictionaryTerms);
     const index=new Index({tokenize:"strict",resolution:SEARCH_SCORE_SLOTS,encode:(value:unknown)=>searchTerms(value,report.language)});
     for(const [key,value]of Object.entries(entries))index.import(key,JSON.stringify(value));
     records+=shard.records.length;

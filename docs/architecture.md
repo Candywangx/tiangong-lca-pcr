@@ -26,12 +26,16 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-30
-lastReviewedCommit: 56e912858aa769ff13075fa852a344d0b730a3b9
-lastReviewedNote: "PCR #159: reviewed stable product 0.4.10 preparation at 56e91285. Authority, three package mirrors and docs lock root metadata advance together; dependency resolutions, canonical content, methodology/translation state, reader minimum and runtime pins remain unchanged. Current preparation notes distinguish verified public 0.4.9 from pending new tag qualification, coordinated npm/site publication and exact workspace integration."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
 ---
 
 # PCR 资料库架构
+
+已合并 PR #26 的 14 份 CPC 04 方法学沿用原有 PCR id 与语义目录；PR #28 现仅交付这 14 份的修复，
+不新增方法。恢复身份不扩大产品、路线、状态或交付边界，也不改变 `narrower` 关系。范围和验证记录见
+[两个 PR 的旧 ID 恢复记录](reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)。
 
 ## 项目定位
 

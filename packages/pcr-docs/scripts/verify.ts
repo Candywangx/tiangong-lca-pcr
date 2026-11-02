@@ -1,3 +1,4 @@
+import {createProviderRuntime,verifyProviderRuntimeExport,verifyPublishedChapterAnchors} from './provider-runtime.ts';
 import {verifyStaticRouteAliases} from "./static-route-aliases.ts";
 import {verifySearchAssets} from "./search-assets.ts";
 import {parseSiteManifest} from "../lib/site-contracts.ts";
@@ -21,6 +22,7 @@ import { SUMMARY_LIMIT } from "./summaries.ts";
 import { summarizeExportFiles } from "./export-size.ts";
 import { decodeInlineDownloadUrl, inlineDownloadManifestPath, inlineDownloadUrl } from "./raw-download.ts";
 import { readProductIdentity } from "../../../builder/scripts/product-identity.ts";
+import { productTreeSha256 } from "../../../builder/scripts/product-release.ts";
 import { gettingStartedGuides, gettingStartedGuide } from "../lib/getting-started.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   root = path.resolve(app, "../.."),
@@ -34,6 +36,8 @@ const manifest = parseSiteManifest(
 if (report.sourceCommit !== manifest.sourceCommit) throw new Error("Search report source identity mismatch");
 await verifySearchAssets(out, manifest.sourceCommit, report.search);
 verifyStaticRouteAliases(out, manifest.sourceCommit);
+const providerRuntime = verifyProviderRuntimeExport(out, manifest.sourceCommit, createProviderRuntime(root, manifest.sourceCommit));
+verifyPublishedChapterAnchors(root, out, providerRuntime);
 verifyHostingContract(
   JSON.parse(fs.readFileSync(path.join(root, "edgeone.json"), "utf8")),
   report.downloads,
@@ -521,7 +525,12 @@ requireThat(
   files.every((f) => f.bytes < 25_000_000),
   "EdgeOne single-file budget exceeded",
 );
+// Bind every successful exported byte for a verified cross-job handoff.
+const treeSha256 = productTreeSha256(files.map(file => ({
+  ...file, sha256: sha256(fs.readFileSync(path.join(out, file.path))).slice(7),
+})));
 const result = {
+  treeSha256,
   pcrs: manifest.records.length,
   pages: manifest.pages.length,
   sourceDocuments: report.documents.length,

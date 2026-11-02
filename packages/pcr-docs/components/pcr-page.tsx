@@ -1,3 +1,5 @@
+import { aliasesForTarget } from '../lib/chapter-compatibility';
+import { ChapterLocation } from './chapter-location';
 import { DocsBody, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
 import type { ReactNode } from 'react';
 import type { DocPage } from '@/lib/types';
@@ -38,6 +40,7 @@ export function PcrPage({
 
   return (
     <DocsPage toc={toc} footer={{ enabled: false }} breadcrumb={{ enabled: false }}>
+      <ChapterLocation aliases={aliasesForTarget(page.url)} />
       <DocsTitle {...headingProps} className={page.title.length > 180 ? 'pcr-title--long' : undefined}>
         {page.title}
       </DocsTitle>
