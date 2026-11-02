@@ -15,8 +15,8 @@ whenToUpdate:
 checkPaths:
   - docs/repository-coding-guidelines.md
 lastReviewedAt: 2026-11-02
-lastReviewedCommit: 4062be1e99e36532aad34c490c1222b78df3f137
-lastReviewedNote: "PCR #164: reviewed PR161 source4062be1 and all69 selected canonical sets, mapping evidence and source-bound web/CI contracts. Corrected macOS fixture paths and root middleware Docpact triggers; CI job limits are explicitly120 minutes from60. Candidate/translation states, physical content, search/file/RSS guards and runtime pins remain. Independent bounded content/engineering review found no remaining material finding; final repaired-source hosted qualification and exact workspace integration remain required."
+lastReviewedCommit: fb5235da528f578f9d3d18d63adcc134cecabd70
+lastReviewedNote: "PCR #164: reviewed PR161 and the bounded anchor-verifier repair from fb5235da. All 69 candidate records and 68 additive mappings retain their source/status boundaries. The dependency-free generated-HTML scanner rejects apparent anchors in attributes, comments and raw/inert content; 111 focused tests and all 3,318 incoming HTML pages agree with DOM anchor inventories. Full final-source hosted qualification, independent boundary recheck and exact workspace integration remain required; no publication or scientific approval is claimed."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
