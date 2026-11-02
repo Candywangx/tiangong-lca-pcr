@@ -1864,6 +1864,10 @@ dataset_production:
       applies_to: "every card"
       requirement: "Replace provisional author screens with actual records or reviewed empirical/source evidence when available. Investigate outliers, never truncate actual data to the screen."
       evidence: "Range review and uncertainty explanation"
+    - id: dq_detection
+      applies_to: "all water-analysis and direct waterborne-substance load records under cp_capture, cp_holding, cp_transfer and cp_handover"
+      requirement: "Retain the original laboratory result, substance/element basis, reporting unit, sampling time, analytical method, detection and quantification limits where applicable, and analytical uncertainty. Record an explicit justified treatment of each non-detect, including its bounded estimate or unresolved gap and propagated load uncertainty; a non-detect is not automatically zero. Do not invent a universal substitution fraction or replace missing samples with zero. Missing limits or a defensible treatment remain disclosed gaps that block finalization of the affected quantitative exchange."
+      evidence: "Laboratory report, method and limits; censored-result decision and load uncertainty record"
     - id: dq_period
       applies_to: "shared and carried burdens"
       requirement: "Reconcile consumer shares, stock and asset events over complete periods; disclose data age, missing seasons and representativeness."
@@ -2034,6 +2038,11 @@ validation_rules:
     rule: "Every amount has basis, condition, protocol/evidence and finite Range. Confirm actual foreground precedence, explain outliers and uncertainty, and do not treat initial author screens or historical husbandry examples as mandatory site performance."
     source_ids:
       - wild-live-method-2026
+  - rule_id: v_detection
+    applies_to: "water analyses and direct waterborne releases"
+    rule: "Verify dq_detection for every applicable result and resulting substance load: retain raw results and applicable detection/quantification limits, explicit non-detect treatment and propagated uncertainty. Neither a non-detect nor a missing sample implies zero. Unresolved treatment or required analytical evidence prevents finalization of the affected exchange."
+    source_ids:
+      - wild-live-method-2026
   - rule_id: validate_inventory_completion
     applies_to: "all concrete exchanges and section 8 completion obligations"
     rule: "Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence."
@@ -2069,7 +2078,7 @@ data_sources:
     used_for: "Internally defined 1 kg normalization, complete cohort/stage/consumer ledgers, measurement/balance protocols and validation; not an external observation or biological performance default"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c99e85eb2818bc2801f91299c68fcbcd6a183975c89238c9653e90234ef9244f"
+  source_sha256: "sha256:2ce99ee911a576064419b96e7940f69542c49af019a2ee4acee1691774946ba0"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6346"
@@ -2168,18 +2177,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_139830"
+    - unit_id: "normative_140657"
       family: "validation"
       span:
         start:
-          offset: 139830
-          line: 1609
+          offset: 140657
+          line: 1610
           column: 1
         end:
-          offset: 142547
-          line: 1622
+          offset: 143826
+          line: 1624
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `v_scope` | reference | Reject unknown purpose, non-wild origin, non-live state, managed production hidden as holding, excluded products or missing gate identity. Do not equate species, life stages or purposes by kg alone. | un-cpc-2025; wild-live-method-2026 |\n| `v_mass` | all inventory rows | Confirm one final 1 kg reference, actual tare/drain procedure and count-to-mass evidence, common denominator and units, measured intermediate quantities, complete mortality/reject exclusion and nonzero accepted biomass. | wild-live-method-2026 |\n| `v_route` | process map | Require actual selected order, entry/exit states, separate capture and holding, declared transfer boundary and live handover. Every conditional omission needs evidence; unknown activity is not inactive. | wild-live-method-2026 |\n| `v_inventory` | every selected node | Check each material role, source/destination and fate, external versus circulated water, provider treatment versus direct release, substance/media specificity and separate upstream/direct emissions. Missing materially plausible flows are disclosed gaps. | wild-live-method-2026 |\n| `v_attribution` | outputs, modes, periods and assets | Check complete intended-output set and handovers, chosen method precedence, consumer shares, batch/continuous runs and changeovers, stock carryover, replacement and terminal events. Fail unexplained double counts or losses. | ghg-product-2011; wild-live-method-2026 |\n| `v_identity` | exchange identities | Final exchanges require verified compatible concrete flow/property/unit identity; conditional material collection obligations require actual expansion. Unverified product or support identity remains an explicit data gap and does not establish publication readiness. | wild-live-method-2026 |\n| `v_quality` | ranges and evidence | Every amount has basis, condition, protocol/evidence and finite Range. Confirm actual foreground precedence, explain outliers and uncertainty, and do not treat initial author screens or historical husbandry examples as mandatory site performance. | wild-live-method-2026 |\n| `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `v_scope` | reference | Reject unknown purpose, non-wild origin, non-live state, managed production hidden as holding, excluded products or missing gate identity. Do not equate species, life stages or purposes by kg alone. | un-cpc-2025; wild-live-method-2026 |\n| `v_mass` | all inventory rows | Confirm one final 1 kg reference, actual tare/drain procedure and count-to-mass evidence, common denominator and units, measured intermediate quantities, complete mortality/reject exclusion and nonzero accepted biomass. | wild-live-method-2026 |\n| `v_route` | process map | Require actual selected order, entry/exit states, separate capture and holding, declared transfer boundary and live handover. Every conditional omission needs evidence; unknown activity is not inactive. | wild-live-method-2026 |\n| `v_inventory` | every selected node | Check each material role, source/destination and fate, external versus circulated water, provider treatment versus direct release, substance/media specificity and separate upstream/direct emissions. Missing materially plausible flows are disclosed gaps. | wild-live-method-2026 |\n| `v_attribution` | outputs, modes, periods and assets | Check complete intended-output set and handovers, chosen method precedence, consumer shares, batch/continuous runs and changeovers, stock carryover, replacement and terminal events. Fail unexplained double counts or losses. | ghg-product-2011; wild-live-method-2026 |\n| `v_identity` | exchange identities | Final exchanges require verified compatible concrete flow/property/unit identity; conditional material collection obligations require actual expansion. Unverified product or support identity remains an explicit data gap and does not establish publication readiness. | wild-live-method-2026 |\n| `v_quality` | ranges and evidence | Every amount has basis, condition, protocol/evidence and finite Range. Confirm actual foreground precedence, explain outliers and uncertainty, and do not treat initial author screens or historical husbandry examples as mandatory site performance. | wild-live-method-2026 |\n| `v_detection` | water analyses and direct waterborne releases | Verify dq_detection for every applicable result and resulting substance load: retain raw results and applicable detection/quantification limits, explicit non-detect treatment and propagated uncertainty. Neither a non-detect nor a missing sample implies zero. Unresolved treatment or required analytical evidence prevents finalization of the affected exchange. | wild-live-method-2026 |\n| `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2196,12 +2205,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 139830
-              line: 1609
+              offset: 140657
+              line: 1610
               column: 1
             end:
-              offset: 139852
-              line: 1609
+              offset: 140679
+              line: 1610
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -2350,106 +2359,119 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 139925
-          line: 1613
+          offset: 140752
+          line: 1614
           column: 1
         end:
-          offset: 140188
-          line: 1613
+          offset: 141015
+          line: 1614
           column: 264
     - pointer: "/validation_rules/1"
       rule_id: "v_mass"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 140189
-          line: 1614
+          offset: 141016
+          line: 1615
           column: 1
         end:
-          offset: 140468
-          line: 1614
+          offset: 141295
+          line: 1615
           column: 280
     - pointer: "/validation_rules/2"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 140469
-          line: 1615
+          offset: 141296
+          line: 1616
           column: 1
         end:
-          offset: 140725
-          line: 1615
+          offset: 141552
+          line: 1616
           column: 257
     - pointer: "/validation_rules/3"
       rule_id: "v_inventory"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 140726
-          line: 1616
+          offset: 141553
+          line: 1617
           column: 1
         end:
-          offset: 141045
-          line: 1616
+          offset: 141872
+          line: 1617
           column: 320
     - pointer: "/validation_rules/4"
       rule_id: "v_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 141046
-          line: 1617
+          offset: 141873
+          line: 1618
           column: 1
         end:
-          offset: 141370
-          line: 1617
+          offset: 142197
+          line: 1618
           column: 325
     - pointer: "/validation_rules/5"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 141371
-          line: 1618
+          offset: 142198
+          line: 1619
           column: 1
         end:
-          offset: 141701
-          line: 1618
+          offset: 142528
+          line: 1619
           column: 331
     - pointer: "/validation_rules/6"
       rule_id: "v_quality"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 141702
-          line: 1619
+          offset: 142529
+          line: 1620
           column: 1
         end:
-          offset: 142012
-          line: 1619
+          offset: 142839
+          line: 1620
           column: 311
     - pointer: "/validation_rules/7"
-      rule_id: "validate_inventory_completion"
+      rule_id: "v_detection"
       identity_kind: "explicit"
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 142013
-          line: 1620
+          offset: 142840
+          line: 1621
           column: 1
         end:
-          offset: 142545
-          line: 1620
+          offset: 143291
+          line: 1621
+          column: 452
+    - pointer: "/validation_rules/8"
+      rule_id: "validate_inventory_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_140657"
+      source_span:
+        start:
+          offset: 143292
+          line: 1622
+          column: 1
+        end:
+          offset: 143824
+          line: 1622
           column: 533
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2490,15 +2512,15 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_139830"
+      unit_id: "normative_140657"
       source_span:
         start:
-          offset: 139830
-          line: 1609
+          offset: 140657
+          line: 1610
           column: 1
         end:
-          offset: 139852
-          line: 1609
+          offset: 140679
+          line: 1610
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2507,5 +2529,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c99e85eb2818bc2801f91299c68fcbcd6a183975c89238c9653e90234ef9244f"
-  generated_content_sha256: "sha256:87499ba0d9da136791509dd8cdde432e97d5c73edae6da89f9367510eb9882bb"
+    sha256: "sha256:2ce99ee911a576064419b96e7940f69542c49af019a2ee4acee1691774946ba0"
+  generated_content_sha256: "sha256:f7a32e0ebff9fa19411fb4be6f69b7f645e6825aeaeb69824ac041dfb5ff61aa"

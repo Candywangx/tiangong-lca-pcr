@@ -2780,14 +2780,15 @@ dataset_production:
         - flatfish-foreground-method
     - id: outfall_load
       applies_to: "direct substance release"
-      rule: "Integrate matched flow times duration times concentration after explicit background, species/elemental and unit conversions; retain net/gross choice and uncertainty. Feed-input balance estimates require composition, retained growth and all removal fates; never equate feed nutrient input to direct emission."
+      rule: "Calculate gross outlet load G_s by integrating actual outlet flow times duration times concentration for each identified substance s, with explicit elemental/species and unit conversions. The final direct-release inventory uses site-attributable load E_s = G_s minus B_pass_s, where B_pass_s is the independently evidenced incoming background amount of that same substance that actually passes through to that same receiving medium in the matched accounting interval. Establish B_pass_s from paired inlet/outlet records and an explicit source/fate balance including opening/closing water and substance stocks, residence-time lags, internal transfers, treatment, retained growth, removed solids and other actual destinations. Use each stream's own measured flow; do not assume equal inlet/outlet volume, subtract the whole inlet load by default, or deduct recirculation again. Gross G_s is retained as a diagnostic, not added again as a second inventory emission. If B_pass_s or its exclusion as inapplicable cannot be evidenced, retain the gross observation and the unresolved attribution gap; do not silently choose gross/net or finalize the affected E_s. Negative or uncertain differences require review, not clipping or removal credit. Apply normalize_lot to the supported original E_s once. Feed-input balance estimates are an alternative evidence route only with composition, retained growth and all removal fates reconciled to this same site-attributable boundary; never equate feed nutrient input to direct emission or add both estimates."
       inputs:
-        - flow
+        - "actual stream-specific flow"
         - duration
-        - "inlet/outlet concentration"
-        - "substance basis"
+        - "matched inlet/outlet substance concentrations and units"
+        - "source/fate and opening/closing stock records"
         - "lab QA"
-      output: "kg actual substance to identified medium"
+        - "background pass-through evidence"
+      output: "kg site-attributable substance to identified medium before normalize_lot"
       source_ids:
         - flatfish-foreground-method
     - id: combustion_leak
@@ -2809,6 +2810,10 @@ dataset_production:
       applies_to: "cohort and environment"
       requirement: "Reconcile all stock phases and transfer ids, growth, feed moisture, mortality/escape/rejects; preserve all stage fates and outfall lab QA; disclose residual balances and detection limits."
       evidence: "primary ledger, calibration and lab QA"
+    - id: quality_outfall_basis
+      applies_to: "direct substance release at every actual stage/outfall under its own collection protocol"
+      requirement: "Retain gross outlet G_s, evidenced incoming background B_pass_s and resulting site-attributable E_s separately in kg of each actual substance before final reference normalization. Link sample, stream, node, receiver, event/interval and residence-time alignment; document each flow/duration/concentration conversion, background source and its actual pass-through versus treatment/retention/other fate, opening/closing stocks, uncertainty and any unresolved evidence. Recirculation and internal wastewater transfers are not new environmental inputs or final discharges. Do not net different substances, media or unmatched periods, assume the entire inlet load passes through without source/fate evidence, or count provider treatment/direct releases twice. A supported zero background contribution requires evidence, not absent inlet records."
+      evidence: "Paired stream measurements and laboratory reports; source/fate and stock balance; background-attribution calculation and uncertainty"
     - id: quality_coverage
       applies_to: "all quantities"
       requirement: "No omitted owned phase, resource, emission or supplier burden may be replaced by silent zero. State measured, calculated or estimated coverage and uncertainty; provisional QA ranges never supply missing observations."
@@ -3272,6 +3277,11 @@ validation_rules:
     rule: "Retain raw results, detection/quantification limits, sampling background and analytical uncertainty. Non-detect is not an automatic zero: disclose a justified bounded estimate or gap. A negative inlet-adjusted concentration/load triggers sampling/background review; preserve raw data, do not clip to zero or claim environmental removal without independently supported physical uptake and boundary evidence."
     source_ids:
       - flatfish-foreground-method
+  - rule_id: validate_outfall_basis
+    applies_to: "direct waterborne-substance inventory and diagnostic balances"
+    rule: "Check outfall_load and quality_outfall_basis: the inventory has one supported E_s on the declared site-attributable basis; G_s remains a separate diagnostic and B_pass_s represents only evidenced incoming background actually reaching the same receiver. Check independent stream flows, substance/element conversion, interval/residence alignment, stocks and all treatment/removal destinations. Missing applicable background/fate evidence blocks the affected exchange; no arbitrary gross/net choice, unsupported full-inlet subtraction, recirculation subtraction, duplicate estimate, clipping or unsupported negative credit is permitted."
+    source_ids:
+      - flatfish-foreground-method
   - rule_id: validate_attribution
     applies_to: "common resources; periods; products"
     rule: "Check complete output and consumer lists, phase/run/period boundaries, carryover and replacement/terminal events, drivers and denominator totals, shared invoices/meters and no duplicate internal flows or upstream burdens."
@@ -3331,7 +3341,7 @@ data_sources:
     used_for: "Gate/form boundary, measurement and collection/calculation rules, stage/fate ledgers, cross-period attribution, unit conversions and 1–1 kg internal reference identity. Broad non-reference screening ranges are separately labelled reasoned_estimate and are not empirical factors."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:004fafcb3e9fbfcb9e849963ed0953ffa940c2c2186f3173fdabcd78f41f3613"
+  source_sha256: "sha256:62508a8e95253e8bedb97dc623394af4cfb20b34ce80871ea4e30ac0d44e17e3"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6339"
@@ -3430,18 +3440,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_316662"
+    - unit_id: "normative_319144"
       family: "validation"
       span:
         start:
-          offset: 316662
-          line: 2411
+          offset: 319144
+          line: 2412
           column: 1
         end:
-          offset: 321676
-          line: 2427
+          offset: 324918
+          line: 2429
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference lot | Verify actual species with independent taxon evidence, aquaculture origin, human-food use, whole unheaded ungutted form and first producer gate. Neither a CPC label nor turbot example proves these facts. | `flatfish-foreground-method` |\n| `validate_branch` | live_gate_final; whole_chill_final; flatfish_gate_release | Verify exactly one evidenced live or fresh/chilled preparation branch supplies the final gate; independently measured branch transfer and acceptance losses reconcile to the sole 1 kg final reference output. Never fix a branch transfer to 1 kg or combine states. Unknown state or food suitability fails completeness. | `flatfish-foreground-method` |\n| `validate_phases` | hatchery; livefood; nursery; growout | Owned larval records must evidence first feeding, metamorphosis, settlement and feed transition; purchased stage must identify upstream coverage. Check phase-specific feed wet/dry basis, count/representative weight, bottom-contact area/occupancy and survival without universal stocking/FCR/temperature values. | `flatfish-foreground-method` |\n| `validate_topology` | water; energy; treatment | Require actual unit-period water diagram, sources and meters; RAS requires actual circulation, filtration/biofilter, solids/backwash and treatment evidence. Confirm abstraction/supply/recirculation distinction, current energy provider and treatment ownership. | `flatfish-foreground-method` |\n| `validate_closure` | all processes | Reconcile phase counts/wet biomass, transfers, growth, mortality, escapes, rejects and final handoff with uncertainty. Check growout_fish → harvest_ready_fish → harvest_collected_fish → selected state intake by event: fresh whole fish require independent suitability evidence and only whole_chill; live_gate receives live fish only; product and mortality waste are exclusive. whole_chill alone owns fresh/chilled-lot pre-killing holding resources/losses, including actual maintenance feed and escape fates. Link all actual stage resources, cleaning/health events, direct releases and waste transfers to unique source unit/cohort/period and final fate; check feed nutrient/material and treatment balances with substance, concentration, background, flow, duration and lab QA. | `flatfish-foreground-method` |\n| `validate_detection` | direct release and concentration records | Retain raw results, detection/quantification limits, sampling background and analytical uncertainty. Non-detect is not an automatic zero: disclose a justified bounded estimate or gap. A negative inlet-adjusted concentration/load triggers sampling/background review; preserve raw data, do not clip to zero or claim environmental removal without independently supported physical uptake and boundary evidence. | `flatfish-foreground-method` |\n| `validate_attribution` | common resources; periods; products | Check complete output and consumer lists, phase/run/period boundaries, carryover and replacement/terminal events, drivers and denominator totals, shared invoices/meters and no duplicate internal flows or upstream burdens. | `flatfish-foreground-method` |\n| `validate_ranges` | all cards | Use foreground measurements first. All provisional reasoned_estimate ranges are replaceable QA screens, not design/operation limits or substitute values; review outliers and expand with evidence, never clip. Zero requires documented non-use, not missing records. | `flatfish-foreground-method` |\n| `validate_identity` | all exchanges | Resolve each actual concrete product/waste/elementary exchange and compatible property/unit before final TIDAS use. Conditional collection obligations in Section 8 require actual distinct substances/materials and destinations. Fixed identity evidence does not prove quantity, emission factor or publication readiness. | `flatfish-foreground-method` |\n| `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |\n| `validate_final_gate` | declared_gate_release | Exactly one evidenced actual-state branch feeds the final gate; reference definition, actual fish state and release record agree. Use final accepted net mass at this gate as the sole denominator throughout; reconcile receipt, acceptance rejects, losses and output without fixing internal transfers to 1 kg. Own operating resources once at the actual responsible node. Unknown state, denominator or fate makes the dataset incomplete and fails validation. | `flatfish-foreground-method` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference lot | Verify actual species with independent taxon evidence, aquaculture origin, human-food use, whole unheaded ungutted form and first producer gate. Neither a CPC label nor turbot example proves these facts. | `flatfish-foreground-method` |\n| `validate_branch` | live_gate_final; whole_chill_final; flatfish_gate_release | Verify exactly one evidenced live or fresh/chilled preparation branch supplies the final gate; independently measured branch transfer and acceptance losses reconcile to the sole 1 kg final reference output. Never fix a branch transfer to 1 kg or combine states. Unknown state or food suitability fails completeness. | `flatfish-foreground-method` |\n| `validate_phases` | hatchery; livefood; nursery; growout | Owned larval records must evidence first feeding, metamorphosis, settlement and feed transition; purchased stage must identify upstream coverage. Check phase-specific feed wet/dry basis, count/representative weight, bottom-contact area/occupancy and survival without universal stocking/FCR/temperature values. | `flatfish-foreground-method` |\n| `validate_topology` | water; energy; treatment | Require actual unit-period water diagram, sources and meters; RAS requires actual circulation, filtration/biofilter, solids/backwash and treatment evidence. Confirm abstraction/supply/recirculation distinction, current energy provider and treatment ownership. | `flatfish-foreground-method` |\n| `validate_closure` | all processes | Reconcile phase counts/wet biomass, transfers, growth, mortality, escapes, rejects and final handoff with uncertainty. Check growout_fish → harvest_ready_fish → harvest_collected_fish → selected state intake by event: fresh whole fish require independent suitability evidence and only whole_chill; live_gate receives live fish only; product and mortality waste are exclusive. whole_chill alone owns fresh/chilled-lot pre-killing holding resources/losses, including actual maintenance feed and escape fates. Link all actual stage resources, cleaning/health events, direct releases and waste transfers to unique source unit/cohort/period and final fate; check feed nutrient/material and treatment balances with substance, concentration, background, flow, duration and lab QA. | `flatfish-foreground-method` |\n| `validate_detection` | direct release and concentration records | Retain raw results, detection/quantification limits, sampling background and analytical uncertainty. Non-detect is not an automatic zero: disclose a justified bounded estimate or gap. A negative inlet-adjusted concentration/load triggers sampling/background review; preserve raw data, do not clip to zero or claim environmental removal without independently supported physical uptake and boundary evidence. | `flatfish-foreground-method` |\n| `validate_outfall_basis` | direct waterborne-substance inventory and diagnostic balances | Check outfall_load and quality_outfall_basis: the inventory has one supported E_s on the declared site-attributable basis; G_s remains a separate diagnostic and B_pass_s represents only evidenced incoming background actually reaching the same receiver. Check independent stream flows, substance/element conversion, interval/residence alignment, stocks and all treatment/removal destinations. Missing applicable background/fate evidence blocks the affected exchange; no arbitrary gross/net choice, unsupported full-inlet subtraction, recirculation subtraction, duplicate estimate, clipping or unsupported negative credit is permitted. | `flatfish-foreground-method` |\n| `validate_attribution` | common resources; periods; products | Check complete output and consumer lists, phase/run/period boundaries, carryover and replacement/terminal events, drivers and denominator totals, shared invoices/meters and no duplicate internal flows or upstream burdens. | `flatfish-foreground-method` |\n| `validate_ranges` | all cards | Use foreground measurements first. All provisional reasoned_estimate ranges are replaceable QA screens, not design/operation limits or substitute values; review outliers and expand with evidence, never clip. Zero requires documented non-use, not missing records. | `flatfish-foreground-method` |\n| `validate_identity` | all exchanges | Resolve each actual concrete product/waste/elementary exchange and compatible property/unit before final TIDAS use. Conditional collection obligations in Section 8 require actual distinct substances/materials and destinations. Fixed identity evidence does not prove quantity, emission factor or publication readiness. | `flatfish-foreground-method` |\n| `validate_inventory_completion` | all concrete exchanges and section 8 completion obligations | Verify each applicable dq_complete obligation has separately measured and identity-verified exchange cards. Check each quantity, native unit, range evidence, normalization, receiving medium, destination and non-duplication. Any unfulfilled actual child exchange, quantity, identity or destination makes the final dataset incomplete and fails validation; unknown cannot be zero. Static PCR checking does not replace this evidence. |  |\n| `validate_final_gate` | declared_gate_release | Exactly one evidenced actual-state branch feeds the final gate; reference definition, actual fish state and release record agree. Use final accepted net mass at this gate as the sole denominator throughout; reconcile receipt, acceptance rejects, losses and output without fixing internal transfers to 1 kg. Own operating resources once at the actual responsible node. Unknown state, denominator or fate makes the dataset incomplete and fails validation. | `flatfish-foreground-method` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -3458,12 +3468,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 316662
-              line: 2411
+              offset: 319144
+              line: 2412
               column: 1
             end:
-              offset: 316684
-              line: 2411
+              offset: 319166
+              line: 2412
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -3651,145 +3661,158 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 316757
-          line: 2415
+          offset: 319239
+          line: 2416
           column: 1
         end:
-          offset: 317030
-          line: 2415
+          offset: 319512
+          line: 2416
           column: 274
     - pointer: "/validation_rules/1"
       rule_id: "validate_branch"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 317031
-          line: 2416
+          offset: 319513
+          line: 2417
           column: 1
         end:
-          offset: 317461
-          line: 2416
+          offset: 319943
+          line: 2417
           column: 431
     - pointer: "/validation_rules/2"
       rule_id: "validate_phases"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 317462
-          line: 2417
+          offset: 319944
+          line: 2418
           column: 1
         end:
-          offset: 317865
-          line: 2417
+          offset: 320347
+          line: 2418
           column: 404
     - pointer: "/validation_rules/3"
       rule_id: "validate_topology"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 317866
-          line: 2418
+          offset: 320348
+          line: 2419
           column: 1
         end:
-          offset: 318209
-          line: 2418
+          offset: 320691
+          line: 2419
           column: 344
     - pointer: "/validation_rules/4"
       rule_id: "validate_closure"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 318210
-          line: 2419
+          offset: 320692
+          line: 2420
           column: 1
         end:
-          offset: 319055
-          line: 2419
+          offset: 321537
+          line: 2420
           column: 846
     - pointer: "/validation_rules/5"
       rule_id: "validate_detection"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 319056
-          line: 2420
+          offset: 321538
+          line: 2421
           column: 1
         end:
-          offset: 319563
-          line: 2420
+          offset: 322045
+          line: 2421
           column: 508
     - pointer: "/validation_rules/6"
+      rule_id: "validate_outfall_basis"
+      identity_kind: "explicit"
+      unit_id: "normative_319144"
+      source_span:
+        start:
+          offset: 322046
+          line: 2422
+          column: 1
+        end:
+          offset: 322805
+          line: 2422
+          column: 760
+    - pointer: "/validation_rules/7"
       rule_id: "validate_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 319564
-          line: 2421
+          offset: 322806
+          line: 2423
           column: 1
         end:
-          offset: 319883
-          line: 2421
+          offset: 323125
+          line: 2423
           column: 320
-    - pointer: "/validation_rules/7"
+    - pointer: "/validation_rules/8"
       rule_id: "validate_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 319884
-          line: 2422
+          offset: 323126
+          line: 2424
           column: 1
         end:
-          offset: 320213
-          line: 2422
+          offset: 323455
+          line: 2424
           column: 330
-    - pointer: "/validation_rules/8"
+    - pointer: "/validation_rules/9"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 320214
-          line: 2423
+          offset: 323456
+          line: 2425
           column: 1
         end:
-          offset: 320604
-          line: 2423
+          offset: 323846
+          line: 2425
           column: 391
-    - pointer: "/validation_rules/9"
+    - pointer: "/validation_rules/10"
       rule_id: "validate_inventory_completion"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 320605
-          line: 2424
+          offset: 323847
+          line: 2426
           column: 1
         end:
-          offset: 321137
-          line: 2424
+          offset: 324379
+          line: 2426
           column: 533
-    - pointer: "/validation_rules/10"
+    - pointer: "/validation_rules/11"
       rule_id: "validate_final_gate"
       identity_kind: "explicit"
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 321138
-          line: 2425
+          offset: 324380
+          line: 2427
           column: 1
         end:
-          offset: 321674
-          line: 2425
+          offset: 324916
+          line: 2427
           column: 537
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -3830,15 +3853,15 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_316662"
+      unit_id: "normative_319144"
       source_span:
         start:
-          offset: 316662
-          line: 2411
+          offset: 319144
+          line: 2412
           column: 1
         end:
-          offset: 316684
-          line: 2411
+          offset: 319166
+          line: 2412
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -3847,5 +3870,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:004fafcb3e9fbfcb9e849963ed0953ffa940c2c2186f3173fdabcd78f41f3613"
-  generated_content_sha256: "sha256:278d3f67a34156575cddf3b079271faa8ebbb1ec29e822f046c7ad8029acfd89"
+    sha256: "sha256:62508a8e95253e8bedb97dc623394af4cfb20b34ce80871ea4e30ac0d44e17e3"
+  generated_content_sha256: "sha256:d2af883a8d2c5a109beceb4ac24fc41d2102311b11aa8d21514031a210834141"
