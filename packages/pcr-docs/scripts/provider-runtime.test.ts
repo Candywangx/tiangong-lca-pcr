@@ -72,6 +72,18 @@ test('unsupported malformed markup and ambiguous numeric references fail closed'
  assert.throws(()=>htmlAnchors('x'.repeat(25_000_000)),/Invalid generated anchor HTML/);
 });
 
+test('declarative shadow templates cannot provide an ordinary document anchor',()=>{const f=fixture();try{
+ install(f.root);const proof=createProviderRuntime(f.root,source)!;write(f.out,PROVIDER_RUNTIME_FILE,JSON.stringify(proof));
+ write(f.root,'packages/pcr-docs/compatibility/published-chapter-anchors.json',JSON.stringify({schemaVersion:1,baseline:'fixture',requirements:[{from:proof.routes[0]!.from,anchors:['section']}]}));
+ for(const attribute of ['shadowrootmode="open"','shadowrootmode="closed"','SHADOWROOTMODE="OPEN"','shadowrootmode="unsupported"']){
+  const html='<div><template '+attribute+' id="section"><h2 id="shadow-content">Shadow</h2></template></div>';
+  assert.throws(()=>htmlAnchors(html),/Unsupported generated declarative shadow root/);
+  write(f.out,'en/docs/pcr/a/b/c/index.html',html);
+  assert.throws(()=>verifyProviderRuntimeExport(f.out,source,proof),/Unsupported generated declarative shadow root/);
+  assert.throws(()=>verifyPublishedChapterAnchors(f.root,f.out,proof),/Unsupported generated declarative shadow root/);
+ }
+}finally{f.cleanup();}});
+
 test('source lookup handles emitted paths and stops at the nearest checkout boundary',()=>{const f=fixture();try{
  write(f.root,'.git','gitdir: fixture-marker\n');const emitted='dist/test-engineering/scripts/engineering/space name.js';write(f.root,emitted,'export {};\n');
  assert.equal(providerRuntimeSourceRoot(pathToFileURL(path.join(f.root,emitted))),f.root);

@@ -110,6 +110,8 @@ export function htmlAnchors(html:string):Set<string>{
    if(tag==='template')templateDepth--;if(tag==='svg'||tag==='math')foreignDepth--;if(tag==='select')selectDepth--;if(tag==='form')formDepth--;
    continue;
   }
+  // Declarative shadow roots consume their template owner; its id is not a document anchor.
+  if(tag==='template')assert(!attributes.has('shadowrootmode'),'Unsupported generated declarative shadow root');
   assert(tag!=='plaintext'&&tag!=='frameset'&&tag!=='frame','Unsupported generated HTML container');
   const parent=stack.at(-1);
   if(!templateDepth&&!foreignDepth){

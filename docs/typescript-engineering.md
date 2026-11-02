@@ -22,8 +22,8 @@ checkPaths:
   - scripts/engineering/**
   - .github/workflows/**
 lastReviewedAt: 2026-11-02
-lastReviewedCommit: fb5235da528f578f9d3d18d63adcc134cecabd70
-lastReviewedNote: "PCR #164: reviewed PR161 and the bounded anchor-verifier repair from fb5235da. All 69 candidate records and 68 additive mappings retain their source/status boundaries. The dependency-free generated-HTML scanner rejects apparent anchors in attributes, comments and raw/inert content; 111 focused tests and all 3,318 incoming HTML pages agree with DOM anchor inventories. Full final-source hosted qualification, independent boundary recheck and exact workspace integration remain required; no publication or scientific approval is claimed."
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
