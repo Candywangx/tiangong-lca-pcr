@@ -1,7 +1,11 @@
 import published from '../compatibility/published-chapters.json' with { type: 'json' };
+import packed from '../compatibility/packed-chapters.json' with { type: 'json' };
 
 export interface ChapterAlias { readonly from: string; readonly to: string; readonly anchor: string }
-export const CHAPTER_ALIASES: readonly ChapterAlias[] = Object.freeze(published.entries.map(row => Object.freeze(row)));
+export const PUBLISHED_CHAPTER_ALIASES: readonly ChapterAlias[] = Object.freeze(published.entries.map(row => Object.freeze(row)));
+export const CHAPTER_ALIASES: readonly ChapterAlias[] = Object.freeze([
+  ...PUBLISHED_CHAPTER_ALIASES, ...packed.documents.flatMap(document => document.entries),
+].sort((a,b) => a.from < b.from ? -1 : a.from > b.from ? 1 : 0).map(row => Object.freeze(row)));
 const bySource = new Map(CHAPTER_ALIASES.map(row => [row.from, row]));
 const byTarget = new Map<string, readonly ChapterAlias[]>();
 for (const row of CHAPTER_ALIASES) byTarget.set(row.to, Object.freeze([...(byTarget.get(row.to) ?? []), row]));
@@ -28,4 +32,12 @@ export function rewriteChapterRequest(request: Request): string | undefined {
 export function compatibilityDestination(href: string, aliases: readonly ChapterAlias[]): string | undefined {
   const url = new URL(href), alias = aliases.find(row => row.from === documentPath(url.pathname));
   return alias ? alias.to + url.search + (url.hash || '#' + encodeURIComponent(alias.anchor)) : undefined;
+}
+
+/** Resolve a logical search hit before client navigation requests physical RSC assets. */
+export function readingTarget(href: string): string {
+  if (!href.startsWith('/') || href.startsWith('//')) return href;
+  const url = new URL(href, 'https://pcr.tiangong.earth');
+  const alias = bySource.get(documentPath(url.pathname));
+  return alias ? alias.to + url.search + (url.hash || '#' + encodeURIComponent(alias.anchor)) : href;
 }

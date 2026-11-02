@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-01
-lastReviewedNote: "Reviewed physical-only generation and retained inline compatibility at source 1ca1c004. This clarification changes no runtime, canonical content, pins or resource gates; product receipts remain bound to their tested source."
-lastReviewedCommit: 1ca1c00418271410ec0cc2b86805194cd528f03a
+lastReviewedAt: 2026-11-02
+lastReviewedNote: "Reviewed the bounded adjacent-PCR reading-page packing change from d828ab7f: ordered whole nodes, unchanged byte ceilings, separate unchanged logical search units, source-bound retained reading routes and anchors, and the upstream ordinary-DOM anchor guard. Canonical/download bytes and methodology states remain unchanged. Exact-source complete qualification is required before handoff."
+lastReviewedCommit: d828ab7f73282de64b30a3d85534e1ce401c2bb7
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -616,15 +616,31 @@ changed. All heading anchors, source ownership, ToCs and internal fragment links
 are rebuilt against the resulting parts. An old-to-new part and anchor routing
 audit makes affected documents reviewable.
 
-This layout optimization changes chapter partitioning and can remove continuation
-URLs from a newly generated site. Source anchors remain available on their new
-owning page; generated links resolve to those owners. It does not establish
-compatibility for an older continuation URL. Search records are page-scoped, so
-record count and query granularity can also change; the codec's same-wire
-restoration guarantee is separate from layout changes. Complete fresh generation,
-both-language search measurements and the actual final export file count and
-browser/product gates must qualify the combined source. Projected file savings are
-diagnostics, not a complete product result.
+PCR reading pages additionally coalesce adjacent complete groups when their combined
+serialized UTF-8 HTML fits the same three-times ceiling. This changes the grouping
+policy, not the 180,000-byte target, 540,000-byte ceiling or indivisible-unit handling.
+Other document kinds retain the former partitioning. Node order, content, tables,
+code and footnotes are checked before deriving reading-page identity and links.
+
+Search retains the former post-tail logical parts, including their ids, titles,
+summaries, source-text scope, ordering and URLs. Reading pagination never merges
+these logical search units or changes ranking input. Removed reading URLs resolve
+through exact same-record, same-language middleware aliases, not redirect HTML.
+`compatibility/packed-chapters.json` binds those retained pre-packing routes to
+baseline commit and canonical source hashes; `packed-chapter-anchors.json` separately
+retains all their original anchors. They are not claims of prior publication.
+Existing published routes are flattened to final owners while their historical
+anchor ledger remains unchanged. All retained and published targets must exist in
+the ordinary document tree. The source-bound provider profile includes the added
+route source; older three-file profiles remain readable. Generation rejects source
+drift until the retained-route evidence is reviewed and updated.
+
+The anchor verifier reuses the upstream bounded generated-HTML scanner. Quoted
+attributes, comments, raw-text payloads, inert/foreign descendants and consumed
+declarative shadow templates cannot supply document anchors; unsupported structure
+fails closed. Complete fresh generation, search restoration/comparison, physical
+export counts, native downloads and browser/provider gates qualify this combined
+source. Projected savings are diagnostics, not acceptance evidence.
 
 Chapter URLs use source heading identities, with content-derived continuation
 suffixes. Tables remain whole, and
