@@ -6,7 +6,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { providerRuntimeSourceRoot, createProviderRuntime, verifyProviderRuntimeSource, verifyProviderRuntimeExport, PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_PATHS } from './provider-runtime.ts';
 const source='a'.repeat(40);
-function fixture(){const root=fs.mkdtempSync(path.join(os.tmpdir(),'pcr-provider-proof-'));const out=path.join(root,'out');fs.mkdirSync(out);return{root,out,cleanup:()=>fs.rmSync(root,{recursive:true,force:true})};}
+function fixture(){const root=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'pcr-provider-proof-')));const out=path.join(root,'out');fs.mkdirSync(out);return{root,out,cleanup:()=>fs.rmSync(root,{recursive:true,force:true})};}
 function write(root:string,file:string,value:string){const target=path.join(root,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,value);}
 function install(root:string){for(const file of PROVIDER_RUNTIME_PATHS)write(root,file,file.endsWith('.json')?JSON.stringify({schemaVersion:1,entries:[{from:'/en/docs/pcr/a/b/c/chapters/old/',to:'/en/docs/pcr/a/b/c/',anchor:'section'}]}):'export {};\n');}
 test('provider source absence is explicit, complete exact closure is required and tampering fails',()=>{const f=fixture();try{

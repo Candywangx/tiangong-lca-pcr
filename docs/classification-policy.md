@@ -21,9 +21,9 @@ checkPaths:
   - .docpact/config.yaml
   - builder/**
   - classifications/**
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: 6276557a23d5a1d651837a261e30e29a9dba22e4
-lastReviewedNote: "PCR #141: reviewed the complete 213-record content repair and 1191-edge classification union with merged dependency repairs, lossless download/inspector transport, bounded build resources and search v5. The physical dictionary envelopes retain original logical indexes, native entries, full records and all query/legacy-reader semantics under unchanged budgets. Independent content/localization and runtime review are complete; focused, strict and bounded browser checks do not substitute for fresh complete hosted corpus/site/coverage qualification. Final 1457-record combined capacity measurement, PR138-before-PR139-before-PR137 ordering, workspace integration and stable publication remain pending. Scientific and translation lifecycle states are not promoted. PCR #143 retains all 57 additional candidates, 1248 accepted edges, 1399 material records and 1693 aliases with the exact reviewed transport and name repairs. Complete fresh hosted qualification remains pending for this composition. PCR #142 retains all 58 additional candidates, the narrower ink correction and complete 1306-edge union (1457 material records, 1647 aliases). Final-source build and hosted qualification remain pending; source identities must not be substituted across receipts."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: 4062be1e99e36532aad34c490c1222b78df3f137
+lastReviewedNote: "PCR #164: reviewed PR161 source4062be1 and all69 selected canonical sets, mapping evidence and source-bound web/CI contracts. Corrected macOS fixture paths and root middleware Docpact triggers; CI job limits are explicitly120 minutes from60. Candidate/translation states, physical content, search/file/RSS guards and runtime pins remain. Independent bounded content/engineering review found no remaining material finding; final repaired-source hosted qualification and exact workspace integration remain required."
 ---
 
 # Classification Policy

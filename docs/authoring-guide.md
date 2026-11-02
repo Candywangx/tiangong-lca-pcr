@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-30
-lastReviewedCommit: 56e912858aa769ff13075fa852a344d0b730a3b9
-lastReviewedNote: "PCR #159: reviewed stable product 0.4.10 preparation at 56e91285. Authority, three package mirrors and docs lock root metadata advance together; dependency resolutions, canonical content, methodology/translation state, reader minimum and runtime pins remain unchanged. Current preparation notes distinguish verified public 0.4.9 from pending new tag qualification, coordinated npm/site publication and exact workspace integration."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: 4062be1e99e36532aad34c490c1222b78df3f137
+lastReviewedNote: "PCR #164: reviewed PR161 source4062be1 and all69 selected canonical sets, mapping evidence and source-bound web/CI contracts. Corrected macOS fixture paths and root middleware Docpact triggers; CI job limits are explicitly120 minutes from60. Candidate/translation states, physical content, search/file/RSS guards and runtime pins remain. Independent bounded content/engineering review found no remaining material finding; final repaired-source hosted qualification and exact workspace integration remain required."
 ---
 
 # Authoring Guide

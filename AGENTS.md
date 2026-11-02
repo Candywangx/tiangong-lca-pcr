@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-01
-lastReviewedCommit: f5fff32b75921454f7e0e89be6963c08f9d43733
-lastReviewedNote: "PR30: reviewed exact published-chapter compatibility, root runtime ownership and sealed source verification. Canonical content, scientific/translation states, runtime pins and deployment authority remain unchanged; final exact-source qualification is separate."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: 4062be1e99e36532aad34c490c1222b78df3f137
+lastReviewedNote: "PCR #164: reviewed PR161 source4062be1 and all69 selected canonical sets, mapping evidence and source-bound web/CI contracts. Corrected macOS fixture paths and root middleware Docpact triggers; CI job limits are explicitly120 minutes from60. Candidate/translation states, physical content, search/file/RSS guards and runtime pins remain. Independent bounded content/engineering review found no remaining material finding; final repaired-source hosted qualification and exact workspace integration remain required."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-01
-lastReviewedNote: "Reviewed physical-only generation and retained inline compatibility at source 1ca1c004. This clarification changes no runtime, canonical content, pins or resource gates; product receipts remain bound to their tested source."
-lastReviewedCommit: 1ca1c00418271410ec0cc2b86805194cd528f03a
+lastReviewedAt: 2026-11-02
+lastReviewedNote: "PCR #164: reviewed PR161 source4062be1 and all69 selected canonical sets, mapping evidence and source-bound web/CI contracts. Corrected macOS fixture paths and root middleware Docpact triggers; CI job limits are explicitly120 minutes from60. Candidate/translation states, physical content, search/file/RSS guards and runtime pins remain. Independent bounded content/engineering review found no remaining material finding; final repaired-source hosted qualification and exact workspace integration remain required."
+lastReviewedCommit: 4062be1e99e36532aad34c490c1222b78df3f137
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -355,8 +355,8 @@ handoff rejects explicit final or stage failures, nonzero exits, unmeasured or
 over-budget stage RSS, and missing or inconsistent stage/total durations; those
 checks retain the exact archive and source/run/attempt-bound log proof. All HTML,
 Next navigation payloads, raw downloads, languages, search and inspector files
-remain intact. Artifact transfer and extraction count against those unchanged
-job limits. A verified
+remain intact. Artifact transfer and extraction count against those job limits,
+increased from the previous 60 minutes. A verified
 routing-only `edgeone.json` is the sole post-verification addition; it is included
 in the transported tree. Final audit files bind that tree and the complete build
 and SEO evidence to the product artifact. The old 18-minute full-build

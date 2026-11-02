@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-30
-lastReviewedCommit: 56e912858aa769ff13075fa852a344d0b730a3b9
-lastReviewedNote: "PCR #159: reviewed stable product 0.4.10 preparation at 56e91285. Authority, three package mirrors and docs lock root metadata advance together; dependency resolutions, canonical content, methodology/translation state, reader minimum and runtime pins remain unchanged. Current preparation notes distinguish verified public 0.4.9 from pending new tag qualification, coordinated npm/site publication and exact workspace integration."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: 4062be1e99e36532aad34c490c1222b78df3f137
+lastReviewedNote: "PCR #164: reviewed PR161 source4062be1 and all69 selected canonical sets, mapping evidence and source-bound web/CI contracts. Corrected macOS fixture paths and root middleware Docpact triggers; CI job limits are explicitly120 minutes from60. Candidate/translation states, physical content, search/file/RSS guards and runtime pins remain. Independent bounded content/engineering review found no remaining material finding; final repaired-source hosted qualification and exact workspace integration remain required."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -315,7 +315,7 @@ verified bytes in a source/run/attempt/qualification-bound archive. A separate
 SEO checker and seals the two npm packages and the identical web archive. Build,
 handoff and SEO audit evidence accompanies the immutable product artifact; it
 does not replace its existing release manifest or checksum contract. Both jobs
-retain their 120-minute limits and are required in both qualification lanes.
+use 120-minute limits, increased from 60 minutes, and are required in both qualification lanes.
 The public product artifact output and publication guards remain unchanged. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.

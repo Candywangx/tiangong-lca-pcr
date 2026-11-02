@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
-lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: 4062be1e99e36532aad34c490c1222b78df3f137
+lastReviewedNote: "PCR #164: reviewed PR161 source4062be1 and all69 selected canonical sets, mapping evidence and source-bound web/CI contracts. Corrected macOS fixture paths and root middleware Docpact triggers; CI job limits are explicitly120 minutes from60. Candidate/translation states, physical content, search/file/RSS guards and runtime pins remain. Independent bounded content/engineering review found no remaining material finding; final repaired-source hosted qualification and exact workspace integration remain required."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -205,7 +205,7 @@ V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 
 PR and formal release qualification run one complete instrumented export in the
 `web-build` job, then create one sealed product bundle in the separate
-`documentation` job. Both jobs retain 120-minute limits and are mandatory in both
+`documentation` job. Both jobs use 120-minute limits, increased from 60 minutes, and are mandatory in both
 lanes. A versioned handoff binds the actual checked-out source (including PR merge
 commits), product identity, current run/attempt, CI plan and full-mode qualification
 ID/plan hash to the complete archive/tree and successful build log. The verifier
