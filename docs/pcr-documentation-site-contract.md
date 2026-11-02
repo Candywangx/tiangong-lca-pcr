@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-01
-lastReviewedNote: "Reviewed physical-only generation and retained inline compatibility at source 1ca1c004. This clarification changes no runtime, canonical content, pins or resource gates; product receipts remain bound to their tested source."
-lastReviewedCommit: 1ca1c00418271410ec0cc2b86805194cd528f03a
+lastReviewedAt: 2026-11-02
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -355,8 +355,8 @@ handoff rejects explicit final or stage failures, nonzero exits, unmeasured or
 over-budget stage RSS, and missing or inconsistent stage/total durations; those
 checks retain the exact archive and source/run/attempt-bound log proof. All HTML,
 Next navigation payloads, raw downloads, languages, search and inspector files
-remain intact. Artifact transfer and extraction count against those unchanged
-job limits. A verified
+remain intact. Artifact transfer and extraction count against those job limits,
+increased from the previous 60 minutes. A verified
 routing-only `edgeone.json` is the sole post-verification addition; it is included
 in the transported tree. Final audit files bind that tree and the complete build
 and SEO evidence to the product artifact. The old 18-minute full-build
@@ -748,7 +748,7 @@ only. Coverage never substitutes for the actual build time/RSS/provider gates.
 
 Reviewed published continuation URLs remain accessible through exact GET/HEAD middleware rewrites. `middleware.ts` and the source-owned chapter mapping preserve original query strings; an existing fragment remains browser-owned. The complete target body is served under the old URL. JavaScript uses supported native history to normalize to the target and preserve an explicit fragment or select the published first anchor. Without JavaScript, explicit source fragments remain usable; fragment-free requests do not claim automatic chapter scrolling. Unknown routes, other methods and RSC assets retain their existing routing.
 
-`generated/provider-runtime.json` seals the exact middleware/import closure and routes to the product source. Export verification requires target/default anchors, and the separate published-source anchor ledger requires every retained historical content anchor. The product archive and probe bind the proof. Provider import compares the actual regular source bytes before handoff and again before the atomic swap; a missing/substituted runtime fails. Historical immutable artifacts without this profile remain readable. Raw TypeScript export remains prohibited. New root middleware belongs to strict TypeScript and measured coverage inventories.
+`generated/provider-runtime.json` seals the exact middleware/import closure and routes to the product source. Export verification requires real target/default anchors, and the separate published-source anchor ledger requires every retained historical content anchor. Anchor checks use a dependency-free scanner for generated HTML below 25,000,000 UTF-8 bytes and at most 1,000 open elements: only first id attributes in the ordinary document tree count, with emitted character references decoded once. Quoted attribute text, comments, raw-text payloads, inert template content and foreign SVG/MathML descendants cannot supply chapter anchors. Unsupported malformed structure, declarative shadow templates or ambiguous character references fail closed; this scanner does not claim general browser error-recovery compatibility. The product archive and probe bind the proof. Provider import compares the actual regular source bytes before handoff and again before the atomic swap; a missing/substituted runtime fails. Historical immutable artifacts without this profile remain readable. Raw TypeScript export remains prohibited. New root middleware belongs to strict TypeScript and measured coverage inventories.
 
 Provider CLI discovery/compilation and sealed-browser simulation are evidence for their respective scopes. They do not assert live production adoption; deployment and live acceptance still require the existing release authority.
 

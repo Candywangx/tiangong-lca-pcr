@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-01
-lastReviewedCommit: f5fff32b75921454f7e0e89be6963c08f9d43733
-lastReviewedNote: "PR30: reviewed exact published-chapter compatibility, root runtime ownership and sealed source verification. Canonical content, scientific/translation states, runtime pins and deployment authority remain unchanged; final exact-source qualification is separate."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

@@ -14,9 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
-lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
