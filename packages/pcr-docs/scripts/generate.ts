@@ -140,6 +140,8 @@ const urlFor = (code: string, slugs: readonly string[]) =>
   "/docs/" +
   slugs.map(encodeURIComponent).join("/") +
   "/";
+const providerProof = createProviderRuntime(root, commit);
+const retainedReadingRoutes = new Map(providerProof?.routes.map(row => [row.from, row]) ?? []);
 const sourceFiles = new Map<string,{sha256:string;bytes:number}>(),
   sourceRoutes = new Map<string,string>(),
   sourceAnchors = new Map<string,Map<string,string>>(),
@@ -280,7 +282,7 @@ function renderDocument({
   downloads = [],
   alternates = {},
 }: {artifact:{text:string;path:string;sha256:string};language:string;slugs:string[];extra:Partial<DocPage>&{kind:DocPage["kind"]};downloads?:Download[];alternates?:Record<string,string>}) {
-  const rendered = renderMarkdown(artifact.text, artifact.path);
+  const rendered = renderMarkdown(artifact.text, artifact.path, {packAdjacent: extra.kind === "pcr" && !artifact.path.includes("/releases/") && providerProof !== undefined});
   const urls = rendered.parts.map((part, i) =>
     urlFor(language, i ? [...slugs, "chapters", part.slug] : slugs),
   );
@@ -289,6 +291,13 @@ function renderDocument({
       part.anchors.map((id) => [id, urls[i] + "#" + encodeURIComponent(id)]),
     ),
   );
+  for (const [index, part] of rendered.logicalParts.entries()) {
+    const oldUrl = urlFor(language, index ? [...slugs, "chapters", part.slug] : slugs);
+    if (urls.includes(oldUrl)) continue;
+    const route = retainedReadingRoutes.get(oldUrl);
+    if (!route || part.anchors.some(anchor => !anchors.get(anchor)?.startsWith(route.to + "#")))
+      throw new Error(artifact.path + ": missing retained reading route/anchor ownership for " + oldUrl);
+  }
   for (const [alias, id] of Object.entries(rendered.anchorAliases))
     anchors.set(alias, anchors.get(id)!);
   sourceAnchors.set(artifact.path, anchors);
@@ -361,17 +370,20 @@ function renderDocument({
       throw new Error(artifact.path + ": " + errorMessage(error));
     }
     write(page.htmlPath!, html);
-    const ids = new Set(part.sourceNodeIds);
-    addSearch(
-      page,
-      rendered.inventory
-        .filter((n) => ids.has(n.id))
-        .map((n) => n.text)
-        .join("\n"),
-    );
     manifest.pages.push(page);
     mapped.push({ url: page.url, sourceNodeIds: page.sourceNodeIds });
   });
+  // Reading pagination may change; logical search units and all ranking inputs do not.
+  for (const [index, part] of rendered.logicalParts.entries()) {
+    const ids = new Set(part.sourceNodeIds);
+    const logicalPage = pageInfo(language, index ? [...slugs, "chapters", part.slug] : slugs, {
+      ...extra, title: part.title,
+      description: documentSummary({title: part.title,
+        nodes: rendered.inventory.filter(node => ids.has(node.id)),
+        fallbackNodes: index === 0 ? rendered.inventory : [], language}).text,
+    });
+    addSearch(logicalPage, rendered.inventory.filter(node => ids.has(node.id)).map(node => node.text).join("\n"));
+  }
   const inventoryPath = "inventory/" + short(artifact.path) + ".json";
   json(inventoryPath, {
     sourcePath: artifact.path,
@@ -1102,8 +1114,7 @@ async function generate() {
       : {}),
   });
   if (productIdentity) json("public/product-release.json", productIdentity);
-  const providerRuntime = createProviderRuntime(root, commit);
-  if (providerRuntime) json("public/provider-runtime.json", providerRuntime);
+  if (providerProof) json("public/provider-runtime.json", providerProof);
   compileDocsBrowserAssets({outputRoot:path.join(stage,"public")});
   write(
     "public/search-engine.mjs",

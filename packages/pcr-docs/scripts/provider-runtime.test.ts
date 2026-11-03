@@ -1,10 +1,11 @@
+import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import { htmlAnchors, verifyPublishedChapterAnchors, providerRuntimeSourceRoot, createProviderRuntime, verifyProviderRuntimeSource, verifyProviderRuntimeExport, PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_PATHS } from './provider-runtime.ts';
+import { htmlAnchors, verifyPublishedChapterAnchors, PACKED_CHAPTERS_PATH, providerRuntimeSourceRoot, createProviderRuntime, verifyProviderRuntimeSource, verifyProviderRuntimeExport, PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_PATHS } from './provider-runtime.ts';
 const source='a'.repeat(40);
 function fixture(){const root=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'pcr-provider-proof-')));const out=path.join(root,'out');fs.mkdirSync(out);return{root,out,cleanup:()=>fs.rmSync(root,{recursive:true,force:true})};}
 function write(root:string,file:string,value:string){const target=path.join(root,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,value);}
@@ -89,4 +90,30 @@ test('source lookup handles emitted paths and stops at the nearest checkout boun
  assert.equal(providerRuntimeSourceRoot(pathToFileURL(path.join(f.root,emitted))),f.root);
  const nested=path.join(f.root,'nested');write(nested,'.git','gitdir: nested-fixture\n');write(nested,emitted,'export {};\n');assert.equal(providerRuntimeSourceRoot(pathToFileURL(path.join(nested,emitted))),nested);
  fs.unlinkSync(path.join(f.root,'.git'));assert.throws(()=>providerRuntimeSourceRoot(pathToFileURL(path.join(f.root,emitted))),/Cannot locate authored provider source repository/);
+}finally{f.cleanup();}});
+
+test('only real document anchors qualify; raw, inert, foreign and consumed shadow targets fail',()=>{
+ const real='<h2 id="section">Body</h2>';
+ assert(htmlAnchors(real).has('section'));
+ for(const html of ['<!-- '+real+' -->','<script>'+JSON.stringify(real)+'</script>',"<div title='"+real+"'></div>",'<template>'+real+'</template>','<svg><foreignObject>'+real+'</foreignObject></svg>'])assert(!htmlAnchors(html).has('section'));
+ for(const mode of ['open','closed','unsupported'])assert.throws(()=>htmlAnchors('<div><template shadowrootmode="'+mode+'" id="section">'+real+'</template></div>'),/declarative shadow root/);
+ assert.deepEqual([...htmlAnchors('<h2 id="first" ID="second">Text</h2>')],['first']);
+ assert.throws(()=>htmlAnchors('<h2 id="section"></h3>'));
+});
+
+test('retained reading routes bind exact source bytes and all anchors without changing publication evidence',()=>{const f=fixture();try{
+ install(f.root);
+ const sourcePath='library/pcrs/a/b/c/pcr.en-US.md';write(f.root,sourcePath,'# Original\n');
+ const sourceSha256='sha256:'+createHash('sha256').update('# Original\n').digest('hex');
+ const entry={from:'/en/docs/pcr/a/b/c/chapters/packed/',to:'/en/docs/pcr/a/b/c/',anchor:'section'};
+ const document={sourcePath,sourceSha256,entries:[entry]};
+ const mapping={schemaVersion:1,baselineCommit:source,documents:[document]};write(f.root,PACKED_CHAPTERS_PATH,JSON.stringify(mapping));
+ write(f.root,'packages/pcr-docs/compatibility/packed-chapter-anchors.json',JSON.stringify({...mapping,documents:[{...document,entries:[{...entry,anchors:['section','second']}]}]}));
+ write(f.root,'packages/pcr-docs/compatibility/published-chapter-anchors.json',JSON.stringify({schemaVersion:1,baseline:'published fixture',requirements:[{from:'/en/docs/pcr/a/b/c/chapters/old/',anchors:['section']}]}));
+ const proof=createProviderRuntime(f.root,source)!;assert.equal(proof.files.length,4);assert.equal(proof.routes.length,2);
+ write(f.out,PROVIDER_RUNTIME_FILE,JSON.stringify(proof));write(f.out,'en/docs/pcr/a/b/c/index.html','<main><h2 id="section">Body</h2><p id="second">Second</p></main>');
+ verifyProviderRuntimeExport(f.out,source,proof);verifyPublishedChapterAnchors(f.root,f.out,proof);
+ write(f.out,'en/docs/pcr/a/b/c/index.html','<h2 id="section">Body</h2><!-- <p id="second"></p> -->');
+ assert.throws(()=>verifyPublishedChapterAnchors(f.root,f.out,proof),/Retained reading anchor missing/);
+ write(f.root,sourcePath,'# Changed\n');assert.throws(()=>createProviderRuntime(f.root,source),/Packed chapter source changed/);
 }finally{f.cleanup();}});

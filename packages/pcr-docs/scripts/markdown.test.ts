@@ -236,3 +236,42 @@ test("coalescing charges UTF-8 bytes and retains the exact existing 3x ceiling",
     rendered(result).forEach((document, index) => verifyRenderedBlocks(document, result.inventory, result.parts[index]!.sourceNodeIds));
   }
 });
+
+test('PCR adjacent packing preserves legacy search units, full ordered nodes and anchor ownership', () => {
+  const source = '---\nlanguage: en-US\n---\n# One PCR\n\n## Alpha\n\n' + 'a'.repeat(900) + ' [next](#beta) and a note[^n].\n\n## Beta\n\n' + '中'.repeat(300) + '\n\n[^n]: Original footnote.\n';
+  const legacy = renderMarkdown(source, 'same-pcr', {maxHtmlBytes: 1_000});
+  const packed = renderMarkdown(source, 'same-pcr', {maxHtmlBytes: 1_000, packAdjacent: true});
+  assert.equal(legacy.parts.length, 2);
+  assert.equal(packed.parts.length, 1);
+  assert.deepEqual(packed.logicalParts, legacy.parts);
+  assert.deepEqual(packed.parts.flatMap(p=>p.nodes), legacy.parts.flatMap(p=>p.nodes));
+  assert.deepEqual(packed.parts.flatMap(p=>p.sourceNodeIds), legacy.parts.flatMap(p=>p.sourceNodeIds));
+  assert.deepEqual(packed.parts.flatMap(p=>p.anchors).sort(), legacy.parts.flatMap(p=>p.anchors).sort());
+  rendered(packed).forEach((document,index)=>verifyRenderedBlocks(document,packed.inventory,packed.parts[index]!.sourceNodeIds));
+  assert.equal(packed.parts[0]!.sourceHeadingId,legacy.parts[0]!.sourceHeadingId);
+});
+
+test('adjacent packing uses actual UTF-8 bytes at the unchanged ceiling and never splits oversized tables', () => {
+  const sourceFor=(count:number)=>'---\nlanguage: zh-CN\n---\n# Same document\n\n## A\n\n'+'a'.repeat(900)+'\n\n## B\n\n'+'中'.repeat(count)+'\n';
+  for(const [count,pages] of [[400,1],[800,2]] as const){
+    const result=renderMarkdown(sourceFor(count),'utf8-adjacent',{maxHtmlBytes:1_000,packAdjacent:true});
+    assert.equal(result.parts.length,pages);
+    if(pages===1)assert(Buffer.byteLength(finalizePart(result.parts[0]!,{hrefForAnchor:a=>a}))<=3_000);
+    assert.deepEqual(result.parts.flatMap(p=>p.nodes),result.logicalParts.flatMap(p=>p.nodes));
+  }
+  const source='---\nlanguage: zh-CN\n---\n# Atomic\n\n## A\n\n| Field | Value |\n| --- | --- |\n| a | '+'中'.repeat(1_100)+' |\n\n## B\n\n'+'b'.repeat(700)+'\n';
+  const result=renderMarkdown(source,'large-table-adjacent',{maxHtmlBytes:1_000,packAdjacent:true});
+  assert.equal(result.parts.length,2);
+  assert.equal(result.parts.flatMap(p=>p.nodes).filter(n=>n.type==='element'&&n.tagName==='table').length,1);
+  assert.deepEqual(result.parts.flatMap(p=>p.nodes),result.logicalParts.flatMap(p=>p.nodes));
+});
+
+test('adjacent complete groups merge at the exact existing byte ceiling but not one byte above',()=>{
+ const sourceFor=(n:number)=>'---\nlanguage: en-US\n---\n# Bound\n\n## Alpha\n\n'+'a'.repeat(900)+'\n\n## Beta\n\n'+'b'.repeat(n)+'\n';
+ const probe=renderMarkdown(sourceFor(1),'adjacent-exact',{maxHtmlBytes:100_000,packAdjacent:true});
+ const overhead=Buffer.byteLength(finalizePart(probe.parts[0]!,{hrefForAnchor:a=>a}))-1;
+ for(const [extra,count] of [[0,1],[1,2]] as const){
+  const result=renderMarkdown(sourceFor(3_000-overhead+extra),'adjacent-exact',{maxHtmlBytes:1_000,packAdjacent:true});
+  assert.equal(result.parts.length,count);assert.deepEqual(result.parts.flatMap(p=>p.nodes),result.logicalParts.flatMap(p=>p.nodes));
+ }
+});
