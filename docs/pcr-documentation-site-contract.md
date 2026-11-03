@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-11-03
-lastReviewedNote: "Reviewed reconciliation with Candywangx main 4de4fcd9: preserve the upstream ordinary-document and consumed-shadow anchor guards and their negative cases alongside bounded adjacent-PCR reading-page packing, unchanged logical search units, and source-bound retained reading routes. Canonical/download bytes, methodology states, runtime pins and resource guards are unchanged. Fresh qualification of the reconciled source remains separate from publication or scientific approval."
-lastReviewedCommit: e7b243d432a620f493a29cc0684b43456191c004
+lastReviewedNote: "Reviewed the scoped CPC3 source at ab6786c1 and its captured search-capacity failure. Generator-only bounded physical layout selection and equivalent dictionary escaping preserve existing logical wires, records, readers, source/route/anchor checks and budgets. The selected final source still requires fresh complete validation and documentation qualification; scientific status, publication and deployment authority are unchanged."
+lastReviewedCommit: ab6786c1c836d1292d16b4b4b8ff5f5a087475a7
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -548,6 +548,17 @@ shapes, large deltas or ineligible expansion retain native columns. Readers for
 versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buckets,
 complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
 including the manifest, remain unchanged.
+
+The generator retains the original sixteen-member greedy layout as a candidate
+and compares a bounded set of consecutive pack boundaries near balanced cuts.
+At each cut position it retains at most sixteen paths. Physical dictionary strings
+may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
+gzip is smaller; dictionary values and first-appearance order remain exact. The
+complete manifest and physical files determine the selected gzip cost within the
+unchanged raw budget. Candidates must also retain the existing per-pack physical
+and summed restored-wire byte limits before selection. This does not change
+logical text buckets, engine exports,
+record fields, logical order, ranking, decoder versions or any size/expansion guard.
 
 `node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
 compares captured physical assets with repacked v7 files over the exact same
