@@ -21,9 +21,9 @@ checkPaths:
   - .docpact/config.yaml
   - builder/**
   - classifications/**
-lastReviewedAt: 2026-10-23
-lastReviewedCommit: 6276557a23d5a1d651837a261e30e29a9dba22e4
-lastReviewedNote: "PCR #141: reviewed the complete 213-record content repair and 1191-edge classification union with merged dependency repairs, lossless download/inspector transport, bounded build resources and search v5. The physical dictionary envelopes retain original logical indexes, native entries, full records and all query/legacy-reader semantics under unchanged budgets. Independent content/localization and runtime review are complete; focused, strict and bounded browser checks do not substitute for fresh complete hosted corpus/site/coverage qualification. Final 1457-record combined capacity measurement, PR138-before-PR139-before-PR137 ordering, workspace integration and stable publication remain pending. Scientific and translation lifecycle states are not promoted. PCR #143 retains all 57 additional candidates, 1248 accepted edges, 1399 material records and 1693 aliases with the exact reviewed transport and name repairs. Complete fresh hosted qualification remains pending for this composition. PCR #142 retains all 58 additional candidates, the narrower ink correction and complete 1306-edge union (1457 material records, 1647 aliases). Final-source build and hosted qualification remain pending; source identities must not be substituted across receipts."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
 ---
 
 # Classification Policy
