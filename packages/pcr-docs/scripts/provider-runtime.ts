@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 export const PROVIDER_RUNTIME_FILE='generated/provider-runtime.json';
 export const PROVIDER_RUNTIME_PATHS=['middleware.ts','packages/pcr-docs/lib/chapter-compatibility.ts','packages/pcr-docs/compatibility/published-chapters.json'] as const;
+export const PACKED_CHAPTERS_PATH='packages/pcr-docs/compatibility/packed-chapters.json';
 export interface ProviderRuntime {schemaVersion:1;sourceCommit:string;files:{path:string;bytes:number;sha256:string}[];routes:{from:string;to:string;anchor:string}[]}
 function record(value:unknown):Record<string,unknown>{assert(value&&typeof value==='object'&&!Array.isArray(value),'Invalid provider runtime object');return value as Record<string,unknown>;}
 function exact(value:Record<string,unknown>,keys:string[]){assert.deepEqual(Object.keys(value).sort(),keys.sort(),'Invalid provider runtime fields');}
@@ -22,15 +23,29 @@ function routeRows(value:unknown):ProviderRuntime['routes']{
  const sources=new Set(rows.map(row=>row.from));assert.equal(sources.size,rows.length);assert(rows.every(row=>!sources.has(row.to)),'Compatibility routes cannot cycle');assert.deepEqual(rows.map(row=>row.from),rows.map(row=>row.from).sort());return rows;
 }
 export function parseProviderRuntime(value:unknown,sourceCommit:string):ProviderRuntime{
- assert(/^[a-f0-9]{40}$/u.test(sourceCommit));const proof=record(value);exact(proof,['schemaVersion','sourceCommit','files','routes']);assert.equal(proof.schemaVersion,1);assert.equal(proof.sourceCommit,sourceCommit);assert(Array.isArray(proof.files));assert.equal(proof.files.length,PROVIDER_RUNTIME_PATHS.length);
- const files=proof.files.map((raw,index)=>{const file=record(raw);exact(file,['path','bytes','sha256']);assert.equal(file.path,PROVIDER_RUNTIME_PATHS[index]);assert(typeof file.bytes==='number'&&Number.isSafeInteger(file.bytes)&&file.bytes>0&&file.bytes<1_000_000);assert(typeof file.sha256==='string'&&/^sha256:[a-f0-9]{64}$/u.test(file.sha256));return{path:PROVIDER_RUNTIME_PATHS[index]!,bytes:file.bytes,sha256:file.sha256};});
+ assert(/^[a-f0-9]{40}$/u.test(sourceCommit));const proof=record(value);exact(proof,['schemaVersion','sourceCommit','files','routes']);assert.equal(proof.schemaVersion,1);assert.equal(proof.sourceCommit,sourceCommit);assert(Array.isArray(proof.files));assert(proof.files.length===PROVIDER_RUNTIME_PATHS.length||proof.files.length===PROVIDER_RUNTIME_PATHS.length+1);
+ const expectedPaths:readonly string[]=proof.files.length===PROVIDER_RUNTIME_PATHS.length?[...PROVIDER_RUNTIME_PATHS]:[...PROVIDER_RUNTIME_PATHS,PACKED_CHAPTERS_PATH];
+ const files=proof.files.map((raw,index)=>{const file=record(raw);exact(file,['path','bytes','sha256']);assert.equal(file.path,expectedPaths[index]);assert(typeof file.bytes==='number'&&Number.isSafeInteger(file.bytes)&&file.bytes>0&&file.bytes<1_000_000);assert(typeof file.sha256==='string'&&/^sha256:[a-f0-9]{64}$/u.test(file.sha256));return{path:expectedPaths[index]!,bytes:file.bytes,sha256:file.sha256};});
  return{schemaVersion:1,sourceCommit,files,routes:routeRows(proof.routes)};
 }
 export function createProviderRuntime(root:string,sourceCommit:string):ProviderRuntime|undefined{
  const present=PROVIDER_RUNTIME_PATHS.map(file=>fs.existsSync(path.join(root,file)));if(!present.some(Boolean))return undefined;assert(present.every(Boolean),'Incomplete provider runtime closure');
- const files=PROVIDER_RUNTIME_PATHS.map(file=>{const bytes=regular(root,file);return{path:file,bytes:bytes.length,sha256:hash(bytes)};});
+ const sourcePaths:readonly string[]=fs.existsSync(path.join(root,PACKED_CHAPTERS_PATH))?[...PROVIDER_RUNTIME_PATHS,PACKED_CHAPTERS_PATH]:PROVIDER_RUNTIME_PATHS;
+ const files=sourcePaths.map(file=>{const bytes=regular(root,file);return{path:file,bytes:bytes.length,sha256:hash(bytes)};});
  const mapping=record(JSON.parse(regular(root,PROVIDER_RUNTIME_PATHS[2]).toString('utf8')) as unknown);exact(mapping,['schemaVersion','entries']);assert.equal(mapping.schemaVersion,1);
- return parseProviderRuntime({schemaVersion:1,sourceCommit,files,routes:mapping.entries},sourceCommit);
+ const routes=[...routeRows(mapping.entries)];
+ if(sourcePaths.includes(PACKED_CHAPTERS_PATH)){
+  const packed=record(JSON.parse(regular(root,PACKED_CHAPTERS_PATH).toString('utf8')) as unknown);
+  exact(packed,['schemaVersion','baselineCommit','documents']);assert.equal(packed.schemaVersion,1);assert(typeof packed.baselineCommit==='string'&&/^[a-f0-9]{40}$/u.test(packed.baselineCommit)&&Array.isArray(packed.documents));
+  const sources=new Set<string>();
+  for(const raw of packed.documents){const document=record(raw);exact(document,['sourcePath','sourceSha256','entries']);
+   assert(typeof document.sourcePath==='string'&&/^library\/pcrs\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+\/pcr\.(?:en-US|zh-CN)\.md$/u.test(document.sourcePath)&&!sources.has(document.sourcePath));sources.add(document.sourcePath);
+   assert.equal(hash(regular(root,document.sourcePath)),document.sourceSha256,'Packed chapter source changed; review retained routes before regeneration');
+   routes.push(...routeRows(document.entries));
+  }
+ }
+ routes.sort((a,b)=>a.from<b.from?-1:a.from>b.from?1:0);
+ return parseProviderRuntime({schemaVersion:1,sourceCommit,files,routes},sourceCommit);
 }
 export function verifyProviderRuntimeSource(root:string,proof:ProviderRuntime|undefined,sourceCommit:string):void{assert.deepEqual(createProviderRuntime(root,sourceCommit),proof,'Provider runtime differs from sealed source proof');}
 export function verifyProviderRuntimeExport(out:string,sourceCommit:string,expected?:ProviderRuntime):ProviderRuntime|undefined{
@@ -146,9 +161,21 @@ export function verifyProviderRuntimeInventory(value:unknown,sourceCommit:string
 /** The published anchor ledger is source evidence, not runtime routing data. */
 export function verifyPublishedChapterAnchors(root:string,out:string,proof:ProviderRuntime|undefined):void {
  if(!proof)return;
- const raw=record(JSON.parse(regular(root,'packages/pcr-docs/compatibility/published-chapter-anchors.json').toString('utf8')) as unknown);exact(raw,['schemaVersion','baseline','requirements']);assert.equal(raw.schemaVersion,1);assert(typeof raw.baseline==='string'&&Array.isArray(raw.requirements));assert.equal(raw.requirements.length,proof.routes.length);
+ const raw=record(JSON.parse(regular(root,'packages/pcr-docs/compatibility/published-chapter-anchors.json').toString('utf8')) as unknown);exact(raw,['schemaVersion','baseline','requirements']);assert.equal(raw.schemaVersion,1);assert(typeof raw.baseline==='string'&&Array.isArray(raw.requirements));const published=record(JSON.parse(regular(root,PROVIDER_RUNTIME_PATHS[2]).toString('utf8')) as unknown);const publishedRoutes=routeRows(published.entries);assert.equal(raw.requirements.length,publishedRoutes.length);const publishedSources=new Set(publishedRoutes.map(row=>row.from));
  const routes=new Map(proof.routes.map(row=>[row.from,row])),seen=new Set<string>(),targets=new Map<string,Set<string>>();
- for(const item of raw.requirements){const row=record(item);exact(row,['from','anchors']);assert(typeof row.from==='string'&&!seen.has(row.from)&&Array.isArray(row.anchors)&&row.anchors.length>0);seen.add(row.from);const route=routes.get(row.from);assert(route,'Published anchor route lacks compatibility');let anchors=targets.get(route.to);if(!anchors){anchors=htmlAnchors(regular(out,decodeURIComponent(route.to.slice(1))+'index.html').toString('utf8'));targets.set(route.to,anchors);}for(const anchor of row.anchors)assert(typeof anchor==='string'&&anchors.has(anchor),'Published chapter anchor missing: '+row.from+'#'+String(anchor));}
+ for(const item of raw.requirements){const row=record(item);exact(row,['from','anchors']);assert(typeof row.from==='string'&&publishedSources.has(row.from)&&!seen.has(row.from)&&Array.isArray(row.anchors)&&row.anchors.length>0);seen.add(row.from);const route=routes.get(row.from);assert(route,'Published anchor route lacks compatibility');let anchors=targets.get(route.to);if(!anchors){anchors=htmlAnchors(regular(out,decodeURIComponent(route.to.slice(1))+'index.html').toString('utf8'));targets.set(route.to,anchors);}for(const anchor of row.anchors)assert(typeof anchor==='string'&&anchors.has(anchor),'Published chapter anchor missing: '+row.from+'#'+String(anchor));}
+ if(fs.existsSync(path.join(root,PACKED_CHAPTERS_PATH))){
+  const packed=record(JSON.parse(regular(root,PACKED_CHAPTERS_PATH).toString('utf8')) as unknown);
+  const ledger=record(JSON.parse(regular(root,'packages/pcr-docs/compatibility/packed-chapter-anchors.json').toString('utf8')) as unknown);
+  exact(ledger,['schemaVersion','baselineCommit','documents']);assert.equal(ledger.schemaVersion,1);assert.equal(ledger.baselineCommit,packed.baselineCommit);assert(Array.isArray(ledger.documents));
+  const projected=ledger.documents.map(raw=>{const document=record(raw);exact(document,['sourcePath','sourceSha256','entries']);assert(Array.isArray(document.entries));
+   const entries=document.entries.map(raw=>{const row=record(raw);exact(row,['from','to','anchor','anchors']);assert(typeof row.from==='string'&&Array.isArray(row.anchors)&&row.anchors.length>0);const route=routes.get(row.from);assert(route&&route.to===row.to&&route.anchor===row.anchor,'Retained reading route differs');
+    let anchors=targets.get(route.to);if(!anchors){anchors=htmlAnchors(regular(out,decodeURIComponent(route.to.slice(1))+'index.html').toString('utf8'));targets.set(route.to,anchors);}
+    for(const anchor of row.anchors)assert(typeof anchor==='string'&&anchors.has(anchor),'Retained reading anchor missing: '+row.from+'#'+String(anchor));
+    return{from:row.from,to:row.to,anchor:row.anchor};});return{sourcePath:document.sourcePath,sourceSha256:document.sourceSha256,entries};});
+  assert.deepEqual(projected,packed.documents,'Incomplete retained reading anchor ledger');
+ }
+
 }
 
 /** Resolve the authored checkout from either source modules or repository-owned compiled tests. */

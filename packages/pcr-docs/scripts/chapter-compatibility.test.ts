@@ -1,10 +1,10 @@
 import { middleware } from '../../../middleware.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CHAPTER_ALIASES, aliasesForTarget, compatibilityDestination, rewriteChapterRequest } from '../lib/chapter-compatibility.ts';
+import { CHAPTER_ALIASES, PUBLISHED_CHAPTER_ALIASES, readingTarget, aliasesForTarget, compatibilityDestination, rewriteChapterRequest } from '../lib/chapter-compatibility.ts';
 
 test('published chapter routes restore exact query and fragment in both languages', () => {
-  assert.equal(CHAPTER_ALIASES.length,342);
+  assert.equal(PUBLISHED_CHAPTER_ALIASES.length,342);assert.equal(CHAPTER_ALIASES.length,473);
   for (const language of ['en','zh']) {
     const entry=CHAPTER_ALIASES.find(row=>row.from.startsWith('/'+language+'/'))!;
     const query='?q=%E7%AB%A0%E8%8A%82&q=a+b&raw=%2f&empty=';
@@ -25,7 +25,7 @@ test('only exact old document paths can rewrite, without source mutation or open
   for(const pathname of ['/','/en/','/unknown/','/generated/raw/a','/_next/static/a.js',entry.from+'index.txt',entry.from+'__next._full.txt',entry.from.replace('/chapters/','/%2fchapters/'),entry.to])
     assert.equal(rewriteChapterRequest(new Request('https://example.org'+pathname)),undefined);
   assert.equal(compatibilityDestination('https://example.org'+entry.from,[]),undefined);
-  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,342);
+  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,473);
   for(const row of CHAPTER_ALIASES){assert.ok(row.to.startsWith(row.from.split('/chapters/')[0]!+'/'));assert.ok(row.anchor);assert.ok(!CHAPTER_ALIASES.some(other=>other.from===row.to));}
 });
 
@@ -45,4 +45,13 @@ test('equivalent percent encodings retain published Unicode chapter access witho
  assert.equal(rewriteChapterRequest(new Request('https://example.org'+lower+'?q=%2f')), 'https://example.org'+row.to+'?q=%2f');
  assert.equal(compatibilityDestination('https://example.org'+lower,aliasesForTarget(row.to)),row.to+'#'+encodeURIComponent(row.anchor));
  assert.equal(rewriteChapterRequest(new Request('https://example.org'+row.from.replace('/chapters/','/%2Fchapters/'))),undefined);
+});
+
+test('logical search hits preserve identity/ranking data while client navigation uses an existing reading target',()=>{
+ const row=CHAPTER_ALIASES.find(item=>!PUBLISHED_CHAPTER_ALIASES.some(p=>p.from===item.from))!;
+ assert(row);assert.equal(readingTarget(row.from+'?q=a+b&x=%2f'),row.to+'?q=a+b&x=%2f#'+encodeURIComponent(row.anchor));
+ assert.equal(readingTarget(row.from+'?q=1#explicit'),row.to+'?q=1#explicit');
+ assert.equal(readingTarget('/unknown/?q=1#explicit'),'/unknown/?q=1#explicit');
+ assert.equal(readingTarget('https://elsewhere.example'+row.from),'https://elsewhere.example'+row.from);
+ assert.equal(readingTarget('//elsewhere.example'+row.from),'//elsewhere.example'+row.from);
 });

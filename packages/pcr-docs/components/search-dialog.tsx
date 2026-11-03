@@ -18,6 +18,7 @@ import {
 import { useI18n } from 'fumadocs-ui/contexts/i18n';
 import { searchDocuments } from '@/lib/search-client';
 import type { SearchResult } from '@/lib/types';
+import { readingTarget } from '@/lib/chapter-compatibility';
 
 const DEBOUNCE_MS = 160;
 const MAX_RESULTS = 24;
@@ -69,7 +70,7 @@ function toItems(results: SearchResult[]): SearchItemType[] {
   return results.map((result) => ({
     type: 'page' as const,
     id: result.id,
-    url: result.url,
+    url: readingTarget(result.url),
     // Titles are plain text; Fumadocs highlights the rendered query matches.
     content: result.content,
     description: result.description,

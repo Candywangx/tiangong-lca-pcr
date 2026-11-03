@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-02
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedAt: 2026-11-03
+lastReviewedNote: "Reviewed the existing adjacent-PCR reading-page optimization for a 45-PCR integration based on upstream main 31074a2ca. Reuse upstream search packing, inspector packs, navigation aliases and anchor-safety guards. Preserve logical search units, canonical/download bytes and source-bound retained routes; exact-source build and hosted qualification remain separate from methodology or publication approval."
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -616,15 +616,31 @@ changed. All heading anchors, source ownership, ToCs and internal fragment links
 are rebuilt against the resulting parts. An old-to-new part and anchor routing
 audit makes affected documents reviewable.
 
-This layout optimization changes chapter partitioning and can remove continuation
-URLs from a newly generated site. Source anchors remain available on their new
-owning page; generated links resolve to those owners. It does not establish
-compatibility for an older continuation URL. Search records are page-scoped, so
-record count and query granularity can also change; the codec's same-wire
-restoration guarantee is separate from layout changes. Complete fresh generation,
-both-language search measurements and the actual final export file count and
-browser/product gates must qualify the combined source. Projected file savings are
-diagnostics, not a complete product result.
+PCR reading pages additionally coalesce adjacent complete groups when their combined
+serialized UTF-8 HTML fits the same three-times ceiling. This changes the grouping
+policy, not the 180,000-byte target, 540,000-byte ceiling or indivisible-unit handling.
+Other document kinds retain the former partitioning. Node order, content, tables,
+code and footnotes are checked before deriving reading-page identity and links.
+
+Search retains the former post-tail logical parts, including their ids, titles,
+summaries, source-text scope, ordering and URLs. Reading pagination never merges
+these logical search units or changes ranking input. Removed reading URLs resolve
+through exact same-record, same-language middleware aliases, not redirect HTML.
+`compatibility/packed-chapters.json` binds those retained pre-packing routes to
+baseline commit and canonical source hashes; `packed-chapter-anchors.json` separately
+retains all their original anchors. They are not claims of prior publication.
+Existing published routes are flattened to final owners while their historical
+anchor ledger remains unchanged. All retained and published targets must exist in
+the ordinary document tree. The source-bound provider profile includes the added
+route source; older three-file profiles remain readable. Generation rejects source
+drift until the retained-route evidence is reviewed and updated.
+
+The anchor verifier reuses the upstream bounded generated-HTML scanner. Quoted
+attributes, comments, raw-text payloads, inert/foreign descendants and consumed
+declarative shadow templates cannot supply document anchors; unsupported structure
+fails closed. Complete fresh generation, search restoration/comparison, physical
+export counts, native downloads and browser/provider gates qualify this combined
+source. Projected savings are diagnostics, not acceptance evidence.
 
 Chapter URLs use source heading identities, with content-derived continuation
 suffixes. Tables remain whole, and
