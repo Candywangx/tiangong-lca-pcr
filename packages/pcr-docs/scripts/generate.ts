@@ -5,6 +5,7 @@ import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResu
 import type {BuilderManifest} from "../../../builder/lib/types.ts";
 import {compileDocsBrowserAssets} from "./browser-assets.ts";
 import {writeRecordDataPacks} from "./record-data-packs.ts";
+import {canonicalReadingParts} from "./reading-routes.ts";
 type ClassificationRef={system:string;version:string;code:string;title?:string;mapping_type?:string};
 interface SiteAuthoringManifest extends BuilderManifest {classification_refs?:ClassificationRef[];modules?:Record<string,string[]>}
 type GeneratedRecord=Omit<SitePcrRecord,"slug"> & {slug:[string,string,string]};
@@ -284,6 +285,7 @@ function renderDocument({
   alternates = {},
 }: {artifact:{text:string;path:string;sha256:string};language:string;slugs:string[];extra:Partial<DocPage>&{kind:DocPage["kind"]};downloads?:Download[];alternates?:Record<string,string>}) {
   const rendered = renderMarkdown(artifact.text, artifact.path, {packAdjacent: extra.kind === "pcr" && !artifact.path.includes("/releases/") && providerProof !== undefined});
+  rendered.parts=canonicalReadingParts(rendered.parts,slug=>urlFor(language,[...slugs,'chapters',slug]),retainedReadingRoutes);
   const urls = rendered.parts.map((part, i) =>
     urlFor(language, i ? [...slugs, "chapters", part.slug] : slugs),
   );

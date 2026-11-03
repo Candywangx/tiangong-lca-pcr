@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-11-04
-lastReviewedNote: "Reviewed the scoped CPC3 source at ecee0961 and its actual search/file-capacity failures. Bounded search layout selection and versioned inspector dictionary transport preserve complete records, historical readers, source/route/anchor checks and existing budgets. Inspector decoding checks the entire restored pack before materialization and writing measures the restored limit before grouping. The selected final source still requires fresh complete validation and documentation qualification; scientific status, publication and deployment authority are unchanged."
-lastReviewedCommit: ecee0961f16f59d568f18aabe33b55ec49620b33
+lastReviewedNote: "Reviewed the scoped CPC3 source at 199860644 and its actual capacity and reserved-route shadowing failures. Bounded search layout selection, versioned inspector dictionary transport and audited current reading-page ownership preserve complete content, historical entries/anchors, existing guards and budgets. Inspector decoding preflights the whole restored pack; reading URLs avoid reserved origins and retained targets follow their complete actual anchor owner. The selected final source still requires fresh complete validation and documentation qualification; scientific status, publication and deployment authority are unchanged."
+lastReviewedCommit: 199860644655a82b5cc228523c930cd2082916d9
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -659,6 +659,16 @@ anchor ledger remains unchanged. All retained and published targets must exist i
 the ordinary document tree. The source-bound provider profile includes the added
 route source; older three-file profiles remain readable. Generation rejects source
 drift until the retained-route evidence is reviewed and updated.
+
+When revised content gives a current reading part a reserved historical source
+URL, its current slug receives a deterministic `-current` suffix. A second
+reserved or duplicated destination fails closed. Complete nodes, anchors and
+logical search parts remain unchanged. Audited retained targets may follow the
+actual same-record, same-language owner only when every historical anchor still
+belongs to that one page. Historical source URLs, default anchors, anchor arrays
+and baselines remain unchanged; no marker-only anchor can substitute for content.
+The original provider source, shadowing and ordinary-document anchor gates still
+apply to the fresh complete export.
 
 The anchor verifier reuses the upstream bounded generated-HTML scanner. Quoted
 attributes, comments, raw-text payloads, inert/foreign descendants and consumed
