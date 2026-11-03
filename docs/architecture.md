@@ -26,16 +26,18 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-03
+lastReviewedCommit: ae5fa3c0c3da869fa2b3d3855463a2e84e876dbd
+lastReviewedNote: "Reviewed immutable archive references for historical CPC 04 evidence. All nine review artifacts remain unchanged; current classification acceptance and canonical PCR identity remain owned by local mappings and ADRs. No methodology, runtime or qualification policy changed."
 ---
 
 # PCR 资料库架构
 
-已合并 PR #26 的 14 份 CPC 04 方法学沿用原有 PCR id 与语义目录；PR #28 现仅交付这 14 份的修复，
-不新增方法。恢复身份不扩大产品、路线、状态或交付边界，也不改变 `narrower` 关系。范围和验证记录见
-[两个 PR 的旧 ID 恢复记录](reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)。
+已合并 PR #26 的 14 份 CPC 04 方法学沿用原有 PCR id 与语义目录；PR #28 修复这些记录，
+没有新增方法。恢复身份不扩大产品、路线、状态或交付边界，也不改变 `narrower` 关系。
+当前接受的分类映射及其依据以 `classifications/mappings/` 和 `docs/adr/` 为准；
+[身份恢复的历史记录](https://github.com/Candywangx/tiangong-lca-pcr/blob/acd016b01883b64d96a321198d65a889d8e96f97/docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)保留在固定提交的归档中，
+不代表当前内容的审核、验证或发布状态。
 
 ## 项目定位
 

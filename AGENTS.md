@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-03
+lastReviewedCommit: ae5fa3c0c3da869fa2b3d3855463a2e84e876dbd
+lastReviewedNote: "Reviewed CPC 04 reference migration to immutable archive links. All nine historical review artifacts are retained byte-for-byte; local ADRs continue to own accepted mapping decisions. Canonical PCRs, accepted mappings, runtime behavior and qualification gates are unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -92,9 +92,10 @@ Rules:
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
 - If a classification leaf maps to an existing PCR, update the mapping file instead of duplicating the PCR.
 - The 14 CPC 04 PCRs delivered by merged PR #26 retain their original ids and semantic directories from the
-  CPC 3.0 leaf-slug inventory; PR #28 now carries only their repairs, not new methods. Keep narrower product,
+  CPC 3.0 leaf-slug inventory; PR #28 repaired those records without adding new methods. Keep narrower product,
   route, state and gate boundaries in methodology and mapping relations rather than replacement ids.
-  See `docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md`.
+  Current accepted decisions live in `classifications/mappings/` and `docs/adr/`. Historical identity-restoration
+  evidence remains available in the [immutable archive](https://github.com/Candywangx/tiangong-lca-pcr/blob/acd016b01883b64d96a321198d65a889d8e96f97/docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md); it does not establish current readiness or qualification.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.
