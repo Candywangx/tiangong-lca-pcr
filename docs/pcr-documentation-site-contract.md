@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-03
-lastReviewedNote: "Reviewed the scoped CPC3 source at ab6786c1 and its captured search-capacity failure. Generator-only bounded physical layout selection and equivalent dictionary escaping preserve existing logical wires, records, readers, source/route/anchor checks and budgets. The selected final source still requires fresh complete validation and documentation qualification; scientific status, publication and deployment authority are unchanged."
-lastReviewedCommit: ab6786c1c836d1292d16b4b4b8ff5f5a087475a7
+lastReviewedAt: 2026-11-04
+lastReviewedNote: "Reviewed the scoped CPC3 source at ecee0961 and its actual search/file-capacity failures. Bounded search layout selection and versioned inspector dictionary transport preserve complete records, historical readers, source/route/anchor checks and existing budgets. Inspector decoding checks the entire restored pack before materialization and writing measures the restored limit before grouping. The selected final source still requires fresh complete validation and documentation qualification; scientific status, publication and deployment authority are unchanged."
+lastReviewedCommit: ecee0961f16f59d568f18aabe33b55ec49620b33
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -594,15 +594,29 @@ context; it does not enable inline emission in current generation.
 
 ### Inspector data transport
 
-The field inspector groups complete generated records into versioned JSON packs,
-using positional entries `[key, manifest, structured]`. Each record carries its
+The field inspector groups complete generated records into versioned JSON packs.
+Version 1 uses positional entries `[key, manifest, structured]`. Each record carries its
 exact transport key; current records and historical releases have distinct keys.
 Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
 whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
 array position, object-key order or empty value is removed. Generation requires
 each decoded record to serialize exactly as its original generated data; export
 verification repeats that comparison against the shipped pack for every record.
-The reader retains support for older unkeyed single-record payloads, rejects
+Version 2 may dictionary-code repeated strings and object keys when its complete
+UTF-8 serialization is smaller than version 1. Nonbeneficial strings remain
+literals. Explicit number/array/object tags preserve every scalar type, empty
+value and object-key order; deterministic dictionary pruning does not claim a
+globally optimal encoding. The physical target remains 1,000,000 bytes and 32
+records. Before materializing any decoded record, the reader validates the whole
+pack, including distinct dictionary/record/decoded object keys, exact tags and
+references. It charges every restored occurrence, JSON escape, punctuation and
+the version-1 envelope against a strict 25,000,000-byte restored-pack bound.
+Dictionary nesting is bounded at 128; older valid deeper records retain version
+1 transport. The writer measures the restored size before encoding a candidate,
+flushes an existing group before that limit and recomputes the singleton. A
+record that cannot satisfy the existing single-file limit fails closed.
+
+The reader retains support for version 1 and older unkeyed single-record payloads, rejects
 unknown versions, duplicate or missing keys and malformed records, and preserves
 the inspector's visible retry behavior. Browser qualification exercises the actual
 inspector in both languages and for available historical releases.

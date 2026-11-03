@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { PcrRecord } from "../lib/types.ts";
-import { decodeRecordData, encodeRecordDataPack, parseRecordData, MAX_RECORDS_PER_PACK, type RecordDataEntry } from "../lib/record-data.ts";
+import { decodeRecordData, encodeRecordDataPack, parseRecordData, measureRecordDataPack, MAX_RESTORED_RECORD_DATA_BYTES, MAX_RECORDS_PER_PACK, type RecordDataEntry } from "../lib/record-data.ts";
 export const RECORD_DATA_PACK_BYTES = 1_000_000;
 /** Pack only the generated inspector transport, with exact per-record round-trip verification. */
 export function writeRecordDataPacks(stage: string, records: readonly PcrRecord[]) {
@@ -29,6 +29,7 @@ export function writeRecordDataPacks(stage: string, records: readonly PcrRecord[
     const source = fs.readFileSync(path.join(stage, record.dataPath), "utf8");
     const data = parseRecordData(JSON.parse(source));
     const entry: RecordDataEntry = [record.dataPath, data.manifest, data.structured];
+    if (pending.length && measureRecordDataPack([...pending, entry]).bytes >= MAX_RESTORED_RECORD_DATA_BYTES) flush();
     const proposed = JSON.stringify(encodeRecordDataPack([...pending, entry]));
     if (pending.length && Buffer.byteLength(proposed) > RECORD_DATA_PACK_BYTES) flush();
     pending.push(entry); owners.push(record); originalBytes += Buffer.byteLength(source);

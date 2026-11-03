@@ -1,0 +1,153 @@
+{
+  "verdict": "bounded_no_new_material_finding_on_hash_bound_proposal",
+  "source": {
+    "baseCommit": "ecee0961f16f59d568f18aabe33b55ec49620b33",
+    "state": "Uncommitted proposal; hashes are authoritative for this review, not a fresh tested clean commit",
+    "files": [
+      {
+        "repoPath": "packages/pcr-docs/lib/record-data-dictionary.ts",
+        "sha256": "sha256:64bd976fc90e9ccee3769b7b55ba22e8292e08a7dcc8a76808d0e912cf2a2ff9"
+      },
+      {
+        "repoPath": "packages/pcr-docs/lib/record-data.ts",
+        "sha256": "sha256:e8dc4ddca1eb5bc348084d9f749da336cfa99df82ebc83293ea4a5d90b418438"
+      },
+      {
+        "repoPath": "packages/pcr-docs/scripts/record-data-packs.ts",
+        "sha256": "sha256:e484b9ca34a403e46a3032bd824972ac13e5777669827404af48899d375a06a4"
+      },
+      {
+        "repoPath": "packages/pcr-docs/scripts/record-data-packs.test.ts",
+        "sha256": "sha256:33ee3c3f4f345b007361ee6c584aa12ce45874954d79f67f1a81e88074718fc2"
+      }
+    ]
+  },
+  "scope": "Full four current files plus relevant prior caller/verifier/contract contexts and implementation R1-R8, independent E-only counterexamples;no F writes",
+  "confirmedNewFindings": [],
+  "knownEarlierIssue": {
+    "sparseDictionary": "Root found red before correction;currentfor-of explicitly checks holes evenunused;independent4dictionarycases pass. Not a newly discovered or unresolved finding."
+  },
+  "criteria": [
+    {
+      "id": "R1",
+      "status": "implemented_and_independently_exercised",
+      "source": "record-data-dictionary.ts:69-130",
+      "evidence": "inspect walks every row before selected lookup/materialization;22 late malformed/expansion cases rejected with zero Object.fromEntries calls."
+    },
+    {
+      "id": "R2",
+      "status": "implemented_and_independently_exercised",
+      "source": "record-data-dictionary.ts:6-40,79-108",
+      "evidence": "Canonical v1 envelope, row4 punctuationbytes, every key/value JSON UTF8 occurrence, separators, finite-number rendering, strict>=limit;600 finiteJSON measurements exactly match full v1 UTF8 sizes. Shared900k×32 expansion rejects before construction. Root owns exact-at-limit and escape-heavy tests."
+    },
+    {
+      "id": "R3",
+      "status": "implemented_code_read_plus_root_actual_writer_evidence",
+      "source": "record-data-packs.ts:12-36",
+      "evidence": "Restored measurement flushes before strictencode; physical target flush then pendingpush;32count unchanged;strict25MB physical remains;actual source-bound Root writer106packs/all1600readback received. Own review did not independently execute writer."
+    },
+    {
+      "id": "R4",
+      "status": "implemented_and_independently_exercised",
+      "source": "record-data-dictionary.ts:70-118;record-data.ts:44-51",
+      "evidence": "Exact headerkeys/tokenarities/typedroots;bounds reject negativezero/floats/out-of-range refs;finite number tags;all records validated;22 invalidcases plus4sparse/duplicate/nonstring dictionaries. for-of closes known sparse-dictionary finding."
+    },
+    {
+      "id": "R5",
+      "status": "implemented_and_independently_exercised",
+      "source": "record-data-dictionary.ts:74-78,104-108,112-118,126-128",
+      "evidence": "Distinct dictionaries/recordkeys;decoded string-key Set handlesliteral/ref aliases;Object.fromEntries gives own __proto__ safely. Independent prototype-like keys,empty/numeric-like keys and fuzz verify exact JSON order/types."
+    },
+    {
+      "id": "R6",
+      "status": "implemented_and_independently_exercised_for_new_v2",
+      "source": "record-data-dictionary.ts:18-40,89-90;record-data.ts:35-40",
+      "evidence": "Iterative measurement records depth;128 allowed/129 v1 fallback;v2inspect checks depth before recursion. Independent exact-depth cases passed. Existing legacy parse recursion is retained;no new guarantee for arbitrarily deep malformedJS objects."
+    },
+    {
+      "id": "R7",
+      "status": "implemented_and_independently_exercised",
+      "source": "record-data-dictionary.ts:43-67;record-data.ts:34-41",
+      "evidence": "Counts first-appearance keys/values, deterministic2pruningpasses explicitly heuristic;literal fallback;complete UTF8 v2<v1 selection tiesv1;dictionary>1M fallback.600determinism/selection checks passed(571v2/29v1)."
+    },
+    {
+      "id": "R8",
+      "status": "entrypoint_compatibility_implemented_final_qualification_pending",
+      "source": "record-data.ts:44-51;record-data-packs.ts:18-20;verify.ts:129-133",
+      "evidence": "Schema1/unkeyeddispatch and exactkeyfailure retained;writer/export comparedecoded JSON exactly. Root actual1600receipt same codeSHA/fullrecord identity confirmed asreceiptreadback. Documentation contract/new-source fullvalidate/docs/browser gates remainRoot-owned;old prototype/fullpass not promoted."
+    }
+  ],
+  "ourExecution": {
+    "strictTS": "code-check.ts strict noEmit compiler exit0",
+    "evidence": "code-check-results.json",
+    "checks": [
+      {
+        "name": "seeded finite-JSON fuzz: exact measurement, deterministic actual-byte selection and public-decoder record serialization",
+        "cases": 600,
+        "status": "pass"
+      },
+      {
+        "name": "late malformed/expansion cases reject before Object.fromEntries materialization",
+        "cases": 22,
+        "status": "pass"
+      },
+      {
+        "name": "sparse/duplicate/nonstring dictionary rejection, including unreferenced slots",
+        "cases": 4,
+        "status": "pass"
+      },
+      {
+        "name": "own prototype-like keys and native integer-key JSON enumeration",
+        "cases": 1,
+        "status": "pass"
+      },
+      {
+        "name": "exact depth128 v2 and129 v1 fallback",
+        "cases": 2,
+        "status": "pass"
+      }
+    ],
+    "fuzz": {
+      "packCases": 600,
+      "recordRoundtrips": 4022,
+      "v1Packs": 29,
+      "v2Packs": 571
+    },
+    "sourceHashesStableDuringExecution": true,
+    "stderr": "code-check.stderr empty; runtime exit0"
+  },
+  "rootExecutionEvidence": {
+    "path": "../inspector-production-readback.json",
+    "sha256": "sha256:7a627233180757a1a89e9f1b906728547f38cf895ac4b709918e7025e4048a3c",
+    "sameFourCodeHashesAsOurChecks": true,
+    "records": 1600,
+    "allReceiptOriginalRestoredHashesEqual": true,
+    "allReceiptOriginalHashesMatchOurEarlier1600SourceReadback": true,
+    "packRecordSum": 1600,
+    "packs": 106,
+    "largestRestoredV1": 2300616,
+    "stats": {
+      "records": 1600,
+      "files": 106,
+      "bytes": 100420469,
+      "originalBytes": 156245882,
+      "largestBytes": 999287,
+      "targetBytes": 1000000
+    },
+    "estimatedExportFiles": 19997,
+    "attribution": "Root executed actual writer/publicdecoder;this reviewer independently checked receipt/hash consistency, not rerun Root1600writer"
+  },
+  "remainingGates": [
+    "Update/retain precise public format and bound documentation for final implementation",
+    "Freeze a new exact source commit after remaining evidence/docs edits",
+    "Root fresh full npm validate and normal complete docs build/Next/static-route budget gates",
+    "Actualbrowser qualification remains separatelyscoped;no claim of oldWorkers accepting newschema2",
+    "Completebuild filecount is pending;Root estimate19997 is not an exported result"
+  ],
+  "limits": [
+    "FiniteJSON transported values are the supported domain. GeneralJS classinstances/getters/cycles are not newly qualified;legacy parsing behavior remains.",
+    "Physicalresponse JSON is already parsed beforedecode;25MB restorationpreflight limits expansion,not all response.json memory.",
+    "Existing original focusedtests/strictweb-tools+worker and23tests areRoot executed,not ourtests.",
+    "No scientific/source/mapping/translation/publication approval;no canonical content changes by reviewer."
+  ]
+}
