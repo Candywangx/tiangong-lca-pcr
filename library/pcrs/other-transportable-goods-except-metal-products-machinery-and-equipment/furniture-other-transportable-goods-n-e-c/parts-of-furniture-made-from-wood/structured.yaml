@@ -48,7 +48,7 @@ system_boundary:
         - ilcd-attributional-2010
     - rule_id: packaging_receipt_basis
       applies_to: "packaging"
-      rule: "For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. X_in/X_out remain separate measured material/water-change terms, not a substitute for whole-article receipt. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names."
+      rule: "For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. F_in/F_out retain independently measured material/water changes. X_in/X_out remove only a documented duplicate already present in another real same-side flow, never stock, the opposite side, card presence or closing retention; neither F nor X is a residual used to force closure. For a receipt whose history or paid/non-purchased status cannot establish P/I/ER, retain one provisional atomic whole-article F_in under cp_packaging, mutually exclusive with P/I/ER and other F components, until evidence establishes its unique final category. Proven first non-purchased/replacement articles use I, not an additional final whole-article F_in. Reclassification moves the one measured event and its burden handover, without adding a second inlet/provider or cancelling it against full wet closing stock. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names."
       source_ids:
         - ilcd-attributional-2010
 boundary_abstraction:
@@ -919,7 +919,7 @@ process_inventory:
           name: "Corrugated transport carton"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "One actual complete corrugated-paperboard transport carton of the declared construction and configuration, not a collection of cartons, plastic bags, film, liners or other packaging. The compatible atomic Product-flow UUID remains unresolved. Record the actual board/flute/ply configuration, fibre composition, coatings/lamination, wet condition, integral adhesives/fasteners and supplier scope; no generic fibre fraction, treatment, size, weight or lifetime is assumed. Include integral supplied constituents once within the whole carton, while actually separate inserts, tape or other materials retain their own disjoint rows and one upstream owner. Keep this card's existing P/I/ER/S/EO role as defined by the packaging boundary and raw protocol, including packaging_receipt_basis where present; a new provider identity must not change that event definition. Retain the complete measured wet gross quantity and the original event/gate/custody/cohort in the card's stated Mass/kg unit, whether immediately used or retained at closing. Keep opening/closing empty, attached and reusable stock, internal reuse and independently measured material/water-change legs; no stock, burden or economic-share correction shrinks the gross leg. Actual manufacture/service burdens are attributed once separately using the existing original-cohort rule and sole normalization; a gross receipt or outflow alone creates no new manufacture, procurement burden, provider link or credit. Resolve a physically compatible carton identity/provider before binding it; missing identity is disclosed and never replaced with a mixed packaging category or an invented UUID."
+          description: "One actual complete corrugated-paperboard transport carton of the declared construction and configuration, not a collection of cartons, plastic bags, film, liners or other packaging. The compatible atomic Product-flow UUID remains unresolved. Record the actual board/flute/ply configuration, fibre composition, coatings/lamination, wet condition, integral adhesives/fasteners and supplier scope; no generic fibre fraction, treatment, size, weight or lifetime is assumed. Include integral supplied constituents once within the whole carton, while actually separate inserts, tape or other materials retain their own disjoint rows and one upstream owner. Keep this card's existing P/I/ER/S/EO role as defined by the packaging boundary and raw protocol, including packaging_receipt_basis where present; a new provider identity must not change that event definition. Retain the complete measured wet gross quantity and the original event/gate/custody/cohort in the card's stated Mass/kg unit, whether immediately used or retained at closing. Keep opening/closing empty, attached and reusable stock, internal reuse and independently measured material/water-change legs; no stock, burden or economic-share correction shrinks the gross leg. Actual manufacture/service burdens are attributed once separately using the existing original-cohort rule and sole normalization; a gross receipt or outflow alone creates no new manufacture, procurement burden, provider link or credit. Resolve a physically compatible carton identity/provider before binding it; missing identity is disclosed and never replaced with a mixed packaging category or an invented UUID. ER requires the same physical article, or an auditable batch with traceable membership and movement history, to have actually left this boundary previously as S or EO for the original cohort. Link its article/batch identity and cohort, prior outward event/date and return receipt; retain earlier-period/offsite custody history when needed. Same material, UUID, equal mass, previous use or burden handover alone does not prove a return. Independently measure actual returned wet mass and condition; do not assume equality with the earlier outward mass. First external non-purchased or replacement articles without that same-article prior outward are not ER: proven first non-purchased ingress is I under packaging_receipt_basis, with one atomic receipt and the complete cp_packaging Amount/collection chain. If history or paid/non-purchased status cannot establish P/I/ER, retain the full measured inlet as one provisional atomic whole-article F_in event with classification unresolved, never invent prior outward, a purchase or omit the receipt; resolve its single final category before dataset acceptance. Internal reuse is not an external receipt. Preserve inherited manufacture/service history with one documented burden owner; a true return creates neither new Q nor a second manufacturing charge."
           amount:
             expression: "A / Q; A = V is the complete actual gross event independent of burden, stock and economic shares; use the sole quotient in section 8."
             value_mode: "calculated_value"
@@ -982,7 +982,7 @@ process_inventory:
           flow_ref:
             uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Physical leg ER for this one material pool, conditional on its actual occurrence. External returned physical article received with actual previous use/burden handover and condition, not internal reuse or new purchase. Numerator is the complete actual gross-leg V in its native unit, never a manufacturing/service burden vector, stock-corrected consumption or economic share. No extra purchase, supplier burden or credit arises from gross disclosure. Opening/closing wet empty/attached-WIP/attached-FG/reusable stocks remain complete; P/I partition the same received article by ownership and are mutually exclusive; internal reuse cancels. Native Product is low-density polyethylene foil (PE-LD), Mass/kg, with non-self-adhesive non-cellular non-reinforced non-laminated unsupported film classification and no fixed geography/route. Only one compatible actual LDPE film article qualifies; not PET, woven PP, multilayer film, a bag plus its film twice, or a paper carton. Declare additives, article manufacture and supplier once."
+          description: "Physical leg ER for this one material pool, conditional on its actual occurrence. ER requires the same physical article, or an auditable batch with traceable membership and movement history, to have actually left this boundary previously as S or EO for the original cohort. Link its article/batch identity and cohort, prior outward event/date and return receipt; retain earlier-period/offsite custody history when needed. Same material, UUID, equal mass, previous use or burden handover alone does not prove a return. Independently measure actual returned wet mass and condition; do not assume equality with the earlier outward mass. First external non-purchased or replacement articles without that same-article prior outward are not ER: proven first non-purchased ingress is I under packaging_receipt_basis, with one atomic receipt and the complete cp_packaging Amount/collection chain. If history or paid/non-purchased status cannot establish P/I/ER, retain the full measured inlet as one provisional atomic whole-article F_in event with classification unresolved, never invent prior outward, a purchase or omit the receipt; resolve its single final category before dataset acceptance. Internal reuse is not an external receipt. Preserve inherited manufacture/service history with one documented burden owner; a true return creates neither new Q nor a second manufacturing charge. Numerator is the complete actual gross-leg V in its native unit, never a manufacturing/service burden vector, stock-corrected consumption or economic share. No extra purchase, supplier burden or credit arises from gross disclosure. Opening/closing wet empty/attached-WIP/attached-FG/reusable stocks remain complete; P/I partition the same received article by ownership and are mutually exclusive; internal reuse cancels. Native Product is low-density polyethylene foil (PE-LD), Mass/kg, with non-self-adhesive non-cellular non-reinforced non-laminated unsupported film classification and no fixed geography/route. Only one compatible actual LDPE film article qualifies; not PET, woven PP, multilayer film, a bag plus its film twice, or a paper carton. Declare additives, article manufacture and supplier once."
           amount:
             expression: "A / Q; A = V is the complete actual gross event independent of burden, stock and economic shares; use the sole quotient in section 8."
             value_mode: "calculated_value"
@@ -1045,7 +1045,7 @@ process_inventory:
           flow_ref:
             uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Physical leg ER for this one material pool, conditional on its actual occurrence. External returned physical article received with actual previous use/burden handover and condition, not internal reuse or new purchase. Numerator is the complete actual gross-leg V in its native unit, never a manufacturing/service burden vector, stock-corrected consumption or economic share. No extra purchase, supplier burden or credit arises from gross disclosure. Opening/closing wet empty/attached-WIP/attached-FG/reusable stocks remain complete; P/I partition the same received article by ownership and are mutually exclusive; internal reuse cancels. Native Product is a finished manufactured wooden load-platform family, production mix at plant, Mass/kg, no fixed wood species, pallet standard or geography. Only one complete wooden transport pallet is represented; boards, nails and moisture already embodied in its whole received wet mass are not additional purchases. Verify treatment/repairable construction and use condition; no assumed EURO specification, reuse count, lifetime or biomass credit."
+          description: "Physical leg ER for this one material pool, conditional on its actual occurrence. ER requires the same physical article, or an auditable batch with traceable membership and movement history, to have actually left this boundary previously as S or EO for the original cohort. Link its article/batch identity and cohort, prior outward event/date and return receipt; retain earlier-period/offsite custody history when needed. Same material, UUID, equal mass, previous use or burden handover alone does not prove a return. Independently measure actual returned wet mass and condition; do not assume equality with the earlier outward mass. First external non-purchased or replacement articles without that same-article prior outward are not ER: proven first non-purchased ingress is I under packaging_receipt_basis, with one atomic receipt and the complete cp_packaging Amount/collection chain. If history or paid/non-purchased status cannot establish P/I/ER, retain the full measured inlet as one provisional atomic whole-article F_in event with classification unresolved, never invent prior outward, a purchase or omit the receipt; resolve its single final category before dataset acceptance. Internal reuse is not an external receipt. Preserve inherited manufacture/service history with one documented burden owner; a true return creates neither new Q nor a second manufacturing charge. Numerator is the complete actual gross-leg V in its native unit, never a manufacturing/service burden vector, stock-corrected consumption or economic share. No extra purchase, supplier burden or credit arises from gross disclosure. Opening/closing wet empty/attached-WIP/attached-FG/reusable stocks remain complete; P/I partition the same received article by ownership and are mutually exclusive; internal reuse cancels. Native Product is a finished manufactured wooden load-platform family, production mix at plant, Mass/kg, no fixed wood species, pallet standard or geography. Only one complete wooden transport pallet is represented; boards, nails and moisture already embodied in its whole received wet mass are not additional purchases. Verify treatment/repairable construction and use condition; no assumed EURO specification, reuse count, lifetime or biomass credit."
           amount:
             expression: "A / Q; A = V is the complete actual gross event independent of burden, stock and economic shares; use the sole quotient in section 8."
             value_mode: "calculated_value"
@@ -1796,14 +1796,14 @@ dataset_production:
       process_id: "gate_service"
       flow_role: "carton; film; pallet; mixed_packaging_waste"
       record_type: "measurement"
-      raw_fields: "article; material pool; direction P/I/ER/S/EO/W; whole wet mass; empty/attached-WIP/attached-FG/reusable opening/closing; F_in; F_out; X_in; X_out; matched same-side OTHER event; owner; source pool; mixed outlet; H; Q_H ; packaging receipt origin; payment/non-purchase evidence; owner/custodian; same-item prior outward ID"
-      collection_method: "Weigh all six real external events for each actual article. Supplier-included I remains physical ingress with one upstream owner. Record disjoint mixed-outlet component pools; do not add their W cards to the one actual mixed Waste. Raw aggregation constraints: Collect full gross raw V by each leg; no stock correction or allocation on gross cards; independent burden service ledger; no division here. Independently record true F_in/F_out without residual fitting. X subtracts only documented duplicate physical quantity already in another real same-side flow, never stock, opposite-side flow, card presence or retained closing influx.  For packaging only, apply packaging_receipt_basis; standalone non-purchase is I, never invented ER or X."
+      raw_fields: "article; material pool; direction P/I/ER/S/EO/W; whole wet mass; empty/attached-WIP/attached-FG/reusable opening/closing; F_in; F_out; X_in; X_out; matched same-side OTHER event; owner; source pool; mixed outlet; H; Q_H ; packaging receipt origin; payment/non-purchase evidence; owner/custodian; same-item prior outward ID; article or auditable-batch ID and membership; original boundary and cohort; prior S/EO event ID/date; return receipt ID/date; earlier-period/offsite custody history; independently measured returned wet mass/state; first nonpurchase or replacement identity; unresolved history or payment status; atomic I or provisional F_in row/event ID and separate Amount; previous-owner burden receipt; inherited manufacture/service vector and remaining unused service; supplier-included scope and distinct incremental service"
+      collection_method: "Weigh all six real external events for each actual article. Supplier-included I remains physical ingress with one upstream owner. Record disjoint mixed-outlet component pools; do not add their W cards to the one actual mixed Waste. Raw aggregation constraints: Collect full gross raw V by each leg; no stock correction or allocation on gross cards; independent burden service ledger; no division here. Independently record true F_in/F_out without residual fitting. X subtracts only documented duplicate physical quantity already in another real same-side flow, never stock, opposite-side flow, card presence or retained closing influx.  For packaging only, apply packaging_receipt_basis; standalone non-purchase is I, never invented ER or X. Qualify each ER by the same-article/batch prior S/EO and linked receipt history, with traceable membership, original boundary/cohort and earlier-period/offsite custody where necessary; match identity and state independently of mass equality. Earlier use elsewhere, the same UUID/material, equal mass or a burden handover alone is insufficient. Independently weigh actual returned wet mass/state rather than copying outward mass. Apply packaging_receipt_basis: proven paid receipts are P; proven first non-purchased/replacement whole articles, new or previously used elsewhere, are I; only qualified same-item returns are ER. If history or paid/non-purchased status cannot establish one category, keep one full measured provisional atomic whole-article F_in, with an explicit evidence gap requiring resolution before dataset acceptance. For each actual carton, film or pallet, use one independent row/event ID, its physically specific flow identity and complete native restrictions, never a packaging aggregate or invented UUID. For proven I, use the existing matching atomic I card; for provisional F_in, retain its own atomic receipt record before dataset use. Both require the complete Amount chain: expression A / Q with A = V, the full independently measured received wet kg, and Q = original Q_H through calc_quotient only; value_mode calculated_value; specificity site_specific; basis text per 1 kg reference flow and kind reference_flow; evidence kind calculated_from_collection, collection_protocol_id cp_packaging, source_ids [ilcd-attributional-2010]; ranges empty unless independently supported. Raw collection here never divides. P, I, qualified ER and provisional whole-article F_in classify each receipt exclusively; move the same provisional event to its one final P/I/ER category without a second receipt or provider burden. Separate whole received mass from other repair/new-material/water F terms; contained constituents stay subledgers, never second inlets. Retain one documented previous-owner/supplier burden handover independently of physical V; nonpurchase does not imply zero or another manufacture charge. Keep inherited manufacturing/service vectors and genuinely unused service separate from actual performed original-cohort service. Supplier-included transport/handling/service is not procured again; distinct actual incremental service remains assigned once to its proper original cohort Q_H over H, even for closing FG. Full wet closing stock retains articles still held and never cancels their actual inlet."
       unit: "kg"
       frequency: "every receipt/shipment/return/discard and opening/closing"
       temporal_coverage: "original cohort actual horizon H"
       site_scope: "empty stores WIP FG reusable custody and real receiver"
       aggregation_rule: "per reference flow"
-      quality_evidence: "six-leg ledger; scales; stock/repair/water bridge; one provider/treatment receipt; source pools"
+      quality_evidence: "six-leg ledger; scales; stock/repair/water bridge; one provider/treatment receipt; source pools; same-article/batch outward-to-return links; custody/member register; independently weighed receipt/state; first-receipt or unresolved-history/payment record; atomic I/provisional F_in complete Amount and single burden owner; inherited vector handover and disjoint included/incremental service evidence"
     - protocol_id: cp_asset_m
       process_id: "manufacture"
       flow_role: "lubricant; cutting_insert_new; cutting_insert_old_in; lathe_new; lathe_old_in; lathe_service; discarded_insert; discarded_lathe; used_oil; tool_reusable_out; lathe_reusable_out"
@@ -1909,7 +1909,7 @@ dataset_production:
         - ilcd-attributional-2010
     - id: calc_packaging_balance
       applies_to: "all inventory rows"
-      rule: "For each whole packaging material pool: O + P + I + ER + F_in - X_in = C + S + EO + W + F_out - X_out. O/C include full wet empty, attached-WIP, attached-FG and reusable stocks; S is gross physical shipment, not net Q. P/I partition the same received article mutually exclusively. Independently measure actual repair/new-material and ordinary moisture/water-phase F_in/F_out; do not fit them from a residual. X removes only a proven duplicate already present in an OTHER real same-side flow term with matched event identity, never stock, opposite-side flow, card presence or closing retention. True retained new influx and full wet C both remain. Internal handovers cancel. One real mixed outlet uses one measured whole Waste/provider, with disjoint measured W source pools summing within uncertainty; total and component exchanges do not add."
+      rule: "For each whole packaging material pool: O + P + I + ER + F_in - X_in = C + S + EO + W + F_out - X_out. O/C include full wet empty, attached-WIP, attached-FG and reusable stocks; S is gross physical shipment, not net Q. P/I partition the same received article mutually exclusively. Independently measure actual repair/new-material and ordinary moisture/water-phase F_in/F_out; do not fit them from a residual. X removes only a proven duplicate already present in an OTHER real same-side flow term with matched event identity, never stock, opposite-side flow, card presence or closing retention. True retained new influx and full wet C both remain. Internal handovers cancel. One real mixed outlet uses one measured whole Waste/provider, with disjoint measured W source pools summing within uncertainty; total and component exchanges do not add. ER is permitted only for the linked same-article/auditable-batch prior S/EO from this boundary and original cohort; independently measure actual returned wet mass/state, not copied outward mass. Proven first external non-purchased/replacement whole articles use I under packaging_receipt_basis, with the independent atomic row/event and complete Amount/collection chain in cp_packaging, not an additional final whole-article F_in. Unknown history or paid/non-purchased status remains one explicitly provisional measured whole-article F_in pending evidence and final P/I/ER classification, mutually exclusive with those categories and disjoint from other repair/material/water F terms. Earlier use elsewhere is not return history. Reclassification moves that one event and its single burden handover, never adds another physical receipt/provider burden. Retention in full wet C never removes the actual inlet; the existing same-side duplicate-only X conditions still apply."
       inputs:
         - O
         - P
@@ -1983,7 +1983,7 @@ validation_rules:
       - usda-wood-handbook-2021
   - rule_id: validation_packaging
     applies_to: "each material P I ER S EO W"
-    rule: "Each real packaging material has separate six-direction cards and complete wet opening/closing empty/attached-WIP/FG/reusable stocks. Repair/new water X terms remove only genuine flow overlap. If a real mixed outlet exists, its one Waste exchange replaces external component-W cards while all W source pools remain traceable. Internal reuse cancels; whole article/component sums and treatment/provider each occur once. F_in/F_out are independently observed true increments; X is only a matched duplicate of an OTHER actual same-side flow. Neither stock nor the opposite side nor card presence permits X; no retained influx is cancelled against full wet closing stock."
+    rule: "Each real packaging material has separate six-direction cards and complete wet opening/closing empty/attached-WIP/FG/reusable stocks. Repair/new water X terms remove only genuine flow overlap. If a real mixed outlet exists, its one Waste exchange replaces external component-W cards while all W source pools remain traceable. Internal reuse cancels; whole article/component sums and treatment/provider each occur once. F_in/F_out are independently observed true increments; X is only a matched duplicate of an OTHER actual same-side flow. Neither stock nor the opposite side nor card presence permits X; no retained influx is cancelled against full wet closing stock. Verify article identity or auditable batch membership, this boundary/original cohort, actual prior outward S/EO and linked return receipt with necessary earlier-period/offsite custody evidence before accepting ER. Previous use, burden handover, the same UUID/material or equal mass is insufficient; independently measured returned wet mass/state may differ. Proven first non-purchased/replacement ingress requires its own atomic I event and the complete cp_packaging Amount/collection chain. Unresolved history or paid/non-purchased status retains one full measured provisional atomic whole-article F_in and an explicit classification gap requiring resolution to one P/I/ER category before dataset acceptance, never a fabricated return, purchase or zero. I, qualified ER, P and provisional F_in are mutually exclusive; other repair/material/water F terms and contained constituents do not duplicate the whole receipt. Reclassification moves the one event without duplicated inlet/provider or deletion against closing stock. Verify inherited manufacture/service history, one burden handover, supplier-included scope and distinct incremental actual service; preserve performed original-cohort services and genuinely unused remaining vectors separately, with the sole original Q_H quotient."
     source_ids:
       - ilcd-attributional-2010
   - rule_id: validation_uncertainty
@@ -2022,7 +2022,7 @@ data_sources:
     used_for: "Attributional allocation-required situations only: subdivision/virtual subdivision, exchange-specific determining physical causality, then residual common-gate actual-state market value; 100% accounting and recycling limitations. No consequential substitution, fixed shares or automatic waste credit."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:84a49a42d54e2aad48adc24e683dd9219b04a704078e36a2d257ce2178cd1950"
+  source_sha256: "sha256:5c6946dfaa811554cc847b891d1391df76356e3df7b7979207b22a904687b5f4"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7842"
@@ -2033,10 +2033,10 @@ normative_context:
           line: 62
           column: 1
         end:
-          offset: 13528
+          offset: 14217
           line: 84
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received untreated unglued kiln-dried Fagus sawn stock >6 mm and actual separately supplied connector/consumables; no purchased preturned leg substitution |\n| starting_condition_role | secondary_manufacturing |\n| product_classification_scope | A narrow manufactured wooden-furniture-part subset; no positive mapping inferred |\n| recursive_input_rule | Purchased whole finished legs retain their existing burdens and first-release identity; cannot substitute for this manufacturing route or create new Q by repacking; internal equal-product transfers cancel |\n| upstream_dataset_requirement | Match actual forestry, sawing, kiln drying, stock form/moisture/species/origin and supplier gate; input article manufacture and transport/packaging each have one owner; no zero upstream burden |\n| disclosure | Actual onsite/upstream split; full gross custody and raw/WIP/FG stocks; inherited vectors; real service H/Q_H; all real atoms and unresolved identities/providers |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | complete product system | Include full stock-to-leg machining, dust control, actual connectors, inspection and pre-release rework; startup/shutdown, idle, cleanup, failed/zero-output runs and samples retain real loads. Purchased stock drying remains upstream. Add each real unlisted chemical, fuel, water supply, component, emission and outlet before use; no hidden other/zero bundle. This dry electric route does not invent a boiler, steam, combustion or surface coating. | `richman-unfinished-leg`; `drewbak-components`; `bukexpo-beech-supply` |\n| boundary_first_release | manufacturing and gate_service | Q is net mass newly first quality-released once. Closing already-released FG is included in Q, never deducted from manufacturing B_close or added as a second product. Manufacturing B_close includes only raw/WIP and unused unassigned material/service charges. Packaging/storage/handling/dispatch/returns have original cohort Q_H and observed horizon H; consolidate internal Q handover by cancellation. | `ilcd-attributional-2010` |\n| boundary_postrelease | actual FG work and natural moisture | Post-release machining/repair requires manufacturer/specification permission, postwork tests, acceptance and disposition to claim continuing qualification; it creates no first release. Lack of permission or failed tests never deletes an actual operation, physical flow or load: retain original cohort and hold/waste status. Broken parts are not assumed restorable. Ordinary humidity uptake/loss is measured independently and needs no invented work permission. | `richman-unfinished-leg`; `usda-wood-handbook-2021` |\n| boundary_gross | each physical gate | Reconcile manufacturing, FG service and consolidated gates with full opening/closing wet raw/WIP/FG, equipment, installed fluids and all actual external gross legs. Never scale physical mass by economic/burden shares. F_in/F_out are independently measured real repair/new-material/water-phase influx and outflow, never a balance residual. X_in/X_out deduct only a proven duplicate already included in an OTHER actual same-side inlet/outlet term, with matched event identity. Stock, an opposite-side term, merely having a card, or closing retention is not overlap evidence. Preserve true retained influx and full wet closing stock simultaneously. Whole articles/preparations and disjoint constituent bridges occur once; internal handovers cancel. | `ilcd-attributional-2010`; `usda-wood-handbook-2021` |\n| boundary_ownership | whole supply and actual disposal | One whole externally purchased preparation/article is procured once; assay, carried water, binder, active components, embedded studs and initial installed fluids are subledgers. Real onsite manufacture/mixing has each separately bought input, real energy and losses. Real waste/failure/sample exports or sales do not by themselves transfer manufacturing or treatment burdens. No automatic coproduct, avoided production or negative credit. | `ilcd-attributional-2010` |\n| packaging_receipt_basis | packaging | For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. X_in/X_out remain separate measured material/water-change terms, not a substitute for whole-article receipt. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names. | ilcd-attributional-2010 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received untreated unglued kiln-dried Fagus sawn stock >6 mm and actual separately supplied connector/consumables; no purchased preturned leg substitution |\n| starting_condition_role | secondary_manufacturing |\n| product_classification_scope | A narrow manufactured wooden-furniture-part subset; no positive mapping inferred |\n| recursive_input_rule | Purchased whole finished legs retain their existing burdens and first-release identity; cannot substitute for this manufacturing route or create new Q by repacking; internal equal-product transfers cancel |\n| upstream_dataset_requirement | Match actual forestry, sawing, kiln drying, stock form/moisture/species/origin and supplier gate; input article manufacture and transport/packaging each have one owner; no zero upstream burden |\n| disclosure | Actual onsite/upstream split; full gross custody and raw/WIP/FG stocks; inherited vectors; real service H/Q_H; all real atoms and unresolved identities/providers |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | complete product system | Include full stock-to-leg machining, dust control, actual connectors, inspection and pre-release rework; startup/shutdown, idle, cleanup, failed/zero-output runs and samples retain real loads. Purchased stock drying remains upstream. Add each real unlisted chemical, fuel, water supply, component, emission and outlet before use; no hidden other/zero bundle. This dry electric route does not invent a boiler, steam, combustion or surface coating. | `richman-unfinished-leg`; `drewbak-components`; `bukexpo-beech-supply` |\n| boundary_first_release | manufacturing and gate_service | Q is net mass newly first quality-released once. Closing already-released FG is included in Q, never deducted from manufacturing B_close or added as a second product. Manufacturing B_close includes only raw/WIP and unused unassigned material/service charges. Packaging/storage/handling/dispatch/returns have original cohort Q_H and observed horizon H; consolidate internal Q handover by cancellation. | `ilcd-attributional-2010` |\n| boundary_postrelease | actual FG work and natural moisture | Post-release machining/repair requires manufacturer/specification permission, postwork tests, acceptance and disposition to claim continuing qualification; it creates no first release. Lack of permission or failed tests never deletes an actual operation, physical flow or load: retain original cohort and hold/waste status. Broken parts are not assumed restorable. Ordinary humidity uptake/loss is measured independently and needs no invented work permission. | `richman-unfinished-leg`; `usda-wood-handbook-2021` |\n| boundary_gross | each physical gate | Reconcile manufacturing, FG service and consolidated gates with full opening/closing wet raw/WIP/FG, equipment, installed fluids and all actual external gross legs. Never scale physical mass by economic/burden shares. F_in/F_out are independently measured real repair/new-material/water-phase influx and outflow, never a balance residual. X_in/X_out deduct only a proven duplicate already included in an OTHER actual same-side inlet/outlet term, with matched event identity. Stock, an opposite-side term, merely having a card, or closing retention is not overlap evidence. Preserve true retained influx and full wet closing stock simultaneously. Whole articles/preparations and disjoint constituent bridges occur once; internal handovers cancel. | `ilcd-attributional-2010`; `usda-wood-handbook-2021` |\n| boundary_ownership | whole supply and actual disposal | One whole externally purchased preparation/article is procured once; assay, carried water, binder, active components, embedded studs and initial installed fluids are subledgers. Real onsite manufacture/mixing has each separately bought input, real energy and losses. Real waste/failure/sample exports or sales do not by themselves transfer manufacturing or treatment burdens. No automatic coproduct, avoided production or negative credit. | `ilcd-attributional-2010` |\n| packaging_receipt_basis | packaging | For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. F_in/F_out retain independently measured material/water changes. X_in/X_out remove only a documented duplicate already present in another real same-side flow, never stock, the opposite side, card presence or closing retention; neither F nor X is a residual used to force closure. For a receipt whose history or paid/non-purchased status cannot establish P/I/ER, retain one provisional atomic whole-article F_in under cp_packaging, mutually exclusive with P/I/ER and other F components, until evidence establishes its unique final category. Proven first non-purchased/replacement articles use I, not an additional final whole-article F_in. Reclassification moves the one measured event and its burden handover, without adding a second inlet/provider or cancelling it against full wet closing stock. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names. | ilcd-attributional-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2073,15 +2073,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_114207"
+    - unit_id: "normative_118530"
       family: "allocation"
       span:
         start:
-          offset: 114207
+          offset: 118530
           line: 1252
           column: 1
         end:
-          offset: 116647
+          offset: 120970
           line: 1262
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_framework | all burden vectors | Use attributional modelling only in situations actually requiring allocation under the cited ILCD scope. First assign dedicated operations/materials and subdivide physically or virtually by actual function. A woodturning manufacturer page supports route, not LCA allocation or a fixed share. | `ilcd-attributional-2010` |\n| allocation_causality | each still-shared exchange | For each remaining exchange identify a determining physical causal relation, with evidence and sensitivity. Material embodiment, electricity load/time, occupied storage capacity/time and transport limiting mass/volume may differ; no blanket mass/time rule and no arbitrary physical/economic choice. Keep causal driver and burden vector separate from full physical gross mass. | `ilcd-attributional-2010` |\n| allocation_residual | genuinely residual common process | Only if subdivision and exchange-specific causality leave a justified residual, allocate that residual at the same actual process gate and contemporary market value in each actual state/quality/quantity. Trace back later packing, conditioning and transport to that gate. Document units/currency/time, sensitivity and total-vector conservation; no fixed ratio. | `ilcd-attributional-2010` |\n| allocation_failures | manufacture and treatment | Keep ordinary manufacturing rejects, breakage, samples, emissions and their handling/treatment burdens with the relevant manufacturing cohort even when exported/sold. T_other is permitted only for a real distinct other cohort/function and a justified one-time allocation/handover with counterpart receipt. Waste sales alone are not that evidence; recycling/true-joint-process provisions need an explicit applicable review, not automatic credit. | `ilcd-attributional-2010` |\n| allocation_service | original cohort H and assets | Attribute only actual service over H to original cohort Q_H. Performed storage/handling/maintenance service is retained despite closing FG; carry forward only unused unassigned service/charge. Separate full physical asset stocks from actual service burden, with measured usage, new/old/repaired parts and fluids, remaining vector and no fixed life or one whole machine per kg. Stock-corrected consumption is not corrected a second time. | `ilcd-attributional-2010` |\n\n"
@@ -2101,11 +2101,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 114207
+              offset: 118530
               line: 1252
               column: 1
             end:
-              offset: 114247
+              offset: 118570
               line: 1252
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -2121,18 +2121,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_137655"
+    - unit_id: "normative_146307"
       family: "validation"
       span:
         start:
-          offset: 137655
+          offset: 146307
           line: 1307
           column: 1
         end:
-          offset: 140768
+          offset: 150708
           line: 1318
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validation_identity | reference and every card | Match complete native name/synonyms/comments, CAS when meaningful, material/phase/form/route/grade/geography/compartment/type and every property before binding. UUID has no dataset-version suffix in canonical content; exact versions are external identity evidence. Wrong raw-wood/whole-furniture core references are blocking. Auxiliary/provider/quantity gaps remain explicit and do not fabricate a core identity hold. | `richman-unfinished-leg`; `drewbak-components` |\n| validation_reference | finished_leg and collection | There is one complete Product reference output linked by finished_leg, measured kg and unique first release. Counts require each actual same-configuration net complete-leg mass with moisture/calibration, never a guessed item kg or secondary property/density. Item(s) and item mean factor1 count only; this PCR does not change to an area or count denominator. | `usda-wood-handbook-2021` |\n| validation_normalization | all inventory rows | Preserve unnormalised raw records, conversions and allocation before the sole quotient. Burden rows use attributed A; gross cards use full V as A with no stock/economic correction, automatic provider multiplication or second credit. Q=0 retains all real load and has no per-unit result. Service uses original Q_H over H. | `ilcd-attributional-2010` |\n| validation_balance | manufacture FG and consolidated | Independently reconcile full physical mass, water and relevant elements, including moisture gain/loss, wood-biogenic, oil/packaging fossil and ambient carbon. Distinguish free/sorbed water and actual structural/reaction water; one residual cannot fit two unknowns, and no dry-machining reaction is presumed. COD/VOC/dust/element totals do not specify molecules. No whole-air aggregate plus species double count. | `usda-wood-handbook-2021` |\n| validation_packaging | each material P I ER S EO W | Each real packaging material has separate six-direction cards and complete wet opening/closing empty/attached-WIP/FG/reusable stocks. Repair/new water X terms remove only genuine flow overlap. If a real mixed outlet exists, its one Waste exchange replaces external component-W cards while all W source pools remain traceable. Internal reuse cancels; whole article/component sums and treatment/provider each occur once. F_in/F_out are independently observed true increments; X is only a matched duplicate of an OTHER actual same-side flow. Neither stock nor the opposite side nor card presence permits X; no retained influx is cancelled against full wet closing stock. | `ilcd-attributional-2010` |\n| validation_uncertainty | all foreground data | Unknown means collect/review with explicit bounds, not pass or zero. Retain missing core evidence as an applicability hold; actual site/provider/auxiliary data require collection. Engineering checks establish declared consistency only, not scientific approval, translation review, classification coverage or publication. | `ilcd-attributional-2010` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validation_identity | reference and every card | Match complete native name/synonyms/comments, CAS when meaningful, material/phase/form/route/grade/geography/compartment/type and every property before binding. UUID has no dataset-version suffix in canonical content; exact versions are external identity evidence. Wrong raw-wood/whole-furniture core references are blocking. Auxiliary/provider/quantity gaps remain explicit and do not fabricate a core identity hold. | `richman-unfinished-leg`; `drewbak-components` |\n| validation_reference | finished_leg and collection | There is one complete Product reference output linked by finished_leg, measured kg and unique first release. Counts require each actual same-configuration net complete-leg mass with moisture/calibration, never a guessed item kg or secondary property/density. Item(s) and item mean factor1 count only; this PCR does not change to an area or count denominator. | `usda-wood-handbook-2021` |\n| validation_normalization | all inventory rows | Preserve unnormalised raw records, conversions and allocation before the sole quotient. Burden rows use attributed A; gross cards use full V as A with no stock/economic correction, automatic provider multiplication or second credit. Q=0 retains all real load and has no per-unit result. Service uses original Q_H over H. | `ilcd-attributional-2010` |\n| validation_balance | manufacture FG and consolidated | Independently reconcile full physical mass, water and relevant elements, including moisture gain/loss, wood-biogenic, oil/packaging fossil and ambient carbon. Distinguish free/sorbed water and actual structural/reaction water; one residual cannot fit two unknowns, and no dry-machining reaction is presumed. COD/VOC/dust/element totals do not specify molecules. No whole-air aggregate plus species double count. | `usda-wood-handbook-2021` |\n| validation_packaging | each material P I ER S EO W | Each real packaging material has separate six-direction cards and complete wet opening/closing empty/attached-WIP/FG/reusable stocks. Repair/new water X terms remove only genuine flow overlap. If a real mixed outlet exists, its one Waste exchange replaces external component-W cards while all W source pools remain traceable. Internal reuse cancels; whole article/component sums and treatment/provider each occur once. F_in/F_out are independently observed true increments; X is only a matched duplicate of an OTHER actual same-side flow. Neither stock nor the opposite side nor card presence permits X; no retained influx is cancelled against full wet closing stock. Verify article identity or auditable batch membership, this boundary/original cohort, actual prior outward S/EO and linked return receipt with necessary earlier-period/offsite custody evidence before accepting ER. Previous use, burden handover, the same UUID/material or equal mass is insufficient; independently measured returned wet mass/state may differ. Proven first non-purchased/replacement ingress requires its own atomic I event and the complete cp_packaging Amount/collection chain. Unresolved history or paid/non-purchased status retains one full measured provisional atomic whole-article F_in and an explicit classification gap requiring resolution to one P/I/ER category before dataset acceptance, never a fabricated return, purchase or zero. I, qualified ER, P and provisional F_in are mutually exclusive; other repair/material/water F terms and contained constituents do not duplicate the whole receipt. Reclassification moves the one event without duplicated inlet/provider or deletion against closing stock. Verify inherited manufacture/service history, one burden handover, supplier-included scope and distinct incremental actual service; preserve performed original-cohort services and genuinely unused remaining vectors separately, with the sole original Q_H quotient. | `ilcd-attributional-2010` |\n| validation_uncertainty | all foreground data | Unknown means collect/review with explicit bounds, not pass or zero. Retain missing core evidence as an applicability hold; actual site/provider/auxiliary data require collection. Engineering checks establish declared consistency only, not scientific approval, translation review, classification coverage or publication. | `ilcd-attributional-2010` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2149,11 +2149,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 137655
+              offset: 146307
               line: 1307
               column: 1
             end:
-              offset: 137677
+              offset: 146329
               line: 1307
               column: 23
           text: "## 9. Validation Rules"
@@ -2245,150 +2245,150 @@ normative_context:
           line: 82
           column: 1
         end:
-          offset: 13526
+          offset: 14215
           line: 82
-          column: 1527
+          column: 2216
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_framework"
       identity_kind: "explicit"
-      unit_id: "normative_114207"
+      unit_id: "normative_118530"
       source_span:
         start:
-          offset: 114320
+          offset: 118643
           line: 1256
           column: 1
         end:
-          offset: 114687
+          offset: 119010
           line: 1256
           column: 368
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_causality"
       identity_kind: "explicit"
-      unit_id: "normative_114207"
+      unit_id: "normative_118530"
       source_span:
         start:
-          offset: 114688
+          offset: 119011
           line: 1257
           column: 1
         end:
-          offset: 115147
+          offset: 119470
           line: 1257
           column: 460
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residual"
       identity_kind: "explicit"
-      unit_id: "normative_114207"
+      unit_id: "normative_118530"
       source_span:
         start:
-          offset: 115148
+          offset: 119471
           line: 1258
           column: 1
         end:
-          offset: 115597
+          offset: 119920
           line: 1258
           column: 450
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_failures"
       identity_kind: "explicit"
-      unit_id: "normative_114207"
+      unit_id: "normative_118530"
       source_span:
         start:
-          offset: 115598
+          offset: 119921
           line: 1259
           column: 1
         end:
-          offset: 116124
+          offset: 120447
           line: 1259
           column: 527
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_service"
       identity_kind: "explicit"
-      unit_id: "normative_114207"
+      unit_id: "normative_118530"
       source_span:
         start:
-          offset: 116125
+          offset: 120448
           line: 1260
           column: 1
         end:
-          offset: 116645
+          offset: 120968
           line: 1260
           column: 521
     - pointer: "/validation_rules/0"
       rule_id: "validation_identity"
       identity_kind: "explicit"
-      unit_id: "normative_137655"
+      unit_id: "normative_146307"
       source_span:
         start:
-          offset: 137750
+          offset: 146402
           line: 1311
           column: 1
         end:
-          offset: 138269
+          offset: 146921
           line: 1311
           column: 520
     - pointer: "/validation_rules/1"
       rule_id: "validation_reference"
       identity_kind: "explicit"
-      unit_id: "normative_137655"
+      unit_id: "normative_146307"
       source_span:
         start:
-          offset: 138270
+          offset: 146922
           line: 1312
           column: 1
         end:
-          offset: 138713
+          offset: 147365
           line: 1312
           column: 444
     - pointer: "/validation_rules/2"
       rule_id: "validation_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_137655"
+      unit_id: "normative_146307"
       source_span:
         start:
-          offset: 138714
+          offset: 147366
           line: 1313
           column: 1
         end:
-          offset: 139114
+          offset: 147766
           line: 1313
           column: 401
     - pointer: "/validation_rules/3"
       rule_id: "validation_balance"
       identity_kind: "explicit"
-      unit_id: "normative_137655"
+      unit_id: "normative_146307"
       source_span:
         start:
-          offset: 139115
+          offset: 147767
           line: 1314
           column: 1
         end:
-          offset: 139613
+          offset: 148265
           line: 1314
           column: 499
     - pointer: "/validation_rules/4"
       rule_id: "validation_packaging"
       identity_kind: "explicit"
-      unit_id: "normative_137655"
+      unit_id: "normative_146307"
       source_span:
         start:
-          offset: 139614
+          offset: 148266
           line: 1315
           column: 1
         end:
-          offset: 140366
+          offset: 150306
           line: 1315
-          column: 753
+          column: 2041
     - pointer: "/validation_rules/5"
       rule_id: "validation_uncertainty"
       identity_kind: "explicit"
-      unit_id: "normative_137655"
+      unit_id: "normative_146307"
       source_span:
         start:
-          offset: 140367
+          offset: 150307
           line: 1316
           column: 1
         end:
-          offset: 140766
+          offset: 150706
           line: 1316
           column: 400
   diagnostics:
@@ -2418,26 +2418,26 @@ normative_context:
           column: 179
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_114207"
+      unit_id: "normative_118530"
       source_span:
         start:
-          offset: 114207
+          offset: 118530
           line: 1252
           column: 1
         end:
-          offset: 114247
+          offset: 118570
           line: 1252
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_137655"
+      unit_id: "normative_146307"
       source_span:
         start:
-          offset: 137655
+          offset: 146307
           line: 1307
           column: 1
         end:
-          offset: 137677
+          offset: 146329
           line: 1307
           column: 23
 projection_metadata:
@@ -2447,5 +2447,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:84a49a42d54e2aad48adc24e683dd9219b04a704078e36a2d257ce2178cd1950"
-  generated_content_sha256: "sha256:17bbba718550ab81e8e9a474493eebfce14617758428b506e3ce08e3ce8787ad"
+    sha256: "sha256:5c6946dfaa811554cc847b891d1391df76356e3df7b7979207b22a904687b5f4"
+  generated_content_sha256: "sha256:c8bb52d6a859b30a287a2499194df183faa7d120958127cd1ace47b927802d7e"

@@ -1,10 +1,1283 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39220"
-  title: "Waste of leather, leather dust, powder and flour"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.waste-of-leather-leather-dust-powder-and-flour"
+  classification_refs: "CPC 3.0:39220 (narrower semantic subset; no accepted mapping implied)"
+  covered_products: "Separately supplied moist chromium(III)-tanned bovine wet-blue edge trimmings for documented fibreboard feed"
+  excluded_products: "Shavings; dust; powder; untanned cuttings; wet-white scraps; vegetable-tanned scraps; finished leather; fibreboard; disposal service"
+  representative_product: "Net wet uncoated bovine wet-blue edge cuttings at receiving plant"
+  production_route: "Purchased wet-blue hide → original trimming → separate collection and segregation → covered holding and bin preparation → road freight → first receiver release"
+  market_state: "Moist chromium-bearing secondary feed material with documented receiver criteria and actual waste/by-product status"
+functional_unit:
+  what: "Supply a segregated wet-blue trimming feed for an accepting leather-fibreboard plant"
+  how_much: "1 kg net wet trimmings first released at receiver gate"
+  how_well: "Meet lot-specific moisture and chromium/contamination acceptance with declared legal status; no default chemical limits"
+  how_long_or_cycle: "One identified origin-to-receiver cohort and first acceptance event"
+  reference_flow_link: "accepted_feed"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "trim; prepare"
+      rule: "Include the actual original trimming of purchased moist chrome-tanned bovine hide; link one complete upstream wet-blue supplier. Curing, beamhouse, tanning and sammying already included upstream must not be repeated as foreground. If they are actually onsite, expand to their individually named supplied formulations, fuels, water, chemicals and actual species with source evidence; do not claim this bounded route for an integrated tannery."
+      source_ids:
+        - eu-jrc-tanning-2013
+        - unido-leather-2019
+    - rule_id: boundary_terminal
+      applies_to: "prepare"
+      rule: "Include segregation, handling, necessary covered holding, actual bin preparation, outbound transport and first receiver acceptance. The supported intended outlet is non-finished trimming feed for leather fibreboard after receiver preparation; fibreboard production, chemical hydrolysis, chromium recovery and disposal service are outside the product reference. A historic recovery example is not current legal permission or guaranteed acceptance."
+      source_ids:
+        - eu-jrc-tanning-2013
+        - unido-leather-2019
+    - rule_id: boundary_atomic
+      applies_to: "all inventory rows"
+      rule: "Instantiate every actually present additional material or species as its own atomic card, including foreign-metal removal, detergent formulation, preserved-biocide addition, fuel, gas, spill and treatment residue. State measured absence for unused operations; no collective other exchange may hide real loads. The selected route has no deliberate drying, new tannage, steam boiler or onsite combustion. A real heat route requires its own exact steam/heat identity, enthalpy and condensate/water agreement and separately named external returns."
+      source_ids:
+        - eu-jrc-tanning-2013
+        - unido-leather-2019
+    - rule_id: boundary_stocks
+      applies_to: "all inventory rows"
+      rule: "Retain all failed batches, Q=0 campaigns, start/stop, idle, cleanup and real incremental rework. Before first receiver release all goods remain WIP, including ready-to-ship source stock and goods in transit. Track mass and an inherited vector for every exchange at every opening/closing WIP gate; transfer vectors rather than erase history. Reinspection is not new production."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_interface
+      applies_to: "all inventory rows"
+      rule: "Keep a physical gross ledger and an allocated product ledger separately. Cancel only exact paired internal transfers at consolidation. For one combined effluent outlet, total and source partitions are nonadditive views of the same stream and share one provider. No avoided-landfill or virgin-leather credit follows from collection."
+      source_ids:
+        - ilcd-allocation-2010
+boundary_abstraction:
+  declared_starting_condition: "Already chrome(III)-tanned moist bovine wet-blue hides purchased before original trimming"
+  starting_condition_role: "intermediate_input"
+  product_classification_scope: "A narrow feed-material subset of CPC 3.0:39220; classification is not methodology identity"
+  recursive_input_rule: "Do not start with purchased already formed trimmings and call it original formation. Any genuine same-category external input is separately identified with its own history and one provider; it cannot be assumed burden free or merged with new formation."
+  upstream_dataset_requirement: "One state-matched whole-hide supply with curing and tannage included; no repeated upstream water or tanning chemical purchase"
+  disclosure: "Actual species/tannage/state, trimming function, supplier coverage, WIP/FG vectors, receiver acceptance, waste/by-product status, provider boundaries and all omitted/changed operations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Waste of leather, leather dust, powder and flour"
+    uuid: "886b2b1a-9f52-411c-852b-5c87a8351a02"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "bovine species and source lot"
+    - "chromium(III) tanning system and curing route"
+    - "undyed unfinished wet-blue state"
+    - "actual as-received moisture and dry matter basis"
+    - "edge-cutting geometry and foreign matter specification"
+    - "total chromium and chromium(VI) test basis and detection limits"
+    - "actual biocides and contact contamination"
+    - "jurisdictional waste or by-product status and authorised receiver function"
+    - "receiver fibreboard feed acceptance and first-release lot identity"
+    - "net wet mass excluding free drain liquid and packaging"
+    - "gross formation and opening closing stocks with inherited burdens"
+    - "source and receiving gates geography period and provider boundaries"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use receiver net wet mass excluding packaging and free drain liquid. Weigh moisture changes independently; never substitute dry mass without explicit conversion and measured moisture. Q is defined by release_quantity."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Verified row reference property"
+      uuid: ""
+    required_unit: "native row unit"
+    rule: "Apply raw_conversions before attribution, then normalize_once. No per-hide weight, leather density, bin mass or service life is inferred from a flow coefficient."
+process_map:
+  - id: trim
+    name: "Original wet-blue hide trimming"
+    inclusion: "required"
+    inclusion_condition: "Actual formation from purchased wet-blue bovine hides"
+    role: "formation"
+    quantitative_reference: "Gross whole-hide physical balance and companion assignments; same final Q"
+  - id: prepare
+    name: "Segregation and receiver-gate supply"
+    inclusion: "required"
+    inclusion_condition: "Separate moist trimmings and documented receiver feed function"
+    role: "preparation_delivery"
+    quantitative_reference: "accepted_feed"
+process_inventory:
+  - id: trim
+    label: "Original wet-blue hide trimming"
+    inputs:
+      product:
+        - row_id: wetblue_hide
+          role: "Wet-blue hide entering original trimming"
+          name: "Moist chromium(III)-tanned bovine hide before trimming"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive already chrome(III)-tanned bovine wet-blue hides with documented curing, moisture, tanning agent and no dyeing, finishing or deliberate drying. Include the complete supplied hide mass and its upstream burden once, including contained water and tanning chemicals as composition subaccounts. Do not repurchase these constituents. The candidate native wet-blue bovine row has conflicting English/Chinese chromium oxide wording; no flow UUID is adopted pending identity resolution."
+          amount:
+            expression: "Report x_i for wetblue_hide as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_trim
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: trim_electricity
+          role: "Trimming electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter actual powered cutting and source handling. Manual cutting has an evidenced absence of this exchange rather than a fabricated electricity intensity. Native identity is alternating-current electricity at point of use on an MJ energy basis, using the property labelled Net calorific value. Voltage, technology, mix, provider geography, delivery boundary and line losses are unspecified; document the actual supply and losses once. It is not a waste-incineration supply assumption."
+          amount:
+            expression: "Report x_i for trim_electricity as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_trim
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: retained_hide
+          role: "Companion retained hide"
+          name: "Retained moist chromium(III)-tanned bovine hide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the same lot retained for leather manufacture. Keep its gross physical quantity and assigned burden in a companion ledger at the trimming gate; it is not the reference product and earns no avoided-product credit. No native UUID is adopted because the same wet-blue identity conflict remains."
+          amount:
+            expression: "Report x_i for retained_hide as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_trim
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: formed_trimmings
+          role: "Freshly formed wet-blue trimmings"
+          name: "Waste of leather, leather dust, powder and flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "886b2b1a-9f52-411c-852b-5c87a8351a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh actual edge cuttings as formed by trimming of wet-blue bovine hide, before later dyeing or finishing. This is the internal transfer to prepare, not an additional first-release quantity. Preserve full gross formation including later rejects and inventory changes; pair its material and inherited burden with received_trimmings. This native Product identity has an unspecified treatment and an at-plant production mix. It identifies only this separately weighed moist bovine chrome-tanned trimming stream here; the broad basename is not permission to pool shavings, powder, untanned scraps or disposal services. It supplies no moisture, chromium, yield, geography or recovery credit; receiver transport is a separate service."
+          amount:
+            expression: "Report x_i for formed_trimmings as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_trim
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+      waste:
+        - row_id: trim_reject
+          role: "Nonusable source trimmings"
+          name: "Rejected moist chromium(III)-tanned bovine trimmings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh only rejected chrome-tanned wet cuttings from this lot and record the authorised actual treatment handover. Do not use a municipal nonhazardous-landfill identity for this industrial chromium-bearing stream. Contaminant species and legal status remain explicit."
+          amount:
+            expression: "Report x_i for trim_reject as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_trim
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+      elementary:
+        - row_id: trim_evaporation
+          role: "Source moisture loss"
+          name: "Water vapour released to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record independently measured ambient water evaporation only when present. This is physical moisture loss, not an inferred chemical reaction or an extra drying process; no density or emission factor is assumed."
+          amount:
+            expression: "Report x_i for trim_evaporation as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance_trim
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+  - id: prepare
+    label: "Segregation and receiver-gate supply"
+    inputs:
+      product:
+        - row_id: received_trimmings
+          role: "Internal trimmings receipt"
+          name: "Waste of leather, leather dust, powder and flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "886b2b1a-9f52-411c-852b-5c87a8351a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Match the exact lot, wet state, gross mass and complete inherited exchange vector from formed_trimmings. Internal transfer cancels on consolidation and cannot receive a second upstream provider. This native Product identity has an unspecified treatment and an at-plant production mix. It identifies only this separately weighed moist bovine chrome-tanned trimming stream here; the broad basename is not permission to pool shavings, powder, untanned scraps or disposal services. It supplies no moisture, chromium, yield, geography or recovery credit; receiver transport is a separate service."
+          amount:
+            expression: "Report x_i for received_trimmings as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_prepare
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: handling_electricity
+          role: "Preparation and gate electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter separation, handling, bin washing pumps and acceptance equipment where used; retain idle, start/stop, failed-lot and cleanup burdens. Avoid overlapping the source cutting meter. Native identity is alternating-current electricity at point of use on an MJ energy basis, using the property labelled Net calorific value. Voltage, technology, mix, provider geography, delivery boundary and line losses are unspecified; document the actual supply and losses once. It is not a waste-incineration supply assumption."
+          amount:
+            expression: "Report x_i for handling_electricity as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_prepare
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: cleaning_water
+          role: "Bin cleaning tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect actual water supplied for cleaning empty bins and contact equipment. No washing of the saleable trimmings is assumed. Record separately any real added water retained in feed; it cannot inflate eligible dry leather or create first-release mass by dilution. Native Product is treated public/potable tap water supplied to consumer or plant, not raw abstraction or deionised water. The reference property is Mass/kg; its additional volume coefficient is not a measured density for effluent or leather. Use a local treatment/supply provider and measured quantity and state."
+          amount:
+            expression: "Report x_i for cleaning_water as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: new_bin
+          role: "New bin procurement"
+          name: "Reusable lidded high-density polyethylene bin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record a single assembled lidded HDPE bin as actually supplied, in measured polymer/article mass, with lid and material specification. Count only new external procurement here; the upstream manufacture is charged once through the measured service-cohort ledger. Do not substitute HDPE resin or a 25 kg seed sack UUID for a bin."
+          amount:
+            expression: "Report x_i for new_bin as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: returned_bin_received
+          role: "External empty-bin return received"
+          name: "Reusable lidded high-density polyethylene bin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual external returns by serial identity and state. They are incoming physical articles with their remaining inherited burden/service ledger, not new procurement and not internal reuse purchases."
+          amount:
+            expression: "Report x_i for returned_bin_received as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: road_freight
+          role: "Truck transport to receiver"
+          name: "Freight Truck"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d55f1329-cd61-44c0-8000-9367d38d5634"
+          property_unit: "Goods transport (mass*distance) 838aaa20-0117-11db-92e3-0800200c9a66 / t*km"
+          description: "Record actual outbound deliveries, rejected-load returns and attributable empty-bin return legs. Distance is actual route distance; record loading limitation and the provider convention for empty running. A single provider includes its own fuel and actual gaseous/particulate emissions. Native Product describes generic road freight by truck, measured as goods mass multiplied by distance. It is not a vehicle purchase or an air/sea service despite examples of general freight in the comment. Truck class, payload, fuel, emissions class, region, loading and empty return belong to the selected provider. Include actual loaded bin tare and rejects transported. Select one complete provider per nonoverlapping leg; do not also add its fuel or exhaust."
+          amount:
+            expression: "Report x_i for road_freight as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_feed
+          role: "First-released receiver feedstock"
+          name: "Waste of leather, leather dust, powder and flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "886b2b1a-9f52-411c-852b-5c87a8351a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the only reference output: first quality release of the newly formed lot at the receiving fibreboard plant gate, weighed net of bins, with actual moisture and chromium/contamination specification. Receipt inspection, resale, repeated release and return of a previously released lot do not create new output. Finished inventory containing this release is a stock destination, not another output. This native Product identity has an unspecified treatment and an at-plant production mix. It identifies only this separately weighed moist bovine chrome-tanned trimming stream here; the broad basename is not permission to pool shavings, powder, untanned scraps or disposal services. It supplies no moisture, chromium, yield, geography or recovery credit; receiver transport is a separate service."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: bin_gross_shipment
+          role: "Bins with gross physical dispatch"
+          name: "Reusable lidded high-density polyethylene bin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep all bins accompanying gross physical consignments, including consignments later rejected or returned. Exclude their tare from Q, retain the packaging stock movements and service burden separately, and never treat the bins as leather co-products."
+          amount:
+            expression: "Report x_i for bin_gross_shipment as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: bin_external_return
+          role: "Separate outward empty-bin return"
+          name: "Reusable lidded high-density polyethylene bin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record empty bins returned outward to an external owner separately from bins already counted with gross shipment. The same physical outward article must appear on only one outgoing leg."
+          amount:
+            expression: "Report x_i for bin_external_return as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+      waste:
+        - row_id: gate_reject
+          role: "Preparation or receiver rejection"
+          name: "Rejected moist chromium(III)-tanned bovine trimmings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh this wet chromium-tanned cutting stream separately from foreign materials, buffing dust and effluent. Retain the original burden and actual extra sorting/transport/treatment; reversal of a previous lot does not become new feed production."
+          amount:
+            expression: "Report x_i for gate_reject as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_prepare
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: wash_effluent
+          role: "Collected bin-wash effluent"
+          name: "Chromium-bearing aqueous bin-cleaning effluent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Meter this one physically collected aqueous effluent at handover, including its measured dissolved/suspended chromium-bearing material. Link its one actual treatment provider; do not also model its contained pollutants as direct river releases. If discharge is actually direct, replace that interface with separately named measured species and receiving compartment."
+          amount:
+            expression: "Report x_i for wash_effluent as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_prepare
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+        - row_id: broken_bin
+          role: "Discarded broken bin"
+          name: "Broken high-density polyethylene bin"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh HDPE article discard separately and disclose adhering leather contamination and destination acceptance. Its waste UUID remains unresolved; generic clean-polyethylene recycling is not established by the polymer name."
+          amount:
+            expression: "Report x_i for broken_bin as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+      elementary:
+        - row_id: handling_evaporation
+          role: "Preparation moisture loss to air"
+          name: "Water vapour released to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure actual evaporation during segregation, covered storage and transport independently of effluent and spills. Total chromium or COD is an analytical balance indicator, not a gaseous chromium or organic-species mass."
+          amount:
+            expression: "Report x_i for handling_evaporation as the already calculated section 8 single-normalization result; no further division."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_balance_prepare
+              source_ids:
+                - eu-jrc-tanning-2013
+                - unido-leather-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "all inventory rows"
+    rule: "Use attributional partitioning only for the declared attributional study. First separate exclusive operations and perform measured or virtual subdivision of inventories; preparation dedicated to accepted trimmings is assigned directly. Document the unpartitioned gross ledger and the retained-hide companion ledger."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_causality
+    applies_to: "trim"
+    rule: "For each remaining exchange identify its determining physical cause separately. Trace embodied hide dry matter, contained water and chromium to retained hide, cuttings, rejected material and measured loss. Cutting to shape the retained hide is not automatically caused by the offcut mass; determine its actual function. Handle leather loss burdens explicitly. Mass conservation alone is not a universal mass allocation key."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_residual
+    applies_to: "trim"
+    rule: "Only after the above steps fail for a residual shared exchange use contemporaneous market values of actual co-functions in the same condition at the common trimming gate. Remove later transport, conditioning and packaging values before comparison; disclose prices, mass basis, negative or zero value and sensitivity. Unknown values require review, not a fixed ratio or free physical/economic choice."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_logistics
+    applies_to: "prepare"
+    rule: "Assign packaging, handling and transport by exclusive measured service first; for shared service use the determining limiting load and duration/distance with evidence. Preserve packaging cohort manufacture burden and remaining service potential. New purchases and returns are physical legs, not repeated manufacture. Use no assumed bin lifetime or recycling substitution credit."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_status
+    applies_to: "accepted_feed"
+    rule: "Declare actual legal and economic status at each gate. A Product flow can represent a material supplied for a documented recovery function without proving end-of-waste or nonhazardous status. If the real transaction is a treatment service or the receiver cannot legally/technically accept the chromium-bearing cuttings, do not use this Product reference and do not silently relabel it."
+    source_ids:
+      - eu-jrc-tanning-2013
+      - unido-leather-2019
+      - ilcd-allocation-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "prepare"
+      flow_role: "first release and receiver specification"
+      record_type: "weighing and acceptance"
+      raw_fields: "lot identity; origin process; tannage; gross; tare; net wet mass; free liquid; moisture; dry matter; total Cr; Cr(VI); test basis; detection limit; contaminants; legal status; receiver permission; newly first-released flag; rejection; return; original delivery"
+      collection_method: "Calibrated receiving scale with same-lot tare and moisture sampling; verify buyer acceptance against documented chromium and contamination criteria and jurisdictional decision. Collect raw mass, not a ratio."
+      unit: "kg"
+      frequency: "every lot and disposition"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_material_trim
+      process_id: "trim"
+      flow_role: "whole-hide and cutting movements"
+      record_type: "physical batch ledger"
+      raw_fields: "lot; product state; species; supplied formulation; gross mass; tare; net mass; dry matter; retained hide; formed cuttings; internal transfer id; opening WIP; closing WIP; per-exchange inherited vector; failed; rework; free liquid"
+      collection_method: "Weigh complete supplied hides and each separate output on calibrated scales, identify matched internal transfers and stock cohorts, and retain supplier scope. Composition subaccounts never become additional whole purchases."
+      unit: "kg"
+      frequency: "each batch and stock gate"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_material_prepare
+      process_id: "prepare"
+      flow_role: "whole-hide and cutting movements"
+      record_type: "physical batch ledger"
+      raw_fields: "lot; product state; species; supplied formulation; gross mass; tare; net mass; dry matter; retained hide; formed cuttings; internal transfer id; opening WIP; closing WIP; per-exchange inherited vector; failed; rework; free liquid"
+      collection_method: "Weigh complete supplied hides and each separate output on calibrated scales, identify matched internal transfers and stock cohorts, and retain supplier scope. Composition subaccounts never become additional whole purchases."
+      unit: "kg"
+      frequency: "each batch and stock gate"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_energy_trim
+      process_id: "trim"
+      flow_role: "separate electricity use"
+      record_type: "meter record"
+      raw_fields: "meter id; process; start reading; end reading; raw kWh; raw MJ; supply voltage; supply boundary; provider geography; idle; start stop; failure; cleanup; meter overlap"
+      collection_method: "Use calibrated meters and engineering attribution of shared meters before normalize_once; preserve all raw readings, loss convention and actual operating/nonproductive time."
+      unit: "kWh; MJ"
+      frequency: "per shift and batch"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_energy_prepare
+      process_id: "prepare"
+      flow_role: "separate electricity use"
+      record_type: "meter record"
+      raw_fields: "meter id; process; start reading; end reading; raw kWh; raw MJ; supply voltage; supply boundary; provider geography; idle; start stop; failure; cleanup; meter overlap"
+      collection_method: "Use calibrated meters and engineering attribution of shared meters before normalize_once; preserve all raw readings, loss convention and actual operating/nonproductive time."
+      unit: "kWh; MJ"
+      frequency: "per shift and batch"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_water
+      process_id: "prepare"
+      flow_role: "cleaning tap water"
+      record_type: "water meter record"
+      raw_fields: "water meter; start; end; volume; actual water temperature; independent density; mass; cleaning event; retained water; supply provider; overlap"
+      collection_method: "Meter raw cleaning supply, independently convert water volume only at the observed state, and reconcile to effluent, wet contact retention and evaporation. Collect all cleanup even if Q is zero."
+      unit: "kg; m3"
+      frequency: "each cleaning event"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_packaging
+      process_id: "prepare"
+      flow_role: "one HDPE bin article and six physical legs"
+      record_type: "serial stock ledger"
+      raw_fields: "article id; lid configuration; polymer; measured same-article tare; opening empty; opening WIP attached; opening FG attached; opening reusable; new purchases; external returns received; closing empty; closing WIP attached; closing FG attached; closing reusable; gross shipment; outward return; waste; remaining service potential; manufacture burden vector; actual service use"
+      collection_method: "Count and weigh matched serial bins including wet residue separately. Reconcile packaging_six_legs and assign only measured service-cohort consumption of manufacture plus actual cleaning/transport; preserve unused closing potential, no guessed lifetime."
+      unit: "kg; item"
+      frequency: "every movement and stock close"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_transport
+      process_id: "prepare"
+      flow_role: "one road-freight provider per leg"
+      record_type: "carrier activity record"
+      raw_fields: "consignment; leg; road distance; loaded leather mass; loaded bin tare; rejected-load mass; bin-return load; limiting mass or volume; loading; empty running convention; provider; included fuel; included exhaust; vehicle region period"
+      collection_method: "Reconcile actual route and carrier invoices with gross carried mass and the chosen service dataset, including attributable returns. Calculate raw tonne-kilometres before attribution, without duplicating the carrier fuel or emissions."
+      unit: "kg; km; t*km"
+      frequency: "every trip"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_waste_trim
+      process_id: "trim"
+      flow_role: "individual rejected cutting or aqueous effluent stream"
+      record_type: "handover and assay"
+      raw_fields: "stream id; lot; wet mass; free water; dry matter; chromium analysis; dissolved fraction; suspended fraction; contaminant identities; destination; legal classification; provider; combined outlet; source partition; Q0 load"
+      collection_method: "Weigh each solid stream and meter the actual aqueous handover; sample chromium and other actual contaminants independently. Keep source partitions as nonadditive views of a single outlet. Link treatment once and preserve permits and receipts."
+      unit: "kg"
+      frequency: "every handover and representative sample"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_waste_prepare
+      process_id: "prepare"
+      flow_role: "individual rejected cutting or aqueous effluent stream"
+      record_type: "handover and assay"
+      raw_fields: "stream id; lot; wet mass; free water; dry matter; chromium analysis; dissolved fraction; suspended fraction; contaminant identities; destination; legal classification; provider; combined outlet; source partition; Q0 load"
+      collection_method: "Weigh each solid stream and meter the actual aqueous handover; sample chromium and other actual contaminants independently. Keep source partitions as nonadditive views of a single outlet. Link treatment once and preserve permits and receipts."
+      unit: "kg"
+      frequency: "every handover and representative sample"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_balance_trim
+      process_id: "trim"
+      flow_role: "wet dry water and chromium balances"
+      record_type: "independent balance observations"
+      raw_fields: "gate; opening stock; closing stock; gross formed; external receipts; gross outward; dry matter; free liquid; evaporation; species-specific releases; chromium; independent observations; uncertainty; F id; X duplicate evidence"
+      collection_method: "Use independent scales, moisture/solids tests and water/chromium sampling. Do not fit evaporation and solid loss from one residual. No reaction water is postulated in this mechanical route; actual chemical reaction requires separate species evidence and a changed route."
+      unit: "kg"
+      frequency: "every gate and cohort"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_balance_prepare
+      process_id: "prepare"
+      flow_role: "wet dry water and chromium balances"
+      record_type: "independent balance observations"
+      raw_fields: "gate; opening stock; closing stock; gross formed; external receipts; gross outward; dry matter; free liquid; evaporation; species-specific releases; chromium; independent observations; uncertainty; F id; X duplicate evidence"
+      collection_method: "Use independent scales, moisture/solids tests and water/chromium sampling. Do not fit evaporation and solid loss from one residual. No reaction water is postulated in this mechanical route; actual chemical reaction requires separate species evidence and a changed route."
+      unit: "kg"
+      frequency: "every gate and cohort"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_allocation_trim
+      process_id: "trim"
+      flow_role: "gross inventory and attribution vectors"
+      record_type: "attribution worksheet"
+      raw_fields: "exchange id; raw amount and unit; conversion evidence; exclusive sub-process; virtual subdivision; determining physical cause; remaining shared load; common gate state; contemporaneous prices; assigned burden; companion vector; opening closing WIP vector; FG history; sensitivity"
+      collection_method: "Retain original unallocated records and a separate decision for each exchange following section 7, then assemble A_i before normalize_once. Preserve value unknowns, excluded downstream charges and allocation sensitivity."
+      unit: "native row unit"
+      frequency: "each exchange and reporting cohort"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+    - protocol_id: cp_allocation_prepare
+      process_id: "prepare"
+      flow_role: "gross inventory and attribution vectors"
+      record_type: "attribution worksheet"
+      raw_fields: "exchange id; raw amount and unit; conversion evidence; exclusive sub-process; virtual subdivision; determining physical cause; remaining shared load; common gate state; contemporaneous prices; assigned burden; companion vector; opening closing WIP vector; FG history; sensitivity"
+      collection_method: "Retain original unallocated records and a separate decision for each exchange following section 7, then assemble A_i before normalize_once. Preserve value unknowns, excluded downstream charges and allocation sensitivity."
+      unit: "native row unit"
+      frequency: "each exchange and reporting cohort"
+      temporal_coverage: "complete matched cohort including opening and closing stocks"
+      site_scope: "origin trimming site to receiving plant gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; original batch and stock records; actual scope evidence; independent reconciliation"
+  calculation_rules:
+    - id: release_quantity
+      applies_to: "accepted_feed"
+      rule: "Q = sum of newly first-released net wet trimming mass at the receiver gate in the cohort; one physical lot is counted once. Free drained liquid and all packaging are excluded. Dispatch and reinspection quantities are separate gross views. For Q=0 preserve the complete raw ledger and burdens and produce no unit result."
+      inputs:
+        - new_release_mass
+        - lot_identity
+        - cp_release
+      output: "Q"
+      source_ids:
+        - eu-jrc-tanning-2013
+        - unido-leather-2019
+    - id: prepare_attribution
+      applies_to: "all inventory rows"
+      rule: "For each exchange i convert the original quantity to its row unit first and apply the documented exchange-specific allocation. A_i = attributed current external load plus inherited opening WIP vector minus inherited closing WIP vector, with exact internal transfers cancelled and companion-output assignments kept separate. Preserve genuine failed/cleanup/rework loads and burdens carried by identified losses. A_i is never a normalized quantity."
+      inputs:
+        - raw_i
+        - conversion_i
+        - allocation_i
+        - opening_vector_i
+        - closing_vector_i
+        - cp_allocation_trim
+        - cp_allocation_prepare
+      output: "A_i"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: normalize_once
+      applies_to: "all inventory rows"
+      rule: "x_i = A_i / Q for Q > 0, exactly once. All non-reference cards and collection aggregation labels refer to this one result per reference flow. No card, collection method or aggregation performs another division. The accepted_feed card is the declared 1 kg reference identity. Physical audit-only companion and packaging movements remain explicitly tagged and cannot become credits."
+      inputs:
+        - A_i
+        - Q
+      output: "x_i"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: physical_gates
+      applies_to: "trim; prepare"
+      rule: "For the trimming-feed stock ledger at each gate: opening stock + external feed receipts + newly formed trimming mass = closing stock + all gross physical outward feed movements + measured losses, cancelling paired internal movements when consolidated. This feed-stock equation does not add newly formed trimmings to the whole-hide material inputs; the complete original trimming-process mass balance is incoming hides = retained hide + cuttings + other individually measured outward material + stock changes + losses. Formation F counts only new material; an X correction removes only an exact duplicate already present on the same side in OTHER, with identity and original booking proof. Never subtract ordinary waste, WIP or returns as duplicate X. Track wet mass, dry leather, free liquid, water and total chromium independently; assay compounds are contained subaccounts. The initial trimming gate balances complete hides against retained hide, cuttings and loss."
+      inputs:
+        - opening_mass
+        - external_receipts
+        - F
+        - X
+        - closing_mass
+        - gross_outward
+        - measured_loss
+      output: "physical_balance"
+      source_ids:
+        - eu-jrc-tanning-2013
+        - unido-leather-2019
+    - id: fg_destinations
+      applies_to: "accepted_feed"
+      rule: "Q is first release at the receiver gate. Newly released material already present in closing FG is included in Q and must not be added again. FG opening + Q + actual external returns received = FG closing + gross onward deliveries + external returns sent + FG waste, with identified moisture changes. Carry historical per-exchange burdens through opening/closing FG and original-delivery reversal if a released lot returns. Any post-release holding/dispatch is a separate service account; its internal released-product transfer cancels when consolidated and cannot create more Q."
+      inputs:
+        - opening_FG
+        - Q
+        - returned_FG
+        - closing_FG
+        - gross_delivery
+        - returned_outward
+        - FG_waste
+      output: "FG_balance"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: packaging_six_legs
+      applies_to: "cp_packaging"
+      rule: "For the single physical bin article: opening empty + opening attached to WIP/FG + opening reusable stock + new external purchase + external return received = closing empty + closing attached to WIP/FG + closing reusable stock + bins leaving with gross physical shipments + separate outward returns + bin waste. Count each serial article once per stock side or external event. Internal reuse cancels; neither internal turnover nor externally returned bins are new manufacture, Q or automatic co-product. Pair the same equation at source, receiver and consolidated gates; no bin tare enters leather mass."
+      inputs:
+        - opening_bin
+        - new_bin
+        - external_return_received
+        - closing_bin
+        - gross_shipment_bin
+        - outward_return_bin
+        - bin_waste
+      output: "bin_balance"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: raw_conversions
+      applies_to: "all inventory rows"
+      rule: "Use the exact reference property/unit chain of each adopted identity. kWh × 3.6 = MJ; kg × km / 1000 = t*km for measured goods including carried bins. Preserve the carrier empty-running convention. Integrated gas/liquid volumes are already totals and are not multiplied by time again; only true rates are integrated. Volume-to-mass requires the actual substance density independently measured at its state; count-to-mass requires measured same-article tare. No secondary coefficient supplies leather density or bin mass."
+      inputs:
+        - raw_unit
+        - actual_state
+        - independent_density
+        - article_tare
+        - distance
+      output: "converted_raw_i"
+      source_ids:
+        - ilcd-allocation-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Keep native descriptions and actual supplied state, provider interface and type compatible. Unresolved upstream, companion and auxiliary UUIDs remain specific unbound exchanges. Resolve the actual whole-hide and retained-hide identity and supplier coverage before linking those exchanges in a quantitative data package; do not bind contradictory candidates or infer per-hide mass. This input identity gap does not by itself invalidate the evidenced trimming-feed reference or manufacturing route."
+      evidence: "Complete direct identities; supplier declarations; receiver specification"
+    - id: dq_coverage
+      applies_to: "all inventory rows"
+      requirement: "Use a representative period covering season, site and actual route, with failed lots, Q0, cleaning and all storage gates. Distinguish missing data from measured zero and preserve the full gross ledger alongside allocated results."
+      evidence: "Calendar; complete batch register; meter calibration; stock reconciliation"
+    - id: dq_science
+      applies_to: "accepted_feed"
+      requirement: "Test actual moisture, chromium species and contaminants on declared bases with uncertainty and detection limits; retain supplier and receiver technical/legal evidence. No source table mean becomes a foreground factor or safety threshold."
+      evidence: "Sampling plan; laboratory methods; acceptance/rejection receipts"
+    - id: dq_attribution
+      applies_to: "all inventory rows"
+      requirement: "Retain each flow conversion, allocation decision and opening/closing inherited vector. Bound uncertainty independently for moisture, losses, shared service and value; no algebraic closure is a substitute for independent measurement."
+      evidence: "Raw worksheets; vector ledger; sensitivity; source context"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "accepted_feed"
+    rule: "Reject pooled leather forms or unverified receiver function/status. Require moist chromium(III)-tanned bovine edge cuttings with no dyeing/finish; shavings, powder, raw/limed hides, wet-white or vegetable-tanned scraps, leather articles and fibreboard are excluded. Missing moisture, chromium/contamination or lawful receiver evidence is unresolved applicability."
+    source_ids:
+      - eu-jrc-tanning-2013
+      - unido-leather-2019
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "Exactly one accepted_feed reference row equals 1 kg and uses Q as first release at the receiver gate. Every other card reports normalize_once with the same Q; protocols collect raw totals. Fail repeated normalization, duplicate FG output, repeated release or unit results at Q=0."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_balances
+    applies_to: "trim; prepare"
+    rule: "Reconcile full original trimming mass, cutting-stock F and exact duplicate X, separate wet/dry/water/chromium balances, per-exchange WIP history, FG destinations and all six packaging legs. Do not infer two unknowns from one residual or use COD/total VOC as a specific chemical mass."
+    source_ids:
+      - eu-jrc-tanning-2013
+      - unido-leather-2019
+      - ilcd-allocation-2010
+  - rule_id: validate_sources
+    applies_to: "all inventory rows"
+    rule: "Check source applicability and limitations independently of extraction verification. Industrial sources support the stated process distinctions, not LCA allocation or current legal permissions; apply the cited attributional ILCD context only within section 7. Unknown quantitative relationships and unresolved native contradictions remain review holds."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_providers
+    applies_to: "all inventory rows"
+    rule: "One provider for each external service or material interface; paired internal trimmings have no second provider. Combined outlet totals and partitions do not add. No duplicated fuel/exhaust of a transport service, no fictitious steam/condensate, and no automatic co-product or recovery credit."
+    source_ids:
+      - ilcd-allocation-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "background_dataset"
+  allowed_use: "State-matched attributional feed supply to an accepting receiver after identity and applicability review"
+  excluded_use: "Treatment-service reporting; consequential recycling credit; general leather powder; finished leather or fibreboard substitution; unverified hazardous-waste exemption"
+  required_metadata: "bovine species and source lot; chromium(III) tanning system and curing route; undyed unfinished wet-blue state; actual as-received moisture and dry matter basis; edge-cutting geometry and foreign matter specification; total chromium and chromium(VI) test basis and detection limits; actual biocides and contact contamination; jurisdictional waste or by-product status and authorised receiver function; receiver fibreboard feed acceptance and first-release lot identity; net wet mass excluding free drain liquid and packaging; gross formation and opening closing stocks with inherited burdens; source and receiving gates geography period and provider boundaries"
+  required_quality_disclosure: "Measured versus unknown data, native identity limits, failed/Q0 coverage, first-release cohort, WIP/FG burden history, packaging stock/service, provider overlap and allocation sensitivity"
+  update_trigger: "Tannage, species, finish, moisture state, outlet function/status, actual process, provider boundary or identity conflict resolution changes"
+data_sources:
+  - id: "eu-jrc-tanning-2013"
+    type: "official_guidance"
+    reference: "European Commission JRC. Tanning of Hides and Skins BREF (2013), doi:10.2788/13548; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/TAN_Published_def.pdf; §§2.3.4–2.3.5, 3.5.2, 4.11.1.2–4.11.1.5; printed pp.21,74–75,197–199"
+    used_for: "Original trimming and shavings distinction; carried chemicals; Table 3.17 conditions/footnotes; Table 4.20 non-finished trimming outlets and adjacent limitations. No numerical default or legal approval."
+  - id: "unido-leather-2019"
+    type: "official_guidance"
+    reference: "UNIDO. The Framework for Sustainable Leather Manufacture, second edition (2019); https://leatherpanel.org/sites/default/files/publications-attachments/the_framework_for_sustainable_leather_manufacturing_2nd_edition_2019_f.pdf; pp.26–27,62; Figs.5,6,39"
+    used_for: "Independent institutional process context, separate wet-blue trimmings versus shavings/dust, inherited chromium and preservation residues. Illustrative chemical balances are not foreground factors."
+  - id: "ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC. ILCD Handbook: General Guide for LCA — Detailed Guidance, first edition March 2010; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf; §§7.9.2–7.9.3, printed pp.255–272 (PDF275–292)"
+    used_for: "Attributional subdivision/virtual subdivision, exchange-specific determining physical causality, residual same-condition common-gate market value and service attribution. No fixed allocation ratio or numerical reuse."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:da07b53444fe16afc5aa19d85c1940960c586b8499530b0d9ce9cd7a4bdbd871"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4969"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4969
+          line: 58
+          column: 1
+        end:
+          offset: 8582
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | trim; prepare | Include the actual original trimming of purchased moist chrome-tanned bovine hide; link one complete upstream wet-blue supplier. Curing, beamhouse, tanning and sammying already included upstream must not be repeated as foreground. If they are actually onsite, expand to their individually named supplied formulations, fuels, water, chemicals and actual species with source evidence; do not claim this bounded route for an integrated tannery. | eu-jrc-tanning-2013; unido-leather-2019 |\n| boundary_terminal | prepare | Include segregation, handling, necessary covered holding, actual bin preparation, outbound transport and first receiver acceptance. The supported intended outlet is non-finished trimming feed for leather fibreboard after receiver preparation; fibreboard production, chemical hydrolysis, chromium recovery and disposal service are outside the product reference. A historic recovery example is not current legal permission or guaranteed acceptance. | eu-jrc-tanning-2013; unido-leather-2019 |\n| boundary_atomic | all inventory rows | Instantiate every actually present additional material or species as its own atomic card, including foreign-metal removal, detergent formulation, preserved-biocide addition, fuel, gas, spill and treatment residue. State measured absence for unused operations; no collective other exchange may hide real loads. The selected route has no deliberate drying, new tannage, steam boiler or onsite combustion. A real heat route requires its own exact steam/heat identity, enthalpy and condensate/water agreement and separately named external returns. | eu-jrc-tanning-2013; unido-leather-2019 |\n| boundary_stocks | all inventory rows | Retain all failed batches, Q=0 campaigns, start/stop, idle, cleanup and real incremental rework. Before first receiver release all goods remain WIP, including ready-to-ship source stock and goods in transit. Track mass and an inherited vector for every exchange at every opening/closing WIP gate; transfer vectors rather than erase history. Reinspection is not new production. | ilcd-allocation-2010 |\n| boundary_interface | all inventory rows | Keep a physical gross ledger and an allocated product ledger separately. Cancel only exact paired internal transfers at consolidation. For one combined effluent outlet, total and source partitions are nonadditive views of the same stream and share one provider. No avoided-landfill or virgin-leather credit follows from collection. | ilcd-allocation-2010 |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Already chrome(III)-tanned moist bovine wet-blue hides purchased before original trimming |\n| starting_condition_role | intermediate_input |\n| product_classification_scope | A narrow feed-material subset of CPC 3.0:39220; classification is not methodology identity |\n| recursive_input_rule | Do not start with purchased already formed trimmings and call it original formation. Any genuine same-category external input is separately identified with its own history and one provider; it cannot be assumed burden free or merged with new formation. |\n| upstream_dataset_requirement | One state-matched whole-hide supply with curing and tannage included; no repeated upstream water or tanning chemical purchase |\n| disclosure | Actual species/tannage/state, trimming function, supplier coverage, WIP/FG vectors, receiver acceptance, waste/by-product status, provider boundaries and all omitted/changed operations |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 281
+              line: 10
+              column: 1
+            end:
+              offset: 344
+              line: 10
+              column: 64
+          text: "# Wet-blue bovine leather trimming feedstock at receiving plant"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4969
+              line: 58
+              column: 1
+            end:
+              offset: 4990
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28905"
+      family: "allocation"
+      span:
+        start:
+          offset: 28905
+          line: 411
+          column: 1
+        end:
+          offset: 31268
+          line: 421
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | all inventory rows | Use attributional partitioning only for the declared attributional study. First separate exclusive operations and perform measured or virtual subdivision of inventories; preparation dedicated to accepted trimmings is assigned directly. Document the unpartitioned gross ledger and the retained-hide companion ledger. | ilcd-allocation-2010 |\n| allocation_causality | trim | For each remaining exchange identify its determining physical cause separately. Trace embodied hide dry matter, contained water and chromium to retained hide, cuttings, rejected material and measured loss. Cutting to shape the retained hide is not automatically caused by the offcut mass; determine its actual function. Handle leather loss burdens explicitly. Mass conservation alone is not a universal mass allocation key. | ilcd-allocation-2010 |\n| allocation_residual | trim | Only after the above steps fail for a residual shared exchange use contemporaneous market values of actual co-functions in the same condition at the common trimming gate. Remove later transport, conditioning and packaging values before comparison; disclose prices, mass basis, negative or zero value and sensitivity. Unknown values require review, not a fixed ratio or free physical/economic choice. | ilcd-allocation-2010 |\n| allocation_logistics | prepare | Assign packaging, handling and transport by exclusive measured service first; for shared service use the determining limiting load and duration/distance with evidence. Preserve packaging cohort manufacture burden and remaining service potential. New purchases and returns are physical legs, not repeated manufacture. Use no assumed bin lifetime or recycling substitution credit. | ilcd-allocation-2010 |\n| allocation_status | accepted_feed | Declare actual legal and economic status at each gate. A Product flow can represent a material supplied for a documented recovery function without proving end-of-waste or nonhazardous status. If the real transaction is a treatment service or the receiver cannot legally/technically accept the chromium-bearing cuttings, do not use this Product reference and do not silently relabel it. | eu-jrc-tanning-2013; unido-leather-2019; ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 281
+              line: 10
+              column: 1
+            end:
+              offset: 344
+              line: 10
+              column: 64
+          text: "# Wet-blue bovine leather trimming feedstock at receiving plant"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28905
+              line: 411
+              column: 1
+            end:
+              offset: 28945
+              line: 411
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50198"
+      family: "validation"
+      span:
+        start:
+          offset: 50198
+          line: 465
+          column: 1
+        end:
+          offset: 52259
+          line: 475
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | accepted_feed | Reject pooled leather forms or unverified receiver function/status. Require moist chromium(III)-tanned bovine edge cuttings with no dyeing/finish; shavings, powder, raw/limed hides, wet-white or vegetable-tanned scraps, leather articles and fibreboard are excluded. Missing moisture, chromium/contamination or lawful receiver evidence is unresolved applicability. | eu-jrc-tanning-2013; unido-leather-2019 |\n| validate_denominator | all inventory rows | Exactly one accepted_feed reference row equals 1 kg and uses Q as first release at the receiver gate. Every other card reports normalize_once with the same Q; protocols collect raw totals. Fail repeated normalization, duplicate FG output, repeated release or unit results at Q=0. | ilcd-allocation-2010 |\n| validate_balances | trim; prepare | Reconcile full original trimming mass, cutting-stock F and exact duplicate X, separate wet/dry/water/chromium balances, per-exchange WIP history, FG destinations and all six packaging legs. Do not infer two unknowns from one residual or use COD/total VOC as a specific chemical mass. | eu-jrc-tanning-2013; unido-leather-2019; ilcd-allocation-2010 |\n| validate_sources | all inventory rows | Check source applicability and limitations independently of extraction verification. Industrial sources support the stated process distinctions, not LCA allocation or current legal permissions; apply the cited attributional ILCD context only within section 7. Unknown quantitative relationships and unresolved native contradictions remain review holds. | ilcd-allocation-2010 |\n| validate_providers | all inventory rows | One provider for each external service or material interface; paired internal trimmings have no second provider. Combined outlet totals and partitions do not add. No duplicated fuel/exhaust of a transport service, no fictitious steam/condensate, and no automatic co-product or recovery credit. | ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 281
+              line: 10
+              column: 1
+            end:
+              offset: 344
+              line: 10
+              column: 64
+          text: "# Wet-blue bovine leather trimming feedstock at receiving plant"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50198
+              line: 465
+              column: 1
+            end:
+              offset: 50220
+              line: 465
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_4969"
+      source_span:
+        start:
+          offset: 5063
+          line: 62
+          column: 1
+        end:
+          offset: 5583
+          line: 62
+          column: 521
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_4969"
+      source_span:
+        start:
+          offset: 5584
+          line: 63
+          column: 1
+        end:
+          offset: 6106
+          line: 63
+          column: 523
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_4969"
+      source_span:
+        start:
+          offset: 6107
+          line: 64
+          column: 1
+        end:
+          offset: 6735
+          line: 64
+          column: 629
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_stocks"
+      identity_kind: "explicit"
+      unit_id: "normative_4969"
+      source_span:
+        start:
+          offset: 6736
+          line: 65
+          column: 1
+        end:
+          offset: 7178
+          line: 65
+          column: 443
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_interface"
+      identity_kind: "explicit"
+      unit_id: "normative_4969"
+      source_span:
+        start:
+          offset: 7179
+          line: 66
+          column: 1
+        end:
+          offset: 7579
+          line: 66
+          column: 401
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_28905"
+      source_span:
+        start:
+          offset: 29018
+          line: 415
+          column: 1
+        end:
+          offset: 29400
+          line: 415
+          column: 383
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_28905"
+      source_span:
+        start:
+          offset: 29401
+          line: 416
+          column: 1
+        end:
+          offset: 29881
+          line: 416
+          column: 481
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_28905"
+      source_span:
+        start:
+          offset: 29882
+          line: 417
+          column: 1
+        end:
+          offset: 30337
+          line: 417
+          column: 456
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_logistics"
+      identity_kind: "explicit"
+      unit_id: "normative_28905"
+      source_span:
+        start:
+          offset: 30338
+          line: 418
+          column: 1
+        end:
+          offset: 30776
+          line: 418
+          column: 439
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_status"
+      identity_kind: "explicit"
+      unit_id: "normative_28905"
+      source_span:
+        start:
+          offset: 30777
+          line: 419
+          column: 1
+        end:
+          offset: 31266
+          line: 419
+          column: 490
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_50198"
+      source_span:
+        start:
+          offset: 50293
+          line: 469
+          column: 1
+        end:
+          offset: 50735
+          line: 469
+          column: 443
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_50198"
+      source_span:
+        start:
+          offset: 50736
+          line: 470
+          column: 1
+        end:
+          offset: 51086
+          line: 470
+          column: 351
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_50198"
+      source_span:
+        start:
+          offset: 51087
+          line: 471
+          column: 1
+        end:
+          offset: 51474
+          line: 471
+          column: 388
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_sources"
+      identity_kind: "explicit"
+      unit_id: "normative_50198"
+      source_span:
+        start:
+          offset: 51475
+          line: 472
+          column: 1
+        end:
+          offset: 51894
+          line: 472
+          column: 420
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_providers"
+      identity_kind: "explicit"
+      unit_id: "normative_50198"
+      source_span:
+        start:
+          offset: 51895
+          line: 473
+          column: 1
+        end:
+          offset: 52257
+          line: 473
+          column: 363
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4969"
+      source_span:
+        start:
+          offset: 4969
+          line: 58
+          column: 1
+        end:
+          offset: 4990
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4969"
+      source_span:
+        start:
+          offset: 7607
+          line: 70
+          column: 1
+        end:
+          offset: 8580
+          line: 77
+          column: 202
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28905"
+      source_span:
+        start:
+          offset: 28905
+          line: 411
+          column: 1
+        end:
+          offset: 28945
+          line: 411
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50198"
+      source_span:
+        start:
+          offset: 50198
+          line: 465
+          column: 1
+        end:
+          offset: 50220
+          line: 465
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:da07b53444fe16afc5aa19d85c1940960c586b8499530b0d9ce9cd7a4bdbd871"
+  generated_content_sha256: "sha256:50085371e14545fbbd876df4dda7b3bee0f5aa6008312c268b04e4fa8d367b2d"

@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.assembled-flooring-panels-made-out-of-wood |
-| classification_refs | CPC 3.0 31626; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0 31626；方法范围更窄；不表示映射已接受 |
 | covered_products | UF胶合全非热带阔叶木单板、透明UV预涂饰多层拼装地板 |
 | excluded_products | 单层实木拼装板；HDF强化/复合地板；未组装条料；其他芯层/胶种/涂饰 |
 | representative_product | 具有声明木层树种配方的工厂涂饰型面多层木地板；不虚构厚度、密度或比例 |
@@ -70,7 +70,7 @@ content_maturity: authored_methodology
 | starting_condition_role | 前景厂门到厂门组装/涂饰，另显式链接上游产品、公用工程、运输和废物处理，供摇篮到厂门使用 |
 | product_classification_scope | 仅CPC 3.0 31626中上述多层木质拼装子集 |
 | recursive_input_rule | 外购拼装地板或同类回收材料在有记录上游数据集终止追溯，披露身份、既往加工及数量；本单元返工为内部在制品，不是新外部参考产品。 |
-| upstream_dataset_requirement | 匹配树种及单板干燥/旋切、实际独立UF树脂或已核完整UF胶的兼容供货状态/参考基准及供应制造/配制/交付、涂料配方、电网地区/年份/电压、供热参考和实际处理；兼容缺失保持待定 |
+| upstream_dataset_requirement | 匹配树种及单板干燥/旋切、胶固形物、涂料配方、电网地区/年份/电压、供热参考和实际处理；兼容缺失保持待定 |
 | disclosure | 厂门、时期、配置、起始含水率、外购/现场划分、在制品/库存变化、供热生成边界、损失及排除的下游情景 |
 
 ### 边界规则
@@ -159,11 +159,11 @@ content_maturity: authored_methodology
 
 ###### 氯化铵（`glue_hardener`）
 
-仅在地板采购边界真实独立供应固态氯化铵催化剂时条件纳入，须供方/SDS含量、形态及真实交付/接口/参考证据。本具体实物交换尚无已核验UUID：化学CAS与质量kg本身不确立相匹配的实际交付供应状态。关联直接核实身份前，须正面证明实际交付状态/接口及原生参考相容；供应溶液或混合制剂须有其完整产品身份。不虚构组成、剂量或路线等效。
+本行是地板单元边界的独立交换，按下述路线条件和计量要求采集。
 
-- 选定流：独立供应固态氯化铵催化剂
+- 选定流：氯化铵 `0d0e3c27-1f93-4dc1-80d0-392a3226cd4f`
 - 流属性/单位：质量 / kg
-- 数量规则：仅单独投加氯化铵时记录：称量盐，记录浓度/纯度和混合损失；外购胶内置催化剂不重复投入。未投加需有缺席证据。 保留真实供方含量及交付固体参考数量；供入溶液或混合制剂须另有相容完整产品身份。
+- 数量规则：仅单独投加氯化铵时记录：称量盐，记录浓度/纯度和混合损失；外购胶内置催化剂不重复投入。未投加需有缺席证据。
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -309,7 +309,7 @@ content_maturity: authored_methodology
 
 ###### 瓦楞纸箱（`carton`）
 
-本行是地板单元边界的独立交换，按下述路线条件和计量要求采集。 所选瓦楞箱记录在其来源纤维基准下限定16.6%原生和83.4%再生纤维、工厂生产混合及技术组合。仅在实际完整供箱组成、构造、状态及供方/参考基准有据匹配这些约束时采用此定位；这些数值是来源身份条件，不是工厂配方或通用再生含量默认值。其他或未核实真实纸箱仍保留完整实物交换，须另有兼容经核身份或具体UUID缺口，供方制箱及交付保留一次。
+本行是地板单元边界的独立交换，按下述路线条件和计量要求采集。
 
 - 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：质量 / kg

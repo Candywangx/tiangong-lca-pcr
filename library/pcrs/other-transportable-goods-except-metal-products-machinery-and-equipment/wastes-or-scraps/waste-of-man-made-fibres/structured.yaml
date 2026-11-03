@@ -1,10 +1,1598 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39216"
-  title: "Waste of man-made fibres"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.waste-of-man-made-fibres"
+  classification_refs: "CPC 3.0:39216 Waste of man-made fibres; narrower candidate methodology"
+  covered_products: "Unopened PET filament selvedge-yarn residue from the declared dry mechanical weaving branch; first accepted recycling-feedstock lot"
+  excluded_products: "Other fibre polymers; blends; cotton or wool wastes/noils; staple soft waste; qualified yarn; fabric clips; PET bottles/flakes/pellets; melted, opened, carded or chemically regenerated output"
+  representative_product: "One composition-defined undyed PET filament selvedge waste lot retaining declared supplier finish and measured as-accepted moisture"
+  production_route: "Purchased filament yarn → receipt/warping/drawing-in → mechanical weaving and selvedge separation → dedicated collection → dry sorting and inspection → packing → first feedstock acceptance → cohort-specific storage/handling"
+  market_state: "Packed unopened dry-handled yarn residue for an identified recycler acceptance specification; dry-handled does not mean oven-dry or oil-free"
+functional_unit:
+  what: "Supply a composition-defined unopened PET selvedge-yarn recycling feedstock"
+  how_much: "1 kg net newly first-accepted residue, excluding packaging"
+  how_well: "Meet the actual recycler specification for PET identity, unopened form, size/dye/finish state, moisture and contamination; no universal numerical limits supplied"
+  how_long_or_cycle: "One declared first-release cohort; subsequent dispatch or reinspection creates no new production"
+  reference_flow_link: "accepted_pet_waste"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "p_source; p_prepare"
+      rule: "Include source yarn receipt, warping and loom preparation, actual weaving and selvedge cutting/separation, dedicated collection, sorting, inspection and real packing. Track both source fabric and waste. A bought-waste repacking model cannot replace this chain."
+      source_ids:
+        - jrc-textiles-2023
+        - getzner-polyester-2024
+        - namphong-yarn-waste
+    - rule_id: boundary_branch
+      applies_to: "product and route"
+      rule: "Use only source-confirmed PET filament residue in the declared undyed, unsized and unopened branch. Size/dye/other-polymer, water-jet wet residue, fabric clips and opened fibre require a different applicability review. Missing condition evidence is unresolved; do not code it as absent."
+      source_ids:
+        - jrc-textiles-2023
+        - namphong-yarn-waste
+        - hising-polyester-selvedge
+    - rule_id: boundary_completeness
+      applies_to: "all processes"
+      rule: "Retain failed and zero-output runs, starts/stops, idle, cleaning, changeovers, rejects and actual rework. Add each actually present input, waste or emitted species as a separately named atomic row with a protocol before asserting completeness. No catch-all other input/output or automatic zero allowance is permitted."
+      source_ids:
+        - jrc-textiles-2023
+    - rule_id: boundary_utilities
+      applies_to: "electricity; air; water; heat"
+      rule: "Use one provider for each utility. If compressed air is purchased, include that supply once; if generated on site, collect compressor electricity and actual cooling water/oil/condensate as separate exchanges and cancel internal air, rather than adding a purchased-air burden. No boiler, steam, fuel combustion, heat return or condensate return is presumed. Any actual external heat/water return needs a separate Product return with state/enthalpy and the supplier agreement."
+      source_ids:
+        - jrc-textiles-2023
+    - rule_id: boundary_stock
+      applies_to: "Q; WIP; FG; V"
+      rule: "Q is newly first released output. Closing FG already contains any Q still held, so never add closing FG to Q as another manufacturing output. Maintain opening FG + Q + external returns received = closing FG + gross physical dispatch V + actual FG losses/transfers. A returned old lot and its original dispatch/reversal retain original cohort burdens; only real incremental repair adds burden, not production."
+      source_ids: []
+    - rule_id: boundary_services
+      applies_to: "p_supply"
+      rule: "Keep storage, handling, loading and any repacking after first release in a raw service journal H by original cohort Qc. Join H to that cohort inventory before its one normalization. H is not divided here, cannot be assigned to current Q merely because an old lot ships now, and cannot create a second reference output. Combine gates by cancelling internal released-material transfers."
+      source_ids: []
+    - rule_id: boundary_native
+      applies_to: "UUID-bearing rows"
+      rule: "The reference UUID is a generic Product flow with unspecified treatment, no PET CAS or grade and no moisture/finish guarantee. It identifies only man-made fibre residue; all PET/source/unopened/supply restrictions in §3 and accepted_pet_waste remain compulsory. The PET reject Waste flow explicitly also covers textiles despite its plastics classification; this classification difference does not make bottle flakes or resin eligible."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Complete purchased PET filament yarn at the source weaving-site gate, including its actual finish/moisture and incoming packaging; follow the source residue to the same declared acceptance condition"
+  starting_condition_role: "Physical source-process input, not purchased finished waste feedstock"
+  product_classification_scope: "Narrow unopened PET weaving-yarn waste within CPC 3.0:39216"
+  recursive_input_rule: "Same-category internal residue/rework carries its original per-exchange burden vector and cancels internally. External same-category waste is outside this source-generation branch unless origin and inherited burden are reconstructed without repeating source manufacture."
+  upstream_dataset_requirement: "One compatible upstream provider per purchased exchange with actual boundary, polymer, finish, route, geography and time; include upstream yarn manufacture exactly once. Document whether incoming cores/transport are included before adding them."
+  disclosure: "Disclose all source weaving, separation, sorting, acceptance, WIP/FG and post-release service gates, output status and upstream exclusions; foreground completeness is not cradle-to-gate completeness."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Waste of man-made fibres"
+    uuid: "f814e607-ba2f-4727-b842-e32eff57e4d1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "PET polymer evidence and fibre fractions"
+    - "source mill and weaving operation"
+    - "filament construction and yarn grade"
+    - "virgin/recycled origin and supplier route"
+    - "undyed and unsized confirmation"
+    - "supplier finish identity and measured content"
+    - "moisture method and weighing state"
+    - "unopened yarn-remnant form"
+    - "foreign-material analysis and acceptance limits"
+    - "source collection and sorting route"
+    - "receiving recycler specification and intended route"
+    - "first-release lot/time and unique release identifier"
+    - "net mass and packaging tare"
+    - "site and reporting period"
+    - "electricity country and voltage"
+    - "allocation drivers and output status"
+    - "WIP/finished-stock quantities and inherited exchange vectors"
+    - "gross dispatch and external returns"
+    - "packaging component ledgers"
+    - "unresolved UUID/provider restrictions"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is the sum of unique newly positive first-release net masses from cp_release after sorting and packing. Include actual moisture and inherited finish; subtract every packaging tare. Retests, regrades, stock transfers, dispatch and returned previously released lots do not increase Q."
+  - id: whole_supply
+    applies_to: "pet_yarn"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Purchase/issue complete supplied yarn once. Assayed PET, supplier finish and carrier water are constituent subledgers, not additional purchased inputs. Separately procured auxiliaries need their own atomic rows."
+  - id: unit_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Original measured property"
+      uuid: ""
+    required_unit: "kg; MJ; m3"
+    rule: "Convert raw quantities before attribution: kWh to MJ uses 3.6; integrate actual rates once over their measured interval. Already integrated volumes are not multiplied by time. Volume-to-mass needs independently evidenced material-specific density at the measured state; no water density for oil/air and no kg per item assumption."
+  - id: physical_components
+    applies_to: "physical ledgers"
+    required_property_ref:
+      name: "Mass and actual composition"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile whole mass and PET, water and actual finish separately. No reaction water or polymer conversion is assumed in this mechanical route. Free water, phase change and inherited moisture differ from chemically bound water. Never fit two unknown losses with one balance residual or translate COD/VOC indicators into a named chemical mass."
+process_map:
+  - id: p_source
+    name: "Source weaving and selvedge generation"
+    inclusion: "required"
+    inclusion_condition: "Actual source cohort"
+    role: "Joint source with fabric and separated residue"
+    quantitative_reference: "Gross fabric and residue quantities retained; attributable vector to T"
+  - id: p_prepare
+    name: "Dedicated collection sorting packing and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Matched source residue"
+    role: "Residual feedstock preparation"
+    quantitative_reference: "Unique new first-release Q"
+  - id: p_supply
+    name: "Released-cohort storage handling and loading"
+    inclusion: "required"
+    inclusion_condition: "Actual service events; replacement packing only when real"
+    role: "Raw H service by original cohort"
+    quantitative_reference: "Original Qc; no new production"
+process_inventory:
+  - id: p_source
+    label: "Source weaving and selvedge generation"
+    inputs:
+      product:
+        - row_id: pet_yarn
+          role: "Whole supplied PET filament yarn"
+          name: "Undyed unsized PET continuous-filament yarn with supplier spin finish"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record all warp, weft and any PET-only catch/selvedge yarn once by actual construction and supply grade. The whole purchased supply includes measured moisture and finish. A generic native polyester-filament candidate has conflicting bilingual reaction-route wording and does not prove this prepared grade; retain this precise identity without a UUID until compatible supplier/native evidence is available. Do not add PET resin, assay components or the upstream yarn-making energy again."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-textiles-2023
+            ranges: []
+        - row_id: source_electricity
+          role: "Source-process electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only CN grid-average electricity delivered to the user below 1 kV matches this UUID. Preserve its native Net calorific value energy property with MJ reference unit; it is an electricity accounting property, not a combustion assumption. Use measured kWh × 3.6 once. Different country, voltage or generation route requires another verified provider. Include actual motors, suction, lighting, idle and cleaning; no default consumption."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-textiles-2023
+            ranges: []
+        - row_id: loom_oil
+          role: "Whole mineral loom-lubricating oil"
+          name: "Mineral-based loom lubricating oil formulation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When this exact oil formulation is used, record whole supplied oil including additives and any carrier; do not purchase its assay twice. Supplier grade/SDS is required. A native petroleum oil fixed at 40.5 MJ/kg and a PAO synthesis oil do not establish this unspecified grade; no UUID or calorific-value default is adopted. Add a separate row for any actual different maintenance formulation."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-textiles-2023
+            ranges: []
+        - row_id: source_water
+          role: "Municipal water for ancillary cleaning"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional ancillary equipment/floor cleaning or actual utility makeup only; residue washing is outside this branch. This native flow is treated municipal/potable supply at plant, Mass reference. It is not raw water, deionised water or steam. Measure its mass or use independently established density/state for a meter-volume conversion; the native secondary volume factor is not independent density evidence."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: source_air
+          role: "Externally supplied compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional actual external air service for loom auxiliaries or collection, not a presumed requirement of every mechanical loom. The generic Volume flow gives no pressure, temperature, dryness, oil grade or normal-volume guarantee. Declare and measure these conditions and use m3 at the declared state. An internal compressor instead follows boundary_utilities; do not add its electricity to a purchased-air provider covering it."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+        - row_id: incoming_paper_core
+          role: "Incoming yarn paperboard core"
+          name: "Cardboard tube or Paper core"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78bf7f6e-519e-4b3d-82f0-eda15b2fee61"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One paperboard cylindrical yarn support, not a carton, wooden beam or plastic cone. Its native plant-production Mass flow supports only this physical article. Include the core supply once only if not already in the yarn provider boundary; record incoming attached cores and supplier returns under cp_pack. Core mass is excluded from yarn and Q."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: source_fabric
+          role: "Co-produced PET greige woven fabric"
+          name: "Undyed unsized PET filament greige woven fabric"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Retain the full unallocated gross fabric output and its status in cp_physical for the joint-source balance and allocation denominator. This diagnostic co-output is not another waste reference or an avoided-product credit. A native polyester mesh specifically fixes mesh structure and cannot identify arbitrary support fabric; leave UUID unresolved. Do not force the fabric mass to equal Q."
+          amount:
+            expression: "Use this row’s unallocated gross physical numerator with the single §8 calculation and the same Q once; preserve its inherited burden vector separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_physical
+              source_ids:
+                - jrc-textiles-2023
+                - getzner-polyester-2024
+            ranges: []
+        - row_id: separated_pet_residue
+          role: "Separated unopened PET selvedge residue"
+          name: "Waste of man-made fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f814e607-ba2f-4727-b842-e32eff57e4d1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the measured unopened PET-only filament selvedge remnant before final sorting. Native identity is generic man-made-fibre waste Product flow, at plant, unspecified treatment, with no CAS, grade, finish or moisture guarantee. Require source/lot PET analysis and all §3 conditions; exclude blends, soft staple waste, fabric clips, qualified yarn, opened fibre and bottle/regranulate routes. Carry the original source exchange vector with the physical T transfer; T is neither a second purchased input nor terminal Q."
+          amount:
+            expression: "Use this row’s unallocated gross physical numerator with the single §8 calculation and the same Q once; preserve its inherited burden vector separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer
+              source_ids:
+                - getzner-polyester-2024
+                - namphong-yarn-waste
+            ranges: []
+      waste:
+        - row_id: source_pet_reject
+          role: "Source PET yarn reject"
+          name: "Waste Polyethylene terephthalate"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "04d3fab8-c5d0-41c5-87b6-449116c1dbab"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an identified PET yarn/fibre reject with actual destination is eligible for this generic waste-PET Mass identity. Native comments cover textiles and containers and specify no fibre grade or treatment; CPC plastics classification differs from the accepted fibre-product category and does not select the route. Keep bottle, pellet, non-PET, oily mixture and fabric-structure streams separate. Measure every reject including failed runs; no fixed loss or automatic recycling credit."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: paper_core_waste
+          role: "Discarded paperboard yarn core"
+          name: "Discarded paperboard yarn core"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only paperboard cores actually discarded; supplier-return cores are a separate external Product return, not this waste. Generic paper-packaging candidates with a fixed 2% loss or kitchen-paper meaning are not used. Actual plastic/metal supports require separately named flows."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: spent_loom_oil
+          role: "Spent mineral loom oil"
+          name: "Spent mineral-based loom lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this actual spent formulation separately from supplied oil and spills. No assumed oil/water/additive ratio or regeneration treatment applies. Reconcile oil held in equipment, transferred to fibre, recovered, wasted and any independently identified release; missing destinations remain gaps."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-textiles-2023
+            ranges: []
+        - row_id: ancillary_cleaning_water
+          role: "Ancillary equipment-cleaning wastewater"
+          name: "Equipment-cleaning wastewater to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual cleaning-water transfer with measured receiving treatment route and composition. Do not bind a native part-degreasing flow fixed as discharged to water to external treatment. Whole aqueous solution mass and water/each measured solute are separate linked ledgers, not duplicate solution and solute purchases. Direct environmental discharge needs independently identified species and media rows."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: source_pet_air
+          role: "PET fibre particulate to air"
+          name: "PET fibre particulate to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured PET fibre particulate actually escaping to air, with particle/form and PET fraction established independently. Captured lint belongs to the physical reject ledger, not this emission. Total dust or a generic terephthalate chemical search result does not establish PET emission mass or CAS identity. Record each other actual emitted chemical separately and never infer two species from one residual."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: source_water_vapour
+          role: "Actual water evaporation to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only independently established actual water evaporation, including measured material moisture change or ancillary water use. No reaction water or heated drying is assumed. A broad native water-vapour candidate mixes water/heavy-water/ice synonyms; no UUID is adopted without resolving physical-species applicability. Close water and whole mass independently, rather than solving both PET and water losses with one residual."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+  - id: p_prepare
+    label: "Dedicated collection sorting packing and acceptance"
+    inputs:
+      product:
+        - row_id: received_pet_residue
+          role: "Matched source residue transfer"
+          name: "Waste of man-made fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f814e607-ba2f-4727-b842-e32eff57e4d1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the measured unopened PET-only filament selvedge remnant before final sorting. Native identity is generic man-made-fibre waste Product flow, at plant, unspecified treatment, with no CAS, grade, finish or moisture guarantee. Require source/lot PET analysis and all §3 conditions; exclude blends, soft staple waste, fabric clips, qualified yarn, opened fibre and bottle/regranulate routes. Carry the original source exchange vector with the physical T transfer; T is neither a second purchased input nor terminal Q."
+          amount:
+            expression: "Use this row’s unallocated gross physical numerator with the single §8 calculation and the same Q once; preserve its inherited burden vector separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_transfer
+              source_ids:
+                - getzner-polyester-2024
+                - namphong-yarn-waste
+            ranges: []
+        - row_id: prepare_electricity
+          role: "Collection sorting and packing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only CN grid-average electricity delivered to the user below 1 kV matches this UUID. Preserve its native Net calorific value energy property with MJ reference unit; it is an electricity accounting property, not a combustion assumption. Use measured kWh × 3.6 once. Different country, voltage or generation route requires another verified provider. Include actual motors, suction, lighting, idle and cleaning; no default consumption."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_energy
+              source_ids: []
+            ranges: []
+        - row_id: prepare_pe_bag
+          role: "Polyethylene feedstock bag"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One complete polyethylene bag, CAS 9002-88-4, physically compatible with the native plant-production Mass flow. It is not PP woven seed packaging or a resin pellet. Actual thickness, printing/lamination, supplier, tare and reuse status require evidence; do not presume a bag count or film grade. Count new supply once and keep all attached/empty/reusable stocks and gross outbound bags under cp_pack."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_pack
+              source_ids: []
+            ranges: []
+        - row_id: prepare_pp_band
+          role: "Polypropylene bale strapping"
+          name: "Polypropylene strapping band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One polypropylene strapping band only when actually used for the same waste lot. The farm-gate twine, seed-capacity bag, PP resin/chips and steel band candidates have different physical form or hard use/composition facets, so none supplies this UUID. Record measured whole band supply and cp_pack movements without a default weight or reuse credit."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_pet_waste
+          role: "Newly first-accepted unopened PET waste"
+          name: "Waste of man-made fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f814e607-ba2f-4727-b842-e32eff57e4d1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One PET-only filament selvedge-yarn residue lot newly first accepted after source segregation, dry sorting and real packing. It remains unopened yarn remnant with actual measured moisture and inherited supplier finish, not dry pure PET by assumption. Native Waste of man-made fibres is a generic Product flow at plant with unspecified treatment and no CAS/grade/route/moisture/finish specification; adoption supplies only broad physical identity. Mandatory qualifiers are every element of §3: PET proof and fibre fractions; source mill/operation; filament/grade/origin/supplier route; undyed/unsized proof; finish identity/content; moisture method/state; unopened form; impurity analysis/limits; collection/sorting route; recycler specification/destination; first-release ID/time; net mass/tare; site/period; electricity country/voltage; allocation/output status; WIP/FG quantities/inherited vectors; gross dispatch/returns; component packaging ledgers; unresolved provider/UUID restrictions. Preserve them in the actual data-package context. Do not use this UUID for virgin/qualified yarn, blends, bottle flakes, pellets, fabric clips, opened or regenerated fibre."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - getzner-polyester-2024
+                - namphong-yarn-waste
+                - hising-polyester-selvedge
+                - jrc-textiles-2023
+            ranges: []
+      waste:
+        - row_id: prepare_pet_reject
+          role: "Sorted PET yarn reject"
+          name: "Waste Polyethylene terephthalate"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "04d3fab8-c5d0-41c5-87b6-449116c1dbab"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an identified PET yarn/fibre reject with actual destination is eligible for this generic waste-PET Mass identity. Native comments cover textiles and containers and specify no fibre grade or treatment; CPC plastics classification differs from the accepted fibre-product category and does not select the route. Keep bottle, pellet, non-PET, oily mixture and fabric-structure streams separate. Measure every reject including failed runs; no fixed loss or automatic recycling credit."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_waste
+              source_ids: []
+            ranges: []
+        - row_id: prepare_pe_waste
+          role: "Discarded polyethylene bag"
+          name: "Discarded polyethylene bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the actual single-material PE bag waste, including damaged bags; do not combine strapping, cores or product into this row. External reusable returns are separate Product returns, and reused bags are not newly purchased. No matched waste UUID is asserted from a cleaned mixed-polyethylene recycling flow."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_pack
+              source_ids: []
+            ranges: []
+        - row_id: prepare_pp_waste
+          role: "Discarded polypropylene band"
+          name: "Discarded polypropylene strapping band"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual broken/discarded PP bands separately; keep external returns and internal reuse distinct. A native PP-waste record prescribing a mechanical recycling route is not presumed compatible with an unconfirmed actual destination."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: prepare_pet_air
+          role: "Sorting PET fibre particulate to air"
+          name: "PET fibre particulate to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured PET fibre particulate actually escaping to air, with particle/form and PET fraction established independently. Captured lint belongs to the physical reject ledger, not this emission. Total dust or a generic terephthalate chemical search result does not establish PET emission mass or CAS identity. Record each other actual emitted chemical separately and never infer two species from one residual."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prepare_emission
+              source_ids: []
+            ranges: []
+  - id: p_supply
+    label: "Released-cohort storage handling and loading"
+    inputs:
+      product:
+        - row_id: supply_electricity
+          role: "Released-cohort storage handling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only CN grid-average electricity delivered to the user below 1 kV matches this UUID. Preserve its native Net calorific value energy property with MJ reference unit; it is an electricity accounting property, not a combustion assumption. Use measured kWh × 3.6 once. Different country, voltage or generation route requires another verified provider. Include actual motors, suction, lighting, idle and cleaning; no default consumption. Record raw H for the original release cohort including actual loading and idle service. No second normalization or new product output is created."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+        - row_id: supply_pe_bag
+          role: "Actual replacement polyethylene bag"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One complete polyethylene bag, CAS 9002-88-4, physically compatible with the native plant-production Mass flow. It is not PP woven seed packaging or a resin pellet. Actual thickness, printing/lamination, supplier, tare and reuse status require evidence; do not presume a bag count or film grade. Count new supply once and keep all attached/empty/reusable stocks and gross outbound bags under cp_pack. Conditional incremental repacking only; first-release packing is already in p_prepare, and retained reused bags add no new purchase."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+        - row_id: supply_pp_band
+          role: "Actual replacement polypropylene band"
+          name: "Polypropylene strapping band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One polypropylene strapping band only when actually used for the same waste lot. The farm-gate twine, seed-capacity bag, PP resin/chips and steel band candidates have different physical form or hard use/composition facets, so none supplies this UUID. Record measured whole band supply and cp_pack movements without a default weight or reuse credit. Only actual incremental replacement belongs in the original cohort service journal."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: supply_pe_waste
+          role: "Repacking polyethylene bag waste"
+          name: "Discarded polyethylene bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional removed PE bag of the original cohort. Measure without an automatic packaging loss coefficient; include it in cp_pack and H with an actual treatment destination."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+        - row_id: supply_pp_waste
+          role: "Repacking polypropylene band waste"
+          name: "Discarded polypropylene strapping band"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional removed PP band of the original cohort. Do not combine it with PE bags or count internal reuse as external discard."
+          amount:
+            expression: "Use the single §8 calculation on this row’s raw attributable A_i and matched Q; do not renormalize the result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "multifunctionality"
+    rule: "This is attributional accounting only for cases requiring allocation, consistent with the chosen study decision context. Industrial process evidence and a price sign do not themselves establish an allocation rule or legal waste/end-of-waste status."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_dedicated
+    applies_to: "all exchanges"
+    rule: "First subdivide or virtually subdivide measured source operations and separate exclusive fabric-only operations from residue-only collection/sorting/packing. Assign identifiable yarn embodied in each physical output and dedicated activities to that output; retain non-valued losses and their causal burdens. Embodied mass assignment is not permission to mass-allocate every remaining exchange."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_causality
+    applies_to: "remaining common exchanges"
+    rule: "For every remaining exchange independently identify the determining physical causal relationship. Metered operating demand and limiting volume/mass with duration may support particular services only with site evidence. A shared mass fraction, common electricity meter or arbitrary physical/economic choice is insufficient. Preserve exchange-specific shares, denominators, failed-operation burdens and uncertainty across all outputs."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_residual
+    applies_to: "unresolved common-process residual only"
+    rule: "Only a genuine residual without a determining physical relation uses contemporaneous market value of every co-function at the same common-process gate in its actual condition. Derive gate-equivalent prices transparently if only later sorted/packed/transported prices exist. Document all quantities, price period/currency, output status, residual exchange list and sensitivity. Undefined or zero total value, negative-value service ambiguity or absent prices remains unresolved; no fixed ratio, arbitrary equal shares or automatic zero burden."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_once
+    applies_to: "source burden and transfers"
+    rule: "Carry each allocated source exchange vector with separated residue through T and WIP once. Choose an explicit joint-source representation or an inherited upstream vector for that same source segment, never both. Subsequent exclusive sorting/packing adds its real burden. Gross output V and mass-balance records stay unallocated; allocation shares alter attributable inventory A, not physical material amounts."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_no_credit
+    applies_to: "reuse and treatment"
+    rule: "Internal reuse cancels with its inherited vector and incremental rework retained. Recycling destination does not establish avoided virgin PET credit. Waste-treatment inputs, exported secondary materials, reusable packaging and services remain separate. A downstream consequential or substitution study needs its own method and cannot silently change this inventory."
+    source_ids:
+      - ilcd-attributional-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "p_prepare"
+      flow_role: "accepted_pet_waste"
+      record_type: "weighing"
+      raw_fields: "lot_id; first_release_id; first_release_time; gross_mass; each_tare; net_mass; moisture; finish_content; PET_analysis; receiver_acceptance; repeat_flag"
+      collection_method: "Calibrated weighing and composition testing at actual packed feedstock acceptance; retain full certificates and exclude repeats. Record raw masses, not unit inventory."
+      unit: "kg"
+      frequency: "each lot and first release"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Dedicated preparation site and matched source/first-release cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_material
+      process_id: "p_source"
+      flow_role: "pet_yarn; loom_oil"
+      record_type: "material_ledger"
+      raw_fields: "exchange_id; supplied_formulation; supplier_grade; lot; receipt; issue; return; opening; closing; moisture; assay; upstream_boundary"
+      collection_method: "Weigh complete supply and reconcile stock/issue by source cohort; separate measured constituent subledgers without duplicate purchasing. Preserve raw original units and conversion evidence."
+      unit: "kg"
+      frequency: "each receipt issue and stock cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_energy
+      process_id: "p_source"
+      flow_role: "source_electricity"
+      record_type: "meter"
+      raw_fields: "meter; country; voltage; supplier; start; end; kWh; power_rate; duration; batch; idle; cleaning; shared_driver"
+      collection_method: "Read calibrated submeters and reconcile bills; separate stages and actual operating/idle/failed states. Preserve raw kWh or rates and interval before conversion and attribution."
+      unit: "kWh; MJ"
+      frequency: "meter interval and each cohort"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_prepare_energy
+      process_id: "p_prepare"
+      flow_role: "prepare_electricity"
+      record_type: "meter"
+      raw_fields: "meter; country; voltage; supplier; start; end; kWh; power_rate; duration; batch; idle; cleaning; shared_driver"
+      collection_method: "Read calibrated submeters and reconcile bills; separate stages and actual operating/idle/failed states. Preserve raw kWh or rates and interval before conversion and attribution."
+      unit: "kWh; MJ"
+      frequency: "meter interval and each cohort"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Dedicated preparation site and matched source/first-release cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_transfer
+      process_id: "p_source"
+      flow_role: "separated_pet_residue"
+      record_type: "transfer"
+      raw_fields: "transfer_id; source_lot; destination_lot; gross_mass; tare; net_mass; moisture; finish; inherited_vector; opening_WIP; closing_WIP"
+      collection_method: "Match weighed two-sided internal transfer T by unique ID; retain gross physical mass and unnormalised per-exchange inherited burden vector. No second external provider."
+      unit: "kg"
+      frequency: "each transfer and period cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_prepare_transfer
+      process_id: "p_prepare"
+      flow_role: "received_pet_residue"
+      record_type: "transfer"
+      raw_fields: "transfer_id; source_lot; destination_lot; gross_mass; tare; net_mass; moisture; finish; inherited_vector; opening_WIP; closing_WIP"
+      collection_method: "Match weighed two-sided internal transfer T by unique ID; retain gross physical mass and unnormalised per-exchange inherited burden vector. No second external provider."
+      unit: "kg"
+      frequency: "each transfer and period cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Dedicated preparation site and matched source/first-release cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_physical
+      process_id: "p_source"
+      flow_role: "source_fabric"
+      record_type: "mass_balance"
+      raw_fields: "stream; lot; opening_WIP; closing_WIP; opening_FG; closing_FG; actual_inputs; fabric_output; T; Q; gross_V; external_returns; original_dispatch_reversal; losses; PET; water; finish; inherited_vector"
+      collection_method: "Independently weigh full unallocated physical streams at each gate and combined gate; assay components independently. Carry stock burden vectors by lot and exchange; report residuals and uncertainty before any allocation."
+      unit: "kg"
+      frequency: "each lot and opening/closing cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_prepare_physical
+      process_id: "p_prepare"
+      flow_role: "all physical streams"
+      record_type: "mass_balance"
+      raw_fields: "stream; lot; opening_WIP; closing_WIP; opening_FG; closing_FG; actual_inputs; fabric_output; T; Q; gross_V; external_returns; original_dispatch_reversal; losses; PET; water; finish; inherited_vector"
+      collection_method: "Independently weigh full unallocated physical streams at each gate and combined gate; assay components independently. Carry stock burden vectors by lot and exchange; report residuals and uncertainty before any allocation."
+      unit: "kg"
+      frequency: "each lot and opening/closing cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Dedicated preparation site and matched source/first-release cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_supply_physical
+      process_id: "p_supply"
+      flow_role: "all physical streams"
+      record_type: "mass_balance"
+      raw_fields: "stream; lot; opening_WIP; closing_WIP; opening_FG; closing_FG; actual_inputs; fabric_output; T; Q; gross_V; external_returns; original_dispatch_reversal; losses; PET; water; finish; inherited_vector"
+      collection_method: "Independently weigh full unallocated physical streams at each gate and combined gate; assay components independently. Carry stock burden vectors by lot and exchange; report residuals and uncertainty before any allocation."
+      unit: "kg"
+      frequency: "each lot and opening/closing cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Declared supply service site and original released cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_pack
+      process_id: "p_source"
+      flow_role: "incoming_paper_core; paper_core_waste"
+      record_type: "component_ledger"
+      raw_fields: "component; material; opening_empty; opening_attached_WIP_FG; opening_reusable; purchase; external_return_received; closing_empty; closing_attached_WIP_FG; closing_reusable; gross_outbound; external_return_out; waste; internal_reuse; provider_inclusion; measured_item_mass"
+      collection_method: "For each paper core, PE bag and PP band separately: opening empty + attached WIP/FG + reusable + external purchases + external returns received = closing empty + attached WIP/FG + reusable + packaging on gross physical dispatch + external returns out + waste. Internal reuse cancels. Track inbound supplier-attached supply once and empty/core Product returns separately. Count-to-mass uses a measured configuration sample; never invent a per-item kg."
+      unit: "kg; item"
+      frequency: "each component movement and cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_prepare_pack
+      process_id: "p_prepare"
+      flow_role: "prepare_pe_bag; prepare_pp_band; prepare_pe_waste; prepare_pp_waste"
+      record_type: "component_ledger"
+      raw_fields: "component; material; opening_empty; opening_attached_WIP_FG; opening_reusable; purchase; external_return_received; closing_empty; closing_attached_WIP_FG; closing_reusable; gross_outbound; external_return_out; waste; internal_reuse; provider_inclusion; measured_item_mass"
+      collection_method: "For each paper core, PE bag and PP band separately: opening empty + attached WIP/FG + reusable + external purchases + external returns received = closing empty + attached WIP/FG + reusable + packaging on gross physical dispatch + external returns out + waste. Internal reuse cancels. Track inbound supplier-attached supply once and empty/core Product returns separately. Count-to-mass uses a measured configuration sample; never invent a per-item kg."
+      unit: "kg; item"
+      frequency: "each component movement and cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Dedicated preparation site and matched source/first-release cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_supply_pack
+      process_id: "p_supply"
+      flow_role: "supply_pe_bag; supply_pp_band; supply_pe_waste; supply_pp_waste"
+      record_type: "component_ledger"
+      raw_fields: "component; material; opening_empty; opening_attached_WIP_FG; opening_reusable; purchase; external_return_received; closing_empty; closing_attached_WIP_FG; closing_reusable; gross_outbound; external_return_out; waste; internal_reuse; provider_inclusion; measured_item_mass"
+      collection_method: "For each paper core, PE bag and PP band separately: opening empty + attached WIP/FG + reusable + external purchases + external returns received = closing empty + attached WIP/FG + reusable + packaging on gross physical dispatch + external returns out + waste. Internal reuse cancels. Track inbound supplier-attached supply once and empty/core Product returns separately. Count-to-mass uses a measured configuration sample; never invent a per-item kg."
+      unit: "kg; item"
+      frequency: "each component movement and cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Declared supply service site and original released cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_waste
+      process_id: "p_source"
+      flow_role: "source_pet_reject; spent_loom_oil"
+      record_type: "weighing"
+      raw_fields: "row_id; composition; source_lot; gross; tare; net; moisture; status; destination; treatment; return_or_disposal; failed_run"
+      collection_method: "Weigh each atomic waste including failed/cleanup lots; retain actual treatment receipt, composition and stock changes. No disappearance of unknown waste or zero production burdens."
+      unit: "kg"
+      frequency: "each waste movement"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_prepare_waste
+      process_id: "p_prepare"
+      flow_role: "prepare_pet_reject"
+      record_type: "weighing"
+      raw_fields: "row_id; composition; source_lot; gross; tare; net; moisture; status; destination; treatment; return_or_disposal; failed_run"
+      collection_method: "Weigh each atomic waste including failed/cleanup lots; retain actual treatment receipt, composition and stock changes. No disappearance of unknown waste or zero production burdens."
+      unit: "kg"
+      frequency: "each waste movement"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Dedicated preparation site and matched source/first-release cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_water
+      process_id: "p_source"
+      flow_role: "source_water; ancillary_cleaning_water"
+      record_type: "water_balance"
+      raw_fields: "supply; quality; meter; mass; integrated_volume; actual_rate; interval; temperature; density_evidence; wastewater_mass; water_fraction; actual_solutes; destination; losses"
+      collection_method: "Collect raw water supply and whole cleaning solution separately; distinguish integrated quantity from rate and measure independent density/state if converting. Identify external treatment versus actual environmental discharge without using COD as a solute mass."
+      unit: "kg; m3"
+      frequency: "each actual cleaning and meter interval"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_air
+      process_id: "p_source"
+      flow_role: "source_air"
+      record_type: "meter"
+      raw_fields: "provider; external_or_internal; pressure; temperature; dryness; oil_grade; metered_volume; standard_or_actual_basis; rate; time; compressor_boundary; condensate"
+      collection_method: "Measure actual state-specific m3 or integrate a real rate once; any normal-volume conversion needs declared conditions and independent physical evidence. Distinguish purchased supply and internal compressor inputs; collect real condensate and cooling-water returns separately when present."
+      unit: "m3"
+      frequency: "each use and meter interval"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_emission
+      process_id: "p_source"
+      flow_role: "source_pet_air; source_water_vapour"
+      record_type: "monitoring"
+      raw_fields: "species; polymer_fraction; particle_form; medium; concentration; integrated_gas_volume; actual_gas_rate; interval; moisture_change; inlet; outlet; captured_mass; uncertainty; detection_limit"
+      collection_method: "Use independent composition-resolved monitoring and state-matched gas volume; multiply concentration by integrated volume once or integrate a rate once. Captured lint, total PM, water evaporation and actual other chemicals are distinct. Unknown composition remains unquantified rather than a fabricated species."
+      unit: "kg; m3"
+      frequency: "actual monitoring interval and cohort"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Source weaving site and matched source cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_prepare_emission
+      process_id: "p_prepare"
+      flow_role: "prepare_pet_air"
+      record_type: "monitoring"
+      raw_fields: "species; polymer_fraction; particle_form; medium; concentration; integrated_gas_volume; actual_gas_rate; interval; moisture_change; inlet; outlet; captured_mass; uncertainty; detection_limit"
+      collection_method: "Use independent composition-resolved monitoring and state-matched gas volume; multiply concentration by integrated volume once or integrate a rate once. Captured lint, total PM, water evaporation and actual other chemicals are distinct. Unknown composition remains unquantified rather than a fabricated species."
+      unit: "kg; m3"
+      frequency: "actual monitoring interval and cohort"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Dedicated preparation site and matched source/first-release cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+    - protocol_id: cp_service
+      process_id: "p_supply"
+      flow_role: "supply_electricity; supply_pe_bag; supply_pp_band; supply_pe_waste; supply_pp_waste"
+      record_type: "service_ledger"
+      raw_fields: "original_cohort; original_Qc; row_id; raw_H; original_unit; duration; occupied_volume; power; dispatch; external_return; reinspection; incremental_rework; replacement_packaging; removed_packaging; all_stock_vectors"
+      collection_method: "Keep storage/handling/loading/repacking as raw H of the original release cohort, with every packaging movement also in cp_pack. Retain old-stock burdens, original dispatch reversal and real incremental rework. Join H only to its Qc before the single final calculation; no division in this collection step and no added production."
+      unit: "kg; MJ; m3"
+      frequency: "each service event and stock cutoff"
+      temporal_coverage: "Complete declared cohort and opening/closing period"
+      site_scope: "Declared supply service site and original released cohort"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original logs; calibration; composition; acceptance; provider boundary; uncertainty"
+  calculation_rules:
+    - id: calculate_q
+      applies_to: "accepted_pet_waste"
+      rule: "Q = sum of unique newly positive first-release net masses after actual tare deduction. Link each physical release once to its cohort; never add closing FG or reinspection to Q."
+      inputs:
+        - cp_release
+        - cp_physical
+        - cp_prepare_physical
+        - cp_supply_physical
+      output: "Q"
+      source_ids: []
+    - id: convert_raw
+      applies_to: "all inventory rows"
+      rule: "Convert each original record into its stated numerator unit, retaining rate/integrated distinction and state evidence. Apply the measured exchange-specific attribution hierarchy to source burdens; keep full gross physical quantities in parallel."
+      inputs:
+        - cp_material
+        - cp_energy
+        - cp_prepare_energy
+        - cp_water
+        - cp_air
+        - cp_emission
+        - cp_prepare_emission
+        - cp_pack
+        - cp_prepare_pack
+        - cp_supply_pack
+        - cp_waste
+        - cp_prepare_waste
+        - cp_physical
+        - cp_prepare_physical
+        - cp_supply_physical
+      output: "converted raw exchange ledgers"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: assemble_a
+      applies_to: "all inventory rows"
+      rule: "A_i = inherited opening-WIP attributable vector_i + attributable current source/dedicated exchange_i - inherited closing-WIP vector_i + matched original-cohort raw H_i. Carry released Q burden into FG once; closing FG is not a second manufacturing deduction/addition. Track previous cohorts separately. Internal T/rework vectors cancel on combination; no duplicate source provider."
+      inputs:
+        - cp_transfer
+        - cp_prepare_transfer
+        - cp_physical
+        - cp_prepare_physical
+        - cp_supply_physical
+        - cp_service
+        - "converted raw exchange ledgers"
+      output: "A_i"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calculate_inventory
+      applies_to: "all inventory rows"
+      rule: "x_i = A_i / Q is the sole final unit-inventory calculation for Q greater than zero. Physical diagnostic transfer/co-output amounts use their unallocated gross numerator / the same Q once, without applying burden shares. The reference output is 1 kg. Cards and aggregation declarations only reference this single calculation; they do not divide again. For Q=0 retain unnormalised A, H, physical ledgers and stocks, issue no unit result."
+      inputs:
+        - A_i
+        - Q
+        - cp_physical
+        - cp_prepare_physical
+        - cp_supply_physical
+      output: "x_i and gross physical diagnostics per 1 kg reference flow"
+      source_ids: []
+    - id: reconcile_gates
+      applies_to: "all processes"
+      rule: "At each manufacturing gate: opening WIP + full physical inputs = closing WIP + actual physical outputs/losses. Reconcile FG with boundary_stock and each packaging component with cp_pack. Combined gates cancel internal T, rework and released Q movements; gross dispatch V remains distinct from new production Q. Independently check PET, finish and water without invented residual species."
+      inputs:
+        - cp_physical
+        - cp_prepare_physical
+        - cp_supply_physical
+        - cp_pack
+        - cp_prepare_pack
+        - cp_supply_pack
+        - cp_transfer
+        - cp_prepare_transfer
+        - cp_water
+        - cp_emission
+        - cp_prepare_emission
+      output: "gate balances and uncertainty"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "reference and inputs"
+      requirement: "Whole primary documents and actual supplier/source/receiver records must support polymer, physical form, treatment and acceptance; classification and generic native identity alone do not."
+      evidence: "PET analysis; supplier TDS/SDS; source and receiver records"
+    - id: quality_period
+      applies_to: "all records"
+      requirement: "Use matching site/cohort/period and retain zero-output, failed, start-stop, idle, cleanup and rework. Bound all stock changes with inherited vectors and measurement uncertainty."
+      evidence: "raw logs; opening/closing stock sheets; calibration"
+    - id: quality_allocation
+      applies_to: "source multifunctionality"
+      requirement: "Retain subdivision feasibility, per-exchange determining physical drivers, residual gate-matched price evidence and sensitivity; no fixed allocation/default zero residue burden."
+      evidence: "ilcd-attributional-2010; site attribution worksheet"
+    - id: quality_sources
+      applies_to: "external sources"
+      requirement: "Sources establish qualitative method and product/process existence only. No source supplies a default recipe, emission, oil dose, moisture, machine weight, yield or factory consumption. Typical clean/undyed wording and a pilot recycling example do not prove every lot or commercial performance."
+      evidence: "jrc-textiles-2023; getzner-polyester-2024; namphong-yarn-waste; hising-polyester-selvedge"
+    - id: quality_gaps
+      applies_to: "unresolved identities and conditions"
+      requirement: "Keep each unbound atomic name and actual uncertainty visible. Ordinary provider/auxiliary gaps require later matching, while a true product, endpoint or method evidence gap blocks conformity and must remain draft/inconclusive."
+      evidence: "manifest review metadata; explicit data-package findings"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "product and source"
+    rule: "Verify the complete §3 qualifier list against supplier certificates, process logs, physical inspection and the receiving specification. PET must be demonstrated, not inferred from the word polyester. Excluded treatment or an unresolved true endpoint/source condition prevents a conforming result."
+    source_ids:
+      - jrc-textiles-2023
+      - namphong-yarn-waste
+  - rule_id: validate_measurement
+    applies_to: "all inventory rows"
+    rule: "Reference row is exactly 1 kg matching the declared first-release Q; all other rows use the same cohort denominator once after raw conversion and attribution. For Q=0 retain raw burdens, WIP and failure reasons, and issue no unit result."
+    source_ids: []
+  - rule_id: validate_mass
+    applies_to: "source; preparation; supply; combined gate"
+    rule: "Reconcile full unallocated physical mass and independent PET/water/finish subledgers at each gate and combined gate with internal T/rework/Q transfers cancelled. Do not balance allocated A against gross physical outputs, duplicate closing FG, invent reaction water or infer species from total dust/COD. Report measured residuals and uncertainty."
+    source_ids: []
+  - rule_id: validate_packaging
+    applies_to: "each packaging component"
+    rule: "Individually close the complete cp_pack six-leg ledger including attached WIP/FG, gross dispatch, external returns and waste. Reconcile product tare without adding packaging to Q or turning reuse into new procurement or a co-product credit."
+    source_ids: []
+  - rule_id: validate_native
+    applies_to: "all UUIDs"
+    rule: "Use verified flow type, every native basename/synonym/comment, CAS, treatment, state, geography, medium and property facets. Preserve reference-property → unit-group → actual unit compatibility; a generic flow is not evidence of a supplier match. Leave incompatible or unresolved atomic identities blank and disclose them."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "data package"
+    rule: "Report accepted input, checks performed, skipped scope, findings and completeness separately. Missing records, unresolved conditions, unknown species and unclosed balances are not passes. Engineering checks do not approve science, translation, mapping or publication."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "One declared unopened PET weaving-residue cohort as recycling feedstock, with verified source and foreground boundaries"
+  allowed_use: "Attributional source-generation and preparation inventory with disclosed compatible upstream links and pending methodology review"
+  excluded_use: "Other fibre families or blends; PET flakes/resin; opened/regenerated fibre; arbitrary waste cut-off or substitution credit; legal end-of-waste certification"
+  required_metadata: "PET polymer evidence and fibre fractions; source mill and weaving operation; filament construction and yarn grade; virgin/recycled origin and supplier route; undyed and unsized confirmation; supplier finish identity and measured content; moisture method and weighing state; unopened yarn-remnant form; foreign-material analysis and acceptance limits; source collection and sorting route; receiving recycler specification and intended route; first-release lot/time and unique release identifier; net mass and packaging tare; site and reporting period; electricity country and voltage; allocation drivers and output status; WIP/finished-stock quantities and inherited exchange vectors; gross dispatch and external returns; packaging component ledgers; unresolved UUID/provider restrictions"
+  required_quality_disclosure: "Q gate; raw and normalized ledgers; all allocation decisions; WIP/FG inherited vectors; H service scope; gross V/returns; packaging balances; unknowns; native/provider limitations; measurement and temporal coverage"
+  update_trigger: "Polymer/source/finish/moisture or receiver-gate change; introduced treatment; different utility/provider; new native evidence; changed allocation drivers or material stock discrepancy"
+data_sources:
+  - id: "unsd-cpc-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Ver.3.0 Explanatory Notes, 30 June 2025, pp.117 and 199–201. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Title-only 39216 and adjacent fibre-waste/noil exclusions; classification context only"
+  - id: "jrc-textiles-2023"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Textiles Industry, EUR31316EN (2023), §§2.1.1.1, 2.4, 2.5.1, pp.15–16 and 33–37. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf"
+    used_for: "PET/PBT/PTT distinction; source yarn/warping/weaving; sizing, oil and adjacent knitting counterexamples; no numerical defaults"
+  - id: "getzner-polyester-2024"
+    type: "literature"
+    reference: "Getzner Textil, High-quality recycled yarn, 15 July 2024. https://www.getzner.at/en/stories/press-releases/high-quality-recycled-yarn"
+    used_for: "Primary industrial report of all-polyester weaving-selvedge generation and collection; downstream yarn recycling is outside this gate"
+  - id: "namphong-yarn-waste"
+    type: "literature"
+    reference: "Nam Phong Group, Yarn Waste, publisher product page. https://namphongindustry.com/en/danh-muc-san-pham/ptextilep/yarn-waste.html"
+    used_for: "Primary collection/sorting and composition separation; normal/sized/water-jet polyester and blended/cotton alternatives are distinct"
+  - id: "hising-polyester-selvedge"
+    type: "literature"
+    reference: "Hi-Sing Textile, 100pct Polyester Selvedge Yarn Waste, publisher product page. https://www.hisingtextile.com/product/100pct-polyester-selvedge-yarn-waste/"
+    used_for: "Corroborative unopened selvedge-yarn market form and typical clean/undyed state only; not actual lot certification or proof of unsized status"
+  - id: "ilcd-attributional-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General guide for Life Cycle Assessment—Detailed guidance, first edition March 2010, §§7.9.1–7.9.3, pp.255–268. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional cases requiring allocation: subdivision/virtual subdivision; exchange-specific determining physical causality; only residual common-process gate/condition-matched market values; no fixed ratios"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:cfb87f5a2af767d23f717a8d25c849605826b902fa5f95b443188c98f7237116"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7181"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7181
+          line: 61
+          column: 1
+        end:
+          offset: 11610
+          line: 84
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Complete purchased PET filament yarn at the source weaving-site gate, including its actual finish/moisture and incoming packaging; follow the source residue to the same declared acceptance condition |\n| starting_condition_role | Physical source-process input, not purchased finished waste feedstock |\n| product_classification_scope | Narrow unopened PET weaving-yarn waste within CPC 3.0:39216 |\n| recursive_input_rule | Same-category internal residue/rework carries its original per-exchange burden vector and cancels internally. External same-category waste is outside this source-generation branch unless origin and inherited burden are reconstructed without repeating source manufacture. |\n| upstream_dataset_requirement | One compatible upstream provider per purchased exchange with actual boundary, polymer, finish, route, geography and time; include upstream yarn manufacture exactly once. Document whether incoming cores/transport are included before adding them. |\n| disclosure | Disclose all source weaving, separation, sorting, acceptance, WIP/FG and post-release service gates, output status and upstream exclusions; foreground completeness is not cradle-to-gate completeness. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | p_source; p_prepare | Include source yarn receipt, warping and loom preparation, actual weaving and selvedge cutting/separation, dedicated collection, sorting, inspection and real packing. Track both source fabric and waste. A bought-waste repacking model cannot replace this chain. | jrc-textiles-2023; getzner-polyester-2024; namphong-yarn-waste |\n| boundary_branch | product and route | Use only source-confirmed PET filament residue in the declared undyed, unsized and unopened branch. Size/dye/other-polymer, water-jet wet residue, fabric clips and opened fibre require a different applicability review. Missing condition evidence is unresolved; do not code it as absent. | jrc-textiles-2023; namphong-yarn-waste; hising-polyester-selvedge |\n| boundary_completeness | all processes | Retain failed and zero-output runs, starts/stops, idle, cleaning, changeovers, rejects and actual rework. Add each actually present input, waste or emitted species as a separately named atomic row with a protocol before asserting completeness. No catch-all other input/output or automatic zero allowance is permitted. | jrc-textiles-2023 |\n| boundary_utilities | electricity; air; water; heat | Use one provider for each utility. If compressed air is purchased, include that supply once; if generated on site, collect compressor electricity and actual cooling water/oil/condensate as separate exchanges and cancel internal air, rather than adding a purchased-air burden. No boiler, steam, fuel combustion, heat return or condensate return is presumed. Any actual external heat/water return needs a separate Product return with state/enthalpy and the supplier agreement. | jrc-textiles-2023 |\n| boundary_stock | Q; WIP; FG; V | Q is newly first released output. Closing FG already contains any Q still held, so never add closing FG to Q as another manufacturing output. Maintain opening FG + Q + external returns received = closing FG + gross physical dispatch V + actual FG losses/transfers. A returned old lot and its original dispatch/reversal retain original cohort burdens; only real incremental repair adds burden, not production. |  |\n| boundary_services | p_supply | Keep storage, handling, loading and any repacking after first release in a raw service journal H by original cohort Qc. Join H to that cohort inventory before its one normalization. H is not divided here, cannot be assigned to current Q merely because an old lot ships now, and cannot create a second reference output. Combine gates by cancelling internal released-material transfers. |  |\n| boundary_native | UUID-bearing rows | The reference UUID is a generic Product flow with unspecified treatment, no PET CAS or grade and no moisture/finish guarantee. It identifies only man-made fibre residue; all PET/source/unopened/supply restrictions in §3 and accepted_pet_waste remain compulsory. The PET reject Waste flow explicitly also covers textiles despite its plastics classification; this classification difference does not make bottle flakes or resin eligible. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 232
+              line: 9
+              column: 1
+            end:
+              offset: 288
+              line: 9
+              column: 57
+          text: "# Unopened PET weaving-selvedge yarn waste for recycling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7181
+              line: 61
+              column: 1
+            end:
+              offset: 7202
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_44001"
+      family: "allocation"
+      span:
+        start:
+          offset: 44001
+          line: 554
+          column: 1
+        end:
+          offset: 46978
+          line: 565
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | multifunctionality | This is attributional accounting only for cases requiring allocation, consistent with the chosen study decision context. Industrial process evidence and a price sign do not themselves establish an allocation rule or legal waste/end-of-waste status. | ilcd-attributional-2010 |\n| allocation_dedicated | all exchanges | First subdivide or virtually subdivide measured source operations and separate exclusive fabric-only operations from residue-only collection/sorting/packing. Assign identifiable yarn embodied in each physical output and dedicated activities to that output; retain non-valued losses and their causal burdens. Embodied mass assignment is not permission to mass-allocate every remaining exchange. | ilcd-attributional-2010 |\n| allocation_causality | remaining common exchanges | For every remaining exchange independently identify the determining physical causal relationship. Metered operating demand and limiting volume/mass with duration may support particular services only with site evidence. A shared mass fraction, common electricity meter or arbitrary physical/economic choice is insufficient. Preserve exchange-specific shares, denominators, failed-operation burdens and uncertainty across all outputs. | ilcd-attributional-2010 |\n| allocation_residual | unresolved common-process residual only | Only a genuine residual without a determining physical relation uses contemporaneous market value of every co-function at the same common-process gate in its actual condition. Derive gate-equivalent prices transparently if only later sorted/packed/transported prices exist. Document all quantities, price period/currency, output status, residual exchange list and sensitivity. Undefined or zero total value, negative-value service ambiguity or absent prices remains unresolved; no fixed ratio, arbitrary equal shares or automatic zero burden. | ilcd-attributional-2010 |\n| allocation_once | source burden and transfers | Carry each allocated source exchange vector with separated residue through T and WIP once. Choose an explicit joint-source representation or an inherited upstream vector for that same source segment, never both. Subsequent exclusive sorting/packing adds its real burden. Gross output V and mass-balance records stay unallocated; allocation shares alter attributable inventory A, not physical material amounts. | ilcd-attributional-2010 |\n| allocation_no_credit | reuse and treatment | Internal reuse cancels with its inherited vector and incremental rework retained. Recycling destination does not establish avoided virgin PET credit. Waste-treatment inputs, exported secondary materials, reusable packaging and services remain separate. A downstream consequential or substitution study needs its own method and cannot silently change this inventory. | ilcd-attributional-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 232
+              line: 9
+              column: 1
+            end:
+              offset: 288
+              line: 9
+              column: 57
+          text: "# Unopened PET weaving-selvedge yarn waste for recycling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 44001
+              line: 554
+              column: 1
+            end:
+              offset: 44041
+              line: 554
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67680"
+      family: "validation"
+      span:
+        start:
+          offset: 67680
+          line: 615
+          column: 1
+        end:
+          offset: 69829
+          line: 626
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | product and source | Verify the complete §3 qualifier list against supplier certificates, process logs, physical inspection and the receiving specification. PET must be demonstrated, not inferred from the word polyester. Excluded treatment or an unresolved true endpoint/source condition prevents a conforming result. | jrc-textiles-2023; namphong-yarn-waste |\n| validate_measurement | all inventory rows | Reference row is exactly 1 kg matching the declared first-release Q; all other rows use the same cohort denominator once after raw conversion and attribution. For Q=0 retain raw burdens, WIP and failure reasons, and issue no unit result. |  |\n| validate_mass | source; preparation; supply; combined gate | Reconcile full unallocated physical mass and independent PET/water/finish subledgers at each gate and combined gate with internal T/rework/Q transfers cancelled. Do not balance allocated A against gross physical outputs, duplicate closing FG, invent reaction water or infer species from total dust/COD. Report measured residuals and uncertainty. |  |\n| validate_packaging | each packaging component | Individually close the complete cp_pack six-leg ledger including attached WIP/FG, gross dispatch, external returns and waste. Reconcile product tare without adding packaging to Q or turning reuse into new procurement or a co-product credit. |  |\n| validate_native | all UUIDs | Use verified flow type, every native basename/synonym/comment, CAS, treatment, state, geography, medium and property facets. Preserve reference-property → unit-group → actual unit compatibility; a generic flow is not evidence of a supplier match. Leave incompatible or unresolved atomic identities blank and disclose them. |  |\n| validate_completeness | data package | Report accepted input, checks performed, skipped scope, findings and completeness separately. Missing records, unresolved conditions, unknown species and unclosed balances are not passes. Engineering checks do not approve science, translation, mapping or publication. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 232
+              line: 9
+              column: 1
+            end:
+              offset: 288
+              line: 9
+              column: 57
+          text: "# Unopened PET weaving-selvedge yarn waste for recycling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67680
+              line: 615
+              column: 1
+            end:
+              offset: 67702
+              line: 615
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 8557
+          line: 76
+          column: 1
+        end:
+          offset: 8925
+          line: 76
+          column: 369
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_branch"
+      identity_kind: "explicit"
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 8926
+          line: 77
+          column: 1
+        end:
+          offset: 9322
+          line: 77
+          column: 397
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 9323
+          line: 78
+          column: 1
+        end:
+          offset: 9704
+          line: 78
+          column: 382
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 9705
+          line: 79
+          column: 1
+        end:
+          offset: 10256
+          line: 79
+          column: 552
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 10257
+          line: 80
+          column: 1
+        end:
+          offset: 10705
+          line: 80
+          column: 449
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_services"
+      identity_kind: "explicit"
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 10706
+          line: 81
+          column: 1
+        end:
+          offset: 11128
+          line: 81
+          column: 423
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_native"
+      identity_kind: "explicit"
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 11129
+          line: 82
+          column: 1
+        end:
+          offset: 11608
+          line: 82
+          column: 480
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_44001"
+      source_span:
+        start:
+          offset: 44114
+          line: 558
+          column: 1
+        end:
+          offset: 44432
+          line: 558
+          column: 319
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_dedicated"
+      identity_kind: "explicit"
+      unit_id: "normative_44001"
+      source_span:
+        start:
+          offset: 44433
+          line: 559
+          column: 1
+        end:
+          offset: 44895
+          line: 559
+          column: 463
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_44001"
+      source_span:
+        start:
+          offset: 44896
+          line: 560
+          column: 1
+        end:
+          offset: 45410
+          line: 560
+          column: 515
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_44001"
+      source_span:
+        start:
+          offset: 45411
+          line: 561
+          column: 1
+        end:
+          offset: 46047
+          line: 561
+          column: 637
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_once"
+      identity_kind: "explicit"
+      unit_id: "normative_44001"
+      source_span:
+        start:
+          offset: 46048
+          line: 562
+          column: 1
+        end:
+          offset: 46535
+          line: 562
+          column: 488
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_44001"
+      source_span:
+        start:
+          offset: 46536
+          line: 563
+          column: 1
+        end:
+          offset: 46976
+          line: 563
+          column: 441
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_67680"
+      source_span:
+        start:
+          offset: 67775
+          line: 619
+          column: 1
+        end:
+          offset: 68154
+          line: 619
+          column: 380
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_67680"
+      source_span:
+        start:
+          offset: 68155
+          line: 620
+          column: 1
+        end:
+          offset: 68443
+          line: 620
+          column: 289
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_67680"
+      source_span:
+        start:
+          offset: 68444
+          line: 621
+          column: 1
+        end:
+          offset: 68857
+          line: 621
+          column: 414
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_67680"
+      source_span:
+        start:
+          offset: 68858
+          line: 622
+          column: 1
+        end:
+          offset: 69153
+          line: 622
+          column: 296
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_native"
+      identity_kind: "explicit"
+      unit_id: "normative_67680"
+      source_span:
+        start:
+          offset: 69154
+          line: 623
+          column: 1
+        end:
+          offset: 69513
+          line: 623
+          column: 360
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_67680"
+      source_span:
+        start:
+          offset: 69514
+          line: 624
+          column: 1
+        end:
+          offset: 69827
+          line: 624
+          column: 314
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 7181
+          line: 61
+          column: 1
+        end:
+          offset: 7202
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7181"
+      source_span:
+        start:
+          offset: 7230
+          line: 65
+          column: 1
+        end:
+          offset: 8484
+          line: 72
+          column: 217
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_44001"
+      source_span:
+        start:
+          offset: 44001
+          line: 554
+          column: 1
+        end:
+          offset: 44041
+          line: 554
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67680"
+      source_span:
+        start:
+          offset: 67680
+          line: 615
+          column: 1
+        end:
+          offset: 67702
+          line: 615
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cfb87f5a2af767d23f717a8d25c849605826b902fa5f95b443188c98f7237116"
+  generated_content_sha256: "sha256:ede96dd70921ce48f33e86dd8b486c7c8d5dee525f302179e9df6c2abf43a5c2"

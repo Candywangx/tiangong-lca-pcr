@@ -14,7 +14,7 @@ functional_unit:
   how_much: "1 kg net coating product; packaging is inventoried separately and is not part of the 1 kg net product mass"
   how_well: "Conforms to the declared product family, formulation route, solids content, density, VOC content, coverage or spreading-rate specification where relevant, and release quality criteria"
   how_long_or_cycle: "One production batch; no use-stage service life is represented"
-  reference_flow_link: "The quantitative reference output of filling_packaging is 1 kg net product linked to the selected Paint flow"
+  reference_flow_link: "fp_reference_product"
 system_boundary:
   rules:
     - rule_id: sb_received_inputs
@@ -43,6 +43,42 @@ system_boundary:
       rule: "Do not omit known hazardous constituents or direct releases solely because their mass is small; document every cut-off and apply the governing programme's completeness rules."
       source_ids:
         - epd-international-pcr-2019-14-v2-0-1
+    - rule_id: system_boundary_rule_6
+      applies_to: "foreground_system_boundary"
+      rule: "The native Paint UUID describes a liquid pigmented paint with a reference Mass property of 1; it does not establish identity for powder coatings, clear varnishes, every performance system or an arbitrary multi-component kit. Use this binding only when the declared configuration matches the complete native object; never change the product to fit the UUID. Other actual routes require an individually verified reference flow for the complete finished preparation, with its property, unit, physical form and delivery state; an unresolved core reference identity blocks use for that dataset. For multi-component products, record the components and proportions of the declared sold configuration: 1 kg is the sum of their net coating masses, not the mass of one active resin."
+      source_ids: []
+    - rule_id: system_boundary_rule_7
+      applies_to: "foreground_system_boundary"
+      rule: "Each dataset represents one declared product, formulation, site, period and actual route. The named cards below are conditional individual-exchange methods, not a common plant BOM or an assertion that all these chemicals are used; absence requires actual evidence of non-applicability. Expand every actual purchased ingredient, complete preparation, packaging item, fuel, steam supply, electricity input, cleaning agent, waste stream and emitted substance by its individual name, raw quantity and provider. One example cannot stand for other real exchanges, and a category label is never a selected flow. An unresolved UUID retains its concrete name and identity gap; do not invent one."
+      source_ids: []
+    - rule_id: system_boundary_rule_8
+      applies_to: "foreground_system_boundary"
+      rule: "For a purchased complete polymer emulsion, pigment paste, solvent mixture or coating preparation, record the whole as-received purchase once; its polymer, pigment, water and solvent contents are a non-additive composition subledger, not additional purchases. For on-site compounding, each separately purchased actual component is an individual exchange. Retain composition, concentration and aqueous phase with the raw records; do not force formulation water into powder routes or collapse 1K/multi-component/cooked routes into a water-borne sample. Track ordinary auxiliary-identity and provider gaps against affected rows; incompatible core reference identity, unknown key actual materials or missing routes block use for that dataset. Source scope does not establish a site recipe."
+      source_ids: []
+    - rule_id: system_boundary_rule_9
+      applies_to: "foreground_system_boundary"
+      rule: "The protocols' aggregation_rule declares the final result basis, not an instruction to meter each kg separately. Retain the raw aggregation steps in collection_method and all raw_fields. Build a traceable cohort for the same product configuration, site, period and actual batches, retaining actual quantity Q: the kg net coating mass first released after completed filling/packaging and conformity to sale specification, excluding packaging. Q is not design capacity, material input, shipments or output inferred from an assumed yield. Newly accepted product in closing finished-goods stock is already in Q exactly once; do not add or subtract that closing stock again. Shipping opening finished goods, reaccepting returns or internal transfer does not create new production. Retain opening/closing raw-material, WIP and finished-goods stock and their historical burdens separately. Carry into the output cohort only its attributable opening-WIP burdens and carry forward closing-WIP burdens outside it; do not additionally deduct finished-goods stock from a Q that includes newly released closing finished goods. Retain actual packaging, handling, storage, cleaning and waste burdens."
+      source_ids: []
+    - rule_id: system_boundary_rule_10
+      applies_to: "foreground_system_boundary"
+      rule: "The raw numerator is the actual matched-cohort exchange total after evidenced return/recovery reconciliation and any necessary allocation; divide by actual Q once. Keep batch quantity ledgers rather than averaging batch ratios. Local QA ratios per bulk output, solvent charged or precursor input are not successive normalization divisors. Do not delete failed batches, zero-output runs, changeovers or shutdown cleaning: assign their burdens to the related cohort on an evidenced basis or retain a separate failure record. When Q=0, do not normalize per kg or erase burdens with zero values or invented output."
+      source_ids: []
+    - rule_id: system_boundary_rule_11
+      applies_to: "foreground_system_boundary"
+      rule: "Record physical flow V at its actual state, unit and quantity; record burden attribution A and causal allocation factors separately, without scaling physical outputs to force burden allocation. Check each provider's product/waste type, property/unit, technology, geography, gate, phase and period. A unit-group conversion is not density or composition evidence. Reconcile intermediate receipts/transfers within process accounts and cancel them in the consolidated site account; do not subtract final product, internal transfers and stock change twice. Retain closure gaps and raw reconciliation, never infer unidentified emissions from residual mass or claim closure has been achieved."
+      source_ids: []
+    - rule_id: system_boundary_rule_12
+      applies_to: "foreground_system_boundary"
+      rule: "Expand aqueous and thermal exchanges only for the real configuration. Keep solids/wet/dry mass and solvent subledgers separate. Record actual cooling-water makeup and discharge, cleaning water, reaction water, condensate and water vapour individually by phase/destination; not every cooked route forms water or uses steam. Actual thermal reactions require species, reaction and operating evidence. For real on-site combustion retain each fuel, oxidant, emitted substance and control burden; electric or externally supplied heat does not imply on-site combustion. Include actual powder extrusion, cooling, grinding and sieving within formulation_dispersion. Reconcile separately produced/packed multi-component quantities and proportions to the real sold configuration. Keep manufacturing gates separate from downstream application/curing."
+      source_ids: []
+    - rule_id: system_boundary_rule_13
+      applies_to: "foreground_system_boundary"
+      rule: "Verify medium-voltage electricity against actual voltage, region and provider; a previously unresolvable identifier is not unit evidence. Confirm manufacturing rejects and cleaning residue individually by composition, form and treatment gate rather than using a flow described as application overspray/sludge/spent filters. The wastewater UUID applies only to total liquid-stream mass at generation before secondary/tertiary treatment, not treated effluent or direct elementary discharge. Density, constituents, treatment acceptance and provider need actual evidence; no generic kg-to-m3 substitution is allowed."
+      source_ids: []
+    - rule_id: system_boundary_rule_14
+      applies_to: "foreground_system_boundary"
+      rule: "Xylene on each VOC card is only a conditional individual substance exchange; expand other real emitted substances by species, gas/water phase, receiving compartment and post-control quantity. Reconcile their sum with total-VOC QA without adding the sum indicator as another release. The titanium-dioxide particulate card likewise cannot represent all dust; confirm particle size, composition and air compartment. In the VOC balance, product retention, recovery, shipped waste, control destruction and stock are mutually exclusive fates. Capture alone is not a final fate: do not deduct it again when already assigned to recovery/waste/stock. Record real combustion/control products separately; destroyed VOC is not disappearance of total mass. Total VOC, COD, closure residuals or historical factors cannot fabricate speciated quantities."
+      source_ids: []
 boundary_abstraction:
   declared_starting_condition: "Receipt at the manufacturing site of coating ingredients, intermediates, packaging, fuels, and utilities"
   starting_condition_role: "Foreground factory-gate start; upstream production and supplier-to-plant transport remain required background contributions for cradle-to-gate results"
@@ -51,7 +87,7 @@ boundary_abstraction:
   upstream_dataset_requirement: "Use representative upstream datasets for pigments, fillers, binders, solvents, water, additives, packaging, fuels, electricity, transport, and waste treatment; disclose geography, technology, age, and substitutions"
   disclosure: "Disclose excluded operations, outsourced steps, rework loops, cut-offs, abatement, allocation, data gaps, and whether application and end-of-life stages are outside the dataset"
 reference_flow_definition:
-  reference_amount: "1 kg net packaged coating product at factory gate"
+  reference_amount: "1"
   product_flow_ref:
     name: "Paint; UUID"
     uuid: "b2aa1a35-1823-4b13-96db-d5b89eda2db5"
@@ -62,11 +98,7 @@ reference_flow_definition:
   reference_unit: "kg"
   required_qualifiers:
     - "formulation family"
-    - water-borne
-    - solvent-borne
-    - powder
-    - one-component
-    - "or multi-component route"
+    - "water-borne / solvent-borne / powder / one-component / multi-component / actual cooked route"
     - "product subcategory and intended substrate"
     - "solids content"
     - density
@@ -159,76 +191,121 @@ process_inventory:
       product:
         - row_id: fd_binder
           role: "Binder or resin"
-          name: "Product-specific binder or resin flow; unresolved family UUID"
+          name: "Polyvinyl acetate emulsion (complete purchased preparation)"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record each binder or resin family separately using supplier mass records; no generic UUID is assigned until the actual chemistry is known."
+          description: "Record each binder or resin family separately using supplier mass records; no generic UUID is assigned until the actual chemistry is known. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Sum batch issue mass and subtract documented returns, normalized by released bulk coating mass."
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg bulk coating released to filling"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_batch_materials
               source_ids:
                 - eu-commission-2025-2607
                 - jrc-145239-2026
-            ranges:
-              - role: qa_guardrail
-                lower: "0.05"
-                upper: "0.80"
-                unit: "kg/kg bulk coating"
-                basis: "Reasoned estimate spanning materially different coating families; replace with plant formulation data."
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+                - us-epa-eiip-coating-2005
+            ranges: []
+        - row_id: fd_acrylic_binder
+          role: "Acrylic binder"
+          name: "Acrylic copolymer dispersion (complete purchased preparation)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual acrylic formulation and supply state; JRC screening chemistry is not a site recipe."
+          amount:
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - eu-commission-2025-2607
+                - jrc-145239-2026
+            ranges: []
+        - row_id: fd_polyester_binder
+          role: "Powder-coating binder"
+          name: "Polyester resin, powder-coating grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual powder manufacture; retain separate actual crosslinker, additives, extrusion/grinding and associated energy and losses. No downstream substrate curing is included here."
+          amount:
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - eu-commission-2025-2607
+                - jrc-145239-2026
+            ranges: []
+        - row_id: fd_alkyd_binder
+          role: "Purchased alkyd binder"
+          name: "Alkyd resin solution (complete purchased preparation)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual purchased alkyd formulation; retain resin/solvent composition without purchasing those contents twice. On-site cooking uses its actual precursor ledger instead."
+          amount:
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - eu-commission-2025-2607
+                - jrc-145239-2026
+            ranges: []
         - row_id: fd_pigments_fillers
           role: "Pigments and fillers"
-          name: "Titanium Dioxide; UUID , plus product-specific pigment and filler flows"
+          name: "Titanium Dioxide; UUID"
           flow_type: "product"
           flow_ref:
             uuid: "12525dde-1d7a-4024-9ea3-5b90912a48f8"
           property_unit: "Mass / kg"
-          description: "Record pigment and filler ingredients separately where supplier datasets differ; titanium dioxide may use the confirmed selected flow."
+          description: "Record pigment and filler ingredients separately where supplier datasets differ; titanium dioxide may use the confirmed selected flow. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Sum batch issue mass and subtract documented returns, normalized by released bulk coating mass."
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg bulk coating released to filling"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_batch_materials
               source_ids:
                 - jrc-145239-2026
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.80"
-                unit: "kg/kg bulk coating"
-                basis: "Reasoned estimate allowing clear varnishes and highly filled coatings; replace with plant formulation data."
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
         - row_id: fd_water
           role: "Formulation water"
-          name: "Fresh water; UUID"
+          name: "Water, fresh; UUID"
           flow_type: "product"
           flow_ref:
             uuid: "021fbe67-2b7a-43b4-af09-4c3d62b83e3b"
           property_unit: "Mass / kg"
           description: "Record water deliberately added to the formula, separate from cleaning water."
           amount:
-            expression: "Use metered mass or convert metered volume with measured density, normalized by released bulk coating mass."
+            expression: "Use metered mass or convert metered volume with measured density. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg bulk coating released to filling"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_batch_materials
@@ -245,76 +322,58 @@ process_inventory:
                 source_ids: []
         - row_id: fd_solvent
           role: "Formulation solvent"
-          name: "Solvent, for coating, at plant; UUID , or substance-specific solvent flow"
+          name: "Xylene (mixed isomers)"
           flow_type: "product"
-          flow_ref:
-            uuid: "db1ae0f8-e5fb-408a-a443-e5d837ec8767"
           property_unit: "Mass / kg"
-          description: "Record each organic solvent by substance or supplier product where possible."
+          description: "Record each organic solvent by substance or supplier product where possible. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Sum batch issue mass and subtract documented returns, normalized by released bulk coating mass."
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg bulk coating released to filling"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_batch_materials
               source_ids:
                 - us-epa-ap42-6-4-1995
                 - jrc-145239-2026
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.80"
-                unit: "kg/kg bulk coating"
-                basis: "Reasoned estimate across powder, water-borne, and high-solvent products; replace with plant formulation data."
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+                - us-epa-voc-controls-1978
+            ranges: []
         - row_id: fd_additives
           role: "Additives"
-          name: "Product-specific additive flow; unresolved family UUID"
+          name: "Ammonia solution (complete purchased preparation)"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record significant additives separately by chemistry and hazard relevance."
+          description: "Record significant additives separately by chemistry and hazard relevance. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Sum batch issue mass and subtract documented returns, normalized by released bulk coating mass."
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg bulk coating released to filling"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_batch_materials
               source_ids:
                 - eu-commission-2025-2607
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.20"
-                unit: "kg/kg bulk coating"
-                basis: "Reasoned estimate; replace with plant formulation and purchasing data."
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+                - us-epa-eiip-coating-2005
+            ranges: []
         - row_id: fd_electricity
           role: "Electricity"
-          name: "Electricity, medium voltage, at plant GLO; UUID , replaced by a representative regional supply flow"
+          name: "Electricity, medium voltage"
           flow_type: "product"
-          flow_ref:
-            uuid: "00e13b1e-b38b-42bc-b5d9-22b1ff5d4355"
-          property_unit: "Net calorific value / kWh"
-          description: "Include mixing, dispersion, milling, pumping, ventilation, filtration, and local quality-control electricity."
+          property_unit: "Energy / kWh"
+          description: "Include mixing, dispersion, milling, pumping, ventilation, filtration, and local quality-control electricity. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Use submetered electricity or allocate a reconciled site meter total by causal equipment runtime and load."
+            expression: "Use submetered electricity or allocate a reconciled site meter total by causal equipment runtime and load. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg bulk coating released to filling"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_formulation_energy
@@ -337,17 +396,17 @@ process_inventory:
       product:
         - row_id: fd_bulk_output
           role: "Bulk coating released to filling"
-          name: "Product-specific bulk paint or varnish intermediate"
+          name: "Bulk coating preparation of the declared configuration"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "This intermediate closes the formulation process and transfers to filling."
+          description: "This intermediate closes the formulation process and transfers to filling. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Measure released batch mass; calculate from filled mass plus retained samples and documented downstream losses when direct weighing is unavailable."
+            expression: "Measure released batch mass; calculate from filled mass plus retained samples and documented downstream losses when direct weighing is unavailable. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "total formulation inputs"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_batch_outputs
@@ -365,19 +424,17 @@ process_inventory:
       waste:
         - row_id: fd_waste_paint
           role: "Off-specification coating and retained residue"
-          name: "Waste paint; UUID"
+          name: "Rejected coating preparation from manufacturing"
           flow_type: "waste"
-          flow_ref:
-            uuid: "877e5a04-76c8-4c5b-ac4c-062f5beeb2bd"
           property_unit: "Mass / kg"
-          description: "Separate material internally reworked from material sent to recovery, treatment, or disposal."
+          description: "Separate material internally reworked from material sent to recovery, treatment, or disposal. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Sum weighed residues and rejected batches leaving the process, excluding documented closed-loop rework."
+            expression: "Sum weighed residues and rejected batches leaving the process, excluding documented closed-loop rework. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg bulk coating released to filling"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_batch_outputs
@@ -395,114 +452,125 @@ process_inventory:
       elementary:
         - row_id: fd_voc_air
           role: "Volatile organic compounds to air"
-          name: "VOC, volatile organic compounds, unspecified origin; UUID"
+          name: "Xylene (mixed isomers), to air"
           flow_type: "elementary"
-          flow_ref:
-            uuid: "08a91e70-3ddc-11dd-9155-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Record measured VOC or a documented substance-level mass balance after capture and control."
+          description: "Record measured VOC or a documented substance-level mass balance after capture and control. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Use monitored release or solvent balance; report control efficiency and avoid double counting retained solvent."
+            expression: "Use monitored release or solvent balance; report control efficiency and avoid double counting retained solvent. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg solvent charged"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_process_emissions
               source_ids:
                 - us-epa-ap42-6-4-1995
-            ranges:
-              - role: qa_guardrail
-                lower: "0.01"
-                upper: "0.02"
-                unit: "kg VOC/kg solvent charged"
-                basis: "Historical AP-42 statement for solvent loss from paint and varnish manufacturing; not a current default or regulatory factor."
-                basis_kind: "process_output"
-                evidence_kind: "external_source"
-                source_ids:
-                  - us-epa-ap42-6-4-1995
+            ranges: []
         - row_id: fd_pm_air
           role: "Particulate matter to air"
-          name: "Particulate matter; UUID"
+          name: "Titanium dioxide particulate, to air"
           flow_type: "elementary"
-          flow_ref:
-            uuid: "0418b561-ecf8-33c8-9c81-225789f15bd3"
           property_unit: "Mass / kg"
-          description: "Record pigment and powder handling releases after capture and control."
+          description: "Record pigment and powder handling releases after capture and control. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Use monitored release or dry-material balance adjusted for documented capture and control."
+            expression: "Use monitored release or dry-material balance adjusted for documented capture and control. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg dry pigment and filler handled"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_process_emissions
               source_ids:
                 - us-epa-ap42-6-4-1995
-            ranges:
-              - role: qa_guardrail
-                lower: "0.005"
-                upper: "0.01"
-                unit: "kg particulate/kg dry pigment handled"
-                basis: "Historical AP-42 estimate for uncontrolled particulate emissions; not a current default or regulatory factor."
-                basis_kind: "process_output"
-                evidence_kind: "external_source"
-                source_ids:
-                  - us-epa-ap42-6-4-1995
+            ranges: []
   - id: thermal_cooking
     label: "Thermal cooking of varnish or resin intermediate"
     inputs:
       product:
         - row_id: tc_precursors
           role: "Varnish or resin precursors"
-          name: "Chemistry-specific precursor flows"
+          name: "Linseed oil"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Include only ingredients entering the on-site cooked intermediate."
+          description: "Include only ingredients entering the on-site cooked intermediate. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Sum batch issue mass and subtract documented returns."
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg cooked intermediate"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_thermal_batch
               source_ids:
                 - us-epa-ap42-6-4-1995
+                - us-epa-voc-controls-1978
             ranges: []
-        - row_id: tc_thermal_energy
-          role: "Thermal energy"
-          name: "Route-specific fuel or supplied heat flow; unresolved thermal-energy UUID"
+        - row_id: tc_rosin
+          role: "Rosin precursor"
+          name: "Rosin"
           flow_type: "product"
-          property_unit: "Net calorific value / MJ"
-          description: "Record fuel and heat carriers separately; the flow UUID remains route-specific."
+          property_unit: "Mass / kg"
+          description: "Conditional on a documented cooked-varnish formulation. Linseed oil and rosin are historical named examples, not a required recipe or fractions; expand every actual precursor individually (EPA 1978 section 4.8.2)."
           amount:
-            expression: "Use metered fuel or heat and measured net calorific value; allocate shared heat by causal duty."
+            expression: "Sum batch issue mass and subtract documented returns. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg cooked intermediate"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_batch
+              source_ids:
+                - us-epa-ap42-6-4-1995
+                - us-epa-voc-controls-1978
+            ranges: []
+        - row_id: tc_thermal_energy
+          role: "Thermal energy"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record fuel and heat carriers separately; the flow UUID remains route-specific. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
+          amount:
+            expression: "Use metered fuel or heat and measured net calorific value; allocate shared heat by causal duty. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_thermal_energy
               source_ids:
                 - us-epa-ap42-6-4-1995
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "10"
-                unit: "MJ/kg cooked intermediate"
-                basis: "Reasoned estimate; replace with metered route-specific data."
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: tc_supplied_steam
+          role: "Purchased steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only for actual supplied-steam duty; keep fuel, steam, purchased heat and electricity separate. Independently record same-period supply and each actual return/discharge/vent mass, pressure, temperature, phase, steam quality where needed and specific enthalpy, with opening/closing carrier inventory and energy; never assume full or equal return. Apply the same per-leg principle to hot-water service only if it actually exists, without creating hot-water, boiler or heat-duty flows."
+          amount:
+            expression: "Use calibrated net-heat metering matched to the declared boundary, or actual-leg enthalpy accounting qualified by val_records in section 9. Use m*(h_s-h_r) only to simplify evidenced equal matched supply/return masses, without dropping other actual legs or storage. For masses in kg and specific enthalpies in kJ/kg, divide summed kJ by 1000 once to MJ; do not reconvert a net meter already in MJ. Retain actual matched-cohort totals and causal duty attribution before the original single net-product normalization."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_energy
+              source_ids:
+                - us-epa-ap42-6-4-1995
+                - doe-ornl-steam-system-survey-2002
+            ranges: []
       waste:
         []
       elementary:
@@ -511,17 +579,17 @@ process_inventory:
       product:
         - row_id: tc_intermediate
           role: "Cooked varnish or resin intermediate"
-          name: "Product-specific cooked intermediate"
+          name: "Cooked varnish intermediate of the declared configuration"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Transfer the measured intermediate to formulation without assigning a final-product reference flow."
+          description: "Transfer the measured intermediate to formulation without assigning a final-product reference flow. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Use measured batch output reconciled with precursor inputs and recorded releases."
+            expression: "Use measured batch output reconciled with precursor inputs and recorded releases. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "total precursor mass"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_thermal_batch
@@ -533,19 +601,17 @@ process_inventory:
       elementary:
         - row_id: tc_voc_air
           role: "Thermal-route VOC to air"
-          name: "VOC, volatile organic compounds, unspecified origin; UUID"
+          name: "Xylene (mixed isomers), to air"
           flow_type: "elementary"
-          flow_ref:
-            uuid: "08a91e70-3ddc-11dd-9155-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Record route-specific VOC separately from formulation emissions before aggregation."
+          description: "Record route-specific VOC separately from formulation emissions before aggregation. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Use monitored release or a documented batch mass balance after capture and control."
+            expression: "Use monitored release or a documented batch mass balance after capture and control. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg cooked intermediate"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_thermal_emissions
@@ -558,16 +624,16 @@ process_inventory:
       product:
         - row_id: fp_bulk_input
           role: "Bulk coating"
-          name: "Product-specific bulk paint or varnish intermediate"
+          name: "Bulk coating preparation of the declared configuration"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Transfer the released bulk coating from formulation."
+          description: "Transfer the released bulk coating from formulation. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Use transferred or reconciled batch mass."
+            expression: "Use transferred or reconciled batch mass. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg net packaged product"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
@@ -577,31 +643,42 @@ process_inventory:
             ranges: []
         - row_id: fp_packaging
           role: "Packaging materials"
-          name: "Material-specific packaging flows; unresolved packaging-material UUIDs"
+          name: "Tinplate coating container"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record containers, closures, liners, labels, cartons, pallets, and other non-reusable packaging separately."
+          description: "Record containers, closures, liners, labels, cartons, pallets, and other non-reusable packaging separately. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Use bill-of-material quantity reconciled with issues, returns, and packaging scrap."
+            expression: "Use bill-of-material quantity reconciled with issues, returns, and packaging scrap. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg net packaged product"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_packaging_records
               source_ids:
                 - eu-commission-2025-2607
-            ranges:
-              - role: qa_guardrail
-                lower: "0.01"
-                upper: "0.30"
-                unit: "kg packaging/kg net product"
-                basis: "Reasoned estimate spanning bulk and small-container formats; replace with the packaging bill of materials."
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: fp_hdpe_container
+          role: "Polyethylene container"
+          name: "High-density polyethylene coating container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if this is the actual packaging. Tinplate and polyethylene containers are alternative conditional objects, not jointly assumed; expand actual closure, liner, label, carton and pallet by material."
+          amount:
+            expression: "Use bill-of-material quantity reconciled with issues, returns, and packaging scrap. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-commission-2025-2607
+            ranges: []
       waste:
         []
       elementary:
@@ -615,13 +692,13 @@ process_inventory:
           flow_ref:
             uuid: "b2aa1a35-1823-4b13-96db-d5b89eda2db5"
           property_unit: "Mass / kg"
-          description: "This is the quantitative reference output."
+          description: "This is the quantitative reference output. Normalize measured saleable batch output once to exactly 1 kg net coating; inventory packaging separately."
           amount:
-            expression: "Set to exactly 1 kg net coating after normalizing measured saleable batch output; inventory packaging separately."
+            expression: "1 kg"
             value_mode: "fixed_value"
             specificity: "product_specific"
             basis:
-              text: "reference product output"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "method_formula"
@@ -640,31 +717,42 @@ process_inventory:
       waste:
         - row_id: fp_packaging_waste
           role: "Packaging scrap"
-          name: "Material-specific packaging waste flows"
+          name: "Tinplate container scrap"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record material-specific packaging scrap sent to recovery, treatment, or disposal."
+          description: "Record material-specific packaging scrap sent to recovery, treatment, or disposal. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Weigh or reconcile issued packaging against packaged units, returns, and stock."
+            expression: "Weigh or reconcile issued packaging against packaged units, returns, and stock. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg net packaged product"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_packaging_records
               source_ids:
                 - mass-balance-identity
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.05"
-                unit: "kg/kg net product"
-                basis: "Reasoned estimate; replace with packaging reconciliation."
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
+        - row_id: fp_hdpe_scrap
+          role: "Polyethylene container scrap"
+          name: "High-density polyethylene container scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual polyethylene container scrap; retain its destination, recovered amount and provider separately from metal scrap or other packaging waste."
+          amount:
+            expression: "Weigh or reconcile issued packaging against packaged units, returns, and stock. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
       elementary:
         []
   - id: cleaning_waste_management
@@ -673,18 +761,18 @@ process_inventory:
       product:
         - row_id: cw_water
           role: "Cleaning water"
-          name: "Fresh water; UUID"
+          name: "Water, fresh; UUID"
           flow_type: "product"
           flow_ref:
             uuid: "021fbe67-2b7a-43b4-af09-4c3d62b83e3b"
           property_unit: "Mass / kg"
           description: "Record cleaning water separately from formulation water."
           amount:
-            expression: "Use metered mass or volume converted with measured density and allocate by documented cleaning event."
+            expression: "Use metered mass or volume converted with measured density and allocate by documented cleaning event. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg net packaged product supported"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
@@ -702,33 +790,23 @@ process_inventory:
                 source_ids: []
         - row_id: cw_solvent
           role: "Cleaning solvent"
-          name: "Solvent, for coating, at plant; UUID , or substance-specific solvent flow"
+          name: "Xylene (mixed isomers)"
           flow_type: "product"
-          flow_ref:
-            uuid: "db1ae0f8-e5fb-408a-a443-e5d837ec8767"
           property_unit: "Mass / kg"
-          description: "Record fresh and recovered cleaning solvents separately."
+          description: "Record fresh and recovered cleaning solvents separately. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Reconcile issued, recovered, returned, emitted, and discarded solvent by cleaning event."
+            expression: "Reconcile issued, recovered, returned, emitted, and discarded solvent by cleaning event. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg net packaged product supported"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_cleaning_inputs
               source_ids:
                 - us-epa-ap42-6-4-1995
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "0.5"
-                unit: "kg/kg net product"
-                basis: "Reasoned estimate; replace with cleaning-event solvent balances."
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -746,11 +824,11 @@ process_inventory:
           property_unit: "Mass / kg"
           description: "Characterize wastewater solids, organic content, and destination where data permit."
           amount:
-            expression: "Use discharge meter or cleaning-event water balance, net of documented recovered water."
+            expression: "Use discharge meter or cleaning-event water balance, net of documented recovered water. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg net packaged product supported"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
@@ -768,18 +846,16 @@ process_inventory:
                 source_ids: []
         - row_id: cw_residue
           role: "Cleaning residue and waste paint"
-          name: "Waste paint; UUID"
+          name: "Coating preparation residue from equipment cleaning"
           flow_type: "waste"
-          flow_ref:
-            uuid: "877e5a04-76c8-4c5b-ac4c-062f5beeb2bd"
           property_unit: "Mass / kg"
-          description: "Record recovered coating separately from residue leaving for treatment or disposal."
+          description: "Record recovered coating separately from residue leaving for treatment or disposal. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Weigh residue containers and subtract documented internal recovery."
+            expression: "Weigh residue containers and subtract documented internal recovery. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg net packaged product supported"
+              text: "per 1 kg reference flow"
               kind: "reference_flow"
             evidence:
               kind: "collected_record"
@@ -798,60 +874,59 @@ process_inventory:
       elementary:
         - row_id: cw_voc_air
           role: "Cleaning VOC to air"
-          name: "VOC, volatile organic compounds, unspecified origin; UUID"
+          name: "Xylene (mixed isomers), to air"
           flow_type: "elementary"
-          flow_ref:
-            uuid: "08a91e70-3ddc-11dd-9155-0050c2490048"
           property_unit: "Mass / kg"
-          description: "Record cleaning-solvent emissions separately before aggregation."
+          description: "Record cleaning-solvent emissions separately before aggregation. This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them."
           amount:
-            expression: "Calculate from the cleaning-solvent balance after recovery, waste shipment, and control, or use monitored release."
+            expression: "Calculate from the cleaning-solvent balance after recovery, waste shipment, and control, or use monitored release. Retain raw totals for the matched production cohort; the final inventory uses the single net-product normalization in section 8."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
-              text: "kg cleaning solvent issued"
-              kind: "process_output"
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
               collection_protocol_id: cp_cleaning_outputs
               source_ids:
                 - us-epa-ap42-6-4-1995
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg VOC/kg cleaning solvent issued"
-                basis: "Reasoned mass-conservation bound; replace with monitored release or a reconciled event-specific solvent balance."
-                basis_kind: "process_output"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
+            ranges: []
 allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "First subdivide or meter directly; for remaining multifunctionality, document whether system expansion fits the goal, background model and governing programme. Where allocation cannot be avoided use real physical causality, otherwise justify and test another relationship such as economic allocation. VOC or material balances establish physical reconciliation, not an economic/co-product allocation basis. Retain physical flows separately from burden attribution."
+    source_ids: []
   - rule_id: al_avoid
     applies_to: "Shared operations and utilities"
     rule: "First avoid allocation through batch segregation, submetering, or process subdivision."
     source_ids:
       - iso-14044-2006
+      - jrc-ilcd-handbook-2010
   - rule_id: al_internal_rework
     applies_to: "In-specification closed-loop rework"
     rule: "Keep internal rework inside the foreground system; do not create a co-product credit, and reconcile its mass without double counting fresh input."
     source_ids:
       - mass-balance-identity
+      - jrc-ilcd-handbook-2010
   - rule_id: al_saleable_coproduct
     applies_to: "Multiple saleable outputs"
     rule: "Use a documented physical causal relationship where it represents resource use; use economic allocation only when no defensible physical relationship exists and disclose prices, period, and sensitivity."
     source_ids:
       - iso-14044-2006
+      - jrc-ilcd-handbook-2010
   - rule_id: al_waste_recovery
     applies_to: "Waste, recovered solvent, and recovered packaging"
     rule: "Model treatment burdens and any credits under the governing programme; disclose system expansion, substitution, or cut-off and never treat avoided waste as negative foreground input."
     source_ids:
       - iso-14044-2006
       - epd-international-pcr-2019-14-v2-0-1
+      - jrc-ilcd-handbook-2010
   - rule_id: al_shared_site_energy
     applies_to: "Shared site electricity and heat"
     rule: "Allocate by metered equipment consumption or causal runtime and load; mass allocation is allowed only with justification and sensitivity for materially different routes."
     source_ids:
       - iso-14044-2006
+      - jrc-ilcd-handbook-2010
 dataset_production:
   collection_protocols:
     - protocol_id: cp_batch_materials
@@ -859,134 +934,135 @@ dataset_production:
       flow_role: "formulation ingredients"
       record_type: "batch issue and return record"
       raw_fields: "material ID, lot, gross issue, return, density, solids"
-      collection_method: "ERP issue and calibrated scale; volume conversion only with measured density"
+      collection_method: "ERP issue and calibrated scale; volume conversion only with measured density; raw cohort aggregation: sum net issues by material and product family"
       unit: "kg"
       frequency: "each batch"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "sum net issues by material and product family"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "purchase ledger, batch sheet, scale calibration"
     - protocol_id: cp_formulation_energy
       process_id: "formulation_dispersion"
       flow_role: "electricity"
       record_type: "meter and equipment log"
       raw_fields: "meter start, meter end, runtime, load, product family"
-      collection_method: "submeter; otherwise reconciled site meter with causal allocation"
+      collection_method: "submeter; otherwise reconciled site meter with causal allocation; raw cohort aggregation: sum direct readings; allocate documented shared remainder"
       unit: "kWh"
       frequency: "batch or monthly"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "sum direct readings; allocate documented shared remainder"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "meter calibration, energy reconciliation"
     - protocol_id: cp_batch_outputs
       process_id: "formulation_dispersion"
       flow_role: "bulk output and residue"
       record_type: "batch yield record"
       raw_fields: "released mass, retained sample, rework, residue, stock change"
-      collection_method: "calibrated scale and batch reconciliation"
+      collection_method: "calibrated scale and batch reconciliation; raw cohort aggregation: mass-weighted aggregate by product family"
       unit: "kg"
       frequency: "each batch"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "mass-weighted aggregate by product family"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "release record, waste record, mass balance"
     - protocol_id: cp_process_emissions
       process_id: "formulation_dispersion"
       flow_role: "VOC and particulate release"
       record_type: "monitoring and material balance"
-      raw_fields: "solvent charged, solvent retained, recovery, waste, capture, control, measured concentration, gas flow"
-      collection_method: "compliant monitoring or documented mass balance"
+      raw_fields: "solvent charged, solvent retained, recovery, waste, capture, control, measured concentration, gas flow ; actual dry mass H, species/size, f_loss/G evidence, hood/duct/device topology, matched bypass/inlet/outlet PM and gas flow, C, D, recovered-solids wet/dry masses and destination"
+      collection_method: "compliant monitoring or documented mass balance; raw cohort aggregation: sum pollutant mass after control; keep routes separate ; for modelled PM establish pre-capture G, capture-to-inlet C and captured-stream removal D, retain uncaptured and treated-outlet branches on matched species/size/period, and retain measured total-release alternatives; do not apply efficiencies again to already controlled amounts"
       unit: "kg"
       frequency: "campaign and reporting period"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant and emission point"
-      aggregation_rule: "sum pollutant mass after control; keep routes separate"
-      quality_evidence: "monitoring report, control log, balance reconciliation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "monitoring report, control log, balance reconciliation ; capture-network diagram, paired-stream measurements, dry-basis/generation evidence, recovered-solids and destination/provider ledgers"
     - protocol_id: cp_thermal_batch
       process_id: "thermal_cooking"
       flow_role: "precursors and cooked intermediate"
       record_type: "batch record"
       raw_fields: "precursor issue, return, intermediate output, residue"
-      collection_method: "calibrated scale and batch reconciliation"
+      collection_method: "calibrated scale and batch reconciliation; raw cohort aggregation: sum net input and output by route"
       unit: "kg"
       frequency: "each thermal batch"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "sum net input and output by route"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "batch sheet, scale calibration, mass balance"
     - protocol_id: cp_thermal_energy
       process_id: "thermal_cooking"
       flow_role: "fuel and heat"
       record_type: "meter and fuel record"
-      raw_fields: "fuel mass or volume, net calorific value, heat meter, runtime"
-      collection_method: "calibrated meter and supplier fuel specification"
+      raw_fields: "fuel mass or volume, net calorific value, heat meter, runtime; steam mass, supply/return pressure, temperature, enthalpy and phase ; independent supply and each actual return/discharge/vent mass (kg), matched period/meter boundary, common enthalpy reference and property source, each leg specific enthalpy (kJ/kg) and quality where needed, opening/closing carrier mass and stored energy, actual other energy transfers, supplier-native reference quantity/property/unit/gate and coverage"
+      collection_method: "Calibrated meters and actual fuel specification; NCV conversion applies only to actual fuels, not steam, supplied heat or hot water. For carriers use boundary-matched calibrated net-heat metering or each actual leg at one common enthalpy reference; m*(h_s-h_r) simplifies only evidenced matched equal masses, with other legs and storage reconciled separately. Raw cohort aggregation: sum converted fuel amounts and carrier boundary energy separately; summed kg*kJ/kg in kJ is /1000 to MJ once. Supplier-native billed/reference quantity is not automatically consumer useful duty; retain physical carrier-water and provider-coverage ledgers, counting provider production once."
       unit: "MJ"
       frequency: "each batch or monthly"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "convert with recorded net calorific value and sum by route"
-      quality_evidence: "meter calibration, fuel certificate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration, fuel certificate ; independent leg mass/state records, property/common-reference source, equal-mass-shortcut evidence or per-leg/storage reconciliation, meter-boundary and provider-coverage evidence"
     - protocol_id: cp_thermal_emissions
       process_id: "thermal_cooking"
       flow_role: "route VOC"
       record_type: "monitoring and batch balance"
       raw_fields: "volatile input, retained mass, condensate, recovery, control, measured release"
-      collection_method: "compliant monitoring or documented mass balance"
+      collection_method: "compliant monitoring or documented mass balance; raw cohort aggregation: sum release after control by route"
       unit: "kg"
       frequency: "campaign and reporting period"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant and emission point"
-      aggregation_rule: "sum release after control by route"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "monitoring report, batch balance"
     - protocol_id: cp_packaging_records
       process_id: "filling_packaging"
       flow_role: "bulk input, product output, and packaging"
       record_type: "filling and bill-of-material record"
       raw_fields: "bulk transfer, filled net mass, unit count, packaging issue, return, scrap"
-      collection_method: "calibrated filler or scale plus inventory reconciliation"
+      collection_method: "calibrated filler or scale plus inventory reconciliation; raw cohort aggregation: sum measured saleable net output and raw packaging by material"
       unit: "kg"
       frequency: "each batch"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "normalize saleable net output to 1 kg and sum packaging by material"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "fill check, bill of materials, scale calibration"
     - protocol_id: cp_cleaning_inputs
       process_id: "cleaning_waste_management"
       flow_role: "water and solvent input"
       record_type: "cleaning-event record"
       raw_fields: "equipment, water, fresh solvent, recovered solvent, return"
-      collection_method: "meter, weighed issue, and solvent log"
+      collection_method: "meter, weighed issue, and solvent log; raw cohort aggregation: assign directly to product campaign or documented shared cleaning driver"
       unit: "kg"
       frequency: "each cleaning event"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "assign directly to product campaign or documented shared cleaning driver"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "cleaning log, meter calibration"
     - protocol_id: cp_cleaning_outputs
       process_id: "cleaning_waste_management"
       flow_role: "wastewater, residue, and VOC"
       record_type: "discharge, shipment, and balance record"
       raw_fields: "wastewater, solids, residue, recovery, solvent issued, solvent returned, VOC control"
-      collection_method: "discharge meter, weighed shipment, and solvent balance"
+      collection_method: "discharge meter, weighed shipment, and solvent balance; raw cohort aggregation: sum by destination and product family; reconcile recovery"
       unit: "kg"
       frequency: "each event and reporting period"
       temporal_coverage: "representative reporting year"
       site_scope: "reporting plant"
-      aggregation_rule: "sum by destination and product family; reconcile recovery"
+      aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "manifests, discharge report, solvent balance"
   calculation_rules:
     - id: calc_normalize
       applies_to: "All foreground exchanges"
-      rule: "normalized amount = reporting-period amount / net saleable coating mass"
+      rule: "normalized amount = matched raw cohort exchange total / actual net released quantity Q; apply once only"
       inputs:
-        - "exchange amount"
-        - "net saleable coating mass"
+        - "raw cohort exchange total"
+        - "actual net released quantity Q"
+        - "stock and historical-burden reconciliation"
       output: "amount per kg net product"
       source_ids:
         - mass-balance-identity
     - id: calc_material_balance
       applies_to: "Each production route"
-      rule: "closure gap = total mass inputs - saleable output - transferred intermediates - recorded wastes - recorded releases - justified stock change"
+      rule: "closure gap = actual inputs to the declared control volume - outward outputs - recorded wastes - recorded releases - stock increase within that volume; process accounts include boundary intermediates, consolidated site accounts cancel internal transfers"
       inputs:
         - "wet-mass inputs"
         - outputs
@@ -998,24 +1074,28 @@ dataset_production:
         - mass-balance-identity
     - id: calc_voc_balance
       applies_to: "VOC release"
-      rule: "VOC release = volatile input - VOC retained in product - recovered solvent - solvent in shipped waste - destroyed or captured mass - justified stock change"
+      rule: "VOC release = volatile input - VOC retained in product - recovered solvent - solvent in shipped waste - destroyed VOC mass - justified stock increase; use mutually exclusive fates and do not additionally deduct capture already represented in another fate"
       inputs:
         - "solvent and volatile-component balance"
       output: "kg VOC after control"
       source_ids:
         - us-epa-ap42-6-4-1995
         - mass-balance-identity
+        - us-epa-eiip-coating-2005
     - id: calc_pm_release
       applies_to: "Particulate release"
-      rule: "released particulate = dry material handled × measured or justified loss fraction × one minus capture efficiency × one minus control efficiency"
+      rule: "G = H*f_loss; H is actual dry mass handled on the documented species/particle-size basis; f_loss is the site-qualified fraction generating airborne PM before capture, not an already controlled release fraction. Only for documented uncaptured-to-air and capture-to-one-removal-device branches: C is the fraction of G routed to that device inlet; D is the fraction removed from that captured stream in the device; released particulate = G*(1-C) + G*C*(1-D) = G*(1-C*D). Account for other actual branches and serial-device inlet/removal relationships instead of assuming a universal topology."
       inputs:
-        - "dry pigment and filler handled"
-        - loss
-        - capture
-        - control
+        - "actual dry mass handled H"
+        - "generation fraction f_loss and G evidence"
+        - "capture-to-inlet fraction C"
+        - "removal-on-captured-stream fraction D"
+        - "actual species/size/period and topology"
       output: "kg particulate release"
       source_ids:
         - us-epa-ap42-6-4-1995
+        - us-epa-eiip-coating-2005
+        - us-epa-capture-systems
     - id: calc_shared_energy
       applies_to: "Shared energy"
       rule: "allocate reconciled shared energy by metered runtime and load or another documented causal driver; test material alternatives"
@@ -1026,9 +1106,10 @@ dataset_production:
       output: "process and product energy"
       source_ids:
         - iso-14044-2006
+        - jrc-ilcd-handbook-2010
     - id: calc_service_conversion
       applies_to: "Comparative service"
-      rule: "required product mass = declared area × application-specific mass per area × applied fraction × maintenance multiplier for the declared study period"
+      rule: "required product mass = declared area / coverage × density / applied fraction × maintenance multiplier for the declared study period; applied fraction is the fraction actually applied to the target surface (greater than 0 and at most 1), with compatible volumetric coverage and density; equivalent application mass per area = density / coverage"
       inputs:
         - area
         - "coverage or spreading rate"
@@ -1067,7 +1148,7 @@ dataset_production:
 validation_rules:
   - rule_id: val_reference_identity
     applies_to: "Reference flow"
-    rule: "Confirm Paint UUID b2aa1a35-1823-4b13-96db-d5b89eda2db5, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, kg unit, and exactly 1 kg net product excluding packaging."
+    rule: "Confirm Paint UUID b2aa1a35-1823-4b13-96db-d5b89eda2db5 only when its whole-object scope matches section 3; otherwise verify the actual route-specific complete finished-product flow; confirm Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, kg unit, and exactly 1 kg net product excluding packaging."
     source_ids:
       - mass-balance-identity
   - rule_id: val_qualifiers
@@ -1088,19 +1169,23 @@ validation_rules:
       - mass-balance-identity
   - rule_id: val_records
     applies_to: "Collected values"
-    rule: "Confirm temporal coverage, site scope, units, calibration, aggregation, and traceability to the named collection protocol."
+    rule: "Confirm temporal coverage, site scope, units, calibration, aggregation, and traceability to the named collection protocol. For actual steam (or hot water only if present), declare supplier gate versus consumer control volume, matched period, meter boundary and common enthalpy reference/property source; independently measure each real supply, return, discharge and vent mass/state without assuming full return. The carried-energy ledger is E_legs_MJ = (sum incoming m_i*h_i - sum outgoing m_j*h_j)/1000, with m in kg and h in kJ/kg. Supply/return terms alone are (m_s*h_s - m_r*h_r)/1000; only evidenced m_s=m_r=m with matched boundary/states permits simplifying those terms to m*(h_s-h_r)/1000, never dropping other real legs or stocks. Consumer useful duty additionally reconciles actual stored-energy increase, heat losses, shaft work and other actual energy transfers at that same boundary, with justified omissions; it is not automatically supplier billed/native reference quantity. A calibrated net meter replaces corresponding leg-energy accounting only for the same boundary, without adding both; a meter already in MJ is not /1000 again. Retain physical carrier-water mass, history and destinations; count provider production once using its actual native property/unit/gate and coverage, without double purchase of included carrier water or provider fuel/boiler, or invented return credits. NCV is for actual fuels only. All actual raw totals remain subject to section 5 cohort, physical V/burden A and single normalization conditions."
     source_ids:
       - epd-international-pcr-2019-14-v2-0-1
+      - doe-ornl-steam-system-survey-2002
   - rule_id: val_emissions
     applies_to: "Direct VOC and particulate"
-    rule: "Confirm route-specific monitoring or balances, capture and control treatment, and absence of double counting; use AP-42 ranges only as historical QA checks."
+    rule: "Confirm route-specific monitoring or balances, capture and control treatment, and absence of double counting; use AP-42 ranges only as historical QA checks. For modelled PM verify actual pre-capture G and its dry-mass/species/size/period basis, C as the fraction routed to the device, and D as removal on the captured stream; only for this evidenced topology add uncaptured G*(1-C) and device outlet G*C*(1-D). Apply actual serial removal stages to their own measured inlets/removal fractions, never treating capture as removal. A measured total covering the same boundary and all branches is an alternative to the branch sum, not an additional release; reconcile any real branches outside its measurement coverage. Retain actual collected solids/residue, reuse or waste destinations and treatment providers; their dry PM content is not additive to the whole wet residue. Nested PM total/species/size subledgers are not additional emitted mass; historical ranges or closure residuals cannot invent G, C, D or species quantities."
     source_ids:
       - us-epa-ap42-6-4-1995
+      - us-epa-eiip-coating-2005
+      - us-epa-capture-systems
   - rule_id: val_allocation
     applies_to: "Shared operations and outputs"
     rule: "Confirm subdivision was considered first, the causal basis is documented, and economic allocation is justified and sensitivity-tested if used."
     source_ids:
       - iso-14044-2006
+      - jrc-ilcd-handbook-2010
   - rule_id: val_background
     applies_to: "Cradle-to-gate profile"
     rule: "Confirm upstream datasets and transport are present for material inputs and disclose geography, technology, age, and substitutions."
@@ -1114,6 +1199,54 @@ validation_rules:
   - rule_id: val_provisional
     applies_to: "Reasoned estimates"
     rule: "Flag all reasoned_estimate ranges as provisional and prevent their use as plant defaults; replace them before publication unless explicitly reviewed and justified."
+    source_ids: []
+  - rule_id: validation_rule_11
+    applies_to: "foreground_dataset_conformance"
+    rule: "These original family-level ranges are separate from final reference normalization and retained only as bounded candidate screening information, not per-ingredient bounds, replacements for actual recipes/meters or mandatory acceptance thresholds. Original ranges remaining on other cards likewise retain their local denominators: calculate local indicators from matched raw quantities rather than dividing final normalized exchanges again. No external measured population range substantiates the reasoned_estimate bounds; never use them as universal plant defaults, and investigate rather than clip outliers. The cleaning-VOC 0–1 conservation bound needs the same event/solvent constituent and no other volatile source; mixture mass is not a species quantity. The AP-42 particulate percentage denominator is pigment handled, not all powders or fillers; it establishes neither species, particle size, compartment nor current emission permission."
+    source_ids: []
+  - rule_id: validation_rule_12
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional formulation guardrail Range role: QA guardrail (qa_guardrail) Lower: 0.05 Upper: 0.80 Unit: kg/kg bulk coating Basis: Reasoned estimate spanning materially different coating families; replace with plant formulation data. Basis kind: Process output (process_output) Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_13
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional formulation guardrail Range role: QA guardrail (qa_guardrail) Lower: 0 Upper: 0.80 Unit: kg/kg bulk coating Basis: Reasoned estimate allowing clear varnishes and highly filled coatings; replace with plant formulation data. Basis kind: Process output (process_output) Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_14
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional formulation guardrail Range role: QA guardrail (qa_guardrail) Lower: 0 Upper: 0.80 Unit: kg/kg bulk coating Basis: Reasoned estimate across powder, water-borne, and high-solvent products; replace with plant formulation data. Basis kind: Process output (process_output) Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_15
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional formulation guardrail Range role: QA guardrail (qa_guardrail) Lower: 0 Upper: 0.20 Unit: kg/kg bulk coating Basis: Reasoned estimate; replace with plant formulation and purchasing data. Basis kind: Process output (process_output) Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_16
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Historical manufacturing solvent-loss observation Range role: QA guardrail (qa_guardrail) Lower: 0.01 Upper: 0.02 Unit: kg VOC/kg solvent charged Basis: AP-42 section 6.4.1 reports 1–2% solvent loss even under well-controlled paint-manufacturing conditions. This prose observation is separate from Table 6.4-1 uncontrolled product-based factors; it is not a current default, a varnish-route factor or a species-level release fraction. Basis kind: Material input (process_output) Evidence kind: External source (external_source) Sources: us-epa-ap42-6-4-1995"
+    source_ids: []
+  - rule_id: validation_rule_17
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Historical uncontrolled dry-pigment handling check Range role: QA guardrail (qa_guardrail) Lower: 0.005 Upper: 0.01 Unit: kg particulate/kg dry pigment handled Basis: Historical AP-42 estimate for uncontrolled particulate emissions; not a current default or regulatory factor. Basis kind: Material input (process_output) Evidence kind: External source (external_source) Sources: us-epa-ap42-6-4-1995"
+    source_ids: []
+  - rule_id: validation_rule_18
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional thermal-energy guardrail Range role: QA guardrail (qa_guardrail) Lower: 0 Upper: 10 Unit: MJ/kg cooked intermediate Basis: Reasoned estimate; replace with metered route-specific data. Basis kind: Process output (process_output) Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_19
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional packaging guardrail Range role: QA guardrail (qa_guardrail) Lower: 0.01 Upper: 0.30 Unit: kg packaging/kg net product Basis: Reasoned estimate spanning bulk and small-container formats; replace with the packaging bill of materials. Basis kind: Reference flow (reference_flow） Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_20
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional packaging-waste guardrail Range role: QA guardrail (qa_guardrail) Lower: 0 Upper: 0.05 Unit: kg/kg net product Basis: Reasoned estimate; replace with packaging reconciliation. Basis kind: Reference flow (reference_flow） Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_21
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional cleaning-solvent guardrail Range role: QA guardrail (qa_guardrail) Lower: 0 Upper: 0.5 Unit: kg/kg net product Basis: Reasoned estimate; replace with cleaning-event solvent balances. Basis kind: Reference flow (reference_flow） Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
+    source_ids: []
+  - rule_id: validation_rule_22
+    applies_to: "foreground_dataset_conformance"
+    rule: "Range: Provisional cleaning-solvent mass-balance guardrail Range role: QA guardrail (qa_guardrail) Lower: 0 Upper: 1 Unit: kg VOC/kg cleaning solvent issued Basis: Reasoned mass-conservation bound; replace with monitored release or a reconciled event-specific solvent balance. Basis kind: Process output (process_output) Evidence kind: Reasoned estimate (reasoned_estimate) Sources:"
     source_ids: []
 published_dataset_profile:
   dataset_role: "Foreground production dataset for a declared paint or varnish product family and plant route"
@@ -1135,7 +1268,7 @@ data_sources:
   - id: "us-epa-ap42-6-4-1995"
     type: "official_guidance"
     reference: "United States Environmental Protection Agency, AP-42 Section 6.4 Paint and Varnish, January 1995; https://www.epa.gov/sites/default/files/2020-10/documents/c06s04.pdf"
-    used_for: "Manufacturing process map; solvent and pigment release mechanisms; historical uncontrolled QA ranges"
+    used_for: "Manufacturing process map; solvent and pigment release mechanisms; historical QA observations with distinct prose and uncontrolled-table contexts"
   - id: "epd-international-pcr-2019-14-v2-0-1"
     type: "standard"
     reference: "EPD International, PCR 2019:14 Construction products, version 2.0.1, 2025; https://www.environdec.com/pcr-library/pcr_6b99d07c-4b75-4763-4485-08dd775d2e49"
@@ -1148,23 +1281,43 @@ data_sources:
     type: "method_factor"
     reference: "Conservation of mass calculation identity"
     used_for: "Reference normalization, yield, rework, packaging, solvent, and process mass-balance calculations"
+  - id: "jrc-ilcd-handbook-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment — Detailed guidance, first edition, 2010, section 6.5.3.2; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Independent multifunctionality method: subdivision, system expansion, real physical causality and other relationships; not a site recipe, emission factor or current permission"
+  - id: "us-epa-eiip-coating-2005"
+    type: "official_guidance"
+    reference: "US EPA, EIIP Volume II, Chapter 8: Methods for Estimating Air Emissions from Paint, Ink, and Other Coating Manufacturing Facilities, February 2005, sections 2.1–2.2 and 5.2; https://www.epa.gov/sites/default/files/2015-08/documents/ii08_feb2005.pdf"
+    used_for: "Conditional named ingredients including PVAc emulsion and ammonia solution, actual operations and speciated emission methods; historical non-binding guidance, without adopting example recipe quantities or default factors"
+  - id: "us-epa-voc-controls-1978"
+    type: "official_guidance"
+    reference: "US EPA, Control Techniques for Volatile Organic Emissions from Stationary Sources, EPA-450/2-78-022, May 1978, section 4.8.2 and Table 4.8-1; https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=2000M8SN.TXT"
+    used_for: "Cooking/bodying versus physical mixing and historical named examples including linseed oil, rosin and xylene; not an actual plant BOM, mandatory ingredients, reaction fractions or current permission"
+  - id: "us-epa-capture-systems"
+    type: "official_guidance"
+    reference: "US EPA, Monitoring by Control Technique — Capture Systems, Description and local exhaust ventilation; https://www.epa.gov/air-emissions-monitoring-knowledge-base/monitoring-control-technique-capture-systems"
+    used_for: "Capture routes emissions to a device; read with EIIP section 2.1.5 Figure 8.2-1 dust collector/recovered PM. Supports network conservation reasoning only, not adoption of VOC enclosure criteria, 100% capture assumptions, legal test applicability or PM efficiencies"
+  - id: "doe-ornl-steam-system-survey-2002"
+    type: "official_guidance"
+    reference: "Greg Harrell, Steam System Survey Guide, ORNL/TM-2001/263, May 2002, sections 3, 4.2, 6.2.2 and 6.4; https://www.energy.gov/sites/prod/files/2014/04/f15/steam_survey_guide.pdf"
+    used_for: "Actual steam/condensate/makeup states, recovery and loss distinctions support per-leg conservation reasoning and heat-boundary qualification; no report example quantities, states, return fractions, efficiencies or boiler defaults adopted, nor supplier-native quantity equated to consumer useful heat"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ebcd65937400051ca9cdb31062f850fa95d7ccc5b41a14f2912cf0ab1ee6bb16"
+  source_sha256: "sha256:817e4a9033eaa0e902ec1993d5cc9b23198a2b2f1bc2512bec6c9781e5ec2c92"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5956"
+    - unit_id: "normative_5951"
       family: "system_boundary"
       span:
         start:
-          offset: 5956
-          line: 63
+          offset: 5951
+          line: 65
           column: 1
         end:
-          offset: 8545
-          line: 84
+          offset: 15751
+          line: 112
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt at the manufacturing site of coating ingredients, intermediates, packaging, fuels, and utilities |\n| starting_condition_role | Foreground factory-gate start; upstream production and supplier-to-plant transport remain required background contributions for cradle-to-gate results |\n| product_classification_scope | CPC 3.0 code 35110 products represented by the declared formulation family and production route |\n| recursive_input_rule | Purchased paint, varnish, or intermediate coating used as an input shall be recorded as a visible technosphere input and shall not inherit this foreground process recursively |\n| upstream_dataset_requirement | Use representative upstream datasets for pigments, fillers, binders, solvents, water, additives, packaging, fuels, electricity, transport, and waste treatment; disclose geography, technology, age, and substitutions |\n| disclosure | Disclose excluded operations, outsourced steps, rework loops, cut-offs, abatement, allocation, data gaps, and whether application and end-of-life stages are outside the dataset |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_received_inputs | Foreground start | Include receipt, storage losses, and dosing of all ingredients, intermediates, packaging, fuels, and utilities; attach upstream datasets and supplier-to-plant transport when reporting cradle-to-gate impacts. | epd-international-pcr-2019-14-v2-0-1 |\n| sb_manufacturing_operations | Factory operations | Include mixing, dispersion or milling, let-down, tinting, filtration, conditional thermal cooking, quality control, rework, filling, packaging, equipment cleaning, direct releases, and on-site waste handling when present. | us-epa-ap42-6-4-1995 |\n| sb_direct_releases | Air, water, and waste releases | Record direct VOC, particulate, wastewater, coating residue, and other material releases after control, together with capture, abatement, and destination. | eu-commission-2025-2607, us-epa-ap42-6-4-1995 |\n| sb_use_end_of_life | Factory-gate profile | Exclude application, service, maintenance, removal, and final end-of-life from the factory-gate dataset; include them only in a separately declared expanded study. | jrc-145239-2026 |\n| sb_cutoff_disclosure | Completeness | Do not omit known hazardous constituents or direct releases solely because their mass is small; document every cut-off and apply the governing programme's completeness rules. | epd-international-pcr-2019-14-v2-0-1 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt at the manufacturing site of coating ingredients, intermediates, packaging, fuels, and utilities |\n| starting_condition_role | Foreground factory-gate start; upstream production and supplier-to-plant transport remain required background contributions for cradle-to-gate results |\n| product_classification_scope | CPC 3.0 code 35110 products represented by the declared formulation family and production route |\n| recursive_input_rule | Purchased paint, varnish, or intermediate coating used as an input shall be recorded as a visible technosphere input and shall not inherit this foreground process recursively |\n| upstream_dataset_requirement | Use representative upstream datasets for pigments, fillers, binders, solvents, water, additives, packaging, fuels, electricity, transport, and waste treatment; disclose geography, technology, age, and substitutions |\n| disclosure | Disclose excluded operations, outsourced steps, rework loops, cut-offs, abatement, allocation, data gaps, and whether application and end-of-life stages are outside the dataset |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_received_inputs | Foreground start | Include receipt, storage losses, and dosing of all ingredients, intermediates, packaging, fuels, and utilities; attach upstream datasets and supplier-to-plant transport when reporting cradle-to-gate impacts. | epd-international-pcr-2019-14-v2-0-1 |\n| sb_manufacturing_operations | Factory operations | Include mixing, dispersion or milling, let-down, tinting, filtration, conditional thermal cooking, quality control, rework, filling, packaging, equipment cleaning, direct releases, and on-site waste handling when present. | us-epa-ap42-6-4-1995 |\n| sb_direct_releases | Air, water, and waste releases | Record direct VOC, particulate, wastewater, coating residue, and other material releases after control, together with capture, abatement, and destination. | eu-commission-2025-2607, us-epa-ap42-6-4-1995 |\n| sb_use_end_of_life | Factory-gate profile | Exclude application, service, maintenance, removal, and final end-of-life from the factory-gate dataset; include them only in a separately declared expanded study. | jrc-145239-2026 |\n| sb_cutoff_disclosure | Completeness | Do not omit known hazardous constituents or direct releases solely because their mass is small; document every cut-off and apply the governing programme's completeness rules. | epd-international-pcr-2019-14-v2-0-1 |\n\n### Whole-reference binding limits\n\nThe native Paint UUID describes a liquid pigmented paint with a reference Mass property of 1; it does not establish identity for powder coatings, clear varnishes, every performance system or an arbitrary multi-component kit. Use this binding only when the declared configuration matches the complete native object; never change the product to fit the UUID. Other actual routes require an individually verified reference flow for the complete finished preparation, with its property, unit, physical form and delivery state; an unresolved core reference identity blocks use for that dataset. For multi-component products, record the components and proportions of the declared sold configuration: 1 kg is the sum of their net coating masses, not the mass of one active resin.\n\n### Actual configuration and individual exchanges\n\nEach dataset represents one declared product, formulation, site, period and actual route. The named cards below are conditional individual-exchange methods, not a common plant BOM or an assertion that all these chemicals are used; absence requires actual evidence of non-applicability. Expand every actual purchased ingredient, complete preparation, packaging item, fuel, steam supply, electricity input, cleaning agent, waste stream and emitted substance by its individual name, raw quantity and provider. One example cannot stand for other real exchanges, and a category label is never a selected flow. An unresolved UUID retains its concrete name and identity gap; do not invent one.\n\nFor a purchased complete polymer emulsion, pigment paste, solvent mixture or coating preparation, record the whole as-received purchase once; its polymer, pigment, water and solvent contents are a non-additive composition subledger, not additional purchases. For on-site compounding, each separately purchased actual component is an individual exchange. Retain composition, concentration and aqueous phase with the raw records; do not force formulation water into powder routes or collapse 1K/multi-component/cooked routes into a water-borne sample. Track ordinary auxiliary-identity and provider gaps against affected rows; incompatible core reference identity, unknown key actual materials or missing routes block use for that dataset. Source scope does not establish a site recipe.\n\n### Production cohort, gate and single normalization\n\nThe protocols' aggregation_rule declares the final result basis, not an instruction to meter each kg separately. Retain the raw aggregation steps in collection_method and all raw_fields. Build a traceable cohort for the same product configuration, site, period and actual batches, retaining actual quantity Q: the kg net coating mass first released after completed filling/packaging and conformity to sale specification, excluding packaging. Q is not design capacity, material input, shipments or output inferred from an assumed yield. Newly accepted product in closing finished-goods stock is already in Q exactly once; do not add or subtract that closing stock again. Shipping opening finished goods, reaccepting returns or internal transfer does not create new production. Retain opening/closing raw-material, WIP and finished-goods stock and their historical burdens separately. Carry into the output cohort only its attributable opening-WIP burdens and carry forward closing-WIP burdens outside it; do not additionally deduct finished-goods stock from a Q that includes newly released closing finished goods. Retain actual packaging, handling, storage, cleaning and waste burdens.\n\nThe raw numerator is the actual matched-cohort exchange total after evidenced return/recovery reconciliation and any necessary allocation; divide by actual Q once. Keep batch quantity ledgers rather than averaging batch ratios. Local QA ratios per bulk output, solvent charged or precursor input are not successive normalization divisors. Do not delete failed batches, zero-output runs, changeovers or shutdown cleaning: assign their burdens to the related cohort on an evidenced basis or retain a separate failure record. When Q=0, do not normalize per kg or erase burdens with zero values or invented output.\n\nRecord physical flow V at its actual state, unit and quantity; record burden attribution A and causal allocation factors separately, without scaling physical outputs to force burden allocation. Check each provider's product/waste type, property/unit, technology, geography, gate, phase and period. A unit-group conversion is not density or composition evidence. Reconcile intermediate receipts/transfers within process accounts and cancel them in the consolidated site account; do not subtract final product, internal transfers and stock change twice. Retain closure gaps and raw reconciliation, never infer unidentified emissions from residual mass or claim closure has been achieved.\n\nExpand aqueous and thermal exchanges only for the real configuration. Keep solids/wet/dry mass and solvent subledgers separate. Record actual cooling-water makeup and discharge, cleaning water, reaction water, condensate and water vapour individually by phase/destination; not every cooked route forms water or uses steam. Actual thermal reactions require species, reaction and operating evidence. For real on-site combustion retain each fuel, oxidant, emitted substance and control burden; electric or externally supplied heat does not imply on-site combustion. Include actual powder extrusion, cooling, grinding and sieving within formulation_dispersion. Reconcile separately produced/packed multi-component quantities and proportions to the real sold configuration. Keep manufacturing gates separate from downstream application/curing.\n\n### Identity and emission-use conditions\n\nVerify medium-voltage electricity against actual voltage, region and provider; a previously unresolvable identifier is not unit evidence. Confirm manufacturing rejects and cleaning residue individually by composition, form and treatment gate rather than using a flow described as application overspray/sludge/spent filters. The wastewater UUID applies only to total liquid-stream mass at generation before secondary/tertiary treatment, not treated effluent or direct elementary discharge. Density, constituents, treatment acceptance and provider need actual evidence; no generic kg-to-m3 substitution is allowed.\n\nXylene on each VOC card is only a conditional individual substance exchange; expand other real emitted substances by species, gas/water phase, receiving compartment and post-control quantity. Reconcile their sum with total-VOC QA without adding the sum indicator as another release. The titanium-dioxide particulate card likewise cannot represent all dust; confirm particle size, composition and air compartment. In the VOC balance, product retention, recovery, shipped waste, control destruction and stock are mutually exclusive fates. Capture alone is not a final fate: do not deduct it again when already assigned to recovery/waste/stock. Record real combustion/control products separately; destroyed VOC is not disappearance of total mass. Total VOC, COD, closure residuals or historical factors cannot fabricate speciated quantities.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1181,12 +1334,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5956
-              line: 63
+              offset: 5951
+              line: 65
               column: 1
             end:
-              offset: 5977
-              line: 63
+              offset: 5972
+              line: 65
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -1201,18 +1354,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33742"
+    - unit_id: "normative_48663"
       family: "allocation"
       span:
         start:
-          offset: 33742
-          line: 683
+          offset: 48663
+          line: 753
           column: 1
         end:
-          offset: 35082
-          line: 693
+          offset: 50588
+          line: 765
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_avoid | Shared operations and utilities | First avoid allocation through batch segregation, submetering, or process subdivision. | iso-14044-2006 |\n| al_internal_rework | In-specification closed-loop rework | Keep internal rework inside the foreground system; do not create a co-product credit, and reconcile its mass without double counting fresh input. | mass-balance-identity |\n| al_saleable_coproduct | Multiple saleable outputs | Use a documented physical causal relationship where it represents resource use; use economic allocation only when no defensible physical relationship exists and disclose prices, period, and sensitivity. | iso-14044-2006 |\n| al_waste_recovery | Waste, recovered solvent, and recovered packaging | Model treatment burdens and any credits under the governing programme; disclose system expansion, substitution, or cut-off and never treat avoided waste as negative foreground input. | iso-14044-2006, epd-international-pcr-2019-14-v2-0-1 |\n| al_shared_site_energy | Shared site electricity and heat | Allocate by metered equipment consumption or causal runtime and load; mass allocation is allowed only with justification and sensitivity for materially different routes. | iso-14044-2006 |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\nFirst subdivide or meter directly; for remaining multifunctionality, document whether system expansion fits the goal, background model and governing programme. Where allocation cannot be avoided use real physical causality, otherwise justify and test another relationship such as economic allocation. VOC or material balances establish physical reconciliation, not an economic/co-product allocation basis. Retain physical flows separately from burden attribution.\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_avoid | Shared operations and utilities | First avoid allocation through batch segregation, submetering, or process subdivision. | iso-14044-2006, jrc-ilcd-handbook-2010 |\n| al_internal_rework | In-specification closed-loop rework | Keep internal rework inside the foreground system; do not create a co-product credit, and reconcile its mass without double counting fresh input. | mass-balance-identity, jrc-ilcd-handbook-2010 |\n| al_saleable_coproduct | Multiple saleable outputs | Use a documented physical causal relationship where it represents resource use; use economic allocation only when no defensible physical relationship exists and disclose prices, period, and sensitivity. | iso-14044-2006, jrc-ilcd-handbook-2010 |\n| al_waste_recovery | Waste, recovered solvent, and recovered packaging | Model treatment burdens and any credits under the governing programme; disclose system expansion, substitution, or cut-off and never treat avoided waste as negative foreground input. | iso-14044-2006, epd-international-pcr-2019-14-v2-0-1, jrc-ilcd-handbook-2010 |\n| al_shared_site_energy | Shared site electricity and heat | Allocate by metered equipment consumption or causal runtime and load; mass allocation is allowed only with justification and sensitivity for materially different routes. | iso-14044-2006, jrc-ilcd-handbook-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1229,12 +1382,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 33742
-              line: 683
+              offset: 48663
+              line: 753
               column: 1
             end:
-              offset: 33782
-              line: 683
+              offset: 48703
+              line: 753
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1249,18 +1402,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42959"
+    - unit_id: "normative_62078"
       family: "validation"
       span:
         start:
-          offset: 42959
-          line: 732
+          offset: 62078
+          line: 806
           column: 1
         end:
-          offset: 45282
-          line: 747
+          offset: 73035
+          line: 958
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_reference_identity | Reference flow | Confirm Paint UUID b2aa1a35-1823-4b13-96db-d5b89eda2db5, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, kg unit, and exactly 1 kg net product excluding packaging. | mass-balance-identity |\n| val_qualifiers | Dataset metadata | Reject an incomplete reference definition when any required qualifier is absent or ambiguous. | eu-commission-2025-2607, jrc-145239-2026 |\n| val_route_coverage | Process map | Require formulation_dispersion, filling_packaging, and cleaning_waste_management; require thermal_cooking only when on-site cooking or reaction occurs and otherwise record it as not applicable. | us-epa-ap42-6-4-1995 |\n| val_mass_closure | Foreground processes | Calculate route and site mass-balance closure, report the gap and threshold, and investigate rather than clip unexplained losses. | mass-balance-identity |\n| val_records | Collected values | Confirm temporal coverage, site scope, units, calibration, aggregation, and traceability to the named collection protocol. | epd-international-pcr-2019-14-v2-0-1 |\n| val_emissions | Direct VOC and particulate | Confirm route-specific monitoring or balances, capture and control treatment, and absence of double counting; use AP-42 ranges only as historical QA checks. | us-epa-ap42-6-4-1995 |\n| val_allocation | Shared operations and outputs | Confirm subdivision was considered first, the causal basis is documented, and economic allocation is justified and sensitivity-tested if used. | iso-14044-2006 |\n| val_background | Cradle-to-gate profile | Confirm upstream datasets and transport are present for material inputs and disclose geography, technology, age, and substitutions. | epd-international-pcr-2019-14-v2-0-1 |\n| val_service_claim | Comparative claims | Reject service-equivalence claims based only on 1 kg product; require declared area, performance, applied fraction, coverage or spreading rate, maintenance, and study period. | jrc-145239-2026 |\n| val_provisional | Reasoned estimates | Flag all reasoned_estimate ranges as provisional and prevent their use as plant defaults; replace them before publication unless explicitly reviewed and justified. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_reference_identity | Reference flow | Confirm Paint UUID b2aa1a35-1823-4b13-96db-d5b89eda2db5 only when its whole-object scope matches section 3; otherwise verify the actual route-specific complete finished-product flow; confirm Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, kg unit, and exactly 1 kg net product excluding packaging. | mass-balance-identity |\n| val_qualifiers | Dataset metadata | Reject an incomplete reference definition when any required qualifier is absent or ambiguous. | eu-commission-2025-2607, jrc-145239-2026 |\n| val_route_coverage | Process map | Require formulation_dispersion, filling_packaging, and cleaning_waste_management; require thermal_cooking only when on-site cooking or reaction occurs and otherwise record it as not applicable. | us-epa-ap42-6-4-1995 |\n| val_mass_closure | Foreground processes | Calculate route and site mass-balance closure, report the gap and threshold, and investigate rather than clip unexplained losses. | mass-balance-identity |\n| val_records | Collected values | Confirm temporal coverage, site scope, units, calibration, aggregation, and traceability to the named collection protocol. For actual steam (or hot water only if present), declare supplier gate versus consumer control volume, matched period, meter boundary and common enthalpy reference/property source; independently measure each real supply, return, discharge and vent mass/state without assuming full return. The carried-energy ledger is E_legs_MJ = (sum incoming m_i*h_i - sum outgoing m_j*h_j)/1000, with m in kg and h in kJ/kg. Supply/return terms alone are (m_s*h_s - m_r*h_r)/1000; only evidenced m_s=m_r=m with matched boundary/states permits simplifying those terms to m*(h_s-h_r)/1000, never dropping other real legs or stocks. Consumer useful duty additionally reconciles actual stored-energy increase, heat losses, shaft work and other actual energy transfers at that same boundary, with justified omissions; it is not automatically supplier billed/native reference quantity. A calibrated net meter replaces corresponding leg-energy accounting only for the same boundary, without adding both; a meter already in MJ is not /1000 again. Retain physical carrier-water mass, history and destinations; count provider production once using its actual native property/unit/gate and coverage, without double purchase of included carrier water or provider fuel/boiler, or invented return credits. NCV is for actual fuels only. All actual raw totals remain subject to section 5 cohort, physical V/burden A and single normalization conditions. | epd-international-pcr-2019-14-v2-0-1, doe-ornl-steam-system-survey-2002 |\n| val_emissions | Direct VOC and particulate | Confirm route-specific monitoring or balances, capture and control treatment, and absence of double counting; use AP-42 ranges only as historical QA checks. For modelled PM verify actual pre-capture G and its dry-mass/species/size/period basis, C as the fraction routed to the device, and D as removal on the captured stream; only for this evidenced topology add uncaptured G*(1-C) and device outlet G*C*(1-D). Apply actual serial removal stages to their own measured inlets/removal fractions, never treating capture as removal. A measured total covering the same boundary and all branches is an alternative to the branch sum, not an additional release; reconcile any real branches outside its measurement coverage. Retain actual collected solids/residue, reuse or waste destinations and treatment providers; their dry PM content is not additive to the whole wet residue. Nested PM total/species/size subledgers are not additional emitted mass; historical ranges or closure residuals cannot invent G, C, D or species quantities. | us-epa-ap42-6-4-1995, us-epa-eiip-coating-2005, us-epa-capture-systems |\n| val_allocation | Shared operations and outputs | Confirm subdivision was considered first, the causal basis is documented, and economic allocation is justified and sensitivity-tested if used. | iso-14044-2006, jrc-ilcd-handbook-2010 |\n| val_background | Cradle-to-gate profile | Confirm upstream datasets and transport are present for material inputs and disclose geography, technology, age, and substitutions. | epd-international-pcr-2019-14-v2-0-1 |\n| val_service_claim | Comparative claims | Reject service-equivalence claims based only on 1 kg product; require declared area, performance, applied fraction, coverage or spreading rate, maintenance, and study period. | jrc-145239-2026 |\n| val_provisional | Reasoned estimates | Flag all reasoned_estimate ranges as provisional and prevent their use as plant defaults; replace them before publication unless explicitly reviewed and justified. |  |\n\n### Retained local diagnostic ratios\n\nThese original family-level ranges are separate from final reference normalization and retained only as bounded candidate screening information, not per-ingredient bounds, replacements for actual recipes/meters or mandatory acceptance thresholds. Original ranges remaining on other cards likewise retain their local denominators: calculate local indicators from matched raw quantities rather than dividing final normalized exchanges again. No external measured population range substantiates the reasoned_estimate bounds; never use them as universal plant defaults, and investigate rather than clip outliers. The cleaning-VOC 0–1 conservation bound needs the same event/solvent constituent and no other volatile source; mixture mass is not a species quantity. The AP-42 particulate percentage denominator is pigment handled, not all powders or fillers; it establishes neither species, particle size, compartment nor current emission permission.\n\n#### fd_binder: original family/process diagnostic ratio\n\n- Range: Provisional formulation guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0.05\n  - Upper: 0.80\n  - Unit: kg/kg bulk coating\n  - Basis: Reasoned estimate spanning materially different coating families; replace with plant formulation data.\n  - Basis kind: Process output (`process_output`)\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### fd_pigments_fillers: original family/process diagnostic ratio\n\n- Range: Provisional formulation guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0\n  - Upper: 0.80\n  - Unit: kg/kg bulk coating\n  - Basis: Reasoned estimate allowing clear varnishes and highly filled coatings; replace with plant formulation data.\n  - Basis kind: Process output (`process_output`)\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### fd_solvent: original family/process diagnostic ratio\n\n- Range: Provisional formulation guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0\n  - Upper: 0.80\n  - Unit: kg/kg bulk coating\n  - Basis: Reasoned estimate across powder, water-borne, and high-solvent products; replace with plant formulation data.\n  - Basis kind: Process output (`process_output`)\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### fd_additives: original family/process diagnostic ratio\n\n- Range: Provisional formulation guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0\n  - Upper: 0.20\n  - Unit: kg/kg bulk coating\n  - Basis: Reasoned estimate; replace with plant formulation and purchasing data.\n  - Basis kind: Process output (`process_output`)\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### fd_voc_air: original family/process diagnostic ratio\n\n- Range: Historical manufacturing solvent-loss observation\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0.01\n  - Upper: 0.02\n  - Unit: kg VOC/kg solvent charged\n  - Basis: AP-42 section 6.4.1 reports 1–2% solvent loss even under well-controlled paint-manufacturing conditions. This prose observation is separate from Table 6.4-1 uncontrolled product-based factors; it is not a current default, a varnish-route factor or a species-level release fraction.\n  - Basis kind: Material input (`process_output`)\n  - Evidence kind: External source (`external_source`)\n  - Sources: us-epa-ap42-6-4-1995\n\n#### fd_pm_air: original family/process diagnostic ratio\n\n- Range: Historical uncontrolled dry-pigment handling check\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0.005\n  - Upper: 0.01\n  - Unit: kg particulate/kg dry pigment handled\n  - Basis: Historical AP-42 estimate for uncontrolled particulate emissions; not a current default or regulatory factor.\n  - Basis kind: Material input (`process_output`)\n  - Evidence kind: External source (`external_source`)\n  - Sources: us-epa-ap42-6-4-1995\n\n#### tc_thermal_energy: original family/process diagnostic ratio\n\n- Range: Provisional thermal-energy guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0\n  - Upper: 10\n  - Unit: MJ/kg cooked intermediate\n  - Basis: Reasoned estimate; replace with metered route-specific data.\n  - Basis kind: Process output (`process_output`)\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### fp_packaging: original family/process diagnostic ratio\n\n- Range: Provisional packaging guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0.01\n  - Upper: 0.30\n  - Unit: kg packaging/kg net product\n  - Basis: Reasoned estimate spanning bulk and small-container formats; replace with the packaging bill of materials.\n  - Basis kind: Reference flow (`reference_flow`）\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### fp_packaging_waste: original family/process diagnostic ratio\n\n- Range: Provisional packaging-waste guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0\n  - Upper: 0.05\n  - Unit: kg/kg net product\n  - Basis: Reasoned estimate; replace with packaging reconciliation.\n  - Basis kind: Reference flow (`reference_flow`）\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### cw_solvent: original family/process diagnostic ratio\n\n- Range: Provisional cleaning-solvent guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0\n  - Upper: 0.5\n  - Unit: kg/kg net product\n  - Basis: Reasoned estimate; replace with cleaning-event solvent balances.\n  - Basis kind: Reference flow (`reference_flow`）\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n#### cw_voc_air: original family/process diagnostic ratio\n\n- Range: Provisional cleaning-solvent mass-balance guardrail\n  - Range role: QA guardrail (`qa_guardrail`)\n  - Lower: 0\n  - Upper: 1\n  - Unit: kg VOC/kg cleaning solvent issued\n  - Basis: Reasoned mass-conservation bound; replace with monitored release or a reconciled event-specific solvent balance.\n  - Basis kind: Process output (`process_output`)\n  - Evidence kind: Reasoned estimate (`reasoned_estimate`)\n  - Sources:\n\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1277,12 +1430,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42959
-              line: 732
+              offset: 62078
+              line: 806
               column: 1
             end:
-              offset: 42981
-              line: 732
+              offset: 62100
+              line: 806
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1301,311 +1454,669 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "sb_received_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_5956"
+      unit_id: "normative_5951"
       source_span:
         start:
-          offset: 7206
-          line: 78
+          offset: 7201
+          line: 80
           column: 1
         end:
-          offset: 7496
-          line: 78
+          offset: 7491
+          line: 80
           column: 291
     - pointer: "/system_boundary/rules/1"
       rule_id: "sb_manufacturing_operations"
       identity_kind: "explicit"
-      unit_id: "normative_5956"
+      unit_id: "normative_5951"
       source_span:
         start:
-          offset: 7497
-          line: 79
+          offset: 7492
+          line: 81
           column: 1
         end:
-          offset: 7796
-          line: 79
+          offset: 7791
+          line: 81
           column: 300
     - pointer: "/system_boundary/rules/2"
       rule_id: "sb_direct_releases"
       identity_kind: "explicit"
-      unit_id: "normative_5956"
+      unit_id: "normative_5951"
       source_span:
         start:
-          offset: 7797
-          line: 80
+          offset: 7792
+          line: 82
           column: 1
         end:
-          offset: 8057
-          line: 80
+          offset: 8052
+          line: 82
           column: 261
     - pointer: "/system_boundary/rules/3"
       rule_id: "sb_use_end_of_life"
       identity_kind: "explicit"
-      unit_id: "normative_5956"
+      unit_id: "normative_5951"
       source_span:
         start:
-          offset: 8058
-          line: 81
+          offset: 8053
+          line: 83
           column: 1
         end:
-          offset: 8287
-          line: 81
+          offset: 8282
+          line: 83
           column: 230
     - pointer: "/system_boundary/rules/4"
       rule_id: "sb_cutoff_disclosure"
       identity_kind: "explicit"
-      unit_id: "normative_5956"
+      unit_id: "normative_5951"
       source_span:
         start:
-          offset: 8288
-          line: 82
+          offset: 8283
+          line: 84
           column: 1
         end:
-          offset: 8543
-          line: 82
+          offset: 8538
+          line: 84
           column: 256
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "system_boundary_rule_6"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 8576
+          line: 88
+          column: 1
+        end:
+          offset: 9348
+          line: 88
+          column: 773
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "system_boundary_rule_7"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 9401
+          line: 92
+          column: 1
+        end:
+          offset: 10087
+          line: 92
+          column: 687
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "system_boundary_rule_8"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 10089
+          line: 94
+          column: 1
+        end:
+          offset: 10873
+          line: 94
+          column: 785
+    - pointer: "/system_boundary/rules/8"
+      rule_id: "system_boundary_rule_9"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 10929
+          line: 98
+          column: 1
+        end:
+          offset: 12114
+          line: 98
+          column: 1186
+    - pointer: "/system_boundary/rules/9"
+      rule_id: "system_boundary_rule_10"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 12116
+          line: 100
+          column: 1
+        end:
+          offset: 12726
+          line: 100
+          column: 611
+    - pointer: "/system_boundary/rules/10"
+      rule_id: "system_boundary_rule_11"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 12728
+          line: 102
+          column: 1
+        end:
+          offset: 13413
+          line: 102
+          column: 686
+    - pointer: "/system_boundary/rules/11"
+      rule_id: "system_boundary_rule_12"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 13415
+          line: 104
+          column: 1
+        end:
+          offset: 14253
+          line: 104
+          column: 839
+    - pointer: "/system_boundary/rules/12"
+      rule_id: "system_boundary_rule_13"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 14297
+          line: 108
+          column: 1
+        end:
+          offset: 14909
+          line: 108
+          column: 613
+    - pointer: "/system_boundary/rules/13"
+      rule_id: "system_boundary_rule_14"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5951"
+      source_span:
+        start:
+          offset: 14911
+          line: 110
+          column: 1
+        end:
+          offset: 15749
+          line: 110
+          column: 839
     - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_48663"
+      source_span:
+        start:
+          offset: 48705
+          line: 755
+          column: 1
+        end:
+          offset: 49168
+          line: 755
+          column: 464
+    - pointer: "/allocation_rules/1"
       rule_id: "al_avoid"
       identity_kind: "explicit"
-      unit_id: "normative_33742"
+      unit_id: "normative_48663"
       source_span:
         start:
-          offset: 33855
-          line: 687
+          offset: 49241
+          line: 759
           column: 1
         end:
-          offset: 34007
-          line: 687
-          column: 153
-    - pointer: "/allocation_rules/1"
+          offset: 49417
+          line: 759
+          column: 177
+    - pointer: "/allocation_rules/2"
       rule_id: "al_internal_rework"
       identity_kind: "explicit"
-      unit_id: "normative_33742"
+      unit_id: "normative_48663"
       source_span:
         start:
-          offset: 34008
-          line: 688
+          offset: 49418
+          line: 760
           column: 1
         end:
-          offset: 34240
-          line: 688
-          column: 233
-    - pointer: "/allocation_rules/2"
+          offset: 49674
+          line: 760
+          column: 257
+    - pointer: "/allocation_rules/3"
       rule_id: "al_saleable_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_33742"
+      unit_id: "normative_48663"
       source_span:
         start:
-          offset: 34241
-          line: 689
+          offset: 49675
+          line: 761
           column: 1
         end:
-          offset: 34516
-          line: 689
-          column: 276
-    - pointer: "/allocation_rules/3"
+          offset: 49974
+          line: 761
+          column: 300
+    - pointer: "/allocation_rules/4"
       rule_id: "al_waste_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_33742"
+      unit_id: "normative_48663"
       source_span:
         start:
-          offset: 34517
-          line: 690
+          offset: 49975
+          line: 762
           column: 1
         end:
-          offset: 34830
-          line: 690
-          column: 314
-    - pointer: "/allocation_rules/4"
+          offset: 50312
+          line: 762
+          column: 338
+    - pointer: "/allocation_rules/5"
       rule_id: "al_shared_site_energy"
       identity_kind: "explicit"
-      unit_id: "normative_33742"
+      unit_id: "normative_48663"
       source_span:
         start:
-          offset: 34831
-          line: 691
+          offset: 50313
+          line: 763
           column: 1
         end:
-          offset: 35080
-          line: 691
-          column: 250
+          offset: 50586
+          line: 763
+          column: 274
     - pointer: "/validation_rules/0"
       rule_id: "val_reference_identity"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 43054
-          line: 736
+          offset: 62173
+          line: 810
           column: 1
         end:
-          offset: 43341
-          line: 736
-          column: 288
+          offset: 62594
+          line: 810
+          column: 422
     - pointer: "/validation_rules/1"
       rule_id: "val_qualifiers"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 43342
-          line: 737
+          offset: 62595
+          line: 811
           column: 1
         end:
-          offset: 43518
-          line: 737
+          offset: 62771
+          line: 811
           column: 177
     - pointer: "/validation_rules/2"
       rule_id: "val_route_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 43519
-          line: 738
+          offset: 62772
+          line: 812
           column: 1
         end:
-          offset: 43774
-          line: 738
+          offset: 63027
+          line: 812
           column: 256
     - pointer: "/validation_rules/3"
       rule_id: "val_mass_closure"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 43775
-          line: 739
+          offset: 63028
+          line: 813
           column: 1
         end:
-          offset: 43974
-          line: 739
+          offset: 63227
+          line: 813
           column: 200
     - pointer: "/validation_rules/4"
       rule_id: "val_records"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 43975
-          line: 740
+          offset: 63228
+          line: 814
           column: 1
         end:
-          offset: 44173
-          line: 740
-          column: 199
+          offset: 64884
+          line: 814
+          column: 1657
     - pointer: "/validation_rules/5"
       rule_id: "val_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 44174
-          line: 741
+          offset: 64885
+          line: 815
           column: 1
         end:
-          offset: 44402
-          line: 741
-          column: 229
+          offset: 66035
+          line: 815
+          column: 1151
     - pointer: "/validation_rules/6"
       rule_id: "val_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 44403
-          line: 742
+          offset: 66036
+          line: 816
           column: 1
         end:
-          offset: 44615
-          line: 742
-          column: 213
+          offset: 66272
+          line: 816
+          column: 237
     - pointer: "/validation_rules/7"
       rule_id: "val_background"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 44616
-          line: 743
+          offset: 66273
+          line: 817
           column: 1
         end:
-          offset: 44832
-          line: 743
+          offset: 66489
+          line: 817
           column: 217
     - pointer: "/validation_rules/8"
       rule_id: "val_service_claim"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 44833
-          line: 744
+          offset: 66490
+          line: 818
           column: 1
         end:
-          offset: 45070
-          line: 744
+          offset: 66727
+          line: 818
           column: 238
     - pointer: "/validation_rules/9"
       rule_id: "val_provisional"
       identity_kind: "explicit"
-      unit_id: "normative_42959"
+      unit_id: "normative_62078"
       source_span:
         start:
-          offset: 45071
-          line: 745
+          offset: 66728
+          line: 819
           column: 1
         end:
-          offset: 45280
-          line: 745
+          offset: 66937
+          line: 819
           column: 210
+    - pointer: "/validation_rules/10"
+      rule_id: "validation_rule_11"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 66977
+          line: 823
+          column: 1
+        end:
+          offset: 67921
+          line: 823
+          column: 945
+    - pointer: "/validation_rules/11"
+      rule_id: "validation_rule_12"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 67981
+          line: 827
+          column: 1
+        end:
+          offset: 68366
+          line: 835
+          column: 13
+    - pointer: "/validation_rules/12"
+      rule_id: "validation_rule_13"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 68436
+          line: 839
+          column: 1
+        end:
+          offset: 68823
+          line: 847
+          column: 13
+    - pointer: "/validation_rules/13"
+      rule_id: "validation_rule_14"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 68884
+          line: 851
+          column: 1
+        end:
+          offset: 69273
+          line: 859
+          column: 13
+    - pointer: "/validation_rules/14"
+      rule_id: "validation_rule_15"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 69336
+          line: 863
+          column: 1
+        end:
+          offset: 69686
+          line: 871
+          column: 13
+    - pointer: "/validation_rules/15"
+      rule_id: "validation_rule_16"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 69747
+          line: 875
+          column: 1
+        end:
+          offset: 70351
+          line: 883
+          column: 34
+    - pointer: "/validation_rules/16"
+      rule_id: "validation_rule_17"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 70411
+          line: 887
+          column: 1
+        end:
+          offset: 70857
+          line: 895
+          column: 34
+    - pointer: "/validation_rules/17"
+      rule_id: "validation_rule_18"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 70925
+          line: 899
+          column: 1
+        end:
+          offset: 71273
+          line: 907
+          column: 13
+    - pointer: "/validation_rules/18"
+      rule_id: "validation_rule_19"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 71336
+          line: 911
+          column: 1
+        end:
+          offset: 71732
+          line: 919
+          column: 13
+    - pointer: "/validation_rules/19"
+      rule_id: "validation_rule_20"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 71801
+          line: 923
+          column: 1
+        end:
+          offset: 72141
+          line: 931
+          column: 13
+    - pointer: "/validation_rules/20"
+      rule_id: "validation_rule_21"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 72202
+          line: 935
+          column: 1
+        end:
+          offset: 72549
+          line: 943
+          column: 13
+    - pointer: "/validation_rules/21"
+      rule_id: "validation_rule_22"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 72610
+          line: 947
+          column: 1
+        end:
+          offset: 73032
+          line: 955
+          column: 13
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5956"
+      unit_id: "normative_5951"
       source_span:
         start:
-          offset: 5956
-          line: 63
+          offset: 5951
+          line: 65
           column: 1
         end:
-          offset: 5977
-          line: 63
+          offset: 5972
+          line: 65
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5956"
+      unit_id: "normative_5951"
       source_span:
         start:
-          offset: 6005
-          line: 67
+          offset: 6000
+          line: 69
           column: 1
         end:
-          offset: 7133
-          line: 74
+          offset: 7128
+          line: 76
           column: 194
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33742"
+      unit_id: "normative_48663"
       source_span:
         start:
-          offset: 33742
-          line: 683
+          offset: 48663
+          line: 753
           column: 1
         end:
-          offset: 33782
-          line: 683
+          offset: 48703
+          line: 753
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
-      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42959"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_48663"
       source_span:
         start:
-          offset: 42959
-          line: 732
+          offset: 48705
+          line: 755
           column: 1
         end:
-          offset: 42981
-          line: 732
+          offset: 49168
+          line: 755
+          column: 464
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_48663"
+      source_span:
+        start:
+          offset: 49241
+          line: 759
+          column: 1
+        end:
+          offset: 49417
+          line: 759
+          column: 177
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_48663"
+      source_span:
+        start:
+          offset: 49418
+          line: 760
+          column: 1
+        end:
+          offset: 49674
+          line: 760
+          column: 257
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_48663"
+      source_span:
+        start:
+          offset: 49675
+          line: 761
+          column: 1
+        end:
+          offset: 49974
+          line: 761
+          column: 300
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_48663"
+      source_span:
+        start:
+          offset: 49975
+          line: 762
+          column: 1
+        end:
+          offset: 50312
+          line: 762
+          column: 338
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_48663"
+      source_span:
+        start:
+          offset: 50313
+          line: 763
+          column: 1
+        end:
+          offset: 50586
+          line: 763
+          column: 274
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_62078"
+      source_span:
+        start:
+          offset: 62078
+          line: 806
+          column: 1
+        end:
+          offset: 62100
+          line: 806
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1614,5 +2125,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ebcd65937400051ca9cdb31062f850fa95d7ccc5b41a14f2912cf0ab1ee6bb16"
-  generated_content_sha256: "sha256:d66bc662a7df8c4b391fdf4984dd0a13186498cc332b8ca7b0a5506adef4fa4a"
+    sha256: "sha256:817e4a9033eaa0e902ec1993d5cc9b23198a2b2f1bc2512bec6c9781e5ec2c92"
+  generated_content_sha256: "sha256:c8a29f31dca56771987cbcf736b2474ce33378f8225f131ee8af85281847e2d3"

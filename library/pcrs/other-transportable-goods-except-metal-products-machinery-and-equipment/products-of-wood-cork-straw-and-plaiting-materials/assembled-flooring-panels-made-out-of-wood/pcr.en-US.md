@@ -21,7 +21,7 @@ The distinction between solid and all-wood engineered flooring follows `nwfa-woo
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.assembled-flooring-panels-made-out-of-wood |
-| classification_refs | CPC 3.0 31626; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
+| classification_refs | CPC 3.0 31626; narrower methodology scope; no accepted mapping implied |
 | covered_products | UF-bonded all-non-tropical-hardwood-veneer, clear UV-prefinished assembled multilayer flooring |
 | excluded_products | Single-layer solid parquet; HDF laminate/composite; unassembled strips; alternate cores/glues/finishes |
 | representative_product | A declared species-layer recipe of factory-finished profiled multilayer wood flooring; no invented thickness, density or proportions |
@@ -70,7 +70,7 @@ Sources: `usda-wood-handbook-2021`, chapters 4 and 13; area and gate-mass requir
 | starting_condition_role | Foreground gate-to-gate assembly/finishing plus explicit upstream product, utility, transport and waste-treatment links for cradle-to-gate use |
 | product_classification_scope | Only the specified multilayer assembled wood subset of CPC 3.0 31626 |
 | recursive_input_rule | Purchased assembled floor panels or recovered same-category material terminate tracing at a documented upstream dataset; disclose identity, previous processing and amount. Rework within this unit is internal WIP, not a new external reference product. |
-| upstream_dataset_requirement | Matched species/veneer drying/peeling, actual independently supplied UF resin or verified complete UF adhesive with compatible supplied-state/reference basis and supplier manufacture/preparation/delivery, coating formulation, grid region/year/voltage, thermal supplier reference and actual treatment; missing compatibility remains pending |
+| upstream_dataset_requirement | Matched species/veneer drying/peeling, resin solids, coating formulation, grid region/year/voltage, thermal supplier reference and actual treatment; missing compatibility remains pending |
 | disclosure | Gate, period, configurations, starting moisture, purchased/on-site split, WIP/stock changes, heat generation boundary, losses and excluded downstream scenarios |
 
 ### Boundary Rules
@@ -159,11 +159,11 @@ This is a separate uf glue exchange at the flooring-unit boundary; collect it un
 
 ###### glue hardener (`glue_hardener`)
 
-Conditional one actually separately supplied solid ammonium-chloride catalyst at the flooring procurement boundary, supported by supplier/SDS assay, form and actual delivery/interface/reference evidence. The selected physical exchange has no verified UUID: chemical CAS and Mass/kg alone do not establish a matching delivered supplier state. Require positive actual delivered-state/interface and native-reference compatibility before linking a directly verified identity. A supplied solution or blend requires its own complete-product identity. Unknown composition, dose or route equivalence is not invented.
+This is a separate glue hardener exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions.
 
-- Selected flow: Separately supplied solid ammonium-chloride catalyst
+- Selected flow: Ammonium Chloride `0d0e3c27-1f93-4dc1-80d0-392a3226cd4f`
 - Flow property / unit: Mass / kg
-- Amount rule: Only when ammonium chloride is separately dosed: weigh pure salt, record concentration/purity and mixing losses; embedded catalyst in purchased adhesive is not a duplicate input. Absent dosing requires evidence of absence. Retain actual supplier assay and delivered solid reference quantity; a supplied solution or blend needs its own compatible complete-formulation identity.
+- Amount rule: Only when ammonium chloride is separately dosed: weigh pure salt, record concentration/purity and mixing losses; embedded catalyst in purchased adhesive is not a duplicate input. Absent dosing requires evidence of absence.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
@@ -309,7 +309,7 @@ This is a separate cleaner exchange at the flooring-unit boundary; collect it un
 
 ###### carton (`carton`)
 
-This is a separate carton exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions. The selected corrugated-box record specifies16.6% primary and83.4% recycled fibre on its source fibre basis, production mix at plant and technology mix. Retain this locator only when actual whole supplied carton composition, construction, state and supplier/reference basis demonstrably match those constraints; these figures are source-identity conditions, never a factory recipe or universal recycled-content default. Other or unverified actual boxes remain whole physical exchanges requiring another compatible verified identity or a precise UUID gap, with supplier box manufacture and delivery retained once.
+This is a separate carton exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions.
 
 - Selected flow: corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Mass / kg

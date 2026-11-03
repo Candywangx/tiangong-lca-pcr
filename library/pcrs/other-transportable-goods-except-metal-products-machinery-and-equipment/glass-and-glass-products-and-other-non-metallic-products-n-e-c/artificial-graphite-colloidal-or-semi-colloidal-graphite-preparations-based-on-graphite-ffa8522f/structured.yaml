@@ -41,7 +41,7 @@ system_boundary:
         - jrc-ilcd-attributional-allocation-2010
     - rule_id: b_pack
       applies_to: "each packaging material"
-      rule: "Maintain opening empty/attached-WIP/attached-FG/reusable stock + purchases P + first non-purchased external ingress I + external return received ER = closing stock + gross shipment out S + external return outward EO + waste W. Deduplicate P/I/ER only against other already included inflow terms and S/EO/W only against other outflow terms. Never remove true new ingress because it remains in closing stock. An upstream owner is assigned once for supplier-included packaging or a purchased whole article. Internal reuse cancels; no new powder Q or purchase or automatic coproduct follows."
+      rule: "Maintain opening empty/attached-WIP/attached-FG/reusable stock + purchases P + first non-purchased external ingress I + external return received ER + provisional unknown receipts U + independently measured material/water additions F_in = closing stock + gross shipment out S + external return outward EO + waste W + independently measured material/water removals F_out. Deduplicate P/I/ER only against other already included inflow terms and S/EO/W only against other outflow terms. Never remove true new ingress because it remains in closing stock. An upstream owner is assigned once for supplier-included packaging or a purchased whole article. Internal reuse cancels; no new powder Q or purchase or automatic coproduct follows."
       source_ids:
         - jrc-ilcd-attributional-allocation-2010
     - rule_id: b_assets
@@ -59,7 +59,7 @@ system_boundary:
         - jrc-ilcd-attributional-allocation-2010
     - rule_id: packaging_receipt_basis
       applies_to: "packaging"
-      rule: "For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. X_in/X_out remain separate measured material/water-change terms, not a substitute for whole-article receipt. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names."
+      rule: "For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. If payment or own prior-outward history is unproven, retain the same measured receipt once as provisional U with unresolved provenance and inherited burden, and hold results dependent on that classification. When evidence resolves it, migrate that event from U to exactly one of P/I/ER without adding quantity or new manufacture burden. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. F_in/F_out retain true independently measured material/water changes, even when retained in full wet closing stock; they do not replace whole-article receipt. Deduplicate only against quantities already represented on the same side. FG X_in/X_out follow the same ownership rule; closing stock on the opposite side never cancels a real addition. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names."
       source_ids:
         - jrc-ilcd-attributional-allocation-2010
 boundary_abstraction:
@@ -1283,7 +1283,7 @@ allocation_rules:
       - jrc-ilcd-attributional-allocation-2010
   - rule_id: a_residual
     applies_to: "remaining common-process burden"
-    rule: "Only genuinely residual common-process burden uses contemporaneous market value at the actual split gate and condition after the preceding causal steps. Record quantities and prices and adjustments for any later conditioning/packing/transport. A missing price is not zero; document sensitivity. No fixed allocation ratio or automatic substitution credit is provided."
+    rule: "Only genuinely residual common-process burden uses contemporaneous market value at the actual split gate and condition after the preceding causal steps. Record quantities and prices and adjustments for any later conditioning/packing/transport. Use proportional residual valuation only when all relevant gate quantities and values and their sum are finite, defined and strictly positive. Missing, nonfinite, zero, negative or offsetting values require a justified case-specific allocation method or a hold on dependent results while retaining every real function and its gross exchanges. Do not use absolute values, equal shares, zero shares, credits or deletion of a function as defaults; document sensitivity. No fixed allocation ratio or automatic substitution credit is provided."
     source_ids:
       - jrc-ilcd-attributional-allocation-2010
   - rule_id: a_discard
@@ -2078,7 +2078,7 @@ data_sources:
     used_for: "Only attributional cases requiring allocation: subdivision/virtual subdivision and exchange-specific determining physical causality then genuinely residual actual-gate market value; no industrial operating-factor support"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:5258e59b6bcda77f6ac8e4a4a90ea98282a590a1a7e2e3e984ea190eed3614d2"
+  source_sha256: "sha256:de4b9e9cea4fe567e8eee42cd1758a19bc5d187c4eb878670b4649af7482158a"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7540"
@@ -2089,10 +2089,10 @@ normative_context:
           line: 55
           column: 1
         end:
-          offset: 15337
+          offset: 16053
           line: 79
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received graphitizable calcined petroleum coke plus separately owned actual conductive graphite and insulation coke and utilities; upstream refining/coking/calcination retained |\n| starting_condition_role | Explicit foreground collection start; not permission to truncate upstream burdens |\n| product_classification_scope | CPC 3.0:37950; narrower |\n| recursive_input_rule | Externally purchased graphite filler uses a compatible upstream provider once; internal recovered filler carries its inherited vector and paired transfers cancel. Reference powder is not recursively purchased as its own feed. |\n| upstream_dataset_requirement | Actual whole received product state and route and geography and ownership; avoid duplication of supplier-included preparation constituents and packaging |\n| disclosure | Actual charge configuration and coke history and physical gates and stocks and cohort vectors and supply interfaces and observed service horizon; technical synthesis rather than a claimed single factory recipe |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | manufacture | The declared start is purchased calcined coke at its received condition; preserve upstream refining/coking/calcination and transport in matched providers. No green-coke calcination may be silently omitted or added a second time. Only actual particle preparation and particulate furnace conversion and cooling/separation and actual finishing/testing count as the selected foreground route. A changed feed or binder/coating route requires renewed applicability and atomic inventories. | imerys-graphite-powder-patent-2015; asbury-synthetic-graphite-2006 |\n| b_gate | manufacture and service | Q is the sum of uniquely identified net whole-powder masses at first quality release in the cohort including released closing FG. Retesting and dispatch and returns do not create production. Keep a separate released-FG physical account: opening FG + internal first-release Q + gross received returns R + true new material/water X_in = closing FG + gross physical dispatch G + real external removals + X_out. X terms exclude only quantities already present in another flow term; a real addition retained in closing stock remains both influx and full wet closing mass. Carry complete per-exchange opening/closing FG historical manufacturing vectors with the original cohort and match returns to that cohort without a new purchase. Combine gates by cancelling internal Q once. | jrc-ilcd-attributional-allocation-2010 |\n| b_stocks | all processes | Preserve complete per-exchange historical burden vectors for opening and closing raw/WIP/unassigned material and filler stores. Manufacturing closing burden excludes already released FG because it is already in Q. Include failed/zero-output runs and start-stop/idle/clean-up and pre-release rework. An already stock-corrected consumption is not stock-corrected again. All performed original-cohort service remains charged; only unused/unassigned service or charge can carry forward. Recovered conductive filler or insulation retained as physical closing stock cannot retract service already performed. Only its genuinely unassigned material or unused charge vector may enter Bclose; keep that vector separate from full recovered physical mass. | jrc-ilcd-attributional-allocation-2010 |\n| b_physical | all physical gates | For each manufacturing and FG/service and combined gate reconcile full wet opening stock + gross real external input = full wet closing stock + gross real external output. Pair and cancel only internal transfers. Separate product coke from conductive graphite and insulation coke and installed electrode/refractory material. Each added repair part or water phase remains a real input even when retained in closing equipment. Economic and service burden shares never scale gross physical legs. Independently reconcile relevant C/H/O/N/S and actual metal/mineral phases; do not solve two unknown species with one total residual or infer emissions from total carbon or VOC/PAH/NOx/SOx indicators. | imerys-graphite-powder-patent-2015; jrc-ilcd-attributional-allocation-2010 |\n| b_pack | each packaging material | Maintain opening empty/attached-WIP/attached-FG/reusable stock + purchases P + first non-purchased external ingress I + external return received ER = closing stock + gross shipment out S + external return outward EO + waste W. Deduplicate P/I/ER only against other already included inflow terms and S/EO/W only against other outflow terms. Never remove true new ingress because it remains in closing stock. An upstream owner is assigned once for supplier-included packaging or a purchased whole article. Internal reuse cancels; no new powder Q or purchase or automatic coproduct follows. | jrc-ilcd-attributional-allocation-2010 |\n| b_assets | support and service | Track actual complete furnace and transfer electrodes and each refractory and repair and in-installed fluid as physical assets/stocks distinct from current service burden. Record original asset vectors and actual current service and replacement evidence without default lifetime or per-kg whole-machine factors. Preserve full new/old removed parts and retained moisture. Actual post-release work requires manufacturer/specification permission and postwork tests and acceptance/disposition; add each real work input and output. | imerys-graphite-powder-patent-2015; asbury-synthetic-graphite-2006; jrc-ilcd-attributional-allocation-2010 |\n| b_completeness | all processes | Every actual fuel and electricity and separated gas and water source and chemical preparation and packaging and waste and molecular/particulate emission is a separate physical identity with its own native extensive unit. Add missing actual exchanges before completing a dataset. One whole purchased preparation is purchased once; assay and carrier and additives are subledgers. No unlisted manufacture input may be hidden as zero or an unspecified other-input bundle. A dry line does not imply a steam supply or wet purification recipe. | imerys-graphite-powder-patent-2015; jrc-ilcd-attributional-allocation-2010 |\n| packaging_receipt_basis | packaging | For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. X_in/X_out remain separate measured material/water-change terms, not a substitute for whole-article receipt. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names. | jrc-ilcd-attributional-allocation-2010 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received graphitizable calcined petroleum coke plus separately owned actual conductive graphite and insulation coke and utilities; upstream refining/coking/calcination retained |\n| starting_condition_role | Explicit foreground collection start; not permission to truncate upstream burdens |\n| product_classification_scope | CPC 3.0:37950; narrower |\n| recursive_input_rule | Externally purchased graphite filler uses a compatible upstream provider once; internal recovered filler carries its inherited vector and paired transfers cancel. Reference powder is not recursively purchased as its own feed. |\n| upstream_dataset_requirement | Actual whole received product state and route and geography and ownership; avoid duplication of supplier-included preparation constituents and packaging |\n| disclosure | Actual charge configuration and coke history and physical gates and stocks and cohort vectors and supply interfaces and observed service horizon; technical synthesis rather than a claimed single factory recipe |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | manufacture | The declared start is purchased calcined coke at its received condition; preserve upstream refining/coking/calcination and transport in matched providers. No green-coke calcination may be silently omitted or added a second time. Only actual particle preparation and particulate furnace conversion and cooling/separation and actual finishing/testing count as the selected foreground route. A changed feed or binder/coating route requires renewed applicability and atomic inventories. | imerys-graphite-powder-patent-2015; asbury-synthetic-graphite-2006 |\n| b_gate | manufacture and service | Q is the sum of uniquely identified net whole-powder masses at first quality release in the cohort including released closing FG. Retesting and dispatch and returns do not create production. Keep a separate released-FG physical account: opening FG + internal first-release Q + gross received returns R + true new material/water X_in = closing FG + gross physical dispatch G + real external removals + X_out. X terms exclude only quantities already present in another flow term; a real addition retained in closing stock remains both influx and full wet closing mass. Carry complete per-exchange opening/closing FG historical manufacturing vectors with the original cohort and match returns to that cohort without a new purchase. Combine gates by cancelling internal Q once. | jrc-ilcd-attributional-allocation-2010 |\n| b_stocks | all processes | Preserve complete per-exchange historical burden vectors for opening and closing raw/WIP/unassigned material and filler stores. Manufacturing closing burden excludes already released FG because it is already in Q. Include failed/zero-output runs and start-stop/idle/clean-up and pre-release rework. An already stock-corrected consumption is not stock-corrected again. All performed original-cohort service remains charged; only unused/unassigned service or charge can carry forward. Recovered conductive filler or insulation retained as physical closing stock cannot retract service already performed. Only its genuinely unassigned material or unused charge vector may enter Bclose; keep that vector separate from full recovered physical mass. | jrc-ilcd-attributional-allocation-2010 |\n| b_physical | all physical gates | For each manufacturing and FG/service and combined gate reconcile full wet opening stock + gross real external input = full wet closing stock + gross real external output. Pair and cancel only internal transfers. Separate product coke from conductive graphite and insulation coke and installed electrode/refractory material. Each added repair part or water phase remains a real input even when retained in closing equipment. Economic and service burden shares never scale gross physical legs. Independently reconcile relevant C/H/O/N/S and actual metal/mineral phases; do not solve two unknown species with one total residual or infer emissions from total carbon or VOC/PAH/NOx/SOx indicators. | imerys-graphite-powder-patent-2015; jrc-ilcd-attributional-allocation-2010 |\n| b_pack | each packaging material | Maintain opening empty/attached-WIP/attached-FG/reusable stock + purchases P + first non-purchased external ingress I + external return received ER + provisional unknown receipts U + independently measured material/water additions F_in = closing stock + gross shipment out S + external return outward EO + waste W + independently measured material/water removals F_out. Deduplicate P/I/ER only against other already included inflow terms and S/EO/W only against other outflow terms. Never remove true new ingress because it remains in closing stock. An upstream owner is assigned once for supplier-included packaging or a purchased whole article. Internal reuse cancels; no new powder Q or purchase or automatic coproduct follows. | jrc-ilcd-attributional-allocation-2010 |\n| b_assets | support and service | Track actual complete furnace and transfer electrodes and each refractory and repair and in-installed fluid as physical assets/stocks distinct from current service burden. Record original asset vectors and actual current service and replacement evidence without default lifetime or per-kg whole-machine factors. Preserve full new/old removed parts and retained moisture. Actual post-release work requires manufacturer/specification permission and postwork tests and acceptance/disposition; add each real work input and output. | imerys-graphite-powder-patent-2015; asbury-synthetic-graphite-2006; jrc-ilcd-attributional-allocation-2010 |\n| b_completeness | all processes | Every actual fuel and electricity and separated gas and water source and chemical preparation and packaging and waste and molecular/particulate emission is a separate physical identity with its own native extensive unit. Add missing actual exchanges before completing a dataset. One whole purchased preparation is purchased once; assay and carrier and additives are subledgers. No unlisted manufacture input may be hidden as zero or an unspecified other-input bundle. A dry line does not imply a steam supply or wet purification recipe. | imerys-graphite-powder-patent-2015; jrc-ilcd-attributional-allocation-2010 |\n| packaging_receipt_basis | packaging | For each actual whole packaging article, P records paid procurement (standalone or bundled, with or without a separate invoice). I records first non-purchased external ingress, including standalone gifts, loans, rental/pool issues and unpaid supplier-attached packaging; supplier attachment is only one I subset. ER requires the same item or an auditable matching batch linked to this site's own prior outward record; another party's prior use alone is not a return. P/I/ER are disjoint. If payment or own prior-outward history is unproven, retain the same measured receipt once as provisional U with unresolved provenance and inherited burden, and hold results dependent on that classification. When evidence resolves it, migrate that event from U to exactly one of P/I/ER without adding quantity or new manufacture burden. The existing matching physical-article cards and raw subledgers cover these origins subject to every native material/form/state qualification; incompatible actual articles require their own atomic rows, never a substitute UUID. F_in/F_out retain true independently measured material/water changes, even when retained in full wet closing stock; they do not replace whole-article receipt. Deduplicate only against quantities already represented on the same side. FG X_in/X_out follow the same ownership rule; closing stock on the opposite side never cancels a real addition. Keep gross wet quantities, owner/custodian, payment/non-purchase basis, provenance, prior-outward links, actual state/unit and inherited manufacture/service vectors. A free receipt is neither a new manufacture nor automatically burden-free: attribute actual service and incremental transport/handling once to the proper original cohort/denominator and retain genuinely unused service separately, without a default lifetime or credit. Stock, physical gross legs and burden vectors remain separate. This is the declared conserving foreground-accounting implementation, not a claim that the cited source prescribes these variable names. | jrc-ilcd-attributional-allocation-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2129,18 +2129,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_91238"
+    - unit_id: "normative_91954"
       family: "allocation"
       span:
         start:
-          offset: 91238
+          offset: 91954
           line: 930
           column: 1
         end:
-          offset: 92789
+          offset: 93921
           line: 938
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_scope | multifunctional attributional processes | Use this hierarchy only in an attributional scenario in which multifunctionality actually remains. First assign dedicated exchanges and subdivide actual or virtual processes. Next justify each remaining exchange by the determining physical causal relationship to its real co-function. A common physical share for all exchanges is not presumed. | jrc-ilcd-attributional-allocation-2010 |\n| a_residual | remaining common-process burden | Only genuinely residual common-process burden uses contemporaneous market value at the actual split gate and condition after the preceding causal steps. Record quantities and prices and adjustments for any later conditioning/packing/transport. A missing price is not zero; document sensitivity. No fixed allocation ratio or automatic substitution credit is provided. | jrc-ilcd-attributional-allocation-2010 |\n| a_discard | losses and recovered filler | Ordinary failed powder and samples and dust and discarded furnace packing retain their manufacturing and treatment burdens even if sent out or sold. Transfer a burden vector once only for a documented genuine other cohort/function under justified allocation/handover. Recovered internal filler carries its measured inherited vector and is not credited or repurchased on reuse. Gross physical transfers remain complete regardless of burden ownership. | jrc-ilcd-attributional-allocation-2010 |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_scope | multifunctional attributional processes | Use this hierarchy only in an attributional scenario in which multifunctionality actually remains. First assign dedicated exchanges and subdivide actual or virtual processes. Next justify each remaining exchange by the determining physical causal relationship to its real co-function. A common physical share for all exchanges is not presumed. | jrc-ilcd-attributional-allocation-2010 |\n| a_residual | remaining common-process burden | Only genuinely residual common-process burden uses contemporaneous market value at the actual split gate and condition after the preceding causal steps. Record quantities and prices and adjustments for any later conditioning/packing/transport. Use proportional residual valuation only when all relevant gate quantities and values and their sum are finite, defined and strictly positive. Missing, nonfinite, zero, negative or offsetting values require a justified case-specific allocation method or a hold on dependent results while retaining every real function and its gross exchanges. Do not use absolute values, equal shares, zero shares, credits or deletion of a function as defaults; document sensitivity. No fixed allocation ratio or automatic substitution credit is provided. | jrc-ilcd-attributional-allocation-2010 |\n| a_discard | losses and recovered filler | Ordinary failed powder and samples and dust and discarded furnace packing retain their manufacturing and treatment burdens even if sent out or sold. Transfer a burden vector once only for a documented genuine other cohort/function under justified allocation/handover. Recovered internal filler carries its measured inherited vector and is not credited or repurchased on reuse. Gross physical transfers remain complete regardless of burden ownership. | jrc-ilcd-attributional-allocation-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -2157,11 +2157,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 91238
+              offset: 91954
               line: 930
               column: 1
             end:
-              offset: 91278
+              offset: 91994
               line: 930
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -2177,15 +2177,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_158983"
+    - unit_id: "normative_160115"
       family: "validation"
       span:
         start:
-          offset: 158983
+          offset: 160115
           line: 1020
           column: 1
         end:
-          offset: 161265
+          offset: 162397
           line: 1030
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | reference product | Confirm actual coke conversion and uncoated powder semi-manufacture gate; reject natural mined graphite or repackage-only routes or finished electrodes and incompatible native form. Whole mass and actual minor phases/moisture must be declared. | imerys-graphite-powder-patent-2015; asbury-synthetic-graphite-2006; asbury-graphite-introduction-2026 |\n| v_identity | all inventory rows | Verify the selected flow against all native names/synonyms/comments/CAS and grade/route/form/geography/media/type and every property. Use the exact reference-property to unit-group to reference-unit chain. An unspecified air compartment must not hide a known specific compartment. Reject hard conflicts rather than excusing them through CAS or classification. | imerys-graphite-powder-patent-2015 |\n| v_quantity | release and all inventory rows | Verify Q from unique first-release whole net masses including closing FG; every input and output and protocol uses the same declared reference basis. Raw collection remains undivided. Check one calc_normalize only with original Qc and observed H; Q0 has no unit result. The finite relationship check does not establish measured site values or physical plausibility. | jrc-ilcd-attributional-allocation-2010 |\n| v_balance | all physical and burden gates | Close full wet mass and independent relevant-element/species balances at manufacture and FG/service and combined gates. Verify packaging six legs and supplier-included owner and complete asset/repair/fluid physical stocks. Real new ingress retained in closing stock remains. No burden share scales gross mass and no ordinary discard/sale automatically creates Tother. Unsupported or quantitatively unknown relationships remain open. | imerys-graphite-powder-patent-2015; jrc-ilcd-attributional-allocation-2010 |\n| v_work | post-release rework | Require actual manufacturer/specification permission and postwork tests/acceptance/disposition and original-cohort traceability; do not infer that every rejected powder or broken asset can be restored. Add all actual incremental physical exchanges and retain treatment burdens. | jrc-ilcd-attributional-allocation-2010 |\n\n"
@@ -2205,11 +2205,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 158983
+              offset: 160115
               line: 1020
               column: 1
             end:
-              offset: 159005
+              offset: 160137
               line: 1020
               column: 23
           text: "## 9. Validation Rules"
@@ -2288,20 +2288,20 @@ normative_context:
           line: 74
           column: 1
         end:
-          offset: 12469
+          offset: 12612
           line: 74
-          column: 668
+          column: 811
     - pointer: "/system_boundary/rules/5"
       rule_id: "b_assets"
       identity_kind: "explicit"
       unit_id: "normative_7540"
       source_span:
         start:
-          offset: 12470
+          offset: 12613
           line: 75
           column: 1
         end:
-          offset: 13142
+          offset: 13285
           line: 75
           column: 673
     - pointer: "/system_boundary/rules/6"
@@ -2310,11 +2310,11 @@ normative_context:
       unit_id: "normative_7540"
       source_span:
         start:
-          offset: 13143
+          offset: 13286
           line: 76
           column: 1
         end:
-          offset: 13793
+          offset: 13936
           line: 76
           column: 651
     - pointer: "/system_boundary/rules/7"
@@ -2323,115 +2323,115 @@ normative_context:
       unit_id: "normative_7540"
       source_span:
         start:
-          offset: 13794
+          offset: 13937
           line: 77
           column: 1
         end:
-          offset: 15335
+          offset: 16051
           line: 77
-          column: 1542
+          column: 2115
     - pointer: "/allocation_rules/0"
       rule_id: "a_scope"
       identity_kind: "explicit"
-      unit_id: "normative_91238"
+      unit_id: "normative_91954"
       source_span:
         start:
-          offset: 91351
+          offset: 92067
           line: 934
           column: 1
         end:
-          offset: 91791
+          offset: 92507
           line: 934
           column: 441
     - pointer: "/allocation_rules/1"
       rule_id: "a_residual"
       identity_kind: "explicit"
-      unit_id: "normative_91238"
+      unit_id: "normative_91954"
       source_span:
         start:
-          offset: 91792
+          offset: 92508
           line: 935
           column: 1
         end:
-          offset: 92250
+          offset: 93382
           line: 935
-          column: 459
+          column: 875
     - pointer: "/allocation_rules/2"
       rule_id: "a_discard"
       identity_kind: "explicit"
-      unit_id: "normative_91238"
+      unit_id: "normative_91954"
       source_span:
         start:
-          offset: 92251
+          offset: 93383
           line: 936
           column: 1
         end:
-          offset: 92787
+          offset: 93919
           line: 936
           column: 537
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_158983"
+      unit_id: "normative_160115"
       source_span:
         start:
-          offset: 159078
+          offset: 160210
           line: 1024
           column: 1
         end:
-          offset: 159459
+          offset: 160591
           line: 1024
           column: 382
     - pointer: "/validation_rules/1"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_158983"
+      unit_id: "normative_160115"
       source_span:
         start:
-          offset: 159460
+          offset: 160592
           line: 1025
           column: 1
         end:
-          offset: 159894
+          offset: 161026
           line: 1025
           column: 435
     - pointer: "/validation_rules/2"
       rule_id: "v_quantity"
       identity_kind: "explicit"
-      unit_id: "normative_158983"
+      unit_id: "normative_160115"
       source_span:
         start:
-          offset: 159895
+          offset: 161027
           line: 1026
           column: 1
         end:
-          offset: 160351
+          offset: 161483
           line: 1026
           column: 457
     - pointer: "/validation_rules/3"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_158983"
+      unit_id: "normative_160115"
       source_span:
         start:
-          offset: 160352
+          offset: 161484
           line: 1027
           column: 1
         end:
-          offset: 160909
+          offset: 162041
           line: 1027
           column: 558
     - pointer: "/validation_rules/4"
       rule_id: "v_work"
       identity_kind: "explicit"
-      unit_id: "normative_158983"
+      unit_id: "normative_160115"
       source_span:
         start:
-          offset: 160910
+          offset: 162042
           line: 1028
           column: 1
         end:
-          offset: 161263
+          offset: 162395
           line: 1028
           column: 354
   diagnostics:
@@ -2461,26 +2461,26 @@ normative_context:
           column: 227
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_91238"
+      unit_id: "normative_91954"
       source_span:
         start:
-          offset: 91238
+          offset: 91954
           line: 930
           column: 1
         end:
-          offset: 91278
+          offset: 91994
           line: 930
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_158983"
+      unit_id: "normative_160115"
       source_span:
         start:
-          offset: 158983
+          offset: 160115
           line: 1020
           column: 1
         end:
-          offset: 159005
+          offset: 160137
           line: 1020
           column: 23
 projection_metadata:
@@ -2490,5 +2490,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:5258e59b6bcda77f6ac8e4a4a90ea98282a590a1a7e2e3e984ea190eed3614d2"
-  generated_content_sha256: "sha256:9c02657d41ff16adfc27d70dcb0483cfe6996cd77fbc27a69a06cb757eaf1dff"
+    sha256: "sha256:de4b9e9cea4fe567e8eee42cd1758a19bc5d187c4eb878670b4649af7482158a"
+  generated_content_sha256: "sha256:f28456a671dbda93ca7c65a354717254fbd83f764fcf2552f9f3e13e9eb8f660"

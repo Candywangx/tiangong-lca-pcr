@@ -1,10 +1,1876 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39249"
-  title: "Other recovered (waste and scrap) paper or paperboard, including unsorted waste and scrap"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.other-recovered-waste-and-scrap-paper-or-paperboard-including-unsorted-waste-and-scrap"
+  classification_refs: "CPC 3.0:39249; proposed narrower mixed-paper supply scope; classification acceptance governed separately"
+  covered_products: "Real unrepulped mixed used-paper/board supply lots; paper grades remain mixed after foreign-matter removal"
+  excluded_products: "New paper; pulp including deinked pulp; finished recycled paper; textile fibres; medical or hazardous waste; material extracted from mixed residual refuse; separately traded single grades of unbleached kraft/corrugated paper (39241), bleached chemical-pulp paper not coloured in the mass (39242), or predominantly mechanical-pulp paper (39243). Constituent occurrence in a genuinely premixed lot does not make three separate purchases. A pure grade routed out of sorting is a separately accounted output under its applicable methodology, never this reference product."
+  representative_product: "One weighed mixed-paper bale lot accepted as feedstock by its named repulping receiver"
+  production_route: "Original-holder handover → collection/transport → reception and negative sorting → dry compaction/baling → actual receiver transport and unconditional release before repulping"
+  market_state: "A mixed paper material Product supply at the receiver gate; legal waste status disclosed separately"
+functional_unit:
+  what: "Provide mixed recovered paper feedstock accepted for the receiver's specified repulping use"
+  how_much: "1 kg net mixed paper material at actual measured release moisture; exclude bale wire and transport packaging"
+  how_well: "Meet the identified receiver contract and measured composition/contaminant/moisture specification; no universal grade or numerical target"
+  how_long_or_cycle: "One identified supply/release cohort; repeat inspection and delivery do not create new production"
+  reference_flow_link: "mixed_paper_release"
+system_boundary:
+  rules:
+    - rule_id: boundary_full_route
+      applies_to: "all foreground processes"
+      rule: "Include original-holder handover, all collection and receiver transport, unloading, receiving inspection, actual removal of hazardous/non-paper intrusions, conveyors, dry compaction, wire binding, dust control, receiver unloading and final unconditional release before pulping. Reject suspected hazardous lots to the actual controlled handler; this PCR does not supply hazardous-waste treatment methodology."
+      source_ids:
+        - jrc-paper-bref-2015
+        - cepi-quality-control
+        - smurfit-mixed-packaging
+    - rule_id: boundary_operations
+      applies_to: "recovery and cohort services"
+      rule: "Retain all start/stop, failed loads, zero-output, idle, cleanup, rework, maintenance, losses and opening/closing WIP. Retain actual post-release storage/packaging/handling through the declared pre-pulper handover, attributed to original release cohort Qc; H is a service activity and never a production denominator. No fictitious steam or boiler is introduced."
+      source_ids:
+        - jrc-paper-bref-2015
+        - ilcd-attributional-2010
+    - rule_id: boundary_provider
+      applies_to: "all exchanges"
+      rule: "For each outsourced freight or treatment leg choose its explicit provider boundary once; do not add its fuel/emissions again as own operations. Own fuelled handling uses separate diesel and species exchanges. Preparation stops before repulping/deinking/papermaking; no displacement credit for those products."
+      source_ids:
+        - jrc-paper-bref-2015
+        - ilcd-attributional-2010
+boundary_abstraction:
+  declared_starting_condition: "Actual source-paper lot at original-holder handover, with its origin-specific prior production/recycling burden identified; not burden-free by name"
+  starting_condition_role: "Explicit foreground observation boundary; upstream history remains modelled and disclosed"
+  product_classification_scope: "Mixed paper remaining mixed, proposed subset of CPC3 39249; no coverage claim for all other paper waste"
+  recursive_input_rule: "Externally acquired premixed paper is recorded once with one provider/burden vector; retrieve upstream preparation and source histories without counting the same collection/baling leg twice"
+  upstream_dataset_requirement: "Origin-specific paper production and prior recovery inventories at actual handover state; utilities/materials/transport and waste treatment with explicit provider cut; no invented recovery rate or avoided credit"
+  disclosure: "Sites and period; paper-source partition; value/status transitions; transport ownership; release/WIP/FG gates; actual emissions and treatment fate; missing source history prevents a complete dataset"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Waste paper"
+    uuid: "d1008171-2d06-4e14-b107-7e510875203f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "lot and original holder"
+    - "source paper history and inherited burden vector"
+    - "actual paper-grade composition and moisture basis"
+    - "mixed status and excluded-grade test"
+    - "collection and transport legs"
+    - "contaminant identities and dispositions"
+    - "receiver and acceptance specification"
+    - "first unconditional quality-release timestamp and Q"
+    - "gross physical mass V and packaging tare"
+    - "opening and closing WIP by exchange vector"
+    - "opening and closing FG by original cohort"
+    - "failed and zero-output periods"
+    - "rework and returns linked to original release"
+    - "actual utility supply and provider boundary"
+    - "wire composition and packaging ledger"
+    - "attributional allocation/value gate and residual shares"
+    - "native UUID property/unit compatibility"
+    - "uncertainty and unresolved rows"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use one net mixed-paper mass basis. Q is the sum of unique first unconditional receiver releases, excluding wire/packaging and duplicate reinspection; weigh actual moisture and report oven-dry paper solids separately. Commercial moisture deductions are not silently substituted for physical mass."
+  - id: numerator_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "row-specific"
+      uuid: ""
+    required_unit: "row-specific"
+    rule: "Collect raw totals before division. Convert kWh to MJ with 3.6; tonne-km to kg*km with 1000. Oil uses Volume/m3; convert L to m3 with 0.001 and weigh or measure that oil's density at stated temperature only for its physical mass ledger. Integrated volumes are not multiplied by time again; integrate only genuine rates."
+  - id: no_invented_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "measured physical basis"
+      uuid: ""
+    required_unit: "declared"
+    rule: "No assumed kg per bale or default water/oil density. Item counts require measured net mass for the same configuration. Supplied mixtures cross once as whole consignments with non-additive composition subledgers; actual on-site formulation requires each purchased ingredient and its losses."
+process_map:
+  - id: recovery
+    name: "Source handover through receiver release"
+    inclusion: "required"
+    inclusion_condition: "Actual source-separated mixed paper material supply; no pulping"
+    role: "Complete route observation with internal stage/lot ledgers"
+    quantitative_reference: "Unique first-release net mass Q"
+  - id: cohort_service
+    name: "Post-release cohort services to pre-pulper handover"
+    inclusion: "conditional"
+    inclusion_condition: "Actual storage or handling after first release"
+    role: "Service increments assigned to original cohort"
+    quantitative_reference: "Original release cohort Qc; H is service exposure only"
+process_inventory:
+  - id: recovery
+    label: "Source handover through receiver release"
+    inputs:
+      product:
+        - row_id: prepared_mixed_paper
+          role: "Previously prepared mixed-paper purchase"
+          name: "Waste paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1008171-2d06-4e14-b107-7e510875203f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual external Product purchase replacing the corresponding quantity of mixed_paper_feed, never an extra purchase of the same paper. Generic ELCD-reconstructed Waste paper Product/Mass/kg with unspecified grade, form, route and geography; 14 net and 16.4750000852581 gross calorific conversions are not used. Document upstream sorting/baling and one provider; source grades and water remain composition subledgers."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_lots."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lots
+              source_ids:
+                - jrc-paper-bref-2015
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: electricity
+          role: "Low-voltage purchased electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter conveyors, baler, extraction and actual auxiliaries, including idle/start/cleanup and failed loads. Native Product is <1 kV grid-average consumption mix to user, locationOfSupply CN, with Net calorific value/MJ: only apply to matching Chinese low-voltage grid supply; different voltage, country or generation contract needs another verified flow/provider. kWh readings are converted once before allocation; no thermal fuel is inferred from the property label."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - jrc-paper-bref-2015
+                - smurfit-mixed-packaging
+            ranges: []
+        - row_id: diesel
+          role: "Own collection and handling diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured diesel for owned collection vehicles and material handlers; exclude legs already covered by a complete freight provider. Native Product/Mass/kg is foreground diesel identity with grade, formulation, density, heating value, refinery route, geography and provider all unspecified; measure and disclose these where needed, never import a default density or emission factor. Fossil fraction and actual blend determine species attribution."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - smurfit-mixed-packaging
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: freight
+          role: "Purchased road collection and receiver freight"
+          name: "freight transport"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a3f30-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Transport performance 118f2a40-50ec-457c-aa60-9bc6b6af9931 / kg*km"
+          description: "Conditional purchased road-freight service for each actual collection-to-yard and yard-to-receiver leg, including actual return/empty movements in the provider inventory. Native Product is road freight production mix at plant, reference transport performance/kg*km; no truck class, geography or provider is fixed. Use real cargo mass and distance, convert tonne-km by 1000, and match provider load/empty-trip conventions without inventing payload or counting own fuel for this leg again."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_transport."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - smurfit-mixed-packaging
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: wire
+          role: "Iron or steel bale binding wire"
+          name: "Baling wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56ddb6db-1bf1-4c3c-b3db-bb00063774a8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure one actual flexible iron/steel baling wire supplied for this bale, including breakage and retained wire stocks. Native Product/Mass/kg is Baling wire, production mix at plant; the comment explicitly includes binding paper/cardboard and typically iron/steel, while a fencing classification is an isolated taxonomic anomaly, not a physical barbed-wire requirement. Use only this physical binding article; actual coating/composition/provider are declared and no bale mass is guessed."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Purchased hydraulic-fluid formulation"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional replenishment/change of the baler hydraulic-fluid formulation, bought once as the whole base-oil-plus-additive product; components are composition subledgers. Native Product is Hydraulic Fluid with mineral or synthetic base oil plus additives, Volume/m3, without a fixed grade/location/provider; match the actual formulation and measure its volume. Physical oil mass requires independent density at recorded temperature or direct weighing; never use water density or lubricant energy factors."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - smurfit-mixed-packaging
+            ranges: []
+        - row_id: cleanup_water
+          role: "Purchased tap water for actual cleanup"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional cleanup water, not a default washing or pulping step. Native Product/Mass/kg is treated piped municipal/potable water supplied at plant/to consumer, with local treatment variation; no raw/surface water or steam substitution. The secondary 0.001 Volume conversion is not a site density measurement; weigh supplied water or independently measure its density/state when converting a meter reading, then follow actual wastewater, retained moisture and evaporation fates."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: ldpe_cover
+          role: "Conditional LDPE protective sheet"
+          name: "Low-density polyethylene protective film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual separately supplied LDPE protective film used to protect this lot; weigh it independently of paper and wire. Polymer, thickness, additives, reuse and provider are declared; no resin-pellet, food-contact recycled-polymer or another formulation UUID is substituted."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - cepi-quality-control
+            ranges: []
+      waste:
+        - row_id: mixed_paper_feed
+          role: "Original-holder premixed paper consignment"
+          name: "waste paper (unspecified)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f140a5a2-5318-4d06-956f-a87b9c6fda25"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual incoming mixed-paper consignment, with incidental moisture and contamination in a measured non-additive composition subledger. Native Waste flow, unspecified waste paper, Mass/kg with no fixed grade/route/location: use only for the original-holder waste handover; not Product release, municipal refuse, pulp or three separately purchased paper grades. Its legal status and inherited source-paper burden are separate attributes; waste identity never makes burden zero."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_lots."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lots
+              source_ids:
+                - jrc-paper-bref-2015
+                - jrc-recycling-2020
+                - ilcd-attributional-2010
+            ranges: []
+      elementary:
+        - row_id: oxygen_air_in
+          role: "Atmospheric oxygen for own engines"
+          name: "Oxygen from air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual atmospheric molecular species crossing owned-engine boundaries, measured independently with gas state, humidity and composition for the physical balance. This is not purchased industrial gas, NOx, created paper output, a fixed air ratio or an emissions-factor default; reconcile actual inlet/outlet nitrogen, oxygen and water with fuel C/H/S and measured exhaust species."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: nitrogen_air_in
+          role: "Atmospheric nitrogen throughput"
+          name: "Nitrogen from air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual atmospheric molecular species crossing owned-engine boundaries, measured independently with gas state, humidity and composition for the physical balance. This is not purchased industrial gas, NOx, created paper output, a fixed air ratio or an emissions-factor default; reconcile actual inlet/outlet nitrogen, oxygen and water with fuel C/H/S and measured exhaust species."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: humidity_air_in
+          role: "Inlet atmospheric water vapour"
+          name: "Water vapour from air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual atmospheric molecular species crossing owned-engine boundaries, measured independently with gas state, humidity and composition for the physical balance. This is not purchased industrial gas, NOx, created paper output, a fixed air ratio or an emissions-factor default; reconcile actual inlet/outlet nitrogen, oxygen and water with fuel C/H/S and measured exhaust species."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+    outputs:
+      product:
+        - row_id: mixed_paper_release
+          role: "First receiver-released mixed-paper supply"
+          name: "Waste paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1008171-2d06-4e14-b107-7e510875203f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The single reference output is one actual mixed-paper lot, still unrepulped and mixed across grades, newly unconditionally accepted for the named receiver; net paper excludes wire and protective film. Native generic ELCD-reconstructed Waste paper is Product/Mass/kg without a fixed composition, route, location or grade; the secondary net/gross calorific factors 14 and 16.4750000852581 supply no measured heating value, density or moisture. Source partitions of this whole lot are non-additive and share one upstream provider; the identity is not supplier certification, a reviewed LCA process or proof of end-of-waste status."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_release
+              source_ids:
+                - jrc-recycling-2020
+                - cepi-quality-control
+                - un-cpc-2025
+            ranges: []
+      waste:
+        - row_id: rejected_paper
+          role: "Separated unsuitable wet-strength paper"
+          name: "Rejected wet-strength recovered paper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual separated wet-strength paper rejected by this receiver; retain its whole measured moist mass and composition. Record distinct treatment or another evidenced receiver, never credit it as accepted mixed paper."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: paper_fines
+          role: "Captured paper fines"
+          name: "Captured dry paper fines"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh captured paper fines after extraction/sweeping, with moisture and mineral content sampled separately. Internal return is an internal transfer, external waste is one fate; neither a kiln-dust UUID nor atmospheric particulate mass is substituted for the captured solid."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: pet_reject
+          role: "Separated PET contamination"
+          name: "Waste Polyethylene terephthalate"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "04d3fab8-c5d0-41c5-87b6-449116c1dbab"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured separated PET articles, not all plastic rejects or recycled resin. Native Waste flow/Mass/kg is waste polyethylene terephthalate, production mix at plant, no grade or recycling percentage; match PET chemistry and keep its actual handler and additives/composition."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: pe_reject
+          role: "Separated polyethylene film"
+          name: "Discarded polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record separately identified polyethylene film actually removed from feed or damaged packaging; origin partitions do not duplicate the whole outlet. No PET or unspecified plastic-family binding; another polymer requires its own row."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: glass_reject
+          role: "Separated container glass"
+          name: "Separated soda-lime container glass"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional chemically identified soda-lime container-glass contamination, weighed to the actual handler. Wafer-production glass, photovoltaic glass or glass manufacture residue is not this exchange."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: wood_reject
+          role: "Separated unagglomerated wood"
+          name: "Separated untreated non-agglomerated wood pieces"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional untreated wood pieces removed from paper; coated/treated wood requires its own chemically specific row and fate. Agglomerated wood/briquette flows are physically incompatible and not used."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: iron_reject
+          role: "Separated iron wire scrap"
+          name: "Discarded iron baling wire"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual iron wire waste outlet, including detached incoming wire or failed new wire as non-additive source partitions. Record actual coating and fate; separately removed aluminium/steel items need their own physical rows, not a scrap-metal/battery collection binding."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: food_reject
+          role: "Separated food contamination"
+          name: "Separated food-contaminated paper residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual contaminated paper reject consignment with its own paper, food solids and water assay subledger; not a generic all-residue pool. Hazardous contamination is quarantined and separately named, and the real treatment fate is retained."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: soil_reject
+          role: "Separated sandy soil"
+          name: "Separated sandy soil contamination"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual physically sampled sandy soil; weigh moisture and retained organic matter, record real treatment. Do not map it to an agricultural elementary input or use it as a balancing residual for unmeasured paper and water."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent hydraulic oil"
+          name: "Spent mineral-based hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actual mineral-oil hydraulic charge disposed after use, with measured contamination; synthetic-fluid waste requires its own row. Do not adopt a 50% oil/25% water/15% additive waste-oil recipe or a metal-machining cutting-fluid identity without compatibility."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: cleanup_effluent
+          role: "Collected cleanup effluent"
+          name: "Collected paper-yard cleanup washwater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual whole cleanup washwater consignment to its named treatment provider, measured mass and density/state if metered volumetrically. Dissolved/suspended species are composition subledgers for an outsourced whole stream; an actual direct discharge instead requires individual measured elementary species and medium, not COD/VOC as one chemical mass."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_residues."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+      elementary:
+        - row_id: co2_fossil
+          role: "Own-engine fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual fossil CO2 from own fuel use, CAS124-38-9, Mass/kg, emissions to unspecified air. The ILCD generic synonym list includes broad carbon-dioxide/isotopic/ionic variants; binding here is strictly neutral gaseous fossil CO2 matching the principal name/CAS, never those other species. No combustion of paper or biogenic carbon is assumed; use measured fuel-carbon and independent species completeness evidence."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: co_fossil
+          role: "Own-engine fossil carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual gaseous fossil CO, CAS630-08-0, Mass/kg, unspecified air; native synonyms include broader cryogenic/exhaust wording, which does not alter this principal chemical identity. Use measured CO and fossil attribution; it is neither total exhaust nor a proxy for VOC or CO2."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: no2
+          role: "Measured nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual NO2 gas, CAS10102-44-0; direct candidate synonyms ambiguously include N2O4, so UUID remains unresolved pending chemical-identity review. An aggregate NOx result expressed as NO2 equivalent does not establish the mass of actual NO2."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: no
+          role: "Measured nitrogen monoxide to air"
+          name: "Nitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual NO, CAS10102-43-9; a candidate synonym list also includes nitroxyl/HNO, so no UUID is adopted without resolving that chemistry. Quantify separately from NO2; no invented NOx speciation."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: so2
+          role: "Measured sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional real SO2 from actual fuel sulfur and measured oxidation/speciation; do not substitute purchased sulfur dioxide or total SOx. No default sulfur content, factor or removal efficiency."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: water_vapour
+          role: "Measured water evaporation to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual moisture evaporation and separately evidenced combustion-formed H2O, with independent measurements and non-additive origin partition. A water-vapour candidate classified as freshwater emission is not adopted; do not solve both water and solids losses from one residual, or infer reaction water in this dry paper route."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: paper_pm25
+          role: "Paper dust below 2.5 micrometres to air"
+          name: "Paper dust PM2.5 to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only uncaptured actual paper particulate below 2.5 micrometres; measure composition and distinguish from captured paper_fines. This physical size class is disjoint from paper_pmcoarse; do not add total PM10 to PM2.5."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: paper_pmcoarse
+          role: "Paper dust 2.5–10 micrometres to air"
+          name: "Paper dust above 2.5 and up to 10 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only measured disjoint coarse paper-dust fraction in this size interval, with real air medium and fate. Coarser particles and each other actual emitted chemical are added separately; no fixed dust composition or collection efficiency."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: oxygen_air_out
+          role: "Residual molecular oxygen to air"
+          name: "Oxygen to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual atmospheric molecular species crossing owned-engine boundaries, measured independently with gas state, humidity and composition for the physical balance. This is not purchased industrial gas, NOx, created paper output, a fixed air ratio or an emissions-factor default; reconcile actual inlet/outlet nitrogen, oxygen and water with fuel C/H/S and measured exhaust species."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: nitrogen_air_out
+          role: "Molecular nitrogen to air"
+          name: "Nitrogen to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual atmospheric molecular species crossing owned-engine boundaries, measured independently with gas state, humidity and composition for the physical balance. This is not purchased industrial gas, NOx, created paper output, a fixed air ratio or an emissions-factor default; reconcile actual inlet/outlet nitrogen, oxygen and water with fuel C/H/S and measured exhaust species."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+  - id: cohort_service
+    label: "Post-release cohort services to pre-pulper handover"
+    inputs:
+      product:
+        - row_id: service_electricity
+          role: "Low-voltage purchased electricity after release"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter conveyors, baler, extraction and actual auxiliaries, including idle/start/cleanup and failed loads. Native Product is <1 kV grid-average consumption mix to user, locationOfSupply CN, with Net calorific value/MJ: only apply to matching Chinese low-voltage grid supply; different voltage, country or generation contract needs another verified flow/provider. kWh readings are converted once before allocation; no thermal fuel is inferred from the property label. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - jrc-paper-bref-2015
+                - smurfit-mixed-packaging
+            ranges: []
+        - row_id: service_diesel
+          role: "Own collection and handling diesel after release"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured diesel for owned collection vehicles and material handlers; exclude legs already covered by a complete freight provider. Native Product/Mass/kg is foreground diesel identity with grade, formulation, density, heating value, refinery route, geography and provider all unspecified; measure and disclose these where needed, never import a default density or emission factor. Fossil fraction and actual blend determine species attribution. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - smurfit-mixed-packaging
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: service_cleanup_water
+          role: "Purchased tap water for actual cleanup after release"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional cleanup water, not a default washing or pulping step. Native Product/Mass/kg is treated piped municipal/potable water supplied at plant/to consumer, with local treatment variation; no raw/surface water or steam substitution. The secondary 0.001 Volume conversion is not a site density measurement; weigh supplied water or independently measure its density/state when converting a meter reading, then follow actual wastewater, retained moisture and evaporation fates. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: service_wire
+          role: "Iron or steel bale binding wire after release"
+          name: "Baling wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56ddb6db-1bf1-4c3c-b3db-bb00063774a8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure one actual flexible iron/steel baling wire supplied for this bale, including breakage and retained wire stocks. Native Product/Mass/kg is Baling wire, production mix at plant; the comment explicitly includes binding paper/cardboard and typically iron/steel, while a fencing classification is an isolated taxonomic anomaly, not a physical barbed-wire requirement. Use only this physical binding article; actual coating/composition/provider are declared and no bale mass is guessed. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - jrc-paper-bref-2015
+                - cepi-quality-control
+            ranges: []
+        - row_id: service_hydraulic_oil
+          role: "Purchased hydraulic-fluid formulation after release"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Conditional replenishment/change of the baler hydraulic-fluid formulation, bought once as the whole base-oil-plus-additive product; components are composition subledgers. Native Product is Hydraulic Fluid with mineral or synthetic base oil plus additives, Volume/m3, without a fixed grade/location/provider; match the actual formulation and measure its volume. Physical oil mass requires independent density at recorded temperature or direct weighing; never use water density or lubricant energy factors. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - smurfit-mixed-packaging
+            ranges: []
+        - row_id: service_ldpe_cover
+          role: "Conditional LDPE protective sheet after release"
+          name: "Low-density polyethylene protective film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual separately supplied LDPE protective film used to protect this lot; weigh it independently of paper and wire. Polymer, thickness, additives, reuse and provider are declared; no resin-pellet, food-contact recycled-polymer or another formulation UUID is substituted. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - cepi-quality-control
+            ranges: []
+        - row_id: service_freight
+          role: "Purchased road collection and receiver freight after release"
+          name: "freight transport"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a3f30-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Transport performance 118f2a40-50ec-457c-aa60-9bc6b6af9931 / kg*km"
+          description: "Conditional purchased road-freight service for each actual collection-to-yard and yard-to-receiver leg, including actual return/empty movements in the provider inventory. Native Product is road freight production mix at plant, reference transport performance/kg*km; no truck class, geography or provider is fixed. Use real cargo mass and distance, convert tonne-km by 1000, and match provider load/empty-trip conventions without inventing payload or counting own fuel for this leg again. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output. All post-release waste and emission outlets use the corresponding explicitly identified recovery cards as whole-route outlets with non-additive stage/cohort partitions in cp_residues/cp_species. Add a separate row if chemistry, medium or provider differs. These outlet cards retain all actual service quantities; no service burden or physical outlet disappears."
+          amount:
+            expression: "A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - smurfit-mixed-packaging
+                - jrc-paper-bref-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "The following rules apply to attributional modelling only. Physical stock balances and gross mass are established independently before allocating exchange burdens. A positive price, a waste label and legal end-of-waste are different facts; none alone establishes a zero-burden boundary."
+    source_ids: []
+  - rule_id: allocation_subdivision
+    applies_to: "each exchange and operation"
+    rule: "First assign dedicated source lots, operations and service increments directly, or use evidenced actual/virtual subdivision. Preserve the source-paper production and prior-recycling inventory vector by origin, actual grade/quality and handover state; never discard history simply because paper is recovered. Do not assign all historical product use/conversion burdens indiscriminately: identify the technically comparable true co-producing stage and the actual upstream allocation boundary."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_physical
+    applies_to: "remaining shared exchange"
+    rule: "After subdivision test the determining physical causal relationship for this particular exchange and each co-function; use measured causally relevant material throughput, equipment operation or service exposure only where that exchange is determined by it. Mass is not automatically a determinant of every motor, building, separation or treatment burden; no arbitrary choice between physical and economic shares."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_residual
+    applies_to: "genuinely inseparable residual"
+    rule: "Only the remaining common-process residual without an established determinant uses actual contemporaneous market values of the co-functions at the same physical condition and gate. Record quantities, currency, period, delivered state and net price/gate-fee basis; shares sum to one for that residual. No fixed yield, allocation percentage, scrap credit or avoided virgin-paper credit."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_value_gate
+    applies_to: "source paper and recovery service"
+    rule: "For positive-value source paper identify prior true co-production and quality loss with documented upstream inventories; do not assume indefinite equal-quality loops or a default recycling rate. For negative-value handover distinguish prior waste-management stages from the actual process step producing valuable secondary paper; apply subdivision/causality and only then residual value allocation at that step, including the treatment-service function and actual absolute fee value. Model all prior stages in the responsible first system and retain their bridge inventory; do not transfer all preceding treatment to this secondary good or make it disappear. Zero/unknown value needs explicit methodological resolution; record an upstream evidence hold until resolved."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_outputs
+    applies_to: "paper lots and separated matter"
+    rule: "Mixed-paper output is one whole supply with non-additive source fractions and one provider. A separately sold OCC, graphic grade, metal or polymer outlet has its own physical row, quality/state and actual status; route it under the appropriate method and allocate only shared burdens after the hierarchy above. Mere internal reuse, detached wire, collection service or payment does not create an automatic co-product."
+    source_ids:
+      - un-cpc-2025
+      - ilcd-attributional-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lots
+      process_id: "recovery"
+      flow_role: "mixed_paper_feed; prepared_mixed_paper"
+      record_type: "weighbridge and source genealogy"
+      raw_fields: "lot; holder; supplier; waste_or_product_state; net_wet_mass; dry_solids; moisture; grade_fractions; contaminants; prior_production_vector; prior_recycling_vector; value_and_fee; provider_stage_coverage"
+      collection_method: "Weigh calibrated gross/tare; sample real composition/moisture and preserve original-holder transfer and upstream inventory records; track one real premixed consignment once. Store raw incoming wet/solid masses and inherited exchange vectors; composition partitions sum to the whole without new purchases; no division."
+      unit: "kg"
+      frequency: "each handover and lot"
+      temporal_coverage: "complete campaign including failed loads and opening lots"
+      site_scope: "all original holders and preparation sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighbridge calibration; chain of custody; assays; upstream source/value receipts"
+    - protocol_id: cp_release
+      process_id: "recovery"
+      flow_role: "mixed_paper_release"
+      record_type: "receiver quality release register"
+      raw_fields: "cohort; lot; first_release_time; receiver; specification; gross_mass; wire_tare; film_tare; net_mixed_paper_mass; measured_moisture; dry_solids; conditional_or_final; prior_release_id; withdrawn_acceptance"
+      collection_method: "Use calibrated net weighing with independent packaging tare and representative moisture/contaminant sampling; reconcile receiver acceptance, rejection and reinspection records, including whole/partial rejection. Sum unique newly unconditionally released net paper as Q; closing FG includes any such Q still stored; do not add it again. Store Q and dry solids separately; no per-unit exchange calculation here."
+      unit: "kg"
+      frequency: "every load and decision"
+      temporal_coverage: "all first releases and zero-release campaigns"
+      site_scope: "named receiver before the pulper"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "signed receiver results; sampling plan; mass/tare calibration; unique release genealogy"
+    - protocol_id: cp_utilities
+      process_id: "recovery"
+      flow_role: "electricity; diesel; hydraulic_oil; cleanup_water"
+      record_type: "meters and stock changes"
+      raw_fields: "exchange_id; phase; lot; opening_stock; receipts; closing_stock; external_returns; meter_start; meter_end; original_unit; rate_or_integrated; time; oil_density_temperature; fuel_carbon_sulfur_hydrogen; fossil_fraction; supply_voltage_country_provider"
+      collection_method: "Read calibrated meters and tank/stock ledgers for actual process, idle, cleanup, start/stop and failures; measure the individual material density/state if a mass conversion is required. Store unnormalized meter/stock deltas in their original units by phase; convert_units later; no division by Q, bales or run count."
+      unit: "MJ; kg; m3"
+      frequency: "continuous meters and each receipt/change"
+      temporal_coverage: "complete campaign and opening/closing stocks"
+      site_scope: "owned recovery operations only; outsourced leg excluded"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter certificates; fuel assays; invoices; operator logs; density test conditions"
+    - protocol_id: cp_transport
+      process_id: "recovery"
+      flow_role: "freight"
+      record_type: "route and provider ledger"
+      raw_fields: "leg; lot; actual_cargo_kg; loaded_km; empty_km; return_km; vehicle_and_load; outsourced_provider_cut; original_unit; fuel_coverage"
+      collection_method: "Record collection and receiver delivery routes with cargo weights and distance evidence; provider represents actual load/empty-return convention; own-vehicle fuel stays in cp_utilities. Retain raw cargo kg, km and service invoice units per leg; form physical transport service before allocation; no product normalization here."
+      unit: "kg*km"
+      frequency: "every leg including failed/returned load"
+      temporal_coverage: "whole declared route and campaign"
+      site_scope: "original holder to yard to receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh tickets; route logs; freight invoices; provider boundary map"
+    - protocol_id: cp_packaging
+      process_id: "recovery"
+      flow_role: "wire; ldpe_cover"
+      record_type: "component stock and movement ledger"
+      raw_fields: "component; actual_composition; empty_opening; attached_WIP_opening; attached_FG_opening; reusable_opening; purchases_P; nonpurchase_external_receipt_I; external_receipt_id; physical_origin; ownership; inherited_burden_owner; external_return_received_ER; empty_closing; attached_WIP_closing; attached_FG_closing; reusable_closing; gross_shipments_S; external_return_out_EO; waste_W; internal_reuse"
+      collection_method: "Weigh each packaging component separately in empty, attached and reusable states. Record purchases P, actual first non-purchase external receipts I (including incoming supplier-attached wire or cover and first borrowed/leased packaging), external returns ER, gross shipments and breakage. Detached incoming old wire is physically received in I, not purchased again. P, I and ER are mutually exclusive for the same receipt; internal reuse is none of them. Retain raw component masses for opening + P + I + ER = closing + S + EO + W, and link actual receipt/ownership and inherited exchange vectors once. Packaging stays outside net paper Q; collect without division. Add a concrete atomic physical component interface when an existing interface does not represent an actual receipt; a physical subledger is not a second procurement or an additional copy of a whole supplied load."
+      unit: "kg"
+      frequency: "each receipt/packing/shipment and stocktake"
+      temporal_coverage: "whole campaign with opening/closing attached stocks"
+      site_scope: "all yards, transit and receiver stock within declared handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "component scales; composition/specification; stock and return tickets"
+    - protocol_id: cp_residues
+      process_id: "recovery"
+      flow_role: "each named waste outlet"
+      record_type: "weighed disposition and assay ledger"
+      raw_fields: "outlet_id; chemistry; source_partition; stage; cohort; wet_mass; dry_mass; water; carbon; actual_handler; treatment; legal_state; outward_returns; opening_closing_stock; offspec_load"
+      collection_method: "Weigh each actual separated waste by chemistry and fate; sample mixed residue consignments and effluent whole streams. Identify new contaminants separately rather than calling them other; require actual handler/treatment records. Store raw whole-outlet mass once with disjoint non-additive origin/stage partitions and assay subledgers; all actual post-release increments retained by cohort; no division."
+      unit: "kg"
+      frequency: "every separation and shipment"
+      temporal_coverage: "complete campaign including cleanup, failed loads and service stages"
+      site_scope: "all stages to final declared handover and named waste handler"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale tickets; chemistry tests; disposal manifests; fate certificates"
+    - protocol_id: cp_species
+      process_id: "recovery"
+      flow_role: "each named elementary species"
+      record_type: "species measurement and fuel/air material balance"
+      raw_fields: "species; CAS; medium; particle_size; stage; cohort; source; fossil_biogenic_split; concentration; gas_volume_or_rate; duration; temperature; pressure; moisture_basis; water_formed; oxygen_in; nitrogen_in_out; captured_and_uncaptured_dust"
+      collection_method: "Measure species and actual gas flow/state independently, or use a fully evidenced fuel-specific calculation with independent closure checks. Separate real NO/NO2, fossil/biogenic carbon, evaporation/combustion water and disjoint particles; add each actual emitted chemical and each required physical oxygen/nitrogen exchange. Store raw species quantities or concentration and integrated gas volume; integrate rates only once. Preserve gross physical mass before allocation; no division by product Q."
+      unit: "kg"
+      frequency: "each emitting operation and representative tests"
+      temporal_coverage: "whole campaign including failures, start/stop and service stages"
+      site_scope: "actual owned emission points and air media"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "laboratory method; CAS/media confirmation; fuel assay; uncertainty; independent C/H/O closure"
+    - protocol_id: cp_stock
+      process_id: "recovery"
+      flow_role: "WIP and FG genealogy"
+      record_type: "physical stock and inherited-exchange ledger"
+      raw_fields: "stage; lot; original_cohort; opening_WIP_mass; closing_WIP_mass; opening_WIP_exchange_vector; closing_WIP_exchange_vector; opening_FG_mass; closing_FG_mass; original_FG_burden; new_first_Q; gross_release_V; returns; rework_increment; losses; internal_transfers"
+      collection_method: "Reconcile each physical stage, transit, receiving hold and FG stock with calibrated weighing and cohort genealogy; carry every exchange's inherited burden, not a single average burden or mass-only adjustment. Keep separate raw physical mass and unnormalized exchange vectors by stage/cohort; cancel internal transfers only after both sides match; no division."
+      unit: "kg; original exchange units"
+      frequency: "each movement and period close"
+      temporal_coverage: "opening to closing, including unsuccessful and Q=0 campaigns"
+      site_scope: "all controlled sites and transit before pre-pulper handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "stocktakes; movement genealogy; original burden receipts; reconciliation residuals"
+    - protocol_id: cp_service
+      process_id: "cohort_service"
+      flow_role: "service_electricity; service_diesel; service_cleanup_water; service_wire; service_hydraulic_oil; service_ldpe_cover; service_freight"
+      record_type: "post-release cohort service ledger"
+      raw_fields: "original_cohort; stored_first_release_Qc; service_H; stage; raw_exchange; original_unit; opening_closing_FG; packaging; loss; return; original_delivery_reversal; rework_increment; first_release_id"
+      collection_method: "Measure post-release storage/handling/packing increments by actual cohort and operation. Preserve original FG burden; reverse original delivery only for the actual return and add real rework once, without a second first release. Store raw service exchange totals and H by original cohort, with the stored Qc; H is not production and no normalization occurs here. Route service wastes/emissions to cp_residues/cp_species once."
+      unit: "MJ; kg; m3; kg*km; original exchange units"
+      frequency: "each service operation and period close"
+      temporal_coverage: "from first release through declared pre-pulper handover"
+      site_scope: "named original release cohorts and receiver storage"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "service meters; original release register; FG genealogy; return/rework records"
+    - protocol_id: cp_allocation
+      process_id: "recovery"
+      flow_role: "each shared exchange"
+      record_type: "attribution and value-gate evidence"
+      raw_fields: "exchange; source_origin; dedicated_assignment; subdivision; determinant; physical_test; common_residual; outputs_and_service; quantities; same_gate_state; currency; price_period; actual_prices_fees; upstream_recycling_model; shares_and_uncertainty"
+      collection_method: "Obtain metered causality/subdivision and contemporaneous same-condition market/gate-fee evidence; independently locate the prior true co-producing stage and actual recycling-value crossing. Retain dedicated/causal/residual allocations of raw exchange totals with shares summing to one at each relevant gate; no normalization here."
+      unit: "original exchange units; documented currency"
+      frequency: "each route/value transition and reporting period"
+      temporal_coverage: "same inventory period and actual source history"
+      site_scope: "source paper, actual recovery step and all co-functions"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "physical causal test; price/fee receipts; upstream model and scope; sensitivity record"
+  calculation_rules:
+    - id: convert_units
+      applies_to: "all inventory rows"
+      rule: "Convert each raw numerator to its card unit before allocation: electricity_MJ = electricity_kWh * 3.6; oil_m3 = oil_L * 0.001; freight_kgkm = freight_tkm * 1000 or sum(actual_cargo_kg * actual_leg_km). A genuine rate is integrated once; a measured integrated volume is already total. Density is independently measured for the actual substance/state where needed, not derived from a secondary flow factor."
+      inputs:
+        - raw_amount
+        - raw_unit
+        - actual_cargo_kg
+        - actual_leg_km
+        - measured_density
+        - measured_state
+        - cp_utilities
+        - cp_transport
+      output: "converted_raw_exchange"
+      source_ids:
+        - jrc-paper-bref-2015
+        - ilcd-attributional-2010
+    - id: physical_gates
+      applies_to: "all physical stages"
+      rule: "For each physical stage and constituent: opening + real external receipts = closing + actual outward transfers + real wastes + actual emissions; internal transfers cancel between stages. Manufacturing V is gross real outgoing candidate paper, including accepted and rejected portions; Q is only unique first accepted net paper, not V. At the final receiver FG gate: opening_FG + Q + actual_external_returns = closing_FG + gross_outward_paper + external_return_out + losses + rework_to_WIP. Closing_FG already contains the still-stored portion of Q; it is not another manufacturing output. Combine the stage gates by cancelling the same internal Q/transfer exactly once. Do not add a new correction X unless it removes a proven exact duplicate already on the same side and in the same OTHER entry."
+      inputs:
+        - cp_lots
+        - cp_release
+        - cp_stock
+        - cp_residues
+        - cp_species
+      output: "independent_stage_and_combined_physical_balances"
+      source_ids:
+        - jrc-paper-bref-2015
+        - cepi-quality-control
+    - id: packaging_balance
+      applies_to: "wire; ldpe_cover; service_wire"
+      rule: "For each packaging component separately, opening_empty + opening_attached_WIP + opening_attached_FG + opening_reusable + purchases_P + nonpurchase_external_receipt_I + external_return_received_ER = closing_empty + closing_attached_WIP + closing_attached_FG + closing_reusable + gross_physical_shipments_S + external_return_out_EO + waste_W. Include transit in its actual stock gate. Internal reuse cancels, does not create a new purchase, net-paper Q or co-product. One whole waste outlet may have non-additive packaging/feed partitions; never sum them again.  I is independently measured non-purchase external ingress, including supplier-attached components and first borrowed/leased packaging; exclude receipts already in P or ER. Physical receipt and stock remain even when the upstream provider already owns the burden. Preserve the actual incoming history and ownership once; procurement burden follows verified actual supply scope and eligible use/withdrawal, not P+I as a new purchase quantity. Do not invent a second provider or charge upstream-included components again."
+      inputs:
+        - cp_packaging
+        - cp_service
+        - cp_residues
+      output: "component_physical_reconciliation"
+      source_ids:
+        - jrc-paper-bref-2015
+        - cepi-quality-control
+    - id: attribute_exchange
+      applies_to: "all inventory rows"
+      rule: "For every raw exchange vector, A_i,c = inherited_opening_WIP_i,c + actual_current_dedicated_i,c + causally_assigned_i,c + residual_assigned_i,c - inherited_closing_WIP_i,c. Reconcile each inherited vector with source history and the stage/lot ledger; no mass-only carryover. Keep FG original production burden with its original cohort c; post-release service increments accumulate once to that same cohort separately. Actual failed/start/stop/idle/cleanup/rework burdens are retained; they are not erased by absence of accepted output. Physical gross flows remain separate from allocated A."
+      inputs:
+        - converted_raw_exchange
+        - cp_lots
+        - cp_stock
+        - cp_allocation
+        - cp_service
+      output: "attributable_raw_exchange_vector_A"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calculate_inventory
+      applies_to: "all inventory rows"
+      rule: "For the selected release cohort c with Q_c > 0, a_i,c = A_i,c / Q_c, performed once only after convert_units and attribute_exchange. Q_c is the stored unique first-release net paper mass; this is the only product normalization. For service increments use the same original stored Q_c and accumulate raw A_i,c before this single calculation; H is never a denominator. Cards and collection aggregation refer to this result without another division. The reference Product output is 1 kg. At Q_c = 0 retain every actual raw burden and physical balance, report no per-unit result, and require explicit documented carry/assignment to a later actual cohort without inventing output."
+      inputs:
+        - attributable_raw_exchange_vector_A
+        - Q_c
+        - cp_release
+        - cp_service
+      output: "a_i,c per 1 kg reference flow"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: independent_constituents
+      applies_to: "paper solids; water; carbon and actual species"
+      rule: "Establish paper/filler/contaminant solids and total physical mass separately from water and relevant element balances. Independently measure at least one quantity for each independent unknown; a residual cannot fit both water and solids losses. Dry paper preparation has no assumed chemical water generation, structural-water release or combustion. For actual engines independently track fuel C/H/S, atmospheric O2/N2 throughput and real exhaust species/water; free moisture, evaporated moisture and combustion-formed water are separate origins, not extra copies of one H2O outlet. COD, BOD, TOC, VOC and NOx equivalents are indicators, not masses of invented specific species."
+      inputs:
+        - cp_lots
+        - cp_utilities
+        - cp_residues
+        - cp_species
+        - cp_stock
+      output: "independent_mass_water_element_and_species_checks"
+      source_ids:
+        - jrc-paper-bref-2015
+        - ilcd-attributional-2010
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "mixed paper and receiver"
+      requirement: "Document true mixed-paper supply and receiver compatibility; no classification label, generic UUID, producer page or initial conditional acceptance establishes the actual lot's release. Test exclusions and trace one whole purchased lot/provider."
+      evidence: "source history; representative samples; buyer specification; final release register"
+    - id: quality_temporal
+      applies_to: "all operations"
+      requirement: "Collect a representative complete reporting campaign with opening/closing stocks and service cohorts; retain failures and all nonproduction periods. Quantify uncertainty by meter, sample, allocation and provider scope; do not substitute generic producer ratios."
+      evidence: "raw logs; calibration; sampling variance; stock genealogy; sensitivity"
+    - id: quality_sources
+      applies_to: "upstream and shared burdens"
+      requirement: "Missing source-paper inherited burden, unresolved treatment/value gate or unknown core receiver compatibility is a real dataset completeness hold. Unknown future plant quantities, an ordinary provider choice or unresolved auxiliary UUID is not a fabricated zero, methodology approval or automatic reason to discard these collection rules."
+      evidence: "explicit gap register; lineage and source scope; unnormalized records"
+    - id: quality_native
+      applies_to: "every UUID and unit"
+      requirement: "Match principal name, all language names, synonyms/comments, CAS, route, form, geography, medium, type and every property against actual exchange; use the exact reference property/unit group chain and official Chinese basename. Unresolved auxiliary identities remain specific atomic names; they are not family bindings."
+      evidence: "complete native identity and property/unit evidence; supplier compatibility; localized display audit"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "Assess both declared-method consistency and actual evidence completeness. A syntactically valid projection or a finite measurement check is not scientific, translation, supplier or classification approval."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "reference product"
+    rule: "Verify the actual mixed-paper lot remains mixed, unrepulped and compatible with its named receiver before pulping; reject residual-refuse-only/service-only cases and separately traded 39241/42/43 grades. Confirm final unconditional receiver acceptance rather than mere delivery or collection."
+    source_ids:
+      - un-cpc-2025
+      - jrc-recycling-2020
+      - cepi-quality-control
+  - rule_id: validate_complete_route
+    applies_to: "all rows and stages"
+    rule: "All actual inputs, losses, returns, failures, cleanup and service emissions/wastes are included as atomic identities with real fates. Check provider cuts for overlaps and omissions; upstream source history and original-cohort burdens remain explicit. Missing evidence is unknown, not zero or pass."
+    source_ids:
+      - jrc-paper-bref-2015
+      - ilcd-attributional-2010
+  - rule_id: validate_mass
+    applies_to: "physical and packaging gates"
+    rule: "Independently close stage, FG and combined gross physical mass, water, solids and relevant elements; trace every WIP inherited exchange and original FG burden. Closing FG already contains Q; cancel internal Q exactly once when combining gates. Check each packaging equation independently, actual external returns and gross movements, and no arbitrary X residual adjustment."
+    source_ids:
+      - cepi-quality-control
+      - jrc-paper-bref-2015
+      - ilcd-attributional-2010
+  - rule_id: validate_normalization
+    applies_to: "all inventory rows"
+    rule: "Verify raw unit conversion, direct/subdivision/causal/residual attribution and vector carryover precede the one A/Q calculation; Q is first release only, services retain original Qc and H never becomes production. Q=0 preserves actual raw loads without a unit result; reinspection/returns/rework create no duplicate release."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: validate_native
+    applies_to: "adopted and unresolved identities"
+    rule: "Recheck all native identity restrictions and unit dimensions, real provider compatibility, official Chinese names and required qualifiers. A chemically inconsistent synonym or wrong air/water medium requires review, not an automatic classifier exemption. UUID-free auxiliary rows remain unresolved and cannot masquerade as verified platform identities."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: validate_allocation
+    applies_to: "all multifunctional gates"
+    rule: "Verify the attributional hierarchy and actual prior-life/value transition against the selected source evidence; do not use an industrial sorting paper as authority for LCA allocation, infer a fixed recovery rate, or add displacement credits. Report actual checks, skipped scope, uncertainties and holds separately."
+    source_ids:
+      - ilcd-attributional-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Actual mixed-paper input before receiver repulping, with original cohort and upstream burden model"
+  allowed_use: "Matching mixed-paper supply, actual composition/state, accepted receiver specification and declared attributional boundary"
+  excluded_use: "Pulp or new paper; single separated paper grades; residual-refuse treatment; hazardous waste; universal recycling credits or assumed zero-burden feed"
+  required_metadata: "All §3 qualifiers; exact physical and provider gates; source origins; Q/WIP/FG/cohort genealogy; measured utility/property units; allocation/value evidence; all actual atomic flows and fates"
+  required_quality_disclosure: "Temporal/site representativeness; uncertainty and unknowns; measured versus calculated data; unresolved auxiliary identities; source-history/value-gate holds; scientific and translation review state"
+  update_trigger: "Change of source mix, receiver specification, preparation route, value/status gate, upstream provider boundary, utility supply, emission fate or measurement configuration"
+data_sources:
+  - id: "un-cpc-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0 Explanatory Notes (30 June 2025), pp.201–202; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "39249 includes unsorted recovered paper; adjacent 39241/42/43 boundaries; no process quantities."
+  - id: "jrc-recycling-2020"
+    type: "literature"
+    reference: "Grant, Cordle and Bridgwater; Quality of recycling: Towards an operational definition, JRC122293 (2020), §4.2 pp.57–61 and Table 4-3; doi:10.2760/225236; https://publications.jrc.ec.europa.eu/repository/bitstream/JRC122293/final_quality_of_recycling_report.pdf"
+    used_for: "Observed source-separated mixed-paper input and mixed-paper output; receiver-specific quality and contrary ungraded output. Site observations do not establish a universal composition or numerical acceptance limit."
+  - id: "jrc-paper-bref-2015"
+    type: "official_guidance"
+    reference: "JRC Best Available Techniques Reference Document for the Production of Pulp, Paper and Board (2015), §6.1.1–6.1.2 printed pp.550–551 (PDF pp.588–589); https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf"
+    used_for: "Source handover; collection yards; removal of non-paper matter; traceability; bale wire; downstream repulping exclusion. No LCA allocation or recovery-rate evidence."
+  - id: "cepi-quality-control"
+    type: "extension_guidance"
+    reference: "CEPI Paper for Recycling Quality Control Guidelines, retained publisher document, pp.2–9 and 12; https://www.cepi.org/wp-content/uploads/2022/02/PaperforRecyclingQuality-Control-GuidelinesWITHANNEX.pdf"
+    used_for: "Delivery documentation; bale integrity; moisture sampling; acceptance/conditional acceptance/refusal; contamination testing. Recommendations and commercial corrections are not universal physical yields or this PCR's mass denominator."
+  - id: "smurfit-mixed-packaging"
+    type: "extension_guidance"
+    reference: "Smurfit Kappa, 5.02 Mixed packaging, publisher page snapshot 2026-10-26; https://www.smurfitkappa.com/products-and-services/recycling/502-mixed-packaging"
+    used_for: "Independent producer example of a mixed used paper/board supply and collection equipment; this particular grade excludes newspapers/magazines. It does not prove another mixed lot is 5.02 or certified, and supplies no site recipe."
+  - id: "ilcd-attributional-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for LCA—Detailed guidance, first edition March 2010, §7.9.2–7.9.3 and Annex14.4 (PDF pp.275–292 and 369–374); https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision and exchange-specific determining physical causality; remaining market-value allocation; actual prior-life recycling/value boundary. Illustrative recycling rates and infinite-loop formulas are not defaults for heterogeneous paper."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c327e5d755b6555297f51296bacb3487d16c3823f32f071d5f66b7592e95d93d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7288"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7288
+          line: 60
+          column: 1
+        end:
+          offset: 9954
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual source-paper lot at original-holder handover, with its origin-specific prior production/recycling burden identified; not burden-free by name |\n| starting_condition_role | Explicit foreground observation boundary; upstream history remains modelled and disclosed |\n| product_classification_scope | Mixed paper remaining mixed, proposed subset of CPC3 39249; no coverage claim for all other paper waste |\n| recursive_input_rule | Externally acquired premixed paper is recorded once with one provider/burden vector; retrieve upstream preparation and source histories without counting the same collection/baling leg twice |\n| upstream_dataset_requirement | Origin-specific paper production and prior recovery inventories at actual handover state; utilities/materials/transport and waste treatment with explicit provider cut; no invented recovery rate or avoided credit |\n| disclosure | Sites and period; paper-source partition; value/status transitions; transport ownership; release/WIP/FG gates; actual emissions and treatment fate; missing source history prevents a complete dataset |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_full_route | all foreground processes | Include original-holder handover, all collection and receiver transport, unloading, receiving inspection, actual removal of hazardous/non-paper intrusions, conveyors, dry compaction, wire binding, dust control, receiver unloading and final unconditional release before pulping. Reject suspected hazardous lots to the actual controlled handler; this PCR does not supply hazardous-waste treatment methodology. | jrc-paper-bref-2015; cepi-quality-control; smurfit-mixed-packaging |\n| boundary_operations | recovery and cohort services | Retain all start/stop, failed loads, zero-output, idle, cleanup, rework, maintenance, losses and opening/closing WIP. Retain actual post-release storage/packaging/handling through the declared pre-pulper handover, attributed to original release cohort Qc; H is a service activity and never a production denominator. No fictitious steam or boiler is introduced. | jrc-paper-bref-2015; ilcd-attributional-2010 |\n| boundary_provider | all exchanges | For each outsourced freight or treatment leg choose its explicit provider boundary once; do not add its fuel/emissions again as own operations. Own fuelled handling uses separate diesel and species exchanges. Preparation stops before repulping/deinking/papermaking; no displacement credit for those products. | jrc-paper-bref-2015; ilcd-attributional-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 294
+              line: 9
+              column: 1
+            end:
+              offset: 363
+              line: 9
+              column: 70
+          text: "# Mixed recovered paper and paperboard supply to a repulping receiver"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7288
+              line: 60
+              column: 1
+            end:
+              offset: 7309
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_53418"
+      family: "allocation"
+      span:
+        start:
+          offset: 53418
+          line: 731
+          column: 1
+        end:
+          offset: 56734
+          line: 743
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nThe following rules apply to attributional modelling only. Physical stock balances and gross mass are established independently before allocating exchange burdens. A positive price, a waste label and legal end-of-waste are different facts; none alone establishes a zero-burden boundary.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivision | each exchange and operation | First assign dedicated source lots, operations and service increments directly, or use evidenced actual/virtual subdivision. Preserve the source-paper production and prior-recycling inventory vector by origin, actual grade/quality and handover state; never discard history simply because paper is recovered. Do not assign all historical product use/conversion burdens indiscriminately: identify the technically comparable true co-producing stage and the actual upstream allocation boundary. | ilcd-attributional-2010 |\n| allocation_physical | remaining shared exchange | After subdivision test the determining physical causal relationship for this particular exchange and each co-function; use measured causally relevant material throughput, equipment operation or service exposure only where that exchange is determined by it. Mass is not automatically a determinant of every motor, building, separation or treatment burden; no arbitrary choice between physical and economic shares. | ilcd-attributional-2010 |\n| allocation_residual | genuinely inseparable residual | Only the remaining common-process residual without an established determinant uses actual contemporaneous market values of the co-functions at the same physical condition and gate. Record quantities, currency, period, delivered state and net price/gate-fee basis; shares sum to one for that residual. No fixed yield, allocation percentage, scrap credit or avoided virgin-paper credit. | ilcd-attributional-2010 |\n| allocation_value_gate | source paper and recovery service | For positive-value source paper identify prior true co-production and quality loss with documented upstream inventories; do not assume indefinite equal-quality loops or a default recycling rate. For negative-value handover distinguish prior waste-management stages from the actual process step producing valuable secondary paper; apply subdivision/causality and only then residual value allocation at that step, including the treatment-service function and actual absolute fee value. Model all prior stages in the responsible first system and retain their bridge inventory; do not transfer all preceding treatment to this secondary good or make it disappear. Zero/unknown value needs explicit methodological resolution; record an upstream evidence hold until resolved. | ilcd-attributional-2010 |\n| allocation_outputs | paper lots and separated matter | Mixed-paper output is one whole supply with non-additive source fractions and one provider. A separately sold OCC, graphic grade, metal or polymer outlet has its own physical row, quality/state and actual status; route it under the appropriate method and allocate only shared burdens after the hierarchy above. Mere internal reuse, detached wire, collection service or payment does not create an automatic co-product. | un-cpc-2025; ilcd-attributional-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 294
+              line: 9
+              column: 1
+            end:
+              offset: 363
+              line: 9
+              column: 70
+          text: "# Mixed recovered paper and paperboard supply to a repulping receiver"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 53418
+              line: 731
+              column: 1
+            end:
+              offset: 53458
+              line: 731
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_75076"
+      family: "validation"
+      span:
+        start:
+          offset: 75076
+          line: 782
+          column: 1
+        end:
+          offset: 77893
+          line: 795
+          column: 1
+      markdown: "## 9. Validation Rules\n\nAssess both declared-method consistency and actual evidence completeness. A syntactically valid projection or a finite measurement check is not scientific, translation, supplier or classification approval.\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | reference product | Verify the actual mixed-paper lot remains mixed, unrepulped and compatible with its named receiver before pulping; reject residual-refuse-only/service-only cases and separately traded 39241/42/43 grades. Confirm final unconditional receiver acceptance rather than mere delivery or collection. | un-cpc-2025; jrc-recycling-2020; cepi-quality-control |\n| validate_complete_route | all rows and stages | All actual inputs, losses, returns, failures, cleanup and service emissions/wastes are included as atomic identities with real fates. Check provider cuts for overlaps and omissions; upstream source history and original-cohort burdens remain explicit. Missing evidence is unknown, not zero or pass. | jrc-paper-bref-2015; ilcd-attributional-2010 |\n| validate_mass | physical and packaging gates | Independently close stage, FG and combined gross physical mass, water, solids and relevant elements; trace every WIP inherited exchange and original FG burden. Closing FG already contains Q; cancel internal Q exactly once when combining gates. Check each packaging equation independently, actual external returns and gross movements, and no arbitrary X residual adjustment. | cepi-quality-control; jrc-paper-bref-2015; ilcd-attributional-2010 |\n| validate_normalization | all inventory rows | Verify raw unit conversion, direct/subdivision/causal/residual attribution and vector carryover precede the one A/Q calculation; Q is first release only, services retain original Qc and H never becomes production. Q=0 preserves actual raw loads without a unit result; reinspection/returns/rework create no duplicate release. | ilcd-attributional-2010 |\n| validate_native | adopted and unresolved identities | Recheck all native identity restrictions and unit dimensions, real provider compatibility, official Chinese names and required qualifiers. A chemically inconsistent synonym or wrong air/water medium requires review, not an automatic classifier exemption. UUID-free auxiliary rows remain unresolved and cannot masquerade as verified platform identities. | ilcd-attributional-2010 |\n| validate_allocation | all multifunctional gates | Verify the attributional hierarchy and actual prior-life/value transition against the selected source evidence; do not use an industrial sorting paper as authority for LCA allocation, infer a fixed recovery rate, or add displacement credits. Report actual checks, skipped scope, uncertainties and holds separately. | ilcd-attributional-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 294
+              line: 9
+              column: 1
+            end:
+              offset: 363
+              line: 9
+              column: 70
+          text: "# Mixed recovered paper and paperboard supply to a repulping receiver"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 75076
+              line: 782
+              column: 1
+            end:
+              offset: 75098
+              line: 782
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_full_route"
+      identity_kind: "explicit"
+      unit_id: "normative_7288"
+      source_span:
+        start:
+          offset: 8562
+          line: 75
+          column: 1
+        end:
+          offset: 9091
+          line: 75
+          column: 530
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_7288"
+      source_span:
+        start:
+          offset: 9092
+          line: 76
+          column: 1
+        end:
+          offset: 9556
+          line: 76
+          column: 465
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_7288"
+      source_span:
+        start:
+          offset: 9557
+          line: 77
+          column: 1
+        end:
+          offset: 9952
+          line: 77
+          column: 396
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 53460
+          line: 733
+          column: 1
+        end:
+          offset: 53746
+          line: 733
+          column: 287
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 53819
+          line: 737
+          column: 1
+        end:
+          offset: 54394
+          line: 737
+          column: 576
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 54395
+          line: 738
+          column: 1
+        end:
+          offset: 54887
+          line: 738
+          column: 493
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 54888
+          line: 739
+          column: 1
+        end:
+          offset: 55357
+          line: 739
+          column: 470
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_value_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 55358
+          line: 740
+          column: 1
+        end:
+          offset: 56216
+          line: 740
+          column: 859
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_outputs"
+      identity_kind: "explicit"
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 56217
+          line: 741
+          column: 1
+        end:
+          offset: 56732
+          line: 741
+          column: 516
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 75100
+          line: 784
+          column: 1
+        end:
+          offset: 75305
+          line: 784
+          column: 206
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 75378
+          line: 788
+          column: 1
+        end:
+          offset: 75767
+          line: 788
+          column: 390
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_complete_route"
+      identity_kind: "explicit"
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 75768
+          line: 789
+          column: 1
+        end:
+          offset: 76164
+          line: 789
+          column: 397
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 76165
+          line: 790
+          column: 1
+        end:
+          offset: 76658
+          line: 790
+          column: 494
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_normalization"
+      identity_kind: "explicit"
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 76659
+          line: 791
+          column: 1
+        end:
+          offset: 77059
+          line: 791
+          column: 401
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_native"
+      identity_kind: "explicit"
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 77060
+          line: 792
+          column: 1
+        end:
+          offset: 77496
+          line: 792
+          column: 437
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 77497
+          line: 793
+          column: 1
+        end:
+          offset: 77891
+          line: 793
+          column: 395
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7288"
+      source_span:
+        start:
+          offset: 7288
+          line: 60
+          column: 1
+        end:
+          offset: 7309
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7288"
+      source_span:
+        start:
+          offset: 7337
+          line: 64
+          column: 1
+        end:
+          offset: 8489
+          line: 71
+          column: 216
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 53418
+          line: 731
+          column: 1
+        end:
+          offset: 53458
+          line: 731
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 53460
+          line: 733
+          column: 1
+        end:
+          offset: 53746
+          line: 733
+          column: 287
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 53819
+          line: 737
+          column: 1
+        end:
+          offset: 54394
+          line: 737
+          column: 576
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 54395
+          line: 738
+          column: 1
+        end:
+          offset: 54887
+          line: 738
+          column: 493
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 54888
+          line: 739
+          column: 1
+        end:
+          offset: 55357
+          line: 739
+          column: 470
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 55358
+          line: 740
+          column: 1
+        end:
+          offset: 56216
+          line: 740
+          column: 859
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_53418"
+      source_span:
+        start:
+          offset: 56217
+          line: 741
+          column: 1
+        end:
+          offset: 56732
+          line: 741
+          column: 516
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 75076
+          line: 782
+          column: 1
+        end:
+          offset: 75098
+          line: 782
+          column: 23
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 75100
+          line: 784
+          column: 1
+        end:
+          offset: 75305
+          line: 784
+          column: 206
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 75378
+          line: 788
+          column: 1
+        end:
+          offset: 75767
+          line: 788
+          column: 390
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 75768
+          line: 789
+          column: 1
+        end:
+          offset: 76164
+          line: 789
+          column: 397
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 76165
+          line: 790
+          column: 1
+        end:
+          offset: 76658
+          line: 790
+          column: 494
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 76659
+          line: 791
+          column: 1
+        end:
+          offset: 77059
+          line: 791
+          column: 401
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 77060
+          line: 792
+          column: 1
+        end:
+          offset: 77496
+          line: 792
+          column: 437
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_75076"
+      source_span:
+        start:
+          offset: 77497
+          line: 793
+          column: 1
+        end:
+          offset: 77891
+          line: 793
+          column: 395
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c327e5d755b6555297f51296bacb3487d16c3823f32f071d5f66b7592e95d93d"
+  generated_content_sha256: "sha256:c1bceae27731c018661c18122fce9cd39dbf57cfaf4f184caac5eb28b07ddd79"

@@ -20,7 +20,7 @@ Wood provenance, species mix, density, thickness, moisture, declared formaldehyd
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.medium-density-fibreboard-mdf |
-| classification_refs | CPC 3.0 31441; narrower; scope and accepted decisions: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its referenced ADRs |
+| classification_refs | CPC 3.0 31441; narrower |
 | covered_products | Conventional dry-process uncoated wood MDF |
 | excluded_products | Wet hardboard; other fibreboards; nonwood fibreboard; particleboard; OSB; coated board; special fire-retardant/preservative recipes |
 | representative_product | Medium density fiberboard `57c184ac-a2d3-4500-af7b-80609ed89d2f` |
@@ -185,7 +185,7 @@ Conditional on actual whole-log furnish; include debarking/chipping and bark fat
 
 ###### UF binder (`binder_uf`)
 
-Include only the resin actually used, in an independently supplied state matching the selected resin identity and actual provider reference. Record supplied mass, measured resin solids, water, supplier recipe and addition point. A bought prepared aqueous or otherwise compounded UF formulation requires one specific complete-formulation supply row and compatible provider preserving supplier manufacture/preparation/delivery before use; the generic resin UUID alone does not establish that complete supply. Its included resin, urea, water and additives are analytical composition only. Real independently purchased additions and actual onsite mixing water/utilities remain separate exchanges. Report resin solids separately; never equate wet formulation kg to dry resin kg or count included formulation water again as purchased process water.
+Include only the resin actually used. Record delivered formulation mass, measured solids/carrier water and elemental composition, supplier recipe, addition point and stocks. Keep delivered resin solids distinct from cured products: actual formulation and measured cure extent determine molecular formation/consumption; UF/MUF condensation can form water, while pMDI-water reaction consumes water and forms CO2. Do not assume full cure, prescribe a reaction yield, count formulation water again as purchased process water or repeat upstream resin-synthesis water in the mill foreground.
 
 Include only the resin actually used. Record delivered formulation mass, measured solids/carrier water and elemental composition, supplier recipe, addition point and stocks. Keep delivered resin solids distinct from cured products: actual formulation and measured cure extent determine molecular formation/consumption; UF/MUF condensation can form water, while pMDI-water reaction consumes water and forms CO2. Do not assume full cure, prescribe a reaction yield, count formulation water again as purchased process water or repeat upstream resin-synthesis water in the mill foreground.
 
@@ -247,7 +247,7 @@ Conditional on separate urea dosing supported by the actual recipe; report produ
 
 ###### Paraffin wax addition (`additive_wax`)
 
-Conditional on petroleum-fraction paraffin wax actually supplied independently in a state and mass reference matching the selected identity and provider. Measure actual supplied wax mass/state; no wax dosage is prescribed. A bought wax emulsion requires one specific complete-emulsion supply row and compatible provider including supplier manufacture/emulsification/preparation/delivery before use; its included wax, carrier water and additives remain analytical subledgers, not extra purchases. Actual separately purchased wax/other constituents and real onsite emulsification or mixing water/utilities are separate exchanges. Never assign whole wet emulsion kg to the paraffin-wax UUID; an unresolved complete-emulsion identity remains pending.
+Conditional on petroleum-fraction paraffin matching supplier identity. Measure wax mass and any emulsion carrier water; this is not a prescribed wax dosage.
 
 - Selected flow: Paraffin wax `17bff97f-179d-49d4-9e97-5128bd6020a6`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -262,7 +262,7 @@ Conditional on petroleum-fraction paraffin wax actually supplied independently i
 
 ###### Ammonium sulphate hardener (`additive_hardener`)
 
-Conditional on ammonium sulphate actually purchased separately in a supplied state matching the selected chemical identity and provider, and actually added in the evidenced recipe. Never infer catalyst species from a generic catalyst survey entry. Record actual supplied chemical mass/state and any independently added onsite carrier water/mixing utilities. A bought prepared hardener solution or formulation requires its own specific complete-product supply row and compatible provider preserving supplier manufacture/preparation/delivery before use; included ammonium sulphate, water and additives are analytical composition only. Record its measured concentration/carrier water without assigning whole formulation kg to the constituent UUID. Other real separately supplied hardeners require their own atomic rows.
+Conditional on supplier recipe naming ammonium sulphate; never infer catalyst species from a generic catalyst survey entry. Record formulation concentration and carrier water; other hardeners need their own atomic rows.
 
 - Selected flow: Ammonium sulphate `7f128b59-9df7-4b5d-ad0f-00103b916cf7`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -1169,13 +1169,13 @@ Measure auxiliary gas separately from direct dryer and oxidizer fuel. Identity i
 
 - Selected flow: natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66`; unit group `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
-- Amount rule: Collect this actual exchange using cp_energy_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_energy and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_energy_utilities`
+- Collection protocol: `cp_energy`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler bark fuel (`boiler_bark`)
@@ -1214,13 +1214,13 @@ Measure boiler auxiliaries and control; apply below-1-kV identity only when actu
 
 - Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66`; unit group `93a60a57-a3c8-11da-a746-0800200c9a66` / MJ
-- Amount rule: Collect this actual exchange using cp_energy_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_energy and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_energy_utilities`
+- Collection protocol: `cp_energy`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler make-up water (`boiler_water`)
@@ -1229,13 +1229,13 @@ Measure new treated make-up water and exclude recovered condensate from this inp
 
 - Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_water_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_water and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_water_utilities`
+- Collection protocol: `cp_water`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Returned condensate received (`boiler_condensate`)
@@ -1244,13 +1244,13 @@ Same physical stream and quantity as condensate_return; do not apply allocation 
 
 - Selected flow: Returned steam condensate from MDF indirect heating
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_thermal_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_thermal and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_thermal_utilities`
+- Collection protocol: `cp_thermal`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ##### Waste flows
@@ -1267,13 +1267,13 @@ Conditional on on-site generation of this carrier. The output equals the linked 
 
 - Selected flow: Process steam delivered to MDF digester
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_thermal_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_thermal and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_thermal_utilities`
+- Collection protocol: `cp_thermal`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Indirect process heat delivered (`boiler_heat`)
@@ -1282,13 +1282,13 @@ Conditional on on-site generation of this carrier. The output equals the linked 
 
 - Selected flow: Indirect process heat delivered to MDF manufacture
 - Flow property / unit: Delivered heat measurement basis unresolved; MJ; flow property/unit group UUID unresolved / MJ
-- Amount rule: Collect this actual exchange using cp_thermal_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_thermal and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_thermal_utilities`
+- Collection protocol: `cp_thermal`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ##### Waste flows
@@ -1299,13 +1299,13 @@ Conditional on this collected boiler waste; measure separately, identify fuel mi
 
 - Selected flow: Wood-residue boiler bottom ash
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_residues_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_residues and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_residues_utilities`
+- Collection protocol: `cp_residues`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Wood-residue boiler captured fly ash (`boiler_fly_ash`)
@@ -1314,13 +1314,13 @@ Conditional on this collected boiler waste; measure separately, identify fuel mi
 
 - Selected flow: Wood-residue boiler captured fly ash
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_residues_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_residues and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_residues_utilities`
+- Collection protocol: `cp_residues`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Wood-residue boiler blowdown water sent to treatment (`boiler_blowdown`)
@@ -1329,13 +1329,13 @@ Conditional on this collected boiler waste; measure separately, identify fuel mi
 
 - Selected flow: Wood-residue boiler blowdown water sent to treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_residues_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_residues and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_residues_utilities`
+- Collection protocol: `cp_residues`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ##### Elementary flows
@@ -1361,13 +1361,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon dioxide (biogenic) `08a91e70-3ddc-11dd-9c15-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: carbon dioxide (fossil) (`boiler_co2fossil`)
@@ -1376,13 +1376,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon dioxide (fossil) `08a91e70-3ddc-11dd-923d-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: carbon monoxide (biogenic) (`boiler_cobio`)
@@ -1391,13 +1391,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon monoxide (biogenic) `8a313a02-e251-11e6-bf01-fe55135034f3`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: carbon monoxide (fossil) (`boiler_cofossil`)
@@ -1406,13 +1406,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: carbon monoxide (fossil) `08a91e70-3ddc-11dd-924e-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: methane (biogenic) (`boiler_ch4bio`)
@@ -1421,13 +1421,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: methane (biogenic) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: methane (fossil) (`boiler_ch4fossil`)
@@ -1436,13 +1436,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: methane (fossil) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: nitrous oxide (`boiler_n2o`)
@@ -1451,13 +1451,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: nitrous oxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: Nitrogen oxides (`boiler_nox`)
@@ -1466,13 +1466,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: Nitrogen oxides `f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: sulfur dioxide (`boiler_so2`)
@@ -1481,13 +1481,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: sulfur dioxide `fe0acd60-3ddc-11dd-ac48-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: particles (PM2.5) (`boiler_pm25`)
@@ -1496,13 +1496,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: particles (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: particles (PM2.5 - PM10) (`boiler_pmcoarse`)
@@ -1511,13 +1511,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: particles (PM2.5 - PM10) `08a91e70-3ddc-11dd-9501-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### Boiler air release: particles (> PM10) (`boiler_pmover10`)
@@ -1526,13 +1526,13 @@ Collect the boiler stack species after control; bind fuel mix, operating mode an
 
 - Selected flow: particles (> PM10) `fe0acd60-3ddc-11dd-a70a-0050c2490048`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- Amount rule: Collect this actual exchange using cp_air_utilities and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
+- Amount rule: Collect this actual exchange using cp_air and divide by accepted net MDF mass for the same period; apply the corresponding calculation rules; missing values remain unresolved with no literature default.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_air_utilities`
+- Collection protocol: `cp_air`
 - Sources: `epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ## 7. Allocation and Co-product Handling
