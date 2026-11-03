@@ -286,7 +286,7 @@ process_inventory:
           flow_ref:
             uuid: "2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Pure sugar maple planer shavings, independently weighed and moisture-tested with documented receiver. Broad wood-waste identity includes this uncoated material; disclose source route wording primary production route and clarify its applicability with the receiver/background. Do not assume the municipal proportions described in its comment. Actual shavings must remain non-agglomerated. Source CPC39282 instead denotes agglomerated wood waste; the concordant broad physical wood identity is conditionally retained, with classification clarification by the source owner and receiver/provider compatibility pending. Do not claim all database metadata verified or infer agglomeration/treatment."
+          description: "Pure sugar maple planer shavings, independently weighed and moisture-tested with documented receiver. The current broad Wood waste definition is 1 kg collected non-agglomerated wood waste at waste generation, with composition and treatment unspecified; CPC39283 is coherent with this non-agglomerated state. Record actual moisture, wood fraction, any adhesive/coating/preservative/oil contamination and actual receiver/provider acceptance and quantity basis. Collection alone establishes neither harmlessness, recycling eligibility, clean biomass fuel, combustion treatment nor avoided-product credit. The actual uncoated shavings remain a conditional physical use, not proof that every supplier/provider requirement is resolved."
           amount:
             expression: "Unallocated physical exchange total in the matching production period divided once by accepted net board mass in kg; retain stage records and stock reconciliation."
             value_mode: "foreground_record"
@@ -307,7 +307,7 @@ process_inventory:
           flow_ref:
             uuid: "2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Whole uncoated boards rejected at inspection and actually dispatched as wood waste. Record defect, net mass, moisture and receiver separately from offcut/shavings. Reworked boards remaining inside the unit are not additional boundary outputs; accepted rework enters accepted_board only once. The broad wood-waste identity requires the same source route clarification as shavings. Actual whole rejected boards must remain non-agglomerated. Source CPC39282 instead denotes agglomerated wood waste; conditional broad physical identity requires source-owner classification clarification plus receiver/provider compatibility, including the existing primary-production wording debt. Do not invent agglomeration or treatment, or claim all source metadata verified."
+          description: "Whole uncoated boards rejected at inspection and actually dispatched as wood waste. Record defect, net mass, moisture and receiver separately from offcut/shavings. Reworked boards remaining inside the unit are not additional boundary outputs; accepted rework enters accepted_board only once. The current broad Wood waste definition is 1 kg collected non-agglomerated waste at waste generation, with unspecified composition/treatment and coherent CPC39283. Actual rejected-board composition, moisture, contamination and receiver/provider compatibility must be documented separately; collection does not establish clean fuel, harmlessness, recycling or treatment eligibility, or an avoided-product credit. No agglomeration or treatment is inferred."
           amount:
             expression: "Unallocated physical exchange total in the matching production period divided once by accepted net board mass in kg; retain stage records and stock reconciliation."
             value_mode: "foreground_record"
@@ -609,7 +609,7 @@ dataset_production:
       source_ids: []
     - id: moisture_balance
       applies_to: "maple_blank; accepted_board; offcut; sawdust; shavings; rejected_board; sanding_dust; spent_belt; water_vapour"
-      rule: "MC = 100*(wet_sample - dry_sample)/dry_sample; dry_wood = measured_wood_mass/(1 + MC/100). For mixed waste first separate measured dry non-wood content from dry wood. In each balance, input = output + closing_stock - opening_stock + documented_residual; retained wood includes accepted boards, all wood residues, wood in spent belt and emitted wood particles. Water input in wood = water in all dispatched/stored streams + net evaporation + water stock change. Do not label an unexplained residual as water, carbon or particulate release."
+      rule: "MC = 100*(wet_sample - dry_sample)/dry_sample; dry_wood = measured_wood_mass/(1 + MC/100). For mixed waste first separate measured dry non-wood content from dry wood. In each balance, input = output + closing_stock - opening_stock + documented_residual; retained wood includes accepted boards, all wood residues, wood in spent belt and emitted wood particles. Water input in wood = water in external outward streams + net evaporation + closing water stock - opening water stock + documented water-balance residual. Water retained in stored wood enters the stock terms once; internal stage transfers cancel after reconciliation and are not external outflows. Do not label an unexplained residual as water, carbon or particulate release."
       inputs:
         - cp_material
         - cp_residue
@@ -726,7 +726,7 @@ data_sources:
     used_for: "Limited physical-allocation/packaging worked example adapted by author using actual site measurements; no Northern softwood survey parameters transferred"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:caf5ddc016ffc8cda1a4109d39de51413d026d7b79e476cd6678671c5d8805ad"
+  source_sha256: "sha256:9efa9c667631bc06047f87da9927ee33b629541252dee3834926f2673312b39f"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5165"
@@ -777,15 +777,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_30262"
+    - unit_id: "normative_30288"
       family: "allocation"
       span:
         start:
-          offset: 30262
+          offset: 30288
           line: 385
           column: 1
         end:
-          offset: 32326
+          offset: 32352
           line: 397
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nThe listed residue cards represent waste dispatches. If no genuine co-product leaves a joint stage, the board receives all its burdens. If actual evidence establishes a co-product, add its specifically verified product-output identity and applicable collection before using the allocation method; do not relabel a waste UUID as a product.\n\nThe following physical-allocation method is an author adaptation of the CORRIM softwood case, not a transfer of that survey to sugar maple factories. No survey density, yield, energy, price or allocation share is adopted. Establish whether a dispatched residue is waste or a co-product from actual contracts, specification, demand and handling; a sale alone does not erase waste treatment. [corrim-northern-lumber-2025]\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_separate | p_board | First separate product-specific stages using measured electricity/work and material records. Assign board-only sanding, acceptance and packaging burdens directly to boards; do not allocate their burdens to residues that left at earlier stages. | corrim-northern-lumber-2025 |\n| al_joint | p_board | For an inseparable joint stage with genuine wood co-products, use measured oven-dry wood mass fractions within that stage. If every residue is waste, the board fraction is 1. Treat actual waste disposal as a board-production burden; exclude wastes, packaging, water and abrasive mass from the co-product denominator. Disclose stage outputs, causal limits and an economic sensitivity using measured revenues when physical shares may distort value. | corrim-northern-lumber-2025 |\n| al_physical | p_board | Keep a complete unallocated physical ledger and a separate allocated environmental-burden ledger. Preserve actual product/co-product/waste quantities and carbon/water balances; never multiply real co-product outputs or internal transfers by a burden share. Internal reuse is measured once with no external substitution credit. | corrim-northern-lumber-2025 |\n\n"
@@ -805,11 +805,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 30262
+              offset: 30288
               line: 385
               column: 1
             end:
-              offset: 30302
+              offset: 30328
               line: 385
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -825,15 +825,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43404"
+    - unit_id: "normative_43627"
       family: "validation"
       span:
         start:
-          offset: 43404
+          offset: 43627
           line: 433
           column: 1
         end:
-          offset: 45306
+          offset: 45529
           line: 444
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | Rule | source_ids |\n| --- | --- | --- | --- |\n| vr_reference | accepted_board | Require exactly one accepted_board product output linked to the 1 kg net reference with declared qualifiers and matched cp_mass denominator in both languages. Broad kitchenware identity cannot be switched to another product. | fda-food-code-2022 |\n| vr_flow | all inventory rows | Check flow type, physical species/material, treatment, medium/submedium, reference property/unit, supplier formulation and compatible background. Reject correction flows, particle-size substitutions and contradictory hard process/CAS restrictions. Applicable unresolved rows keep the dataset incomplete. |  |\n| vr_balance | p_board | Reconcile unallocated wood/water/carbon, package, abrasive and oil accounts with stock changes and uncertainty. Stage internal transfers match at both ends. Retain real co-product quantities after burden allocation; no lost moisture is invented as emissions. | usda-wood-handbook-2021; corrim-northern-lumber-2025 |\n| vr_air | pm25; pmcoarse; pmover10; water_vapour | Require actual consistent outlet/fugitive sampling or documented justified nonoccurrence, exclusive particulate bins and evidence for net evaporation. Do not turn PTE capacity, missing monitoring or a no-boiler route into measured zero emissions. | epa-sawmill-pte-2014 |\n| vr_recipe | p_board | Verify no glue, coating, wax or applied oil on the reference board. Discovering one stops applicability and requires actual ingredient/formulation collection and separately reviewed methodology. Machine oil is not food-contact finishing oil. |  |\n| vr_review | p_board | Report identity, measurement and source-scope coverage separately from methodological approval; candidate authorship or a CLI pass does not establish scientific review, food-contact certification or accepted mapping. |  |\n\n"
@@ -853,11 +853,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43404
+              offset: 43627
               line: 433
               column: 1
             end:
-              offset: 43426
+              offset: 43649
               line: 433
               column: 23
           text: "## 9. Validation Rules"
@@ -929,144 +929,144 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 30304
+          offset: 30330
           line: 387
           column: 1
         end:
-          offset: 30642
+          offset: 30668
           line: 387
           column: 339
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 30644
+          offset: 30670
           line: 389
           column: 1
         end:
-          offset: 31063
+          offset: 31089
           line: 389
           column: 420
     - pointer: "/allocation_rules/2"
       rule_id: "al_separate"
       identity_kind: "explicit"
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 31136
+          offset: 31162
           line: 393
           column: 1
         end:
-          offset: 31437
+          offset: 31463
           line: 393
           column: 302
     - pointer: "/allocation_rules/3"
       rule_id: "al_joint"
       identity_kind: "explicit"
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 31438
+          offset: 31464
           line: 394
           column: 1
         end:
-          offset: 31939
+          offset: 31965
           line: 394
           column: 502
     - pointer: "/allocation_rules/4"
       rule_id: "al_physical"
       identity_kind: "explicit"
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 31940
+          offset: 31966
           line: 395
           column: 1
         end:
-          offset: 32324
+          offset: 32350
           line: 395
           column: 385
     - pointer: "/validation_rules/0"
       rule_id: "vr_reference"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_43627"
       source_span:
         start:
-          offset: 43499
+          offset: 43722
           line: 437
           column: 1
         end:
-          offset: 43780
+          offset: 44003
           line: 437
           column: 282
     - pointer: "/validation_rules/1"
       rule_id: "vr_flow"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_43627"
       source_span:
         start:
-          offset: 43781
+          offset: 44004
           line: 438
           column: 1
         end:
-          offset: 44122
+          offset: 44345
           line: 438
           column: 342
     - pointer: "/validation_rules/2"
       rule_id: "vr_balance"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_43627"
       source_span:
         start:
-          offset: 44123
+          offset: 44346
           line: 439
           column: 1
         end:
-          offset: 44463
+          offset: 44686
           line: 439
           column: 341
     - pointer: "/validation_rules/3"
       rule_id: "vr_air"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_43627"
       source_span:
         start:
-          offset: 44464
+          offset: 44687
           line: 440
           column: 1
         end:
-          offset: 44787
+          offset: 45010
           line: 440
           column: 324
     - pointer: "/validation_rules/4"
       rule_id: "vr_recipe"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_43627"
       source_span:
         start:
-          offset: 44788
+          offset: 45011
           line: 441
           column: 1
         end:
-          offset: 45058
+          offset: 45281
           line: 441
           column: 271
     - pointer: "/validation_rules/5"
       rule_id: "vr_review"
       identity_kind: "explicit"
-      unit_id: "normative_43404"
+      unit_id: "normative_43627"
       source_span:
         start:
-          offset: 45059
+          offset: 45282
           line: 442
           column: 1
         end:
-          offset: 45304
+          offset: 45527
           line: 442
           column: 246
   diagnostics:
@@ -1096,86 +1096,86 @@ normative_context:
           column: 172
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 30262
+          offset: 30288
           line: 385
           column: 1
         end:
-          offset: 30302
+          offset: 30328
           line: 385
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 30304
+          offset: 30330
           line: 387
           column: 1
         end:
-          offset: 30642
+          offset: 30668
           line: 387
           column: 339
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 30644
+          offset: 30670
           line: 389
           column: 1
         end:
-          offset: 31063
+          offset: 31089
           line: 389
           column: 420
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 31136
+          offset: 31162
           line: 393
           column: 1
         end:
-          offset: 31437
+          offset: 31463
           line: 393
           column: 302
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 31438
+          offset: 31464
           line: 394
           column: 1
         end:
-          offset: 31939
+          offset: 31965
           line: 394
           column: 502
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_30262"
+      unit_id: "normative_30288"
       source_span:
         start:
-          offset: 31940
+          offset: 31966
           line: 395
           column: 1
         end:
-          offset: 32324
+          offset: 32350
           line: 395
           column: 385
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43404"
+      unit_id: "normative_43627"
       source_span:
         start:
-          offset: 43404
+          offset: 43627
           line: 433
           column: 1
         end:
-          offset: 43426
+          offset: 43649
           line: 433
           column: 23
 projection_metadata:
@@ -1185,5 +1185,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:caf5ddc016ffc8cda1a4109d39de51413d026d7b79e476cd6678671c5d8805ad"
-  generated_content_sha256: "sha256:e16ab3c5b284d7f1786056a725b44ae7fb7fdbb604d1f5ae5e7384fcd72e9d44"
+    sha256: "sha256:9efa9c667631bc06047f87da9927ee33b629541252dee3834926f2673312b39f"
+  generated_content_sha256: "sha256:f2a00d96e6bc974552628191fa015376025d63b4a6102f35b3556851ad9295be"

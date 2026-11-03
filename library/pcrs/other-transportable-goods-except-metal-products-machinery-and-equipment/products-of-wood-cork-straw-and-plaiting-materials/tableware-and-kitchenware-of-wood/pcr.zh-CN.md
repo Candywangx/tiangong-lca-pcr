@@ -225,9 +225,9 @@ content_maturity: authored_methodology
 
 ###### 单独收集的刨花（`shavings`）
 
-纯糖枫刨花，单独称重、测含水率并记录接收方。广义废木料身份包括此无涂层实物；披露源路线字段“原生生产路线”，向接收方/背景供方澄清适用性。不使用说明中城市废物比例。 实际刨花须保持未团聚。源CPC39282却表示团聚废木料；基于一致的广义木质实物身份条件保留，源方分类澄清及接收方/供方兼容性待决。不声称全部数据库元数据已验证，不推定团聚/处理。
+纯糖枫刨花，单独称重、测含水率并记录接收方。当前广义废木材定义为废物产生端收集的1 kg非团聚废木材，组成及处理方式未指定；CPC39283与非团聚状态相容。记录真实含水率、木质比例、任何胶黏剂/涂层/防腐剂/油污染，以及实际接收方/负荷提供方验收和数量基准。单纯收集不建立无害、可回收、清洁生物质燃料、已焚烧或替代产品收益。真实无涂层刨花仅有条件采用该实物身份，不表示全部供应方/负荷提供方要求已经解决。
 
-- 选定流: 废木料 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
+- 选定流: 废木材 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 单位组: `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则: 匹配生产期间的未分配实物交换总量除以验收净板质量 kg，只除一次；保留阶段记录及库存核对。
@@ -241,9 +241,9 @@ content_maturity: authored_methodology
 
 ###### 整块不合格糖枫板（`rejected_board`）
 
-检验不合格且实际按废木料外运的整块无涂层砧板。缺陷、净质量、含水率及接收方与边角料/刨花分列。单元内返工板不是额外边界输出；返工后验收的板只计入 accepted_board 一次。广义废木料身份需要与刨花相同的源路线澄清。 实际整块不合格板须保持未团聚。源CPC39282却表示团聚废木料；广义实物身份条件采用须源方澄清分类并核实接收方/供方兼容性，同时保留原生生产路线措辞债务。不虚构团聚或处理，也不声称全部源元数据已验证。
+检验不合格且实际按废木材外运的整块无涂层砧板。缺陷、净质量、含水率及接收方与边角料/刨花分列。单元内返工板不是额外边界输出；返工后验收的板只计入accepted_board一次。当前广义废木材定义为废物产生端收集的1 kg非团聚废物，组成/处理未指定，CPC39283与此相容。真实不合格板组成、含水率、污染及接收方/负荷提供方相容性须单独记录；收集不建立清洁燃料、无害、可回收或处理资格，也不建立替代产品收益。不推定团聚或处理。
 
-- 选定流: 废木料 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
+- 选定流: 废木材 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 单位组: `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则: 匹配生产期间的未分配实物交换总量除以验收净板质量 kg，只除一次；保留阶段记录及库存核对。
@@ -415,7 +415,7 @@ content_maturity: authored_methodology
 | rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | normalize_batch | all inventory rows | 对每行，q = A / B；A 为匹配期间按该行单位实测或计算的数量；B 为 cp_mass 在匹配期间跨越已包装工厂门口边界的验收净板质量 kg。q 为每 1 kg 参考流数量。负荷分配前保留实际未分配输出。 | A; B; cp_mass | 每 1 kg 参考流的行数量 |  |
-| moisture_balance | maple_blank; accepted_board; offcut; sawdust; shavings; rejected_board; sanding_dust; spent_belt; water_vapour | MC = 100*(wet_sample - dry_sample)/dry_sample；dry_wood = measured_wood_mass/(1 + MC/100)。混合废物先将实测非木质干物与干木质分开。每项平衡中，输入 = 输出 + 期末库存 - 期初库存 + 有记录残差；木质包括验收板、全部木质残料、废砂带残木及空气木颗粒。木料带入水 = 全部外运/储存流带出水 + 净蒸发 + 水库存变化。不得将不明残差命名为水、碳或颗粒排放。 | cp_material; cp_residue; cp_mass; cp_air | 含明确不确定性的绝干木质及水账 | usda-wood-handbook-2021 |
+| moisture_balance | maple_blank; accepted_board; offcut; sawdust; shavings; rejected_board; sanding_dust; spent_belt; water_vapour | MC = 100*(wet_sample - dry_sample)/dry_sample；dry_wood = measured_wood_mass/(1 + MC/100)。混合废物先将实测非木质干物与干木质分开。每项平衡中，输入 = 输出 + 期末库存 - 期初库存 + 有记录残差；木质包括验收板、全部木质残料、废砂带残木及空气木颗粒。木料带入水 = 真实外部外向流带出水 + 净蒸发 + 期末水库存 - 期初水库存 + 有记录水平衡残差。储存木料内留存水仅计入库存项一次；内部阶段转移核对后抵消，不是额外外部流出。不得将不明残差命名为水、碳或颗粒排放。 | cp_material; cp_residue; cp_mass; cp_air | 含明确不确定性的绝干木质及水账 | usda-wood-handbook-2021 |
 | electric_work | electricity | 电功 MJ = 实测 kWh * 3.6。阶段分表与可归属厂级供电核对；单位转换后才应用 normalize_batch。 | cp_energy | 期间 MJ，然后每 1 kg 参考流的 MJ |  |
 | particulate_bins | pm25; pmcoarse; pmover10 | 每个兼容测量范围：fine = PM2.5；coarse = PM10 - PM2.5；over10 = total_particulate - PM10。在不确定性内要求 total_particulate >= PM10 >= PM2.5 >= 0。各出口互斥段与另有证据的逸散只求和一次。拒绝不兼容干湿气、平均期间、可凝结物定义或检测截点；重新测量，不强行生成粒径段。 | cp_air | 互斥空气排放 kg，然后每 1 kg 参考流 | epa-sawmill-pte-2014 |
 | joint_burdens | p_board | 每一不可分联合阶段，f_board = dry_board_equivalent / sum(该阶段离开的真实木质共产品绝干当量，含砧板前体)。全部份额和为 1。砧板负荷 = f_board * joint_stage_burden + direct_board_stage_burden。保留真实实物输出；分配仅改变联合负荷归属。使用逐阶段实测绝干质量，不使用最终阶段湿质量。 | cp_material; cp_residue; cp_energy | 与实物账分开的分配负荷账 | corrim-northern-lumber-2025 |
