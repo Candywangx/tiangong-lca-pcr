@@ -50,3 +50,6 @@ Read method notes only when the active workflow or PCR topic needs them:
 ## Prompts
 
 Prompt files are thin entrypoints for agent tools. They should point agents to workflows and contracts instead of duplicating workflow content.
+
+Material reusable modules have a separate owner contract at
+`../../docs/method-module-contract.md`; they do not inherit category-PCR publication semantics.
