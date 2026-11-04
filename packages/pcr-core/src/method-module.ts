@@ -32,7 +32,7 @@ export function readRegularBytes(filename: string): Buffer {
   const fd = openSync(absolute, constants.O_RDONLY | constants.O_NOFOLLOW);
   try { if (!fstatSync(fd).isFile()) fail(`not a regular file: ${filename}`); return readFileSync(fd); } finally { closeSync(fd); }
 }
-export function readRegular(filename: string): string { return readRegularBytes(filename).toString('utf8'); }
+export function readRegular(filename: string): string { return new TextDecoder('utf-8', { fatal: true }).decode(readRegularBytes(filename)); }
 export interface Requirement { id: string; applicability: string; check_kind: string; sources: string[]; canonical_markdown: string; translation_markdown: string }
 export interface Projection {
   schema_version: 1; kind: 'method_module_projection'; module_id: string; module_version: string;
@@ -40,7 +40,7 @@ export interface Projection {
   canonical_context: string; translation_context: string; requirements: Requirement[];
   manifest: Record<string, unknown>; source_bindings: Record<string, unknown>; review: Record<string, unknown>;
 }
-export interface ModulePackage { schema_version: 1; kind: 'method_module_package'; payload_sha256: string; payload: Projection }
+export interface ModulePackage { schema_version: 1; kind: 'method_module_package'; payload_sha256: string; payload: Projection & { authored_files: Record<string, string> } }
 export interface Expectations { id: string; version: string; artifact_sha256: string; review_basis_sha256: string; source_bindings_sha256: string; applicability: 'product-environmental-footprint' }
 function sections(markdown: string): { context: string; units: { id: string; applicability: string; check_kind: string; sources: string[]; markdown: string }[] } {
   const matches = [...markdown.matchAll(/^## (PEF-\d{2}) — .+$/gm)];
@@ -163,7 +163,8 @@ export function verifyModulePackage(bytes: string, expected: Expectations): Proj
   return projected;
 }
 export function exportModule(directory: string): string {
-  const projection = checkModule(directory), files = readModule(directory);
+  const files = readModule(directory), projection = projectModule(files);
+  if (readRegular(path.join(directory, 'structured.yaml')) !== projectionYaml(projection)) fail('stale or substituted structured projection');
   const payload = { ...projection, authored_files: files };
   return json({ schema_version: 1, kind: 'method_module_package', payload_sha256: sha256(json(payload)), payload });
 }

@@ -39,6 +39,7 @@ test('localized module reader rejects traversal, symbolic files and stale projec
   writeFileSync(path.join(dir, 'structured.yaml'), 'wrong'); assert.throws(() => checkModule(dir), /stale/);
   symlinkSync(path.join(dir, 'module.en-US.md'), path.join(dir, 'linked.md')); assert.throws(() => readRegular(path.join(dir, 'linked.md')), /symbolic/);
   assert.throws(() => readRegular(dir), /regular/);
+  writeFileSync(path.join(dir, 'invalid-utf8.md'), Buffer.from([0xff])); assert.throws(() => readRegular(path.join(dir, 'invalid-utf8.md')), /encoded data/);
   symlinkSync(dir, path.join(root, 'library/modules/environmental-footprint/linked')); assert.throws(() => findModules(root), /symbolic module/);
 }));
 test('missing applicability, source locator, duplicate ID or translation context fails closed', () => {
@@ -86,6 +87,8 @@ test('CLI exports only explicitly diagnostic candidates, refuses overwrite and p
   assert.equal(call('--help').status, 0); assert.equal(call('check').status, 0);
   assert.equal(call('sync', '--module', TARGET).status, 0); assert.equal(checkModule(dir).requirements.length, 20);
   assert.equal(call('export', '--module', TARGET, '--output', output).status, 1);
+  symlinkSync(dir, path.join(root, 'module-output-alias'));
+  assert.equal(call('export', '--module', TARGET, '--output', path.join(root, 'module-output-alias/package.json'), '--allow-unreviewed').status, 1);
   assert.equal(call('export', '--module', TARGET, '--output', output, '--allow-unreviewed').status, 0); assert.match(readFileSync(output, 'utf8'), /method_module_package/);
   assert.equal(call('export', '--module', TARGET, '--output', output, '--allow-unreviewed').status, 1);
   for (const args of [[], ['unknown'], ['check', '--unknown'], ['check', '--module'], ['sync', '--source-packet', 'p'], ['check', '--output', 'x'], ['check', '--allow-unreviewed'], ['export']]) assert.equal(call(...args).status, 1);

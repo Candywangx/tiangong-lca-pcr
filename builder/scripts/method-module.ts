@@ -1,4 +1,4 @@
-import { mkdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { realpathSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { checkModule, exportModule, findModules, json, moduleDirectory, projectModule, projectionYaml, readModule, sha256, verifyOriginals, verifyFactorSources } from '../../packages/pcr-core/src/method-module.ts';
@@ -32,9 +32,10 @@ export function main(args: string[]): void {
       const projection = checkModule(directory);
       if (command === 'export') {
         if (!unreviewed && (projection.review['records'] as unknown[]).length !== 3) throw new Error('Independent source/translation/semantic review incomplete; --allow-unreviewed creates a candidate diagnostic artifact only');
-        const bytes = exportModule(directory), output = path.resolve(options['--output']!);
+        const bytes = exportModule(directory), requested = path.resolve(options['--output']!);
+        const output = path.join(realpathSync(path.dirname(requested)), path.basename(requested));
         if (output.startsWith(`${directory}${path.sep}`)) throw new Error('Export must be outside canonical module directory');
-        mkdirSync(path.dirname(output), { recursive: true }); writeFileSync(output, bytes, { flag: 'wx' });
+        writeFileSync(output, bytes, { flag: 'wx' });
         results.push({ module: target, output, artifact_sha256: sha256(bytes), source_bindings_sha256: projection.source_sha256['source-bindings.json'], review_basis_sha256: projection.review_basis_sha256, candidate_diagnostic: unreviewed });
       } else {
         results.push({ module: target, conformance: 'pass', independent_reviews: (projection.review['records'] as unknown[]).length, review_basis_sha256: projection.review_basis_sha256, verified_originals: options['--source-packet'] ? verifyOriginals(projection, path.resolve(options['--source-packet'])) : 'not-checked', verified_factor_sources: options['--ef-directory'] ? verifyFactorSources(projection, path.resolve(options['--ef-directory'])) : 'not-checked', study_qualification: 'not-assessed' });

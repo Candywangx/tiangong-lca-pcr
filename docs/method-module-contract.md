@@ -95,7 +95,8 @@ selected evidence root; file/descendant symlinks are rejected.
 Export requires all three independent review dimensions unless the explicit
 `--allow-unreviewed` diagnostic flag is used. Diagnostic output is candidate evidence
 and fails verified consumer adoption. Export uses a new output file outside the
-canonical module directory, fails if it already exists, and prints the exact artifact,
+canonical module directory with an existing parent directory, rejects physical
+output-parent aliases back into the canonical module, fails if the file already exists, and prints the exact artifact,
 source-bindings and review-basis SHA-256 values. No private workspace dependency,
 credentials or original PDFs/ZIPs enter the artifact.
 
