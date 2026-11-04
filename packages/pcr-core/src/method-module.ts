@@ -29,10 +29,20 @@ function parseYaml(source: string): unknown {
 export function readRegularBytes(filename: string): Buffer {
   const absolute = path.resolve(filename); let current = path.parse(absolute).root;
   for (const part of absolute.slice(current.length).split(path.sep)) { current = path.join(current, part); if (lstatSync(current).isSymbolicLink()) fail(`symbolic path: ${current}`); }
-  const fd = openSync(absolute, constants.O_RDONLY | constants.O_NOFOLLOW);
-  try { if (!fstatSync(fd).isFile()) fail(`not a regular file: ${filename}`); return readFileSync(fd); } finally { closeSync(fd); }
+  const before = lstatSync(absolute);
+  if (!before.isFile()) fail(`not a regular file: ${filename}`);
+  // POSIX nonblocking open prevents a regular-file-to-FIFO race from blocking before fstat.
+  // Windows exposes neither flag and has no filesystem FIFO; retain pre/open descriptor checks.
+  const guardedFlags = process.platform === 'win32' ? 0 : constants.O_NOFOLLOW | constants.O_NONBLOCK;
+  const fd = openSync(absolute, constants.O_RDONLY | guardedFlags);
+  try {
+    const opened = fstatSync(fd);
+    if (!opened.isFile()) fail(`not a regular file: ${filename}`);
+    if (before.dev !== opened.dev || before.ino !== opened.ino) fail(`file changed during open: ${filename}`);
+    return readFileSync(fd);
+  } finally { closeSync(fd); }
 }
-export function readRegular(filename: string): string { return new TextDecoder('utf-8', { fatal: true }).decode(readRegularBytes(filename)); }
+export function readRegular(filename: string): string { return new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(readRegularBytes(filename)); }
 export interface Requirement { id: string; applicability: string; check_kind: string; sources: string[]; canonical_markdown: string; translation_markdown: string }
 export interface Projection {
   schema_version: 1; kind: 'method_module_projection'; module_id: string; module_version: string;

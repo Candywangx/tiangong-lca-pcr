@@ -89,6 +89,17 @@ hashes/sizes and source URLs. Factor-source check verifies the 25 original XML
 hashes, UUIDs, versions, quantity references, units, geography and factor counts,
 plus all 16 original config scalar values and labels. These checks validate
 represented source facts, not scientific interpretation or completeness of a study.
+Text decoding rejects malformed UTF-8 and retains a BOM, so adding it changes the
+exact source hash, review basis and portable bytes. The reader checks regular-file
+type before open and on the opened descriptor, comparing device/inode identity.
+POSIX opens include `O_NOFOLLOW | O_NONBLOCK`, so a replacement FIFO cannot block
+before descriptor inspection. Windows does not expose those flags; its ordinary
+file read retains the pre-open and descriptor checks. The regression uses actual
+POSIX FIFOs (both pre-existing and substituted immediately before open) in bounded
+child processes; Windows exercises a nonregular directory rather than claiming
+POSIX FIFO coverage. All fixture paths and children are released after the test.
+These choices follow the pinned [Node 24.19 TextDecoder contract](https://github.com/nodejs/node/blob/v24.19.0/doc/api/util.md#new-textdecoderencoding-options)
+and [filesystem flag/platform contract](https://github.com/nodejs/node/blob/v24.19.0/doc/api/fs.md#file-open-constants).
 Root symlink aliases such as macOS `/tmp` are canonicalized at the explicitly
 selected evidence root; file/descendant symlinks are rejected.
 

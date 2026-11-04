@@ -7,7 +7,7 @@ import { spawnSync } from 'node:child_process';
 import { checkModule, exportModule, findModules, json, moduleDirectory, projectModule, projectionYaml, readModule, readRegular, sha256, verifyModulePackage, verifyOriginals, verifyFactorSources, type Expectations } from '../../packages/pcr-core/src/method-module.ts';
 
 const TARGET = 'library/modules/environmental-footprint/pef-2021-ef31';
-const source = readModule(path.resolve(TARGET));
+const source: Record<string, string> = { ...readModule(path.resolve(TARGET)), 'review.json': json({ schema_version: 1, records: [], limitations: ['Synthetic unreviewed test input; actual source reviews are not fixture authority.'] }) };
 function withModule(run: (root: string, dir: string, files: Record<string, string>) => void): void {
   const root = mkdtempSync(path.join(realpathSync(tmpdir()), 'pcr-method-test-')), dir = path.join(root, TARGET), files = { ...source };
   mkdirSync(dir, { recursive: true });
@@ -112,4 +112,29 @@ test('fresh original packet verification distinguishes exact bytes from changed 
   const packet = sources.map((s, i) => { const bytes = `Synthetic source ${i}, not an authentic publication`; const filename = `source-${i}.txt`; s['sha256'] = sha256(bytes); s['bytes'] = Buffer.byteLength(bytes); writeFileSync(path.join(root, filename), bytes); return { sha256: s['sha256'], official_url: s['url'], local_file: filename }; });
   const packetPath = path.join(root, 'packet.json'); writeFileSync(packetPath, json({ sources: packet }));
   assert.equal(verifyOriginals(p, packetPath), 6); writeFileSync(path.join(root, 'source-0.txt'), 'substituted'); assert.throws(() => verifyOriginals(p, packetPath), /bytes mismatch/);
+}));
+test('BOM changes exact source hash, review basis and portable bytes instead of being silently stripped', () => withModule((_root, dir, files) => {
+  const original = projectModule(files), english = path.join(dir, 'module.en-US.md');
+  writeFileSync(english, Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), readFileSync(english)]));
+  const captured = readModule(dir), changed = projectModule(captured);
+  assert.equal(captured['module.en-US.md']!.charCodeAt(0), 0xfeff);
+  assert.equal(changed.source_sha256['module.en-US.md'], sha256(readFileSync(english)));
+  assert.notEqual(changed.source_sha256['module.en-US.md'], original.source_sha256['module.en-US.md']);
+  assert.notEqual(changed.review_basis_sha256, original.review_basis_sha256);
+  assert.throws(() => exportModule(dir), /stale/);
+  writeFileSync(path.join(dir, 'structured.yaml'), projectionYaml(changed));
+  const pkg = JSON.parse(exportModule(dir)) as { payload: { authored_files: Record<string, string> } };
+  assert.deepEqual(Buffer.from(pkg.payload.authored_files['module.en-US.md']!, 'utf8'), readFileSync(english));
+}));
+test('nonregular canonical files and replacement between precheck/open reject in bounded child processes', () => withModule((root) => {
+  const fixture = path.resolve('builder/lib/fixtures/method-module-nonregular.ts');
+  for (const mode of ['preexisting', 'replaced']) {
+    const filename = path.join(root, `fifo-${mode}`);
+    const result = spawnSync(process.execPath, [fixture, filename, mode], { encoding: 'utf8', timeout: 3000 });
+    assert.equal(result.error, undefined, `reader must not hang: ${String(result.error)}`);
+    assert.equal(result.status, 0, result.stderr);
+    const report = JSON.parse(result.stdout) as { rejected: boolean; case: string; replaced: boolean };
+    assert.equal(report.rejected, true); assert.equal(report.replaced, mode === 'replaced');
+    assert.equal(report.case, process.platform === 'win32' ? 'nonregular-directory' : 'actual-posix-fifo');
+  }
 }));
