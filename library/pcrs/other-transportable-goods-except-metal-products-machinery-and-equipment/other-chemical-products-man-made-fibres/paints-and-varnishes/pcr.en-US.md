@@ -55,7 +55,7 @@ The reference binding is conditional on the complete-object identity and actual-
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | mu_reference_mass | Reference product output | Mass | kg | Normalize the packaged saleable product to 1 kg net coating, excluding packaging mass. |
-| mu_material_inputs | Formulation ingredients, cleaning agents, packaging, wastes, and wastewater | Mass | kg | Record wet mass as received; additionally record dry matter, solids, or concentration when required to interpret the material. |
+| mu_material_inputs | Formulation ingredients, cleaning agents, packaging, wastes, and wastewater | Mass | kg | Record wet mass as received; additionally record dry matter, solids, or concentration when required to interpret the material. Where solids/nonvolatile (NV) content is used, declare the actual measurement method, test state and conditions, and compatibility with the supplied formulation and supplier reference. Keep whole wet mass, NV fraction, carrier water and retained volatile liquid in separate accounts; retained water, ethanol or other volatile carrier is not NV solids. An operational residue reading requires its retained-carrier/interference uncertainty to be disclosed; it does not establish an assumed cure or yield. |
 | mu_liquid_volume | Metered water, solvent, or liquid ingredients when mass is not directly measured | Volume and density | m3 and kg/m3 | Convert volume to mass using a batch- and temperature-representative measured density; retain the raw volume and density. |
 | mu_electricity | Purchased or generated electricity | Energy | kWh | Record meter or allocated electricity and identify voltage level and supply dataset. |
 | mu_thermal_energy | Fuel or supplied heat used by a thermal cooking route | Net calorific value or energy | MJ | Report fuel mass or volume and net calorific value, or directly metered supplied heat; do not substitute electricity without disclosure. |
@@ -105,7 +105,7 @@ Expand aqueous and thermal exchanges only for the real configuration. Keep solid
 
 ### Identity and emission-use conditions
 
-Verify medium-voltage electricity against actual voltage, region and provider; a previously unresolvable identifier is not unit evidence. Confirm manufacturing rejects and cleaning residue individually by composition, form and treatment gate rather than using a flow described as application overspray/sludge/spent filters. The wastewater UUID applies only to total liquid-stream mass at generation before secondary/tertiary treatment, not treated effluent or direct elementary discharge. Density, constituents, treatment acceptance and provider need actual evidence; no generic kg-to-m3 substitution is allowed.
+Verify medium-voltage electricity against actual voltage, region and provider; a previously unresolvable identifier is not unit evidence. Confirm manufacturing rejects and cleaning residue individually by composition, form and treatment gate rather than using a flow described as application overspray/sludge/spent filters. The wastewater UUID is only a conditional physical locator for whole liquid-stream mass if source-owner/provider and actual receiving evidence establish the intended untreated handover interface. Its native Secondary/Tertiary Treatment label leaves that interface unestablished by the label alone: it proves neither the pre-treatment generation gate nor an already-treated effluent state. Record actual collection stage, composition, density, treatment acceptance and compatible provider before using the binding; otherwise verify a different compatible interface. It is not a direct elementary discharge; no generic kg-to-m3 substitution is allowed.
 
 Xylene on each VOC card is only a conditional individual substance exchange; expand other real emitted substances by species, gas/water phase, receiving compartment and post-control quantity. Reconcile their sum with total-VOC QA without adding the sum indicator as another release. The titanium-dioxide particulate card likewise cannot represent all dust; confirm particle size, composition and air compartment. In the VOC balance, product retention, recovery, shipped waste, control destruction and stock are mutually exclusive fates. Capture alone is not a final fate: do not deduct it again when already assigned to recovery/waste/stock. Record real combustion/control products separately; destroyed VOC is not disappearance of total mass. Total VOC, COD, closure residuals or historical factors cannot fabricate speciated quantities.
 
@@ -302,6 +302,8 @@ This card applies only when actual records confirm the single named physical or 
 ###### Bulk coating released to filling (`fd_bulk_output`)
 
 This intermediate closes the formulation process and transfers to filling.
+
+Retain 0.90–1.00 kg released bulk coating per kg total formulation inputs only as a provisional QA diagnostic from matched raw batch quantities. The denominator is total formulation input mass, not process output or final net product. This is a reasoned estimate to flag unreconciled losses, without an external measured population range; replace it with site-specific yield history, investigate rather than clip outliers, and never use it as a plant default or mandatory acceptance threshold. It is outside typed inventory amount/ranges and does not alter the card or Section 8 single net-product normalization.
 This card applies only when actual records confirm the single named physical or chemical object; record other actual constituents or routes individually, without combining them.
 
 - Selected flow: Bulk coating preparation of the declared configuration
@@ -314,15 +316,6 @@ This card applies only when actual records confirm the single named physical or 
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: cp_batch_outputs
 - Sources: mass-balance-identity
-- Range: Provisional batch-yield guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.90
-  - Upper: 1.00
-  - Unit: kg/kg total formulation inputs
-  - Basis: Reasoned estimate used only to flag unreconciled losses; replace with site-specific yield history.
-  - Basis kind: Material input (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-  - Sources:
 
 ##### Waste flows
 
@@ -684,7 +677,7 @@ This card applies only when actual records confirm the single named physical or 
 
 ###### Wastewater (`cw_wastewater`)
 
-Characterize wastewater solids, organic content, and destination where data permit.
+Characterize actual wastewater solids, organic content and destination. The native Secondary/Tertiary Treatment label alone does not establish this UUID as the intended untreated handover. Use it only as a conditional whole-stream Mass/kg physical locator if source-owner/provider and actual receiving-interface evidence confirm that untreated state; until then the interface remains pending. Do not infer already-treated effluent, treatment technology, receiving permission or density. Collect actual composition, collection/treatment gate, density and acceptance/provider scope; otherwise verify a different compatible interface.
 
 - Selected flow: Wastewater; UUID bc2cd1d5-69d5-42d7-818f-38a69ebb18ef
 - Flow property / unit: Mass / kg
@@ -770,7 +763,7 @@ The collection and calculation rules are governed by the complete actual-configu
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_batch_materials | formulation_dispersion | formulation ingredients | batch issue and return record | material ID, lot, gross issue, return, density, solids | ERP issue and calibrated scale; volume conversion only with measured density; raw cohort aggregation: sum net issues by material and product family | kg | each batch | representative reporting year | reporting plant | per 1 kg reference flow | purchase ledger, batch sheet, scale calibration |
+| cp_batch_materials | formulation_dispersion | formulation ingredients | batch issue and return record | material ID, lot, gross issue, return, density, solids; actual solids/NV definition and measurement method; test state and conditions; supplier/formulation reference compatibility; separate carrier-water and retained-volatile-liquid contents; operational residue/interference uncertainty | ERP issue and calibrated scale; volume conversion only with measured density; obtain actual compatible solids/NV method and condition evidence, keeping the whole wet issue, NV fraction, water and retained volatile carrier separate rather than assuming carrier removal or curing; raw cohort aggregation: sum net issues by material and product family | kg | each batch | representative reporting year | reporting plant | per 1 kg reference flow | purchase ledger, batch sheet, scale calibration; actual method/test-state records, supplier/formulation compatibility and residue/interference uncertainty evidence |
 | cp_formulation_energy | formulation_dispersion | electricity | meter and equipment log | meter start, meter end, runtime, load, product family | submeter; otherwise reconciled site meter with causal allocation; raw cohort aggregation: sum direct readings; allocate documented shared remainder | kWh | batch or monthly | representative reporting year | reporting plant | per 1 kg reference flow | meter calibration, energy reconciliation |
 | cp_batch_outputs | formulation_dispersion | bulk output and residue | batch yield record | released mass, retained sample, rework, residue, stock change | calibrated scale and batch reconciliation; raw cohort aggregation: mass-weighted aggregate by product family | kg | each batch | representative reporting year | reporting plant | per 1 kg reference flow | release record, waste record, mass balance |
 | cp_process_emissions | formulation_dispersion | VOC and particulate release | monitoring and material balance | solvent charged, solvent retained, recovery, waste, capture, control, measured concentration, gas flow ; actual dry mass H, species/size, f_loss/G evidence, hood/duct/device topology, matched bypass/inlet/outlet PM and gas flow, C, D, recovered-solids wet/dry masses and destination | compliant monitoring or documented mass balance; raw cohort aggregation: sum pollutant mass after control; keep routes separate ; for modelled PM establish pre-capture G, capture-to-inlet C and captured-stream removal D, retain uncaptured and treated-outlet branches on matched species/size/period, and retain measured total-release alternatives; do not apply efficiencies again to already controlled amounts | kg | campaign and reporting period | representative reporting year | reporting plant and emission point | per 1 kg reference flow | monitoring report, control log, balance reconciliation ; capture-network diagram, paired-stream measurements, dry-basis/generation evidence, recovered-solids and destination/provider ledgers |
@@ -799,7 +792,7 @@ The collection and calculation rules are governed by the complete actual-configu
 | dq_technology | Foreground route | Data shall represent the declared water-borne, solvent-borne, powder, one-component, multi-component, or thermal route and its actual control technology. | process description, formulation family, equipment and control records |
 | dq_time | Foreground data | Use a representative continuous twelve-month period where available; explain shutdowns, campaigns, abnormal batches, and extrapolation. | dated batch, meter, purchase, waste, and production records |
 | dq_geography | All datasets | Identify plant country or region and use representative electricity, fuel, transport, water, and waste-treatment datasets. | dataset metadata and supplier or utility records |
-| dq_completeness | Material and emission inventory | Reconcile mass and energy, list omissions and cut-offs, and retain hazardous or environmentally significant constituents and releases. | balance checks, omission register, monitoring reports |
+| dq_completeness | Material and emission inventory | Reconcile mass and energy, list omissions and cut-offs, and retain hazardous or environmentally significant constituents and releases. Before completing any solids/NV-dependent quantitative conversion, require the actual declared method/test state/conditions and compatible supplier/formulation basis; keep whole wet mass and retained water/ethanol/other volatile-carrier contents separate from NV solids. Retain operational residue/interference uncertainty explicitly; an unknown or unmatched basis blocks the dependent quantitative completion and cannot be replaced by assumed cure, yield or carrier removal. | balance checks, omission register, monitoring reports; actual solids/NV method and condition evidence, supplier/formulation compatibility, retained-carrier/interference uncertainty and pending-basis register |
 | dq_source_priority | Secondary data | Prefer official standards, PCRs, regulations, official datasets and institutional reports, then peer-reviewed literature, then industry documents; label reasoned estimates as provisional. | source register and estimate flags |
 | dq_uncertainty | Estimates and allocation | Quantify or qualitatively assess uncertainty for provisional estimates, secondary substitutions, allocation, and service conversion. | sensitivity results and data-quality notes |
 
@@ -878,7 +871,7 @@ These original family-level ranges are separate from final reference normalizati
   - Upper: 0.02
   - Unit: kg VOC/kg solvent charged
   - Basis: AP-42 section 6.4.1 reports 1–2% solvent loss even under well-controlled paint-manufacturing conditions. This prose observation is separate from Table 6.4-1 uncontrolled product-based factors; it is not a current default, a varnish-route factor or a species-level release fraction.
-  - Basis kind: Material input (`process_output`)
+  - Denominator: actual material input named in the unit; this prose diagnostic is not a process-output basis token.
   - Evidence kind: External source (`external_source`)
   - Sources: us-epa-ap42-6-4-1995
 
@@ -890,7 +883,7 @@ These original family-level ranges are separate from final reference normalizati
   - Upper: 0.01
   - Unit: kg particulate/kg dry pigment handled
   - Basis: Historical AP-42 estimate for uncontrolled particulate emissions; not a current default or regulatory factor.
-  - Basis kind: Material input (`process_output`)
+  - Denominator: actual material input named in the unit; this prose diagnostic is not a process-output basis token.
   - Evidence kind: External source (`external_source`)
   - Sources: us-epa-ap42-6-4-1995
 

@@ -1174,7 +1174,7 @@ dataset_production:
         - jrc-ilcd-2010
     - id: c_physical
       applies_to: "all physical gates"
-      rule: "For each gate keep opening physical stocks + external receipts + real reaction uptake = closing stocks + external exits + measured species releases. Manufacturing exits include Q once; accepted closing FG is inside Q and not a second manufacturing output. FG gate: opening released FG + paired Q + actual received returns = closing FG + gross physical shipments + actual service rejects, with internal service transfers paired. Combine gates by cancelling internal Q and other paired movements. Reconcile total mass and each relevant Au/Ag/Cu/other-element independently from species/reaction-water evidence; disclose uncertainty and do not force closure."
+      rule: "For each gate keep opening physical stocks + external receipts + real reaction uptake = closing stocks + external exits + measured species releases. Manufacturing exits include Q once; accepted closing FG is inside Q and not a second manufacturing output. FG gate on full actual as-received mass: opening released FG + paired Q + actual received returns + FG_in = closing FG + gross physical shipments + actual service rejects + FG_out, with internal service transfers paired. FG_in and FG_out are independently measured actual postrelease material/water/species or phase-transfer legs crossing this same gate, including genuine reaction uptake or vapour/removed-liquid exits when present; exclude anything already in returns, shipment, rejects or another term on that same side. Internal phase redistribution is not an external mass source. Keep dry-metal and fine-Au companion accounts separate from this whole-mass gate. Add each actual missing atomic interface and raw service/state record before claiming completeness; no wet operation, reaction yield or phase loss is defaulted. Combine gates by cancelling internal Q and other paired movements. Reconcile total mass and each relevant Au/Ag/Cu/other-element independently from species/reaction-water evidence; disclose uncertainty and do not force closure."
       inputs:
         - cp_origin
         - cp_outputs_forming
@@ -1241,7 +1241,7 @@ validation_rules:
       - jrc-ilcd-2010
   - rule_id: v_balances
     applies_to: "physical and packaging"
-    rule: "Check every gate including FG and combined transfers, whole mixture versus partitions, element and water/species evidence independently, every packaging state/return/fate and complete WIP/FG inherited vectors. Unknown relationships remain explicit review items; do not force a numerical pass."
+    rule: "Check every gate including the complete as-received FG equality in c_physical with independently measured non-overlapping FG_in/FG_out postrelease material/water/species/phase legs and their actual atomic interfaces. Keep dry-metal/fine-Au subaccounts separate. Check combined transfers, whole mixture versus partitions, element and water/species evidence independently, every packaging state/return/fate and complete WIP/FG inherited vectors. Unknown relationships remain explicit review items; do not force a numerical pass."
     source_ids:
       - gjsci-components-2013
       - brepohl-refining
@@ -1292,7 +1292,7 @@ data_sources:
     used_for: "Attributional context, real/virtual subdivision, exchange-specific determining physical causality then justified residual common-gate market value; no industrial recipe or default waste credit"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:46508256a9f23e4ff0562781fa69c095bfafefe581e193a3fcbc80adf2c1d230"
+  source_sha256: "sha256:d491542fddee226c8c79f71925f51d8b7ba618a3a8ca28a04e264a4089c4b2d8"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_7900"
@@ -1391,18 +1391,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_69650"
+    - unit_id: "normative_70307"
       family: "validation"
       span:
         start:
-          offset: 69650
+          offset: 70307
           line: 743
           column: 1
         end:
-          offset: 71662
+          offset: 72553
           line: 754
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | application | Verify the complete covered alloy/route/source/form conjunction and exclusions including 39332/39333; source specification/assay and actual receiving conditions are required. | `un-cpc3-2025`; `gjsci-components-2013`; `mw-terms-2023` |\n| v_identity | each UUID | Check native Product/Waste/Elementary type, all name components/comments/synonyms, CAS, grade/route/form/geography/medium and every property. Use exact referenced property/unit-group chain and real reference unit, no latest substitution. Reject hard identity contradictions even if classification matches; retain all restrictions in the consuming context. | `mw-terms-2023` |\n| v_basis | Q and load | Confirm unique first release, separate Au/dry/whole mass, no closing-FG double production, c_units and attribution before the only c_normalise, original Q_c service basis, and retained Q-zero loads. | `jrc-ilcd-2010` |\n| v_balances | physical and packaging | Check every gate including FG and combined transfers, whole mixture versus partitions, element and water/species evidence independently, every packaging state/return/fate and complete WIP/FG inherited vectors. Unknown relationships remain explicit review items; do not force a numerical pass. | `gjsci-components-2013`; `brepohl-refining`; `jrc-ilcd-2010` |\n| v_receiver | receipt endpoint | Missing current receiver authorisation/acceptance, incompatible transfer status, oil/hazard/low-grade rejection or missing decisive assay prevents use of the actual receiving endpoint. Keep held material and burden, not fictional refining output or coverage. | `mw-scrap`; `mw-terms-2023` |\n| v_review | data package | Run finite measurement, source/content fingerprint and Schema checks; separately assess scientific applicability and translation. Engineering success is not scientific/translation review, accepted classification mapping or publication. | `jrc-ilcd-2010` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | application | Verify the complete covered alloy/route/source/form conjunction and exclusions including 39332/39333; source specification/assay and actual receiving conditions are required. | `un-cpc3-2025`; `gjsci-components-2013`; `mw-terms-2023` |\n| v_identity | each UUID | Check native Product/Waste/Elementary type, all name components/comments/synonyms, CAS, grade/route/form/geography/medium and every property. Use exact referenced property/unit-group chain and real reference unit, no latest substitution. Reject hard identity contradictions even if classification matches; retain all restrictions in the consuming context. | `mw-terms-2023` |\n| v_basis | Q and load | Confirm unique first release, separate Au/dry/whole mass, no closing-FG double production, c_units and attribution before the only c_normalise, original Q_c service basis, and retained Q-zero loads. | `jrc-ilcd-2010` |\n| v_balances | physical and packaging | Check every gate including the complete as-received FG equality in c_physical with independently measured non-overlapping FG_in/FG_out postrelease material/water/species/phase legs and their actual atomic interfaces. Keep dry-metal/fine-Au subaccounts separate. Check combined transfers, whole mixture versus partitions, element and water/species evidence independently, every packaging state/return/fate and complete WIP/FG inherited vectors. Unknown relationships remain explicit review items; do not force a numerical pass. | `gjsci-components-2013`; `brepohl-refining`; `jrc-ilcd-2010` |\n| v_receiver | receipt endpoint | Missing current receiver authorisation/acceptance, incompatible transfer status, oil/hazard/low-grade rejection or missing decisive assay prevents use of the actual receiving endpoint. Keep held material and burden, not fictional refining output or coverage. | `mw-scrap`; `mw-terms-2023` |\n| v_review | data package | Run finite measurement, source/content fingerprint and Schema checks; separately assess scientific applicability and translation. Engineering success is not scientific/translation review, accepted classification mapping or publication. | `jrc-ilcd-2010` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1419,11 +1419,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 69650
+              offset: 70307
               line: 743
               column: 1
             end:
-              offset: 69672
+              offset: 70329
               line: 743
               column: 23
           text: "## 9. Validation Rules"
@@ -1573,79 +1573,79 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_69650"
+      unit_id: "normative_70307"
       source_span:
         start:
-          offset: 69745
+          offset: 70402
           line: 747
           column: 1
         end:
-          offset: 70006
+          offset: 70663
           line: 747
           column: 262
     - pointer: "/validation_rules/1"
       rule_id: "v_identity"
       identity_kind: "explicit"
-      unit_id: "normative_69650"
+      unit_id: "normative_70307"
       source_span:
         start:
-          offset: 70007
+          offset: 70664
           line: 748
           column: 1
         end:
-          offset: 70409
+          offset: 71066
           line: 748
           column: 403
     - pointer: "/validation_rules/2"
       rule_id: "v_basis"
       identity_kind: "explicit"
-      unit_id: "normative_69650"
+      unit_id: "normative_70307"
       source_span:
         start:
-          offset: 70410
+          offset: 71067
           line: 749
           column: 1
         end:
-          offset: 70653
+          offset: 71310
           line: 749
           column: 244
     - pointer: "/validation_rules/3"
       rule_id: "v_balances"
       identity_kind: "explicit"
-      unit_id: "normative_69650"
+      unit_id: "normative_70307"
       source_span:
         start:
-          offset: 70654
+          offset: 71311
           line: 750
           column: 1
         end:
-          offset: 71051
+          offset: 71942
           line: 750
-          column: 398
+          column: 632
     - pointer: "/validation_rules/4"
       rule_id: "v_receiver"
       identity_kind: "explicit"
-      unit_id: "normative_69650"
+      unit_id: "normative_70307"
       source_span:
         start:
-          offset: 71052
+          offset: 71943
           line: 751
           column: 1
         end:
-          offset: 71376
+          offset: 72267
           line: 751
           column: 325
     - pointer: "/validation_rules/5"
       rule_id: "v_review"
       identity_kind: "explicit"
-      unit_id: "normative_69650"
+      unit_id: "normative_70307"
       source_span:
         start:
-          offset: 71377
+          offset: 72268
           line: 752
           column: 1
         end:
-          offset: 71660
+          offset: 72551
           line: 752
           column: 284
   diagnostics:
@@ -1687,14 +1687,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_69650"
+      unit_id: "normative_70307"
       source_span:
         start:
-          offset: 69650
+          offset: 70307
           line: 743
           column: 1
         end:
-          offset: 69672
+          offset: 70329
           line: 743
           column: 23
 projection_metadata:
@@ -1704,5 +1704,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:46508256a9f23e4ff0562781fa69c095bfafefe581e193a3fcbc80adf2c1d230"
-  generated_content_sha256: "sha256:09676b1843cc6797103d01e854d55b7f2bbd41a613b6e66c368f3e4d0a6d7f9c"
+    sha256: "sha256:d491542fddee226c8c79f71925f51d8b7ba618a3a8ca28a04e264a4089c4b2d8"
+  generated_content_sha256: "sha256:459511bc91be08bb4c8adc3491ec5c8bdb87b2adb3a706c1b615406406dd35df"

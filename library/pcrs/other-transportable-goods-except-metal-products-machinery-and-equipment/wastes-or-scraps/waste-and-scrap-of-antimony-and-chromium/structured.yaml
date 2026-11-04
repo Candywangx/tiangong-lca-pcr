@@ -50,7 +50,7 @@ system_boundary:
         - jrc-ilcd-2010
     - rule_id: sb_components
       applies_to: "every real packaging container and attachment"
-      rule: "For each concrete component k close opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k at the same physical gate. Opening/closing includes empty stock, components attached to raw/WIP, attached FG and reusable stock without overlap. P means real purchases only. N_ext means all first external nonpurchase physical receipts including supplier-included packaging and first entrusted, borrowed or leased receipt. ER requires the same identified component to have an earlier external dispatch. These three ingress classes are mutually exclusive; opening stock cannot replace current receipts. Record actual material/form/type/direction and independently measured quantity for every event through its specific atomic receipt card/interface. Missing an actual interface makes that concrete package incomplete; do not just add a symbol or reuse a purchase UUID blindly. Internal issues/reuse cancel. grossS follows gross shipments, never Q or economic allocation. Measured transformation/moisture changes need separately identified physical legs."
+      rule: "For each concrete component k close opening_k + P_k + N_ext_k + ER_k + F_in_k = closing_k + grossS_k + EO_k + W_k + F_out_k at the same physical gate. Opening/closing includes empty stock, components attached to raw/WIP, attached FG and reusable stock without overlap. P means real purchases only. N_ext means all first external nonpurchase physical receipts including supplier-included packaging and first entrusted, borrowed or leased receipt. ER requires the same identified component to have an earlier external dispatch. These three ingress classes are mutually exclusive; opening stock cannot replace current receipts. Record actual material/form/type/direction and independently measured quantity for every event through its specific atomic receipt card/interface. Missing an actual interface makes that concrete package incomplete; do not just add a symbol or reuse a purchase UUID blindly. Internal issues/reuse cancel. grossS follows gross shipments, never Q or economic allocation. F_in_k/F_out_k are these independently measured and separately identified actual material/water/species or phase-transfer legs crossing this same component gate; exclude quantities already in P_k/N_ext_k/ER_k or grossS_k/EO_k/W_k. Include actual retained contamination or moisture changes without assuming their presence. Pair internal cross-ledger legs and cancel them only at the combined gate. Whole contaminated W_k remains one measured outlet with non-additive component/content partitions and one provider. A genuinely new retained-material input is still an input, not an X deduction; X removes only an exact OTHER duplicate on the same side. No reaction yield, water uptake or loss quantity is defaulted."
       source_ids:
         - jrc-ilcd-2010
     - rule_id: sb_component_burdens
@@ -1103,8 +1103,8 @@ dataset_production:
       process_id: "component_pool"
       flow_role: "Each named component and real direction"
       record_type: "atomic physical receipt movement and stock records"
-      raw_fields: "component identity and material; form and type; exact direction P N_ext ER grossS EO or W; event id; gross tare and measured net kg; ownership; supplier included scope; first external receipt or prior external dispatch id; raw WIP FG reusable opening and closing location; original cohort; per-exchange vector; incremental rental return cleaning"
-      collection_method: "Weigh and identify every actual component event using its specific receipt or movement interface. Distinguish true purchase from all first nonpurchase external receipts and genuine returns; internally issued quantity is paired and cancels. Close each material at one gate; no guessed item kg."
+      raw_fields: "component identity and material; form and type; exact direction P N_ext ER grossS EO or W; event id; gross tare and measured net kg; ownership; supplier included scope; first external receipt or prior external dispatch id; raw WIP FG reusable opening and closing location; original cohort; per-exchange vector; incremental rental return cleaning; independently measured F_in_k/F_out_k material/water/species/phase leg and paired cross-ledger event IDs"
+      collection_method: "Weigh and identify every actual component event using its specific receipt or movement interface. Distinguish true purchase from all first nonpurchase external receipts and genuine returns; internally issued quantity is paired and cancels. Close each material at one gate; no guessed item kg. Collect actual change legs independently without overlap with receipt/outlet classes; preserve whole contaminated W once and its non-additive child accounts."
       unit: "kg"
       frequency: "each event and complete stocktake"
       temporal_coverage: "full declared period including failures and Q0"
@@ -1146,11 +1146,12 @@ dataset_production:
         - jrc-ilcd-2010
     - id: calc_component_closure
       applies_to: "each physical component pool"
-      rule: "opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k; P is true purchase; N_ext is all first nonpurchase external physical receipts; ER has prior external dispatch; classify events mutually exclusively. Include all empty/raw/WIP/FG/reusable stocks once. Internal issues cancel and original manufacture is charged once independently of receipt classification."
+      rule: "opening_k + P_k + N_ext_k + ER_k + F_in_k = closing_k + grossS_k + EO_k + W_k + F_out_k; P is true purchase; N_ext is all first nonpurchase external physical receipts; ER has prior external dispatch; classify events mutually exclusively. Include all empty/raw/WIP/FG/reusable stocks once. Internal issues cancel and original manufacture is charged once independently of receipt classification."
       inputs:
         - "event-specific material form type direction and measured kg"
         - "same-gate stocks"
         - history
+        - "independently measured actual F_in_k/F_out_k and paired cross-ledger IDs"
       output: "raw component balance and signed unresolved difference"
       source_ids:
         - jrc-ilcd-2010
@@ -1210,7 +1211,7 @@ validation_rules:
       - jrc-ilcd-2010
   - rule_id: vr_components
     applies_to: "every physical component"
-    rule: "Recalculate opening + P + N_ext + ER = closing + grossS + EO + W for each concrete material/form/type at one gate. P is purchase only; N_ext includes supplier-included and first entrusted/borrowed/leased receipts; ER requires original external dispatch. Events are disjoint. Opening does not replace current receipts; internal raw/WIP/FG issues/reuse cancel. Require actual specific receipt interface and measured kg for every event; missing interface makes that data package incomplete. Audit ownership/original cohort/inherited vector/provider-included manufacture and incremental rental/return service separately with one burden owner; no zero burden/new Q/credit inference."
+    rule: "Recalculate opening + P + N_ext + ER + F_in = closing + grossS + EO + W + F_out for each concrete material/form/type at one gate. P is purchase only; N_ext includes supplier-included and first entrusted/borrowed/leased receipts; ER requires original external dispatch. Events are disjoint. Opening does not replace current receipts; internal raw/WIP/FG issues/reuse cancel. Require actual specific receipt interface and measured kg for every event; missing interface makes that data package incomplete. Audit ownership/original cohort/inherited vector/provider-included manufacture and incremental rental/return service separately with one burden owner; no zero burden/new Q/credit inference."
     source_ids:
       - jrc-ilcd-2010
   - rule_id: vr_physical
@@ -1259,7 +1260,7 @@ data_sources:
     used_for: "Attributional subdivision and exchange-specific determining physical causality before residual common-gate market-value allocation; inventory conservation and service attribution. No industrial yield or automatic recycling credit."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:e537bed4591f17d4bbbb01deb53781f0fc8c5ab5d0327a7430575119fc37dc67"
+  source_sha256: "sha256:44f124b289b5b48278388815377fdcf770e10a544c403ef5c8655fb5d5039ac4"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8346"
@@ -1270,10 +1271,10 @@ normative_context:
           line: 63
           column: 1
         end:
-          offset: 20182
+          offset: 20831
           line: 102
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of the original whole chromium feed forms and actual separate oxide powder before source casting; a compatible verified source-formation module may replace only the same measured stages with readable burdens |\n| starting_condition_role | supplied_material |\n| product_classification_scope | CPC 3.0:39368; narrower |\n| recursive_input_rule | Internal wash metal and raw/WIP/FG transfers cancel with history; external finished scrap does not create new casting manufacture or Q. Retain actual inherited providers once. |\n| upstream_dataset_requirement | Use one compatible provider for every whole chromium supply form, oxide powder, whole refractory article and actual utility. Trace chromium feed through its real primary/secondary metal production and actual refining/degassing/form preparation and transport; do not infer an electrolytic route merely from the flake name. Supplied formulations and manufactured articles are charged once; constituent assays and carrier water are subledgers. Actual onsite preparation instead requires each purchased constituent plus real energy and loss. An independently verified source module may carry formation, but its raw gates, co-outputs, allocation and inherited exchange vector must be readable; never copy a full batch burden to both billet and riser. |\n| disclosure | single chromium casting heat and original feed origin; chromium metal matrix with independently measured oxygen and oxide inclusions; complete elemental assay including Sb Fe Pb and relevant contaminants; cooled cut-off riser form with recorded shrinkage pipe and porosity distinct from scale ash powder sludge and alloy scrap; actual cut-off method and tool and any fluid; mother billet gate before scalping and extrusion; source-specific flake briquette and chromium oxide supply forms; vacuum induction casting and crucible conditioning history; actual segregation and preparation; specified chromium recycler acceptance and contamination limits; unique first-release lot and net whole-riser kg Q_c; opening and closing raw WIP FG and component stocks with per-exchange inherited vectors; gross movements and genuine return history; actual site period utilities and emission media; allocation relation and common-gate state and prices if needed; original cohort and actual postrelease service horizon H; all purchase and nonpurchase first physical component receipts; supplier-included burden scope and container ownership; individual waste destinations and actual species |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_route | whole source chain | Include actual high-purity chromium flake receipt and any separately supplied chromium briquette and Cr2O3 powder; whole-crucible conditioning and wash melts; vacuum induction melting under actual argon exchanges; steel-mould casting; controlled cooling; removal of the cooled solid riser; source segregation; necessary foreign-object removal and receiver-grade testing; and unique first release. Preserve failure, start/stop, idle, cleanup and rework loads. The mother billet leaves at the same post-cut gate before scalping, extrusion and target machining; those later billet-only operations cannot be allocated backward onto an already separated riser. Buying finished scrap and packing it does not fulfil this route. | `mrc-chromium-casting-2000`; `jrc-ilcd-2010` |\n| sb_supply | each supplied whole input | Use one compatible provider for every whole chromium supply form, oxide powder, whole refractory article and actual utility. Trace chromium feed through its real primary/secondary metal production and actual refining/degassing/form preparation and transport; do not infer an electrolytic route merely from the flake name. Supplied formulations and manufactured articles are charged once; constituent assays and carrier water are subledgers. Actual onsite preparation instead requires each purchased constituent plus real energy and loss. An independently verified source module may carry formation, but its raw gates, co-outputs, allocation and inherited exchange vector must be readable; never copy a full batch burden to both billet and riser. | `jrc-ilcd-2010` |\n| sb_release | first release and FG | Q_c is newly first-released whole net solid riser mass for the named recycler in cohort c. The specification gate is at the generating/preparing facility after required tests; actual delivery to the recycler is retained as a later service. Exclude all packages, detached foreign matter and separately measured free water from Q_c; intrinsic oxide inclusions remain within the whole metal-matrix riser. Closing released FG already belongs to Q_c and is never added beside Q_c as production. Reinspection, shipment, borrowed container receipt, return or rework creates no second Q. Reverse an invalid release only against its original lot and restore any corrected release to that original cohort. | `jrc-ilcd-2010` |\n| sb_stock | every exchange and cohort | Retain physical quantities and complete inherited per-exchange vectors for opening/closing raw stores, WIP, FG and containers. Convert raw original units before attribution. For newly released work assign current eligible loads plus opening-WIP history minus closing-WIP history; do not deduct closing accepted FG production history. Internal raw/WIP/FG issues and wash-metal returns transfer both quantity and history and cancel on consolidation. Include failed and zero-output batches and all measured start/stop, idle, cleaning and rework; Q_c=0 retains real loads and yields no unit result. | `jrc-ilcd-2010` |\n| sb_service | postrelease services to reception | Keep performed storage, packing, handling, actual freight, recycler reception, returned deliveries and incremental rework in disjoint original-cohort service accounts. Use original fixed Q_c and observed horizon H; H is never a production denominator. Opening/closing released lots keep historical manufacturing vectors. Reverse the original delivery leg for a true customer return while retaining original production and adding only genuine incremental services. Unserved FG and unfinished transport/reception are disclosed; partial service history cannot claim a completed receiving gate. Contract manufacture and leased/entrusted container ownership do not alter these physical gates or burden inheritance. | `jrc-ilcd-2010` |\n| sb_physical | production FG and consolidated gates | Use unallocated physical V for balances and attributed exchange vector A for burdens. Production opening raw/component stores and WIP plus external receipts plus old FG entering rework equals corresponding closing stores/WIP plus gross newly released transfer V_new plus old FG returned to FG plus all external outlets. V_new already contains Q_c and attached packages; do not add Q_c again. FG opening gross stock plus V_new plus true external returns plus old FG returned plus service component issues equals closing gross FG plus gross shipments plus old FG sent to rework plus actual external losses. Cancel paired internal legs in the combined gate. Reconcile total mass and Cr/O/Sb/Fe/Pb and each relevant element independently from actual phase/species evidence; one residual cannot fit two unknowns. Whole mixed outlets and source partitions are non-additive. X_in or X_out removes only an exactly duplicated OTHER term on the same side; never a stock or opposite-side flow. | `jrc-ilcd-2010` |\n| sb_components | every real packaging container and attachment | For each concrete component k close opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k at the same physical gate. Opening/closing includes empty stock, components attached to raw/WIP, attached FG and reusable stock without overlap. P means real purchases only. N_ext means all first external nonpurchase physical receipts including supplier-included packaging and first entrusted, borrowed or leased receipt. ER requires the same identified component to have an earlier external dispatch. These three ingress classes are mutually exclusive; opening stock cannot replace current receipts. Record actual material/form/type/direction and independently measured quantity for every event through its specific atomic receipt card/interface. Missing an actual interface makes that concrete package incomplete; do not just add a symbol or reuse a purchase UUID blindly. Internal issues/reuse cancel. grossS follows gross shipments, never Q or economic allocation. Measured transformation/moisture changes need separately identified physical legs. | `jrc-ilcd-2010` |\n| sb_component_burdens | component ownership and supply coverage | Physical receipt classification is separate from ownership, original cohort, inherited per-exchange vector, supplier-included scope and actual incremental rental/return services. Charge manufacture once under its real provider agreement; a nonpurchase receipt is not zero burden and a return is not a new purchase, new Q or credit. For a whole purchased drum/cylinder record its component material partitions without purchasing those parts again. Supplier-included attachments retain their measured receipt even if their manufacture is already inside a provider; do not add it twice. One physical waste outlet has one provider; source partitions sum to its whole without duplication. | `jrc-ilcd-2010` |\n| sb_extend | all actual exchanges | The finite cards are specific candidate interfaces, not a measured factory BOM. Mark absence only from actual route evidence. Before claiming completeness add a separately named atomic row/interface for every real unlisted tool, saw/abrasive/EDM consumable, entire cutting-fluid preparation, vacuum-pump oil, fuel, water circuit, package attachment, waste outlet and emitted chemical species. Declare actual material and cut-off technology without inventing an alloy recipe or lubricant. Thermal cut-off, wet chemical purification, milling or blending changes require scope review. Gas, free/reaction/structural water, condensate and heat are separate actual-state ledgers. External returned cooling water or real condensate is Product return with measured mass/state/enthalpy and supplier water/energy scope; do not create an unobserved boiler or steam system. | `jrc-ilcd-2010` |\n\n\n\n### Component-part receipt interfaces\n\nWhen a supplied whole article has attachments, instantiate these concrete material/form interfaces for every actual event with independently measured kg, exact P/N_ext/ER direction, grossS/EO/W outlet and stock location. The table names physical parts, not additional whole-article purchases. A partition of a purchased whole drum is a physical child receipt whose manufacture may already be inherited; financial procurement and physical partition are not added together. A real valve/gasket of an unlisted composition must be named and extended before the package is complete; do not invent its alloy or elastomer.\n\n| interface_id | material_and_form | event_direction | quantity_and_record |\n| --- | --- | --- | --- |\n| drum_steel_body_receipt | Steel open-head drum body | P or N_ext or ER | measured body kg; actual event id; cp_components; separate grossS EO W and all stock legs |\n| drum_steel_lid_receipt | Steel open-head drum lid | P or N_ext or ER | measured lid kg; actual event id; cp_components; same physical gate and retained history |\n| drum_steel_ring_receipt | Steel drum closure ring | P or N_ext or ER | measured ring kg; actual event id; cp_components; same physical gate and retained history |\n| cylinder_steel_body_receipt | Seamless steel argon-cylinder body | P or N_ext or ER | measured empty body kg; actual event id; cp_components; actual valve cap and guard separately identified |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of the original whole chromium feed forms and actual separate oxide powder before source casting; a compatible verified source-formation module may replace only the same measured stages with readable burdens |\n| starting_condition_role | supplied_material |\n| product_classification_scope | CPC 3.0:39368; narrower |\n| recursive_input_rule | Internal wash metal and raw/WIP/FG transfers cancel with history; external finished scrap does not create new casting manufacture or Q. Retain actual inherited providers once. |\n| upstream_dataset_requirement | Use one compatible provider for every whole chromium supply form, oxide powder, whole refractory article and actual utility. Trace chromium feed through its real primary/secondary metal production and actual refining/degassing/form preparation and transport; do not infer an electrolytic route merely from the flake name. Supplied formulations and manufactured articles are charged once; constituent assays and carrier water are subledgers. Actual onsite preparation instead requires each purchased constituent plus real energy and loss. An independently verified source module may carry formation, but its raw gates, co-outputs, allocation and inherited exchange vector must be readable; never copy a full batch burden to both billet and riser. |\n| disclosure | single chromium casting heat and original feed origin; chromium metal matrix with independently measured oxygen and oxide inclusions; complete elemental assay including Sb Fe Pb and relevant contaminants; cooled cut-off riser form with recorded shrinkage pipe and porosity distinct from scale ash powder sludge and alloy scrap; actual cut-off method and tool and any fluid; mother billet gate before scalping and extrusion; source-specific flake briquette and chromium oxide supply forms; vacuum induction casting and crucible conditioning history; actual segregation and preparation; specified chromium recycler acceptance and contamination limits; unique first-release lot and net whole-riser kg Q_c; opening and closing raw WIP FG and component stocks with per-exchange inherited vectors; gross movements and genuine return history; actual site period utilities and emission media; allocation relation and common-gate state and prices if needed; original cohort and actual postrelease service horizon H; all purchase and nonpurchase first physical component receipts; supplier-included burden scope and container ownership; individual waste destinations and actual species |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_route | whole source chain | Include actual high-purity chromium flake receipt and any separately supplied chromium briquette and Cr2O3 powder; whole-crucible conditioning and wash melts; vacuum induction melting under actual argon exchanges; steel-mould casting; controlled cooling; removal of the cooled solid riser; source segregation; necessary foreign-object removal and receiver-grade testing; and unique first release. Preserve failure, start/stop, idle, cleanup and rework loads. The mother billet leaves at the same post-cut gate before scalping, extrusion and target machining; those later billet-only operations cannot be allocated backward onto an already separated riser. Buying finished scrap and packing it does not fulfil this route. | `mrc-chromium-casting-2000`; `jrc-ilcd-2010` |\n| sb_supply | each supplied whole input | Use one compatible provider for every whole chromium supply form, oxide powder, whole refractory article and actual utility. Trace chromium feed through its real primary/secondary metal production and actual refining/degassing/form preparation and transport; do not infer an electrolytic route merely from the flake name. Supplied formulations and manufactured articles are charged once; constituent assays and carrier water are subledgers. Actual onsite preparation instead requires each purchased constituent plus real energy and loss. An independently verified source module may carry formation, but its raw gates, co-outputs, allocation and inherited exchange vector must be readable; never copy a full batch burden to both billet and riser. | `jrc-ilcd-2010` |\n| sb_release | first release and FG | Q_c is newly first-released whole net solid riser mass for the named recycler in cohort c. The specification gate is at the generating/preparing facility after required tests; actual delivery to the recycler is retained as a later service. Exclude all packages, detached foreign matter and separately measured free water from Q_c; intrinsic oxide inclusions remain within the whole metal-matrix riser. Closing released FG already belongs to Q_c and is never added beside Q_c as production. Reinspection, shipment, borrowed container receipt, return or rework creates no second Q. Reverse an invalid release only against its original lot and restore any corrected release to that original cohort. | `jrc-ilcd-2010` |\n| sb_stock | every exchange and cohort | Retain physical quantities and complete inherited per-exchange vectors for opening/closing raw stores, WIP, FG and containers. Convert raw original units before attribution. For newly released work assign current eligible loads plus opening-WIP history minus closing-WIP history; do not deduct closing accepted FG production history. Internal raw/WIP/FG issues and wash-metal returns transfer both quantity and history and cancel on consolidation. Include failed and zero-output batches and all measured start/stop, idle, cleaning and rework; Q_c=0 retains real loads and yields no unit result. | `jrc-ilcd-2010` |\n| sb_service | postrelease services to reception | Keep performed storage, packing, handling, actual freight, recycler reception, returned deliveries and incremental rework in disjoint original-cohort service accounts. Use original fixed Q_c and observed horizon H; H is never a production denominator. Opening/closing released lots keep historical manufacturing vectors. Reverse the original delivery leg for a true customer return while retaining original production and adding only genuine incremental services. Unserved FG and unfinished transport/reception are disclosed; partial service history cannot claim a completed receiving gate. Contract manufacture and leased/entrusted container ownership do not alter these physical gates or burden inheritance. | `jrc-ilcd-2010` |\n| sb_physical | production FG and consolidated gates | Use unallocated physical V for balances and attributed exchange vector A for burdens. Production opening raw/component stores and WIP plus external receipts plus old FG entering rework equals corresponding closing stores/WIP plus gross newly released transfer V_new plus old FG returned to FG plus all external outlets. V_new already contains Q_c and attached packages; do not add Q_c again. FG opening gross stock plus V_new plus true external returns plus old FG returned plus service component issues equals closing gross FG plus gross shipments plus old FG sent to rework plus actual external losses. Cancel paired internal legs in the combined gate. Reconcile total mass and Cr/O/Sb/Fe/Pb and each relevant element independently from actual phase/species evidence; one residual cannot fit two unknowns. Whole mixed outlets and source partitions are non-additive. X_in or X_out removes only an exactly duplicated OTHER term on the same side; never a stock or opposite-side flow. | `jrc-ilcd-2010` |\n| sb_components | every real packaging container and attachment | For each concrete component k close opening_k + P_k + N_ext_k + ER_k + F_in_k = closing_k + grossS_k + EO_k + W_k + F_out_k at the same physical gate. Opening/closing includes empty stock, components attached to raw/WIP, attached FG and reusable stock without overlap. P means real purchases only. N_ext means all first external nonpurchase physical receipts including supplier-included packaging and first entrusted, borrowed or leased receipt. ER requires the same identified component to have an earlier external dispatch. These three ingress classes are mutually exclusive; opening stock cannot replace current receipts. Record actual material/form/type/direction and independently measured quantity for every event through its specific atomic receipt card/interface. Missing an actual interface makes that concrete package incomplete; do not just add a symbol or reuse a purchase UUID blindly. Internal issues/reuse cancel. grossS follows gross shipments, never Q or economic allocation. F_in_k/F_out_k are these independently measured and separately identified actual material/water/species or phase-transfer legs crossing this same component gate; exclude quantities already in P_k/N_ext_k/ER_k or grossS_k/EO_k/W_k. Include actual retained contamination or moisture changes without assuming their presence. Pair internal cross-ledger legs and cancel them only at the combined gate. Whole contaminated W_k remains one measured outlet with non-additive component/content partitions and one provider. A genuinely new retained-material input is still an input, not an X deduction; X removes only an exact OTHER duplicate on the same side. No reaction yield, water uptake or loss quantity is defaulted. | `jrc-ilcd-2010` |\n| sb_component_burdens | component ownership and supply coverage | Physical receipt classification is separate from ownership, original cohort, inherited per-exchange vector, supplier-included scope and actual incremental rental/return services. Charge manufacture once under its real provider agreement; a nonpurchase receipt is not zero burden and a return is not a new purchase, new Q or credit. For a whole purchased drum/cylinder record its component material partitions without purchasing those parts again. Supplier-included attachments retain their measured receipt even if their manufacture is already inside a provider; do not add it twice. One physical waste outlet has one provider; source partitions sum to its whole without duplication. | `jrc-ilcd-2010` |\n| sb_extend | all actual exchanges | The finite cards are specific candidate interfaces, not a measured factory BOM. Mark absence only from actual route evidence. Before claiming completeness add a separately named atomic row/interface for every real unlisted tool, saw/abrasive/EDM consumable, entire cutting-fluid preparation, vacuum-pump oil, fuel, water circuit, package attachment, waste outlet and emitted chemical species. Declare actual material and cut-off technology without inventing an alloy recipe or lubricant. Thermal cut-off, wet chemical purification, milling or blending changes require scope review. Gas, free/reaction/structural water, condensate and heat are separate actual-state ledgers. External returned cooling water or real condensate is Product return with measured mass/state/enthalpy and supplier water/energy scope; do not create an unobserved boiler or steam system. | `jrc-ilcd-2010` |\n\n\n\n### Component-part receipt interfaces\n\nWhen a supplied whole article has attachments, instantiate these concrete material/form interfaces for every actual event with independently measured kg, exact P/N_ext/ER direction, grossS/EO/W outlet and stock location. The table names physical parts, not additional whole-article purchases. A partition of a purchased whole drum is a physical child receipt whose manufacture may already be inherited; financial procurement and physical partition are not added together. A real valve/gasket of an unlisted composition must be named and extended before the package is complete; do not invent its alloy or elastomer.\n\n| interface_id | material_and_form | event_direction | quantity_and_record |\n| --- | --- | --- | --- |\n| drum_steel_body_receipt | Steel open-head drum body | P or N_ext or ER | measured body kg; actual event id; cp_components; separate grossS EO W and all stock legs |\n| drum_steel_lid_receipt | Steel open-head drum lid | P or N_ext or ER | measured lid kg; actual event id; cp_components; same physical gate and retained history |\n| drum_steel_ring_receipt | Steel drum closure ring | P or N_ext or ER | measured ring kg; actual event id; cp_components; same physical gate and retained history |\n| cylinder_steel_body_receipt | Seamless steel argon-cylinder body | P or N_ext or ER | measured empty body kg; actual event id; cp_components; actual valve cap and guard separately identified |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1310,15 +1311,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_73521"
+    - unit_id: "normative_74170"
       family: "allocation"
       span:
         start:
-          offset: 73521
+          offset: 74170
           line: 755
           column: 1
         end:
-          offset: 76171
+          offset: 76820
           line: 765
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_subdivide | joint casting and preparation | This PCR is attributional and addresses cases requiring allocation. First use dedicated measurement and physical or virtual subdivision for riser-only separation/QA/packing, billet-only continuation, common conditioning and each waste-control operation. Keep the full joint process physically visible. Wash melts that are remelted internally carry the original history once plus actual new work; failed heats are not erased. | `jrc-ilcd-2010` |\n| al_causality | each remaining shared exchange | Identify the determining physical causality separately for every still-shared input, emission and waste/service exchange: demonstrate how changing billet or riser function changes that exchange. Composition, mass, thermal requirement, equipment duty or processing time may be relevant only with an evidenced causal model for that exchange. A checklist is not free choice and a single mass ratio does not automatically allocate all furnace/argon/refractory loads. Document the causal gate and uncertainty. | `jrc-ilcd-2010` |\n| al_remaining | only residual exchanges without causal relation | Only after justified inability to subdivide and to establish determining physical causality apply a documented other relation, normally contemporaneous market value at the same common process gate and actual state. Use actual relevant quantities and prices for unextruded billet and unrefined riser in their actual purity/form/packaging; not finished target prices against dirty scrap at a different gate. Do not invent a fixed ratio, positive value for disposal or a missing price. If needed values or treatment of a real negative/zero-value stream are unresolved, that concrete quantitative package remains incomplete pending an applicable waste-transfer decision; do not manufacture zero burden or recycling credit. Preserve exchange-vector conservation and sensitivities. | `jrc-ilcd-2010` |\n| al_provider | inherited burdens and actual services | The original chromium production and actual formation burden enters once and is assigned between genuine co-functions at its real gate; scrap naming, ownership and nonpurchase receipt do not erase it. Keep component manufacture, physical P/N_ext/ER movements and real rental/return/cleaning services independent. No substitution or avoided primary chromium, no new production from internal reuse and no inferred credit. Gross V remains unallocated for physical closure while assigned A vectors sum to original extensive loads. | `jrc-ilcd-2010` |\n\n\n"
@@ -1338,11 +1339,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 73521
+              offset: 74170
               line: 755
               column: 1
             end:
-              offset: 73561
+              offset: 74210
               line: 755
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1358,18 +1359,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_90646"
+    - unit_id: "normative_91652"
       family: "validation"
       span:
         start:
-          offset: 90646
+          offset: 91652
           line: 808
           column: 1
         end:
-          offset: 94342
+          offset: 95363
           line: 821
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| vr_scope | identity and terminal | Require all reference qualifiers and one real solid chromium casting-riser source plus actual agreed recycler acceptance. Reject mixed Sb/Cr, plated steel, ferroalloy, chemical sludge, oxide/ash/slag or a finished-target proxy. No current lot can be certified from a classification label or patent example alone. | `un-cpc3-2025`; `mrc-chromium-casting-2000`; `exotech-chromium-feed`; `exotech-solid-reception` |\n| vr_route | complete method | Verify original whole feed manufacture/inherited provider and real casting/conditioning/cooling/cut-off before segregation/release; keep the common billet gate and every genuine input/output including failures and Q0. A purchase-only scrap model, unmeasured missing actual exchange or full-batch double inheritance fails quantitative completion. | `mrc-chromium-casting-2000`; `jrc-ilcd-2010` |\n| vr_normalization | release stocks and services | Check unique first Q_c, no closing-FG double output, all inherited WIP vectors, raw conversion and actual allocation before the sole A/Q division. Cards and protocols reuse one result. Retain all actual original-cohort services and return reversals without new Q; H is not a denominator. Q0 retains raw loads and no unit result. | `jrc-ilcd-2010` |\n| vr_components | every physical component | Recalculate opening + P + N_ext + ER = closing + grossS + EO + W for each concrete material/form/type at one gate. P is purchase only; N_ext includes supplier-included and first entrusted/borrowed/leased receipts; ER requires original external dispatch. Events are disjoint. Opening does not replace current receipts; internal raw/WIP/FG issues/reuse cancel. Require actual specific receipt interface and measured kg for every event; missing interface makes that data package incomplete. Audit ownership/original cohort/inherited vector/provider-included manufacture and incremental rental/return service separately with one burden owner; no zero burden/new Q/credit inference. | `jrc-ilcd-2010` |\n| vr_physical | production FG and consolidated gates | Apply the identical raw V gates in sb_physical and calc_physical. Independently verify total mass, each relevant element, actual phases/species and all water/heat legs; PM/COD/total-metal indicators are not specific chemical mass. Do not solve multiple unknowns with one residual. Whole outlets and disjoint source partitions are not additive; no allocation factor can close a missing physical leg. Only identical OTHER duplicates on the same side may be removed as X. | `jrc-ilcd-2010` |\n| vr_allocation | joint-process burdens | Check physical/virtual subdivision then exchange-specific determining physical causality; only justified residual burdens may use actual contemporaneous same-state common-gate values. Confirm vector conservation across billet/riser and real services. No blanket mass/economic choice, assumed positive scrap value, original burden erasure, second provider or recovery credit. | `jrc-ilcd-2010` |\n| vr_atoms_native | every exchange and support chain | Every actual input/article/whole formulation/energy/water/package/waste/species has one concrete row and condition. Check each adopted flow against its full native restrictions and exact property-to-unit chain and official Chinese display; do not infer physical identity from category alone or use ordinary unbound auxiliary rows to claim a missing core method. Actual unsupported core identity/terminal/method is a separate real hold. Schema and finite measurement checks do not certify scientific or translation approval. | `jrc-ilcd-2010` |\n\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| vr_scope | identity and terminal | Require all reference qualifiers and one real solid chromium casting-riser source plus actual agreed recycler acceptance. Reject mixed Sb/Cr, plated steel, ferroalloy, chemical sludge, oxide/ash/slag or a finished-target proxy. No current lot can be certified from a classification label or patent example alone. | `un-cpc3-2025`; `mrc-chromium-casting-2000`; `exotech-chromium-feed`; `exotech-solid-reception` |\n| vr_route | complete method | Verify original whole feed manufacture/inherited provider and real casting/conditioning/cooling/cut-off before segregation/release; keep the common billet gate and every genuine input/output including failures and Q0. A purchase-only scrap model, unmeasured missing actual exchange or full-batch double inheritance fails quantitative completion. | `mrc-chromium-casting-2000`; `jrc-ilcd-2010` |\n| vr_normalization | release stocks and services | Check unique first Q_c, no closing-FG double output, all inherited WIP vectors, raw conversion and actual allocation before the sole A/Q division. Cards and protocols reuse one result. Retain all actual original-cohort services and return reversals without new Q; H is not a denominator. Q0 retains raw loads and no unit result. | `jrc-ilcd-2010` |\n| vr_components | every physical component | Recalculate opening + P + N_ext + ER + F_in = closing + grossS + EO + W + F_out for each concrete material/form/type at one gate. P is purchase only; N_ext includes supplier-included and first entrusted/borrowed/leased receipts; ER requires original external dispatch. Events are disjoint. Opening does not replace current receipts; internal raw/WIP/FG issues/reuse cancel. Require actual specific receipt interface and measured kg for every event; missing interface makes that data package incomplete. Audit ownership/original cohort/inherited vector/provider-included manufacture and incremental rental/return service separately with one burden owner; no zero burden/new Q/credit inference. | `jrc-ilcd-2010` |\n| vr_physical | production FG and consolidated gates | Apply the identical raw V gates in sb_physical and calc_physical. Independently verify total mass, each relevant element, actual phases/species and all water/heat legs; PM/COD/total-metal indicators are not specific chemical mass. Do not solve multiple unknowns with one residual. Whole outlets and disjoint source partitions are not additive; no allocation factor can close a missing physical leg. Only identical OTHER duplicates on the same side may be removed as X. | `jrc-ilcd-2010` |\n| vr_allocation | joint-process burdens | Check physical/virtual subdivision then exchange-specific determining physical causality; only justified residual burdens may use actual contemporaneous same-state common-gate values. Confirm vector conservation across billet/riser and real services. No blanket mass/economic choice, assumed positive scrap value, original burden erasure, second provider or recovery credit. | `jrc-ilcd-2010` |\n| vr_atoms_native | every exchange and support chain | Every actual input/article/whole formulation/energy/water/package/waste/species has one concrete row and condition. Check each adopted flow against its full native restrictions and exact property-to-unit chain and official Chinese display; do not infer physical identity from category alone or use ordinary unbound auxiliary rows to claim a missing core method. Actual unsupported core identity/terminal/method is a separate real hold. Schema and finite measurement checks do not certify scientific or translation approval. | `jrc-ilcd-2010` |\n\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1386,11 +1387,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 90646
+              offset: 91652
               line: 808
               column: 1
             end:
-              offset: 90668
+              offset: 91674
               line: 808
               column: 23
           text: "## 9. Validation Rules"
@@ -1495,20 +1496,20 @@ normative_context:
           line: 85
           column: 1
         end:
-          offset: 17037
+          offset: 17686
           line: 85
-          column: 1143
+          column: 1792
     - pointer: "/system_boundary/rules/7"
       rule_id: "sb_component_burdens"
       identity_kind: "explicit"
       unit_id: "normative_8346"
       source_span:
         start:
-          offset: 17038
+          offset: 17687
           line: 86
           column: 1
         end:
-          offset: 17808
+          offset: 18457
           line: 86
           column: 771
     - pointer: "/system_boundary/rules/8"
@@ -1517,11 +1518,11 @@ normative_context:
       unit_id: "normative_8346"
       source_span:
         start:
-          offset: 17809
+          offset: 18458
           line: 87
           column: 1
         end:
-          offset: 18727
+          offset: 19376
           line: 87
           column: 919
     - pointer: "/system_boundary/rules/9"
@@ -1530,154 +1531,154 @@ normative_context:
       unit_id: "normative_8346"
       source_span:
         start:
-          offset: 18770
+          offset: 19419
           line: 93
           column: 1
         end:
-          offset: 19385
+          offset: 20034
           line: 93
           column: 616
     - pointer: "/allocation_rules/0"
       rule_id: "al_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_73521"
+      unit_id: "normative_74170"
       source_span:
         start:
-          offset: 73634
+          offset: 74283
           line: 759
           column: 1
         end:
-          offset: 74127
+          offset: 74776
           line: 759
           column: 494
     - pointer: "/allocation_rules/1"
       rule_id: "al_causality"
       identity_kind: "explicit"
-      unit_id: "normative_73521"
+      unit_id: "normative_74170"
       source_span:
         start:
-          offset: 74128
+          offset: 74777
           line: 760
           column: 1
         end:
-          offset: 74702
+          offset: 75351
           line: 760
           column: 575
     - pointer: "/allocation_rules/2"
       rule_id: "al_remaining"
       identity_kind: "explicit"
-      unit_id: "normative_73521"
+      unit_id: "normative_74170"
       source_span:
         start:
-          offset: 74703
+          offset: 75352
           line: 761
           column: 1
         end:
-          offset: 75565
+          offset: 76214
           line: 761
           column: 863
     - pointer: "/allocation_rules/3"
       rule_id: "al_provider"
       identity_kind: "explicit"
-      unit_id: "normative_73521"
+      unit_id: "normative_74170"
       source_span:
         start:
-          offset: 75566
+          offset: 76215
           line: 762
           column: 1
         end:
-          offset: 76168
+          offset: 76817
           line: 762
           column: 603
     - pointer: "/validation_rules/0"
       rule_id: "vr_scope"
       identity_kind: "explicit"
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 90741
+          offset: 91747
           line: 812
           column: 1
         end:
-          offset: 91190
+          offset: 92196
           line: 812
           column: 450
     - pointer: "/validation_rules/1"
       rule_id: "vr_route"
       identity_kind: "explicit"
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 91191
+          offset: 92197
           line: 813
           column: 1
         end:
-          offset: 91616
+          offset: 92622
           line: 813
           column: 426
     - pointer: "/validation_rules/2"
       rule_id: "vr_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 91617
+          offset: 92623
           line: 814
           column: 1
         end:
-          offset: 92016
+          offset: 93022
           line: 814
           column: 400
     - pointer: "/validation_rules/3"
       rule_id: "vr_components"
       identity_kind: "explicit"
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 92017
+          offset: 93023
           line: 815
           column: 1
         end:
-          offset: 92759
+          offset: 93780
           line: 815
-          column: 743
+          column: 758
     - pointer: "/validation_rules/4"
       rule_id: "vr_physical"
       identity_kind: "explicit"
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 92760
+          offset: 93781
           line: 816
           column: 1
         end:
-          offset: 93303
+          offset: 94324
           line: 816
           column: 544
     - pointer: "/validation_rules/5"
       rule_id: "vr_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 93304
+          offset: 94325
           line: 817
           column: 1
         end:
-          offset: 93740
+          offset: 94761
           line: 817
           column: 437
     - pointer: "/validation_rules/6"
       rule_id: "vr_atoms_native"
       identity_kind: "explicit"
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 93741
+          offset: 94762
           line: 818
           column: 1
         end:
-          offset: 94339
+          offset: 95360
           line: 818
           column: 599
   diagnostics:
@@ -1710,11 +1711,11 @@ normative_context:
       unit_id: "normative_8346"
       source_span:
         start:
-          offset: 18770
+          offset: 19419
           line: 93
           column: 1
         end:
-          offset: 19385
+          offset: 20034
           line: 93
           column: 616
     - code: "NON_RULE_TABLE"
@@ -1722,35 +1723,35 @@ normative_context:
       unit_id: "normative_8346"
       source_span:
         start:
-          offset: 19387
+          offset: 20036
           line: 95
           column: 1
         end:
-          offset: 20180
+          offset: 20829
           line: 100
           column: 195
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_73521"
+      unit_id: "normative_74170"
       source_span:
         start:
-          offset: 73521
+          offset: 74170
           line: 755
           column: 1
         end:
-          offset: 73561
+          offset: 74210
           line: 755
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_90646"
+      unit_id: "normative_91652"
       source_span:
         start:
-          offset: 90646
+          offset: 91652
           line: 808
           column: 1
         end:
-          offset: 90668
+          offset: 91674
           line: 808
           column: 23
 projection_metadata:
@@ -1760,5 +1761,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:e537bed4591f17d4bbbb01deb53781f0fc8c5ab5d0327a7430575119fc37dc67"
-  generated_content_sha256: "sha256:8f83918f2202c981c1cbd3d5e7097d75a50639bcfc687b77ef8eb59deb98f696"
+    sha256: "sha256:44f124b289b5b48278388815377fdcf770e10a544c403ef5c8655fb5d5039ac4"
+  generated_content_sha256: "sha256:421a8e2215d40f4ac1b7e87a962b244f01f3aa0c29753f7b153e3b4159de02c2"

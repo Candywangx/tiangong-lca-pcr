@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.other-recovered-waste-and-scrap-paper-or-paperboard-including-unsorted-waste-and-scrap |
-| classification_refs | CPC 3.0:39249；拟议的较窄混合纸供货范围；分类接受另行治理 |
+| classification_refs | CPC 3.0:39249；历史作者建议为较窄混合纸供货范围。当前映射关系及接受状态以 `classifications/mappings/cpc-3.0-to-pcr.yaml` 及其 `acceptance.decision_ref` ADR 为准 |
 | covered_products | 真实未制浆旧纸/纸板混合供货批次；去异物后纸种仍混合 |
 | excluded_products | 新纸；包括脱墨浆在内的纸浆；再生纸成品；纺织纤维；医疗或危险废物；从混合剩余垃圾提取的纸；可分开交易的单独未漂白牛皮纸/瓦楞纸等级（39241）、主要由漂白化学浆制成且未在浆内染色的纸等级（39242）、或主要机械浆纸等级（39243）。真实预混批次含有这些成分，不构成三次独立采购。分选出的纯等级另按适用方法记录出口，不作为本参考产品。 |
 | representative_product | 由明确再制浆接收方验收作为原料的一批称重混合废纸包 |
@@ -155,9 +155,9 @@ content_maturity: authored_methodology
 
 ###### 铁或钢捆包丝 (`wire`)
 
-计量用于该纸包的一种真实柔韧铁/钢捆扎丝，包括断丝和余存。原生Product/Mass/kg为捆包铁丝、生产混合、在厂；正式注释明确包括纸/纸板捆扎且通常为铁/钢，围栏分类是孤立分类异常，不构成带刺形态要求。只用于该实体捆扎品；声明真实镀层/组成/供方，不猜纸包质量。
+计量用于该纸包的一种真实柔韧铁或非合金钢捆扎线，包括断丝和余存。当前原生Product/Mass/kg身份为CPC41263打包及物料捆扎用铁或非合金钢丝，生产混合、在厂；原围栏分类属于历史，不是当前带刺形态要求。只用于该实体捆扎品；真实牌号、镀层、组成、直径、强度及供方仍须声明并核实，不猜纸包质量或性能。
 
-- 选定流: 捆包铁丝 `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- 选定流: 捆扎线，铁或非合金钢 `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则: A_i,c / Q_c；对本行按第8节完成原始单位转换和归属后仅计算一次；在cp_packaging保留未相除总量。
 - 数值来源模式: calculated_value
@@ -668,9 +668,9 @@ content_maturity: authored_methodology
 
 ###### 放行后铁或钢捆包丝 (`service_wire`)
 
-计量用于该纸包的一种真实柔韧铁/钢捆扎丝，包括断丝和余存。原生Product/Mass/kg为捆包铁丝、生产混合、在厂；正式注释明确包括纸/纸板捆扎且通常为铁/钢，围栏分类是孤立分类异常，不构成带刺形态要求。只用于该实体捆扎品；声明真实镀层/组成/供方，不猜纸包质量。 本卡仅为按原放行批群Qc归属的实测放行后服务增量，排除回收阶段总量；采用原批群已存分母，不新增生产产出。
+计量用于该纸包的一种真实柔韧铁或非合金钢捆扎线，包括断丝和余存。当前原生Product/Mass/kg身份为CPC41263打包及物料捆扎用铁或非合金钢丝，生产混合、在厂；原围栏分类属于历史，不是当前带刺形态要求。只用于该实体捆扎品；真实牌号、镀层、组成、直径、强度及供方仍须声明并核实，不猜纸包质量或性能。 本卡仅为按原放行批群Qc归属的实测放行后服务增量，排除回收阶段总量；采用原批群已存分母，不新增生产产出。
 
-- 选定流: 捆包铁丝 `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- 选定流: 捆扎线，铁或非合金钢 `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - 流属性/单位: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则: A_i,c / Q_c；对本行按第8节完成原始单位转换和归属后仅计算一次；在cp_service保留未相除总量。
 - 数值来源模式: calculated_value

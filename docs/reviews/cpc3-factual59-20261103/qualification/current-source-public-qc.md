@@ -1,0 +1,9 @@
+Current-source public QC for `4afaab61ebb1a04daffc1ed64725aba4eaba8172`, tree `7c1e39d0fe7b7b2a067f732f21805b3490690e2f`: no open actionable findings. Source was clean and stable before/after.
+
+Narrow delta:17new public route-evidence files and7modified existing navigation/manifest files were actually read;1,134 unchanged files reuse exact199860644Git-blob identities and its measured public hashes. All1,158 files are Git-tracked. Four manifests verify2,011entries; all36 standard local Markdown links resolve. No incremental private-path or credential spill was found.
+
+All16 route export rows match retained private source hashes/sizes and public export hashes/sizes;13exact originals and3physical-prefix-normalized copies are distinct digest identities. Current implementation indexes bind the actual4afahelper/generator/registry hashes. The preserved proposal peer report contains an earlier contract-text hash; its five code/registry hashes match current source, and the final current contract paragraph was separately read here.
+
+Each retained registry changes only `/documents/66/entries/0/to` for guitarEN; reversing that one replacement restores the entire prior file byte-for-byte. The215historical anchor array/hash/order, origins/defaults/baselines/Chinese and all other fields remain intact. Existing provider/middleware/anchor/parser/published guards are unchanged, and there is zero PCR/classification delta from19986. The initial473-route/17,034-anchor diagnostic and actual-helper EN/ZH ownership proofs remain correctly attributed historical/proposal evidence, not a new product build.
+
+The prior19986normal docs failure remains exit1. Current4afaqualification is pending; no failed05log, global/proposal render, targeted9test result or prior fullpass was promoted into a fresh pass. Root's actual docs/full/browser results and source-bound exports require a later narrow closure. No F/WTwrites or PCR/CLI/test loops were performed.

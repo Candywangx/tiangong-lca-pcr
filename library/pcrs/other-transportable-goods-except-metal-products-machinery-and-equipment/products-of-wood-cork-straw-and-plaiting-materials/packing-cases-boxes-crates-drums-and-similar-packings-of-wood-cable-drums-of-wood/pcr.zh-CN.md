@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.packing-cases-boxes-crates-drums-and-similar-packings-of-wood-cable-drums-of-wood |
-| classification_refs | CPC 3.0 31701; narrower; 待独立接受，当前未映射 |
+| classification_refs | CPC 3.0 31701；更窄的实木板钉装箱范围。当前映射关系及接受状态以 `classifications/mappings/cpc-3.0-to-pcr.yaml` 及其 `acceptance.decision_ref` ADR 为准 |
 | covered_products | 未涂饰钉装针叶实木锯材运输空箱，含配套盖板及整体木档 |
 | excluded_products | 电缆盘、木桶、托盘、开敞条板箱、结构框架箱、人造板箱、胶合箱、拆装箱片、再用箱 |
 | representative_product | 外购窑干针叶板料裁切钉装的新制运输箱；不指定默认尺寸、载荷或质量 |
@@ -97,7 +97,7 @@ translation_status: aligned
 
 侧板、端板、盖板、底板及整体木档使用同一均质未浸渍针叶锯材等级。选定UUID仅适用于实际进厂厚度大于6毫米的实木锯材板料；逐项实测并记录构件厚度。厚度小于或等于6毫米的投入须在完成数据集前另行核实身份及适用性，不能推定工厂板厚或沿用本定位流。原始账逐项记录BOM构件；不同木材等级须另建原子行。供应商窑干属于上游，不能据此假定箱厂实施热处理。
 
-- 选定流：窑干锯材（针叶材） `50904047-e5b0-4110-990a-53751d250267`
+- 选定流：针叶锯材 `50904047-e5b0-4110-990a-53751d250267`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：同一批次的实际归属交换总量除以验收净质量 Q；cp_material。
 - 数值来源模式：`calculated_value`

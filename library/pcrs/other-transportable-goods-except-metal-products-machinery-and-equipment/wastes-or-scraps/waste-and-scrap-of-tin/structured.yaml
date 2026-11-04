@@ -51,7 +51,7 @@ system_boundary:
         - ilcd-2010
     - rule_id: boundary_packaging
       applies_to: "each actual component and physical gate"
-      rule: "For each carton, pallet, polyethylene film, polypropylene band, whole supplied paper label and reusable steel container independently, measure all first external physical receipts: purchased P and non-purchased N_ext including supplier-supplied attached articles, first entrusted/borrowed/rented receipts. P remains purchase only. ER requires the same article/cohort previously dispatched externally; P/N_ext/ER are mutually exclusive. Opening stock never replaces a current receipt. Close O + P + N_ext + ER = C + grossS + EO + W on that same component/gate. O/C include empty stock, attached WIP/FG and reusable stock; grossS is packaging on all physical outward consignments, never net Q. EO is a distinct external return. Internal stores/WIP/FG issues/reuse cancel. Each actual event requires the concrete material/form/type/direction card or interface and measured quantity; a missing interface makes the data package incomplete. A symbol alone, borrowed purchase UUID, invented purchase/return or wholesale duplication cannot repair it."
+      rule: "For each carton, pallet, polyethylene film, polypropylene band, whole supplied paper label and reusable steel container independently, measure all first external physical receipts: purchased P and non-purchased N_ext including supplier-supplied attached articles, first entrusted/borrowed/rented receipts. P remains purchase only. ER requires the same article/cohort previously dispatched externally; P/N_ext/ER are mutually exclusive. Opening stock never replaces a current receipt. Close O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out on that same component/gate. F_in/F_out are independently measured and separately named actual material/water/species or phase-transfer legs crossing this component gate, excluding quantities already in P/N_ext/ER or grossS/EO/W. Include genuine retained contamination or moisture change only when observed; pair each internal cross-ledger transfer with its counterpart and cancel it only at the combined gate. Measure whole contaminated W once with non-additive component/content partitions and one provider. A real new retained-material input is not an OTHER duplicate: X can remove only an exactly duplicated term on the same side. No actual wet operation, reaction yield or quantity is defaulted. O/C include empty stock, attached WIP/FG and reusable stock; grossS is packaging on all physical outward consignments, never net Q. EO is a distinct external return. Internal stores/WIP/FG issues/reuse cancel. Each actual event requires the concrete material/form/type/direction card or interface and measured quantity; a missing interface makes the data package incomplete. A symbol alone, borrowed purchase UUID, invented purchase/return or wholesale duplication cannot repair it."
       source_ids:
         - nt-britannia-2015
         - nt-white-metals
@@ -1423,8 +1423,8 @@ dataset_production:
       process_id: "cohort_service"
       flow_role: "Corrugated fibreboard shipping carton"
       record_type: "foreground_record"
-      raw_fields: "component carton; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
-      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER = C + grossS + EO + W at the same gate; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
+      raw_fields: "component carton; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; independently measured F_in/F_out material/water/species/phase transfers and paired cross-ledger IDs; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
+      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out at the same gate using independently measured non-overlapping change legs and actual atomic interfaces; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
       unit: "kg"
       frequency: "every physical event and stock cut"
       temporal_coverage: "whole period plus prior outward/cohort history"
@@ -1435,8 +1435,8 @@ dataset_production:
       process_id: "cohort_service"
       flow_role: "Wooden shipping pallet"
       record_type: "foreground_record"
-      raw_fields: "component pallet; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
-      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER = C + grossS + EO + W at the same gate; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
+      raw_fields: "component pallet; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; independently measured F_in/F_out material/water/species/phase transfers and paired cross-ledger IDs; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
+      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out at the same gate using independently measured non-overlapping change legs and actual atomic interfaces; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
       unit: "kg"
       frequency: "every physical event and stock cut"
       temporal_coverage: "whole period plus prior outward/cohort history"
@@ -1447,8 +1447,8 @@ dataset_production:
       process_id: "cohort_service"
       flow_role: "Polyethylene shrink film"
       record_type: "foreground_record"
-      raw_fields: "component film; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
-      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER = C + grossS + EO + W at the same gate; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
+      raw_fields: "component film; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; independently measured F_in/F_out material/water/species/phase transfers and paired cross-ledger IDs; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
+      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out at the same gate using independently measured non-overlapping change legs and actual atomic interfaces; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
       unit: "kg"
       frequency: "every physical event and stock cut"
       temporal_coverage: "whole period plus prior outward/cohort history"
@@ -1459,8 +1459,8 @@ dataset_production:
       process_id: "cohort_service"
       flow_role: "Polypropylene packaging band"
       record_type: "foreground_record"
-      raw_fields: "component band; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
-      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER = C + grossS + EO + W at the same gate; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
+      raw_fields: "component band; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; independently measured F_in/F_out material/water/species/phase transfers and paired cross-ledger IDs; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
+      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out at the same gate using independently measured non-overlapping change legs and actual atomic interfaces; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
       unit: "kg"
       frequency: "every physical event and stock cut"
       temporal_coverage: "whole period plus prior outward/cohort history"
@@ -1471,8 +1471,8 @@ dataset_production:
       process_id: "cohort_service"
       flow_role: "Supplied adhesive paper package label"
       record_type: "foreground_record"
-      raw_fields: "component label; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
-      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER = C + grossS + EO + W at the same gate; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
+      raw_fields: "component label; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; independently measured F_in/F_out material/water/species/phase transfers and paired cross-ledger IDs; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
+      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out at the same gate using independently measured non-overlapping change legs and actual atomic interfaces; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
       unit: "kg"
       frequency: "every physical event and stock cut"
       temporal_coverage: "whole period plus prior outward/cohort history"
@@ -1483,8 +1483,8 @@ dataset_production:
       process_id: "cohort_service"
       flow_role: "Reusable covered steel scrap container"
       record_type: "foreground_record"
-      raw_fields: "component container; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
-      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER = C + grossS + EO + W at the same gate; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
+      raw_fields: "component container; event ID; material/form/type/direction; measured raw kg and count/tare if used; O_empty/O_WIP/O_FG/O_reusable; P; N_ext and nonpurchase kind; ER and prior outward ID; C_empty/C_WIP/C_FG/C_reusable; grossS; EO; W; independently measured F_in/F_out material/water/species/phase transfers and paired cross-ledger IDs; internal issue/reuse IDs; ownership; original cohort; exchange inherited vector; supplier included scope; real incremental rental/return service"
+      collection_method: "Physically weigh this one actual component and identify every receipt/dispatch, including supplier-attached and first entrusted/borrowed/rented articles. Route to its purchase, first_nonpurchase or external_return card using actual history; never duplicate a consignment. Audit O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out at the same gate using independently measured non-overlapping change legs and actual atomic interfaces; internal stores/WIP/FG/reuse cancel. Verify actual material; a missing alternative component interface is incomplete data."
       unit: "kg"
       frequency: "every physical event and stock cut"
       temporal_coverage: "whole period plus prior outward/cohort history"
@@ -1550,7 +1550,7 @@ dataset_production:
         - ilcd-2010
     - id: calc_packaging
       applies_to: "cohort_service"
-      rule: "For each material/form component at one physical gate, O + P + N_ext + ER = C + grossS + EO + W; P is true purchase, N_ext genuine nonpurchase first receipt, ER proven return after earlier outward movement. Count attached WIP/FG and reusable stock in O/C, cancel internal issues/reuse, and independently transfer each cohort exchange vector. Never use net Q as grossS or use a symbol in place of an actual missing interface."
+      rule: "For each material/form component at one physical gate, O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out; P is true purchase, N_ext genuine nonpurchase first receipt, ER proven return after earlier outward movement. Count attached WIP/FG and reusable stock in O/C, cancel internal issues/reuse, and independently transfer each cohort exchange vector. Never use net Q as grossS or use a symbol in place of an actual missing interface."
       inputs:
         - cp_pack_carton
         - cp_pack_pallet
@@ -1601,7 +1601,7 @@ validation_rules:
       - ilcd-2010
   - rule_id: val_packaging
     applies_to: "all actual applicable records"
-    rule: "Inspect each actual component event/interface and measured quantity, including supplier-attached nonpurchase/first entrusted/borrowed/rented receipts. P/N_ext/ER are disjoint and ER has prior external dispatch. In production, contract manufacture and services alike, verify O + P + N_ext + ER = C + grossS + EO + W on the same component/gate, including empty/WIP/FG/reusable stocks; internal use cancels. Missing real interfaces cannot pass through added symbols, fictitious receipts or duplicate batches."
+    rule: "Inspect each actual component event/interface and measured quantity, including supplier-attached nonpurchase/first entrusted/borrowed/rented receipts. P/N_ext/ER are disjoint and ER has prior external dispatch. In production, contract manufacture and services alike, verify O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out on the same component/gate, including empty/WIP/FG/reusable stocks; internal use cancels. Missing real interfaces cannot pass through added symbols, fictitious receipts or duplicate batches."
     source_ids:
       - nt-britannia-2015
       - ilcd-2010
@@ -1662,7 +1662,7 @@ data_sources:
     used_for: "Electrical melting and regulation around a chosen heating-chamber setpoint, supporting the qualitative electric melt/hold operating configuration. No measured melt temperature, energy use or specific-factory equipment claim."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:5117f9be81954d8157c74b704d7fbaef96617d0b03956243d9688cfd3f9952c3"
+  source_sha256: "sha256:06f1e073e1e16ef20e6c21ed60f112bc43bc3344bed1e61b07e572a8abf9623d"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_8613"
@@ -1673,10 +1673,10 @@ normative_context:
           line: 65
           column: 1
         end:
-          offset: 16479
+          offset: 17166
           line: 90
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole identified pre-alloyed solid Sn-Sb-Cu casting ingot/bar, plus original WIP/mould/component stocks and vectors |\n| starting_condition_role | Upstream alloy production is linked once; original foreground casting and gate formation remain explicit |\n| product_classification_scope | Narrow single-source metallic tin-base casting-gate subset of CPC3.0:39366 |\n| recursive_input_rule | Genuine external same-category feed needs its own inherited vector and explicit route review. Internal gates/remelts cancel; neither recursion nor waste status erases history. |\n| upstream_dataset_requirement | One compatible provider per actual whole supply/service; actual geography, alloy/form and included scope. No fabricated recipe or borrowed primary/secondary metal process. |\n| disclosure | one original alloy lot and source casting cohort; whole Sn-Sb-Cu assay and tin-predominance evidence; supplier ingot/bar form and upstream exchange burden vector; no added-lead specification and actual trace analysis; actual mould material and curing/procurement boundary; melting/holding and clipping configuration; dry metallic gate/runner shape with no finishing coating or flux paste; actual receiver identity and feed acceptance conditions; site and reporting period; first-release Q and physical G_Q link; moisture and detachable contamination measurements; opening/closing WIP and FG cohort vectors; gross physical dispatch and return history; failed/Q0/start-stop/idle/cleanup/rework loads; electricity voltage and geography and provider scope; every real material and species and destination; per-component packaging P/N_ext/ER events and burden ownership; allocation common gate and service Qc history |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_origin | whole product chain | Retain alloy production through a compatible linked upstream dataset plus the actual original casting that creates gates. Receive the whole purchased alloy once; Sn/Sb/Cu assays and alloy water are non-additive child accounts. Actual in-house alloying requires each external metal, each real formulation, energy and losses as its own added row before use. No finished-scrap purchase shortcut. | asl-pewter; nt-britannia-2015; ilcd-2010 |\n| boundary_casting | source_casting | Include whole-alloy receipt and unloading, actual mould preparation and lifetime use, electric melting/holding, actual centrifugal casting/cooling, hand clipping and source segregation. The companion uncoated casting exits before separate tumbling/coating. Retain all failed casts, internal remelts, start/stop, idle, spills, cleanup and opening/closing WIP with exchange-level burden vectors. An internal remelt is not new external alloy or fresh scrap production. | tt-casting-2012; asl-pewter; ilcd-2010; nicem-f100-spin-casting-furnace; contenti-electric-melting-furnace-manual |\n| boundary_release | scrap_release | Keep one original alloy/casting source through clipping, dry separation, necessary manual sizing and representative assay/visual checks. Release only the metallic gate stream meeting the named receiver agreement. Do not pool dross, oxide dust, used solder/paste or other alloys into Q. Receiver identity, contractual material state and actual lot acceptance must be demonstrated; a generic recycler offer is not a lot approval. | nt-white-metals; dkl-reception |\n| boundary_physical | manufacturing and FG gates | Use the same material state and time cut at every physical gate. Whole-stream manufacturing: Ow + F + Ru + O_air + X = Cw + G_Q + B + Wm + Em. FG: Of + G_Q + Rg = Cf + grossV + Wf. Ow/Cw include every source WIP and unreleased gate; F is first external whole-alloy feed; Ru/Rg are disjoint true returns to WIP/FG; B is actual companion casting; Wm/Wf and Em sum individually identified outgoing wastes/species once. X is only separately named additional mass not already on that same input side; never re-add F or assayed constituents. Combine gates by cancelling G_Q and all internal transfers. Q is normalization, never added again to Cf or grossV. Containers/mould stocks have their separate component gates; wear entering metal is a measured cross-ledger transfer. | ilcd-2010 |\n| boundary_species | physical and element balances | Close whole physical mass and Sn/Sb/Cu and relevant O/H balances independently. Oxidation oxygen, moisture, actual reaction water, phase/structural water and each emitted species require independent evidence; one residual cannot determine two unknowns. A total-metal assay is not SnO2/Sb2O3/CuO mass; COD/VOC/PM metrics are not invented chemical species. Keep captured mixed dust whole and its source/element partitions non-additive with one provider. | ilcd-2010 |\n| boundary_packaging | each actual component and physical gate | For each carton, pallet, polyethylene film, polypropylene band, whole supplied paper label and reusable steel container independently, measure all first external physical receipts: purchased P and non-purchased N_ext including supplier-supplied attached articles, first entrusted/borrowed/rented receipts. P remains purchase only. ER requires the same article/cohort previously dispatched externally; P/N_ext/ER are mutually exclusive. Opening stock never replaces a current receipt. Close O + P + N_ext + ER = C + grossS + EO + W on that same component/gate. O/C include empty stock, attached WIP/FG and reusable stock; grossS is packaging on all physical outward consignments, never net Q. EO is a distinct external return. Internal stores/WIP/FG issues/reuse cancel. Each actual event requires the concrete material/form/type/direction card or interface and measured quantity; a missing interface makes the data package incomplete. A symbol alone, borrowed purchase UUID, invented purchase/return or wholesale duplication cannot repair it. | nt-britannia-2015; nt-white-metals; ilcd-2010 |\n| boundary_burdens | components and toll/lease services | Physical receipt, ownership and environmental burden are separate ledgers. Preserve original cohort, exchange-specific inherited vector, supplier-included scope and actual incremental lease/return/cleaning/transport service. Charge embodied manufacture once over evidenced service use, not on each return. Free supply, entrusted goods and customer-owned/toll manufacture are not zero burden, new Q or environmental credit. Apply the full receipt interfaces and same component closure to contract manufacturing and cohort services. | ilcd-2010 |\n| boundary_extension | all actual exchanges | The named cards define a bounded compatible route, not permission to omit real inputs. Add one named atomic card/interface with measured quantity for each actual unlisted formulation, lubricant, fuel, water circuit, gas, mould-making ingredient, package or species. Verify actual polymer/metal construction; alternative packaging and in-house mould compounding require their own interfaces. Preserve measured absence evidence, not default zero. A purchased complete mould/formulation is counted whole once; on-site preparation records the actual separate purchases and processing. | asl-pewter; nt-white-metals |\n| boundary_service | cohort_service | Keep actual storage, packing, handling and freight to receiver; preserve old FG burden history, gross outward/reverse movements and real incremental return/rework loads. Reinspection or re-delivery of the same gates does not generate first release again. Purchased service includes its declared provider scope once; do not add its internal fuel or emissions again. No assumed steam/boiler, condensate return, washing, inert gas or melting credit; if real, record each physical flow and heat state with provider water/energy convention. | dkl-reception; ilcd-2010 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole identified pre-alloyed solid Sn-Sb-Cu casting ingot/bar, plus original WIP/mould/component stocks and vectors |\n| starting_condition_role | Upstream alloy production is linked once; original foreground casting and gate formation remain explicit |\n| product_classification_scope | Narrow single-source metallic tin-base casting-gate subset of CPC3.0:39366 |\n| recursive_input_rule | Genuine external same-category feed needs its own inherited vector and explicit route review. Internal gates/remelts cancel; neither recursion nor waste status erases history. |\n| upstream_dataset_requirement | One compatible provider per actual whole supply/service; actual geography, alloy/form and included scope. No fabricated recipe or borrowed primary/secondary metal process. |\n| disclosure | one original alloy lot and source casting cohort; whole Sn-Sb-Cu assay and tin-predominance evidence; supplier ingot/bar form and upstream exchange burden vector; no added-lead specification and actual trace analysis; actual mould material and curing/procurement boundary; melting/holding and clipping configuration; dry metallic gate/runner shape with no finishing coating or flux paste; actual receiver identity and feed acceptance conditions; site and reporting period; first-release Q and physical G_Q link; moisture and detachable contamination measurements; opening/closing WIP and FG cohort vectors; gross physical dispatch and return history; failed/Q0/start-stop/idle/cleanup/rework loads; electricity voltage and geography and provider scope; every real material and species and destination; per-component packaging P/N_ext/ER events and burden ownership; allocation common gate and service Qc history |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_origin | whole product chain | Retain alloy production through a compatible linked upstream dataset plus the actual original casting that creates gates. Receive the whole purchased alloy once; Sn/Sb/Cu assays and alloy water are non-additive child accounts. Actual in-house alloying requires each external metal, each real formulation, energy and losses as its own added row before use. No finished-scrap purchase shortcut. | asl-pewter; nt-britannia-2015; ilcd-2010 |\n| boundary_casting | source_casting | Include whole-alloy receipt and unloading, actual mould preparation and lifetime use, electric melting/holding, actual centrifugal casting/cooling, hand clipping and source segregation. The companion uncoated casting exits before separate tumbling/coating. Retain all failed casts, internal remelts, start/stop, idle, spills, cleanup and opening/closing WIP with exchange-level burden vectors. An internal remelt is not new external alloy or fresh scrap production. | tt-casting-2012; asl-pewter; ilcd-2010; nicem-f100-spin-casting-furnace; contenti-electric-melting-furnace-manual |\n| boundary_release | scrap_release | Keep one original alloy/casting source through clipping, dry separation, necessary manual sizing and representative assay/visual checks. Release only the metallic gate stream meeting the named receiver agreement. Do not pool dross, oxide dust, used solder/paste or other alloys into Q. Receiver identity, contractual material state and actual lot acceptance must be demonstrated; a generic recycler offer is not a lot approval. | nt-white-metals; dkl-reception |\n| boundary_physical | manufacturing and FG gates | Use the same material state and time cut at every physical gate. Whole-stream manufacturing: Ow + F + Ru + O_air + X = Cw + G_Q + B + Wm + Em. FG: Of + G_Q + Rg = Cf + grossV + Wf. Ow/Cw include every source WIP and unreleased gate; F is first external whole-alloy feed; Ru/Rg are disjoint true returns to WIP/FG; B is actual companion casting; Wm/Wf and Em sum individually identified outgoing wastes/species once. X is only separately named additional mass not already on that same input side; never re-add F or assayed constituents. Combine gates by cancelling G_Q and all internal transfers. Q is normalization, never added again to Cf or grossV. Containers/mould stocks have their separate component gates; wear entering metal is a measured cross-ledger transfer. | ilcd-2010 |\n| boundary_species | physical and element balances | Close whole physical mass and Sn/Sb/Cu and relevant O/H balances independently. Oxidation oxygen, moisture, actual reaction water, phase/structural water and each emitted species require independent evidence; one residual cannot determine two unknowns. A total-metal assay is not SnO2/Sb2O3/CuO mass; COD/VOC/PM metrics are not invented chemical species. Keep captured mixed dust whole and its source/element partitions non-additive with one provider. | ilcd-2010 |\n| boundary_packaging | each actual component and physical gate | For each carton, pallet, polyethylene film, polypropylene band, whole supplied paper label and reusable steel container independently, measure all first external physical receipts: purchased P and non-purchased N_ext including supplier-supplied attached articles, first entrusted/borrowed/rented receipts. P remains purchase only. ER requires the same article/cohort previously dispatched externally; P/N_ext/ER are mutually exclusive. Opening stock never replaces a current receipt. Close O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out on that same component/gate. F_in/F_out are independently measured and separately named actual material/water/species or phase-transfer legs crossing this component gate, excluding quantities already in P/N_ext/ER or grossS/EO/W. Include genuine retained contamination or moisture change only when observed; pair each internal cross-ledger transfer with its counterpart and cancel it only at the combined gate. Measure whole contaminated W once with non-additive component/content partitions and one provider. A real new retained-material input is not an OTHER duplicate: X can remove only an exactly duplicated term on the same side. No actual wet operation, reaction yield or quantity is defaulted. O/C include empty stock, attached WIP/FG and reusable stock; grossS is packaging on all physical outward consignments, never net Q. EO is a distinct external return. Internal stores/WIP/FG issues/reuse cancel. Each actual event requires the concrete material/form/type/direction card or interface and measured quantity; a missing interface makes the data package incomplete. A symbol alone, borrowed purchase UUID, invented purchase/return or wholesale duplication cannot repair it. | nt-britannia-2015; nt-white-metals; ilcd-2010 |\n| boundary_burdens | components and toll/lease services | Physical receipt, ownership and environmental burden are separate ledgers. Preserve original cohort, exchange-specific inherited vector, supplier-included scope and actual incremental lease/return/cleaning/transport service. Charge embodied manufacture once over evidenced service use, not on each return. Free supply, entrusted goods and customer-owned/toll manufacture are not zero burden, new Q or environmental credit. Apply the full receipt interfaces and same component closure to contract manufacturing and cohort services. | ilcd-2010 |\n| boundary_extension | all actual exchanges | The named cards define a bounded compatible route, not permission to omit real inputs. Add one named atomic card/interface with measured quantity for each actual unlisted formulation, lubricant, fuel, water circuit, gas, mould-making ingredient, package or species. Verify actual polymer/metal construction; alternative packaging and in-house mould compounding require their own interfaces. Preserve measured absence evidence, not default zero. A purchased complete mould/formulation is counted whole once; on-site preparation records the actual separate purchases and processing. | asl-pewter; nt-white-metals |\n| boundary_service | cohort_service | Keep actual storage, packing, handling and freight to receiver; preserve old FG burden history, gross outward/reverse movements and real incremental return/rework loads. Reinspection or re-delivery of the same gates does not generate first release again. Purchased service includes its declared provider scope once; do not add its internal fuel or emissions again. No assumed steam/boiler, condensate return, washing, inert gas or melting credit; if real, record each physical flow and heat state with provider water/energy convention. | dkl-reception; ilcd-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1713,15 +1713,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_75909"
+    - unit_id: "normative_76596"
       family: "allocation"
       span:
         start:
-          offset: 75909
+          offset: 76596
           line: 979
           column: 1
         end:
-          offset: 79461
+          offset: 80148
           line: 990
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| alloc_subdivide | source and services | This is an attributional allocation scenario. First assign independently measured dedicated casting, segregation, service and treatment operations; use actual/virtual subdivision before allocating joint inventories. Preserve opening/closing WIP and each upstream exchange vector. Do not use a whole-plant mass ratio for every exchange. | ilcd-2010 |\n| alloc_true_joint | positive-value metallic scrap | Identify the true joint process where a material technically most similar to this secondary whole-alloy feed was produced, using actual chemistry/quality and receiving function. It may precede final shaping/hand clipping. Preserve the original casting/forming raw inventory but do not automatically charge every later article-specific step to scrap: demonstrate exchange-specific assignment and carry only its established share, plus genuinely scrap-dedicated preparation/services. No recycling-loop average, rate or substitution model is assumed; an external recycling-average input requires compatible declared upstream methodology and reviewed data. | ilcd-2010 |\n| alloc_causality | remaining joint exchanges | Identify the determining physical relationship separately for each residual exchange at the verified true joint process identified from original alloy production/casting history; do not assume that preparation or sale is the joint gate. Embodied alloy may follow measured material embodiment; holding heat, mould use and shared services require their own demonstrated causal drivers and actual losses. An appealing mass, enthalpy, time or value ratio is not self-justifying. | ilcd-2010 |\n| alloc_residual | only irreducible residual exchanges | Only after showing why determining physical causality cannot resolve a residual exchange may contemporaneous market values in the actual quantity, quality and state at the same common gate be used. Remove downstream finishing, packaging and delivery margins before comparison. Document price period, evidence, uncertainty and sensitivity. No fixed split, arbitrary physical/economic choice or automatic credit. Negative-value wastes and paid treatment require an explicit reviewed waste boundary; never insert a zero or negative allocation factor silently. | ilcd-2010 |\n| alloc_cohorts | rework/returns and reusable components | Keep source-alloy, casting and original cohort burdens once. Internal remelt has real incremental energy/losses and transfers its inherited vector, not a new external purchase. True returns reverse the original delivery allocation where necessary and carry original history; only actual new service/rework loads are added. Packaging P/N_ext/ER uses boundary_packaging independently of purchase or ownership, with the same closure in production and service accounts. Unknown inherited burdens stay explicit and cannot be replaced by zero. | ilcd-2010 |\n| alloc_waste | scrap and associated wastes | Positive-value metallic gates retain their established inherited allocation. Keep dross, dust, spent mould and each packaging waste as distinct physical transfers with actual treatment/provider boundaries. Commercial buyback credits are financial transactions. Neither the name waste nor a recycler offer establishes zero history, avoided virgin production, a coproduct or an environmental credit; downstream metal recovery is outside this reference output. | nt-white-metals; dkl-reception; ilcd-2010 |\n\n"
@@ -1741,11 +1741,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 75909
+              offset: 76596
               line: 979
               column: 1
             end:
-              offset: 75949
+              offset: 76636
               line: 979
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1761,18 +1761,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_97630"
+    - unit_id: "normative_99550"
       family: "validation"
       span:
         start:
-          offset: 97630
+          offset: 99550
           line: 1030
           column: 1
         end:
-          offset: 100648
+          offset: 102583
           line: 1042
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_scope | all actual applicable records | Confirm one real Sn-predominant Sn-Sb-Cu source alloy, solid uncoated metallic gates, original casting/hand separation and actual remelt-feed acceptance. Reject tinplate, Cu/Pb/Zn-base material, whole paste and oxide/dross identity substitution. | un-cpc3-2025; asl-pewter; tt-casting-2012; nt-white-metals; dkl-reception |\n| val_reference | all actual applicable records | Q includes each newly first-released net dry alloy lot once, including material remaining in closing FG. Check reference row 1 kg, G_Q/moisture/foreign-material reconciliation, WIP/FG physical gates and cancellation of G_Q/internal transfers. Delivery/reinspection/returns never create Q. | ilcd-2010 |\n| val_normalization | all actual applicable records | Trace raw records through actual unit/rate conversion, allocation and A_j/Q once. Check all Inputs/Output/source links and full descriptions. Q0 and unsupported/unknown relationships retain real loads and unresolved findings, never a passing unit result. Services use original Qc and real H only as driver. | ilcd-2010 |\n| val_mass_species | all actual applicable records | Check independent whole physical, Sn/Sb/Cu and relevant O/H balances with actual phase/species/water evidence. No residual fitting of multiple unknowns, double counting of a whole mixture and its source fractions, or generic metal/PM-to-oxide conversion. Use one provider per real waste transfer. | ilcd-2010 |\n| val_packaging | all actual applicable records | Inspect each actual component event/interface and measured quantity, including supplier-attached nonpurchase/first entrusted/borrowed/rented receipts. P/N_ext/ER are disjoint and ER has prior external dispatch. In production, contract manufacture and services alike, verify O + P + N_ext + ER = C + grossS + EO + W on the same component/gate, including empty/WIP/FG/reusable stocks; internal use cancels. Missing real interfaces cannot pass through added symbols, fictitious receipts or duplicate batches. | nt-britannia-2015; ilcd-2010 |\n| val_history | all actual applicable records | Check ownership, original cohort, every inherited exchange vector, supplier-included scope and actual incremental rental/return/cleanup/rework service separately. Preserve original manufacture once and all failed/idle/Q0 loads; no new Q, free-supply zero burden, automatic coproduct or avoided-production credit. | ilcd-2010 |\n| val_bindings | all actual applicable records | Use exact verified Product scrap identity and exact support chain. CN low-voltage AC and air-resource oxygen apply only under their complete native conditions stated in the cards. Unbound concrete auxiliary flows need actual provider/identity verification before package use; ordinary auxiliary UUID gaps do not establish a global methodological hold. Distinguish checks performed/skipped and incomplete real evidence from approval. | ilcd-2010 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_scope | all actual applicable records | Confirm one real Sn-predominant Sn-Sb-Cu source alloy, solid uncoated metallic gates, original casting/hand separation and actual remelt-feed acceptance. Reject tinplate, Cu/Pb/Zn-base material, whole paste and oxide/dross identity substitution. | un-cpc3-2025; asl-pewter; tt-casting-2012; nt-white-metals; dkl-reception |\n| val_reference | all actual applicable records | Q includes each newly first-released net dry alloy lot once, including material remaining in closing FG. Check reference row 1 kg, G_Q/moisture/foreign-material reconciliation, WIP/FG physical gates and cancellation of G_Q/internal transfers. Delivery/reinspection/returns never create Q. | ilcd-2010 |\n| val_normalization | all actual applicable records | Trace raw records through actual unit/rate conversion, allocation and A_j/Q once. Check all Inputs/Output/source links and full descriptions. Q0 and unsupported/unknown relationships retain real loads and unresolved findings, never a passing unit result. Services use original Qc and real H only as driver. | ilcd-2010 |\n| val_mass_species | all actual applicable records | Check independent whole physical, Sn/Sb/Cu and relevant O/H balances with actual phase/species/water evidence. No residual fitting of multiple unknowns, double counting of a whole mixture and its source fractions, or generic metal/PM-to-oxide conversion. Use one provider per real waste transfer. | ilcd-2010 |\n| val_packaging | all actual applicable records | Inspect each actual component event/interface and measured quantity, including supplier-attached nonpurchase/first entrusted/borrowed/rented receipts. P/N_ext/ER are disjoint and ER has prior external dispatch. In production, contract manufacture and services alike, verify O + P + N_ext + ER + F_in = C + grossS + EO + W + F_out on the same component/gate, including empty/WIP/FG/reusable stocks; internal use cancels. Missing real interfaces cannot pass through added symbols, fictitious receipts or duplicate batches. | nt-britannia-2015; ilcd-2010 |\n| val_history | all actual applicable records | Check ownership, original cohort, every inherited exchange vector, supplier-included scope and actual incremental rental/return/cleanup/rework service separately. Preserve original manufacture once and all failed/idle/Q0 loads; no new Q, free-supply zero burden, automatic coproduct or avoided-production credit. | ilcd-2010 |\n| val_bindings | all actual applicable records | Use exact verified Product scrap identity and exact support chain. CN low-voltage AC and air-resource oxygen apply only under their complete native conditions stated in the cards. Unbound concrete auxiliary flows need actual provider/identity verification before package use; ordinary auxiliary UUID gaps do not establish a global methodological hold. Distinguish checks performed/skipped and incomplete real evidence from approval. | ilcd-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1789,11 +1789,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 97630
+              offset: 99550
               line: 1030
               column: 1
             end:
-              offset: 97652
+              offset: 99572
               line: 1030
               column: 23
           text: "## 9. Validation Rules"
@@ -1885,20 +1885,20 @@ normative_context:
           line: 85
           column: 1
         end:
-          offset: 14612
+          offset: 15299
           line: 85
-          column: 1158
+          column: 1845
     - pointer: "/system_boundary/rules/6"
       rule_id: "boundary_burdens"
       identity_kind: "explicit"
       unit_id: "normative_8613"
       source_span:
         start:
-          offset: 14613
+          offset: 15300
           line: 86
           column: 1
         end:
-          offset: 15215
+          offset: 15902
           line: 86
           column: 603
     - pointer: "/system_boundary/rules/7"
@@ -1907,11 +1907,11 @@ normative_context:
       unit_id: "normative_8613"
       source_span:
         start:
-          offset: 15216
+          offset: 15903
           line: 87
           column: 1
         end:
-          offset: 15874
+          offset: 16561
           line: 87
           column: 659
     - pointer: "/system_boundary/rules/8"
@@ -1920,180 +1920,180 @@ normative_context:
       unit_id: "normative_8613"
       source_span:
         start:
-          offset: 15875
+          offset: 16562
           line: 88
           column: 1
         end:
-          offset: 16477
+          offset: 17164
           line: 88
           column: 603
     - pointer: "/allocation_rules/0"
       rule_id: "alloc_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_75909"
+      unit_id: "normative_76596"
       source_span:
         start:
-          offset: 76022
+          offset: 76709
           line: 983
           column: 1
         end:
-          offset: 76413
+          offset: 77100
           line: 983
           column: 392
     - pointer: "/allocation_rules/1"
       rule_id: "alloc_true_joint"
       identity_kind: "explicit"
-      unit_id: "normative_75909"
+      unit_id: "normative_76596"
       source_span:
         start:
-          offset: 76414
+          offset: 77101
           line: 984
           column: 1
         end:
-          offset: 77133
+          offset: 77820
           line: 984
           column: 720
     - pointer: "/allocation_rules/2"
       rule_id: "alloc_causality"
       identity_kind: "explicit"
-      unit_id: "normative_75909"
+      unit_id: "normative_76596"
       source_span:
         start:
-          offset: 77134
+          offset: 77821
           line: 985
           column: 1
         end:
-          offset: 77670
+          offset: 78357
           line: 985
           column: 537
     - pointer: "/allocation_rules/3"
       rule_id: "alloc_residual"
       identity_kind: "explicit"
-      unit_id: "normative_75909"
+      unit_id: "normative_76596"
       source_span:
         start:
-          offset: 77671
+          offset: 78358
           line: 986
           column: 1
         end:
-          offset: 78298
+          offset: 78985
           line: 986
           column: 628
     - pointer: "/allocation_rules/4"
       rule_id: "alloc_cohorts"
       identity_kind: "explicit"
-      unit_id: "normative_75909"
+      unit_id: "normative_76596"
       source_span:
         start:
-          offset: 78299
+          offset: 78986
           line: 987
           column: 1
         end:
-          offset: 78909
+          offset: 79596
           line: 987
           column: 611
     - pointer: "/allocation_rules/5"
       rule_id: "alloc_waste"
       identity_kind: "explicit"
-      unit_id: "normative_75909"
+      unit_id: "normative_76596"
       source_span:
         start:
-          offset: 78910
+          offset: 79597
           line: 988
           column: 1
         end:
-          offset: 79459
+          offset: 80146
           line: 988
           column: 550
     - pointer: "/validation_rules/0"
       rule_id: "val_scope"
       identity_kind: "explicit"
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 97725
+          offset: 99645
           line: 1034
           column: 1
         end:
-          offset: 98094
+          offset: 100014
           line: 1034
           column: 370
     - pointer: "/validation_rules/1"
       rule_id: "val_reference"
       identity_kind: "explicit"
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 98095
+          offset: 100015
           line: 1035
           column: 1
         end:
-          offset: 98447
+          offset: 100367
           line: 1035
           column: 353
     - pointer: "/validation_rules/2"
       rule_id: "val_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 98448
+          offset: 100368
           line: 1036
           column: 1
         end:
-          offset: 98822
+          offset: 100742
           line: 1036
           column: 375
     - pointer: "/validation_rules/3"
       rule_id: "val_mass_species"
       identity_kind: "explicit"
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 98823
+          offset: 100743
           line: 1037
           column: 1
         end:
-          offset: 99186
+          offset: 101106
           line: 1037
           column: 364
     - pointer: "/validation_rules/4"
       rule_id: "val_packaging"
       identity_kind: "explicit"
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 99187
+          offset: 101107
           line: 1038
           column: 1
         end:
-          offset: 99775
+          offset: 101710
           line: 1038
-          column: 589
+          column: 604
     - pointer: "/validation_rules/5"
       rule_id: "val_history"
       identity_kind: "explicit"
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 99776
+          offset: 101711
           line: 1039
           column: 1
         end:
-          offset: 100150
+          offset: 102085
           line: 1039
           column: 375
     - pointer: "/validation_rules/6"
       rule_id: "val_bindings"
       identity_kind: "explicit"
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 100151
+          offset: 102086
           line: 1040
           column: 1
         end:
-          offset: 100646
+          offset: 102581
           line: 1040
           column: 496
   diagnostics:
@@ -2123,26 +2123,26 @@ normative_context:
           column: 929
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_75909"
+      unit_id: "normative_76596"
       source_span:
         start:
-          offset: 75909
+          offset: 76596
           line: 979
           column: 1
         end:
-          offset: 75949
+          offset: 76636
           line: 979
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_97630"
+      unit_id: "normative_99550"
       source_span:
         start:
-          offset: 97630
+          offset: 99550
           line: 1030
           column: 1
         end:
-          offset: 97652
+          offset: 99572
           line: 1030
           column: 23
 projection_metadata:
@@ -2152,5 +2152,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:5117f9be81954d8157c74b704d7fbaef96617d0b03956243d9688cfd3f9952c3"
-  generated_content_sha256: "sha256:3eefc5aadc7091d70989dc871be944cac40d9dd16e4e748ebed5f16c47088abe"
+    sha256: "sha256:06f1e073e1e16ef20e6c21ed60f112bc43bc3344bed1e61b07e572a8abf9623d"
+  generated_content_sha256: "sha256:f4970cf6daef61a26847f8090169db0656d33995ba2046f36e923b14f2be34a4"

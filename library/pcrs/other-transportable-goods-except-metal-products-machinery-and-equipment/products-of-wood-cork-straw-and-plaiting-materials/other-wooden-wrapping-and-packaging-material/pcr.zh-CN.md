@@ -31,7 +31,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.other-wooden-wrapping-and-packaging-material |
-| classification_refs | CPC 3.0 31709; narrower |
+| classification_refs | CPC 3.0 31709；更窄产品范围。当前映射关系及接受状态以 `classifications/mappings/cpc-3.0-to-pcr.yaml` 及其 `acceptance.decision_ref` ADR 为准 |
 | covered_products | 具有货物接触形状并验收的实木包装楔块及异形/开槽垫块 |
 | excluded_products | 第1节所列排除项；分类名称本身不证明适用性 |
 | representative_product | 以窑干锯材按订单锯切的未胶合未涂饰松木斜面包装楔块 |
@@ -88,7 +88,7 @@ translation_status: aligned
 | --- | --- |
 | declared_starting_condition | 车间收到购入的窑干未处理锯材；供方干燥负荷保留在上游 |
 | starting_condition_role | 厂门至厂门电动加工为验收包装制品 |
-| product_classification_scope | 仅指定实木包装楔块/异形垫块子集；CPC31709建议narrower |
+| product_classification_scope | 仅指定实木包装楔块及带轮廓/缺口块的子集；当前CPC31709映射关系及接受状态以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其 acceptance.decision_ref ADR 为准 |
 | recursive_input_rule | 购入同类未成品/返工包装制品会改变路线，须另行披露供方边界；不得默替锯材或重复计精加工收益 |
 | upstream_dataset_requirement | 匹配木坯树种、干燥、含水率/参考量、林业碳/分配、供方边界及运入运输；匹配交付电压/地区/时期、润滑油和PE供方规格。身份UUID不等于背景数据集。 |
 | disclosure | 披露所有厂门、实际操作、计量表、运输供方、排除项及待决身份/背景兼容问题；厂门至厂门本身不是摇篮至厂门 |
@@ -130,7 +130,7 @@ translation_status: aligned
 
 
 
-- 选定流: 窑干锯材（针叶材） `50904047-e5b0-4110-990a-53751d250267`
+- 选定流: 针叶锯材 `50904047-e5b0-4110-990a-53751d250267`
 
 - 流属性/单位: 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / 千克
 

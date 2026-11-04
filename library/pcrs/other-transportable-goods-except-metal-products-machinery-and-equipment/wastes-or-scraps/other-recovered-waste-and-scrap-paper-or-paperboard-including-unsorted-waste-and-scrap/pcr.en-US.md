@@ -21,7 +21,7 @@ The representative route uses mechanical dry contaminant removal and a wire-boun
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.other-recovered-waste-and-scrap-paper-or-paperboard-including-unsorted-waste-and-scrap |
-| classification_refs | CPC 3.0:39249; proposed narrower mixed-paper supply scope; classification acceptance governed separately |
+| classification_refs | CPC 3.0:39249; historical author recommendation: narrower mixed-paper supply scope. Current mapping relation and acceptance: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its `acceptance.decision_ref` ADRs |
 | covered_products | Real unrepulped mixed used-paper/board supply lots; paper grades remain mixed after foreign-matter removal |
 | excluded_products | New paper; pulp including deinked pulp; finished recycled paper; textile fibres; medical or hazardous waste; material extracted from mixed residual refuse; separately traded single grades of unbleached kraft/corrugated paper (39241), bleached chemical-pulp paper not coloured in the mass (39242), or predominantly mechanical-pulp paper (39243). Constituent occurrence in a genuinely premixed lot does not make three separate purchases. A pure grade routed out of sorting is a separately accounted output under its applicable methodology, never this reference product. |
 | representative_product | One weighed mixed-paper bale lot accepted as feedstock by its named repulping receiver |
@@ -155,9 +155,9 @@ Conditional purchased road-freight service for each actual collection-to-yard an
 
 ###### Iron or steel bale binding wire (`wire`)
 
-Measure one actual flexible iron/steel baling wire supplied for this bale, including breakage and retained wire stocks. Native Product/Mass/kg is Baling wire, production mix at plant; the comment explicitly includes binding paper/cardboard and typically iron/steel, while a fencing classification is an isolated taxonomic anomaly, not a physical barbed-wire requirement. Use only this physical binding article; actual coating/composition/provider are declared and no bale mass is guessed.
+Measure one actual flexible iron or non-alloy steel baling wire supplied for this bale, including breakage and retained wire stocks. Current native Product/Mass/kg identity is iron or non-alloy steel wire for baling and material binding, CPC41263, production mix at plant; former fencing classification is historical, not a current physical barbed-wire requirement. Use only this physical binding article; actual grade, coating, composition, diameter, strength and provider remain to be declared and verified, with no bale mass or performance guessed.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_packaging.
 - Value mode: calculated_value
@@ -668,9 +668,9 @@ Conditional cleanup water, not a default washing or pulping step. Native Product
 
 ###### Iron or steel bale binding wire after release (`service_wire`)
 
-Measure one actual flexible iron/steel baling wire supplied for this bale, including breakage and retained wire stocks. Native Product/Mass/kg is Baling wire, production mix at plant; the comment explicitly includes binding paper/cardboard and typically iron/steel, while a fencing classification is an isolated taxonomic anomaly, not a physical barbed-wire requirement. Use only this physical binding article; actual coating/composition/provider are declared and no bale mass is guessed. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output.
+Measure one actual flexible iron or non-alloy steel baling wire supplied for this bale, including breakage and retained wire stocks. Current native Product/Mass/kg identity is iron or non-alloy steel wire for baling and material binding, CPC41263, production mix at plant; former fencing classification is historical, not a current physical barbed-wire requirement. Use only this physical binding article; actual grade, coating, composition, diameter, strength and provider remain to be declared and verified, with no bale mass or performance guessed. This card is exclusively the measured post-release service increment attached to original cohort Qc, excluding recovery-stage totals; use the original cohort's stored denominator and never create another production output.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: A_i,c / Q_c; use the single calculation in section 8 for this row, after raw-unit conversion and attribution; retain raw totals in cp_service.
 - Value mode: calculated_value

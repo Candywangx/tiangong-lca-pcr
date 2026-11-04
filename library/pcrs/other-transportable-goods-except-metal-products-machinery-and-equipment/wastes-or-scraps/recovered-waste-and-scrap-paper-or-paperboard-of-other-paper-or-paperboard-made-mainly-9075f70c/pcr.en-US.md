@@ -25,7 +25,7 @@ JRC BREF §6.1.1 corroborates industrial cuttings, grade sorting, foreign-materi
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.recovered-waste-and-scrap-paper-or-paperboard-of-other-paper-or-paperboard-made-mainly-9075f70c |
-| classification_refs | CPC 3.0:39242; narrower proposed relation; independent acceptance required |
+| classification_refs | CPC 3.0:39242; narrower product scope. Current mapping relation and acceptance: `classifications/mappings/cpc-3.0-to-pcr.yaml` and its `acceptance.decision_ref` ADRs |
 | covered_products | Dry-sorted baled white unprinted uncoated woodfree industrial paper cuttings from mainly bleached chemical pulp |
 | excluded_products | Exclude unbleached kraft and corrugated-board waste; predominantly mechanical-pulp newsprint/journals; mixed white grades of unknown furnish; mass-coloured paper; printed or coated shavings; adhesive-bound, wet-strength, laminated, carbonless, thermal, waxed or contaminated paper; white board, tissue and pulp. A white surface alone proves neither bleaching nor chemical-pulp predominance. UN CPC 39242 describes furnish and absence of mass colouring; it does not make “unprinted” and “uncoated” synonyms of that condition. These are additional, narrower grade restrictions here. Record body colour, surface printing and surface coating independently. |
 | representative_product | Dry-sorted baled white unprinted uncoated woodfree paper cuttings |
@@ -130,9 +130,9 @@ Electricity for actual cutting capture, conveyors, fans, separators, compressor 
 
 ###### New purchased bale-binding wire (`wire_new`)
 
-One supplied iron/steel baling wire for the actual paper bale; record metal, diameter, coating and provider. The Product record at plant explicitly includes paper binding and flexible iron/steel wire, with no fixed grade/CAS/geography; its fencing/barbed-wire classification is an isolated classification defect, not permission to supply barbed or incompatible wire. Confirm smooth binding wire from supplier records. Record the whole purchased wire once, including any supplied coating; do not buy its metal/coating again in a component subledger. Reused or externally returned wire is not a new purchase. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
+One supplied iron or non-alloy steel baling wire for the actual paper bale; record metal, grade, diameter, coating, strength and provider. Current native Product/Mass identity at plant is CPC41263 iron or non-alloy steel wire for baling and material binding, with exact grade, surface finish, diameter, strength, supplier and geography unspecified; former fencing/barbed-wire classification observations are historical, not the current classification or permission to supply incompatible wire. Confirm smooth binding wire from supplier records. Record the whole purchased wire once, including any supplied coating; do not buy its metal/coating again in a component subledger. Reused or externally returned wire is not a new purchase. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: q per reference flow; raw records under cp_packaging.
 - Value mode: Foreground record (`foreground_record`)
@@ -175,9 +175,9 @@ Conditional equipment/yard cleaning only, not paper washing or a yield-improving
 
 ###### External binding-wire return received (`wire_return_in`)
 
-The same individually identified smooth iron/steel wire described in wire_new, received back from an external holder for actual reuse; native paper-binding Product identity applies, including its disclosed classification defect. Record condition, holder, tare and inherited burden without a second purchase. Internal reuse is a cancelling movement rather than this external input. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
+The same individually identified smooth iron or non-alloy steel wire described in wire_new, received back from an external holder for actual reuse; current native material-binding Product identity and all actual grade, coating, diameter, strength and provider qualifications apply. Record condition, holder, tare and inherited burden without a second purchase. Internal reuse is a cancelling movement rather than this external input. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: q per reference flow; raw records under cp_packaging.
 - Value mode: Foreground record (`foreground_record`)
@@ -228,9 +228,9 @@ One recovered-paper Product, not pulp: white unprinted uncoated woodfree shaving
 
 ###### Binding wire attached to gross outward bales (`wire_outbound`)
 
-The same qualified single iron/steel paper-binding wire, including the native record’s classification defect and supplier limits described in wire_new. Report actual wire attached to all gross physical bale shipments, including shipments from opening FG and returned shipments; it is not a coproduct or paper Q. This is the physical packaging exit linked to the wire stock ledger, not a second wire production inventory or negative input credit. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
+The same qualified single iron or non-alloy steel paper-binding wire, with current CPC41263 identity and actual specification/provider limits described in wire_new. Report actual wire attached to all gross physical bale shipments, including shipments from opening FG and returned shipments; it is not a coproduct or paper Q. This is the physical packaging exit linked to the wire stock ledger, not a second wire production inventory or negative input credit. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: q per reference flow; raw records under cp_packaging.
 - Value mode: Foreground record (`foreground_record`)
@@ -243,9 +243,9 @@ The same qualified single iron/steel paper-binding wire, including the native re
 
 ###### External unused-wire return sent (`wire_return_out`)
 
-The same qualified smooth iron/steel Product wire, returned to the actual external owner/provider; preserve the native paper-binding scope and disclosed fencing-classification defect. Measure external returns separately from attachment on shipment and waste; reverse only the corresponding actual supply burden where contract and records establish it. No credit from a hypothetical future reuse. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
+The same qualified smooth iron or non-alloy steel Product wire, returned to the actual external owner/provider; preserve current CPC41263 material-binding scope and actual specification/provider limits. Measure external returns separately from attachment on shipment and waste; reverse only the corresponding actual supply burden where contract and records establish it. No credit from a hypothetical future reuse. This card’s q only references the existing result of the single normalize_exchange calculation in §8; collection retains undivided raw amounts.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: q per reference flow; raw records under cp_packaging.
 - Value mode: Foreground record (`foreground_record`)

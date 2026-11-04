@@ -727,7 +727,7 @@ GJSCI说明金或金合金组件制造、热加工成形分支、边角及粉尘
 | c_attribute | 所有清单行 | 逐交换j按第7节专属或虚拟细分、决定性物理因果及仅有依据的共同门剩余价值归属。A_j等于期初在制品继承向量_j加实际归属转换负荷_j减期末在制品继承向量_j，核对内部返回交接向量对。保留全部失败、零产出、启停、空转、清理、返工负荷及所有其他共功能。这是负荷账，不是总物理V平衡。 | converted_raw; cp_stocks_forming; cp_stocks_preparation; allocation_records | A_j | `jrc-ilcd-2010` |
 | c_normalise | 所有清单行 | Q大于0时仅一次a_j=A_j/Q，卡片和协议汇总只引用本结果。Q为0保留A_j及库存历史，不出单位生产结果。gold_feed参考输出由同次操作得到1千克。 | A_j; Q; cp_release | a_j | `jrc-ilcd-2010` |
 | c_services | services | 原放行批次c的Q_c大于0时，对互斥真实放行后服务仅一次s_jc=H_jc/Q_c。s_jc关联原批生产画像，不再除；H不是Q，也不再进入当前生产A_j/Q。保留期初成品负荷、退回、原交付冲回和仅真实增量返工；重验或交付不造产量。Q_c缺失或为0则保留H，暂缓单位服务结果。 | cp_services; cp_packaging; cp_stocks_forming; cp_stocks_preparation; Q_c | s_jc | `jrc-ilcd-2010` |
-| c_physical | 全部实物门 | 各门期初实物库存加外部收到加真实反应吸收，等于期末库存加外部流出加实测物种排放。制造出口只含一次Q；已放期末成品在Q内，不是第二份制造输出。成品门：期初已放成品加配对Q加实际收到退回，等于期末成品加毛实物发运加实际服务拒收；服务内交接配对。合并各门抵消内部Q及其他配对变动。总质量及相关金银铜等各元素独立核对物种反应水证据；披露不确定性，不强迫闭合。 | cp_origin; cp_outputs_forming; cp_outputs_preparation; cp_stocks_forming; cp_stocks_preparation; cp_release; cp_services; cp_species | physical_reconciliation | `gjsci-components-2013`; `jrc-ilcd-2010` |
+| c_physical | 全部实物门 | 各门期初实物库存加外部收到加真实反应吸收，等于期末库存加外部流出加实测物种排放。制造出口只含一次Q；已放期末成品在Q内，不是第二份制造输出。成品门按完整实际实收质量：期初已放成品加配对Q加实际收到退回加FG_in，等于期末成品加毛实物发运加实际服务拒收加FG_out；服务内交接配对。FG_in及FG_out为独立实测、真实跨越同一门的放行后材料/水/物种或相态转移腿，实际存在时包括真实反应吸收、水蒸气或分离液体外出；须排除同侧退回、发运、拒收或其他项已含的量。内部相态重新分布不是外部质量源。干金属和纯金伴随子账与本整质量门分开。声称完整前，逐项补齐实际缺失的原子接口与原始服务/状态记录；不默认湿操作、反应产率或相态损失。合并各门抵消内部Q及其他配对变动。总质量及相关金银铜等各元素独立核对物种反应水证据；披露不确定性，不强迫闭合。 | cp_origin; cp_outputs_forming; cp_outputs_preparation; cp_stocks_forming; cp_stocks_preparation; cp_release; cp_services; cp_species | physical_reconciliation | `gjsci-components-2013`; `jrc-ilcd-2010` |
 | c_packages | 每种包装物 | 钢罐、标签、胶带逐种：期初空置加期初附着在制加期初附着成品加期初周转加P加ER，等于C加S加EO加W。C含对应全部期末状态；S是随毛实物发运外出的包装，含退回或重复发运。内部重用抵消，不是采购或产品Q。新增外部界面X仅扩展真实所在侧；只有证明OTHER恰为同侧该重复项才去重。保留所有权、原负荷及污染；不再加金属分析分区。 | cp_packaging; cp_services; cp_stocks_forming; cp_stocks_preparation | packaging_reconciliation | `brepohl-refining`; `jrc-ilcd-2010` |
 
 ### 数据质量要求
@@ -747,7 +747,7 @@ GJSCI说明金或金合金组件制造、热加工成形分支、边角及粉尘
 | v_scope | 具体应用 | 核对完整合金路线来源形态组合及39332/39333等排除条件；必须有供料规格分析及真实接收条件。 | `un-cpc3-2025`; `gjsci-components-2013`; `mw-terms-2023` |
 | v_identity | 每个UUID | 逐UUID核原生类型、全部名称组成注释同义词、CAS、规格路线形态地域介质及全部属性。采用精确引用的属性单位组链和真实参考单位，不以最新版替代。即使分类吻合也拒绝硬身份矛盾；全部限制进入消费上下文。 | `mw-terms-2023` |
 | v_basis | Q与负荷 | 核唯一首次放行，区分金、干质量、整份质量，禁止期末成品重复产量；先单位转换和归属，再唯一归一；服务用原Q_c并保留零Q负荷。 | `jrc-ilcd-2010` |
-| v_balances | 实物与包装 | 核每门含成品及合并交接、整份混合物及分区、独立元素水物种证据、每个包装状态返回去向及完整在制成品继承向量。未知关系保持复核项，不能强行数值通过。 | `gjsci-components-2013`; `brepohl-refining`; `jrc-ilcd-2010` |
+| v_balances | 实物与包装 | 检查 c_physical 中按完整实收质量的 FG 等式，含独立实测且互不重叠的放行后 FG_in/FG_out 材料/水/物种/相态跨门腿及其真实原子接口；干金属/纯金子账分开。检查全部物理门及合并交接，整混合物与分区、元素和水/物种证据、包装状态/退回/去向及完整 WIP/FG 继承向量。未知关系保留明确审查，不强迫数值通过。 | `gjsci-components-2013`; `brepohl-refining`; `jrc-ilcd-2010` |
 | v_receiver | 接收终端 | 缺现行接收资质接受、转移状态不相容、因油危险物低品位被拒或缺决定性分析时，不得使用实际接收终端。保留暂缓物料和负荷，不虚构精炼输出或覆盖。 | `mw-scrap`; `mw-terms-2023` |
 | v_review | 数据包 | 执行有限计量、源内容指纹及Schema检查；另评科学适用性和翻译。工程通过不表示科学翻译批准、接受分类映射或发布。 | `jrc-ilcd-2010` |
 

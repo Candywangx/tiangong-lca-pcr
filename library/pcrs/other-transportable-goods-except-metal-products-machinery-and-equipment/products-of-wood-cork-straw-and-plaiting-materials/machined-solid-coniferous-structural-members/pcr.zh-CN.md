@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.machined-solid-coniferous-structural-members |
-| classification_refs | CPC 3.0 31625 为候选分类语境；建筑柱覆盖范围须独立审查 |
+| classification_refs | CPC 3.0 31625；较窄的工厂节点加工单件非工程木梁柱范围；当前决定以classifications/mappings/cpc-3.0-to-pcr.yaml及其acceptance.decision_ref ADR为准；独立方法学审查仍待完成 |
 | covered_products | 采购窑干锯材制成的未组装单根针叶实体结构梁柱；必须有构件专用卯、榫、缺口或连接孔及加工后结构验收 |
 | excluded_products | 没有节点加工的普通粗锯或直刨分等材；仅连续成型的型材；围栏柱、圆杆及轨枕；阔叶材；工程木、指接、胶合、防腐或涂覆产品；组装框架及安装 |
 | representative_product | 构件工厂门口验收合格的干燥未处理、未组装节点加工针叶实体结构构件 |
@@ -97,7 +97,7 @@ content_maturity: authored_methodology
 
 必需的单根窑干针叶材毛坯，未经防腐处理及胶合。记录供方边界、实际树种、含水率、尺寸及等级；上游锯切和干燥负荷只继承一次。
 
-- 选定流：窑干锯材（针叶材） `50904047-e5b0-4110-990a-53751d250267`
+- 选定流：针叶锯材 `50904047-e5b0-4110-990a-53751d250267`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：本交换单位的同批期未分配总量除以验收净实体 m3 量 Q；每 1 m3 参考流。保留原始阶段总量及库存变化，实物量不乘负荷分配份额。
 - 数值来源模式：`calculated_value`

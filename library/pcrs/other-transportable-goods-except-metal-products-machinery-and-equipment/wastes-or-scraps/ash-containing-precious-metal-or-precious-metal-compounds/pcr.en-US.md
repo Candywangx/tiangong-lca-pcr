@@ -21,7 +21,7 @@ Exclude selectors pooling gold/platinum/palladium ashes, unburned sludge, direct
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.ash-containing-precious-metal-or-precious-metal-compounds |
-| classification_refs | CPC 3.0:39333; narrower single-source silver bottom-ash subset; no accepted mapping |
+| classification_refs | CPC 3.0:39333; narrower single-source silver bottom-ash subset. Current accepted narrower mapping and its durable acceptance decision are governed by classifications/mappings/cpc-3.0-to-pcr.yaml and acceptance.decision_ref; this does not grant whole-leaf coverage, independent scientific/translation approval or publication. |
 | covered_products | Cooled contained incineration bottom ash from one photographic gelatin/silver precipitate route |
 | excluded_products | Unburned sludge; direct film ash; filter dust as reference output; non-precious ash; non-ash metal scrap; refined silver |
 | representative_product | One actual assayed silver-bearing bottom-ash lot with receiver specification; no universal Ag grade |

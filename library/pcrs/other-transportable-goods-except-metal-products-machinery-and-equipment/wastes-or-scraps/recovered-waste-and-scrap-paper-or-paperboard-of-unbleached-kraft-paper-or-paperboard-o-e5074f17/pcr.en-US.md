@@ -164,9 +164,9 @@ Native Hydraulic Fluid allows mineral or synthetic base oil plus additives; this
 
 ###### Production baling wire purchase (`wire_purchase`)
 
-One supplied steel baling wire article used on OCC bales. Native family explicitly includes corrugated-cardboard binding, but does not set alloy, coating, strength, diameter, supplier or wire mass per bale; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. This is P_recovery only; a purchase used in service belongs to P_service, never both.
+One supplied iron or non-alloy steel baling wire article used on OCC bales. Current native CPC41263 identifies iron or non-alloy steel wire for baling and material binding; the former fencing classification is historical. Exact grade, coating, strength, diameter, supplier and wire mass per bale are unspecified; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. This is P_recovery only; a purchase used in service belongs to P_service, never both.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Retain the unnormalized numerator for this row and phase under cp_packaging_recovery; reference the same sole per-reference calculation in section 8 after conversion and attribution.
 - Value mode: `calculated_value`
@@ -525,9 +525,9 @@ Supplied treated potable municipal water at plant; not reservoir raw water, dire
 
 ###### Service replacement baling-wire purchase (`wire_service_purchase`)
 
-One supplied steel baling wire article used on OCC bales. Native family explicitly includes corrugated-cardboard binding, but does not set alloy, coating, strength, diameter, supplier or wire mass per bale; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. P_service is only a disjoint partition of actual procurement; internal reuse is not purchase.
+One supplied iron or non-alloy steel baling wire article used on OCC bales. Current native CPC41263 identifies iron or non-alloy steel wire for baling and material binding; the former fencing classification is historical. Exact grade, coating, strength, diameter, supplier and wire mass per bale are unspecified; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. P_service is only a disjoint partition of actual procurement; internal reuse is not purchase.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Retain the unnormalized numerator for this row and phase under cp_packaging_gate; reference the same sole per-reference calculation in section 8 after conversion and attribution.
 - Value mode: `calculated_value`
@@ -555,9 +555,9 @@ The same one purchased tag article as tag_purchase, restricted to service replac
 
 ###### Externally returned baling wire received (`wire_external_received`)
 
-One supplied steel baling wire article used on OCC bales. Native family explicitly includes corrugated-cardboard binding, but does not set alloy, coating, strength, diameter, supplier or wire mass per bale; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. ER includes loose and attached returns, each actual crossing once. Its prior procurement vector is inherited; ER is not P. Require the same article/lot trace to its actual prior outward crossing and receipt; first external nonpurchase entry, even if used elsewhere, is N rather than ER. Do not invent outward history.
+One supplied iron or non-alloy steel baling wire article used on OCC bales. Current native CPC41263 identifies iron or non-alloy steel wire for baling and material binding; the former fencing classification is historical. Exact grade, coating, strength, diameter, supplier and wire mass per bale are unspecified; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. ER includes loose and attached returns, each actual crossing once. Its prior procurement vector is inherited; ER is not P. Require the same article/lot trace to its actual prior outward crossing and receipt; first external nonpurchase entry, even if used elsewhere, is N rather than ER. Do not invent outward history.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Retain the unnormalized numerator for this row and phase under cp_packaging_gate; reference the same sole per-reference calculation in section 8 after conversion and attribution.
 - Value mode: `calculated_value`
@@ -619,9 +619,9 @@ This generic Product family is production mix at plant with unspecified treatmen
 
 ###### Baling wire attached to gross dispatch (`wire_shipped`)
 
-One supplied steel baling wire article used on OCC bales. Native family explicitly includes corrugated-cardboard binding, but does not set alloy, coating, strength, diameter, supplier or wire mass per bale; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. S follows all actual gross goods dispatch H, including repeat shipment and historical stock. Attached-wire mass is not net OCC or new wire procurement.
+One supplied iron or non-alloy steel baling wire article used on OCC bales. Current native CPC41263 identifies iron or non-alloy steel wire for baling and material binding; the former fencing classification is historical. Exact grade, coating, strength, diameter, supplier and wire mass per bale are unspecified; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. S follows all actual gross goods dispatch H, including repeat shipment and historical stock. Attached-wire mass is not net OCC or new wire procurement.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Retain the unnormalized numerator for this row and phase under cp_packaging_gate; reference the same sole per-reference calculation in section 8 after conversion and attribution.
 - Value mode: `calculated_value`
@@ -649,9 +649,9 @@ S of this one tag follows H, not Q; its pre-existing procurement vector leaves w
 
 ###### Baling wire returned externally (`wire_external_out`)
 
-One supplied steel baling wire article used on OCC bales. Native family explicitly includes corrugated-cardboard binding, but does not set alloy, coating, strength, diameter, supplier or wire mass per bale; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. EO is actual return-out, distinct from wire shipped with H. A crossing cannot be both S and EO; internal reuse I cancels.
+One supplied iron or non-alloy steel baling wire article used on OCC bales. Current native CPC41263 identifies iron or non-alloy steel wire for baling and material binding; the former fencing classification is historical. Exact grade, coating, strength, diameter, supplier and wire mass per bale are unspecified; declare these and select a compatible provider. Exclude wire from Q; procurement and physical attached-wire ledgers are separate. EO is actual return-out, distinct from wire shipped with H. A crossing cannot be both S and EO; internal reuse I cancels.
 
-- Selected flow: Baling wire `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
+- Selected flow: Baling wire, iron or non-alloy steel `56ddb6db-1bf1-4c3c-b3db-bb00063774a8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Retain the unnormalized numerator for this row and phase under cp_packaging_gate; reference the same sole per-reference calculation in section 8 after conversion and attribution.
 - Value mode: `calculated_value`

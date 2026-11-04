@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.densified-wood |
-| classification_refs | CPC 3.0: 31520; narrower; 候选范围，未接受映射 |
+| classification_refs | CPC 3.0: 31520; narrower; 当前映射决定以 classifications/mappings/cpc-3.0-to-pcr.yaml 及其 acceptance.decision_ref ADR 为准 |
 | covered_products | 无树脂、未胶合、热定形压缩实木工具柄坯料；黄桦为代表 |
 | excluded_products | compreg；普通胶合板/细木工板；胶合压缩单板；MDF；刨花板；天然高密度但未压缩木；仅热改性木；涂饰或化学处理产品 |
 | representative_product | 黄桦未涂饰工具柄坯料，验收调湿后工厂门净质量 |
@@ -213,9 +213,9 @@ content_maturity: authored_methodology
 
 ###### 交废物处理的未处理黄桦刨削木屑 (`planing_shavings`)
 
-刨削时纳入并分别称量实际松散黄桦刨屑，记录压缩前后来源、含水率及无外加胶、树脂或涂层。不能自动视为锯切粉尘、人造板给料、木片或颗粒燃料。广义废木料身份须匹配实际制造来源和接收处理；其原生生产措辞及CPC39282团聚分类与此未团聚残余物状态存在待澄清源元数据债务。名称和注释一致指废木料，并不证明发生制粒或压块。
+刨削时纳入并分别称量实际松散黄桦刨屑，记录压缩前后来源、含水率及无外加胶、树脂或涂层。不能自动视为锯切粉尘、人造板给料、木片或颗粒燃料。广义废木材身份表示按质量计量的已收集非团聚废木材，组成和去向由产生过程明确。链接前须核实实际制造来源、压缩前后状态、含水率、污染及接收方/提供方兼容性。该身份不证明制粒或压块、清洁生物质燃料状态、无害性、回收资格、焚烧处理或避免产品抵扣。
 
-- 选定流：废木料 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
+- 选定流：废木材 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 单位组：`93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：按 `cp_residues` 采集并归一化至每 1 kg 参考流
@@ -229,9 +229,9 @@ content_maturity: authored_methodology
 
 ###### 交废物处理的不合格致密化黄桦实木坯料 (`rejected_solid`)
 
-分别称量不可回收废品坯料和实木修边料，与粉尘及刨屑分开。记录实际热压历史、回弹失效或缺陷、含水率、无外加树脂/胶/涂层及接收处理。连续实木压缩并非木颗粒团聚；广义废木料记录的CPC39282团聚字段及原生生产措辞须按实际未团聚制造残余物澄清，不借此默认处置背景。内部返工留在本单元内且只计一次，不同时列为外送废物。
+分别称量不可回收废品坯料和实木修边料，与粉尘及刨屑分开。记录实际热压历史、回弹失效或缺陷、含水率、无外加树脂/胶/涂层及接收处理。连续实木压缩并非木颗粒团聚。广义废木材身份涵盖已收集非团聚废物，组成和去向由产生过程明确；须核实实际不合格物料、污染及接收方/提供方兼容性，不借此默认处置背景、回收资格或避免产品抵扣。内部返工留在本单元内且只计一次，不同时列为外送废物。
 
-- 选定流：废木料 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
+- 选定流：废木材 `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 单位组：`93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：按 `cp_residues` 采集并归一化至每 1 kg 参考流

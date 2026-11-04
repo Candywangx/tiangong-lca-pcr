@@ -19,7 +19,7 @@ Exclude hardwood, fencing posts, round poles, sleepers, glued/laminated/finger-j
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.machined-solid-coniferous-structural-members |
-| classification_refs | CPC 3.0 31625 is candidate classification context; building-column coverage requires independent review |
+| classification_refs | CPC 3.0 31625; narrower factory-machined single-piece non-engineered beam/column scope; current decisions are governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its acceptance.decision_ref ADRs; independent methodology review remains required |
 | covered_products | Unassembled one-piece solid coniferous structural beams and columns made from purchased kiln-dried sawn stock; component-specific mortise, tenon, notch or connection bore and post-machining structural acceptance required |
 | excluded_products | Ordinary rough/straight-planed graded stock without connection machining; continuous profiles alone; fencing posts, round poles, sleepers; hardwood; engineered/finger-jointed/glued/treatment/coating products; assembled frames and installation |
 | representative_product | Accepted dry untreated unassembled connection-machined solid coniferous structural member, at component factory gate |

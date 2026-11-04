@@ -383,11 +383,9 @@ Delivered PE bag used for the actual pack count, including supplied print. Recor
 
 One real corrugated transport box grade. Record actual fibre mix, print, provider and mass; do not impose the candidate database box recipe of 16.6% virgin/83.4% recycled fibre.
 
-The broad packaging record positively includes corrugated cases; use it only for this one actual delivered carton, never an aggregated bag/carton/wrap bundle. Require actual fibre composition, board construction, print/glue, moisture, grade and supplier/plant-gate mass compatibility. No 16.6%/83.4% fibre recipe or generic-world supplier dataset is adopted.
+The generic Packaging materials, unspecified candidate does not positively establish this specific whole corrugated carton: it has no formal descriptive comment, and broad synonyms for cartons, liner bags and stretch wrap do not prove one physical article. Its UUID is withdrawn from this row. Retain this concrete carton interface and collect actual fibre composition, board construction, print/glue, moisture, grade, complete article mass and supplier/plant-gate scope. A compatible whole-carton identity and provider remain unresolved before quantitative package completion; no 16.6%/83.4% fibre recipe, packaging bundle or generic-world supplier dataset is adopted.
 
-The selected UUID retains the official native name Packaging materials, unspecified; Corrugated shipping carton is the concrete single-component display within that disclosed family.
-
-- Selected flow: Corrugated shipping carton `7336a8ee-9e4d-49a6-9fe5-ce285f613245`
+- Selected flow: Corrugated shipping carton
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: q_i=A_i/Q; actual external batch total and net accepted batch mass from the linked protocol; conditional absence requires proof
 - Value mode: Calculated value (`calculated_value`)

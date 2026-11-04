@@ -21,7 +21,7 @@ content_maturity: authored_methodology
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.ash-containing-precious-metal-or-precious-metal-compounds |
-| classification_refs | CPC 3.0:39333；更窄的单源含银底灰子集；不建立已接受映射 |
+| classification_refs | CPC 3.0:39333；更窄的单源含银底灰子集。当前已接受的 narrower 映射及其持久接受决定以 classifications/mappings/cpc-3.0-to-pcr.yaml 和 acceptance.decision_ref 为准；不授予全叶覆盖、独立科学/翻译批准或发布。 |
 | covered_products | 单一照相乳剂制造含银明胶沉淀的冷却盛装焚烧底灰 |
 | excluded_products | 未烧污泥；直接胶片焚烧灰；滤尘作为参考输出；非贵金属灰；非灰金属废料；精炼银 |
 | representative_product | 一批经真实分析及接收规范限定的含银底灰，不规定通用银等级 |
