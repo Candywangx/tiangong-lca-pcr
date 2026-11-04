@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-03
-lastReviewedNote: "Reviewed reconciliation with Candywangx main 4de4fcd9: preserve the upstream ordinary-document and consumed-shadow anchor guards and their negative cases alongside bounded adjacent-PCR reading-page packing, unchanged logical search units, and source-bound retained reading routes. Canonical/download bytes, methodology states, runtime pins and resource guards are unchanged. Fresh qualification of the reconciled source remains separate from publication or scientific approval."
-lastReviewedCommit: e7b243d432a620f493a29cc0684b43456191c004
+lastReviewedAt: 2026-11-04
+lastReviewedNote: "Reviewed the scoped CPC3 source at 199860644 and its actual capacity and reserved-route shadowing failures. Bounded search layout selection, versioned inspector dictionary transport and audited current reading-page ownership preserve complete content, historical entries/anchors, existing guards and budgets. Inspector decoding preflights the whole restored pack; reading URLs avoid reserved origins and retained targets follow their complete actual anchor owner. The selected final source still requires fresh complete validation and documentation qualification; scientific status, publication and deployment authority are unchanged."
+lastReviewedCommit: 199860644655a82b5cc228523c930cd2082916d9
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -549,6 +549,17 @@ versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buck
 complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
 including the manifest, remain unchanged.
 
+The generator retains the original sixteen-member greedy layout as a candidate
+and compares a bounded set of consecutive pack boundaries near balanced cuts.
+At each cut position it retains at most sixteen paths. Physical dictionary strings
+may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
+gzip is smaller; dictionary values and first-appearance order remain exact. The
+complete manifest and physical files determine the selected gzip cost within the
+unchanged raw budget. Candidates must also retain the existing per-pack physical
+and summed restored-wire byte limits before selection. This does not change
+logical text buckets, engine exports,
+record fields, logical order, ranking, decoder versions or any size/expansion guard.
+
 `node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
 compares captured physical assets with repacked v7 files over the exact same
 logical wires, source identity, language and pack membership. It retains physical,
@@ -583,15 +594,29 @@ context; it does not enable inline emission in current generation.
 
 ### Inspector data transport
 
-The field inspector groups complete generated records into versioned JSON packs,
-using positional entries `[key, manifest, structured]`. Each record carries its
+The field inspector groups complete generated records into versioned JSON packs.
+Version 1 uses positional entries `[key, manifest, structured]`. Each record carries its
 exact transport key; current records and historical releases have distinct keys.
 Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
 whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
 array position, object-key order or empty value is removed. Generation requires
 each decoded record to serialize exactly as its original generated data; export
 verification repeats that comparison against the shipped pack for every record.
-The reader retains support for older unkeyed single-record payloads, rejects
+Version 2 may dictionary-code repeated strings and object keys when its complete
+UTF-8 serialization is smaller than version 1. Nonbeneficial strings remain
+literals. Explicit number/array/object tags preserve every scalar type, empty
+value and object-key order; deterministic dictionary pruning does not claim a
+globally optimal encoding. The physical target remains 1,000,000 bytes and 32
+records. Before materializing any decoded record, the reader validates the whole
+pack, including distinct dictionary/record/decoded object keys, exact tags and
+references. It charges every restored occurrence, JSON escape, punctuation and
+the version-1 envelope against a strict 25,000,000-byte restored-pack bound.
+Dictionary nesting is bounded at 128; older valid deeper records retain version
+1 transport. The writer measures the restored size before encoding a candidate,
+flushes an existing group before that limit and recomputes the singleton. A
+record that cannot satisfy the existing single-file limit fails closed.
+
+The reader retains support for version 1 and older unkeyed single-record payloads, rejects
 unknown versions, duplicate or missing keys and malformed records, and preserves
 the inspector's visible retry behavior. Browser qualification exercises the actual
 inspector in both languages and for available historical releases.
@@ -634,6 +659,16 @@ anchor ledger remains unchanged. All retained and published targets must exist i
 the ordinary document tree. The source-bound provider profile includes the added
 route source; older three-file profiles remain readable. Generation rejects source
 drift until the retained-route evidence is reviewed and updated.
+
+When revised content gives a current reading part a reserved historical source
+URL, its current slug receives a deterministic `-current` suffix. A second
+reserved or duplicated destination fails closed. Complete nodes, anchors and
+logical search parts remain unchanged. Audited retained targets may follow the
+actual same-record, same-language owner only when every historical anchor still
+belongs to that one page. Historical source URLs, default anchors, anchor arrays
+and baselines remain unchanged; no marker-only anchor can substitute for content.
+The original provider source, shadowing and ordinary-document anchor gates still
+apply to the fresh complete export.
 
 The anchor verifier reuses the upstream bounded generated-HTML scanner. Quoted
 attributes, comments, raw-text payloads, inert/foreign descendants and consumed

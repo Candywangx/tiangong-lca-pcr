@@ -1,10 +1,1850 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39214"
-  title: "Cotton waste, except garnetted stock"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.cotton-waste-except-garnetted-stock"
+  classification_refs: "CPC3.0:39214; narrower"
+  covered_products: "One segregated unbleached ungarnetted cotton comber-noil spinning-feedstock stratum"
+  excluded_products: "seed cotton; cotton linters; cottonseed hulls; card strips; yarn hard waste; mixed sweepings; wool/silk waste; garnetted cotton; bleached absorbent cotton; long sliver; yarn"
+  representative_product: "Unbleached ungarnetted cotton comber noil for spinning"
+  production_route: "Start at received ginned cotton bales; include receiving and opening/cleaning, carding, actual drawing/lap preparation needed for combing, combing separation, segregated noil collection, dry inspection and actual mechanical cleaning, sampling and first quality release for a named spinning customer specification. Include suction, dust filtration, compression and attributable maintenance. Model the actual route; purchased finished noils plus packing alone cannot represent this integrated production dataset."
+  market_state: "loose or compressed unbleached noil at first spinning-quality release with subsequent cohort-specific storage/packing/dispatch service disclosed"
+functional_unit:
+  what: "cotton comber noil feedstock for subsequent spinning"
+  how_much: "1 kg net noil at new first quality release"
+  how_well: "actual declared spinning receiver specification for purity and length plus measured moisture/trash/contamination; no medical specification implied"
+  how_long_or_cycle: "one original first-release production cohort; later services retain Qc"
+  reference_flow_link: "first_release_noil"
+system_boundary:
+  rules:
+    - rule_id: b_full_route
+      applies_to: "foreground_system"
+      rule: "Start at received ginned cotton bales; include receiving and opening/cleaning, carding, actual drawing/lap preparation needed for combing, combing separation, segregated noil collection, dry inspection and actual mechanical cleaning, sampling and first quality release for a named spinning customer specification. Include suction, dust filtration, compression and attributable maintenance. Model the actual route; purchased finished noils plus packing alone cannot represent this integrated production dataset."
+      source_ids:
+        - usitc-comber-1990
+        - gp-comber-noil
+        - jrc-textiles-2023
+    - rule_id: b_exclusive
+      applies_to: "reference_product"
+      rule: "Only unbleached ungarnetted cotton short fibres separated at the comber are the reference product. Keep card strips, blowroom waste, lap/sliver/roving waste and yarn hard waste separate. Exclude seed cotton, linters removed from cottonseed, hulls, mixed floor sweepings, wool/silk waste, garnetted fabric/yarn, bleached absorbent cotton, long combed sliver and yarn from reference Q. Classification 39214 is broader than this noil boundary; 39215 cannot substitute for it."
+      source_ids:
+        - un-cpc3-2025
+        - usitc-comber-1990
+        - gp-comber-noil
+    - rule_id: b_physical_burden
+      applies_to: "every_exchange"
+      rule: "Keep gross physical quantities V and their source/destination partition independently from the attributional inventory vector A. Allocation changes burdens; it never rewrites the actual mass balance or invents a physical fibre input. An exported mixed collector total and its source partitions describe one transfer and one provider link; do not add them. A newly discovered actual exchange F must receive a specific atomic row; remove X only when it is an exact same-side duplicate already inside OTHER. Never use an undivided OTHER as a selected flow. The normalized A/Q view is environmental attribution; physical co-output cards retain gross V in the joint ledger and cannot offer a second supply provider carrying the same A. Never use A as the physically shipped mass or test physical conservation on allocated A."
+      source_ids:
+        - ilcd-attributional-2010
+    - rule_id: b_release_service
+      applies_to: "production_and_finished_stock"
+      rule: "Q is the net fibre mass newly passing the first spinning-feedstock quality release in the production cohort. Q includes that cohort remaining in closing finished goods once; do not add closingFG to Q again. Subsequent inspection, storage, compression, packaging, handling and dispatch are a separate service ledger assigned to the original released cohort Qc. Service throughput H and gross shipments S are not a new production denominator. Cancel internal noil transfers and their inherited vectors when combining modules."
+      source_ids:
+        - usitc-comber-1990
+        - ilcd-attributional-2010
+    - rule_id: b_inheritance
+      applies_to: "raw_material_WIP_and_unused_stock"
+      rule: "At every physical gate retain opening/closing WIP, unused non-WIP inputs, first-release finished stock, returns and their exchange-by-exchange inherited vectors. Preserve all failed lots, Q0, start/stop, idle, cleanup and real rework loads. Consume opening WIP with its history; carry closing WIP history forward; unused unopened supplies retain procurement history separately. Do not subtract a stock correction twice from an already net issue. Reinspection and redispatch create no new Q."
+      source_ids:
+        - ilcd-attributional-2010
+    - rule_id: b_actual_services
+      applies_to: "utilities_and_auxiliaries"
+      rule: "The baseline is dry mechanical fibre separation. Mains water applies only to actual humidification or utility makeup; no washing, bleach, chemical dissolution, steam, boiler, drying heat or onsite combustion is assumed. If actually operated, retain its loads even when unauthorized or outside the intended route, report the route departure and add every purchased whole formulation, fuel, water return, waste and actual gas species separately before using the dataset. Purchased formulations are counted once; assays and carrier water are subsidiary balances. In-house preparation uses each actual purchased ingredient plus its real energy and losses."
+      source_ids:
+        - usitc-comber-1990
+        - jrc-textiles-2023
+    - rule_id: b_packaging
+      applies_to: "each_packaging_component"
+      rule: "For each actual jute cloth, cotton cloth, steel wire and polypropylene strap maintain its own balance: opening empty + opening attached to WIP/FG + opening reusable stock + purchases P + external returns received ER = closing empty/attached/reusable + material on gross physical shipments S + external returns outward EO + waste W. Internal reuse I cancels between steps; it is neither another purchase nor noil Q nor an automatic coproduct. Keep inlet bale wrappings and outlet packaging separately by lot and component."
+      source_ids:
+        - usitc-comber-1990
+        - ilcd-attributional-2010
+    - rule_id: b_upstream
+      applies_to: "upstream_and_outsourced_interfaces"
+      rule: "Ginned cotton carries representative cultivation and ginning supply through one linked upstream dataset; do not invent a zero-burden waste cut-off for a valuable noil. Distinguish integrated combing from an explicitly contracted upstream combing service with its actual burden vector; never add a purchased noil and rebuild the same cotton/combing history. Outbound transport after the stated dispatch gate and downstream blending/spinning are outside this foreground boundary."
+      source_ids:
+        - usitc-comber-1990
+        - ilcd-attributional-2010
+boundary_abstraction:
+  declared_starting_condition: "ginned virgin cotton lint in traceable bales before opening/carding; source and moisture declared"
+  starting_condition_role: "foreground input gate; carry actual upstream cotton supply once"
+  product_classification_scope: "Only unbleached ungarnetted cotton short fibres separated at the comber are the reference product. Keep card strips, blowroom waste, lap/sliver/roving waste and yarn hard waste separate. Exclude seed cotton, linters removed from cottonseed, hulls, mixed floor sweepings, wool/silk waste, garnetted fabric/yarn, bleached absorbent cotton, long combed sliver and yarn from reference Q. Classification 39214 is broader than this noil boundary; 39215 cannot substitute for it."
+  recursive_input_rule: "same-category noil receipts retain prior process state and inherited upstream vector once; never rebuild the same ginning/combing history or count returned noil as newly produced"
+  upstream_dataset_requirement: "Ginned cotton carries representative cultivation and ginning supply through one linked upstream dataset; do not invent a zero-burden waste cut-off for a valuable noil. Distinguish integrated combing from an explicitly contracted upstream combing service with its actual burden vector; never add a purchased noil and rebuild the same cotton/combing history. Outbound transport after the stated dispatch gate and downstream blending/spinning are outside this foreground boundary."
+  disclosure: "input state; actual equipment; all co-outputs; product/waste status; original cohort; moisture; source/utility restrictions; all production failures; stocks; later service period and packaging"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Cotton waste, except garnetted stock"
+    uuid: "706d76ad-229e-4559-81bf-6b8619cbe6be"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "comber source line and lot"
+    - "ginned virgin cotton origin and prior preparation"
+    - "ungarnetted unbleached short-fibre form"
+    - "cotton purity and measured foreign-fibre contamination"
+    - "fibre length distribution and receiver spinning specification"
+    - "measured plant trash and neps"
+    - "free moisture and declared as-released mass basis"
+    - "oil or finish identity and retained content when present"
+    - "first quality release Q and original cohort Qc"
+    - "opening and closing WIP plus unused non-WIP vectors"
+    - "gross physical V distinct from attributional A"
+    - "joint co-output allocation evidence"
+    - "legal transfer status and receiver acceptance"
+    - "site and technology"
+    - "representative production and service periods"
+    - "actual packaging composition and full component balances"
+    - "native identity restrictions and provider compatibility"
+reference_flows:
+  []
+measurement_rules:
+  - id: meas_reference
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "All rows are per 1 kg reference flow; Q is newly first released net fibre mass. Protocols collect raw unnormalized numerators; calc_normalize performs A/Q once. ClosingFG is already inside Q once."
+  - id: meas_moisture
+    applies_to: "cotton and physical mass ledger"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep as-released wet mass and independently measured free-water fraction w; dry cotton and actual trash/contamination form separate measured partitions. m_dry=m_as_received*(1-w) only after defining non-water constituents. No default regain, oil fraction or density. Do not add assay partitions to the purchased whole mass."
+  - id: meas_service
+    applies_to: "services"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Service numerator is assigned to original Qc; H is not a denominator. Gross V balances remain independent of A and n."
+  - id: meas_energy
+    applies_to: "electrical rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Keep raw kWh; the verified energy unit group has reference MJ and kWh factor3.6. Do not interpret the property name as fuel combustion or apply a calorific factor to cotton."
+process_map:
+  - id: preparation
+    name: "Ginned cotton preparation and joint combing"
+    inclusion: "required"
+    inclusion_condition: "Actual ginned virgin cotton route; retain all co-outputs"
+    role: "joint production through physical separation"
+    quantitative_reference: "gross cotton throughput V and separate noil/long-sliver quantities"
+  - id: noil_release
+    name: "Segregated noil collection cleaning and first release"
+    inclusion: "required"
+    inclusion_condition: "Cleaning only as actually performed; inspection and release always documented"
+    role: "dedicated noil production"
+    quantitative_reference: "new first released noil Q"
+  - id: services
+    name: "Finished-stock storage packing handling and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Actual services and packaging by original cohort"
+    role: "post-release service ledger; no new production"
+    quantitative_reference: "original cohort Qc; H and S only activity records"
+process_inventory:
+  - id: preparation
+    label: "Ginned cotton preparation and joint combing"
+    inputs:
+      product:
+        - row_id: ginned_cotton
+          role: "Ginned virgin cotton feedstock"
+          name: "Ginned uncarded cotton lint"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive traceable ginned fibre bales excluding seed and linters; retain fibre origin and bale coverings separately. A formal Cotton fabric identity with woven-fabric synonyms is incompatible with ginned raw lint regardless of a raw-cotton classification or generic raw-cotton comment. Keep this physically specific input unbound pending a compatible identity. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usitc-comber-1990
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Metered electrical supply"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use only CN grid-average consumption mix delivered below 1 kV to the user. Meter this stage including its suction and controls. This is not hydropower-only, power-plant production, medium/high-voltage electricity, purchased compressed air, heat or diesel. Record actual geography/voltage/provider; incompatible supply requires another verified atomic identity. Convert raw kWh to MJ using 3.6 before allocation. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_energy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: long_combed_sliver
+          role: "Long-fibre combed sliver co-output"
+          name: "Cotton, carded or combed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "93976740-418a-40e3-8901-dbc34f0acdc6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This Product flow is finished manufactured carded/combed cotton at plant. Here it is the physically separate long-fibre combed sliver from the same joint combing gate; never use it for short rejected noil. Declare actual presentation and cotton-only composition. Subsequent sliver drawing for yarn quality belongs to that co-output. Measure full gross V separately from burden allocation; this is not Q. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usitc-comber-1990
+            ranges: []
+        - row_id: raw_noil_transfer
+          role: "Segregated unreleased comber noil"
+          name: "Cotton waste, except garnetted stock"
+          flow_type: "product"
+          flow_ref:
+            uuid: "706d76ad-229e-4559-81bf-6b8619cbe6be"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Generic Product flow at plant with unspecified treatment; no fixed grade, CAS, geography, noil yield or spinning acceptance is certified by this identity. Restrict this row to unbleached ungarnetted cotton short fibres originating specifically at the comber; exclude linters, seed cotton, card strips, yarn hard waste, cloth and mixed floor sweepings. Retain fibre length distribution, measured plant trash, free moisture, oil/finish contamination, cotton purity, source line/lot and actual receiver specification/status. The official Chinese name is broad and does not mean all recovered fibre is excluded; the English ungarnetted boundary controls. Transfer gross physical V with its inherited inventory vector; internal movements cancel on consolidation and do not create another procurement or first release. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: card_strip_product
+          role: "Recovered card-strip co-output"
+          name: "Recovered cotton card strips"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional only for this specific separated cotton stream actually accepted as functional product. Record its gross mass and receiver separately; it is not comber noil and not reference Q. The same physical mass cannot also be discarded waste. Do not combine card strips with blowroom fibre or plant trash. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+            ranges: []
+        - row_id: blowroom_fibre_product
+          role: "Recovered blowroom cotton co-output"
+          name: "Recovered blowroom cotton fibre"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional only for this specific separated cotton stream actually accepted as functional product. Record its gross mass and receiver separately; it is not comber noil and not reference Q. The same physical mass cannot also be discarded waste. Do not combine card strips with blowroom fibre or plant trash. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+            ranges: []
+      waste:
+        - row_id: preparation_discarded_cotton
+          role: "Discarded cotton fibre"
+          name: "Discarded ungarnetted cotton fibre"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only cotton fibre actually discarded at this stage; exclude separately weighed plant matter and collector dust. Unreleased failed lots and post-release service rejects retain their distinct history and actual destination; no default zero burden or credit. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: preparation_plant_trash
+          role: "Separated plant trash"
+          name: "Cotton leaf and boll plant residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured plant matter removed in this stage; weigh and characterize this actual stream with moisture and destination. Retained trash within noil is part of that noil mass and cannot be counted again as separated output. Mixed collector composition requires one total with nonadditive source partitions and no invented pure-species split. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: preparation_captured_dust
+          role: "Captured cotton dust"
+          name: "Captured cotton fibre dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the actual captured cotton-dust stream and its composition, filter-bin opening/closing stock and destination. This waste is not an atmospheric elementary release; do not count the collector total again under plant trash or discarded fibre. Product recovery, if real, requires its own exclusive functional product row. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+      elementary:
+        - row_id: preparation_air_pm
+          role: "Residual particulate emission to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Elementary emission to air with unspecified subcompartment and unspecified particle size. No fixed composition, stack height or characterization factor is provided. The native clinker example is not a cotton emission factor or a restriction to clinker. Use independently measured stage exhaust/fugitive particulate mass and retain actual controls, medium and sampling; no PM2.5/PM10 assumption. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+  - id: noil_release
+    label: "Segregated noil collection cleaning and first release"
+    inputs:
+      product:
+        - row_id: noil_release_electricity
+          role: "Metered electrical supply"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use only CN grid-average consumption mix delivered below 1 kV to the user. Meter this stage including its suction and controls. This is not hydropower-only, power-plant production, medium/high-voltage electricity, purchased compressed air, heat or diesel. Record actual geography/voltage/provider; incompatible supply requires another verified atomic identity. Convert raw kWh to MJ using 3.6 before allocation. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_energy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: raw_noil_receipt
+          role: "Unreleased noil for cleaning and inspection"
+          name: "Cotton waste, except garnetted stock"
+          flow_type: "product"
+          flow_ref:
+            uuid: "706d76ad-229e-4559-81bf-6b8619cbe6be"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Generic Product flow at plant with unspecified treatment; no fixed grade, CAS, geography, noil yield or spinning acceptance is certified by this identity. Restrict this row to unbleached ungarnetted cotton short fibres originating specifically at the comber; exclude linters, seed cotton, card strips, yarn hard waste, cloth and mixed floor sweepings. Retain fibre length distribution, measured plant trash, free moisture, oil/finish contamination, cotton purity, source line/lot and actual receiver specification/status. The official Chinese name is broad and does not mean all recovered fibre is excluded; the English ungarnetted boundary controls. Transfer gross physical V with its inherited inventory vector; internal movements cancel on consolidation and do not create another procurement or first release. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: humidification_water
+          role: "Actual humidification makeup"
+          name: "Mains water for cotton-room humidification"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual humidification. Meter the supplied whole water stream and track water retained in fibre, emitted vapour, purge and stocks. Use a mass-based mains-water identity compatible with actual supply; a viscose-specific CTUe water definition is incompatible. This is not washing or a source abstraction; utility supply burden is linked once. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-textiles-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: first_release_noil
+          role: "First spinning-quality noil release"
+          name: "Cotton waste, except garnetted stock"
+          flow_type: "product"
+          flow_ref:
+            uuid: "706d76ad-229e-4559-81bf-6b8619cbe6be"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Generic Product flow at plant with unspecified treatment; no fixed grade, CAS, geography, noil yield or spinning acceptance is certified by this identity. Restrict this row to unbleached ungarnetted cotton short fibres originating specifically at the comber; exclude linters, seed cotton, card strips, yarn hard waste, cloth and mixed floor sweepings. Retain fibre length distribution, measured plant trash, free moisture, oil/finish contamination, cotton purity, source line/lot and actual receiver specification/status. The official Chinese name is broad and does not mean all recovered fibre is excluded; the English ungarnetted boundary controls. Q is new net fibre mass at the first documented spinning-quality release; closingFG from this cohort is already included once. Subsequent storage, packing and dispatch remain in services. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        - row_id: noil_release_discarded_cotton
+          role: "Discarded cotton fibre"
+          name: "Discarded ungarnetted cotton fibre"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only cotton fibre actually discarded at this stage; exclude separately weighed plant matter and collector dust. Unreleased failed lots and post-release service rejects retain their distinct history and actual destination; no default zero burden or credit. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: noil_release_plant_trash
+          role: "Separated plant trash"
+          name: "Cotton leaf and boll plant residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured plant matter removed in this stage; weigh and characterize this actual stream with moisture and destination. Retained trash within noil is part of that noil mass and cannot be counted again as separated output. Mixed collector composition requires one total with nonadditive source partitions and no invented pure-species split. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: noil_release_captured_dust
+          role: "Captured cotton dust"
+          name: "Captured cotton fibre dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the actual captured cotton-dust stream and its composition, filter-bin opening/closing stock and destination. This waste is not an atmospheric elementary release; do not count the collector total again under plant trash or discarded fibre. Product recovery, if real, requires its own exclusive functional product row. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: water_purge
+          role: "Actual humidifier purge"
+          name: "Humidifier purge water"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual liquid purge sent to its documented wastewater receiver; include measured suspended cotton material and dissolved additives in a subsidiary composition ledger. Do not call COD a chemical mass. No purge is assumed absent without operational evidence. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pp_contamination
+          role: "Removed polypropylene contamination"
+          name: "Removed polypropylene fibre contamination"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional only when tests identify polypropylene in a separately collected contamination stream; keep all other actually identified contaminants as separate named rows. No blanket assumption that noil is contamination-free; this is not the bag or strap purchase. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+            ranges: []
+      elementary:
+        - row_id: noil_release_air_pm
+          role: "Residual particulate emission to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Elementary emission to air with unspecified subcompartment and unspecified particle size. No fixed composition, stack height or characterization factor is provided. The native clinker example is not a cotton emission factor or a restriction to clinker. Use independently measured stage exhaust/fugitive particulate mass and retain actual controls, medium and sampling; no PM2.5/PM10 assumption. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: water_vapour_release
+          role: "Net water vapour release"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional ordinary H2O vapour emitted to air with unspecified subcompartment, CAS 7732-18-5, Mass/kg. The native synonym list contains heavy/tritiated-water noise; do not interpret those synonyms as permitting isotope substitution or as ordinary H2O evidence for another substance. Measure net vapour from actual humidification/fibre moisture change and inlet/outlet humidity/airflow; no reaction water and no dust-residual fit. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+  - id: services
+    label: "Finished-stock storage packing handling and dispatch"
+    inputs:
+      product:
+        - row_id: services_electricity
+          role: "Metered electrical supply"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use only CN grid-average consumption mix delivered below 1 kV to the user. Meter this stage including its suction and controls. This is not hydropower-only, power-plant production, medium/high-voltage electricity, purchased compressed air, heat or diesel. Record actual geography/voltage/provider; incompatible supply requires another verified atomic identity. Convert raw kWh to MJ using 3.6 before allocation. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_energy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: released_noil_receipt
+          role: "Internal receipt of first released noil"
+          name: "Cotton waste, except garnetted stock"
+          flow_type: "product"
+          flow_ref:
+            uuid: "706d76ad-229e-4559-81bf-6b8619cbe6be"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Generic Product flow at plant with unspecified treatment; no fixed grade, CAS, geography, noil yield or spinning acceptance is certified by this identity. Restrict this row to unbleached ungarnetted cotton short fibres originating specifically at the comber; exclude linters, seed cotton, card strips, yarn hard waste, cloth and mixed floor sweepings. Retain fibre length distribution, measured plant trash, free moisture, oil/finish contamination, cotton purity, source line/lot and actual receiver specification/status. The official Chinese name is broad and does not mean all recovered fibre is excluded; the English ungarnetted boundary controls. Transfer gross physical V with its inherited inventory vector; internal movements cancel on consolidation and do not create another procurement or first release. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: returned_noil
+          role: "External returned noil"
+          name: "Cotton waste, except garnetted stock"
+          flow_type: "product"
+          flow_ref:
+            uuid: "706d76ad-229e-4559-81bf-6b8619cbe6be"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Generic Product flow at plant with unspecified treatment; no fixed grade, CAS, geography, noil yield or spinning acceptance is certified by this identity. Restrict this row to unbleached ungarnetted cotton short fibres originating specifically at the comber; exclude linters, seed cotton, card strips, yarn hard waste, cloth and mixed floor sweepings. Retain fibre length distribution, measured plant trash, free moisture, oil/finish contamination, cotton purity, source line/lot and actual receiver specification/status. The official Chinese name is broad and does not mean all recovered fibre is excluded; the English ungarnetted boundary controls. Conditional actual returns retain the original cohort Qc and inherited vectors; reverse the original delivery in its service ledger and add actual incremental rework only. No new Q. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: cottoncloth_supply
+          role: "Cotton bale cloth — Purchased component"
+          name: "Cotton fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dd9f2248-bc28-43b9-8d57-d77756754f4d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use one woven cotton cloth with verified composition and condition. Its native formal fabric name/synonyms agree with this article; the raw-cotton classification and generic raw-cotton comment are an isolated inconsistent classification/context, disclosed here, not permission to bind raw lint. No bleached/printed grade is implied. Conditional on actual use of this component at inlet or outlet. Purchased component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: cottoncloth_external_return
+          role: "Cotton bale cloth — External return received"
+          name: "Cotton fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dd9f2248-bc28-43b9-8d57-d77756754f4d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use one woven cotton cloth with verified composition and condition. Its native formal fabric name/synonyms agree with this article; the raw-cotton classification and generic raw-cotton comment are an isolated inconsistent classification/context, disclosed here, not permission to bind raw lint. No bleached/printed grade is implied. Conditional on actual use of this component at inlet or outlet. External return received: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: jutecloth_supply
+          role: "Jute hessian bale cloth — Purchased component"
+          name: "Woven jute hessian bale cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific physical material unbound until a compatible native identity is confirmed. Natural burlap evidence does not certify every fibre composition; verify actual jute hessian. Conditional on actual use of this component at inlet or outlet. Purchased component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: jutecloth_external_return
+          role: "Jute hessian bale cloth — External return received"
+          name: "Woven jute hessian bale cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific physical material unbound until a compatible native identity is confirmed. Natural burlap evidence does not certify every fibre composition; verify actual jute hessian. Conditional on actual use of this component at inlet or outlet. External return received: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steelwire_supply
+          role: "Steel baling wire — Purchased component"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use cylindrical flexible iron/non-alloy steel wire from steel production, matching actual diameter, grade and coating; not flat steel band, copper rod or a wire rope assembly. Conditional on actual use of this component at inlet or outlet. Purchased component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steelwire_external_return
+          role: "Steel baling wire — External return received"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use cylindrical flexible iron/non-alloy steel wire from steel production, matching actual diameter, grade and coating; not flat steel band, copper rod or a wire rope assembly. Conditional on actual use of this component at inlet or outlet. External return received: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: ppstrap_supply
+          role: "Polypropylene baling strap — Purchased component"
+          name: "Polypropylene baling strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific polypropylene strap unbound; a25kg seed bag, farm twine, cable tie or PP resin is not a ready baling strap. Conditional on actual use of this component at inlet or outlet. Purchased component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: ppstrap_external_return
+          role: "Polypropylene baling strap — External return received"
+          name: "Polypropylene baling strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific polypropylene strap unbound; a25kg seed bag, farm twine, cable tie or PP resin is not a ready baling strap. Conditional on actual use of this component at inlet or outlet. External return received: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: gross_noil_dispatch
+          role: "Gross physical noil dispatch"
+          name: "Cotton waste, except garnetted stock"
+          flow_type: "product"
+          flow_ref:
+            uuid: "706d76ad-229e-4559-81bf-6b8619cbe6be"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Generic Product flow at plant with unspecified treatment; no fixed grade, CAS, geography, noil yield or spinning acceptance is certified by this identity. Restrict this row to unbleached ungarnetted cotton short fibres originating specifically at the comber; exclude linters, seed cotton, card strips, yarn hard waste, cloth and mixed floor sweepings. Retain fibre length distribution, measured plant trash, free moisture, oil/finish contamination, cotton purity, source line/lot and actual receiver specification/status. The official Chinese name is broad and does not mean all recovered fibre is excluded; the English ungarnetted boundary controls. Record actual gross outward fibre including redelivery with cohort provenance; this is S, not a second production output Q. OpeningFG history and closingFG stay in the service stock reconciliation. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_service."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - usitc-comber-1990
+                - gp-comber-noil
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: cottoncloth_outward
+          role: "Cotton bale cloth — Component physically leaving"
+          name: "Cotton fabric"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dd9f2248-bc28-43b9-8d57-d77756754f4d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use one woven cotton cloth with verified composition and condition. Its native formal fabric name/synonyms agree with this article; the raw-cotton classification and generic raw-cotton comment are an isolated inconsistent classification/context, disclosed here, not permission to bind raw lint. No bleached/printed grade is implied. Conditional on actual use of this component at inlet or outlet. Component physically leaving: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: jutecloth_outward
+          role: "Jute hessian bale cloth — Component physically leaving"
+          name: "Woven jute hessian bale cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific physical material unbound until a compatible native identity is confirmed. Natural burlap evidence does not certify every fibre composition; verify actual jute hessian. Conditional on actual use of this component at inlet or outlet. Component physically leaving: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steelwire_outward
+          role: "Steel baling wire — Component physically leaving"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use cylindrical flexible iron/non-alloy steel wire from steel production, matching actual diameter, grade and coating; not flat steel band, copper rod or a wire rope assembly. Conditional on actual use of this component at inlet or outlet. Component physically leaving: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: ppstrap_outward
+          role: "Polypropylene baling strap — Component physically leaving"
+          name: "Polypropylene baling strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific polypropylene strap unbound; a25kg seed bag, farm twine, cable tie or PP resin is not a ready baling strap. Conditional on actual use of this component at inlet or outlet. Component physically leaving: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        - row_id: services_discarded_cotton
+          role: "Discarded cotton fibre"
+          name: "Discarded ungarnetted cotton fibre"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only cotton fibre actually discarded at this stage; exclude separately weighed plant matter and collector dust. Unreleased failed lots and post-release service rejects retain their distinct history and actual destination; no default zero burden or credit. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: services_plant_trash
+          role: "Separated plant trash"
+          name: "Cotton leaf and boll plant residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured plant matter removed in this stage; weigh and characterize this actual stream with moisture and destination. Retained trash within noil is part of that noil mass and cannot be counted again as separated output. Mixed collector composition requires one total with nonadditive source partitions and no invented pure-species split. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: services_captured_dust
+          role: "Captured cotton dust"
+          name: "Captured cotton fibre dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the actual captured cotton-dust stream and its composition, filter-bin opening/closing stock and destination. This waste is not an atmospheric elementary release; do not count the collector total again under plant trash or discarded fibre. Product recovery, if real, requires its own exclusive functional product row. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - usitc-comber-1990
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: cottoncloth_waste
+          role: "Cotton bale cloth — Discarded component"
+          name: "Discarded cotton bale cloth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use one woven cotton cloth with verified composition and condition. Its native formal fabric name/synonyms agree with this article; the raw-cotton classification and generic raw-cotton comment are an isolated inconsistent classification/context, disclosed here, not permission to bind raw lint. No bleached/printed grade is implied. Conditional on actual use of this component at inlet or outlet. Discarded component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: jutecloth_waste
+          role: "Jute hessian bale cloth — Discarded component"
+          name: "Discarded jute hessian cloth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific physical material unbound until a compatible native identity is confirmed. Natural burlap evidence does not certify every fibre composition; verify actual jute hessian. Conditional on actual use of this component at inlet or outlet. Discarded component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steelwire_waste
+          role: "Steel baling wire — Discarded component"
+          name: "Discarded steel baling wire"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use cylindrical flexible iron/non-alloy steel wire from steel production, matching actual diameter, grade and coating; not flat steel band, copper rod or a wire rope assembly. Conditional on actual use of this component at inlet or outlet. Discarded component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: ppstrap_waste
+          role: "Polypropylene baling strap — Discarded component"
+          name: "Discarded polypropylene strap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep this specific polypropylene strap unbound; a25kg seed bag, farm twine, cable tie or PP resin is not a ready baling strap. Conditional on actual use of this component at inlet or outlet. Discarded component: record its own P/I/ER/S/EO/W and opening/closing empty, WIP-attached, FG-attached and reusable stocks under b_packaging. Outward material distinguishes gross shipment attachment S from return to external owner EO; no automatic coproduct/provider credit. Internal I cancels and is not procurement. This is separate from fibre Q; do not multiply by a nominal bale weight. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - usitc-comber-1990
+                - ilcd-attributional-2010
+            ranges: []
+      elementary:
+        - row_id: services_air_pm
+          role: "Residual particulate emission to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Elementary emission to air with unspecified subcompartment and unspecified particle size. No fixed composition, stack height or characterization factor is provided. The native clinker example is not a cotton emission factor or a restriction to clinker. Use independently measured stage exhaust/fugitive particulate mass and retain actual controls, medium and sampling; no PM2.5/PM10 assumption. Quantity n is the existing result of calc_normalize in Section 8; collecting raw records and reading n do not execute another division."
+          amount:
+            expression: "n per reference flow; raw records under cp_environment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_environment
+              source_ids:
+                - jrc-textiles-2023
+                - ilcd-attributional-2010
+            ranges: []
+allocation_rules:
+  - rule_id: a_subdivide
+    applies_to: "joint_combing_and_shared_services"
+    rule: "This PCR chooses attributional supply modelling for functional spinning feedstock. First assign dedicated noil collection, cleaning, testing and packaging directly; subdivide or virtually subdivide separable preparation, combing and services using quantitative process knowledge and submeter records. Identify joint cotton/combing burdens that actually remain shared with long combed sliver and other valuable outputs."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: a_causality
+    applies_to: "each_remaining_exchange"
+    rule: "For each remaining exchange test the determining physical causal relationship to each co-function; justify the chosen driver and measure it. Mechanical material throughput may determine conveying demand; combing required for long-sliver quality does not become noil-caused solely because noil mass exists. Do not apply a single mass share to every flow, and do not substitute correlation or a yield ratio for determining causality."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: a_residual_value
+    applies_to: "genuinely_unresolved_joint_inventory"
+    rule: "Only genuinely remaining joint exchanges use contemporaneous representative market values at the same joint process gate and actual state. Document values and quantities for every valuable co-output and a sensitivity check. Back out separately incurred noil cleaning, baling, packaging and freight from later delivered prices. No fixed share, free choice between physical and economic allocation, avoided-virgin-cotton credit or default substitution is allowed."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: a_status
+    applies_to: "product_waste_and_receiver"
+    rule: "Record actual legal status, ownership transfer, receiver acceptance, destination and functional use. The reference is a Product flow supply of accepted noil; waste treatment services require a separate suitable reference and cannot be represented by a negative noil supply. For each physical fibre quantity choose product transfer or discarded waste exclusively. Negative-value waste and end-of-life recovery require explicit true-joint-process/zero-value boundary assessment under ILCD; do not import that treatment scenario into this valuable production-residue supply."
+    source_ids:
+      - usitc-comber-1990
+      - ilcd-attributional-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material
+      process_id: "preparation"
+      flow_role: "gross cotton and co-output transfers plus inheritance"
+      record_type: "scale tickets and process-lot register"
+      raw_fields: "row_id; gate; lot; input state; gross V; dry cotton; free water; measured trash; contamination; opening WIP; closing WIP; unused non-WIP; inherited vector; receiver"
+      collection_method: "Calibrated net weighing with tare; matched moisture/contaminant samples; link each combing line and separate co-output; no borrowed yield collect unnormalized V and inherited vectors; apply calc_stock then calc_allocate then calc_normalize once for per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each lot and shift"
+      temporal_coverage: "whole production cohort including all failures and Q0"
+      site_scope: "all manufacture gates including noil_release"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; stock reconciliation; traceability; sampling results"
+    - protocol_id: cp_release
+      process_id: "noil_release"
+      flow_role: "first quality release"
+      record_type: "release certificates and weights"
+      raw_fields: "cohort_id; lot_id; first_release_id; Q; net fibre mass; tare; moisture; fibre purity; length; trash; neps; oil; spinning receiver specification; accepted status; failed quantity; closingFG included"
+      collection_method: "Unique first-release event and calibrated net fibre scale; compare sampled properties with declared spinning specification; do not assume medical purity sum newly first released Q once including same-cohort closingFG; retain raw totals; unit row1kg references calc_normalize"
+      unit: "kg"
+      frequency: "each first release"
+      temporal_coverage: "complete cohort once"
+      site_scope: "noil release gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "release signature; customer acceptance; scale and laboratory records"
+    - protocol_id: cp_energy
+      process_id: "preparation"
+      flow_role: "stage energy and shared services"
+      record_type: "meters and operation logs"
+      raw_fields: "row_id; process_id; voltage; geography; provider; readings; raw kWh; integrated amount; rate; duration; idle; cleanup; allocation driver"
+      collection_method: "Submeter all three stages and reconcile invoices; distinguish integrated meter reading from power rate; use causal driver only after subdivision retain raw readings and units; calc_units then calc_allocate then calc_normalize once for per 1 kg reference flow"
+      unit: "kWh; MJ"
+      frequency: "continuous with shift and invoice reconciliation"
+      temporal_coverage: "production and post-release service periods linked to original cohorts"
+      site_scope: "preparation; noil_release; services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; invoices; voltage evidence; complete runtime log"
+    - protocol_id: cp_environment
+      process_id: "noil_release"
+      flow_role: "each solid reject and particulate outlet"
+      record_type: "waste tickets and environmental sampling"
+      raw_fields: "row_id; stage; source partition; waste status; receiver; opening bin; closing bin; gross mass; moisture; measured composition; outlet flow; temperature; pressure; sampling duration; actual particulate concentration; air medium"
+      collection_method: "Weigh separately collected streams; characterize mixed total without adding its partitions; match environmental sampling to actual exhaust flow and time; no occupational-to-emission conversion raw mass and rate/integrated volume remain unnormalized; calc_units then calc_allocate then calc_normalize once for per 1 kg reference flow"
+      unit: "kg; m3; h; mg/m3"
+      frequency: "each removal plus representative operating states"
+      temporal_coverage: "all runs including startup shutdown idle and failures"
+      site_scope: "preparation; noil_release; services and each outlet"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling report; calibration; receiver acceptance; total/partition reconciliation"
+    - protocol_id: cp_water
+      process_id: "noil_release"
+      flow_role: "actual humidification water and its exits"
+      record_type: "water meters humidity and purge records"
+      raw_fields: "row_id; ordinary H2O; supply amount; fibre moisture inlet/outlet; inlet/outlet humidity; actual airflow; temperature; pressure; net vapour; liquid purge; opening/closing water stock; density method"
+      collection_method: "Measure each water path independently; evaluate actual humidification equipment and moisture change; any integral already reported is used once; no reaction water inferred retain unnormalized water balance; calc_units then calc_allocate then calc_normalize once for per 1 kg reference flow"
+      unit: "kg; m3; h"
+      frequency: "each shift and material lot"
+      temporal_coverage: "same cohorts and water service period"
+      site_scope: "actual humidification and its liquid/air outlets"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated meter; humidity sample; purge analysis; independently measured density if needed"
+    - protocol_id: cp_service
+      process_id: "services"
+      flow_role: "FG storage returns and gross dispatch"
+      record_type: "cohort FG and shipment ledger"
+      raw_fields: "row_id; cohort_id; original Qc; H; S; openingFG; closingFG; inherited vector; external return; original delivery reversal; real incremental rework; service electricity; rejects"
+      collection_method: "Link each movement to original first-release cohort; record physical outward/return separately and reconcile all historical burdens keep raw H/S/stocks and histories; apply calc_service then same calc_normalize once using original Qc for per 1 kg reference flow"
+      unit: "kg; MJ; h"
+      frequency: "each movement and stock period"
+      temporal_coverage: "whole original cohort service period including future settlement"
+      site_scope: "FG store packing and dispatch gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "dispatch/return ticket; original cohort link; burden carry-forward and settlement"
+    - protocol_id: cp_packaging
+      process_id: "services"
+      flow_role: "one row per packaging component and movement"
+      record_type: "component receipts issues returns and stock register"
+      raw_fields: "row_id; component; inlet/outlet role; cohort; opening empty; opening attached WIP; opening attached FG; opening reusable; P; I; ER; S; EO; W; closing empty/attached/reusable; actual composition; supplier; net kg"
+      collection_method: "Weigh each component and movement; reconcile b_packaging separately for cotton cloth jute cloth steel wire and PP strap; retain inlet bale wrapping history and outbound gross attachments retain unnormalized P/I/ER/S/EO/W and stocks; calc_packaging then calc_allocate then calc_normalize once for per 1 kg reference flow"
+      unit: "kg"
+      frequency: "each receipt movement and closing stock"
+      temporal_coverage: "production and full original-cohort service period"
+      site_scope: "all three process gates with component ownership"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "component scale; composition certificate; purchase/return tickets; complete stock reconciliation"
+  calculation_rules:
+    - id: calc_units
+      applies_to: "all inventory rows"
+      rule: "Convert each raw measurement in its own unit before allocation:1kWh=3.6MJ;1t=1000kg. Integrate true rates once over measured duration; do not reintegrate cumulative quantities. Use independently measured substance/state density only for a required volume-to-mass conversion. Preserve gross V unchanged by allocation."
+      inputs:
+        - raw_measurements
+        - unit_factors
+        - rate_or_integral
+        - substance_state_density
+      output: "converted_raw_vector"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calc_stock
+      applies_to: "manufacture and unused input stocks"
+      rule: "For each actual material and each inherited exchange vector reconcile opening WIP + newly introduced material = closing WIP + first-release output + separately identified co-outputs + actual rejects/releases. Reconcile unused non-WIP supplies separately: opening + receipts = closing + actual issues + outward returns. Apply only unposted corrections; already net issues are not corrected twice. Keep water and measured contamination partitions nonadditive to whole mass."
+      inputs:
+        - gross_V
+        - opening_WIP
+        - closing_WIP
+        - unused_nonWIP
+        - inherited_vectors
+        - new_receipts
+        - issues
+      output: "cohort_raw_vectors"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calc_allocate
+      applies_to: "all inventory rows"
+      rule: "Assign dedicated/virtually subdivided vectors first; for each remaining exchange use documented determining physical causality under a_causality; only the genuine remainder follows a_residual_value at the same joint gate. Retain all co-function vectors and reconcile their sum to the unallocated vector. A is the attributable unnormalized numerator after unit conversion and stock inheritance; it is not gross physical V."
+      inputs:
+        - cohort_raw_vectors
+        - dedicated_vectors
+        - causal_drivers
+        - same_gate_values
+      output: "A"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calc_service
+      applies_to: "services"
+      rule: "Reconcile openingFG + first-release receipt + external fibre returns = closingFG + gross fibre shipments + actual service rejects/releases with original inherited vectors. Reverse the original delivery for returns without erasing history and add only real incremental rework. Assign all service loads to original cohort Qc; H and S are activity records. For overlapping periods retain cohort-specific carry-forward and later settlement. Internal transfers and history cancel in the combined model."
+      inputs:
+        - original_Qc
+        - opening_FG
+        - closing_FG
+        - gross_shipments_S
+        - returns
+        - inherited_vectors
+        - incremental_service
+      output: "cohort_service_A"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calc_packaging
+      applies_to: "each packaging component"
+      rule: "Apply the full component balance in b_packaging to each card. Distinguish new purchases P, external returns received ER, gross outward attachment S, outward external-owner return EO and waste W. Internal reuse I cancels; no material is purchased twice. Maintain inbound and outbound ownership history without adding packaging to net noil Q."
+      inputs:
+        - P
+        - I
+        - ER
+        - S
+        - EO
+        - W
+        - opening_component_stocks
+        - closing_component_stocks
+      output: "component_raw_vectors"
+      source_ids:
+        - usitc-comber-1990
+        - ilcd-attributional-2010
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "n=A/Q; A is the attributable unnormalized exchange numerator for the first-release cohort; Q is its newly first released net noil kg. This is the only division: cards and collection aggregation reference this same result. For services use the original cohort Qc in this same operator after calc_service; H is never a denominator. The first_release_noil row is 1 kg. If the applicable denominator Q (or original Qc for services) is zero retain the actual burdens without a unit result."
+      inputs:
+        - A
+        - Q
+        - original_Qc
+      output: "n per 1 kg reference flow"
+      source_ids:
+        - ilcd-attributional-2010
+  data_quality_requirements:
+    - id: dq_trace
+      applies_to: "all rows"
+      requirement: "Link real operating records and gross quantities to a common lot/site/period; include every idle failed and Q0 state. No fabricated plant values or transferable supplier ranges."
+      evidence: "production and stock ledgers; calibrated measurements"
+    - id: dq_native
+      applies_to: "UUID-bearing rows"
+      requirement: "Use official Chinese displays and complete per-card restrictions. Exact flow/property/unit chain is identity evidence only; verify each actual supplier and composition separately. Missing raw-lint and auxiliary UUIDs stay concrete and explicit."
+      evidence: "native identity records and supplier evidence"
+    - id: dq_scope
+      applies_to: "source support"
+      requirement: "USITC1990 describes the route and unbleached uses; it is not a current legal ruling or modern inventory. G P supplier claims identify commercial noil and neighbours only. BREF broader wool/synthetic lubricant examples do not establish cotton oil dosage. ILCD is generic attributional method, not a noil plant measurement."
+      evidence: "full source context and actual applicability assessment"
+    - id: dq_uncertainty
+      applies_to: "unit result and services"
+      requirement: "Disclose measurement uncertainty, incomplete supplier identity, causal-allocation support, stock inheritance, source/geographic mismatch and service-cohort settlement. Do not claim clinical purity, a universal yield or complete LCIA characterization."
+      evidence: "uncertainty log; allocation sensitivity; cohort carry-forward"
+validation_rules:
+  - rule_id: v_identity
+    applies_to: "reference_and_all_bound_exchanges"
+    rule: "Verify noil origin at the comber and actual spinning-feedstock acceptance. Enforce each native basename, form, route, geography, medium, type, CAS where present and reference property. Generic cotton-waste identity alone does not certify a noil grade or legal status. Reject fabric as ginned cotton, carded sliver as noil, linters as noil, and garnetted material as ungarnetted noil."
+    source_ids:
+      - un-cpc3-2025
+      - usitc-comber-1990
+      - gp-comber-noil
+  - rule_id: v_quantity
+    applies_to: "production_service_and_consolidation"
+    rule: "Reconcile full gross mass and separate dry cotton, free moisture, measured plant matter, contamination and actual auxiliaries at manufacture, FG/service and combined gates. Q includes closingFG once. Keep whole failed/zero-output campaigns and opening/closing WIP and unused non-WIP inheritance. Internal transfers cancel exactly; two unknown losses cannot be fitted from one residual. No reaction or structural-water production is inferred for mechanical separation."
+    source_ids:
+      - usitc-comber-1990
+      - ilcd-attributional-2010
+  - rule_id: v_once
+    applies_to: "all_inventory_rows"
+    rule: "Trace raw measurements through unit conversion and allocation to A, then apply calc_normalize exactly once. Collection and aggregation retain unnormalized records. Cards consume that result; no second division. Q0 keeps burdens with no unit result. Services use original Qc, never H; returns preserve original history and record only real incremental rework."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: v_emissions
+    applies_to: "air_water_and_waste"
+    rule: "Environmental exhaust requires measured outlet conditions and flow with actual particulate sampling; workplace exposure is not an emission factor. Integrate a true rate once; an already integrated volume is not multiplied by time again. Independently measure substance-specific density at actual temperature/pressure when needed. Do not derive chemical species from COD, total VOC or a mass-balance residual. Report captured solids separately from atmospheric releases and treatment links once."
+    source_ids:
+      - jrc-textiles-2023
+      - ilcd-attributional-2010
+  - rule_id: v_packaging
+    applies_to: "every_packaging_card"
+    rule: "Check each component balance P/I/ER/S/EO/W including empty, WIP-attached, FG-attached and reusable opening/closing stock. Shipment packaging follows gross physical dispatch including returns/redelivery; it does not change net fibre Q. Check recovered old packaging is not repurchased and no automatic material credit is issued."
+    source_ids:
+      - usitc-comber-1990
+      - ilcd-attributional-2010
+  - rule_id: v_complete
+    applies_to: "dataset_before_use"
+    rule: "Verify current projection, all required qualifiers, sources, protocols, allocation evidence and all conditional actual exchanges. Missing operating records require collection; missing auxiliaries remain explicit identity gaps. An unresolved core reference identity or unresolved core route/terminal quality makes the dataset unusable and methodology draft. Scientific and translation approval are independent of mechanical checks."
+    source_ids:
+      - ilcd-attributional-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "spinning feedstock models with matched origin and noil state"
+  allowed_use: "attributional noil supply at new first release with explicitly attached original-cohort services and upstream cotton once"
+  excluded_use: "waste-treatment service; garnetted cotton; linters; clinical cotton; universal plant average; automatic substitution credit"
+  required_metadata: "comber source line and lot; ginned virgin cotton origin and prior preparation; ungarnetted unbleached short-fibre form; cotton purity and measured foreign-fibre contamination; fibre length distribution and receiver spinning specification; measured plant trash and neps; free moisture and declared as-released mass basis; oil or finish identity and retained content when present; first quality release Q and original cohort Qc; opening and closing WIP plus unused non-WIP vectors; gross physical V distinct from attributional A; joint co-output allocation evidence; legal transfer status and receiver acceptance; site and technology; representative production and service periods; actual packaging composition and full component balances; native identity restrictions and provider compatibility"
+  required_quality_disclosure: "Disclose measurement uncertainty, incomplete supplier identity, causal-allocation support, stock inheritance, source/geographic mismatch and service-cohort settlement. Do not claim clinical purity, a universal yield or complete LCIA characterization."
+  update_trigger: "change in fibre origin/state; combing or cleaning route; contamination; receiver specification; utility identity; allocation; first-release gate; stock/service boundaries; packaging; stronger source evidence"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Version3.0 Structure and Explanatory Notes,30June2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "39214 and39215 classification titles plus adjacent textile waste categories; classification context only"
+  - id: "usitc-comber-1990"
+    type: "official_guidance"
+    reference: "USITC Publication2334, Cotton Comber Waste, November1990, A-10–A-11 and A-28–A-29; https://www.usitc.gov/publications/22/pub2334.pdf"
+    used_for: "ginned cotton preparation and combing origin; unbleached noil used in spinning; separate handling and natural burlap; conditional dealer cleaning; historical route facts only, no modern amounts or legal claims"
+  - id: "gp-comber-noil"
+    type: "literature"
+    reference: "G P Group India, Cotton Comber Noil; https://www.gpgroupindia.com/cotton-comber-noil.html"
+    used_for: "first-party commercial noil origin and OE spinning use; adjacent flat-strip lickerin and yarn-waste distinctions; supplier specifications not transferred as PCR ranges"
+  - id: "jrc-textiles-2023"
+    type: "official_guidance"
+    reference: "JRC Textiles Industry BREF,2023, sections2.4.2–2.4.3, PDF68–69; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf"
+    used_for: "cotton preparation process context and actual auxiliary screening; neighbouring wool and synthetic oil percentages are inapplicable to cotton noil; no default oil recipe or emission quantity"
+  - id: "ilcd-attributional-2010"
+    type: "official_guidance"
+    reference: "ILCD Handbook General guide for LCA Detailed guidance, First edition March2010,7.9.2–7.9.3, PDF275–292; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "generic attributional subdivision and exchange-specific determining physical causality; genuine residual common-gate market values; waste/recycling limitations; foreground collection implementation is this PCR synthesis without borrowed plant numbers"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:4082f6c72ac476ec77033400eab8a01cd09bab85cab1e43a9b5f96bee1765cf7"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6077"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6077
+          line: 60
+          column: 1
+        end:
+          offset: 13146
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | ginned virgin cotton lint in traceable bales before opening/carding; source and moisture declared |\n| starting_condition_role | foreground input gate; carry actual upstream cotton supply once |\n| product_classification_scope | Only unbleached ungarnetted cotton short fibres separated at the comber are the reference product. Keep card strips, blowroom waste, lap/sliver/roving waste and yarn hard waste separate. Exclude seed cotton, linters removed from cottonseed, hulls, mixed floor sweepings, wool/silk waste, garnetted fabric/yarn, bleached absorbent cotton, long combed sliver and yarn from reference Q. Classification 39214 is broader than this noil boundary; 39215 cannot substitute for it. |\n| recursive_input_rule | same-category noil receipts retain prior process state and inherited upstream vector once; never rebuild the same ginning/combing history or count returned noil as newly produced |\n| upstream_dataset_requirement | Ginned cotton carries representative cultivation and ginning supply through one linked upstream dataset; do not invent a zero-burden waste cut-off for a valuable noil. Distinguish integrated combing from an explicitly contracted upstream combing service with its actual burden vector; never add a purchased noil and rebuild the same cotton/combing history. Outbound transport after the stated dispatch gate and downstream blending/spinning are outside this foreground boundary. |\n| disclosure | input state; actual equipment; all co-outputs; product/waste status; original cohort; moisture; source/utility restrictions; all production failures; stocks; later service period and packaging |\n\n### Normative System Boundary Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_full_route | foreground_system | Start at received ginned cotton bales; include receiving and opening/cleaning, carding, actual drawing/lap preparation needed for combing, combing separation, segregated noil collection, dry inspection and actual mechanical cleaning, sampling and first quality release for a named spinning customer specification. Include suction, dust filtration, compression and attributable maintenance. Model the actual route; purchased finished noils plus packing alone cannot represent this integrated production dataset. | `usitc-comber-1990`; `gp-comber-noil`; `jrc-textiles-2023` |\n| b_exclusive | reference_product | Only unbleached ungarnetted cotton short fibres separated at the comber are the reference product. Keep card strips, blowroom waste, lap/sliver/roving waste and yarn hard waste separate. Exclude seed cotton, linters removed from cottonseed, hulls, mixed floor sweepings, wool/silk waste, garnetted fabric/yarn, bleached absorbent cotton, long combed sliver and yarn from reference Q. Classification 39214 is broader than this noil boundary; 39215 cannot substitute for it. | `un-cpc3-2025`; `usitc-comber-1990`; `gp-comber-noil` |\n| b_physical_burden | every_exchange | Keep gross physical quantities V and their source/destination partition independently from the attributional inventory vector A. Allocation changes burdens; it never rewrites the actual mass balance or invents a physical fibre input. An exported mixed collector total and its source partitions describe one transfer and one provider link; do not add them. A newly discovered actual exchange F must receive a specific atomic row; remove X only when it is an exact same-side duplicate already inside OTHER. Never use an undivided OTHER as a selected flow. The normalized A/Q view is environmental attribution; physical co-output cards retain gross V in the joint ledger and cannot offer a second supply provider carrying the same A. Never use A as the physically shipped mass or test physical conservation on allocated A. | `ilcd-attributional-2010` |\n| b_release_service | production_and_finished_stock | Q is the net fibre mass newly passing the first spinning-feedstock quality release in the production cohort. Q includes that cohort remaining in closing finished goods once; do not add closingFG to Q again. Subsequent inspection, storage, compression, packaging, handling and dispatch are a separate service ledger assigned to the original released cohort Qc. Service throughput H and gross shipments S are not a new production denominator. Cancel internal noil transfers and their inherited vectors when combining modules. | `usitc-comber-1990`; `ilcd-attributional-2010` |\n| b_inheritance | raw_material_WIP_and_unused_stock | At every physical gate retain opening/closing WIP, unused non-WIP inputs, first-release finished stock, returns and their exchange-by-exchange inherited vectors. Preserve all failed lots, Q0, start/stop, idle, cleanup and real rework loads. Consume opening WIP with its history; carry closing WIP history forward; unused unopened supplies retain procurement history separately. Do not subtract a stock correction twice from an already net issue. Reinspection and redispatch create no new Q. | `ilcd-attributional-2010` |\n| b_actual_services | utilities_and_auxiliaries | The baseline is dry mechanical fibre separation. Mains water applies only to actual humidification or utility makeup; no washing, bleach, chemical dissolution, steam, boiler, drying heat or onsite combustion is assumed. If actually operated, retain its loads even when unauthorized or outside the intended route, report the route departure and add every purchased whole formulation, fuel, water return, waste and actual gas species separately before using the dataset. Purchased formulations are counted once; assays and carrier water are subsidiary balances. In-house preparation uses each actual purchased ingredient plus its real energy and losses. | `usitc-comber-1990`; `jrc-textiles-2023` |\n| b_packaging | each_packaging_component | For each actual jute cloth, cotton cloth, steel wire and polypropylene strap maintain its own balance: opening empty + opening attached to WIP/FG + opening reusable stock + purchases P + external returns received ER = closing empty/attached/reusable + material on gross physical shipments S + external returns outward EO + waste W. Internal reuse I cancels between steps; it is neither another purchase nor noil Q nor an automatic coproduct. Keep inlet bale wrappings and outlet packaging separately by lot and component. | `usitc-comber-1990`; `ilcd-attributional-2010` |\n| b_upstream | upstream_and_outsourced_interfaces | Ginned cotton carries representative cultivation and ginning supply through one linked upstream dataset; do not invent a zero-burden waste cut-off for a valuable noil. Distinguish integrated combing from an explicitly contracted upstream combing service with its actual burden vector; never add a purchased noil and rebuild the same cotton/combing history. Outbound transport after the stated dispatch gate and downstream blending/spinning are outside this foreground boundary. | `usitc-comber-1990`; `ilcd-attributional-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 273
+              line: 10
+              column: 1
+            end:
+              offset: 329
+              line: 10
+              column: 57
+          text: "# Unbleached ungarnetted cotton comber noil for spinning"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6077
+              line: 60
+              column: 1
+            end:
+              offset: 6098
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_69202"
+      family: "allocation"
+      span:
+        start:
+          offset: 69202
+          line: 813
+          column: 1
+        end:
+          offset: 71538
+          line: 822
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_subdivide | joint_combing_and_shared_services | This PCR chooses attributional supply modelling for functional spinning feedstock. First assign dedicated noil collection, cleaning, testing and packaging directly; subdivide or virtually subdivide separable preparation, combing and services using quantitative process knowledge and submeter records. Identify joint cotton/combing burdens that actually remain shared with long combed sliver and other valuable outputs. | `ilcd-attributional-2010` |\n| a_causality | each_remaining_exchange | For each remaining exchange test the determining physical causal relationship to each co-function; justify the chosen driver and measure it. Mechanical material throughput may determine conveying demand; combing required for long-sliver quality does not become noil-caused solely because noil mass exists. Do not apply a single mass share to every flow, and do not substitute correlation or a yield ratio for determining causality. | `ilcd-attributional-2010` |\n| a_residual_value | genuinely_unresolved_joint_inventory | Only genuinely remaining joint exchanges use contemporaneous representative market values at the same joint process gate and actual state. Document values and quantities for every valuable co-output and a sensitivity check. Back out separately incurred noil cleaning, baling, packaging and freight from later delivered prices. No fixed share, free choice between physical and economic allocation, avoided-virgin-cotton credit or default substitution is allowed. | `ilcd-attributional-2010` |\n| a_status | product_waste_and_receiver | Record actual legal status, ownership transfer, receiver acceptance, destination and functional use. The reference is a Product flow supply of accepted noil; waste treatment services require a separate suitable reference and cannot be represented by a negative noil supply. For each physical fibre quantity choose product transfer or discarded waste exclusively. Negative-value waste and end-of-life recovery require explicit true-joint-process/zero-value boundary assessment under ILCD; do not import that treatment scenario into this valuable production-residue supply. | `usitc-comber-1990`; `ilcd-attributional-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 273
+              line: 10
+              column: 1
+            end:
+              offset: 329
+              line: 10
+              column: 57
+          text: "# Unbleached ungarnetted cotton comber noil for spinning"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 69202
+              line: 813
+              column: 1
+            end:
+              offset: 69242
+              line: 813
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_82907"
+      family: "validation"
+      span:
+        start:
+          offset: 82907
+          line: 856
+          column: 1
+        end:
+          offset: 85989
+          line: 867
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_identity | reference_and_all_bound_exchanges | Verify noil origin at the comber and actual spinning-feedstock acceptance. Enforce each native basename, form, route, geography, medium, type, CAS where present and reference property. Generic cotton-waste identity alone does not certify a noil grade or legal status. Reject fabric as ginned cotton, carded sliver as noil, linters as noil, and garnetted material as ungarnetted noil. | `un-cpc3-2025`; `usitc-comber-1990`; `gp-comber-noil` |\n| v_quantity | production_service_and_consolidation | Reconcile full gross mass and separate dry cotton, free moisture, measured plant matter, contamination and actual auxiliaries at manufacture, FG/service and combined gates. Q includes closingFG once. Keep whole failed/zero-output campaigns and opening/closing WIP and unused non-WIP inheritance. Internal transfers cancel exactly; two unknown losses cannot be fitted from one residual. No reaction or structural-water production is inferred for mechanical separation. | `usitc-comber-1990`; `ilcd-attributional-2010` |\n| v_once | all_inventory_rows | Trace raw measurements through unit conversion and allocation to A, then apply calc_normalize exactly once. Collection and aggregation retain unnormalized records. Cards consume that result; no second division. Q0 keeps burdens with no unit result. Services use original Qc, never H; returns preserve original history and record only real incremental rework. | `ilcd-attributional-2010` |\n| v_emissions | air_water_and_waste | Environmental exhaust requires measured outlet conditions and flow with actual particulate sampling; workplace exposure is not an emission factor. Integrate a true rate once; an already integrated volume is not multiplied by time again. Independently measure substance-specific density at actual temperature/pressure when needed. Do not derive chemical species from COD, total VOC or a mass-balance residual. Report captured solids separately from atmospheric releases and treatment links once. | `jrc-textiles-2023`; `ilcd-attributional-2010` |\n| v_packaging | every_packaging_card | Check each component balance P/I/ER/S/EO/W including empty, WIP-attached, FG-attached and reusable opening/closing stock. Shipment packaging follows gross physical dispatch including returns/redelivery; it does not change net fibre Q. Check recovered old packaging is not repurchased and no automatic material credit is issued. | `usitc-comber-1990`; `ilcd-attributional-2010` |\n| v_complete | dataset_before_use | Verify current projection, all required qualifiers, sources, protocols, allocation evidence and all conditional actual exchanges. Missing operating records require collection; missing auxiliaries remain explicit identity gaps. An unresolved core reference identity or unresolved core route/terminal quality makes the dataset unusable and methodology draft. Scientific and translation approval are independent of mechanical checks. | `ilcd-attributional-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 273
+              line: 10
+              column: 1
+            end:
+              offset: 329
+              line: 10
+              column: 57
+          text: "# Unbleached ungarnetted cotton comber noil for spinning"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 82907
+              line: 856
+              column: 1
+            end:
+              offset: 82929
+              line: 856
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_full_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 7930
+          line: 77
+          column: 1
+        end:
+          offset: 8540
+          line: 77
+          column: 611
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_exclusive"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 8541
+          line: 78
+          column: 1
+        end:
+          offset: 9107
+          line: 78
+          column: 567
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_physical_burden"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 9108
+          line: 79
+          column: 1
+        end:
+          offset: 9996
+          line: 79
+          column: 889
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_release_service"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 9997
+          line: 80
+          column: 1
+        end:
+          offset: 10625
+          line: 80
+          column: 629
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_inheritance"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 10626
+          line: 81
+          column: 1
+        end:
+          offset: 11200
+          line: 81
+          column: 575
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_actual_services"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 11201
+          line: 82
+          column: 1
+        end:
+          offset: 11947
+          line: 82
+          column: 747
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 11948
+          line: 83
+          column: 1
+        end:
+          offset: 12563
+          line: 83
+          column: 616
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "b_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 12564
+          line: 84
+          column: 1
+        end:
+          offset: 13144
+          line: 84
+          column: 581
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_69202"
+      source_span:
+        start:
+          offset: 69315
+          line: 817
+          column: 1
+        end:
+          offset: 69815
+          line: 817
+          column: 501
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_69202"
+      source_span:
+        start:
+          offset: 69816
+          line: 818
+          column: 1
+        end:
+          offset: 70319
+          line: 818
+          column: 504
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_residual_value"
+      identity_kind: "explicit"
+      unit_id: "normative_69202"
+      source_span:
+        start:
+          offset: 70320
+          line: 819
+          column: 1
+        end:
+          offset: 70871
+          line: 819
+          column: 552
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_status"
+      identity_kind: "explicit"
+      unit_id: "normative_69202"
+      source_span:
+        start:
+          offset: 70872
+          line: 820
+          column: 1
+        end:
+          offset: 71536
+          line: 820
+          column: 665
+    - pointer: "/validation_rules/0"
+      rule_id: "v_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_82907"
+      source_span:
+        start:
+          offset: 83002
+          line: 860
+          column: 1
+        end:
+          offset: 83494
+          line: 860
+          column: 493
+    - pointer: "/validation_rules/1"
+      rule_id: "v_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_82907"
+      source_span:
+        start:
+          offset: 83495
+          line: 861
+          column: 1
+        end:
+          offset: 84067
+          line: 861
+          column: 573
+    - pointer: "/validation_rules/2"
+      rule_id: "v_once"
+      identity_kind: "explicit"
+      unit_id: "normative_82907"
+      source_span:
+        start:
+          offset: 84068
+          line: 862
+          column: 1
+        end:
+          offset: 84488
+          line: 862
+          column: 421
+    - pointer: "/validation_rules/3"
+      rule_id: "v_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_82907"
+      source_span:
+        start:
+          offset: 84489
+          line: 863
+          column: 1
+        end:
+          offset: 85072
+          line: 863
+          column: 584
+    - pointer: "/validation_rules/4"
+      rule_id: "v_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_82907"
+      source_span:
+        start:
+          offset: 85073
+          line: 864
+          column: 1
+        end:
+          offset: 85490
+          line: 864
+          column: 418
+    - pointer: "/validation_rules/5"
+      rule_id: "v_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_82907"
+      source_span:
+        start:
+          offset: 85491
+          line: 865
+          column: 1
+        end:
+          offset: 85987
+          line: 865
+          column: 497
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 6077
+          line: 60
+          column: 1
+        end:
+          offset: 6098
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6077"
+      source_span:
+        start:
+          offset: 6126
+          line: 64
+          column: 1
+        end:
+          offset: 7820
+          line: 71
+          column: 210
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_69202"
+      source_span:
+        start:
+          offset: 69202
+          line: 813
+          column: 1
+        end:
+          offset: 69242
+          line: 813
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_82907"
+      source_span:
+        start:
+          offset: 82907
+          line: 856
+          column: 1
+        end:
+          offset: 82929
+          line: 856
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4082f6c72ac476ec77033400eab8a01cd09bab85cab1e43a9b5f96bee1765cf7"
+  generated_content_sha256: "sha256:54c50df8077af66aacaaa5de7ff426ec19534358576f747792b52c537e8936e8"

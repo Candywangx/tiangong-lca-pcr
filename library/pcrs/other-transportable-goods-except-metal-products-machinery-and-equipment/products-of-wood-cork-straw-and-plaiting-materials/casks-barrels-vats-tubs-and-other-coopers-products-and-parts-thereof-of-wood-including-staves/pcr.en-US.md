@@ -418,7 +418,7 @@ Identity support:flow property `93a60a56-a3c8-11da-a746-0800200b9a66`; unit grou
 
 Conditional gaseous pipeline natural gas, reference Volume/m3. Match temperature, absolute pressure, wet/dry composition, compressibility and supplier background m3 definition before linking a quantity; secondary database mass coefficients are not density.
 
-- Selected flow: natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- Selected flow: Natural gas, gaseous `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Volume / m3
 
 Identity support:flow property `93a60a56-a3c8-22da-a746-0800200c9a66`; unit group `93a60a57-a3c8-12da-a746-0800200c9a66`
@@ -454,7 +454,7 @@ Identity support:flow property `93a60a56-a3c8-11da-a746-0800200b9a66`; unit grou
 
 Conditional gaseous pipeline natural gas, reference Volume/m3. Match temperature, absolute pressure, wet/dry composition, compressibility and supplier background m3 definition before linking a quantity; secondary database mass coefficients are not density.
 
-- Selected flow: natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- Selected flow: Natural gas, gaseous `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Volume / m3
 
 Identity support:flow property `93a60a56-a3c8-22da-a746-0800200c9a66`; unit group `93a60a57-a3c8-12da-a746-0800200c9a66`
@@ -490,7 +490,7 @@ Identity support:flow property `93a60a56-a3c8-11da-a746-0800200b9a66`; unit grou
 
 Conditional gaseous pipeline natural gas, reference Volume/m3. Match temperature, absolute pressure, wet/dry composition, compressibility and supplier background m3 definition before linking a quantity; secondary database mass coefficients are not density.
 
-- Selected flow: natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- Selected flow: Natural gas, gaseous `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Volume / m3
 
 Identity support:flow property `93a60a56-a3c8-22da-a746-0800200c9a66`; unit group `93a60a57-a3c8-12da-a746-0800200c9a66`
@@ -674,7 +674,7 @@ Identity support:flow property `93a60a56-a3c8-11da-a746-0800200b9a66`; unit grou
 
 ###### Discarded untreated oak planing shavings (`discarded_shavings`)
 
-Actual separately collected non-agglomerated untreated oak planing shavings, independently weighed with measured moisture, material/contamination state and actual receiver. Broad Wood waste names/synonyms/comment include wood residues and its primary-production route is compatible with manufacturing residues; source CPC39282 agglomeration conflicts with this physical description. Retain unresolved source classification/receiver/provider clarification, not an exact agglomeration or treatment claim. Exclude sold coproducts, internal fuel/returns, stack particles and separated char; do not import the source municipal-waste percentages.
+Actual separately collected non-agglomerated untreated oak planing shavings, independently weighed with measured moisture, material/contamination state and actual receiver. Current Wood waste is a 1 kg collected non-agglomerated waste locator at generation, CPC39283, with composition and treatment unspecified. Earlier CPC39282, primary-production and municipal-percentage observations are historical, not the current definition. Actual wood/adhesive/coating/preservative contamination and receiver/fate must be established; collection does not prove harmlessness, recycling eligibility, combustion treatment, exact provider compatibility or avoided-product credit. Exclude sold coproducts, internal fuel/returns, stack particles and separated char; no borrowed waste-composition percentages.
 
 - Selected flow: Wood waste `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
 - Flow property / unit: Mass / kg

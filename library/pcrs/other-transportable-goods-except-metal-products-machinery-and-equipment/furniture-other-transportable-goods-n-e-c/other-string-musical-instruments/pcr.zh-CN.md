@@ -80,7 +80,7 @@ translation_status: aligned
 | b_water_carbon | 所有材料水空气残余 | 独立约束整体实物质量和相关元素。区分木材生物碳、树脂涂料塑料化石碳、环境碳及上游林业吸收，不自动储碳或废料销售信用。分别实测游离及吸附木水分、液气载体制剂水、结构水和独立证实的反应水。普通仓储搬运吸解湿是真实原子流，不虚构作业许可。胶干燥及溶剂损失不能证明反应水。VOC/COD/TOC/PM和木尘指标不是分子物种，一个残差不能求两个未知。积分气液体积不再乘时间，仅真实速率积分；密度须对应该物质实际状态。 | `yamaha-craftsmanship`; `mohawk-instrument-2012`; `ilcd-attributional-2010` |
 | b_work | 全部真实失败退回作业后事件 | 制造商或规范许可、作业后测试验收及处置约束真实重工及持续合格，但不能删除已发生未获准、失败、扣留或未验收作业；保留全部实物负荷及原队列和实际扣留废弃。破木接头涂层不假恢复。普通制造废物、样品失败、外售外送及处理不自动减负荷；只有真实不同队列功能且有正当分配移交，才一次转向量，毛实物保持完整。 | `yamaha-qc`; `ilcd-attributional-2010` |
 | b_extend | 真实未列原子交换及供方 | 数值使用前逐项新增所有真实未列木种供货形态、镶嵌嵌件紧固件、整份制剂、另加化学品燃料能耗水相、制冷剂包材废物出口和真实物种，不用other材料或能载集合，不由查询失败推缺席。真实现场制造供货部件制剂时，须完整实际采购材料、水能损失，不再叠整份供方。热服务保留真实载体kg、热MJ、Product返还、状态焓及供方水能边界，不假蒸汽锅炉。 | `ilcd-attributional-2010`; `yamaha-craftsmanship` |
-| packaging_receipt_basis | packaging | 逐实际完整包装制品，P记录有偿采购（单独或随货付费，有无单独发票均可）。I记录首次非采购外部入流，含单独赠与、借用、租赁/周转池领入和未付费供方随附包装；供方随附仅为I的一个子集。ER必须以同一制品或可审计匹配批次关联本场所先前外发记录；仅有他方使用史不属于退回。P/I/ER互斥。已有匹配物理制品卡及原始分账覆盖这些来源，但仍须满足全部原生材料/形态/状态限制；不相容真实制品须另列原子行，不得替用UUID。X_in/X_out仍为独立实测水料变化，不能替代整制品接收。保留完整湿毛量、所有者/保管者、付费/非采购依据、来源、原外发关联、实际状态单位和继承制造/服务向量。无偿接收既非新制造，也不自动零负荷；真实服务及新增运输搬运按正确原批群和分母归属一次，真实未用服务另留，不设默认寿命或抵扣。存量、毛实物流和负荷向量分开。这是声明的守恒前景核算实现，不声称引用原文规定这些变量名。 | ilcd-attributional-2010 |
+| packaging_receipt_basis | packaging | 逐实际完整包装制品，P记录有偿采购（单独或随货付费，有无单独发票均可）。I记录首次非采购外部入流，含单独赠与、借用、租赁/周转池领入和未付费供方随附包装；供方随附仅为I的一个子集。ER必须以同一制品或可审计匹配批次关联本场所先前外发记录；仅有他方使用史不属于退回。P/I/ER互斥。已有匹配物理制品卡及原始分账覆盖这些来源，但仍须满足全部原生材料/形态/状态限制；不相容真实制品须另列原子行，不得替用UUID。F_in/F_out仍为独立实测水料变化，不能替代整制品接收。保留完整湿毛量、所有者/保管者、付费/非采购依据、来源、原外发关联、实际状态单位和继承制造/服务向量。无偿接收既非新制造，也不自动零负荷；真实服务及新增运输搬运按正确原批群和分母归属一次，真实未用服务另留，不设默认寿命或抵扣。存量、毛实物流和负荷向量分开。这是声明的守恒前景核算实现，不声称引用原文规定这些变量名。 | ilcd-attributional-2010 |
 
 ## 6. 过程清单结构
 
@@ -643,7 +643,7 @@ translation_status: aligned
 
 ###### 丙酮清洗溶剂（`acetone_cleaner`）
 
-仅在实际另购且批准相容的工具或工艺清洗下记录丙酮，核实纯度及含水供货状态；不替换成湿法冶金乙酮溶液。若真实清洗剂为混合物则改用对应整份制剂。 整份制剂只采购一次，分析、活性成分、化石/生物碳和载水仅为不叠加子账。另加材料、能耗及损失逐项新增交换。采集未除基准的实际数量和原料/在制品库存，含清理及失败作业。
+仅在实际另购且批准相容的工具或工艺清洗下记录丙酮，核实纯度及含水供货状态；不替换成湿法冶金丙酮溶液。若真实清洗剂为混合物则改用对应整份制剂。 整份制剂只采购一次，分析、活性成分、化石/生物碳和载水仅为不叠加子账。另加材料、能耗及损失逐项新增交换。采集未除基准的实际数量和原料/在制品库存，含清理及失败作业。
 
 - 选定流：丙酮清洗溶剂
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -3232,11 +3232,11 @@ translation_status: aligned
 
 ###### 木材开料锯（`saw_service`）
 
-该真实木材开料锯的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实木材开料锯的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：木材开料锯
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3277,11 +3277,11 @@ translation_status: aligned
 
 ###### 木材定厚刨床（`planer_service`）
 
-该真实木材定厚刨床的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实木材定厚刨床的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：木材定厚刨床
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3322,11 +3322,11 @@ translation_status: aligned
 
 ###### 吉他木作铣机（`router_service`）
 
-该真实吉他木作铣机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实吉他木作铣机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：吉他木作铣机
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3367,11 +3367,11 @@ translation_status: aligned
 
 ###### 吉他侧板弯曲压机（`bender_service`）
 
-该真实吉他侧板弯曲压机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实吉他侧板弯曲压机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：吉他侧板弯曲压机
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3412,11 +3412,11 @@ translation_status: aligned
 
 ###### 吉他砂磨机（`sander_service`）
 
-该真实吉他砂磨机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实吉他砂磨机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：吉他砂磨机
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3457,11 +3457,11 @@ translation_status: aligned
 
 ###### 木尘抽吸装置（`extractor_service`）
 
-该真实木尘抽吸装置的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实木尘抽吸装置的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：木尘抽吸装置
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3502,11 +3502,11 @@ translation_status: aligned
 
 ###### 乐器涂料喷枪（`sprayer_service`）
 
-该真实乐器涂料喷枪的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实乐器涂料喷枪的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：乐器涂料喷枪
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3547,11 +3547,11 @@ translation_status: aligned
 
 ###### 空气压缩机（`compressor_service`）
 
-该真实空气压缩机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实空气压缩机的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：空气压缩机
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -3592,11 +3592,11 @@ translation_status: aligned
 
 ###### 吉他琴身夹持模具（`mould_service`）
 
-该真实吉他琴身夹持模具的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。FG留库仍保留原队列已完成服务，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
+该真实吉他琴身夹持模具的不叠加实物已完成服务账户。采用真实运行、闲置、启停、清理、失败、利用率及能力和逐交换已证实驱动，只有一个资本与维护供方负荷向量。资产kg不是服务需求。逐真实取用按接收作业及首次放行状态分类：已完成的放行前作业归制造，仅真实后期作业归原队列服务。FG留库仍保留已完成作业，仅结转未用或未归属服务。失败或未获准但已发生维修仍保留所有材料及能耗。
 
 - 选定流：吉他琴身夹持模具
 - 流属性/单位：时间 / h
-- 数量规则：使用本行唯一已计算x_i，原始采集采用cp_assets。其分子为一次原队列真实服务A_h_i。
+- 数量规则：逐真实接收作业/队列使用本行唯一已计算x_i；原始服务取用采用cp_assets。首次放行前制造服务采用N_i = A_m_i及Q_c = Q；仅真实后期原队列服务采用N_i = A_h_i及Q_c = 原Q_H。采用对应既有唯一商值，不再次求商；不同接收队列或分母的取用不得混合汇总。
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考流
@@ -4300,7 +4300,7 @@ translation_status: aligned
 | cp_fg | gate_service | 吉他毛方向及独立附件方向 | 原放行发运退回及作业后历史 | row_id; original_release; original_Q_H; observed_H; opening_FG; closing_FG; per_flow_inherited_vectors; G; R; original_shipment; original_delivery_state; current_return_mass; water; loss; new_parts; actual_work; permission; posttests; acceptance; disposition; accessory_mass | 把实际完整或残件退货关联原放行发运，称量真实状态并记录完整FG历史。失败未获准真实作业仍全采，许可测试仅决定合格；发运重验不新增Q，退回质量不证明原交付反向量。独立附件供货和毛流出一次配对，仅采原始量。 | kg; original item; actual test unit | 每次真实事件及库存日 | 原放行历史及观测H | 真实FG及独立附件门 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
 | cp_pack | packaging | 所有独立制品P/I/ER/S/EO/W和charge行 | 六方向湿库存及归属台账 | article_id; row_id; material; whole_article; component_bridge; wet_tare; opening_empty; opening_attached_WIP; opening_attached_FG; opening_reusable; P; I; ER; closing_same_states; gross_S; EO; W; source_pool; mixed_total; actual_X_in; actual_X_out; overlap_term; new_repair_material; water; upstream_owner; fulfilled_service; unused_charge; original_Q_H; H ；F_in；F_out；X_in；X_out；同侧OTHER匹配owner；收集期初期末湿量；外排来源分区；包装接收来源；付费/非采购依据；所有者/保管者；同件原外发ID | 逐真实制品计量六事件，含无另发票的供方已含流入、完整期初期末湿库存及自然新增水或维修原子。X只去同侧其他入出项重叠，不去留存流入。整湿P/I与组分皮重内容物互斥，内部复用抵消。单混合出口一个Waste加互斥池W，完整毛V独立于份额，charge一次归供方服务，仅原始量。  执行b_pack真实F与严格同侧OTHER的X规则，新增入流不抵库存；混合来源W不叠加且匹配真实出口，收集存量损失完整保留。 仅对包装按packaging_receipt_basis分类，单独非采购接收归I，不得虚构ER或X。| kg; original count with independently measured wet tare | 每次真实方向库存和charge事件 | 完整原队列及H | 真实包装空置WIP附着FG附着周转退回废物状态 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
 | cp_pack_repair | packaging | 独立实际新增或移除托盘原子 | 维修材料及湿库存台账 | row_id; actual_material; new_or_used; actual_influx; actual_outflux; whole_wet_mass; opening; full_closing; water; overlap_other_inout; whole_included_bridge; actual_work; permission; tests; disposition; provider_owner ；F_in；F_out；X_in；X_out；同侧OTHER匹配owner；收集期初期末湿量；外排来源分区| 称量真实独立维修入出和完整期末湿库存；新旧料水即使留存仍是真实入流，X仅对别的入出项去重。木板不是整托盘，整件已含部件不再采购。失败未获准作业仍保留全部负荷处置，不除基准。  执行b_pack真实F与严格同侧OTHER的X规则，新增入流不抵库存；混合来源W不叠加且匹配真实出口，收集存量损失完整保留。| kg | 每次收货维修移除及库存事件 | 实际H及保管历史 | 真实托盘和部件边界 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
-| cp_assets | assets | 真实独立机器工具部件流体及服务 | 序列保管及已完成服务记录 | row_id; serial; configuration; full_wet_mass; integral_fluid; opening_installed; new_receipt; used_receipt; actual_repair_added; worn_removed; reusable_out; waste_out; full_closing; included_bridge; water_in; water_out; overlap_other_inout; actual_hours; idle; failure; capacity; utilization; causal_driver; provider_vector; unused_service; cohort; permission; test; disposition | 完整资产部件流体实物保管与真实已完成服务及一个资本维护供方向量分开。不固定寿命、不任意每kg整机、不由资产质量直接推服务。真实新旧部件水流入及完整湿期末保留，整件已含部件与独立新增互斥。失败未获准维修全采，FG留库仍保留已完成服务，仅未用未归属服务结转，仅原始量。 | kg; h; actual native extensive unit | 每次事件及服务区间 | 期初历史至真实队列及H | 真实在装资产库存和服务供方 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
+| cp_assets | assets | 真实独立机器工具部件流体及服务 | 序列保管及已完成服务记录 | row_id; serial; configuration; full_wet_mass; integral_fluid; opening_installed; new_receipt; used_receipt; actual_repair_added; worn_removed; reusable_out; waste_out; full_closing; included_bridge; water_in; water_out; overlap_other_inout; actual_hours; idle; failure; capacity; utilization; causal_driver; provider_vector; unused_service; cohort; permission; test; disposition; receiving_operation; receiving_cohort; pre_or_post_first_release; manufacturing_Q; original_Q_H; observed_H | 完整资产部件流体实物保管与真实已完成服务及一个资本维护供方向量分开。不固定寿命、不任意每kg整机、不由资产质量直接推服务。真实新旧部件水流入及完整湿期末保留，整件已含部件与独立新增互斥。失败未获准维修全采，FG留库仍保留已完成服务，仅未用未归属服务结转，仅原始量。 逐真实取用记录接收作业/队列及首次放行前后状态。放行前制造工具服务按calc_attribution进入A_m_i并采用Q；仅真实后期原队列服务按calc_service进入A_h_i并采用原Q_H。保留一个资本/维护供方向量、真实小时/能力及剩余服务，不重复供方或新增产出Q。不同接收队列/分母的账户分开；此处仅记录原始数据，calc_quotient执行唯一归一化。 | kg; h; actual native extensive unit | 每次事件及服务区间 | 期初历史至真实队列及H | 真实在装资产库存和服务供方 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
 | cp_treatment_manufacture | manufacture | 每个唯一关联处理服务行 | 接收方处理供方及边界记录 | waste_row_id; actual_outlet; wet_feed_kg; original_native_service_unit; actual_state_conversion; receiver; operation; included_transport; onsite_or_external; direct_species; residues; unique_provider_owner; actual_incurred_load; cohort; uncertainty | 每个真实废物出口按原生广延单位采集一次真实处理活动和完整边界，仅在实际供方支持时以湿kg需求换算，不编转换。混合池W不新增供方，现场处理逐真实材料水能物种记录，不再叠整份服务。普通废售外送不扣已发生制造处理负荷，仅原始量。 | kg actual wet feed; actual native service unit | 每次真实出口及处理事件 | 完整原队列及观测H | 真实接收方和处理门 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
 | cp_treatment_gate_service | gate_service | 每个唯一关联处理服务行 | 接收方处理供方及边界记录 | waste_row_id; actual_outlet; wet_feed_kg; original_native_service_unit; actual_state_conversion; receiver; operation; included_transport; onsite_or_external; direct_species; residues; unique_provider_owner; actual_incurred_load; cohort; uncertainty | 每个真实废物出口按原生广延单位采集一次真实处理活动和完整边界，仅在实际供方支持时以湿kg需求换算，不编转换。混合池W不新增供方，现场处理逐真实材料水能物种记录，不再叠整份服务。普通废售外送不扣已发生制造处理负荷，仅原始量。 | kg actual wet feed; actual native service unit | 每次真实出口及处理事件 | 完整原队列及观测H | 真实接收方和处理门 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
 | cp_treatment_packaging | packaging | 每个唯一关联处理服务行 | 接收方处理供方及边界记录 | waste_row_id; actual_outlet; wet_feed_kg; original_native_service_unit; actual_state_conversion; receiver; operation; included_transport; onsite_or_external; direct_species; residues; unique_provider_owner; actual_incurred_load; cohort; uncertainty | 每个真实废物出口按原生广延单位采集一次真实处理活动和完整边界，仅在实际供方支持时以湿kg需求换算，不编转换。混合池W不新增供方，现场处理逐真实材料水能物种记录，不再叠整份服务。普通废售外送不扣已发生制造处理负荷，仅原始量。 | kg actual wet feed; actual native service unit | 每次真实出口及处理事件 | 完整原队列及观测H | 真实接收方和处理门 | 每参考流 | 原始证据校准、实际规范供方状态、完整事件库存向量桥、误差及真实验收处置；汇总仅引用第8节唯一结果，原始采集不除基准。 |
@@ -4312,8 +4312,8 @@ translation_status: aligned
 | --- | --- | --- | --- | --- | --- |
 | calc_q | finished_guitar | Q = 同队列同配置实际完整乐器首次放行净质量实测值之和，每件唯一一次；排除包装及独立附件，已放行期末FG已含Q。 | actual_net_masses; cp_release | Q | `yamaha-craftsmanship` |
 | calc_raw | 所有清单行 | 库存或归属核算前原单位一次换算，仅积分真实速率；1 kWh = 3.6 MJ。密度热状态须对应该物质状态实测；毛V与负荷向量分开，完整期末湿库存及全部真实流入均保留。 | raw_records; cp_util_m; cp_util_h; cp_material | converted_raw | `ilcd-attributional-2010` |
-| calc_attribution | 所有清单行 | 制造A_m_i = B_open_i + U_i - B_close_raw_WIP_unassigned_i - T_other_i，须先真实单位换算、细分、逐交换因果及真实残余分配。B_close不含已首次放行FG；逐流继承向量及真实未归属非WIP库存显式保留，已库存校正U不二校正。T_other仅在真实不同功能队列且正当一次移交时存在，普通失败废物外售处理仍保留。 | converted_raw; raw_WIP_inherited_vectors; actual_other_function_decision | A_m_i | `ilcd-attributional-2010` |
-| calc_service | 所有清单行 | 对原队列Q_H及实际H，A_h_i包含真实已完成仓储搬运包装资产处理放行后作业增量和真正分配的期初未用charge，仅扣未用或未归属期末服务charge及正当一次真实其他功能移交。不得因FG仍留库扣已完成服务，也不把历史制造向量重新采购。毛实物V不改为A_h_i或经济份额。 H仅为实际观察期间，不是第二分母；已累计A_h_i或毛V_i仅经唯一商除原Q_H一次，不再除H。 | actual_service_records; original_Q_H; H; single_owner_vectors | A_h_i | `ilcd-attributional-2010` |
+| calc_attribution | 所有清单行 | 制造A_m_i = B_open_i + U_i - B_close_raw_WIP_unassigned_i - T_other_i，须先真实单位换算、细分、逐交换因果及真实残余分配。B_close不含已首次放行FG；逐流继承向量及真实未归属非WIP库存显式保留，已库存校正U不二校正。T_other仅在真实不同功能队列且正当一次移交时存在，普通失败废物外售处理仍保留。 本制造队列接收的真实首次放行前工具服务取用计入A_m_i，接收分母为Q，即使同一资产还服务其他后期队列也不改变此归属。 | converted_raw; raw_WIP_inherited_vectors; actual_other_function_decision | A_m_i | `ilcd-attributional-2010` |
+| calc_service | 所有清单行 | 对原队列Q_H及实际H，A_h_i包含真实已完成仓储搬运包装资产处理放行后作业增量和真正分配的期初未用charge，仅扣未用或未归属期末服务charge及正当一次真实其他功能移交。不得因FG仍留库扣已完成服务，也不把历史制造向量重新采购。毛实物V不改为A_h_i或经济份额。 H仅为实际观察期间，不是第二分母；已累计A_h_i或毛V_i仅经唯一商除原Q_H一次，不再除H。 本账户中的资产/工具服务仅指真实后期原队列作业；首次放行前制造取用保留于calc_attribution的A_m_i及Q。 | actual_service_records; original_Q_H; H; single_owner_vectors | A_h_i | `ilcd-attributional-2010` |
 | calc_quotient | 所有清单行 | x_i = N_i / Q_c，仅一次。制造负荷N_i用A_m_i，真实服务负荷用A_h_i，纯实物披露用完整实际毛方向V_i。制造Q_c为Q，观测服务毛方向为原Q_H，不新增产品Q。各维分开，毛V不库存校正、不按分配份额缩量、不新计供方信用。Q_c = 0保留原始分子实物流且不出单位结果；卡与汇总复用同一x_i，不再除。 | A_m_i; A_h_i; V_i; Q; Q_H; cp_release | x_i | `ilcd-attributional-2010` |
 | calc_physical | 所有清单行 | 各门完整期初湿态+真实外部流入=完整期末湿态+真实外部流出，物种元素碳水须独立实测约束。X_in/X_out仅对同侧另一OTHER入出项去重，绝不去留存流入。内部整琴部件交接配对抵消，整包装皮重内容物组分互斥，来源池W和等于真实单混合出口而不另叠加。 各适用门执行b_pack明确的真实F_in/F_out及同侧OTHER项X定义；同一真实外排实测来源分区不同于收集前废弃量，须保留收集期初期末湿库存及全部互斥新增损失，内部交接只抵消一次；未知分区保持未决，不拟合到一个总量。 | raw_physical_stocks; gross_V; independent_species_constraints; overlap_bridge | closure_findings | `ilcd-attributional-2010` |
 

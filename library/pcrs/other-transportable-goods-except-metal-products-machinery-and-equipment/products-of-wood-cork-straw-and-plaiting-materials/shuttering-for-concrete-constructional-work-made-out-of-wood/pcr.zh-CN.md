@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.shuttering-for-concrete-constructional-work-made-out-of-wood |
-| classification_refs | CPC 3.0:31623; narrower (建议，尚未接受) |
+| classification_refs | CPC 3.0:31623；较窄的按图加工无框架面板范围；当前决定以classifications/mappings/cpc-3.0-to-pcr.yaml及其acceptance.decision_ref ADR为准 |
 | covered_products | 按具体模板图纸加工且全部裸露边孔重新封漆的新制无框架桦木模板面板 |
 | excluded_products | 库存原板；其他木质模板路线；完整模板系统；使用服务 |
 | representative_product | 单件按图成品，无默认厚度、尺寸、配方或质量 |
@@ -111,7 +111,7 @@ content_maturity: authored_methodology
 
 ###### 涂料（水性）（`edge_paint`）
 
-整配方湿态水性丙烯酸封边漆，刷涂裸露切边和孔壁，与采购膜层兼容并常温干燥。必须取得供应商 TDS/SDS 和配方；不覆盖 UV 固化、溶剂型清漆，也不假定固含量或 VOC 因子。该身份包含更宽的树脂示例，不允许替换为醇酸配方或引用其泛称减排断言。
+整配方湿态水性丙烯酸封边漆，刷涂裸露切边和孔壁，与采购膜层兼容并常温干燥。必须取得供应商 TDS/SDS 和配方；不覆盖 UV 固化、溶剂型清漆，也不假定固含量或 VOC 因子。该身份包含更宽的树脂示例，不允许替换为醇酸配方或引用其泛称减排断言。其CPC 35120位置描述艺术家用颜色及相关调色品，与宽泛水性漆定义存在尚未解决的来源分类不一致，不能证明适合工业封边。本方法仅在真实应用、配方/状态及供应商/供方兼容性有据时保留所述整份丙烯酸水性漆；不改写来源分类，也不推定认证牌号。
 
 - 选定流：涂料（水性） `47411f13-cc57-455b-ba23-dafbaeef17db`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg

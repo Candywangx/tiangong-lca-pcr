@@ -140,7 +140,7 @@ Record the purchased dry powder formulation and moisture/solids. Do not substitu
 
 ###### Ammonium Chloride (`nh4cl`)
 
-Only separately supplied solid ammonium chloride used when the supplier-qualified powder recipe requires it. Weigh the salt; other hardeners require separate rows.
+Only separately supplied solid ammonium chloride used when the supplier-qualified powder recipe requires it. Weigh the salt; other hardeners require separate rows. The native Product/Mass identity has concordant ammonium-chloride name, CAS 12125-02-9 and crystalline-salt comment, but specifies an absorption-tower/chemical-treatment interface. It is used here only as a qualified foreground physical mass locator, not a verified delivered-hardener background. Independently establish the actual solid supply, purity, grade, moisture and provider boundary; the native interface alone does not establish compatibility with that delivered supply. Missing supply/provider evidence remains an explicit dataset gap.
 
 - Selected flow: Ammonium Chloride `0d0e3c27-1f93-4dc1-80d0-392a3226cd4f`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -154,7 +154,7 @@ Only separately supplied solid ammonium chloride used when the supplier-qualifie
 
 ###### Wheat flour (`wheat_extender`)
 
-Only separately added wheat flour when used in the qualified recipe. Record as-received moisture and mass; not wood flour, starch or an inferred universal addition.
+Only separately added wheat flour when used in the qualified recipe. Record as-received moisture and mass; not wood flour, starch or an inferred universal addition. The native wheat-flour name and wheat-powder comment support this physical identity, but its CPC 23220 placement describes starches/inulin/wheat gluten/dextrins and is an unresolved source-classification inconsistency. This does not authorize starch or isolated gluten substitution. Retain the actual whole-flour composition, grade, moisture and compatible supplier/provider evidence; the UUID alone establishes none of those.
 
 - Selected flow: Wheat flour `f87532de-91ec-4971-8cde-7cb05b236b0f`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66`; unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg

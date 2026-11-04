@@ -1,0 +1,148 @@
+{
+  "status": "adjudicated_nonfinding_on_this_lead",
+  "code": "39213",
+  "observed_at_utc": "2026-11-03T11:02:46.628237+00:00",
+  "source_commit": "95bdddb739fdc4144f94a482f712bcf6d9452f4b",
+  "source_four_sha256": {
+    "manifest.yaml": "8a2f9aee5beec1ea056f8a2333559e3305e0f0b3ab6b7977dfc7609608302ba2",
+    "pcr.en-US.md": "b6a202106d23c3c0e7443d2fa5cc0056b9583e3808c278ab3a2eeb04b1372c8b",
+    "pcr.zh-CN.md": "445790fecf2b6d029717f5dbc917a95d98d2fda220d827b7bf63ccde2f3a0587",
+    "structured.yaml": "776f804b7be05b7b33b28205dd7602a493ec3061f7349f1a84650aa4ce8c72c8"
+  },
+  "current_own_worktree_four_sha256": {
+    "manifest.yaml": "de68868a3e263430ca9c98435893415c867037162edc8793d34326adfc79b332",
+    "pcr.en-US.md": "bc00a0a8be44b6d58abb64461bbfd44225bb60570d3b6fd7625a260424e19999",
+    "pcr.zh-CN.md": "cb9cf08d286fb43a42b8ff13c0a51d181b2cab4f4b356f055ccb89ce7a0344c7",
+    "structured.yaml": "51caf28e3e9cd86bff86b0cfbf4acbe7003c68c872689fb5864a058d9958384f"
+  },
+  "current_repair_commit": "98968927738bd5526fe5d90b926e00ede9af252a",
+  "ledger_protocol_calculation_text_unchanged_by_wire_native_update": true,
+  "finding": "The 379xx whole-wet-article addition/removal contradiction is not established by the 39213 component equation alone.",
+  "reason": [
+    "c_packaging explicitly applies to each separate component; cp_packaging is a component_ledger with independently determined net component mass and composition/source partitions. Neither clause explicitly defines P_open/P_close/W as a full contaminated wet article containing extra separately supplied water/material.",
+    "Both waste cards require only discarded component W; a mixed treatment load has one physical total and non-additive composition partitions, so component W is not automatically the entire wet mixed-treatment load.",
+    "c_physical separately requires complete gross V/wet-mass and dry-fibre/element reconciliation; c_completeness and v_completeness require actual newly observed exchanges to be individually identified and permit exclusions only for exact same-side OTHER duplicates.",
+    "No actual post-receipt wire/HDPE material or water change, wet-component substitution or corrosion/coating recipe is established. The dry-fibre route is not used to assume dry packaging or zero moisture."
+  ],
+  "bounded_uncertainty": "The text says net component mass, not explicitly oven-dry component mass. Concrete data must document component versus attached water/contamination and the gross companion bridge. If an implementation instead puts full contaminated wet mass into component C/W while leaving independently supplied water/material outside that component balance, its scope would need reconciliation; that implementation is not demonstrated here.",
+  "action": "No additional canonical repair from this lead. Preserve component/gross-account distinction and do not auto-apply the 379xx F/X template. Root may request narrow clarity after independent adjudication.",
+  "relevant_full_records": [
+    {
+      "pointer": "/dataset_production/collection_protocols/5",
+      "record": {
+        "protocol_id": "cp_packaging",
+        "process_id": "fg_service",
+        "flow_role": "each packaging material and waste row",
+        "record_type": "component_ledger",
+        "raw_fields": "component_id; P_open_empty; P_open_attached_WIP; P_open_attached_FG; P_open_reusable; I; ER; P_close_empty; P_close_attached_WIP; P_close_attached_FG; P_close_reusable; S; EO; W; internal_reuse; unit; composition; provider; physical_destination; source_partition",
+        "collection_method": "Weigh/count and independently determine net component mass where counts are used. Reconcile every component at empty/attached/reusable gates and supplier/receiver records. Return raw P/I/ER/S/EO/W and reuse entries; composition partitions of one mixture remain non-additive.",
+        "unit": "kg; counts retained separately",
+        "frequency": "each purchase use dispatch return discard and close",
+        "temporal_coverage": "full period and inherited packaging stocks",
+        "site_scope": "each actual packaging component",
+        "aggregation_rule": "per 1 kg reference flow",
+        "quality_evidence": "weighing evidence; complete component reconciliation; receiver receipt"
+      }
+    },
+    {
+      "pointer": "/dataset_production/calculation_rules/5",
+      "record": {
+        "id": "c_physical",
+        "applies_to": "all material gates",
+        "rule": "For each physical gate: opening stock + gross external received + paired internal received = closing stock + gross external dispatched + paired internal sent + actual waste + actual emissions. V is this gross physical movement ledger in consistent units; A is the attributed environmental exchange vector and is not V. At the combined gate internal Q transfers cancel; accepted stock remaining in closing FG is never another output added to Q. Reconcile total wet mass and relevant dry fibre/elements independently with actual species/phase evidence. No reaction water is assumed for mechanical fraying.",
+        "inputs": [
+          "cp_material",
+          "cp_release",
+          "cp_service",
+          "cp_air"
+        ],
+        "output": "gross_V; gate_residuals; inherited_vector_transfers",
+        "source_ids": [
+          "bianco-mwool-2022"
+        ]
+      }
+    },
+    {
+      "pointer": "/dataset_production/calculation_rules/6",
+      "record": {
+        "id": "c_packaging",
+        "applies_to": "hdpe_wrap; steel_tie; hdpe_wrap_waste; steel_tie_waste",
+        "rule": "For each separate component: P_open + I + ER = P_close + S + EO + W. P includes empty/attached-WIP/attached-FG/reusable stock; S follows gross physical shipments rather than net Q; internal reuse cancels. Component receipt with returned product is ER once even if attached. One mixed disposal gets one total treatment provider; source/composition partitions reconcile to that total and do not add providers.",
+        "inputs": [
+          "cp_packaging",
+          "P_open",
+          "I",
+          "ER",
+          "P_close",
+          "S",
+          "EO",
+          "W"
+        ],
+        "output": "component_balance_residuals",
+        "source_ids": [
+          "bianco-mwool-2022"
+        ]
+      }
+    },
+    {
+      "pointer": "/dataset_production/calculation_rules/7",
+      "record": {
+        "id": "c_completeness",
+        "applies_to": "all inventory rows",
+        "rule": "F contains every real newly observed exchange X absent from the current cards; add an atomic row with its own identity/unit/source/protocol before completion. Exclude X from F only for an exact same-side duplicate already itemized in OTHER; document its exact original row. OTHER is not a hiding place for unknown materials or emissions. Preserve all failure/zero-output loads.",
+        "inputs": [
+          "physical_survey",
+          "all_raw_records",
+          "exact_duplicate_links"
+        ],
+        "output": "F; X; completeness_gaps",
+        "source_ids": [
+          "ilcd-attributional-2010"
+        ]
+      }
+    }
+  ],
+  "bilingual_line_locators": [
+    {
+      "file": "pcr.en-US.md",
+      "line": 505,
+      "text": "| cp_packaging | fg_service | each packaging material and waste row | component_ledger | component_id; P_open_empty; P_open_attached_WIP; P_open_attached_FG; P_open_reusable; I; ER; P_close_empty; P_close_attached_WIP; P_close_attached_FG; P_close_reusable; S; EO; W; internal_reuse; unit; composition; provider; physical_destination; source_partition | Weigh/count and independently determine net component mass where counts are used. Reconcile every component at empty/attached/reusable gates and supplier/receiver records. Return raw P/I/ER/S/EO/W and reuse entries; composition partitions of one mixture remain non-additive. | kg; counts retained separately | each purchase use dispatch return discard and close | full period and inherited packaging stocks | each actual packaging component | per 1 kg reference flow | weighing evidence; complete component reconciliation; receiver receipt |"
+    },
+    {
+      "file": "pcr.en-US.md",
+      "line": 516,
+      "text": "| c_physical | all material gates | For each physical gate: opening stock + gross external received + paired internal received = closing stock + gross external dispatched + paired internal sent + actual waste + actual emissions. V is this gross physical movement ledger in consistent units; A is the attributed environmental exchange vector and is not V. At the combined gate internal Q transfers cancel; accepted stock remaining in closing FG is never another output added to Q. Reconcile total wet mass and relevant dry fibre/elements independently with actual species/phase evidence. No reaction water is assumed for mechanical fraying. | cp_material; cp_release; cp_service; cp_air | gross_V; gate_residuals; inherited_vector_transfers | `bianco-mwool-2022` |"
+    },
+    {
+      "file": "pcr.en-US.md",
+      "line": 517,
+      "text": "| c_packaging | hdpe_wrap; steel_tie; hdpe_wrap_waste; steel_tie_waste | For each separate component: P_open + I + ER = P_close + S + EO + W. P includes empty/attached-WIP/attached-FG/reusable stock; S follows gross physical shipments rather than net Q; internal reuse cancels. Component receipt with returned product is ER once even if attached. One mixed disposal gets one total treatment provider; source/composition partitions reconcile to that total and do not add providers. | cp_packaging; P_open; I; ER; P_close; S; EO; W | component_balance_residuals | `bianco-mwool-2022` |"
+    },
+    {
+      "file": "pcr.en-US.md",
+      "line": 518,
+      "text": "| c_completeness | all inventory rows | F contains every real newly observed exchange X absent from the current cards; add an atomic row with its own identity/unit/source/protocol before completion. Exclude X from F only for an exact same-side duplicate already itemized in OTHER; document its exact original row. OTHER is not a hiding place for unknown materials or emissions. Preserve all failure/zero-output loads. | physical_survey; all_raw_records; exact_duplicate_links | F; X; completeness_gaps | `ilcd-attributional-2010` |"
+    },
+    {
+      "file": "pcr.zh-CN.md",
+      "line": 505,
+      "text": "| cp_packaging | fg_service | 各包装材料及废物行 | component_ledger | component_id; P_open_empty; P_open_attached_WIP; P_open_attached_FG; P_open_reusable; I; ER; P_close_empty; P_close_attached_WIP; P_close_attached_FG; P_close_reusable; S; EO; W; internal_reuse; 单位; 组成; 供方; 实物去向; 来源分区 | 称重/计件；使用件数时独立确定组件净质量。逐组件核对空包装/附着/再用门及供应/接收记录。返回原始P/I/ER/S/EO/W和再用条目；同一混合物的组成分区不可叠加。 | kg; 件数另留 | 每采购使用发运退还报废及结账 | 完整期间及继承包装存量 | 每种实际包装组件 | 每 1 kg 参考流 | 称重证据; 完整组件核对; 接收凭证 |"
+    },
+    {
+      "file": "pcr.zh-CN.md",
+      "line": 516,
+      "text": "| c_physical | all material gates | 每实物门：期初库存 + 外部毛收到 + 成对内部收到 = 期末库存 + 外部毛发出 + 成对内部发出 + 实际废物 + 实际排放。V是单位一致的毛实物流转账；A为归属环境交换向量，二者不同。合并门抵消内部Q转移；期末FG合格存量不再作为新增输出加到Q。总湿质量和相关干纤维/元素分别以实际物种/相态证据核对。机械撕解不默认反应水。 | cp_material; cp_release; cp_service; cp_air | gross_V; gate_residuals; inherited_vector_transfers | `bianco-mwool-2022` |"
+    },
+    {
+      "file": "pcr.zh-CN.md",
+      "line": 517,
+      "text": "| c_packaging | hdpe_wrap; steel_tie; hdpe_wrap_waste; steel_tie_waste | 每个独立组件：P_open + I + ER = P_close + S + EO + W。P含空包装/附着WIP/附着FG/可再用库存；S随毛实物发运而非净Q；内部再用抵消。随退回产品收到的组件即使仍附着也仅作ER一次。一份混合处置只对应一次总处理供方；来源/组成分区核对该总量，不另加供方。 | cp_packaging; P_open; I; ER; P_close; S; EO; W | component_balance_residuals | `bianco-mwool-2022` |"
+    },
+    {
+      "file": "pcr.zh-CN.md",
+      "line": 518,
+      "text": "| c_completeness | all inventory rows | F包含所有真实新增且现有卡未列的交换X；完成前新增原子行及身份/单位/来源/协议。仅当X是OTHER中已逐项列明的同侧确切重复时才从F排除，并记录确切原行。OTHER不能隐藏未知物料或排放。保留全部失败/零产出负荷。 | physical_survey; all_raw_records; exact_duplicate_links | F; X; completeness_gaps | `ilcd-attributional-2010` |"
+    }
+  ],
+  "limits": "Read-only adjudication; not scientific approval, measured wire conservation, actual supplier confirmation or a blanket no-error finding."
+}
