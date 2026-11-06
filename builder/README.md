@@ -254,3 +254,14 @@ The library build checks source contracts and stages an immutable English-only
 SQLite snapshot. It does not change PCR lifecycle or authoring files. Read
 [the distribution contract](../docs/offline-distribution.md) for packaging,
 compatibility, licenses and offline installation.
+
+## Material reusable method modules
+
+`npm run module:sync -- --module library/modules/<group>/<slug>` regenerates one
+localized material module. `npm run module:check` checks all localized modules;
+optional `--source-packet` and `--ef-directory` verify actual selected source bytes
+and represented method facts. `npm run module:export -- --module <leaf> --output
+<new-file>` produces a portable review-bound JSON package. Explicit
+`--allow-unreviewed` creates diagnostic candidate output only. Read the
+[method module contract](../docs/method-module-contract.md) for review, consumer
+pinning and authority limits. These commands never publish or change a PCR.

@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-03
-lastReviewedCommit: ae5fa3c0c3da869fa2b3d3855463a2e84e876dbd
-lastReviewedNote: "Reviewed CPC 04 reference migration to immutable archive links. All nine historical review artifacts are retained byte-for-byte; local ADRs continue to own accepted mapping decisions. Canonical PCRs, accepted mappings, runtime behavior and qualification gates are unchanged."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -360,3 +360,9 @@ or methodology authority.
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+Material reusable modules follow [the source/package contract](docs/method-module-contract.md).
+Use `module:sync`, `module:check` and `module:export` for their generated projection
+and portable source package; PCR lifecycle/publication commands do not apply.
+Independent document-review records, scientific approval and study qualification
+remain separate, and consumers independently pin eligible Main provenance.

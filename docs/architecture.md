@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-11-03
-lastReviewedCommit: ae5fa3c0c3da869fa2b3d3855463a2e84e876dbd
-lastReviewedNote: "Reviewed immutable archive references for historical CPC 04 evidence. All nine review artifacts remain unchanged; current classification acceptance and canonical PCR identity remain owned by local mappings and ADRs. No methodology, runtime or qualification policy changed."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 ---
 
 # PCR 资料库架构
@@ -590,3 +590,13 @@ YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解�
 ### Typed consumer dependencies in installed Goal runtimes
 
 Verified Goal runtime overlays include the consumer core TypeScript modules, its compiler/generated dependencies and schemas. Installing a new runtime on an older task baseline must transfer the complete approved dependency graph; a file extension change must not silently omit a module. Canonical PCR content remains outside the runtime overlay and comes from the selected task/integration baseline.
+
+## Material method module packages
+
+Localized material modules use [the source/package contract](method-module-contract.md).
+Canonical English and aligned Chinese preserve complete requirement/context units;
+`source-bindings.json` owns factual source metadata and `review.json` records actual
+review identities and dimensions. The generated projection and portable package
+are distinct from PCR catalog, category identity and publication history. Consumers
+independently pin the delivered artifact and reviewed Main source; package conformance
+is not scientific approval or study qualification.
