@@ -1,0 +1,1161 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.rotary-peeled-conifer-veneer-indirect-steam-drying"
+  classification_refs: "CPC 3.0 31511; narrower"
+  covered_products: "Single unbonded rotary-peeled conifer sheets, dried, actual thickness <=6 mm"
+  excluded_products: "Hardwood or sliced/sawn sheets; bonded or backed products; treated wood; green-only output; direct-fired route"
+  representative_product: "A declared botanical conifer species, rotary-peeled unbonded sheet at measured dispatch moisture and declared thickness"
+  production_route: "Untreated log receipt -> debarking/bucking -> steam conditioning -> rotary peeling/clipping -> indirect steam drying/redrying -> grading/packing"
+  market_state: "Dried, unbonded, unbacked, untreated veneer at the declared mill gate; moisture and grading acceptance specified by the actual purchaser"
+functional_unit:
+  what: "Provide unbonded conifer sheet furnish for a subsequent manufacturing process"
+  how_much: "1 kg net veneer at first acceptance in its declared dispatch-ready moisture state"
+  how_well: "Actual thickness <=6 mm, declared species, dimensions, grade and moisture acceptance; no adhesive or backing"
+  how_long_or_cycle: "One manufacturing and gate-delivery cycle; downstream service life is unspecified"
+  reference_flow_link: "accepted_veneer"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "veneer_mill"
+      rule: "Include log yard losses, debarking, bucking, steam conditioning, peeling/clipping, every drying/redrying pass, cooling/grading, dry collection and packaging. Retain separate operation records so an integrated plywood mill stops this output before gluing or composing."
+      source_ids:
+        - epa-veneer-2002
+    - rule_id: boundary_heat
+      applies_to: "steam_heat"
+      rule: "Only purchased indirect steam heat crosses this foreground boundary. Onsite boiler, direct-fired dryer or thermal oxidizer operation requires expansion with actual fuel and individual emissions; no boiler emissions are created from the supplier steam mass in this route."
+      source_ids:
+        - epa-veneer-2002
+    - rule_id: boundary_air
+      applies_to: "veneer_mill"
+      rule: "Measure dryer conditioning and fugitive outlets after controls; captured dust and discharged water remain separate outputs. An indirect dryer can still release wood organics; absence of combustion does not establish zero emissions."
+      source_ids:
+        - epa-veneer-2002
+boundary_abstraction:
+  declared_starting_condition: "Untreated conifer logs at the mill receiving gate, with known bark inclusion, source, incoming moisture and stock"
+  starting_condition_role: "foreground_entry"
+  product_classification_scope: "CPC 3.0 31511; narrower"
+  recursive_input_rule: "Purchased same-category dried veneer is a separately qualified upstream input, not a log or zero-burden internal return. It is outside this log-fed route and requires explicit method review. Internal green veneer, redrying and recovered sheet returns are transfers and stocks, with one final reference output only."
+  upstream_dataset_requirement: "Link compatible actual forestry/log production, inbound transport, electricity, delivered steam heat with agreed return convention, water, oil, packaging and external waste treatment. Mill foreground alone is gate-to-gate; cradle-to-gate use requires all upstream links with no supplier burden duplicated."
+  disclosure: "Declare receiving and dispatch gates; species/site/period; stock changes; subcontracted stages; transport; utility providers; excluded capital goods and personnel; every cut-off and missing link. Downstream bonding, use and end of life are separate."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Wood material"
+    uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "botanical conifer species and source region"
+    - "solid single sheet"
+    - "actual thickness <=6 mm and length/width"
+    - "rotary peeling route"
+    - "dry-basis dispatch-ready moisture and measurement method"
+    - "first-acceptance cohort and grading/acceptance criterion"
+    - "unbonded/unbacked/uncoated/unpreserved state"
+    - "purchased-steam indirect drying and redrying history"
+    - "actual mill/provider"
+    - "geography and production period"
+    - "net wood mass excluding packaging"
+    - "upstream log-provider boundary and matching heat delivery/return convention"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_output
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Q is the sum of calibrated net masses of production lots first accepted during the selected period, at their declared dispatch-ready moisture state: Q=new first-accepted dispatch+newly accepted closing finished goods. The two groups are disjoint and counted once. Exclude opening accepted finished goods, returns, retests, reacceptance, packaging and rejects; collect with cp_reference. Every inventory row is per 1 kg reference flow."
+  - id: moisture_conversion
+    applies_to: "wood material and residues"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use dry-basis moisture fraction u=(wet mass-dry mass)/dry mass; dry mass=wet mass/(1+u). Retain sampled wet and ovendry masses. For veneer sample four or five positions per sheet, weigh promptly and oven-dry to constant mass at 101–105 °C; report volatile-extractive bias. Do not apply lumber sample dimensions to thin sheets. [usda-wood-moisture-2021]"
+  - id: electricity_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ with 1 kWh=3.6 MJ, preserving actual delivery voltage and geography; sum all drying passes once."
+  - id: steam_enthalpy
+    applies_to: "steam_heat"
+    required_property_ref:
+      name: "Transferred heat"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record steam kg, pressure, temperature, dryness and inlet enthalpy; every return/loss stream kg and enthalpy; derive net supplier heat as incoming enthalpy minus enthalpy leaving the supplier-system return boundary on a documented common datum. Declare treatment of unreturned condensate. Do not convert steam kg to MJ by a generic constant."
+process_map:
+  - id: veneer_mill
+    name: "Integrated rotary veneer mill to dry-sheet dispatch"
+    inclusion: "required"
+    inclusion_condition: "Declared log-fed indirect-steam route"
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: veneer_mill
+    label: "Integrated rotary veneer mill to dry-sheet dispatch"
+    inputs:
+      product:
+        - row_id: conifer_logs
+          role: "Conifer veneer logs"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Untreated solid conifer logs received for rotary peeling. Record botanical species, origin, bark inclusion, initial moisture, supplier and received net mass. This generic flow identity does not select a forestry dataset or turn veneer into logs."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Purchased alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include lathe drives, debarker, crosscut saw, clipper, conveyors, dryer fans, redrying, dust collection, lighting attributable to production and electric yard handling. Meter at the real delivery voltage and geography. Record kWh and convert by 3.6; no fuel-powered mobile equipment is included in this route."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: steam_heat
+          role: "Net imported steam heat"
+          name: "Net heat transferred from purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include log heating and indirect dryer coils, including redrying. The inventory exchange is transferred thermal energy, not steam commodity mass. Meter incoming steam and outgoing condensate separately; use pressure, temperature and enthalpy records to derive net delivered heat. Link one supplier heat dataset on the same return convention; do not add a second provider burden for steam mass."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: makeup_water
+          role: "Log-conditioning makeup water"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c6fb2442-d527-4e3d-bf01-4c94ea2b71ec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record tap-water makeup entering the log-conditioning bath and cleaning circuit. Recirculated bath water is an internal loop, not repeated purchased intake. Direct surface or groundwater abstraction needs its own elementary input and an expanded water account."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: lubricating_oil
+          role: "Hydraulic and bearing oil"
+          name: "Petroleum hydraulic lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include measured fresh petroleum oil charged to the rotary lathe and associated hydraulic machinery; use issue/return and stock records. Machine hydraulic circulation is not repeated oil input. Record distinct oil formulations separately if the site uses more than this single formulation."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: packaging_film
+          role: "Dispatch LDPE wrap"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include LDPE wrap actually retained on dispatched veneer bundles, plus attributable wrap loss. Exclude it from the net veneer denominator. Add one atomic exchange for every other actual packaging component; a missing pallet or strap is not represented by this film."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - corrim-western-plywood-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_veneer
+          role: "Accepted dried veneer"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One net unbonded sheet output at first acceptance in the declared dispatch-ready moisture state. Opening accepted finished goods dispatched later, returns, retests and reacceptance are not new output; include newly accepted closing finished goods once even before dispatch. Declare conifer botanical species; rotary peeling; actual thickness not exceeding 6 mm; length/width; grading criterion; no glue, backing, coating or preservative; indirect purchased-steam drying and actual mill/provider. Generic Wood material is a mass identity only; every supplied fact must be evidenced at exchange level."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_reference
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: bark_coproduct
+          role: "Bark sold as fuel"
+          name: "Untreated conifer bark fuel coproduct"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only separately identified bark with a documented sale and useful fuel destination is a coproduct. Record its actual wet mass and moisture for dry-mass allocation. The native Wood material identity is not assumed to cover bark. Do not also enter the same bark as waste."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-plywood-2025
+            ranges: []
+        - row_id: peel_core
+          role: "Saleable peeler core"
+          name: "Untreated conifer peeler core"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Count the remaining cylindrical core from the lathe only when sold as an actual separate wood product. Record dimensions, net mass, moisture and destination. Its wood product service and allocation terminate at peeling; veneer drying burdens are not allocated to it."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-plywood-2025
+            ranges: []
+        - row_id: wood_clip_coproduct
+          role: "Saleable green clipping"
+          name: "Unbonded conifer veneer clipping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One green clipping stream sold as furnish before drying, with buyer and acceptance evidence. Keep dry trim and rejected dry sheets in separate physical accounts. No avoided-product credit or automatic energy substitution is taken."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - corrim-western-plywood-2025
+            ranges: []
+      waste:
+        - row_id: bark_waste
+          role: "Discarded bark"
+          name: "Untreated conifer bark waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Bark with no qualifying coproduct destination is a separately weighed waste to its actual external treatment. Record mass, moisture and receiver; do not assign it a coproduct allocation share or silently assume combustion."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: bucking_sawdust
+          role: "Bucking sawdust waste"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Uncontaminated sawdust from log bucking or ancillary wood cutting sent for actual external recovery/treatment. Native identity allows untreated combustion/recovery routes; select a compatible receiver and disclose the route. A sold useful sawdust product requires a separate coproduct account, not this waste card."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: veneer_reject
+          role: "Rejected dry sheet"
+          name: "Unbonded conifer veneer reject"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Off-grade dried sheets and dry trim discarded outside the factory. Record drying pass and measured moisture; include the production and redrying burdens spent before rejection. Internally returned sheets are stock/transfer records, not external waste."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: conditioning_effluent
+          role: "Spent conditioning bath water"
+          name: "Spent log-conditioning water"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual purge from the conditioning bath sent to external wastewater treatment, with measured volume/mass, density basis, receiving plant and analytes. Recirculation is not discharge. If treated onsite or discharged to the environment, add the treatment and individual releases before claiming completeness."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent hydraulic oil"
+          name: "Spent petroleum hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure removed oil sent to a licensed actual receiver; reconcile new oil and inventory changes. Do not include circulating machine oil as a waste each production cycle."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: collected_dust
+          role: "Captured dry wood dust"
+          name: "Captured untreated conifer wood dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the dry collector discharge separately from saw kerf and veneer rejects; record moisture and actual treatment destination. Collector capture is not an atmospheric emission or an automatic saleable coproduct. Retain dust remaining in filter equipment as stock change."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+      elementary:
+        - row_id: pm25
+          role: "Fine particulate release"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Outdoor-air release after actual dry collection, with source-specific sampling for particles up to 2.5 micrometres. Collected dust remains a solid residue. Report the actual air compartment and exclude duplicate stack/fugitive estimates."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: pmcoarse
+          role: "Coarse particulate release"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Outdoor-air release greater than 2.5 and up to 10 micrometres, disjoint from pm25. Total PM10 already includes pm25 and cannot be added to both fractions. Quantify particles above 10 micrometres separately whenever present."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: condensable_organic_aerosol
+          role: "Condensable organic aerosol"
+          name: "Condensable organic particulate matter"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dryer condensable particulate release requires a defined sampling/filter temperature and phase definition. Measure separately from noncondensable gases; reconcile overlap with filterable PM and any total organic-carbon or VOC measurement before summation. It is not a proxy flow for all VOCs."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: formaldehyde
+          role: "Formaldehyde from wood heating"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Screen actual conditioning/dryer exhaust for this individual substance and quantify detected releases to outdoor air, after controls. No glue or hot-press emission factor applies. Evidence of absence may support not_applicable; missing analysis is unknown. Add each other identified organic substance as its own atomic row."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: water_vapour
+          role: "Drying evaporation"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Water removed from wood and vented to outdoor air. Reconcile inlet/outlet wood moisture, rejects, redrying and stocks; exclude supplier steam generation and returned steam condensate. This exchange is not a credit and does not stand for organic emissions."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - usda-wood-moisture-2021
+            ranges: []
+        - row_id: pmover10
+          role: "Particles above 10 micrometres"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Quantify the outdoor-air fraction above 10 micrometres separately from the two finer fractions after controls. Retain the actual sampling cut and avoid adding total filterable dust again. A missing coarse fraction remains an emissions-completeness gap."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: methanol
+          role: "Methanol screening and release"
+          name: "methanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "EPA Table 10.5-3 identifies methanol, CAS 67-56-1, in indirect-heated softwood dryer heated-zone and cooling exhaust. Screen the actual plant and quantify its non-overlapping outdoor-air release after controls; do not use a table factor as a default. Nondetects require method and limit records."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+        - row_id: alpha_pinene
+          role: "Alpha-pinene screening and release"
+          name: "pin-2(3)-ene"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0a701083-c7e6-43d1-8ae5-e62050edc5dc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "EPA Table 10.5-3 identifies alpha-pinene, CAS 80-56-8, in indirect-heated softwood dryer exhaust. The selected native elementary flow is CAS 80-56-8, without a chosen enantiomer, to air unspecified. Retain substance/compartment evidence and quantify actual release; do not replace beta-pinene or limonene by this row. No table factor is transferred."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; preserve inherited vectors, original numerator units and the operation/destination ledger. Old-cohort service is kept separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - epa-veneer-2002
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "veneer_mill"
+    rule: "First use operation meters and separate branch records. Assign veneer drying/redrying, final grading and packaging directly to accepted dried veneer and the rejects generated there. No upstream saleable green core or clipping receives downstream drying or packaging burden."
+    source_ids:
+      - corrim-western-plywood-2025
+  - rule_id: allocation_dry_mass
+    applies_to: "veneer_mill"
+    rule: "For genuinely joint pre-separation operations, allocate burdens among useful outputs by their measured ovendry mass leaving that operation: share_i=dry_i/sum(dry_useful_outputs). Apply successively at debarking and peeling, retaining the green veneer stream into drying. Waste receives no product allocation share; retain its treatment burden with the responsible operation. Physical exchange quantities are never reduced by allocation shares. This dry-mass refinement is an explicit synthesis of the physical-mass precedent and moisture measurement."
+    source_ids:
+      - corrim-western-plywood-2025
+      - usda-wood-moisture-2021
+  - rule_id: allocation_recovery
+    applies_to: "bark_coproduct; peel_core; wood_clip_coproduct"
+    rule: "Require contracts, destination and moisture evidence before treating an output as useful. Internal recycling has no coproduct share or export credit. Do not combine attributional allocation with avoided-fuel credits. If physical subdivision/allocation cannot represent the actual functions, retain the problem for review and disclose an economic-allocation sensitivity using observed prices, never an invented default."
+    source_ids:
+      - corrim-western-plywood-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reference
+      process_id: "veneer_mill"
+      flow_role: "accepted_veneer"
+      record_type: "measurement"
+      raw_fields: "production cohort and lot id; first-acceptance id/date; species; dimensions; grade; first-accepted net mass and moisture; tare; new first-accepted dispatch; newly accepted closing finished goods; opening accepted finished-goods dispatch; returns/retests/reacceptance; opening/closing raw-material, WIP and finished-goods masses and inherited physical-exchange/burden vectors; old-cohort original accepted net mass; mill/provider"
+      collection_method: "Calibrated bundle weighing excluding film; thickness measurements and first purchaser-quality acceptance; moisture samples at four or five sheet positions, promptly weighed and dried to constant mass. Reconcile disjoint first-acceptance events with dispatch and finished-goods stock. Trace consumed raw/WIP and their inherited vectors to completed cohorts; retain untouched stock and old-cohort service separately. Never reset inherited vectors when a period changes."
+      unit: "kg"
+      frequency: "Every lot; reconcile the full production period"
+      temporal_coverage: "One common declared production period"
+      site_scope: "Actual mill and declared route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw records, reconciliation and missing-data disclosure"
+    - protocol_id: cp_wood
+      process_id: "veneer_mill"
+      flow_role: "conifer_logs"
+      record_type: "measurement"
+      raw_fields: "log supplier; botanical species; origin; incoming mass; bark; incoming/green veneer moisture; green transfer; stock change"
+      collection_method: "Weigh incoming loads and independent branch transfers; retain chain-of-custody and representative moisture specimens by species and operation."
+      unit: "kg"
+      frequency: "Each receipt and branch lot"
+      temporal_coverage: "One common declared production period"
+      site_scope: "Actual mill and declared route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw records, reconciliation and missing-data disclosure"
+    - protocol_id: cp_utilities
+      process_id: "veneer_mill"
+      flow_role: "electricity; steam_heat; makeup_water"
+      record_type: "measurement"
+      raw_fields: "meter id; stage; kWh; water kg; steam kg; inlet/return pressure temperature dryness and enthalpy; condensate return kg; losses; supplier boundary; calibration"
+      collection_method: "Submeter conditioning, peeling and every drying/redrying pass; reconcile invoices and stock. Retain a full physical steam/condensate ledger and a single supplier net-heat account."
+      unit: "MJ; kg"
+      frequency: "Continuous meters; reconcile each reporting period"
+      temporal_coverage: "One common declared production period"
+      site_scope: "Actual mill and declared route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw records, reconciliation and missing-data disclosure"
+    - protocol_id: cp_consumables
+      process_id: "veneer_mill"
+      flow_role: "lubricating_oil; packaging_film"
+      record_type: "measurement"
+      raw_fields: "material identity; fresh issue kg; returns; stock changes; packaging retained; loss; supplier"
+      collection_method: "Reconcile purchases, issue and stock with actual consumption; weigh actual packaging components independently."
+      unit: "kg"
+      frequency: "Each issue and monthly balance"
+      temporal_coverage: "One common declared production period"
+      site_scope: "Actual mill and declared route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw records, reconciliation and missing-data disclosure"
+    - protocol_id: cp_residues
+      process_id: "veneer_mill"
+      flow_role: "bark_coproduct; peel_core; wood_clip_coproduct; bark_waste; bucking_sawdust; veneer_reject; spent_oil; collected_dust"
+      record_type: "measurement"
+      raw_fields: "stage; physical stream; wet kg; dry-basis moisture; sale/waste status; destination; buyer/receiver; price if relevant; stock changes"
+      collection_method: "Weigh each separate stream at its actual separation point; sample moisture and retain sale or waste-transfer evidence; reconcile internal returns."
+      unit: "kg"
+      frequency: "Every output lot, reconciled to the period"
+      temporal_coverage: "One common declared production period"
+      site_scope: "Actual mill and declared route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw records, reconciliation and missing-data disclosure"
+    - protocol_id: cp_releases
+      process_id: "veneer_mill"
+      flow_role: "conditioning_effluent; pm25; pmcoarse; pmover10; condensable_organic_aerosol; formaldehyde; methanol; alpha_pinene; water_vapour"
+      record_type: "measurement"
+      raw_fields: "outlet; operation; controls; measured concentration; exhaust flow; operating hours; size/phase; sampling/filter temperature; analyte; purge kg; wood water balance; nondetect limit"
+      collection_method: "Measure representative normal and redrying operation after controls; combine source-specific concentration, flow and operating time. Retain uncertainty, nondetects and wood-water balance; add separate rows for every detected additional substance."
+      unit: "kg"
+      frequency: "Representative campaigns plus continuous activity logs"
+      temporal_coverage: "One common declared production period"
+      site_scope: "Actual mill and declared route only"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw records, reconciliation and missing-data disclosure"
+  calculation_rules:
+    - id: cohort_accounting
+      applies_to: "all inventory rows"
+      rule: "Assemble each new first-accepted cohort vector from inherited raw/WIP vectors actually completed plus measured additions through first acceptance and actual packing/dispatch service for that cohort, each once; retain closing uncompleted vectors and old accepted-FG vectors separately. Keep old-cohort service additions with their original accepted net mass, never new Q. Q=0 retains unnormalized vectors. Physical stock and exchange quantities remain distinct from allocated burdens."
+      inputs:
+        - cp_reference
+        - "cohort and stock identities"
+        - "inherited vectors"
+        - "attributable measurements"
+      output: "cumulative cohort vectors in original units"
+      source_ids:
+        - usda-wood-moisture-2021
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For Q>0, divide each cumulative physical exchange vector of the new first-accepted cohort, assembled under cohort_accounting, by its first-accepted net mass Q in kg. Accepted output equals Q/Q=1 kg per 1 kg reference flow. Preserve each numerator unit. Q=0 prohibits new-output normalization and retains the unnormalized physical-exchange and burden vectors; old-cohort service uses its original accepted net mass."
+      inputs:
+        - "cohort vectors"
+        - Q
+        - "original accepted net mass"
+        - cp_reference
+      output: "per 1 kg reference flow"
+      source_ids:
+        - usda-wood-moisture-2021
+    - id: dry_mass_ledger
+      applies_to: "conifer_logs; accepted_veneer; bark_coproduct; peel_core; wood_clip_coproduct; bark_waste; bucking_sawdust; veneer_reject"
+      rule: "For each stream independently: dry=wet/(1+u). Compare dry input with useful output, wastes, measured losses and stock change before allocating burdens. Never close the balance by inventing a yield or scaling measured physical output."
+      inputs:
+        - "wet kg"
+        - "dry-basis u"
+        - stocks
+        - cp_wood
+        - cp_residues
+        - cp_reference
+      output: "dry kg by operation"
+      source_ids:
+        - usda-wood-moisture-2021
+        - corrim-western-plywood-2025
+    - id: net_heat_ledger
+      applies_to: "steam_heat"
+      rule: "H_in=sum(m_in*h_in); H_return=sum(m_return*h_return). Use the common datum and actual supplier system boundary to calculate net heat, in MJ, including documented unreturned condensate treatment. When h is kJ/kg, divide the resulting kJ by 1000; compare with heat meters and invoice convention."
+      inputs:
+        - cp_utilities
+        - "steam and return states"
+        - "supplier convention"
+      output: "net delivered MJ"
+      source_ids:
+        - epa-veneer-2002
+    - id: release_period
+      applies_to: "pm25; pmcoarse; pmover10; condensable_organic_aerosol; formaldehyde; methanol; alpha_pinene"
+      rule: "Integrate each identified concentration with its compatible dry/wet exhaust-flow basis and actual hours; correct units and retain detection limits. Separate each outlet and phase; add only non-overlapping masses, attribute them to the correct cohort under cohort_accounting and divide by that cohort denominator only when positive."
+      inputs:
+        - cp_releases
+        - concentration
+        - flow
+        - hours
+      output: "kg per 1 kg reference flow"
+      source_ids:
+        - epa-veneer-2002
+  data_quality_requirements:
+    - id: species_state
+      applies_to: "accepted_veneer"
+      requirement: "Actual botanical species, grade, dimensions, moisture and unbonded state must be auditable; mixed-species lots retain composition and do not mask hardwood."
+      evidence: "Supplier/species and acceptance records"
+    - id: representativeness
+      applies_to: "veneer_mill"
+      requirement: "Use a declared complete operating period covering normal production, stoppages, seasonal moisture and redrying; disclose exclusions, sampled operations, uncertainty and temporal/geographic differences from sources. No literature value is a factory measurement."
+      evidence: "Period reconciliation and missing-record register"
+    - id: provider_matching
+      applies_to: "all inventory rows"
+      requirement: "Match each actual provider or treatment to flow type, mass/energy property, voltage, species/state, geography and delivered boundary. Unresolved native UUIDs remain explicit identity gaps; neither blank identity nor generic identity authorizes an incompatible provider."
+      evidence: "Native records and actual provider/treatment documentation"
+    - id: emissions_completeness
+      applies_to: "cp_releases"
+      requirement: "Retain species-specific organic screening, phase/temperature conditions and coarse dust assessment. Total VOC is a quality cross-check, not an elementary exchange replacing individual compounds. Nondetect is bounded evidence, not an unqualified zero."
+      evidence: "Test reports and outlet/phase register"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "accepted_veneer"
+    rule: "Reject hardwood, sawn/sliced routes, thickness above 6 mm, adhesive/backing/preservation, missing botanical identity or missing required qualifiers. One generic Wood material UUID never establishes these facts or an eligible supplier."
+    source_ids:
+      - epa-veneer-2002
+  - rule_id: validate_measurement
+    applies_to: "all inventory rows"
+    rule: "Require Q>0 for new-output normalization, finite nonnegative physical quantities and the same first-acceptance cohort/denominator in both languages. Q=0 retains unnormalized physical-exchange and burden vectors without an invented normalized output. Reject gross bundle mass, percent/fraction confusion, unconverted volume, double-counted redrying and unsupported steam-heat conversion. Compare mass/energy balances against documented instrument uncertainty; this PCR supplies no invented tolerance."
+    source_ids:
+      - usda-wood-moisture-2021
+      - epa-veneer-2002
+  - rule_id: validate_cohort
+    applies_to: "all inventory rows"
+    rule: "Reconcile unique first-acceptance events: new dispatch plus newly accepted closing finished goods equals Q, with no opening accepted-FG dispatch, return, retest or reacceptance added. Audit raw/WIP/FG inherited vectors and service additions against lot provenance; reject missing or reset vectors, stock mass treated as new production, old-cohort service divided by new Q, and any per-kg new-output result when Q=0."
+    source_ids:
+      - usda-wood-moisture-2021
+  - rule_id: validate_allocation
+    applies_to: "veneer_mill"
+    rule: "Useful-output shares sum to one at each joint operation; retain measured dry masses, destinations and stock changes. Reject assigning drying/packing to a core sold upstream, output mass reduced by allocation, waste counted as a saleable coproduct, or simultaneous allocation and avoided-fuel credit."
+    source_ids:
+      - corrim-western-plywood-2025
+      - usda-wood-moisture-2021
+  - rule_id: validate_boundary_emissions
+    applies_to: "veneer_mill"
+    rule: "Check all actual utilities, individual packaging components, residues, wastewater destinations and non-overlapping air species/phases. Missing evidence, identities or providers remain disclosed gaps. Changed onsite combustion/wet treatment requires expanded inventories; do not claim a complete cradle-to-gate result before all upstream links and treatment are verified."
+    source_ids:
+      - epa-veneer-2002
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified declared-species rotary veneer at its recorded gate; downstream plywood or other production may link this unbonded material input while modelling their own adhesives and subsequent operations."
+  excluded_use: "Universal conifer veneer average; hardwood/sliced/sawn or bonded veneer; complete building service comparisons; automatic carbon-neutrality or avoided-energy claims."
+  required_metadata: "All reference qualifiers; actual mill/provider; period; gates; species mix; physical operation and inherited stock/cohort ledgers; first-acceptance Q and original old-cohort net masses; moisture method; utility boundaries; allocation shares; upstream and treatment links."
+  required_quality_disclosure: "Collection and identity gaps; sampled outlets; detection limits and phase overlap; temporal/geographic applicability; allocation sensitivity; cut-offs; missing providers; no scientific or study approval inferred."
+  update_trigger: "Species/state/thickness, sourcing, peeling route, heat provider, dryer/control technology, moisture acceptance, coproduct market or measurement basis changes."
+data_sources:
+  - id: "epa-veneer-2002"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 §10.5 Plywood Manufacturing, January 2002, pp. 10.5-1–10.5-4 and Table 10.5-3 pp.10.5-10–10.5-11; https://www.epa.gov/sites/default/files/2020-10/documents/c10s05.pdf"
+    used_for: "Log conditioning, rotary peeling/clipping, indirect steam drying/redrying, unbonded-sheet stopping point, source/phase-specific emissions and indirect-softwood organic species screening (including CAS identity, without table factors). Plywood resin/pressing and numeric temperature/moisture/emission defaults are not transferred."
+  - id: "usda-wood-moisture-2021"
+    type: "handbook"
+    reference: "USDA Forest Products Laboratory, Wood Handbook—Wood as an Engineering Material, FPL-GTR-282 (2021), Chapter 13, printed pp.13–1–13–2, PDF pp.323–324; https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
+    used_for: "Dry-basis moisture, representative veneer sampling, prompt weighing, oven-drying and method limitations; dry-mass conversion, without prescribing output moisture or density."
+  - id: "corrim-western-plywood-2025"
+    type: "literature"
+    reference: "CORRIM, Life Cycle Assessment of Softwood Plywood Production – Western Region, edited 22 July 2025, §§3.2.1 and 3.2.6, PDF pp.12–13,16; https://corrim.org/wp-content/uploads/2025/07/LCA-Report-Western-Plywood-Report-Final-07222025.pdf"
+    used_for: "Physical allocation precedent, separately assigned packaging and upstream boundary. Regional integrated plywood inventories and averages are not veneer values; the staged dry-mass treatment is the explicit synthesis stated in this PCR."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:851ec5f19fc49fe4a5d48339ec3bbdbb5785a2a632d9738965d33519257141af"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5875"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5875
+          line: 61
+          column: 1
+        end:
+          offset: 8159
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Untreated conifer logs at the mill receiving gate, with known bark inclusion, source, incoming moisture and stock |\n| starting_condition_role | foreground_entry |\n| product_classification_scope | CPC 3.0 31511; narrower |\n| recursive_input_rule | Purchased same-category dried veneer is a separately qualified upstream input, not a log or zero-burden internal return. It is outside this log-fed route and requires explicit method review. Internal green veneer, redrying and recovered sheet returns are transfers and stocks, with one final reference output only. |\n| upstream_dataset_requirement | Link compatible actual forestry/log production, inbound transport, electricity, delivered steam heat with agreed return convention, water, oil, packaging and external waste treatment. Mill foreground alone is gate-to-gate; cradle-to-gate use requires all upstream links with no supplier burden duplicated. |\n| disclosure | Declare receiving and dispatch gates; species/site/period; stock changes; subcontracted stages; transport; utility providers; excluded capital goods and personnel; every cut-off and missing link. Downstream bonding, use and end of life are separate. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | veneer_mill | Include log yard losses, debarking, bucking, steam conditioning, peeling/clipping, every drying/redrying pass, cooling/grading, dry collection and packaging. Retain separate operation records so an integrated plywood mill stops this output before gluing or composing. | epa-veneer-2002 |\n| boundary_heat | steam_heat | Only purchased indirect steam heat crosses this foreground boundary. Onsite boiler, direct-fired dryer or thermal oxidizer operation requires expansion with actual fuel and individual emissions; no boiler emissions are created from the supplier steam mass in this route. | epa-veneer-2002 |\n| boundary_air | veneer_mill | Measure dryer conditioning and fugitive outlets after controls; captured dust and discharged water remain separate outputs. An indirect dryer can still release wood organics; absence of combustion does not establish zero emissions. | epa-veneer-2002 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 9
+              column: 1
+            end:
+              offset: 366
+              line: 9
+              column: 75
+          text: "# Unbonded rotary-peeled conifer veneer up to 6 mm — indirect steam drying"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5875
+              line: 61
+              column: 1
+            end:
+              offset: 5896
+              line: 61
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_32097"
+      family: "allocation"
+      span:
+        start:
+          offset: 32097
+          line: 472
+          column: 1
+        end:
+          offset: 33726
+          line: 480
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | veneer_mill | First use operation meters and separate branch records. Assign veneer drying/redrying, final grading and packaging directly to accepted dried veneer and the rejects generated there. No upstream saleable green core or clipping receives downstream drying or packaging burden. | corrim-western-plywood-2025 |\n| allocation_dry_mass | veneer_mill | For genuinely joint pre-separation operations, allocate burdens among useful outputs by their measured ovendry mass leaving that operation: share_i=dry_i/sum(dry_useful_outputs). Apply successively at debarking and peeling, retaining the green veneer stream into drying. Waste receives no product allocation share; retain its treatment burden with the responsible operation. Physical exchange quantities are never reduced by allocation shares. This dry-mass refinement is an explicit synthesis of the physical-mass precedent and moisture measurement. | corrim-western-plywood-2025; usda-wood-moisture-2021 |\n| allocation_recovery | bark_coproduct; peel_core; wood_clip_coproduct | Require contracts, destination and moisture evidence before treating an output as useful. Internal recycling has no coproduct share or export credit. Do not combine attributional allocation with avoided-fuel credits. If physical subdivision/allocation cannot represent the actual functions, retain the problem for review and disclose an economic-allocation sensitivity using observed prices, never an invented default. | corrim-western-plywood-2025 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 9
+              column: 1
+            end:
+              offset: 366
+              line: 9
+              column: 75
+          text: "# Unbonded rotary-peeled conifer veneer up to 6 mm — indirect steam drying"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 32097
+              line: 472
+              column: 1
+            end:
+              offset: 32137
+              line: 472
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_45131"
+      family: "validation"
+      span:
+        start:
+          offset: 45131
+          line: 518
+          column: 1
+        end:
+          offset: 47427
+          line: 528
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | accepted_veneer | Reject hardwood, sawn/sliced routes, thickness above 6 mm, adhesive/backing/preservation, missing botanical identity or missing required qualifiers. One generic Wood material UUID never establishes these facts or an eligible supplier. | epa-veneer-2002 |\n| validate_measurement | all inventory rows | Require Q>0 for new-output normalization, finite nonnegative physical quantities and the same first-acceptance cohort/denominator in both languages. Q=0 retains unnormalized physical-exchange and burden vectors without an invented normalized output. Reject gross bundle mass, percent/fraction confusion, unconverted volume, double-counted redrying and unsupported steam-heat conversion. Compare mass/energy balances against documented instrument uncertainty; this PCR supplies no invented tolerance. | usda-wood-moisture-2021; epa-veneer-2002 |\n| validate_cohort | all inventory rows | Reconcile unique first-acceptance events: new dispatch plus newly accepted closing finished goods equals Q, with no opening accepted-FG dispatch, return, retest or reacceptance added. Audit raw/WIP/FG inherited vectors and service additions against lot provenance; reject missing or reset vectors, stock mass treated as new production, old-cohort service divided by new Q, and any per-kg new-output result when Q=0. | usda-wood-moisture-2021 |\n| validate_allocation | veneer_mill | Useful-output shares sum to one at each joint operation; retain measured dry masses, destinations and stock changes. Reject assigning drying/packing to a core sold upstream, output mass reduced by allocation, waste counted as a saleable coproduct, or simultaneous allocation and avoided-fuel credit. | corrim-western-plywood-2025; usda-wood-moisture-2021 |\n| validate_boundary_emissions | veneer_mill | Check all actual utilities, individual packaging components, residues, wastewater destinations and non-overlapping air species/phases. Missing evidence, identities or providers remain disclosed gaps. Changed onsite combustion/wet treatment requires expanded inventories; do not claim a complete cradle-to-gate result before all upstream links and treatment are verified. | epa-veneer-2002 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 9
+              column: 1
+            end:
+              offset: 366
+              line: 9
+              column: 75
+          text: "# Unbonded rotary-peeled conifer veneer up to 6 mm — indirect steam drying"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 45131
+              line: 518
+              column: 1
+            end:
+              offset: 45153
+              line: 518
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 7232
+          line: 76
+          column: 1
+        end:
+          offset: 7552
+          line: 76
+          column: 321
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_heat"
+      identity_kind: "explicit"
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 7553
+          line: 77
+          column: 1
+        end:
+          offset: 7874
+          line: 77
+          column: 322
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_air"
+      identity_kind: "explicit"
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 7875
+          line: 78
+          column: 1
+        end:
+          offset: 8157
+          line: 78
+          column: 283
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_32097"
+      source_span:
+        start:
+          offset: 32210
+          line: 476
+          column: 1
+        end:
+          offset: 32554
+          line: 476
+          column: 345
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_dry_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_32097"
+      source_span:
+        start:
+          offset: 32555
+          line: 477
+          column: 1
+        end:
+          offset: 33200
+          line: 477
+          column: 646
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_32097"
+      source_span:
+        start:
+          offset: 33201
+          line: 478
+          column: 1
+        end:
+          offset: 33724
+          line: 478
+          column: 524
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_45131"
+      source_span:
+        start:
+          offset: 45226
+          line: 522
+          column: 1
+        end:
+          offset: 45517
+          line: 522
+          column: 292
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_45131"
+      source_span:
+        start:
+          offset: 45518
+          line: 523
+          column: 1
+        end:
+          offset: 46108
+          line: 523
+          column: 591
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_45131"
+      source_span:
+        start:
+          offset: 46109
+          line: 524
+          column: 1
+        end:
+          offset: 46593
+          line: 524
+          column: 485
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_45131"
+      source_span:
+        start:
+          offset: 46594
+          line: 525
+          column: 1
+        end:
+          offset: 46988
+          line: 525
+          column: 395
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_boundary_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_45131"
+      source_span:
+        start:
+          offset: 46989
+          line: 526
+          column: 1
+        end:
+          offset: 47425
+          line: 526
+          column: 437
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 5875
+          line: 61
+          column: 1
+        end:
+          offset: 5896
+          line: 61
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 5924
+          line: 65
+          column: 1
+        end:
+          offset: 7159
+          line: 72
+          column: 267
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_32097"
+      source_span:
+        start:
+          offset: 32097
+          line: 472
+          column: 1
+        end:
+          offset: 32137
+          line: 472
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_45131"
+      source_span:
+        start:
+          offset: 45131
+          line: 518
+          column: 1
+        end:
+          offset: 45153
+          line: 518
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:851ec5f19fc49fe4a5d48339ec3bbdbb5785a2a632d9738965d33519257141af"
+  generated_content_sha256: "sha256:601be804f4ff4fa43abf0013095d2956568a6798fe3c5ec20f8eaed1672018fd"

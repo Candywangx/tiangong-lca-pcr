@@ -1,0 +1,1361 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.wet-process-untrimmed-wood-softboard"
+  classification_refs: "CPC 3.0 31449 Other fibreboard; narrower"
+  covered_products: "Uncoated single-layer wet-laid low-density wood softboard, dried and conditioned before dry trimming/finishing"
+  excluded_products: "MDF; hardboard/HDF; particleboard; non-wood fibreboard; wet mats; resin-bonded/asphalt-treated/faced board; finished trimmed and packed board"
+  representative_product: "Declared wood-softboard grade transferred as dried and conditioned untrimmed board to a finishing receiver"
+  production_route: "Received wood chips → hot-water softening/atmospheric refining → stock preparation → wet forming/cold dewatering → indirect drying/conditioning"
+  market_state: "Measured manufacturing intermediate at the drying/conditioning handoff; no finished building-product or dispatch claim"
+functional_unit:
+  what: "Supply dried and conditioned untrimmed wet-process wood softboard to its finishing receiver"
+  how_much: "1 kg net accepted dried and conditioned board at the declared handoff; denominator Q is newly accepted board including closing accepted intermediate stock once"
+  how_well: "Declare grade, density/conditioning test, net moisture, thickness and actual area; meet the receiving finishing specification; no assumed thermal resistance, finished dimensions or strength class"
+  how_long_or_cycle: "One manufacturing cohort through first acceptance at the drying/conditioning handoff; no assumed use life or finishing yield"
+  reference_flow_link: "board"
+system_boundary:
+  rules:
+    - rule_id: boundary_stages
+      applies_to: "wet_board"
+      rule: "Include chip receipt/storage, hot-water softening, atmospheric refining/screening, actual washing, formulation, wire laying, vacuum/cold dewatering, indirect drying/conditioning, handoff inspection and associated fibre/water recovery and emission control. Keep stage-specific raw balances within the integrated unit."
+      source_ids:
+        - epa-wet-fibreboard-2002
+        - usda-wood-handbook-2021
+    - rule_id: boundary_handoff
+      applies_to: "board"
+      rule: "End at measured acceptance of dried/conditioned untrimmed board by the finishing receiver. Include its upstream manufacturing burdens once. Exclude later dry trimming/sanding/coating/packing/dispatch; a downstream model must carry this board input and add those measured operations and losses before claiming finished board."
+      source_ids:
+        - epa-wet-fibreboard-2002
+        - usda-wood-handbook-2021
+    - rule_id: boundary_utilities
+      applies_to: "wet_board"
+      rule: "Purchased natural-gas-derived indirect heat is the only heat route covered and does not justify onsite fuel or boiler emissions. Other heat sources/mixes are outside this route until separately evidenced. Actual steam injection, combustion, additional chemical/refrigerant, external packaging or direct discharge requires a separately evidenced atomic exchange and scope review. Unlisted exchanges are not zero."
+      source_ids:
+        - epa-wet-fibreboard-2002
+    - rule_id: boundary_providers
+      applies_to: "wet_board"
+      rule: "Keep source chipping/preparation, transport, heat generation and external treatment in their actual providers without overlap. Carbon uptake carried in the chip provider is counted once. Wastewater transferred to treatment is a waste exchange, not an elementary release of the same water and pollutants."
+      source_ids: []
+    - rule_id: system_boundary_rule_5
+      applies_to: "foreground_system_boundary"
+      rule: "Track stage states separately: chip receipt; hot-water softening/refining; screened stock and sizing; wet mat after cold dewatering; dry board; conditioned board accepted at handoff; fibre/water recovery. Every internal transfer preserves wet quantity, moisture, composition and inherited inventory vector at both ends. Do not invent a product sale or Q for each internal stage. EPA/USDA historical temperatures, times, moisture and recipe observations are not modern plant defaults. [epa-wet-fibreboard-2002; usda-wood-handbook-2021]"
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Delivered clean wood chips, with known origin, species, moisture, supplier gate and solid/bulk volume basis"
+  starting_condition_role: "foreground_gate_input"
+  product_classification_scope: "Wet-process low-density wood softboard at the drying/conditioning handoff, subset of CPC31449"
+  recursive_input_rule: "Internal fibre/white-water recirculation stays in the physical ledger once; an externally received same-category board needs a separate verified identity and inherited provider rather than an invented recursive chain"
+  upstream_dataset_requirement: "Compatible forestry/residue-generation/chipping provider, electricity, sizing, water, purchased heat, actual transport and waste-treatment providers; identity alone never establishes their inventory vectors"
+  disclosure: "Actual site, period, starting condition, drying handoff, supplier/receiver, utility/control/treatment boundaries, loops, stock movements, losses and excluded finishing/use/end-of-life"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Dried and conditioned board"
+    uuid: "5677877c-d6cd-423a-a0de-1aa6420a3c4e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "wood species and origin"
+    - "low-density softboard grade and density test"
+    - "wood-only furnish"
+    - "single-layer/no facing"
+    - "wet forming and cold dewatering"
+    - "no hot hardboard consolidation"
+    - "exact sizing ingredients/assays/hydration"
+    - "measured net moisture/conditioning"
+    - "untrimmed area/thickness"
+    - "real drying-gate receiver and acceptance specification"
+    - "purchased natural-gas heat boundary"
+    - "chip solid/bulk volume protocol"
+    - "cohort/stock/handoff records"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "board"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "cp_reference weighs net newly accepted board at the drying/conditioning gate. Q includes newly accepted closing stock once; exclude packaging, unreleased WIP/rejects and previously accepted returns. Normalize production exchanges per 1 kg reference flow using that same Q."
+  - id: geometry
+    applies_to: "board"
+    required_property_ref:
+      name: "Mass; Volume; area"
+      uuid: ""
+    required_unit: "kg; m3; m2"
+    rule: "cp_reference measures untrimmed area A, thickness t and conditioned density rho on the same specimens/moisture basis as mass m; check m = A × t × rho. Area per reference kg = 1/(t × rho). Never use chip bulk density or downstream trimmed dimensions."
+  - id: moisture
+    applies_to: "wood_chips; board; rejected_sized_board; captured_unsized_fibre; sludge"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "cp_material records wet mass, water and dry solids: dry-basis u = water/dry solids; wet-basis w = water/wet total; u = w/(1-w), dry solids = wet total/(1+u). Separate wood and sizing solids; no fixed conversion moisture."
+  - id: chip_volume
+    applies_to: "wood_chips"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "cp_material declares actual supplier solid/bulk volume and packing, density, temperature and moisture. Convert measured wet mass to volume only with matched measured wet density; upstream linkage remains incomplete until supplier m3 is compatible."
+  - id: energy
+    applies_to: "electricity; heat"
+    required_property_ref:
+      name: "Energy; net delivered heat"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "cp_energy converts metered kWh using 3.6 MJ/kWh. Heat requires matched supply/return mass, temperature, pressure, fluid and enthalpy; supplier fuel heating value or gross steam energy cannot stand in for net delivered thermal energy."
+  - id: transport
+    applies_to: "freight_chips"
+    required_property_ref:
+      name: "Mass times distance"
+      uuid: ""
+    required_unit: "t*km"
+    rule: "cp_transport uses actual transported wet tonnes and each loaded km; 1 t*km = 1000 kg*km. Retain load/return convention and confirm provider boundaries; never invent density, payload or distance."
+process_map:
+  - id: wet_board
+    name: "Integrated wet-process untrimmed softboard production"
+    inclusion: "required"
+    inclusion_condition: "Declared wood-only, cold-dewatered route with purchased natural-gas indirect heat only and a real drying/conditioning handoff"
+    role: "Receipt/refining/stock/forming/drying/conditioning/control; retain stage meters and physical states"
+    quantitative_reference: "board"
+process_inventory:
+  - id: wet_board
+    label: "Integrated wet-process untrimmed softboard production"
+    inputs:
+      product:
+        - row_id: wood_chips
+          role: "Wood Chip"
+          name: "Wood Chip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3fa2a6a7-224c-4d99-bd55-a214f0a83161"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Received clean wood chips only. Retain source forest/residue status, species, preparation, supplier gate and measured moisture/volume. The broad identity does not prove supplier allocation, solid/bulk packing or a dry-mass conversion."
+          amount:
+            expression: "Use cp_material and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "User-side grid-average electricity at 1–35 kV for refining, pumps, vacuum, dryer fans, conditioning and control. The selected CN identity is usable only with compatible geography/voltage and provider; other supplies need separately verified identities."
+          amount:
+            expression: "Use cp_energy and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "External make-up process water only; retain supplier quality and wet mass. Recovered white water, condensate returned inside the boundary and internal dilution loops are not repeated purchases."
+          amount:
+            expression: "Use cp_material and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: paraffin
+          role: "Paraffin wax"
+          name: "Paraffin wax"
+          flow_type: "product"
+          flow_ref:
+            uuid: "17bff97f-179d-49d4-9e97-5128bd6020a6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Separately received neat petroleum paraffin used in the declared sizing formulation; record assay and actual retained/lost wax. Purchased whole wax emulsions are outside this ingredient-only formulation scope until separately modelled."
+          amount:
+            expression: "Use cp_material and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: starch
+          role: "Starch"
+          name: "Starch"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e5842f16-31b3-4ea4-b16a-f7b06beeb6c3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Separately received unmodified native starch only where actually used; record botanical origin, grade, moisture and actual retention. Modified starch or resin adhesive is a different input and requires scope review."
+          amount:
+            expression: "Use cp_material and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: alum
+          role: "Aluminium sulfate, powder"
+          name: "Aluminium sulfate, powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1c9f77ea-7da1-42a6-a2ec-d2d4580913c7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Separately received aluminium sulfate powder precipitation aid where actually used; record hydration state, assay and any separately supplied dilution water. Do not infer a universal alum recipe or full solids retention."
+          amount:
+            expression: "Use cp_material and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: lubricant
+          role: "Lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Petroleum lubricating oil consumed by the included line; reconcile receipts, stocks and maintenance. Identify its actual grade; inventory amounts are not taken from the identity record heating value."
+          amount:
+            expression: "Use cp_material and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: freight_chips
+          role: "Rigid Truck transport"
+          name: "Rigid Truck transport"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fba6a49d-22e7-4ce6-81d1-3aa2bfd41ba4"
+          property_unit: "Mass times distance 118f2a40-50ec-457c-aa60-9bc6b6af9931 / t*km"
+          description: "Only actual non-articulated diesel cargo HDV total weight >31.0 t matching this transport identity and provider load/empty-return convention. Record wet transported mass and actual leg distance. Chip production and separately purchased transport must not overlap. Other vehicles/modes require separate atomic service cards."
+          amount:
+            expression: "Use cp_transport and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: heat
+          role: "Net purchased natural-gas industrial heat"
+          name: "Net purchased natural-gas industrial heat"
+          flow_type: "product"
+          property_unit: "Net delivered thermal energy / MJ"
+          description: "Net purchased natural-gas industrial heat for hot-water softening and indirect drying. Measure supply/return enthalpy and provider boundary. A fuel-volume or steam-gross-energy record is not this delivered-heat identity; its UUID remains unresolved."
+          amount:
+            expression: "Use cp_energy and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: board
+          role: "Dried and conditioned board"
+          name: "Dried and conditioned board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5677877c-d6cd-423a-a0de-1aa6420a3c4e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Newly accepted untrimmed wood softboard after drying and conditioning, transferred to a finishing receiver under the declared grade/specification. Measure net Q at that handoff; retain dry solids, sizing, water, geometry and inherited exchange vector. It is neither a wet mat nor trimmed finished board."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+      waste:
+        - row_id: rejected_sized_board
+          role: "Rejected sized wood-softboard panels"
+          name: "Wood waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One collected stream of rejected sized dried/conditioned wood-softboard panels failing acceptance at the drying handoff, exported as non-agglomerated wood waste. Record its actual sizing composition, conditioned moisture, contaminants, measured mass and recipient/treatment separately. It excludes captured unsized fibre dust, wet mat clipping and internally recovered material. Internal recovery is a separate physical loop; downstream dry trimming remains excluded."
+          amount:
+            expression: "Use cp_waste and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: captured_unsized_fibre
+          role: "Captured unsized wood-fibre dust"
+          name: "Wood waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One dry unsized wood-fibre dust stream collected by the chip-receipt dust extractor before contact with sizing chemicals, where this collector actually exists. Record collector/stage, dry wood and moisture, contaminants, mass and actual external recovery/treatment status. It excludes sized panel rejects, wet slurry/sludge and particles released to air. If returned inside the line, retain its measured recovery loop instead of an external waste exchange. Absence must be evidenced; any other collector or mixed stream requires its own atomic row."
+          amount:
+            expression: "Use cp_waste and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: sludge
+          role: "Sludge"
+          name: "Sludge"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "725c8f6e-7975-4155-a250-1f95ef70c508"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One dewatered fibre-recovery sludge stream exported for treatment, measured wet with dry solids and water separately. Verify contamination, recipient acceptance and treatment boundary; a generic sludge identity never proves treatability."
+          amount:
+            expression: "Use cp_waste and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: waste_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Used lubricating oil separately collected for external treatment; record generated mass, contamination and destination and reconcile with oil stocks. It is not combined with sludge or fibre waste."
+          amount:
+            expression: "Use cp_waste and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: effluent
+          role: "Untreated wood-fibreboard process wastewater"
+          name: "Untreated wood-fibreboard process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One liquid purge transferred to external treatment, excluding internally recirculated white water. Record volume, measured density, dry solids, dissolved organics, pollutants and treatment acceptance. Identity is unresolved; never substitute treated water or a direct elementary water release."
+          amount:
+            expression: "Use cp_waste and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+      elementary:
+        - row_id: co_bio
+          role: "carbon monoxide (biogenic)"
+          name: "carbon monoxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "8a313a02-e251-11e6-bf01-fe55135034f3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only independently measured CAS630-08-0 with demonstrated wood-carbon origin, actual phase/compartment and source/control interval. No automatic burner emission is assumed in this indirect purchased-heat route. Air, unspecified only; a known finer actual outdoor compartment requires a separately verified matching identity."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: formic_acid
+          role: "formic acid"
+          name: "formic acid"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9424-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only independently detected CAS64-18-6 source-specific release with gas/aerosol partition and actual air compartment. Do not infer from acetic acid, total VOC, condensable PM or COD. Air, unspecified only, CAS64-18-6; a known finer outdoor compartment requires a separately verified identity."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Released filterable PM2.5 to outdoor air; use matched source and control conditions. Captured dust remains recovered material or waste."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: pmcoarse
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Released filterable PM2.5–PM10 to outdoor air; compute from comparable cumulative PM10 minus PM2.5 only where both measurements cover the same source/time/control."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: pmover10
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Released filterable particles above PM10 to outdoor air; comparable total filterable PM minus PM10. Condensable particles are not silently assigned to this fraction."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: formaldehyde
+          role: "formaldehyde"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Wood-derived formaldehyde to outdoor air where detected in refining/drying/conditioning; resin-free does not prove zero. Retain detection limits."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: methanol
+          role: "methanol"
+          name: "methanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a935-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Methanol released to outdoor air where measured; exact species, not methylbenzyl alcohol or total VOC. No regional sawmill survey factor is transferred."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: acetic_acid
+          role: "acetic acid"
+          name: "acetic acid"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-92c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Acetic acid (CAS 64-19-7) released to outdoor air where measured in wood processing; do not substitute indolylacetic acid. The identity uses air, unspecified; a known finer outdoor compartment requires a verified compatible identity. Collect species mass, not total VOC-as-carbon."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: co2bio
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Biogenic carbon dioxide actually released from wood degradation or oxidation inside the declared boundary; retain it in LCI even if a GHG convention excludes it from an indicator. No combustion is assumed in this purchased-heat route."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: ch4bio
+          role: "methane (biogenic)"
+          name: "methane (biogenic)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a8e8-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Biogenic methane only where measured or supported by a site-specific degradation model; identify wood/organic carbon origin. No assumed wastewater-treatment emissions outside the gate."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net water evaporated from wet mats to outdoor air; reconcile make-up water, chip/board moisture, recycled white water, condensate, wastewater and sludge water."
+          amount:
+            expression: "Use cp_emissions and cp_stock to retain this atomic exchange gross quantity, unit, stage and origin. Reconcile with cohort and opening/closing raw, WIP and accepted-board stock; assign causally to the same newly accepted cohort and divide by Q from cp_reference (per 1 kg reference flow). Previously accepted returns never create Q; their services use the matched original accepted subset mass and inherited vector under allocation_stock, never this new-production denominator. Missing records are unknown, not zero; use not_applicable only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-wet-fibreboard-2002
+                - usda-wood-handbook-2021
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "wet_board"
+    rule: "Retain gross physical vector V separately from attributed burden A. First subdivide actual operations, or virtually assign exchanges exclusive to one function using stage/cohort evidence. For a remaining inseparable multifunctional operation, identify the determining physical causal relationship separately for each exchange. Only residual exchanges lacking such a relationship use evidenced market values of the co-functions in their actual condition at the split point. Missing causality, compatible prices or study-context justification remains unresolved; no blanket mass/time/equal share."
+    source_ids:
+      - ilcd-attributional-allocation-2010
+  - rule_id: allocation_recovery
+    applies_to: "rejected_sized_board; captured_unsized_fibre; sludge"
+    rule: "Internal recovered fibre and white water are loops with actual recovery energy and losses; they are not co-product credits. For externally transferred residue establish legal/material status, receiver use, composition, price where relevant and actual treatment. Keep shared generation burdens separate from post-split recovery/treatment burdens. Unknown status or allocation remains unresolved. This limited hierarchy does not establish recycling allocation or substitution benefits; those require an explicit compatible study method."
+    source_ids:
+      - ilcd-attributional-allocation-2010
+  - rule_id: allocation_sources
+    applies_to: "wood_chips"
+    rule: "Carry source forestry/residue generation and chipping burdens from the compatible upstream provider once. A residue label does not prove zero upstream burden. Do not allocate incoming wood, contained water and sizing partitions as separate purchases when one whole supply is received."
+    source_ids:
+      - ilcd-attributional-allocation-2010
+  - rule_id: allocation_stock
+    applies_to: "board"
+    rule: "For identified original cohort c, Qc is its original first-accepted net kg at this same drying/conditioning handoff; Ec is its inherited production exchange vector and xc = Ec/Qc. Preserve original acceptance evidence and opening/closing stocks. A returned/reinspected/reconditioned subset retains its original accepted net mass q_c within Qc and the matched xc; actual later service exchanges are assigned only to that traced subset, normalized by q_c (Qc only when the whole cohort is serviced), and recorded separately from new production. Never divide old-board services by unrelated new Q or recreate production. Unknown Qc, original accepted subset mass or inherited vector remains unresolved, even if a new output weight is available."
+    source_ids:
+      - ilcd-attributional-allocation-2010
+  - rule_id: allocation_rule_5
+    applies_to: "foreground_burden_allocation"
+    rule: "This is an attributional intermediate-inventory method. ILCD sections 7.9.2–3 support the limited subdivision and exchange-specific allocation hierarchy only where allocation is appropriate for the declared study context; they do not authorize substitution, recycling credits or a general ILCD-compliance claim. The explicit cohort/stock and handoff requirements are additional author prescriptions. Retain each causal relationship and residual market-value calculation with evidence, limitations and sensitivity; unavailable allocation evidence remains unresolved. Exported residues never receive an automatic avoided-product credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reference
+      process_id: "wet_board"
+      flow_role: "board"
+      record_type: "accepted handoff and stock records"
+      raw_fields: "grade; batch; date; first acceptance; wet net mass; moisture; area; thickness; density; receiving specification; stock status"
+      collection_method: "Calibrated net weighing and matched moisture/geometry tests at drying/conditioning handoff; reconcile producer and receiver  Q = newly first-accepted net kg, including closing newly accepted board once; exclude packaging, rejects, WIP and previously accepted returns; denominator for per 1 kg reference flow"
+      unit: "kg; m2; m; kg/m3"
+      frequency: "each cohort/handoff"
+      temporal_coverage: "matched production and stock interval"
+      site_scope: "actual line and receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; laboratory/test method; signed handoff; stock reconciliation"
+    - protocol_id: cp_material
+      process_id: "wet_board"
+      flow_role: "wood_chips; process_water; paraffin; starch; alum; lubricant"
+      record_type: "receipts, formulation and stage material balances"
+      raw_fields: "supplier/grade; source; batch; wet mass; dry solids; water; volume basis; density; assay/hydration; stage; opening/closing stocks"
+      collection_method: "Weigh receipts and withdrawals, sample moisture/assay, meter external water, retain actual separate formulation and stage ledger  Reconcile net consumption and stage/cohort attribution with cp_stock; divide same-cohort total by Q from cp_reference per 1 kg reference flow; internal recirculation is not repeated input"
+      unit: "kg; m3"
+      frequency: "delivery/batch and meter interval"
+      temporal_coverage: "same cohort period as Q"
+      site_scope: "actual included line"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "supplier specifications; calibration; moisture replicates; recipe and retention records"
+    - protocol_id: cp_energy
+      process_id: "wet_board"
+      flow_role: "electricity; heat"
+      record_type: "utility meters and enthalpy records"
+      raw_fields: "start/end reading; time; stage; voltage/geography; fluid composition; supply/return mass/temperature/pressure; enthalpy; provider boundary"
+      collection_method: "Use synchronized line/stage meters, reconcile invoice boundary and net heat; subtract separately metered out-of-scope finishing  Retain stage totals and cp_stock attribution; convert kWh × 3.6, calculate net supply-minus-return heat; divide same-cohort MJ by Q per 1 kg reference flow"
+      unit: "MJ; kWh"
+      frequency: "meter interval aligned to batches"
+      temporal_coverage: "same cohort period as Q"
+      site_scope: "included stages and actual natural-gas heat or electricity supplier"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; enthalpy method; meter coverage; utility background compatibility"
+    - protocol_id: cp_transport
+      process_id: "wet_board"
+      flow_role: "freight_chips"
+      record_type: "supplier shipment and vehicle records"
+      raw_fields: "wet tonnes; origin/destination; loaded km; vehicle/fuel; load/return convention; provider included stages"
+      collection_method: "Verify actual waybills and route legs; compare chip and freight provider boundaries  Sum wet t × loaded km by compatible provider and cohort; divide by Q per 1 kg reference flow; no generic empty-return factor"
+      unit: "t; km; t*km"
+      frequency: "each incoming shipment"
+      temporal_coverage: "same cohort period as Q"
+      site_scope: "actual chip supply chain"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "waybill; route evidence; vehicle identity; boundary reconciliation"
+    - protocol_id: cp_waste
+      process_id: "wet_board"
+      flow_role: "rejected_sized_board; captured_unsized_fibre; effluent; sludge; waste_oil"
+      record_type: "outgoing waste and treatment records"
+      raw_fields: "source stage; wet mass; dry solids; water; density/volume for effluent; pollutant concentration; legal status; receiver; treatment; stock"
+      collection_method: "Weigh each atomic stream, sample sludge/effluent and document treatment acceptance; distinguish recycled internal material  Reconcile each stream with cp_stock, water/solids/pollutant ledgers; volume × measured compatible density gives effluent kg; divide same-cohort totals by Q per 1 kg reference flow"
+      unit: "kg; m3; mg/l"
+      frequency: "each load and representative sample interval"
+      temporal_coverage: "same cohort period as Q"
+      site_scope: "included line/control and actual receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale/flow calibration; sampling methods; manifests; receiver acceptance"
+    - protocol_id: cp_emissions
+      process_id: "wet_board"
+      flow_role: "individual elementary emission cards"
+      record_type: "source-specific stack/fugitive measurement and water balance"
+      raw_fields: "species/CAS; phase; compartment; time; source; controls; concentration; dry/wet gas basis; reference T/P; flow; operating hours; detection limit; moisture inputs/outputs"
+      collection_method: "Matched species concentration and volumetric-flow measurement; integrate across actual operation; reconcile evaporated water independently  For matching bases sum C × gas volume × 10^-6 kg/mg, add measured fugitives once; use cp_stock to attribute cohort then divide by Q per 1 kg reference flow; retain below-detection bounds, not invented zeros"
+      unit: "kg; mg/m3; m3/h; h"
+      frequency: "representative intervals for every source/control state"
+      temporal_coverage: "same cohort period as Q"
+      site_scope: "included chip/refining/forming/drying/conditioning/control sources"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "test method; raw time series; phase/compartment match; calibration; uncertainty; controls"
+    - protocol_id: cp_stock
+      process_id: "wet_board"
+      flow_role: "every exchange and inherited vector"
+      record_type: "raw/WIP/accepted-board ledger"
+      raw_fields: "opening/closing quantities and exchange vectors; receipts; transfers; first acceptance; returns; rejects; losses; cohort; stage; timestamps"
+      collection_method: "Trace actual lots through receipt, refining, stock, mat, dry and conditioned states; reconcile both ends of each internal transfer  Opening + external entries = outgoing + closing + measured losses for each conserved constituent; retain inherited vector and assign only demonstrable current-cohort contributions before dividing by Q per 1 kg reference flow; no division for Q=0"
+      unit: "row-native unit; kg dry solids; kg water"
+      frequency: "each cohort and period close"
+      temporal_coverage: "same interval as Q with prior cohort links"
+      site_scope: "actual included stores/line and handoff"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "immutable lot history; stocktake; producer/receiver reconciliation; discrepancy explanation"
+  calculation_rules:
+    - id: calc_reference
+      applies_to: "all inventory rows"
+      rule: "For new production only, x_i = E_i,cohort / Q after cp_stock attribution; E_i,cohort excludes inherited old-board production and old-board services. Q > 0 is required; the board row is Q/Q = 1. Q=0, idle or cleanup intervals retain raw burdens and documented later attribution; do not divide by zero or discard them."
+      inputs:
+        - "raw exchange"
+        - "causal cohort link"
+        - Q
+      output: "row-native unit per 1 kg reference flow"
+      source_ids: []
+    - id: calc_stock
+      applies_to: "every conserved constituent and inherited exchange"
+      rule: "opening stock + actual entries = actual exits + closing stock + measured losses. Keep raw/WIP/accepted stock and their exchange vectors distinct. Reused/returned board retains original Qc, Ec and accepted subset q_c; its service ledger uses q_c, never unrelated new Q. Missing original denominator/vector remains unresolved. Internal transfers cancel in the integrated boundary."
+      inputs:
+        - "stage/lot/stock records"
+        - "V and A vectors"
+      output: "auditable constituent and burden reconciliation"
+      source_ids: []
+    - id: calc_solids_water
+      applies_to: "chips; slurry; wet mat; dry/conditioned board; wastes"
+      rule: "Wet total = water + wood dry solids + actual sizing dry solids. Track source component retention/loss and water in each stage; internal white water cancels externally. Water inputs + opening water = board water + effluent/sludge/reject water + net evaporation + closing water + other measured exits."
+      inputs:
+        - "measured masses"
+        - moisture
+        - formulation
+        - "water/condensate records"
+      output: "stage balances and net evaporation"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: calc_heat
+      applies_to: "heat"
+      rule: "H = sum(m_supply × h_supply - m_return × h_return) over matched actual boundary/interval; use measured composition and consistent reference states. Resolve identity/property/provider before final background linkage."
+      inputs:
+        - "mass flows"
+        - fluid
+        - T
+        - P
+        - "enthalpy reference"
+      output: "net delivered MJ then per 1 kg reference flow"
+      source_ids: []
+    - id: calc_emissions
+      applies_to: "elementary emissions"
+      rule: "Species mass = matching concentration × matching gas volume with explicit unit conversion; cumulative particle fractions can be differenced only for matched sources/time/basis. PM2.5, PM2.5–PM10 and >PM10 are nonoverlapping. Total VOC-as-carbon, COD, filterable and condensable PM are distinct measurements, not interchangeable species."
+      inputs:
+        - "source-specific concentrations"
+        - "gas flow/time"
+        - "detection limits"
+        - controls
+      output: "individual emitted species kg per 1 kg reference flow"
+      source_ids:
+        - epa-wet-fibreboard-2002
+    - id: calc_carbon
+      applies_to: "wood and carbon-bearing sizing"
+      rule: "Reconcile measured incoming carbon with board/waste/stock carbon and emitted carbon by source. Never invent universal wood carbon content, uptake, degradation gas yields or 100% sizing retention. Carry verified upstream uptake once and retain biogenic emissions separately."
+      inputs:
+        - "actual composition and source fractions"
+        - "stage stocks"
+        - "measured species"
+      output: "source-specific carbon ledger and explicit unresolved residual"
+      source_ids: []
+    - id: calc_downstream
+      applies_to: "finishing receiver"
+      rule: "Carry the complete drying-gate board inventory per accepted kg. Finished output requires actual received board mass, finishing inputs/emissions and losses; no assumed 1:1 yield. Geometric partitions are not extra purchases."
+      inputs:
+        - "handoff quantity/vector"
+        - "actual downstream records"
+      output: "compatible intermediate provider link; no finished-product result without finishing"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_scope
+      applies_to: "reference and every exchange"
+      requirement: "Same declared grade, wood-only wet cold-dewatered route, drying handoff, site and coherent period; retain actual stage state and source/provider boundary. Extra route components require explicit extension."
+      evidence: "producer/receiver specifications; route observations; process diagram"
+    - id: dq_identity
+      applies_to: "UUID-bearing and unresolved rows"
+      requirement: "Full flow name, type, quantitative reference/property/unit, geography, route and emission compartment must fit the actual exchange. Resolve heat/effluent and any additional exchange before claiming a complete background-linked study."
+      evidence: "direct record and support chain; supplier/receiver compatibility; explicit gaps"
+    - id: dq_measurement
+      applies_to: "materials, utilities and releases"
+      requirement: "Retain raw measured values, calibration, sampling coverage, uncertainty and detection bounds. Missing records remain unknown. Independently compare water, dry solids, sizing and carbon ledgers and investigate residuals instead of inventing closure factors."
+      evidence: "cp_reference to cp_stock evidence and uncertainty log"
+    - id: dq_sources
+      applies_to: "literature and quantities"
+      requirement: "EPA 2002 and USDA 2021 support qualitative route/state distinctions. Their historical figures are not general consumption, moisture, recipe, emission-factor or performance defaults. No compatible multi-source empirical quantity range is established here."
+      evidence: "source/page applicability assessment and actual foreground records"
+    - id: dq_functions
+      applies_to: "product claims"
+      requirement: "No kg-based comparison of thermal/acoustic/building service without tested configuration, dimensions, moisture, performance and scenario alignment. The untrimmed intermediate does not prove a finished product standard."
+      evidence: "actual test report and downstream finishing specification"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "board"
+    rule: "Confirm actual wet wood softboard and drying/conditioning receiver handoff. Reject substitution by MDF, hardboard, wet mat, particleboard, faced/resinated board or finished trimmed output. Check all reference qualifiers and producer/receiver quantity/state agreement."
+    source_ids:
+      - un-cpc3-2025
+      - epa-wet-fibreboard-2002
+      - usda-wood-handbook-2021
+  - rule_id: validate_basis
+    applies_to: "all rows"
+    rule: "Same positive Q and cohort must support every normalized exchange. Check first acceptance, opening/closing raw/WIP/accepted stocks, returns and inherited vectors; reconcile dry solids, sizing, water and carbon. Missing causal split or unknown residual is inconclusive."
+    source_ids: []
+  - rule_id: validate_flows
+    applies_to: "all rows"
+    rule: "Each card is one actual atomic exchange. Check UUID full-record identity/property/unit and actual background/provider scope; missing heat/effluent identity or any necessary additional exchange remains an explicit gap. A valid UUID does not validate quantity, occurrence or treatment."
+    source_ids: []
+  - rule_id: validate_emissions
+    applies_to: "releases and wastes"
+    rule: "Distinguish captured material, external treatment transfers and actual elementary releases; retain species, phase, compartment, controls and detection bounds. Avoid particle/VOC or wastewater double counting; unmeasured release is not zero."
+    source_ids:
+      - epa-wet-fibreboard-2002
+  - rule_id: validate_completion
+    applies_to: "study"
+    rule: "Report performed/skipped checks, findings and unresolved coverage. Do not claim a complete linked study, finished-product comparison, independent scientific approval or publication from a method/check result alone."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Candidate guidance for a site-specific wet-process untrimmed wood-softboard intermediate provider; an actual study must disclose its own evidence/status"
+  downstream_use: "Feed a matched trimming/finishing process with the accepted dried/conditioned board quantity and inherited complete exchange vector"
+  allowed_use: "Transparent gate-to-gate inventory; cradle-to-handoff only with complete compatible upstream/transport/treatment links and explicit unresolved coverage"
+  excluded_use: "Finished-board, packaged dispatch or building-function declaration; default recipe/energy/emission factors; methodology or study approval by classification alone"
+  required_metadata: "All reference qualifiers; real supplier/receiver/handoff; site/period; grade; route/stage states; Q; stock/cohort links; raw units/moisture; provider boundaries; identity/property/unit evidence; allocation rationale"
+  required_quality_disclosure: "Calibration; sampling; uncertainty; source age/applicability; missing exchange/identity/provider/quantity; unresolved balances; actual performed/skipped checks; study review state"
+  update_trigger: "Changed grade/formulation/furnish, utility/heat/control/treatment, handoff specification, upstream provider, major stock/yield behavior or new compatible evidence"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 official structure, 30 June 2025; [official structure CSV](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv), entries 31441, 31442, 31449"
+    used_for: "Classification distinction only; no method approval or complete coverage claim"
+  - id: "epa-wet-fibreboard-2002"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 Section 10.6.4 Hardboard and Fiberboard Manufacturing, September 2002, printed pp.10.6.4-4–5, Figure 10.6.4-3 and emissions discussion; [official PDF](https://www.epa.gov/sites/default/files/2020-10/documents/c10s0604.pdf)"
+    used_for: "Wet wood route, additives, cold dewatering, board drying before finishing, source/control-specific emission attention; historical factors/settings are not adopted"
+  - id: "usda-wood-handbook-2021"
+    type: "official_guidance"
+    reference: "USDA Forest Products Laboratory, Wood Handbook—Wood as an Engineering Material, FPL-GTR-282 (2021), Chapter 11, printed p.11-15, Cellulosic Fiberboard and Finishing Techniques; [official PDF](https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf)"
+    used_for: "Low-density wet-laid cellulosic softboard, natural bonding, sizing, cold dewatering, drying before post-treatment; no universal recipe or quantitative defaults"
+  - id: "ilcd-attributional-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment—Detailed guidance, first edition March 2010, sections 7.9.2–3, printed pp.255–258 and 266–267; [official PDF](https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf)"
+    used_for: "Attributional-context subdivision/virtual subdivision, exchange-specific determining physical causality and residual market-value hierarchy; no blanket compliance, recycling credit or consequential-substitution claim"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d14cb1b95a4efb100407860150412ab87fb1bff6ece18d8a0510c5de7f508e00"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7471"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7471
+          line: 64
+          column: 1
+        end:
+          offset: 10808
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Delivered clean wood chips, with known origin, species, moisture, supplier gate and solid/bulk volume basis |\n| starting_condition_role | foreground_gate_input |\n| product_classification_scope | Wet-process low-density wood softboard at the drying/conditioning handoff, subset of CPC31449 |\n| recursive_input_rule | Internal fibre/white-water recirculation stays in the physical ledger once; an externally received same-category board needs a separate verified identity and inherited provider rather than an invented recursive chain |\n| upstream_dataset_requirement | Compatible forestry/residue-generation/chipping provider, electricity, sizing, water, purchased heat, actual transport and waste-treatment providers; identity alone never establishes their inventory vectors |\n| disclosure | Actual site, period, starting condition, drying handoff, supplier/receiver, utility/control/treatment boundaries, loops, stock movements, losses and excluded finishing/use/end-of-life |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_stages | wet_board | Include chip receipt/storage, hot-water softening, atmospheric refining/screening, actual washing, formulation, wire laying, vacuum/cold dewatering, indirect drying/conditioning, handoff inspection and associated fibre/water recovery and emission control. Keep stage-specific raw balances within the integrated unit. | `epa-wet-fibreboard-2002`; `usda-wood-handbook-2021` |\n| boundary_handoff | board | End at measured acceptance of dried/conditioned untrimmed board by the finishing receiver. Include its upstream manufacturing burdens once. Exclude later dry trimming/sanding/coating/packing/dispatch; a downstream model must carry this board input and add those measured operations and losses before claiming finished board. | `epa-wet-fibreboard-2002`; `usda-wood-handbook-2021` |\n| boundary_utilities | wet_board | Purchased natural-gas-derived indirect heat is the only heat route covered and does not justify onsite fuel or boiler emissions. Other heat sources/mixes are outside this route until separately evidenced. Actual steam injection, combustion, additional chemical/refrigerant, external packaging or direct discharge requires a separately evidenced atomic exchange and scope review. Unlisted exchanges are not zero. | `epa-wet-fibreboard-2002` |\n| boundary_providers | wet_board | Keep source chipping/preparation, transport, heat generation and external treatment in their actual providers without overlap. Carbon uptake carried in the chip provider is counted once. Wastewater transferred to treatment is a waste exchange, not an elementary release of the same water and pollutants. | |\n\nTrack stage states separately: chip receipt; hot-water softening/refining; screened stock and sizing; wet mat after cold dewatering; dry board; conditioned board accepted at handoff; fibre/water recovery. Every internal transfer preserves wet quantity, moisture, composition and inherited inventory vector at both ends. Do not invent a product sale or Q for each internal stage. EPA/USDA historical temperatures, times, moisture and recipe observations are not modern plant defaults. [epa-wet-fibreboard-2002; usda-wood-handbook-2021]\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 308
+              line: 10
+              column: 1
+            end:
+              offset: 378
+              line: 10
+              column: 71
+          text: "# Wet-process untrimmed wood softboard at drying and conditioning gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7471
+              line: 64
+              column: 1
+            end:
+              offset: 7492
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_46521"
+      family: "allocation"
+      span:
+        start:
+          offset: 46521
+          line: 498
+          column: 1
+        end:
+          offset: 49770
+          line: 509
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | wet_board | Retain gross physical vector V separately from attributed burden A. First subdivide actual operations, or virtually assign exchanges exclusive to one function using stage/cohort evidence. For a remaining inseparable multifunctional operation, identify the determining physical causal relationship separately for each exchange. Only residual exchanges lacking such a relationship use evidenced market values of the co-functions in their actual condition at the split point. Missing causality, compatible prices or study-context justification remains unresolved; no blanket mass/time/equal share. | `ilcd-attributional-allocation-2010` |\n| allocation_recovery | rejected_sized_board; captured_unsized_fibre; sludge | Internal recovered fibre and white water are loops with actual recovery energy and losses; they are not co-product credits. For externally transferred residue establish legal/material status, receiver use, composition, price where relevant and actual treatment. Keep shared generation burdens separate from post-split recovery/treatment burdens. Unknown status or allocation remains unresolved. This limited hierarchy does not establish recycling allocation or substitution benefits; those require an explicit compatible study method. | `ilcd-attributional-allocation-2010` |\n| allocation_sources | wood_chips | Carry source forestry/residue generation and chipping burdens from the compatible upstream provider once. A residue label does not prove zero upstream burden. Do not allocate incoming wood, contained water and sizing partitions as separate purchases when one whole supply is received. | `ilcd-attributional-allocation-2010` |\n| allocation_stock | board | For identified original cohort c, Qc is its original first-accepted net kg at this same drying/conditioning handoff; Ec is its inherited production exchange vector and xc = Ec/Qc. Preserve original acceptance evidence and opening/closing stocks. A returned/reinspected/reconditioned subset retains its original accepted net mass q_c within Qc and the matched xc; actual later service exchanges are assigned only to that traced subset, normalized by q_c (Qc only when the whole cohort is serviced), and recorded separately from new production. Never divide old-board services by unrelated new Q or recreate production. Unknown Qc, original accepted subset mass or inherited vector remains unresolved, even if a new output weight is available. | `ilcd-attributional-allocation-2010` |\n\nThis is an attributional intermediate-inventory method. ILCD sections 7.9.2–3 support the limited subdivision and exchange-specific allocation hierarchy only where allocation is appropriate for the declared study context; they do not authorize substitution, recycling credits or a general ILCD-compliance claim. The explicit cohort/stock and handoff requirements are additional author prescriptions. Retain each causal relationship and residual market-value calculation with evidence, limitations and sensitivity; unavailable allocation evidence remains unresolved. Exported residues never receive an automatic avoided-product credit.\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 308
+              line: 10
+              column: 1
+            end:
+              offset: 378
+              line: 10
+              column: 71
+          text: "# Wet-process untrimmed wood softboard at drying and conditioning gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 46521
+              line: 498
+              column: 1
+            end:
+              offset: 46561
+              line: 498
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_60905"
+      family: "validation"
+      span:
+        start:
+          offset: 60905
+          line: 545
+          column: 1
+        end:
+          offset: 62557
+          line: 555
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | board | Confirm actual wet wood softboard and drying/conditioning receiver handoff. Reject substitution by MDF, hardboard, wet mat, particleboard, faced/resinated board or finished trimmed output. Check all reference qualifiers and producer/receiver quantity/state agreement. | `un-cpc3-2025`; `epa-wet-fibreboard-2002`; `usda-wood-handbook-2021` |\n| validate_basis | all rows | Same positive Q and cohort must support every normalized exchange. Check first acceptance, opening/closing raw/WIP/accepted stocks, returns and inherited vectors; reconcile dry solids, sizing, water and carbon. Missing causal split or unknown residual is inconclusive. | |\n| validate_flows | all rows | Each card is one actual atomic exchange. Check UUID full-record identity/property/unit and actual background/provider scope; missing heat/effluent identity or any necessary additional exchange remains an explicit gap. A valid UUID does not validate quantity, occurrence or treatment. | |\n| validate_emissions | releases and wastes | Distinguish captured material, external treatment transfers and actual elementary releases; retain species, phase, compartment, controls and detection bounds. Avoid particle/VOC or wastewater double counting; unmeasured release is not zero. | `epa-wet-fibreboard-2002` |\n| validate_completion | study | Report performed/skipped checks, findings and unresolved coverage. Do not claim a complete linked study, finished-product comparison, independent scientific approval or publication from a method/check result alone. | |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 308
+              line: 10
+              column: 1
+            end:
+              offset: 378
+              line: 10
+              column: 71
+          text: "# Wet-process untrimmed wood softboard at drying and conditioning gate"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 60905
+              line: 545
+              column: 1
+            end:
+              offset: 60927
+              line: 545
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_stages"
+      identity_kind: "explicit"
+      unit_id: "normative_7471"
+      source_span:
+        start:
+          offset: 8634
+          line: 79
+          column: 1
+        end:
+          offset: 9039
+          line: 79
+          column: 406
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_handoff"
+      identity_kind: "explicit"
+      unit_id: "normative_7471"
+      source_span:
+        start:
+          offset: 9040
+          line: 80
+          column: 1
+        end:
+          offset: 9450
+          line: 80
+          column: 411
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_7471"
+      source_span:
+        start:
+          offset: 9451
+          line: 81
+          column: 1
+        end:
+          offset: 9927
+          line: 81
+          column: 477
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_providers"
+      identity_kind: "explicit"
+      unit_id: "normative_7471"
+      source_span:
+        start:
+          offset: 9928
+          line: 82
+          column: 1
+        end:
+          offset: 10270
+          line: 82
+          column: 343
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "system_boundary_rule_5"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_7471"
+      source_span:
+        start:
+          offset: 10272
+          line: 84
+          column: 1
+        end:
+          offset: 10806
+          line: 84
+          column: 535
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_46521"
+      source_span:
+        start:
+          offset: 46634
+          line: 502
+          column: 1
+        end:
+          offset: 47303
+          line: 502
+          column: 670
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_46521"
+      source_span:
+        start:
+          offset: 47304
+          line: 503
+          column: 1
+        end:
+          offset: 47958
+          line: 503
+          column: 655
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_sources"
+      identity_kind: "explicit"
+      unit_id: "normative_46521"
+      source_span:
+        start:
+          offset: 47959
+          line: 504
+          column: 1
+        end:
+          offset: 48320
+          line: 504
+          column: 362
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_46521"
+      source_span:
+        start:
+          offset: 48321
+          line: 505
+          column: 1
+        end:
+          offset: 49132
+          line: 505
+          column: 812
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_rule_5"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_46521"
+      source_span:
+        start:
+          offset: 49134
+          line: 507
+          column: 1
+        end:
+          offset: 49768
+          line: 507
+          column: 635
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_60905"
+      source_span:
+        start:
+          offset: 61000
+          line: 549
+          column: 1
+        end:
+          offset: 61367
+          line: 549
+          column: 368
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_basis"
+      identity_kind: "explicit"
+      unit_id: "normative_60905"
+      source_span:
+        start:
+          offset: 61368
+          line: 550
+          column: 1
+        end:
+          offset: 61670
+          line: 550
+          column: 303
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_flows"
+      identity_kind: "explicit"
+      unit_id: "normative_60905"
+      source_span:
+        start:
+          offset: 61671
+          line: 551
+          column: 1
+        end:
+          offset: 61988
+          line: 551
+          column: 318
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_60905"
+      source_span:
+        start:
+          offset: 61989
+          line: 552
+          column: 1
+        end:
+          offset: 62304
+          line: 552
+          column: 316
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_60905"
+      source_span:
+        start:
+          offset: 62305
+          line: 553
+          column: 1
+        end:
+          offset: 62555
+          line: 553
+          column: 251
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7471"
+      source_span:
+        start:
+          offset: 7471
+          line: 64
+          column: 1
+        end:
+          offset: 7492
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7471"
+      source_span:
+        start:
+          offset: 7520
+          line: 68
+          column: 1
+        end:
+          offset: 8561
+          line: 75
+          column: 201
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_46521"
+      source_span:
+        start:
+          offset: 46521
+          line: 498
+          column: 1
+        end:
+          offset: 46561
+          line: 498
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_60905"
+      source_span:
+        start:
+          offset: 60905
+          line: 545
+          column: 1
+        end:
+          offset: 60927
+          line: 545
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d14cb1b95a4efb100407860150412ab87fb1bff6ece18d8a0510c5de7f508e00"
+  generated_content_sha256: "sha256:b0861caa667fe18134b9062a209310f69dff2c322902acd733ae66606922809a"
