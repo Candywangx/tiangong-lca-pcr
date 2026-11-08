@@ -1,0 +1,1024 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.antioxidant-inhibited-mineral-transformer-oil"
+  classification_refs: "CPC 3.0 33390; narrower product and route boundary"
+  covered_products: "New DBPC-inhibited petroleum mineral transformer oil, blended from actual fully refined hydrotreated naphthenic base and whole inhibitor concentrate, then conditioned and released"
+  excluded_products: "The distinct material, principal-function, recycling and downstream routes in section1; no entire residual-oil leaf coverage"
+  representative_product: "Whole liquid inhibited mineral transformer oil with actual contract, blend ticket and batch electrical/chemical acceptance"
+  production_route: "Purchased fully refined oil and DBPC concentrate → metering/blending → actual filtration/vacuum conditioning → release, packaging/storage and factory dispatch preparation"
+  market_state: "New bulk or packaged liquid whole oil, at plant; not an oil constituent, emissions surrogate, or provider screening inventory"
+functional_unit:
+  what: "Supply complete new inhibited mineral transformer insulating oil at the declared factory acceptance gate"
+  how_much: "1 kg reference flow of accepted whole liquid oil, excluding detachable packaging"
+  how_well: "Meet actual transformer-oil contract and standard/edition, inhibited state, composition, moisture/particle cleanliness, dielectric, oxidation and sulfur/contamination release requirements"
+  how_long_or_cycle: "One actual complete production period with uniquely identified first-acceptance cohorts; no assigned transformer service life"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete_unit
+      applies_to: "oil_supply"
+      rule: "Include metering/blending, actual heating/vacuum/filtration, storage, all repeated passes, testing, rejected runs, cleaning, packaging and dispatch preparation. Record receipt, blending, conditioning and supply as separate tagged stages inside this integrated unit. Source machine performance is not a mandatory operating recipe."
+      source_ids:
+        - enervac-e865a
+        - ergon-bht-concentrate
+    - rule_id: boundary_first_acceptance
+      applies_to: "reference_product"
+      rule: "For positive Q, count uniquely newly accepted oil dispatched in this period plus newly accepted oil remaining in closing FG once. Opening already accepted FG, old returns, redelivery, internal transfers, repeated tests and conditioning throughput do not create Q. WIP/unaccepted oil is not closing accepted FG. Attribute post-acceptance losses and services to their original cohort, without re-acceptance or a second output."
+      source_ids: []
+    - rule_id: boundary_stock_vectors
+      applies_to: "oil_supply"
+      rule: "Maintain raw/WIP/FG masses and exchange-level inherited burden vectors separately at opening and closing; transfers move both. Withdrawals of opening stock bring their recorded inherited burdens; closing stocks retain appropriate upstream and current-stage burdens. Old-cohort storage/retest/return services belong to the original accepted cohort and its original accepted mass. Unknown inherited vectors or cohort denominator remain unknown."
+      source_ids: []
+    - rule_id: boundary_no_downstream
+      applies_to: "oil_supply"
+      rule: "Upstream refining and input transport remain linked backgrounds. Transformer manufacture, onsite filling, service oxidation/reinhibition and final disposal require distinct downstream models; no default longer-life credit is granted."
+      source_ids:
+        - iec-mineral-insulating-2020
+boundary_abstraction:
+  declared_starting_condition: "Purchased fully hydrotreated naphthenic oil and whole DBPC mineral-oil concentrate at receipt; actual opening raw/WIP/FG stock, packaging and carried burden vectors"
+  starting_condition_role: "Foreground blending and conditioning boundary, not a zero-burden upstream cutoff"
+  product_classification_scope: "Narrow new inhibited petroleum transformer-oil category, independently assessed against current CPC3.0 residual exclusions"
+  recursive_input_rule: "Internal oil recirculation is a stage transfer, not a fresh input or first acceptance. Purchased same-category oil and external returns need origin/state and inherited-burden evidence; used/recycled oil is outside this route"
+  upstream_dataset_requirement: "Match each whole base oil/concentrate/utility to actual production route, gate, year, geography and amount basis; refining burdens and justified refinery coproduct allocation remain upstream"
+  disclosure: "Report receipt-to-factory-gate stages, acceptance Q, dispatch/FG bridge, physical and burden stocks, recirculation, returns, test/conditioning losses, source and provider limits"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Insulation oil"
+    uuid: "53bd72ac-2f0a-4d18-aa9f-158c82b3578f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual site and reporting period"
+    - "new virgin-petroleum origin and whole recipe/mineral-oil share"
+    - "hydrotreated naphthenic base and actual upstream gate"
+    - "DBPC concentrate SKU"
+    - carrier
+    - "assay and dose"
+    - "inhibited transformer grade with contract standard/edition and release tests"
+    - "actual blending/conditioning sequence and number of passes"
+    - "net mass and temperature/density when volume is used"
+    - "factory gate and packaging/storage boundary"
+    - "unique first-acceptance Q and dispatched/closing-FG split"
+    - "raw/WIP/FG physical stocks and inherited burden vectors by cohort"
+    - "external returns/retests/old-cohort service links"
+    - "broad native identity and33380 metadata debt"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference is 1 kg accepted whole liquid oil excluding detachable packaging. cp_acceptance measures net mass; volume requires measured batch density at matching temperature, not the example SDS density."
+  - id: same_reference_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Row-specific physical quantity or energy"
+      uuid: ""
+    required_unit: "per 1 kg reference flow"
+    rule: "Record raw amounts under the linked protocol, attribute their complete burden vectors to the relevant cohort, then divide once by its accepted mass. All cards and protocols declare this same basis."
+  - id: whole_preparation
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass with separate constituent subledger"
+      uuid: ""
+    required_unit: "kg"
+    rule: "A purchased concentrate is one whole exchange. Its contained BHT and carrier-oil masses describe composition only and are not additional purchased inputs. Keep actual assay, batch variation and residual inhibitor in losses."
+process_map:
+  - id: oil_supply
+    name: "Inhibited mineral-oil blending, conditioning and factory supply"
+    inclusion: "required"
+    inclusion_condition: "Actual new mineral transformer-oil route in section1"
+    role: "Integrated foreground with receipt, blend, condition/test and factory-supply stage tags"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: oil_supply
+    label: "Inhibited mineral-oil blending, conditioning and factory supply"
+    inputs:
+      product:
+        - row_id: hydrotreated_base
+          role: "Hydrotreated naphthenic mineral base oil"
+          name: "Hydrotreated naphthenic mineral base oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Required actual fully refined petroleum base; preserve supplier blend/composition, oil state, receipt gate, stocks and upstream refining burden. Add separate rows for additional actual base grades."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_material, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ergon-hyvolt-iii-2021
+            ranges: []
+        - row_id: inhibitor_concentrate
+          role: "DBPC concentrate in mineral transformer oil"
+          name: "DBPC concentrate in mineral transformer oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Required whole commercial inhibitor preparation. Measure supplied mass and actual inhibitor/carrier assay; do not adopt the source nominal concentrate strength or count contained carrier oil twice."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_material, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ergon-bht-concentrate
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Measure all pumping, mixing, electrical heating, vacuum, filtration, test equipment, storage and dispatch loads; reconcile shared meters and standby/failure energy."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_utility, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - enervac-e865a
+            ranges: []
+        - row_id: nitrogen_blanket
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual dry inert blanketing. Retain total supply, pressure/temperature, purity, venting and stocks; volume conversion requires the same gas-state basis."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_utility, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_filter
+          role: "Polypropylene oil-filter cartridge"
+          name: "Polypropylene oil-filter cartridge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual polypropylene cartridge; record actual material and dry new cartridge mass separately from retained oil and water in spent filter. A different medium requires its own atomic row."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_material, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - enervac-e865a
+            ranges: []
+        - row_id: steel_drum
+          role: "Carbon-steel oil drum"
+          name: "Carbon-steel oil drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual drum supply. Separate tare, reuse cycles, return stocks and cleaning; no generic container lifetime. Bulk supply needs its actual logistics inventory."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_packaging, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: hdpe_closure
+          role: "High-density polyethylene drum closure"
+          name: "High-density polyethylene drum closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual closure, separately weighed and linked to its drum cohort. Do not combine with steel drum mass or assume every package uses HDPE."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_packaging, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: wash_water
+          role: "Equipment washing water"
+          name: "Equipment washing water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional measured equipment cleaning water, segregated from oil conditioning and retained moisture. If the actual route uses another cleaning agent, add its own row and discharge."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_utility, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+        - row_id: vacuum_pump_oil
+          role: "Mineral vacuum-pump lubricating oil"
+          name: "Mineral vacuum-pump lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual oil-sealed vacuum pump; record charges, additions, drains and stocks. Dry pumps require evidence of absence and their actual maintenance inputs."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_material, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Insulation oil"
+          name: "Insulation oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "53bd72ac-2f0a-4d18-aa9f-158c82b3578f"
+          property_unit: "Mass / kg"
+          description: "Whole new inhibited petroleum mineral transformer oil after actual blend, conditioning, batch acceptance and included factory-supply operations. Retain full native at-plant/electrical-route context and the broader-comment/classification limitations in section3."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - ergon-hyvolt-iii-2021
+            ranges: []
+      waste:
+        - row_id: oil_water_residue
+          role: "Oil-contaminated aqueous condensate"
+          name: "Oil-contaminated aqueous condensate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual separated water/condensate transferred to treatment; measure retained oil, dissolved species and receiver. It is not a direct water emission or a pure-water credit."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_residue, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - enervac-e865a
+            ranges: []
+        - row_id: spent_filter
+          role: "Oil-contaminated polypropylene filter cartridge"
+          name: "Oil-contaminated polypropylene filter cartridge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual spent cartridge transferred to treatment with whole as-transferred mass, oil/water/solids subledger and receiver; do not count retained oil again as another external waste."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_residue, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - enervac-e865a
+            ranges: []
+        - row_id: rejected_oil
+          role: "Rejected mineral transformer oil"
+          name: "Rejected mineral transformer oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual off-spec oil leaving the boundary for treatment or verified external recovery. Internal rework stays an internal transfer. Receiver evidence decides waste or separately declared coproduct status."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_residue, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids: []
+            ranges: []
+        - row_id: pump_waste_oil
+          role: "Spent mineral vacuum-pump oil"
+          name: "Spent mineral vacuum-pump oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional drained pump oil; separate from rejected product, record actual composition, contamination, mass and treatment/recovery receiver."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_residue, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: vented_water
+          role: "Water vapour to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual uncondensed removed water released to air after controls; do not repeat the condensed aqueous waste quantity. Declare air compartment and sampling/balance evidence."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_emission, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - enervac-e865a
+            ranges: []
+        - row_id: vented_nitrogen
+          role: "Nitrogen to air"
+          name: "Nitrogen to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual nitrogen released after blanketing/vacuum; reconcile fresh supply, dissolved gas, vents and stock. A carrier gas is not an invented VOC quantity."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_emission, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: oil_mist
+          role: "Mineral oil aerosol to air"
+          name: "Mineral oil aerosol to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual released oil aerosol after controls; retain measured particle size and air compartment. Add each actually present volatile hydrocarbon separately; a total organic-carbon signal is not one identified species."
+          amount:
+            expression: "Record the actual raw quantity attributable to its cohort under cp_emission, then normalize once to per 1 kg reference flow; old-cohort services use their original cohort denominator separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_trace_first
+    applies_to: "oil_supply"
+    rule: "Subdivide batches/stages and meter or trace recipe/utility inputs first. Shared blending/vacuum loads use evidenced causal drivers, such as actual measured batch energy and pass time. If a residual common burden needs allocation among genuinely different oil grades, document the physical relationship, its measured shares and sensitivity before use; no universal mass, price or yield coefficient is prescribed."
+    source_ids: []
+  - rule_id: allocation_physical_separate
+    applies_to: "oil_supply"
+    rule: "Close unallocated physical mass, water, oil/inhibitor constituents and energy before any environmental-burden allocation. Burden shares sum to one for the eligible outputs but do not scale away physical waste or coproduct mass. Ordinary blending has no invented chemical-reaction yield or reaction sink."
+    source_ids: []
+  - rule_id: allocation_recovery
+    applies_to: "rejected_oil"
+    rule: "Waste remains a waste-service interface until actual receiver evidence establishes an independently marketable coproduct. Record recovery quantity, composition, destination and treatment inputs; grant no automatic displacement credit, zero-burden recycled oil or negative treatment amount. Internal recovered oil carries its original burdens and actual extra processing."
+    source_ids: []
+  - rule_id: allocation_stock_cohorts
+    applies_to: "oil_supply"
+    rule: "Carry each opening/closing raw/WIP/FG stock's exchange-level burden vector with its physical cohort. Allocate failure/rework, stock losses and actual acceptance-stage service to the relevant accepted cohorts using disclosed evidence. Old-cohort services augment their original cohort vector and use its original accepted mass; they do not inflate current Q or pass into the current new cohort by convenience."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material
+      process_id: "oil_supply"
+      flow_role: "base_concentrate_filter_pump"
+      record_type: "batch_and_stock"
+      raw_fields: "whole supplied SKU/composition/CAS; supplier gate; concentrate assay/carrier; receipts; opening/closing raw stocks and burden vectors; weighed consumption; transfer/return; filter/pump charges and residual oil"
+      collection_method: "Calibrated net weighing or actual matched-temperature density/volume records, supplier certificates and stage/cohort stock reconciliation; no SDS-band recipe reconstruction"
+      unit: "kg"
+      frequency: "Each receipt/batch/change and stock close"
+      temporal_coverage: "Actual complete reporting period including failed and zero-output runs"
+      site_scope: "Receipt/blend/condition stages and input supply interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrations, actual recipe, stock vectors, supplier data and mass/assay closure"
+    - protocol_id: cp_utility
+      process_id: "oil_supply"
+      flow_role: "energy_nitrogen_water"
+      record_type: "meters_and_state"
+      raw_fields: "electricity by stage/pass/standby; nitrogen mass/purity/T/P and provider basis; water receipt/cleaning; shared meter and burden allocation driver"
+      collection_method: "Submeters and calibrated flow/mass records; reconcile electrical heating/pumping/vacuum and shared loads; measured gas-state/density conversions"
+      unit: "kWh; kg"
+      frequency: "Continuous or each batch/pass and stock close"
+      temporal_coverage: "Same actual period with starts/stops, cleaning and failures"
+      site_scope: "Actual integrated oil-supply unit and utility providers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter/phase records, quantity-basis compatibility and energy/water/gas balances"
+    - protocol_id: cp_packaging
+      process_id: "oil_supply"
+      flow_role: "drum_closure"
+      record_type: "supplier_and_stock"
+      raw_fields: "each package component; tare; receipts/returns; reusable-unit id; actual service cycles/cleaning; opening/closing stocks and burden vectors"
+      collection_method: "Weigh components separately; reconcile returnable packaging by actual cohort/cycles without default lifetime"
+      unit: "kg"
+      frequency: "Each packaging operation and period close"
+      temporal_coverage: "Same reporting period with prior-cohort carry retained"
+      site_scope: "Actual packaging/storage/dispatch stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Weighing, reuse/return receipts and actual stock/burden carry"
+    - protocol_id: cp_acceptance
+      process_id: "oil_supply"
+      flow_role: "accepted_oil_and_stock"
+      record_type: "cohort_release_ledger"
+      raw_fields: "new cohort id; recipe/assays; contract/standard edition; lab release; net whole mass; temperature/density if volume; first acceptance time; new dispatch and closing FG; opening FG; WIP; returns/retests/redelivery; physical/burden vectors"
+      collection_method: "Calibrated net tank/dispatch weighing or matched-temperature volumetry; reconcile unique batch acceptance to physical raw/WIP/FG and paired transfer records"
+      unit: "kg"
+      frequency: "Each acceptance, dispatch, return, retest and period stock close"
+      temporal_coverage: "Same actual complete period plus original-cohort histories"
+      site_scope: "Complete blend/condition/release and included factory-supply operations"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Actual certificates, calibration, first-acceptance bridge, unique cohort links and inherited vectors"
+    - protocol_id: cp_residue
+      process_id: "oil_supply"
+      flow_role: "external_waste_and_recovery"
+      record_type: "weighing_and_receiver"
+      raw_fields: "each whole residue mass/composition/oil/water/solids; filter tare/retained oil; rejected product; pump drain; stock; receiver and treatment/recovery status"
+      collection_method: "Weigh whole transfers and sample composition; reconcile treatment/recovery receipts and distinguish internal recirculation from external waste"
+      unit: "kg"
+      frequency: "Each waste/recovery transfer and stock close"
+      temporal_coverage: "Same actual reporting period with cohort attribution"
+      site_scope: "Actual separation/cleaning and external receivers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Weighing, assays, receiver evidence and no duplicate retained-oil count"
+    - protocol_id: cp_emission
+      process_id: "oil_supply"
+      flow_role: "final_elementary_releases"
+      record_type: "monitoring_and_balance"
+      raw_fields: "actual water/nitrogen/oil-aerosol/each VOC species; medium/subcompartment; particle size; concentration/flow T/P/wet-dry basis; sampling duration; dissolved gas; capture/condensate; uncertainty"
+      collection_method: "Paired concentration/flow monitoring integrated over actual operating periods, or independently checked oil/water/gas constituent balances; retain unknowns and detection limits"
+      unit: "kg"
+      frequency: "Actual monitoring program and each material operating change"
+      temporal_coverage: "Same actual period including startup, vacuum passes and upsets"
+      site_scope: "Actual vacuum exhaust, tanks, blending and control devices"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Species/size evidence, matched bases, control efficiency records and balanced final releases"
+  calculation_rules:
+    - id: accepted_once
+      applies_to: "reference_product"
+      rule: "Q = D_new + F_new_close, where D_new is uniquely first-accepted oil dispatched and F_new_close is uniquely first-accepted oil held in closing accepted FG in this period; sets must be disjoint. Opening accepted FG, returned/retested/redelivered old oil and unaccepted WIP are excluded. Keep original accepted masses for older cohorts."
+      inputs:
+        - cp_acceptance
+      output: "Positive new accepted mass Q and separate older-cohort denominators"
+      source_ids: []
+    - id: normalize_once
+      applies_to: "all inventory rows"
+      rule: "For each physical exchange direction i attributable to eligible accepted cohort c, report a_i,c = A_i,c / Q_c once, using the actual unallocated physical numerator A_i,c and that cohort's original accepted mass Q_c. Separately report its attributed environmental-burden vector B_c / Q_c, including inherited and genuine new service burdens. Neither vector allocation nor stock service attribution reduces actual physical movements. Do not add raw receipts to already stock-corrected consumption, or count both carried and newly purchased burden for the same oil. Do not divide physical coproducts by allocation shares. For Q_c = 0 or an unknown Q_c, retain raw numerators, stocks, vectors and unresolved attribution; do not divide, assume zero, discard failed runs or invent Q."
+      inputs:
+        - cp_material
+        - cp_utility
+        - cp_packaging
+        - cp_acceptance
+        - cp_residue
+        - cp_emission
+      output: "Exchanges per 1 kg reference flow by accepted cohort; explicit unresolved zero-output periods"
+      source_ids: []
+    - id: stock_and_physical
+      applies_to: "oil_supply"
+      rule: "For each stage and the aggregate boundary, opening mass + actual receipts/transfers in = actual transfers/dispatch out + final wastes/emissions + closing mass, with internal links cancelled only at aggregation. Reconcile oil, BHT, carrier oil, water and nitrogen subaccounts and energy separately. Blending/dehydration separates constituents without an invented reaction term. For inherited burden vectors use opening vector + attributable additions = vectors transferred out + closing vector, with actual loss/service attribution documented; a physical closure does not establish an unknown burden vector."
+      inputs:
+        - cp_material
+        - cp_utility
+        - cp_packaging
+        - cp_acceptance
+        - cp_residue
+        - cp_emission
+      output: "Physical and burden ledgers with explained residuals"
+      source_ids: []
+    - id: preparation_constituents
+      applies_to: "inhibitor_concentrate"
+      rule: "Contained BHT = measured whole concentrate mass multiplied by actual BHT mass fraction; carrier oil and other constituents use their actual measured fractions. Fractions sum to the whole preparation; these are composition subaccounts, not duplicate background purchases. Include inhibitor retained in product, WIP, removed residues and aerosol."
+      inputs:
+        - cp_material
+        - cp_acceptance
+        - cp_residue
+        - cp_emission
+      output: "Whole-preparation and constituent reconciliation"
+      source_ids:
+        - ergon-bht-concentrate
+        - ergon-hyvolt-sds-2024
+    - id: emission_integrate
+      applies_to: "oil_mist, vented_water, vented_nitrogen"
+      rule: "Integrate matching species concentrations and exhaust flows over real time on the same T/P and wet/dry basis; distinguish captured condensate/retained filter oil from final air release. Dissolved air/nitrogen and residual water are real physical inputs/outputs even where non-characterised bulk air is omitted from impact modelling. Total organic carbon needs actual speciation or explicit unresolved status, not an invented hydrocarbon identity."
+      inputs:
+        - cp_emission
+        - cp_residue
+        - cp_utility
+      output: "Final emitted species and control-device transfers without duplication"
+      source_ids:
+        - enervac-e865a
+    - id: acceptance_event_bridge
+      applies_to: "all inventory rows"
+      rule: "Lock Q to unique independently measured first-acceptance events. Use the two-term dispatch/closing-stock bridge only when L_new is zero; otherwise reconcile disjoint D_new, F_new_close and actual post-acceptance net exits L_new on the original acceptance basis. Retain original event Q for later losses/services and prevent internal/return/rework throughput duplication. Do not add Q as an extra external output. Unresolved event/stock evidence blocks complete normalization."
+      inputs:
+        - "original acceptance events"
+        - "net parcel-state bridge"
+        - "original cohort quantities"
+      output: "auditable positive event Q and separate physical stock bridge"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference_product"
+      requirement: "Verify whole mineral inhibited oil, actual at-plant gate and electrical principal function; preserve broad native descriptions and contrary33380 metadata rather than silently treating the tag as proof or rejection."
+      evidence: "Actual native original, product/contract evidence and independent classification decision"
+    - id: dq_recipe
+      applies_to: "oil_supply"
+      requirement: "Record actual whole recipe and supplier assays; hazard disclosure bands and source nominal concentrate strengths are not batch composition, universal recipes or production ranges."
+      evidence: "Blend tickets, full composition certification and release assays"
+    - id: dq_cohorts
+      applies_to: "oil_supply"
+      requirement: "Reconcile first acceptance with disjoint new dispatch/closing FG; maintain raw/WIP/FG mass and burden histories; no stock drawdown, retest or return may mint new output."
+      evidence: "Cohort ledgers, paired transfers and inherited vectors"
+    - id: dq_coverage
+      applies_to: "oil_supply"
+      requirement: "Disclose monitoring period, loads, failed batches, missing species/provider bases, unknown opening vectors, zero-output work and measurement uncertainty. An unresolved quantity or identity is not a zero exchange."
+      evidence: "Actual records and explicit gap register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference_product"
+    rule: "Require one whole finished mineral-oil reference with net mass, real full Product/Mass/kg chain and declared route/gate; reject ingredient, emission, provider inventory, hard opposing family or unverified whole identity."
+    source_ids: []
+  - rule_id: validate_applicability
+    applies_to: "oil_supply"
+    rule: "Verify new petroleum origin, actual inhibited transformer function, full recipe/mineral share and agreed release standard/edition. A generic name or native33380 tag cannot settle current33390; retain actual physical/specification and principal-function evidence for independent decision."
+    source_ids:
+      - un-cpc3-2025
+      - iec-mineral-insulating-2020
+      - ergon-hyvolt-iii-2021
+  - rule_id: validate_ledger
+    applies_to: "oil_supply"
+    rule: "Check unique first acceptance, finite common denominator, original-cohort service attribution, physical and inherited-burden stocks, complete atomic exchanges, whole concentrate accounting, no double-normalization and explicit Q0 handling. Unsupported inherited burden is unresolved even when physical mass closes."
+    source_ids: []
+  - rule_id: validate_interfaces
+    applies_to: "oil_supply"
+    rule: "Check stage links, actual conditioning passes, water/gas/oil constituent closure, receiver/compartment and provider quantity basis. Reject duplicate retained oil, whole concentrate plus its carrier purchase, arbitrary credits or unmeasured-zero releases."
+    source_ids:
+      - enervac-e865a
+      - ergon-bht-concentrate
+published_dataset_profile:
+  dataset_role: "Foreground new inhibited mineral transformer-oil blending and conditioning dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared petroleum mineral/DBPC route and factory gate, with actual qualified inputs, release and cohort/stock data"
+  excluded_use: "Entire33390; upstream refinery production represented by this foreground alone; uninhibited/recycled/ester/silicone/GTL oils; transformer lifetime benefits or downstream services"
+  required_metadata: "Reference qualifiers, route, contract/grade/standard edition, full recipe, Q bridge, stock/vector histories, actual provider and treatment/emission interfaces"
+  required_quality_disclosure: "Broad native scope and33380 debt, classification acceptance status, missing native auxiliary identities, source/specification/quantity limits and zero-output/stock burdens"
+  update_trigger: "Feed/concentrate/assay/route/conditioning or grade change; standard/contract changes; new identity/classification evidence; material stock/provider/monitoring changes"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version3.0 Explanatory Notes,30June2025,pp154–156,333 and3331–3339. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Current principal-use lubricant definition and residual-oil exclusions; independently assessed classification, not production quantities"
+  - id: "iec-mineral-insulating-2020"
+    type: "standard"
+    reference: "IEC60296:2020,edition5,publisher scope/description,26June2020. https://webstore.iec.ch/en/publication/61025"
+    used_for: "Unused versus recycled mineral insulating-oil scope, delivered state, insulation/heat transfer and cable/capacitor exclusion; publisher abstract only, not complete numerical standard"
+  - id: "ergon-hyvolt-iii-2021"
+    type: "handbook"
+    reference: "Ergon,HyVolt III Electrical Insulating Oil Marketing Specification,15March2021,one-page complete table/notes. https://ergonspecialtyoils.com/files/naphthenic/HyVolt%20III_English.pdf"
+    used_for: "Real inhibited hydrotreated naphthenic oil and relevant contract test types; example grade specifications/typicals are not universal release or inventory values"
+  - id: "ergon-hyvolt-sds-2024"
+    type: "handbook"
+    reference: "Ergon,HyVolt III SDS US,version21,revised26July2024,sections1,3,9. https://msds.ergon.com/files/ergon-lubes-naphthenics/2024-07-26%20SDS%20US%20-%20HYVOLT%20III.pdf"
+    used_for: "Real transformer-oil hydrocarbon/BHT mixture and physical state; hazard-reporting bands and initial boiling point are not full recipe or distillation curve"
+  - id: "ergon-bht-concentrate"
+    type: "handbook"
+    reference: "Ergon,Inhibitor Concentrate for Transformer Oils,HyVolt BHT brochure,whole-preparation specification and context,dated publisher snapshot6November2026. https://ergonspecialtyoils.com/hyvoltbht/HyVoltBHT_Brochure.pdf"
+    used_for: "Commercial DBPC/mineral-oil concentrate identity and constituent accounting; no default dose, maintenance interval or lifetime credit"
+  - id: "enervac-e865a"
+    type: "handbook"
+    reference: "ENERVAC,Transformer Oil Purifier/Degasification E865A,process description and performance qualifications,publisher snapshot6November2026. https://www.enervac.com/transformer-oil-purifier-e865a"
+    used_for: "Actual vacuum dehydration/degassing/filtration technology and water/gas/particle interfaces; no mandatory site process, pass count, efficiency or energy factor"
+  - id: "un-cpc2-insulating-counterevidence"
+    type: "official_guidance"
+    reference: "UNSD,CPC Version2 classification detail33380,Explanatory note and correspondence. https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1073/33380"
+    used_for: "Historical broader33380 explicitly included insulating oils; counterevidence only, the listed one-to-many CPC2-to-2.1 correspondence does not establish adoption into currentCPC3.0"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:ad89f97cb3eb64a83982be001d15413097fc2315c7fd4b948b6c0f0746153ac3"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8529"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8529
+          line: 63
+          column: 1
+        end:
+          offset: 11515
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased fully hydrotreated naphthenic oil and whole DBPC mineral-oil concentrate at receipt; actual opening raw/WIP/FG stock, packaging and carried burden vectors |\n| starting_condition_role | Foreground blending and conditioning boundary, not a zero-burden upstream cutoff |\n| product_classification_scope | Narrow new inhibited petroleum transformer-oil category, independently assessed against current CPC3.0 residual exclusions |\n| recursive_input_rule | Internal oil recirculation is a stage transfer, not a fresh input or first acceptance. Purchased same-category oil and external returns need origin/state and inherited-burden evidence; used/recycled oil is outside this route |\n| upstream_dataset_requirement | Match each whole base oil/concentrate/utility to actual production route, gate, year, geography and amount basis; refining burdens and justified refinery coproduct allocation remain upstream |\n| disclosure | Report receipt-to-factory-gate stages, acceptance Q, dispatch/FG bridge, physical and burden stocks, recirculation, returns, test/conditioning losses, source and provider limits |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete_unit | oil_supply | Include metering/blending, actual heating/vacuum/filtration, storage, all repeated passes, testing, rejected runs, cleaning, packaging and dispatch preparation. Record receipt, blending, conditioning and supply as separate tagged stages inside this integrated unit. Source machine performance is not a mandatory operating recipe. | `enervac-e865a`; `ergon-bht-concentrate` |\n| boundary_first_acceptance | reference_product | For positive Q, count uniquely newly accepted oil dispatched in this period plus newly accepted oil remaining in closing FG once. Opening already accepted FG, old returns, redelivery, internal transfers, repeated tests and conditioning throughput do not create Q. WIP/unaccepted oil is not closing accepted FG. Attribute post-acceptance losses and services to their original cohort, without re-acceptance or a second output. |  |\n| boundary_stock_vectors | oil_supply | Maintain raw/WIP/FG masses and exchange-level inherited burden vectors separately at opening and closing; transfers move both. Withdrawals of opening stock bring their recorded inherited burdens; closing stocks retain appropriate upstream and current-stage burdens. Old-cohort storage/retest/return services belong to the original accepted cohort and its original accepted mass. Unknown inherited vectors or cohort denominator remain unknown. |  |\n| boundary_no_downstream | oil_supply | Upstream refining and input transport remain linked backgrounds. Transformer manufacture, onsite filling, service oxidation/reinhibition and final disposal require distinct downstream models; no default longer-life credit is granted. | `iec-mineral-insulating-2020` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 372
+              line: 10
+              column: 48
+          text: "# Antioxidant-inhibited mineral transformer oil"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8529
+              line: 63
+              column: 1
+            end:
+              offset: 8550
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_25837"
+      family: "allocation"
+      span:
+        start:
+          offset: 25837
+          line: 370
+          column: 1
+        end:
+          offset: 27634
+          line: 379
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_trace_first | oil_supply | Subdivide batches/stages and meter or trace recipe/utility inputs first. Shared blending/vacuum loads use evidenced causal drivers, such as actual measured batch energy and pass time. If a residual common burden needs allocation among genuinely different oil grades, document the physical relationship, its measured shares and sensitivity before use; no universal mass, price or yield coefficient is prescribed. |  |\n| allocation_physical_separate | oil_supply | Close unallocated physical mass, water, oil/inhibitor constituents and energy before any environmental-burden allocation. Burden shares sum to one for the eligible outputs but do not scale away physical waste or coproduct mass. Ordinary blending has no invented chemical-reaction yield or reaction sink. |  |\n| allocation_recovery | rejected_oil | Waste remains a waste-service interface until actual receiver evidence establishes an independently marketable coproduct. Record recovery quantity, composition, destination and treatment inputs; grant no automatic displacement credit, zero-burden recycled oil or negative treatment amount. Internal recovered oil carries its original burdens and actual extra processing. |  |\n| allocation_stock_cohorts | oil_supply | Carry each opening/closing raw/WIP/FG stock's exchange-level burden vector with its physical cohort. Allocate failure/rework, stock losses and actual acceptance-stage service to the relevant accepted cohorts using disclosed evidence. Old-cohort services augment their original cohort vector and use its original accepted mass; they do not inflate current Q or pass into the current new cohort by convenience. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 372
+              line: 10
+              column: 48
+          text: "# Antioxidant-inhibited mineral transformer oil"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 25837
+              line: 370
+              column: 1
+            end:
+              offset: 25877
+              line: 370
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_39966"
+      family: "validation"
+      span:
+        start:
+          offset: 39966
+          line: 418
+          column: 1
+        end:
+          offset: 41424
+          line: 427
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference_product | Require one whole finished mineral-oil reference with net mass, real full Product/Mass/kg chain and declared route/gate; reject ingredient, emission, provider inventory, hard opposing family or unverified whole identity. |  |\n| validate_applicability | oil_supply | Verify new petroleum origin, actual inhibited transformer function, full recipe/mineral share and agreed release standard/edition. A generic name or native33380 tag cannot settle current33390; retain actual physical/specification and principal-function evidence for independent decision. | `un-cpc3-2025`; `iec-mineral-insulating-2020`; `ergon-hyvolt-iii-2021` |\n| validate_ledger | oil_supply | Check unique first acceptance, finite common denominator, original-cohort service attribution, physical and inherited-burden stocks, complete atomic exchanges, whole concentrate accounting, no double-normalization and explicit Q0 handling. Unsupported inherited burden is unresolved even when physical mass closes. |  |\n| validate_interfaces | oil_supply | Check stage links, actual conditioning passes, water/gas/oil constituent closure, receiver/compartment and provider quantity basis. Reject duplicate retained oil, whole concentrate plus its carrier purchase, arbitrary credits or unmeasured-zero releases. | `enervac-e865a`; `ergon-bht-concentrate` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 372
+              line: 10
+              column: 48
+          text: "# Antioxidant-inhibited mineral transformer oil"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 39966
+              line: 418
+              column: 1
+            end:
+              offset: 39988
+              line: 418
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete_unit"
+      identity_kind: "explicit"
+      unit_id: "normative_8529"
+      source_span:
+        start:
+          offset: 9823
+          line: 78
+          column: 1
+        end:
+          offset: 10237
+          line: 78
+          column: 415
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_first_acceptance"
+      identity_kind: "explicit"
+      unit_id: "normative_8529"
+      source_span:
+        start:
+          offset: 10238
+          line: 79
+          column: 1
+        end:
+          offset: 10717
+          line: 79
+          column: 480
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_stock_vectors"
+      identity_kind: "explicit"
+      unit_id: "normative_8529"
+      source_span:
+        start:
+          offset: 10718
+          line: 80
+          column: 1
+        end:
+          offset: 11205
+          line: 80
+          column: 488
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_no_downstream"
+      identity_kind: "explicit"
+      unit_id: "normative_8529"
+      source_span:
+        start:
+          offset: 11206
+          line: 81
+          column: 1
+        end:
+          offset: 11513
+          line: 81
+          column: 308
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_trace_first"
+      identity_kind: "explicit"
+      unit_id: "normative_25837"
+      source_span:
+        start:
+          offset: 25950
+          line: 374
+          column: 1
+        end:
+          offset: 26406
+          line: 374
+          column: 457
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical_separate"
+      identity_kind: "explicit"
+      unit_id: "normative_25837"
+      source_span:
+        start:
+          offset: 26407
+          line: 375
+          column: 1
+        end:
+          offset: 26761
+          line: 375
+          column: 355
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_25837"
+      source_span:
+        start:
+          offset: 26762
+          line: 376
+          column: 1
+        end:
+          offset: 27176
+          line: 376
+          column: 415
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_stock_cohorts"
+      identity_kind: "explicit"
+      unit_id: "normative_25837"
+      source_span:
+        start:
+          offset: 27177
+          line: 377
+          column: 1
+        end:
+          offset: 27632
+          line: 377
+          column: 456
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_39966"
+      source_span:
+        start:
+          offset: 40061
+          line: 422
+          column: 1
+        end:
+          offset: 40329
+          line: 422
+          column: 269
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_39966"
+      source_span:
+        start:
+          offset: 40330
+          line: 423
+          column: 1
+        end:
+          offset: 40732
+          line: 423
+          column: 403
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_39966"
+      source_span:
+        start:
+          offset: 40733
+          line: 424
+          column: 1
+        end:
+          offset: 41085
+          line: 424
+          column: 353
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_39966"
+      source_span:
+        start:
+          offset: 41086
+          line: 425
+          column: 1
+        end:
+          offset: 41422
+          line: 425
+          column: 337
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8529"
+      source_span:
+        start:
+          offset: 8529
+          line: 63
+          column: 1
+        end:
+          offset: 8550
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8529"
+      source_span:
+        start:
+          offset: 8578
+          line: 67
+          column: 1
+        end:
+          offset: 9750
+          line: 74
+          column: 195
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_25837"
+      source_span:
+        start:
+          offset: 25837
+          line: 370
+          column: 1
+        end:
+          offset: 25877
+          line: 370
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_39966"
+      source_span:
+        start:
+          offset: 39966
+          line: 418
+          column: 1
+        end:
+          offset: 39988
+          line: 418
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ad89f97cb3eb64a83982be001d15413097fc2315c7fd4b948b6c0f0746153ac3"
+  generated_content_sha256: "sha256:f2047ba0171ebb751f0fe9f110a0a1482cf117a11d4ef61dc6f3d349f7b70a5b"
