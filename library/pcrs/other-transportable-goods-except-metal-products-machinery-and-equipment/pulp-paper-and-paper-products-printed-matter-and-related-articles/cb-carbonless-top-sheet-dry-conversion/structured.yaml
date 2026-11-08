@@ -1,0 +1,967 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.cb-carbonless-top-sheet-dry-conversion"
+  classification_refs: "CPC 3.0 32191; narrower"
+  covered_products: "Unprinted loose CB carbonless top sheets; actual dimensions meeting documented non-bulk criteria"
+  excluded_products: "CF, CFB, SC; carbon paper; transfer paper; duplicator stencils and paper offset plates; bulk coating stock; printed, collated or glued forms, pads and other finished articles"
+  representative_product: "Customer-specified small-format loose CB sheets of one supplier grade, colour and coating side"
+  production_route: "Purchased already-coated reels; dry electric slitting/sheeting; inspection and paper wrapping"
+  market_state: "Accepted unprinted loose sheets at converter gate, net of packaging"
+functional_unit:
+  what: "Pressure-copying top-sheet stock for subsequent pairing with compatible receiving paper"
+  how_much: "1 kg accepted net paper mass"
+  how_well: "Declared dimensions, tolerances, grade, colour, coating orientation and supplier-specific copying quality; no unacceptable capsule damage"
+  how_long_or_cycle: "One conversion campaign; shelf storage and copy life follow the actual supplier declaration, without generic years"
+  reference_flow_link: "cb_sheet_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "convert"
+      rule: "Keep purchased coated-reel production upstream; foreground starts with receipt and ends with accepted loose sheets and exported residues. Integrated coating or printing requires another applicable method."
+      source_ids:
+        - koehler-reacto-cb
+        - jrc-paper-bref-2015
+    - rule_id: boundary_completeness
+      applies_to: "convert"
+      rule: "Include material handling, rejected lots, electricity for extraction and room control, actual wrapping, waste destinations and boundary emissions. Add one atomic row for every actual ancillary material, packaging component, water exchange, maintenance consumable or refrigerant loss; absent activity needs documented non-applicability, not invented zero."
+      source_ids:
+        - jrc-paper-bref-2015
+    - rule_id: boundary_loops
+      applies_to: "convert"
+      rule: "One foreground unit aggregates sheeting and packing, with independently metered stages. Keep stage handovers equal on both ends in the physical ledger; do not create a second final product exchange. Track actual returned reels, cores and removed incoming packaging by custody, material, count/unit mass, receipts/dispatch, actual reuse, damage/loss/discard, opening/closing stocks and receiver. Do not count circulating objects as new manufacture or assume reuse cycles; add actual cleaning/repair/transport and utilities. Consumed or discarded components require separate exchanges."
+      source_ids:
+        - jrc-paper-bref-2015
+    - rule_id: boundary_packaging_receipts
+      applies_to: "convert"
+      rule: "Trace each actual packaging component and core from its first external physical receipt independently of procurement and ownership. A whole-package purchase price includes its components even without separate invoices: retain purchased input attribution. For first borrowed, rented, entrusted or other non-purchased accompanying packaging, preserve material, form, type, direction, raw unit, receipt quantity/time, origin, ownership, cohort, prior burden vector and provider; unknown prior vector remains unresolved. A returning object needs its actual earlier outward history. Internal reuse is not a new external receipt."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Traceable purchased reels with completed CB functional coating; cores and transport packaging accounted separately"
+  starting_condition_role: "intermediate_product"
+  product_classification_scope: "Small-format CB loose-sheet subset of CPC 3.0 32191; size criteria and mapping require independent determination"
+  recursive_input_rule: "Same-category accepted-sheet rework remains a measured physical input linked to its supplying stage; do not recurse indefinitely, delete the input or count it as fresh accepted output"
+  upstream_dataset_requirement: "Reel background must cover base paper and actual CB coating production, compatible formulation and delivery; a UUID alone does not establish background compatibility. Link inbound transport separately from the actual route."
+  disclosure: "Declare converter-gate foreground boundary, upstream and transport links, material states, storage conditions and ancillary materials. Conversion-only burdens do not establish a full life cycle."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "coated printing, writing and packaging paper"
+    uuid: "faaae1a8-97af-4a26-bdb2-198abfc0d8e4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CB type and one-sided coating"
+    - "supplier grade and coating evidence"
+    - "dimensions and non-bulk criterion"
+    - grammage
+    - "moisture and basis"
+    - colour
+    - "capsule integrity"
+    - "copy quality and compatible receiving paper"
+    - "packaging exclusion"
+    - site
+    - "period and electricity supply point"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted net paper mass D including existing coating and excluding packaging; measure each stream wet mass and water at its actual delivery/collection state, including existing coating. Compare different states in separate common dry-solids and H2O ledgers; do not convert received wet mass to an assumed gate moisture or change the wet reference amount."
+  - id: electricity_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ by multiplying by 3.6; this is an energy-unit conversion, not a combustion assumption. Preserve supplier delivery and background-electricity property basis."
+  - id: moisture_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure moisture separately for product, trim and dust; w must be a measured wet-basis H2O fraction; dry mass equals wet mass times (1-w) only when the non-water fraction is proven to be that dry matter. Verify encapsulated liquids/solvents and other non-water volatiles separately, without treating all drying loss as water. Relative air or relative paper humidity is not wet-basis mass fraction and cannot be used to deduct water."
+process_map:
+  - id: convert
+    name: "Dry sheeting, inspection and wrapping"
+    inclusion: "required"
+    inclusion_condition: "Declared CB reel conversion route"
+    role: "foreground"
+    quantitative_reference: "1 kg accepted net CB sheets"
+process_inventory:
+  - id: convert
+    label: "Dry sheeting, inspection and wrapping"
+    inputs:
+      product:
+        - row_id: cb_reel
+          role: "Purchased CB carbonless parent reel"
+          name: "coated printing, writing and packaging paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "faaae1a8-97af-4a26-bdb2-198abfc0d8e4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net consumed CB reel paper, including its existing coating, from opening stock plus receipts minus closing stock and supplier returns. Exclude core and transport packaging mass. Record supplier, grade, coating side and upstream dataset; no on-site coating ingredients are inferred."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_material records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - koehler-reacto-cb
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter attributable cutting, extraction, handling, packing and electrically controlled-room electricity. This identity is only for 1–35 kV consumption mix delivered to the user; verify the actual supply point and upstream losses. If the supply is at another voltage, this UUID cannot be used. The complete record has locationOfSupply CN. Collect actual site/provider region, year, generation mix, delivery point and loss coverage, as well as compatibility with its native Net calorific value/MJ reference. A matching electrical-material UUID and kWh conversion do not prove those background conditions."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_energy records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: paper_wrapper
+          role: "Uncoated printing, writing and packaging paper"
+          name: "Uncoated printing, writing and packaging paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "936bdcb2-06b6-4ee9-8e7c-2f7762aba298"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh actual uncoated paper ream wrapper consumed, including wrapping rejects; supplier declaration must confirm uncoated material. The broad physical identity is narrowed to this wrapper; no generic kraft grade or barrier treatment is assumed. Verify a single actual uncoated/unimpregnated paper wrapper without laminate, adhesive backing, coating or reinforcement, with grade, fibre origin, inherent fillers/sizing, moisture and provider mass basis. Other actual packaging materials require separate verified atomic rows. Source CPC 32129 graphic woodfree classification is narrower than the packaging-paper name: disclose this source metadata limitation and require source/provider classification clarification, without asserting an exact actual wrapping category or default recipe."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_material records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cb_sheet_output
+          role: "Unprinted loose CB carbonless top-sheet paper, cut to non-bulk size"
+          name: "coated printing, writing and packaging paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "faaae1a8-97af-4a26-bdb2-198abfc0d8e4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "1 kg accepted net paper output, including the existing CB coating, excluding all packaging. Measure accepted batches after final cutting, inspect dimensions and capsule damage and document grade-specific copy performance evidence."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - koehler-reacto-cb
+                - koehler-reacto-practical
+            ranges: []
+      waste:
+        - row_id: coated_trim
+          role: "waste paper (unspecified)"
+          name: "waste paper (unspecified)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f140a5a2-5318-4d06-956f-a87b9c6fda25"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh separately collected CB-coated trim and rejected sheets exported to the receiver. Declare capsule/coating contamination, moisture, legal waste classification and receiving route; no automatic recycling or unrestricted recovered-paper substitution. Keep wrapper offcuts separately in the foreground evidence."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_residue records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: wrapper_trim
+          role: "waste paper (unspecified)"
+          name: "waste paper (unspecified)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f140a5a2-5318-4d06-956f-a87b9c6fda25"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh uncoated wrapper offcuts and wrapping rejects exported separately from CB-coated paper. Record actual composition, moisture and receiver; sharing a broad waste-paper UUID does not merge these physically distinct streams."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_residue records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: captured_dust
+          role: "Captured CB-coated paper cutting dust"
+          name: "Dust"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a6c9b60-a075-45ec-b611-c3b4dd255935"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh actual exported particles removed from the dry CB-paper cutting extraction collector, with measured fibre, microcapsules/capsule wall/encapsulated liquid/binder and any other existing coating components, moisture, contamination, collection point, stock/internal return, waste status and receiver/provider compatibility. No component recipe, CAS or hazard class is inferred from the generic name. Waste Mass/kg is actual captured whole particles, not an atmospheric PM exchange, ash, wood dust or treatment service. Keep collector stocks and internal returns separate from exports; measured air-release fractions remain disjoint. The source English comment supports industrial collectors; its generic Chinese non-degradability and weekly housekeeping wording is not an actual biodegradability or collection-frequency claim for this material."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_residue records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+      elementary:
+        - row_id: pm25_air
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only measured particles at or below 2.5 micrometres released beyond the site boundary to outdoor air, unspecified subcompartment. A mass concentration without gas-volume and time integration is incomplete."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_air records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: pm25_10_air
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only the measured exclusive fraction above 2.5 and at or below 10 micrometres discharged to outdoor air, unspecified subcompartment. Do not add cumulative PM10 to PM2.5; subtraction requires matched sample/time/volume bases."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_air records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+        - row_id: pmover10_air
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured exclusive fraction above 10 micrometres discharged to outdoor air, unspecified subcompartment. Do not substitute total dust or a correction flow. No positive default emission is specified."
+          amount:
+            expression: "Measured amount per 1 kg reference flow from cp_air records; campaign totals divided by accepted net paper mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-paper-bref-2015
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "convert"
+    rule: "First investigate subdivision or system expansion to avoid allocation; use separate batch meters and direct attribution for subdivision. Expansion requires actual co-functions, empirically demonstrated substitution and representative boundaries, with results for the expanded system as a whole and no automatic waste credit. If neither applies, document a causal physical allocation basis; another basis requires justification and sensitivity analysis. Neither saleability nor mass alone establishes a coproduct credit."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_physical
+    applies_to: "convert"
+    rule: "Preserve the unallocated physical mass/water/carbon ledger separately from allocated environmental burdens. Do not multiply physical coproduct outputs or internal transfers by burden allocation shares. Record waste as physical exports; recovery credit requires the applicable end-of-life method and verified receiver, without duplicate avoided-production credit."
+    source_ids:
+      - eu-pef-2021
+      - jrc-paper-bref-2015
+  - rule_id: allocation_row_cause
+    applies_to: "all inventory rows"
+    rule: "Preserve original quantities, integrate actual rates once and convert the recorded scope first; then subdivide separately metered stages and attribute each exchange by its measured physical cause. Only a demonstrated same-stage residual shared among actual co-functions may use contemporaneous stage-specific relative values after causal physical attribution is unavailable, with actual quantities/prices, justification and sensitivity. Normalize A/Q once at the end. Do not allocate every exchange by one revenue ratio or invent substitution credit."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_history
+    applies_to: "convert"
+    rule: "Raw/unused inputs, work in progress and finished goods at opening/closing carry their actual per-flow inherited burden vectors. Keep newly incurred burdens separate. Historical rework, customer returns and redelivery retain earlier vectors plus only actual incremental handling/conversion. Do not charge opening FG inherited manufacture again to new-lot Q: preserve each original cohort's recorded first-accepted net quantity Q_original and attribute only actual incremental service burdens to the cohort served. Its correction per kg is incremental A_service / Q_original, never divided by new-lot Q or serviced/retested quantity; retain an unknown original quantity as an unresolved raw correction. Converted or inspected service quantity and handling counts do not create new accepted-product denominators. Keep burdens of failed lots, Q-zero runs, idle, cleanup and start/stop; document their causal attribution and period linkage."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "convert"
+      flow_role: "cb_sheet_output"
+      record_type: "weighing"
+      raw_fields: "batch; grade; coating side; dimensions; moisture basis; accepted mass D; packaging tare"
+      collection_method: "Calibrated weighing of accepted net paper, dimension inspection and capsule-damage/supplier-compatible quality evidence; reconcile packaging tare."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "declared complete operating period"
+      site_scope: "selected converter line"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration, acceptance records, supplier specification"
+    - protocol_id: cp_material
+      process_id: "convert"
+      flow_role: "cb_reel; paper_wrapper"
+      record_type: "material balance"
+      raw_fields: "opening; receipts; closing; returns; tare; supplier; grade; batch; moisture; validated H2O/non-water volatile fractions; coating/capsule composition; actual packaging/core custody"
+      collection_method: "Weigh each material and reconcile stocks; separate coated reel paper from wrapper. Account for cores and removed packaging separately; add separate rows for other actual materials."
+      unit: "kg"
+      frequency: "each batch and stock closing"
+      temporal_coverage: "same period as accepted output"
+      site_scope: "selected converter line"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "receipts, stocks, returns and supplier basis"
+    - protocol_id: cp_energy
+      process_id: "convert"
+      flow_role: "electricity"
+      record_type: "meter"
+      raw_fields: "meter start/end; submeter; voltage; CN source versus actual site/provider geography/year/mix; supply point/loss coverage; line time; auxiliary loads; D"
+      collection_method: "Calibrated meter reads synchronized with cutting, extraction and packing auxiliaries; verified driver for shared loads; actual supply point compatible with background consumption mix."
+      unit: "kWh; MJ"
+      frequency: "each batch"
+      temporal_coverage: "same period as accepted output"
+      site_scope: "actual electrical supply boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration, wiring, supplier and loss boundary"
+    - protocol_id: cp_residue
+      process_id: "convert"
+      flow_role: "coated_trim; wrapper_trim; captured_dust"
+      record_type: "weighing"
+      raw_fields: "stream id; wet mass; moisture; fibre/coating composition; microcapsules and encapsulated non-water liquids; H2O; contamination; stock/internal return; waste status; destination; receiver; D"
+      collection_method: "Weigh trim and collector dust separately, preserve composition/contamination; reconcile dispatch and actual receiver requirements, with equal internal-loop quantities at both ends."
+      unit: "kg"
+      frequency: "each collection and dispatch"
+      temporal_coverage: "same period as accepted output"
+      site_scope: "each stream leaving the converter line"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale, waste transfer record, receiver approval"
+    - protocol_id: cp_air
+      process_id: "convert"
+      flow_role: "pm25_air; pm25_10_air; pmover10_air"
+      record_type: "measurement"
+      raw_fields: "outlet; sample time; size fraction; concentration; dry/wet gas volume basis; gas T/P/conditioning; total sampled volume versus volumetric rate; duration; capture; fugitive escape; detection limit; D"
+      collection_method: "Use calibrated outlet- and size-appropriate sampling, retaining method performance, detection limit and gas-volume state; cover outlets and actual fugitive boundary escape. Use matched concentration/gas T/P/wet-dry/conditioning bases: integrate C(t) times volumetric flow rate, or a demonstrated comparable average concentration times the entire matching period gas volume. Never multiply an already integrated volume by duration again. Do not invent size splits."
+      unit: "kg"
+      frequency: "representative operating-state sampling and period integration"
+      temporal_coverage: "same period as accepted output"
+      site_scope: "outdoor-air site-boundary releases"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw sampling, flow-meter calibration, gas state and representativeness"
+    - protocol_id: cp_campaign
+      process_id: "convert"
+      flow_role: "all inventory rows"
+      record_type: "lot and burden ledger"
+      raw_fields: "lot/cohort; first-release time; Q; opening/closing raw/unused/WIP/FG; gross V by direction; inherited per-flow vector; incremental A; rate/time and original unit; stage/cause; failure/idle/cleanup/start-stop; service/handling quantity; original cohort first-accepted net quantity Q_original; incremental A_service; actual residual co-functions and contemporaneous prices"
+      collection_method: "Link calibrated primary records to first quality release and stock movements; keep physical quantities and burden vectors separate, attribute by exchange cause, and retain failed-period burdens."
+      unit: "original unit; kg; kWh; MJ"
+      frequency: "each movement and first release; period closing"
+      temporal_coverage: "same complete campaign and linked historical cohorts"
+      site_scope: "selected line and measured shared stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "lot acceptance, stock reconciliation, raw meters, causal drivers and inherited vector provenance"
+    - protocol_id: cp_packaging
+      process_id: "convert"
+      flow_role: "actual wrapper; cores; incoming and reusable packaging components"
+      record_type: "receipt and custody ledger"
+      raw_fields: "component/material/form/type/direction; raw unit; count and unit mass; receipt/time/origin/ownership/cohort; purchase inclusion; provider; prior vector; prior outward record; opening/closing empty/raw/WIP/FG/reusable; dispatch/returnout/waste; cleaning/repair"
+      collection_method: "Establish first external physical receipt separately from purchasing/ownership, then reconcile every physical leg; count each whole article provider once and keep component analysis as a subledger. Internal reuse creates no new first receipt."
+      unit: "actual raw unit; count; kg"
+      frequency: "each receipt, movement and stock closing"
+      temporal_coverage: "same campaign plus evidenced return history"
+      site_scope: "every packaging state at converter boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "receiving notes, package price scope, ownership contract, stock counts, provider coverage and actual outward/return records"
+    - protocol_id: cp_transport
+      process_id: "convert"
+      flow_role: "actual inbound/outbound packaging, materials and residues"
+      record_type: "route records"
+      raw_fields: "stream and cohort; gross leg/direction; actual loaded mass; distance; vehicle/mode/load; empty return; fuel/service basis; provider coverage"
+      collection_method: "Retain each physical dispatch and return leg without netting. For mass-distance service convert measured kg to tonnes once, multiply by actual km once; separate a provider transport service from any duplicated own vehicle fuel. Add a verified atomic exchange for each actual service or fuel before dataset completion."
+      unit: "kg; km; tkm; actual provider unit"
+      frequency: "each leg"
+      temporal_coverage: "same campaign and linked return legs"
+      site_scope: "actual transport boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "waybills, weighbridge, route evidence and provider transport boundary"
+  calculation_rules:
+    - id: normalize_records
+      applies_to: "all inventory rows"
+      rule: "Divide each attributable row total for the same period by D to obtain the amount per 1 kg reference flow; finished reference row is fixed at 1 kg."
+      inputs:
+        - "row total"
+        - D
+        - cp_output
+      output: "exchange amount per 1 kg reference flow"
+      source_ids: []
+    - id: electricity_units
+      applies_to: "electricity"
+      rule: "MJ = kWh × 3.6; normalize with the same D."
+      inputs:
+        - "meter kWh"
+        - D
+        - cp_energy
+      output: "MJ per 1 kg reference flow"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "convert"
+      rule: "Keep an unallocated physical ledger: net paper-and-coating inputs + opening work in progress = accepted sheets + trim + captured dust + air particles + closing work in progress + other measured releases. Separate dry-solids and water balances before comparing different moisture states; balance packaging separately. Report residuals without forcing invented zero."
+      inputs:
+        - cp_material
+        - cp_output
+        - cp_residue
+        - cp_air
+      output: "physical balance and residual"
+      source_ids:
+        - jrc-paper-bref-2015
+    - id: pm_exclusive
+      applies_to: "pm25_air; pm25_10_air; pmover10_air"
+      rule: "For matched cumulative measurements, 2.5–10 fraction = PM10 - PM2.5 and >10 fraction = total particles - PM10. Negative differences or different bases require investigation. Unmeasured fractions remain unresolved, without size factors."
+      inputs:
+        - "matched cp_air samples"
+      output: "exclusive particle amounts"
+      source_ids: []
+    - id: pm_mass_basis
+      applies_to: "each air-particle row"
+      rule: "m_kg = 10^-6 * integral(C_mg_per_m3(t) * Vdot_m3_per_time(t) dt), or proven comparable average C * matching period total V * 10^-6. Convert mg to kg once and divide by D once. Match concentration and gas T/P/wet-dry/conditioning bases; do not multiply cumulative gas volume by duration or assume gas state/bin shares."
+      inputs:
+        - cp_air
+        - cp_output
+      output: "exclusive particle kg per 1 kg reference flow"
+      source_ids: []
+    - id: campaign_stock_vectors
+      applies_to: "convert"
+      rule: "Q equals first-released new-lot net kg including closing FG. For each stock state: opening + gross inward = gross outward + closing + measured loss, with internal stage handovers equal. In physical_balance accepted sheets denotes first release Q; the separate FG ledger reconciles opening FG + Q + actual returns = gross dispatch + closing FG + actual rework/discard; no closing-FG subtraction from Q. Carry actual per-flow historical vectors separately from physical V and incremental A; normalize each final A by Q once. Q-zero burdens remain linked unresolved quantities until attributed."
+      inputs:
+        - cp_campaign
+        - cp_output
+        - cp_material
+        - cp_residue
+      output: "reconciled physical stocks and inherited/incremental burden vectors per 1 kg reference flow"
+      source_ids: []
+    - id: packaging_legs
+      applies_to: "convert"
+      rule: "Reconcile each component/cohort/state: opening + gross receipt + internal inward = gross dispatch + returnout + waste + internal outward + closing + measured loss. Separate purchased first receipt, non-purchased first external receipt and evidenced external return; internal legs cancel only on aggregation. Do not net physical transport legs or count whole-container manufacture and the same component manufacture twice."
+      inputs:
+        - cp_packaging
+        - cp_campaign
+        - cp_residue
+      output: "complete component stocks, custody, first-receipt and provider attribution"
+      source_ids: []
+    - id: transport_basis
+      applies_to: "convert"
+      rule: "For a provider with native tkm, physical service = actual loaded kg / 1000 * actual km for each leg; integrate a rate over its actual time only once. Convert original units and provider scope before causal attribution, then divide A by Q once. Preserve empty-return activity in its actual service or vehicle basis; do not invent cargo for an empty leg."
+      inputs:
+        - cp_transport
+        - cp_campaign
+        - cp_output
+      output: "actual transport service and attributable amount per 1 kg reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_supplier
+      applies_to: "cb_reel; cb_sheet_output"
+      requirement: "Traceable reel and finished states; upstream includes actual coating, without substitution by uncoated or ordinary copy paper."
+      evidence: "supplier declaration and upstream compatibility"
+    - id: dq_time
+      applies_to: "all inventory rows"
+      requirement: "One site and period for inventory, output, stocks and burden attribution; cover downtime, rejects, changeovers and auxiliaries."
+      evidence: "complete primary campaign records"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Unknown formulation, emissions or supplier basis are unresolved, not zero. Unmeasured carbon forms do not establish zero biogenic CO2; if a later route introduces combustion or degradation, add actual biogenic/fossil CO2 species rows and carbon balance and retain the complete LCI."
+      evidence: "route audit, mass/water/carbon reconciliation"
+    - id: dq_stock_provider
+      applies_to: "all inventory rows"
+      requirement: "Each actual whole CB reel includes paper plus actual capsule wall, encapsulated liquid, binder and other existing coating once in its manufacturing provider. Component chemistry/analysis is a subledger, not another manufacture exchange. Unknown composition, density, water/solids, species/phase, retention, yield, price or provider scope requires actual evidence; pure paper, wood or polymer does not stand for the whole coated output. Finished-product components in raw/WIP/FG and all physical losses remain in stocks and net-mass checks."
+      evidence: "supplier whole-product coverage, formulation/SDS or analysis, stage stocks, actual rates/units and provider exchange ledger"
+    - id: dq_packaging
+      applies_to: "convert"
+      requirement: "Document every first external packaging receipt and actual outward/return/waste leg, ownership and purchase inclusion independently. Resolve unknown prior vectors and provider coverage before dataset completion; absent separate component invoice is not absence of purchase."
+      evidence: "cp_packaging reconciliation and cp_transport gross-leg evidence"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "reference product"
+    rule: "Reject CF, CFB, SC, carbon-transfer, bulk reel, printed or bound-form datasets under this method. Require actual sheet dimensions, non-bulk classification evidence, CB grade and supplier-specific performance; reference identity must be verified."
+    source_ids:
+      - koehler-reacto-cb
+      - koehler-reacto-practical
+  - rule_id: validate_measurement
+    applies_to: "all inventory rows"
+    rule: "Exactly one product output is the 1 kg reference. Require the same D across collection and calculations in both languages. Check net mass, packaging exclusion, separate moisture bases and energy conversion."
+    source_ids: []
+  - rule_id: validate_environment
+    applies_to: "convert"
+    rule: "Require disjoint PM fractions and receiver-qualified waste identities; do not count collector dust as air release. Source measurements must establish outdoor-air boundary escape; missing sampling is incomplete evidence, not passed validation. Any unexpected wet or combustion route requires boundary and atomic-row reassessment."
+    source_ids:
+      - jrc-paper-bref-2015
+  - rule_id: validate_quality
+    applies_to: "convert"
+    rule: "Check capsule damage, grade, orientation and copy-quality acceptance without transferring producer blade angles, relative humidity or service-life figures into generic LCI defaults. UUID support establishes identity only; separately verify provider, quantity basis and background boundary."
+    source_ids:
+      - koehler-reacto-practical
+  - rule_id: validate_campaign
+    applies_to: "convert"
+    rule: "Verify Q first-release uniqueness, closing FG inclusion, all stock states and physical legs, inherited per-flow vectors, actual incremental cause and failed/idle burdens. Require actual provider coverage once for each whole article and each separately supplied exchange; component analyses do not duplicate whole manufacturing. Unresolved additional ordinary inputs are specific data obligations; they do not establish a different physical branch or justify a false reference identity."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground production dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "After identity, foreground collection and review, modelling same-grade small-format CB conversion with declared upstream links"
+  excluded_use: "No substitution for pulping, coating production or complete printed/glued forms; no cross-grade functional equivalence; the broad identity does not establish CB supplier or background compatibility"
+  required_metadata: "Grade, coating side, size criterion, net-mass/moisture basis, packaging, site/period, suppliers/transport, UUIDs and background bases"
+  required_quality_disclosure: "Measurement coverage, unresolved identities and quantities, size sampling, allocation and separate physical ledger, non-bulk classification evidence"
+  update_trigger: "Coating grade/route change; terminal conversion added; supplier/voltage/packaging/recovery changes; new sampling or identity correction"
+data_sources:
+  - id: "koehler-reacto-cb"
+    type: "handbook"
+    reference: "Koehler reacto® CB, dated official website snapshot: https://www.koehlerpaper.com/en/products/Carbonless-paper/Top-sheet-reacto-CB.php"
+    used_for: "Back microcapsules and reel/sheet state; no recipe or LCI quantity"
+  - id: "koehler-reacto-practical"
+    type: "handbook"
+    reference: "Koehler reacto® Practical notes, 11.25, PDF page 2, Cutting: https://www.koehlerpaper.com/media/docs/en/product-information/reacto/reacto_Verarbeitungshinweise_GB.pdf"
+    used_for: "Product-specific pressure-sensitive cutting; angle/stack/relative-humidity/life figures not generic quantities"
+  - id: "jrc-paper-bref-2015"
+    type: "official_guidance"
+    reference: "JRC Production of Pulp, Paper and Board BREF, 2015, section 7.1.10, printed page 670 / PDF page 708: https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf"
+    used_for: "General cutting/wrapping, energy, trim and dust screening; no presumed converter broke recycling or emission factors"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5, PDF pages 63–64: https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "Subdivision/system expansion and justified physical/other-relationship allocation hierarchy; no full PEF-compliance claim"
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC3.0 Explanatory Notes,30June2025, printed147, subclass32191; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "The official non-bulk copying-paper category is defined through HS2022 heading4816. Actual dimensions/form and current frozen-edition eligibility remain mandatory evidence, not an inference from the generic native coated-paper name."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:998ddb97391496f612913618d547813c01351f8f23cc40a2d9713fca5b0b1f2d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6897"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6897
+          line: 65
+          column: 1
+        end:
+          offset: 10089
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Traceable purchased reels with completed CB functional coating; cores and transport packaging accounted separately |\n| starting_condition_role | intermediate_product |\n| product_classification_scope | Small-format CB loose-sheet subset of CPC 3.0 32191; size criteria and mapping require independent determination |\n| recursive_input_rule | Same-category accepted-sheet rework remains a measured physical input linked to its supplying stage; do not recurse indefinitely, delete the input or count it as fresh accepted output |\n| upstream_dataset_requirement | Reel background must cover base paper and actual CB coating production, compatible formulation and delivery; a UUID alone does not establish background compatibility. Link inbound transport separately from the actual route. |\n| disclosure | Declare converter-gate foreground boundary, upstream and transport links, material states, storage conditions and ancillary materials. Conversion-only burdens do not establish a full life cycle. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_route` | convert | Keep purchased coated-reel production upstream; foreground starts with receipt and ends with accepted loose sheets and exported residues. Integrated coating or printing requires another applicable method. | koehler-reacto-cb; jrc-paper-bref-2015 |\n| `boundary_completeness` | convert | Include material handling, rejected lots, electricity for extraction and room control, actual wrapping, waste destinations and boundary emissions. Add one atomic row for every actual ancillary material, packaging component, water exchange, maintenance consumable or refrigerant loss; absent activity needs documented non-applicability, not invented zero. | jrc-paper-bref-2015 |\n| `boundary_loops` | convert | One foreground unit aggregates sheeting and packing, with independently metered stages. Keep stage handovers equal on both ends in the physical ledger; do not create a second final product exchange. Track actual returned reels, cores and removed incoming packaging by custody, material, count/unit mass, receipts/dispatch, actual reuse, damage/loss/discard, opening/closing stocks and receiver. Do not count circulating objects as new manufacture or assume reuse cycles; add actual cleaning/repair/transport and utilities. Consumed or discarded components require separate exchanges. | jrc-paper-bref-2015 |\n| `boundary_packaging_receipts` | convert | Trace each actual packaging component and core from its first external physical receipt independently of procurement and ownership. A whole-package purchase price includes its components even without separate invoices: retain purchased input attribution. For first borrowed, rented, entrusted or other non-purchased accompanying packaging, preserve material, form, type, direction, raw unit, receipt quantity/time, origin, ownership, cohort, prior burden vector and provider; unknown prior vector remains unresolved. A returning object needs its actual earlier outward history. Internal reuse is not a new external receipt. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 413
+              line: 10
+              column: 89
+          text: "# Dry conversion of purchased CB carbonless reels to unprinted loose small-format sheets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6897
+              line: 65
+              column: 1
+            end:
+              offset: 6918
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21264"
+      family: "allocation"
+      span:
+        start:
+          offset: 21264
+          line: 261
+          column: 1
+        end:
+          offset: 23978
+          line: 270
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_hierarchy` | convert | First investigate subdivision or system expansion to avoid allocation; use separate batch meters and direct attribution for subdivision. Expansion requires actual co-functions, empirically demonstrated substitution and representative boundaries, with results for the expanded system as a whole and no automatic waste credit. If neither applies, document a causal physical allocation basis; another basis requires justification and sensitivity analysis. Neither saleability nor mass alone establishes a coproduct credit. | eu-pef-2021 |\n| `allocation_physical` | convert | Preserve the unallocated physical mass/water/carbon ledger separately from allocated environmental burdens. Do not multiply physical coproduct outputs or internal transfers by burden allocation shares. Record waste as physical exports; recovery credit requires the applicable end-of-life method and verified receiver, without duplicate avoided-production credit. | eu-pef-2021; jrc-paper-bref-2015 |\n| `allocation_row_cause` | all inventory rows | Preserve original quantities, integrate actual rates once and convert the recorded scope first; then subdivide separately metered stages and attribute each exchange by its measured physical cause. Only a demonstrated same-stage residual shared among actual co-functions may use contemporaneous stage-specific relative values after causal physical attribution is unavailable, with actual quantities/prices, justification and sensitivity. Normalize A/Q once at the end. Do not allocate every exchange by one revenue ratio or invent substitution credit. | eu-pef-2021 |\n| `allocation_history` | convert | Raw/unused inputs, work in progress and finished goods at opening/closing carry their actual per-flow inherited burden vectors. Keep newly incurred burdens separate. Historical rework, customer returns and redelivery retain earlier vectors plus only actual incremental handling/conversion. Do not charge opening FG inherited manufacture again to new-lot Q: preserve each original cohort's recorded first-accepted net quantity Q_original and attribute only actual incremental service burdens to the cohort served. Its correction per kg is incremental A_service / Q_original, never divided by new-lot Q or serviced/retested quantity; retain an unknown original quantity as an unresolved raw correction. Converted or inspected service quantity and handling counts do not create new accepted-product denominators. Keep burdens of failed lots, Q-zero runs, idle, cleanup and start/stop; document their causal attribution and period linkage. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 413
+              line: 10
+              column: 89
+          text: "# Dry conversion of purchased CB carbonless reels to unprinted loose small-format sheets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21264
+              line: 261
+              column: 1
+            end:
+              offset: 21304
+              line: 261
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37241"
+      family: "validation"
+      span:
+        start:
+          offset: 37241
+          line: 312
+          column: 1
+        end:
+          offset: 39199
+          line: 322
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_scope` | reference product | Reject CF, CFB, SC, carbon-transfer, bulk reel, printed or bound-form datasets under this method. Require actual sheet dimensions, non-bulk classification evidence, CB grade and supplier-specific performance; reference identity must be verified. | koehler-reacto-cb; koehler-reacto-practical |\n| `validate_measurement` | all inventory rows | Exactly one product output is the 1 kg reference. Require the same D across collection and calculations in both languages. Check net mass, packaging exclusion, separate moisture bases and energy conversion. |  |\n| `validate_environment` | convert | Require disjoint PM fractions and receiver-qualified waste identities; do not count collector dust as air release. Source measurements must establish outdoor-air boundary escape; missing sampling is incomplete evidence, not passed validation. Any unexpected wet or combustion route requires boundary and atomic-row reassessment. | jrc-paper-bref-2015 |\n| `validate_quality` | convert | Check capsule damage, grade, orientation and copy-quality acceptance without transferring producer blade angles, relative humidity or service-life figures into generic LCI defaults. UUID support establishes identity only; separately verify provider, quantity basis and background boundary. | koehler-reacto-practical |\n| `validate_campaign` | convert | Verify Q first-release uniqueness, closing FG inclusion, all stock states and physical legs, inherited per-flow vectors, actual incremental cause and failed/idle burdens. Require actual provider coverage once for each whole article and each separately supplied exchange; component analyses do not duplicate whole manufacturing. Unresolved additional ordinary inputs are specific data obligations; they do not establish a different physical branch or justify a false reference identity. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 325
+              line: 10
+              column: 1
+            end:
+              offset: 413
+              line: 10
+              column: 89
+          text: "# Dry conversion of purchased CB carbonless reels to unprinted loose small-format sheets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37241
+              line: 312
+              column: 1
+            end:
+              offset: 37263
+              line: 312
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_6897"
+      source_span:
+        start:
+          offset: 8080
+          line: 80
+          column: 1
+        end:
+          offset: 8358
+          line: 80
+          column: 279
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_6897"
+      source_span:
+        start:
+          offset: 8359
+          line: 81
+          column: 1
+        end:
+          offset: 8775
+          line: 81
+          column: 417
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_loops"
+      identity_kind: "explicit"
+      unit_id: "normative_6897"
+      source_span:
+        start:
+          offset: 8776
+          line: 82
+          column: 1
+        end:
+          offset: 9414
+          line: 82
+          column: 639
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_packaging_receipts"
+      identity_kind: "explicit"
+      unit_id: "normative_6897"
+      source_span:
+        start:
+          offset: 9415
+          line: 83
+          column: 1
+        end:
+          offset: 10087
+          line: 83
+          column: 673
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_21264"
+      source_span:
+        start:
+          offset: 21377
+          line: 265
+          column: 1
+        end:
+          offset: 21949
+          line: 265
+          column: 573
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_21264"
+      source_span:
+        start:
+          offset: 21950
+          line: 266
+          column: 1
+        end:
+          offset: 22385
+          line: 266
+          column: 436
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_row_cause"
+      identity_kind: "explicit"
+      unit_id: "normative_21264"
+      source_span:
+        start:
+          offset: 22386
+          line: 267
+          column: 1
+        end:
+          offset: 23000
+          line: 267
+          column: 615
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_history"
+      identity_kind: "explicit"
+      unit_id: "normative_21264"
+      source_span:
+        start:
+          offset: 23001
+          line: 268
+          column: 1
+        end:
+          offset: 23976
+          line: 268
+          column: 976
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_37241"
+      source_span:
+        start:
+          offset: 37336
+          line: 316
+          column: 1
+        end:
+          offset: 37670
+          line: 316
+          column: 335
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_37241"
+      source_span:
+        start:
+          offset: 37671
+          line: 317
+          column: 1
+        end:
+          offset: 37930
+          line: 317
+          column: 260
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_environment"
+      identity_kind: "explicit"
+      unit_id: "normative_37241"
+      source_span:
+        start:
+          offset: 37931
+          line: 318
+          column: 1
+        end:
+          offset: 38320
+          line: 318
+          column: 390
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_37241"
+      source_span:
+        start:
+          offset: 38321
+          line: 319
+          column: 1
+        end:
+          offset: 38672
+          line: 319
+          column: 352
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_campaign"
+      identity_kind: "explicit"
+      unit_id: "normative_37241"
+      source_span:
+        start:
+          offset: 38673
+          line: 320
+          column: 1
+        end:
+          offset: 39197
+          line: 320
+          column: 525
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6897"
+      source_span:
+        start:
+          offset: 6897
+          line: 65
+          column: 1
+        end:
+          offset: 6918
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6897"
+      source_span:
+        start:
+          offset: 6946
+          line: 69
+          column: 1
+        end:
+          offset: 8007
+          line: 76
+          column: 212
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21264"
+      source_span:
+        start:
+          offset: 21264
+          line: 261
+          column: 1
+        end:
+          offset: 21304
+          line: 261
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37241"
+      source_span:
+        start:
+          offset: 37241
+          line: 312
+          column: 1
+        end:
+          offset: 37263
+          line: 312
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:998ddb97391496f612913618d547813c01351f8f23cc40a2d9713fca5b0b1f2d"
+  generated_content_sha256: "sha256:a5dbd1b212a7ebccc65e29f60f5c9e4164cdf46b8c67c16926478b75214a7585"

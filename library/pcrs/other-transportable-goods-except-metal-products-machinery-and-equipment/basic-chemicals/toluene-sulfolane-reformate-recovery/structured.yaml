@@ -1,0 +1,1206 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.toluene-sulfolane-reformate-recovery"
+  classification_refs: "CPC 3.0 34110; narrower"
+  covered_products: "Bulk liquid commercial toluene from the declared reformate recovery route"
+  excluded_products: "Neat-component accounting in place of whole grade; diluted toluene blend; spent solvent; benzene or xylene marketed as toluene"
+  representative_product: "Toluene CAS108-88-3, whole accepted liquid grade"
+  production_route: "Wet sulfolane liquid-liquid extraction of reformate; clay polishing and benzene/toluene fractionation"
+  market_state: "Bulk liquid at plant delivery gate, actual assay/water/impurities and custody state declared"
+functional_unit:
+  what: "Supply commercial toluene as a chemical feedstock"
+  how_much: "1 kg"
+  how_well: "Accepted actual commercial grade with measured toluene assay, water and specified impurities; no universal purity is assumed"
+  how_long_or_cycle: "One plant-gate delivery; no downstream use lifetime"
+  reference_flow_link: "accepted_toluene"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "recovery_unit"
+      rule: "Include receipt/storage, every extraction/recovery/regeneration/wash/clay/fractionation operation, internal transfers, start/stop/cleaning losses, loading and final releases. No upstream refinery unit is duplicated or assumed burden-free. Additional actual chemicals, packaging, regeneration or controls require individual physical exchanges before completeness."
+      source_ids:
+        - jrc-lvoc-2017
+    - rule_id: boundary_acceptance
+      applies_to: "accepted_toluene"
+      rule: "Tag every first acceptance once. Q>0 equals newly accepted product dispatched in the period plus newly accepted closing finished stock, without opening finished stock, returns, retests, internal recycles or rejected output. Keep old and new acceptance cohorts apart. An already accepted lot rehandled this period never produces a second reference output."
+      source_ids:
+        - jrc-ilcd-general-2010
+    - rule_id: boundary_carry
+      applies_to: "recovery_unit"
+      rule: "Carry raw-feed, solvent, bed, WIP and FG mass/component stocks with their accumulated upstream and operation burden vectors by lot/cohort. Carry partial raw/WIP burdens forward until acceptance; add only incremental processing, avoiding a second feed burden. Opening FG dispatch is a transfer of its original burden. Later service/return/repair corrections attach to the original accepted cohort and original accepted quantity Q0; never divide them by current Q. If Q0 is unknown, preserve raw unnormalised burdens and hold the correction, rather than inventing a denominator."
+      source_ids:
+        - jrc-ilcd-general-2010
+boundary_abstraction:
+  declared_starting_condition: "Actual extraction-ready reformate received at the recovery unit, with feed composition and upstream readiness evidence"
+  starting_condition_role: "foreground_entry"
+  product_classification_scope: "CPC 3.0 34110; narrower"
+  recursive_input_rule: "Purchased same-category toluene is an evidenced upstream input with burdens, never new recovered output or an internal recycle. Split it into an added atomic input and do not dilute it into production Q."
+  upstream_dataset_requirement: "Actual reformate provider includes reforming, splitting and required feed treatment; utility, solvent/clay and external treatment links match composition/property/gate"
+  disclosure: "Record actual source plant, feed batch/readiness, all gates, utility return convention, outsourced treatment, omitted operations and inventory gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Toluene"
+    uuid: "33ac34b7-d691-4eda-8563-daef49a05157"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - CAS108-88-3
+    - "whole commercial product"
+    - "assay and method"
+    - "water and benzene/non-aromatic impurities"
+    - "acceptance specification"
+    - "liquid temperature/pressure"
+    - "bulk plant delivery gate"
+    - "wet sulfolane reformate route"
+    - "actual site/provider and period"
+    - "feed readiness"
+    - "stock/acceptance cohort"
+    - "upstream boundaries and allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use net whole liquid product mass, excluding tank/container tare; 1 kg reference flow is not multiplied by toluene assay. Measure assay separately with cp_reference."
+  - id: volume_mass
+    applies_to: "reformate_feed; accepted_toluene; water_makeup; cooling_makeup"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert measured liquid volume using measured or traceable composition-specific density at the same temperature and pressure; disclose corrections and avoid converting wet mixtures by neat-toluene density."
+  - id: utility_bases
+    applies_to: "electricity; indirect_steam; direct_steam; condensate_return"
+    required_property_ref:
+      name: "Energy and Mass"
+      uuid: ""
+    required_unit: "MJ; kg"
+    rule: "1 kWh=3.6 MJ for electricity. Steam commodity and returned condensate remain kg with recorded states. Heat check=sum(incoming kg times specific enthalpy)-sum(returned kg times specific enthalpy), with a common datum and kJ divided by 1000 to MJ. Keep direct steam/water-stripper recycles separate. Never impose a generic MJ/kg factor or buy the same steam twice."
+process_map:
+  - id: recovery_unit
+    name: "Wet sulfolane reformate recovery and fractionation"
+    inclusion: "required"
+    inclusion_condition: "Declared route only; submeter each operation"
+    role: "foreground_process"
+    quantitative_reference: "accepted_toluene; 1 kg"
+process_inventory:
+  - id: recovery_unit
+    label: "Wet sulfolane reformate recovery and fractionation"
+    inputs:
+      product:
+        - row_id: reformate_feed
+          role: "Catalytically reformed naphtha extraction feed"
+          name: "Catalytically reformed naphtha extraction feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Received hydrofined or otherwise demonstrated extraction-ready reformate, with batch-specific C6-C8+ composition, water, sulfur and olefin analysis. Upstream reforming, feed splitting and any required hydrofining are in the actual upstream provider boundary, never free or repeated here. Record whole mixture mass and assay, not only contained toluene."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: sulfolane_makeup
+          role: "Sulfolane solvent makeup"
+          name: "Sulfolane solvent makeup"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh tetrahydrothiophene 1,1-dioxide makeup, CAS126-33-0, including declared delivery water and other constituents if present. Retain whole supplied formulation mass and component ledger; pure sulfolane identity alone cannot represent a diluted delivered formulation. Circulating lean/rich solvent is an internal transfer, not repeated fresh input."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_makeup
+          role: "Process-water makeup"
+          name: "Process-water makeup"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "External liquid water entering wet-solvent adjustment and raffinate washing. Meter fresh makeup only. Keep recirculating wash water, stripped water and entrained feed water in the internal water ledger. Actual supplier or direct abstraction and treatment must be identified."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: clay_charge
+          role: "Activated clay for aromatic extract polishing"
+          name: "Activated clay for aromatic extract polishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fresh clay charged to remove trace olefinic impurities before fractionation. Record actual mineral formulation, charge, service campaign and supplier. No numerical clay life or dose is assumed; consumed service and retained bed stock are reconciled without deleting the full fresh/spent physical exchanges."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumable
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: electricity
+          role: "Purchased alternating-current electricity"
+          name: "Purchased alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include extraction and circulation pumps, vacuum equipment, cooling pumps, fractionation auxiliaries, tank transfer and attributable controls. Meter actual voltage and geography; convert kWh by 3.6. Purchased electricity is separate from steam and liquid water."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: indirect_steam
+          role: "Purchased indirect-heating steam"
+          name: "Purchased indirect-heating steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whole steam commodity supplied to reboilers and solvent recovery/regeneration heat exchangers, at actual pressure, temperature, dryness and supplier return convention. Record steam mass and enthalpy, and condensate return separately. Link one steam supplier burden; a derived MJ heat account is a check, not a second purchased heat exchange."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: direct_steam
+          role: "Purchased direct-contact stripping steam"
+          name: "Purchased direct-contact stripping steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual external steam used for stripping, vacuum ejectors or clay steam-out, separated by point of use. Internally generated water-stripper steam is an internal link and not purchased twice. Direct-contact condensate goes to its actual contaminated-water account, not the clean utility return."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: cooling_makeup
+          role: "Cooling-water makeup"
+          name: "Cooling-water makeup"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fresh liquid makeup for the declared recirculating cooling loop. Meter separately from process-water makeup and record evaporation, drift, blowdown and stock; circulation itself is not repeated intake. A once-through or refrigerant cooling design requires a separately complete extension."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: nitrogen
+          role: "Nitrogen for tank blanketing"
+          name: "Nitrogen for tank blanketing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only if actual tanks or solvent system use nitrogen blanketing. Retain supplier purity, pressure and metered mass; convert gas volume only with declared temperature, pressure, composition and compressibility. Absence needs operational evidence; no default purge is imposed."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumable
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_toluene
+          role: "Toluene"
+          name: "Toluene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "33ac34b7-d691-4eda-8563-daef49a05157"
+          property_unit: "Mass / kg"
+          description: "One accepted bulk liquid toluene product at the plant delivery gate. Keep net whole commercial product mass, measured toluene assay, water, benzene/non-aromatic impurities and acceptance specification. This is not a neat-component mass, solvent blend, spent solvent or transported-market product. Native generic production-mix identity does not prescribe technology shares or a provider."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: benzene_coproduct
+          role: "Recovered benzene commercial product"
+          name: "Recovered benzene commercial product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Physically separate benzene-column distillate sold to a documented user at actual purity and gate. Record whole product mass, assay, destination and price. Do not bind a native Brazil transport interface or a technology-share mix to this single reformate-recovery output without genuine compatibility."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: c8_aromatic_cut
+          role: "Toluene-column C8-plus aromatic bottoms product"
+          name: "Toluene-column C8-plus aromatic bottoms product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One undivided useful C8-plus aromatic cut leaving the toluene column. Retain mixed-xylene isomers, ethylbenzene and higher-boiler assay and receiver. Do not rename the whole cut pure xylene or p-xylene. Further xylene purification/isomerisation is outside this route and belongs to the downstream receiver."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: raffinate
+          role: "Washed non-aromatic reformate raffinate"
+          name: "Washed non-aromatic reformate raffinate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Useful non-aromatic raffinate after solvent washing, with actual residual aromatics, sulfolane and water assay. Its buyer and refinery/solvent use must be evidenced. This mixture is not a named pure alkane and receives no automatic avoided-gasoline credit."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: condensate_return
+          role: "Returned indirect-steam condensate"
+          name: "Returned indirect-steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual uncontaminated liquid return to the steam supplier, with mass, temperature and common-datum enthalpy. This utility return is not a separately sold coproduct and has no allocation share. Unreturned or contaminated condensate stays in actual water/waste accounts."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      waste:
+        - row_id: solvent_regenerator_residue
+          role: "Sulfolane-regenerator degradation residue"
+          name: "Sulfolane-regenerator degradation residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual solvent-regenerator purge containing sulfolane degradation products and retained hydrocarbons. Measure removed whole mass and composition, waste classification and receiving treatment. Internal regenerated solvent is a return, not this waste."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: spent_clay
+          role: "Spent aromatic-polishing clay"
+          name: "Spent aromatic-polishing clay"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole exhausted clay after actual steam-out, retaining clay, hydrocarbons, water and deposits. Record campaign, removed mass, retained contamination and treatment destination. Record actual fresh replacement and bed-stock change; service amortisation never substitutes for the whole material exchange."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: process_effluent
+          role: "BTX-and-sulfolane-bearing aqueous purge"
+          name: "BTX-and-sulfolane-bearing aqueous purge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual aqueous purge from solvent/water recovery, benzene receiver boot and clay steaming to external treatment. Retain separately measured source volumes/densities and analytes before aggregation when they share a verified treatment interface. This is a contaminated-water mixture, not elemental water released to a river."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: cooling_blowdown
+          role: "Recirculating-cooling blowdown"
+          name: "Recirculating-cooling blowdown"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Liquid cooling-loop purge to the actual receiver, separate from BTX process effluent and utility condensate return. Retain water-treatment additives and impurity analysis; add each actual fresh additive as its own input before claiming inventory completeness."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: captured_vent
+          role: "Captured aromatic process vent to external abatement"
+          name: "Captured aromatic process vent to external abatement"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Captured gas crossing to the actual external shared abatement or recovery service. Measure whole gas mass and species composition at the handover; include actual treatment burden. Do not also enter captured species as direct air releases. Only final uncaptured/residual releases belong to elementary outputs."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+      elementary:
+        - row_id: benzene_air
+          role: "Benzene to outdoor air"
+          name: "Benzene to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure residual stack, vacuum, tank/loading and fugitive benzene separately after capture/control; integrate non-overlapping releases. CAS71-43-2; an elementary flow in the wrong compartment is not a substitute."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: toluene_air
+          role: "Toluene to outdoor air"
+          name: "Toluene to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure final residual toluene CAS108-88-3 by source and operating time. Product toluene UUID is never used as an elementary emission; captured-transfer and final-release quantities are disjoint."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: oxylene_air
+          role: "o-Xylene to outdoor air"
+          name: "o-Xylene to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify the o-isomer CAS95-47-6 only when present, separately from m/p isomers and other C8 hydrocarbons; sum to total VOC only as a cross-check."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: mxylene_air
+          role: "m-Xylene to outdoor air"
+          name: "m-Xylene to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify the m-isomer CAS108-38-3 only when present; keep sampling method, detection limit and release compartment."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: pxylene_air
+          role: "p-Xylene to outdoor air"
+          name: "p-Xylene to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify the p-isomer CAS106-42-3 only when present; a pure-isomer release cannot stand for the full aromatic cut."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: ethylbenzene_air
+          role: "Ethylbenzene to outdoor air"
+          name: "Ethylbenzene to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify ethylbenzene CAS100-41-4 in actual final air releases when present; it is distinct from every xylene isomer and from toluene."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: sulfolane_air
+          role: "Sulfolane to outdoor air"
+          name: "Sulfolane to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Screen final vents and entrained aerosol for sulfolane CAS126-33-0; retain sampling phase and quantify actual residual mass. Low volatility does not prove absence, and collected aerosol is not direct emission."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: sulfur_dioxide_air
+          role: "Sulfur dioxide to outdoor air"
+          name: "Sulfur dioxide to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Screen solvent degradation and final vent treatment for SO2 CAS7446-09-5; quantify only actual final releases. There is no stoichiometric assumption that all lost sulfolane becomes SO2."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: nitrogen_air
+          role: "Nitrogen to outdoor air"
+          name: "Nitrogen to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify actual uncaptured or final residual nitrogen from blanketing if used; preserve captured-transfer boundary and do not infer nitrogen loss from an imposed purge rate."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+        - row_id: water_vapour_air
+          role: "Water vapour to outdoor air"
+          name: "Water vapour to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify actual cooling evaporation and other final water-vapour releases from the separate water ledger. Keep drift droplets, wastewater and internal process steam distinct; add actual droplet/component releases separately."
+          amount:
+            expression: "Cumulative physical exchange amount belonging to the new first-accepted production cohort / Q; cp_reference. Retain inherited material/burden vectors, original numerator units and separate actual-period physical ledgers. Old-cohort service stays separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_releases
+              source_ids:
+                - jrc-lvoc-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "recovery_unit"
+    rule: "Retain unallocated whole-stream mass/component/water/energy balances first. Subdivide metered operations and assign directly identifiable product storage, loading and dedicated column duties to the product that causes them. Keep raffinate, benzene and C8-plus product services, mixed residuals and shared solvent recovery visible; no physical coproduct quantity is scaled by an allocation share."
+    source_ids:
+      - jrc-ilcd-general-2010
+      - jrc-lvoc-2017
+  - rule_id: allocation_causality
+    applies_to: "recovery_unit"
+    rule: "For each remaining joint burden, test and document physical causality from measured component recovery and operation responses. Mass share is permissible only for a burden demonstrably driven by handled mass; use a relevant measured constituent share where composition causes the burden. Energy allocation is limited to actual useful energy products on an evidenced calorific/enthalpy basis; chemical BTX and raffinate are not all fuel services. No universal mass or heat-value default applies."
+    source_ids:
+      - jrc-ilcd-general-2010
+  - rule_id: allocation_residual
+    applies_to: "recovery_unit"
+    rule: "For residual joint burdens without determining physical causality, use disclosed study-consistent economic shares a_i=m_i*p_i/sum(m_j*p_j) across actual useful co-products at their separation gates, using observed same-period net prices, consistent currency and positive value. Document missing/zero/negative-price cases for review, not fabricated shares. Test plausible price sensitivity; do not combine attributed burdens with avoided-product credits. Waste treatment remains with the causing process; internal solvent/water loops, condensate return and captured gas awaiting abatement have no saleable-product share."
+    source_ids:
+      - jrc-ilcd-general-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reference
+      process_id: "recovery_unit"
+      flow_role: "accepted_toluene"
+      record_type: "measurement"
+      raw_fields: "lot id; original cohort; first acceptance date; assay/water/impurities; specification; liquid state; tare/density; newly accepted dispatch; new closing FG; opening FG; returns; Q; Q0"
+      collection_method: "Calibrated net weighing or temperature-corrected tank gauging with measured compatible density; chromatographic assay and water analysis; reconcile sales, acceptance and stock by immutable lot identity."
+      unit: "kg"
+      frequency: "Every batch or continuous meter; full-period reconciliation"
+      temporal_coverage: "One declared complete operating period including start/stop"
+      site_scope: "Actual recovery unit and declared route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+    - protocol_id: cp_material
+      process_id: "recovery_unit"
+      flow_role: "reformate_feed; sulfolane_makeup"
+      record_type: "measurement"
+      raw_fields: "supplier; exact formulation; whole kg; component assay; feed readiness; fresh supply; transfers; opening/closing raw solvent WIP and carried burden vector"
+      collection_method: "Weigh or gauge every fresh receipt; assay representative batches; reconcile independent lean/rich/stripper/recovery/wash transfer meters and sampled components."
+      unit: "kg"
+      frequency: "Every batch or continuous meter; full-period reconciliation"
+      temporal_coverage: "One declared complete operating period including start/stop"
+      site_scope: "Actual recovery unit and declared route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+    - protocol_id: cp_utility
+      process_id: "recovery_unit"
+      flow_role: "electricity; indirect_steam; direct_steam; condensate_return; water_makeup; cooling_makeup"
+      record_type: "measurement"
+      raw_fields: "operation; meter; kWh; steam kg T P dryness enthalpy; return kg state; water kg; evaporative and blowdown terms; supplier convention; losses; calibration"
+      collection_method: "Submeter extraction, recovery/regeneration and each column/cooling operation; separate direct and indirect steam and physical water. Reconcile purchased utilities and the complete steam/condensate/water balance."
+      unit: "MJ; kg"
+      frequency: "Every batch or continuous meter; full-period reconciliation"
+      temporal_coverage: "One declared complete operating period including start/stop"
+      site_scope: "Actual recovery unit and declared route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+    - protocol_id: cp_consumable
+      process_id: "recovery_unit"
+      flow_role: "clay_charge; nitrogen"
+      record_type: "measurement"
+      raw_fields: "actual formulation; fresh charge kg; campaign; retained bed mass; removal; blanketing use; meter states; gas conversion; incremental service ledger"
+      collection_method: "Record issues and stocks, actual fresh/spent campaigns and independently measured service usage. A shared campaign splits only the service burden by evidenced use; full physical exchange remains in its real period."
+      unit: "kg"
+      frequency: "Every batch or continuous meter; full-period reconciliation"
+      temporal_coverage: "One declared complete operating period including start/stop"
+      site_scope: "Actual recovery unit and declared route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+    - protocol_id: cp_outputs
+      process_id: "recovery_unit"
+      flow_role: "benzene_coproduct; c8_aromatic_cut; raffinate"
+      record_type: "measurement"
+      raw_fields: "stream id; whole kg; all measured constituents; destination; sale/use evidence; separation gate; net price; currency; stocks; burden vector"
+      collection_method: "Independently weigh or gauge and assay each distinct output; reconcile acceptance and buyer records without turning an undivided cut into pure components."
+      unit: "kg"
+      frequency: "Every batch or continuous meter; full-period reconciliation"
+      temporal_coverage: "One declared complete operating period including start/stop"
+      site_scope: "Actual recovery unit and declared route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+    - protocol_id: cp_wastes
+      process_id: "recovery_unit"
+      flow_role: "solvent_regenerator_residue; spent_clay; process_effluent; cooling_blowdown"
+      record_type: "measurement"
+      raw_fields: "source; whole kg or volume and density; composition including water; campaign; receiver; treatment; stocks; manifest; leach/analyte record"
+      collection_method: "Measure every actual removal and retain separate originating streams, treatment interface and composition. Reconcile fresh/spent and water balances; select real treatment, never assumed generic disposal."
+      unit: "kg"
+      frequency: "Every batch or continuous meter; full-period reconciliation"
+      temporal_coverage: "One declared complete operating period including start/stop"
+      site_scope: "Actual recovery unit and declared route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+    - protocol_id: cp_releases
+      process_id: "recovery_unit"
+      flow_role: "captured_vent; benzene_air; toluene_air; oxylene_air; mxylene_air; pxylene_air; ethylbenzene_air; sulfolane_air; sulfur_dioxide_air; nitrogen_air; water_vapour_air"
+      record_type: "measurement"
+      raw_fields: "outlet; species CAS; phase; concentration; wet/dry gas flow; T P; operating time; controls; captured transfer; final residual; detection limits; water evaporation"
+      collection_method: "Screen actual component releases and measure representative routine/start-stop/loading/fugitive conditions; integrate concentration with compatible exhaust flow and hours. Keep transfer and residual boundaries separate; add every other actual species atomically."
+      unit: "kg"
+      frequency: "Every batch or continuous meter; full-period reconciliation"
+      temporal_coverage: "One declared complete operating period including start/stop"
+      site_scope: "Actual recovery unit and declared route"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Divide each cumulative physical exchange belonging to the newly accepted cohort, including inherited upstream/WIP terms and actual incremental operations, by positive first-acceptance Q; accepted_toluene equals 1 kg. Retain the unallocated ledger and units. Compute separately attributed burden vectors using subdivision and documented joint shares, then divide each cohort vector by its own accepted quantity. Never erase coproduct mass or move opening-FG service into current Q."
+      inputs:
+        - cp_reference
+        - "period records"
+        - "cohort ledger"
+      output: "per 1 kg reference flow"
+      source_ids:
+        - jrc-ilcd-general-2010
+    - id: component_balance
+      applies_to: "recovery_unit"
+      rule: "For each whole stream use measured component kg=whole kg times its measured mass fraction. For total mass and conserved elemental C/H/S, check input plus opening stocks equals outputs plus closing stocks, with zero net elemental generation. For each reactive chemical species X, including sulfolane degradation and water, use opening X + external input X + actual G_X = closing X + external output X + actual C_X; establish actual formation/consumption from matched analysis or supported stoichiometry with measured reaction extent. Unknown species conversion remains unresolved; do not impose species conservation or assume complete degradation. Retain measured losses and uncertainty. Keep raw/WIP/FG burden vectors separate from physical mass. Unknown residual is a finding, never a fictitious product or zero."
+      inputs:
+        - cp_material
+        - cp_outputs
+        - cp_wastes
+        - cp_releases
+        - stocks
+      output: "unallocated component and water balances"
+      source_ids:
+        - jrc-lvoc-2017
+        - jrc-ilcd-general-2010
+    - id: heat_check
+      applies_to: "indirect_steam; direct_steam; condensate_return"
+      rule: "Calculate net incoming-minus-return enthalpy using measured kg and same-datum states; kJ/1000=MJ. Track direct steam into process water and distinguish clean indirect return. Internal recovered heat/water is not a new supplier input or avoided-heat credit."
+      inputs:
+        - cp_utility
+        - "measured mass"
+        - "specific enthalpy"
+        - states
+      output: "physical heat and water check"
+      source_ids:
+        - jrc-lvoc-2017
+    - id: release_integral
+      applies_to: "benzene_air; toluene_air; oxylene_air; mxylene_air; pxylene_air; ethylbenzene_air; sulfolane_air; sulfur_dioxide_air"
+      rule: "Integrate species concentration times compatible gas-flow rate times operating duration, correct units, then divide by Q. Sum disjoint outlets/phases only; retain uncertainty and detection limits. Captured vent enters its external treatment once; do not count both captured molecules and treatment final emissions as direct releases here."
+      inputs:
+        - cp_releases
+        - concentration
+        - flow
+        - time
+        - Q
+      output: "kg per 1 kg reference flow"
+      source_ids:
+        - jrc-lvoc-2017
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Confirm whole physical identity, type, phase/composition, property/unit and gate before linking a provider. Ordinary unresolved UUIDs/providers stay explicit gaps, not absent exchanges; product Toluene cannot identify an air emission. Native CPC35499 classification debt does not rewrite chemical CAS/type or the independent official CPC34110 scope."
+      evidence: "Native records and supplier/receiver analysis"
+    - id: quality_coverage
+      applies_to: "recovery_unit"
+      requirement: "Cover normal and abnormal operation, component assay variation, solvent degradation, wash and steam-out discharges, actual cleaning/additives, stocks and every output destination. No JRC historical BB2 energy range or vendor purity/recovery number is a plant default. Add all actual omitted atomic exchanges before claiming completeness."
+      evidence: "Full-period operations and missing-data register"
+    - id: quality_cohorts
+      applies_to: "cp_reference"
+      requirement: "Prove unique first acceptance and raw/WIP/FG carryover; retain original Q0 for any later service correction. Unknown old denominator permits only a raw correction record pending review. Record sampling and allocation uncertainty without invented tolerances."
+      evidence: "Lot-linked stock, burden vectors, calibration and acceptance records"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "accepted_toluene"
+    rule: "Require one whole liquid commercial Toluene reference output and all qualifiers; reject styrene/polymer, solvent blend, emission, wrong market gate or component-only quantity. Missing core identity blocks usable methodology; generic name alone cannot verify a study."
+    source_ids:
+      - jrc-lvoc-2017
+  - rule_id: validate_quantities
+    applies_to: "all inventory rows"
+    rule: "Require Q>0 and finite nonnegative physical quantities, common period and 1 kg basis in both languages. Test volume-density and fraction/percent conventions, full steam/return/water separation and mass/component closure against measured uncertainty. Reject double first acceptance, component-scaled product reference, recycling as fresh input and double steam heat burdens."
+    source_ids:
+      - jrc-lvoc-2017
+      - jrc-ilcd-general-2010
+  - rule_id: validate_allocation
+    applies_to: "recovery_unit"
+    rule: "Check every saleable output and branch point, evidence for subdivision/causality and residual economic shares. Shares sum to one only for the relevant useful co-functions; retain full physical outputs, no avoided-product credit, waste/return exclusions and original-cohort Q0. Unresolved allocation is study review, never a fabricated passing factor."
+    source_ids:
+      - jrc-ilcd-general-2010
+  - rule_id: validate_completeness
+    applies_to: "recovery_unit"
+    rule: "Check final atmospheric species/phases, captured gas receiver, BTX/solvent water treatment, spent clay and solvent residue, supplier compatibility and stock vectors. Additional actual additives/emissions require atomic extensions. A passed structural/measurement check does not remove identity/provider/quantity gaps or confer scientific, translation or study approval."
+    source_ids:
+      - jrc-lvoc-2017
+      - jrc-ilcd-general-2010
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared bulk toluene recovery route at its verified plant gate, with complete actual upstream/treatment links and explicit allocation/cohort metadata"
+  excluded_use: "Universal toluene production mix; other feed/solvent routes; pure-component quantity substitutes; completed comparative assertion or automatic avoided-gasoline credit"
+  required_metadata: "Reference qualifiers; site/time; feed composition/readiness; utilities and steam return; every coproduct/waste/air destination; stock and burden vectors; Q/Q0; actual allocation and provider pins"
+  required_quality_disclosure: "Native classification debt; unresolved ordinary identities/providers; sampled conditions; analytical uncertainty; missing records; original-source limitations; allocation/price sensitivity; review and study states"
+  update_trigger: "Feed readiness/composition, extraction technology/solvent, product gate/specification, steam/cooling/abatement, coproduct use, stock rules or allocation evidence changes"
+data_sources:
+  - id: "jrc-lvoc-2017"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Production of Large Volume Organic Chemicals (2017), JRC109279, DOI 10.2760/77304; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/JRC109279_LVOC_Bref.pdf"
+    used_for: "§4.2.2.2 and Figure4.3, printed197–199/PDF235–237: extraction-ready feed, wet sulfolane loops, raffinate washing, clay and fractionation; §§4.3.1.2,4.3.2.2,4.3.3–4.3.6, printed212–218/PDF250–256: final air, water, solvent/clay waste and utilities. Qualitative route evidence only; historical energy and purity values are not defaults."
+  - id: "jrc-ilcd-general-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment—Detailed guidance, first edition March2010, EUR24708EN/JRC48157, DOI10.2788/38479; https://publications.jrc.ec.europa.eu/repository/bitstream/JRC48157/ilcd_handbook-general_guide_for_lca-detailed_guidance_12march2010_isbn_fin.pdf"
+    used_for: "§§7.9.2–7.9.3, printed255–272/PDF275–292: subdivision, flow-specific determining physical causality and residual market-value allocation. Cohort/stock handling and first-acceptance rules are explicit PCR foreground-protocol synthesis, not a quoted ILCD factory formula or default allocation factor."
+  - id: "honeywell-aromatics-recovery"
+    type: "literature"
+    reference: "Honeywell UOP, Aromatics Recovery, official technology page, snapshot retrieved 2026-11-06; https://uop.honeywell.com/en/industry-solutions/petrochemicals/aromatics-recovery"
+    used_for: "Independent vendor counterevidence distinguishes simplified ED Sulfolane for reformate-splitter overhead from traditional Sulfolane. Vendor purity/recovery/cost claims are not adopted for this wet liquid-liquid route."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:687756748b2df2593a9c6ebc59dc8775942c3661733ea3fa377cac4e67b63024"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4808"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4808
+          line: 58
+          column: 1
+        end:
+          offset: 7304
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual extraction-ready reformate received at the recovery unit, with feed composition and upstream readiness evidence |\n| starting_condition_role | foreground_entry |\n| product_classification_scope | CPC 3.0 34110; narrower |\n| recursive_input_rule | Purchased same-category toluene is an evidenced upstream input with burdens, never new recovered output or an internal recycle. Split it into an added atomic input and do not dilute it into production Q. |\n| upstream_dataset_requirement | Actual reformate provider includes reforming, splitting and required feed treatment; utility, solvent/clay and external treatment links match composition/property/gate |\n| disclosure | Record actual source plant, feed batch/readiness, all gates, utility return convention, outsourced treatment, omitted operations and inventory gaps |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | recovery_unit | Include receipt/storage, every extraction/recovery/regeneration/wash/clay/fractionation operation, internal transfers, start/stop/cleaning losses, loading and final releases. No upstream refinery unit is duplicated or assumed burden-free. Additional actual chemicals, packaging, regeneration or controls require individual physical exchanges before completeness. | `jrc-lvoc-2017` |\n| boundary_acceptance | accepted_toluene | Tag every first acceptance once. Q>0 equals newly accepted product dispatched in the period plus newly accepted closing finished stock, without opening finished stock, returns, retests, internal recycles or rejected output. Keep old and new acceptance cohorts apart. An already accepted lot rehandled this period never produces a second reference output. | `jrc-ilcd-general-2010` |\n| boundary_carry | recovery_unit | Carry raw-feed, solvent, bed, WIP and FG mass/component stocks with their accumulated upstream and operation burden vectors by lot/cohort. Carry partial raw/WIP burdens forward until acceptance; add only incremental processing, avoiding a second feed burden. Opening FG dispatch is a transfer of its original burden. Later service/return/repair corrections attach to the original accepted cohort and original accepted quantity Q0; never divide them by current Q. If Q0 is unknown, preserve raw unnormalised burdens and hold the correction, rather than inventing a denominator. | `jrc-ilcd-general-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 323
+              line: 9
+              column: 81
+          text: "# Toluene recovered from reformate by wet sulfolane extraction and fractionation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4808
+              line: 58
+              column: 1
+            end:
+              offset: 4829
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36257"
+      family: "allocation"
+      span:
+        start:
+          offset: 36257
+          line: 538
+          column: 1
+        end:
+          offset: 38105
+          line: 546
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | recovery_unit | Retain unallocated whole-stream mass/component/water/energy balances first. Subdivide metered operations and assign directly identifiable product storage, loading and dedicated column duties to the product that causes them. Keep raffinate, benzene and C8-plus product services, mixed residuals and shared solvent recovery visible; no physical coproduct quantity is scaled by an allocation share. | `jrc-ilcd-general-2010`; `jrc-lvoc-2017` |\n| allocation_causality | recovery_unit | For each remaining joint burden, test and document physical causality from measured component recovery and operation responses. Mass share is permissible only for a burden demonstrably driven by handled mass; use a relevant measured constituent share where composition causes the burden. Energy allocation is limited to actual useful energy products on an evidenced calorific/enthalpy basis; chemical BTX and raffinate are not all fuel services. No universal mass or heat-value default applies. | `jrc-ilcd-general-2010` |\n| allocation_residual | recovery_unit | For residual joint burdens without determining physical causality, use disclosed study-consistent economic shares a_i=m_i*p_i/sum(m_j*p_j) across actual useful co-products at their separation gates, using observed same-period net prices, consistent currency and positive value. Document missing/zero/negative-price cases for review, not fabricated shares. Test plausible price sensitivity; do not combine attributed burdens with avoided-product credits. Waste treatment remains with the causing process; internal solvent/water loops, condensate return and captured gas awaiting abatement have no saleable-product share. | `jrc-ilcd-general-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 323
+              line: 9
+              column: 81
+          text: "# Toluene recovered from reformate by wet sulfolane extraction and fractionation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36257
+              line: 538
+              column: 1
+            end:
+              offset: 36297
+              line: 538
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_47709"
+      family: "validation"
+      span:
+        start:
+          offset: 47709
+          line: 577
+          column: 1
+        end:
+          offset: 49473
+          line: 586
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | accepted_toluene | Require one whole liquid commercial Toluene reference output and all qualifiers; reject styrene/polymer, solvent blend, emission, wrong market gate or component-only quantity. Missing core identity blocks usable methodology; generic name alone cannot verify a study. | `jrc-lvoc-2017` |\n| validate_quantities | all inventory rows | Require Q>0 and finite nonnegative physical quantities, common period and 1 kg basis in both languages. Test volume-density and fraction/percent conventions, full steam/return/water separation and mass/component closure against measured uncertainty. Reject double first acceptance, component-scaled product reference, recycling as fresh input and double steam heat burdens. | `jrc-lvoc-2017`; `jrc-ilcd-general-2010` |\n| validate_allocation | recovery_unit | Check every saleable output and branch point, evidence for subdivision/causality and residual economic shares. Shares sum to one only for the relevant useful co-functions; retain full physical outputs, no avoided-product credit, waste/return exclusions and original-cohort Q0. Unresolved allocation is study review, never a fabricated passing factor. | `jrc-ilcd-general-2010` |\n| validate_completeness | recovery_unit | Check final atmospheric species/phases, captured gas receiver, BTX/solvent water treatment, spent clay and solvent residue, supplier compatibility and stock vectors. Additional actual additives/emissions require atomic extensions. A passed structural/measurement check does not remove identity/provider/quantity gaps or confer scientific, translation or study approval. | `jrc-lvoc-2017`; `jrc-ilcd-general-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 243
+              line: 9
+              column: 1
+            end:
+              offset: 323
+              line: 9
+              column: 81
+          text: "# Toluene recovered from reformate by wet sulfolane extraction and fractionation"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 47709
+              line: 577
+              column: 1
+            end:
+              offset: 47731
+              line: 577
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_4808"
+      source_span:
+        start:
+          offset: 5819
+          line: 73
+          column: 1
+        end:
+          offset: 6236
+          line: 73
+          column: 418
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_acceptance"
+      identity_kind: "explicit"
+      unit_id: "normative_4808"
+      source_span:
+        start:
+          offset: 6237
+          line: 74
+          column: 1
+        end:
+          offset: 6662
+          line: 74
+          column: 426
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_carry"
+      identity_kind: "explicit"
+      unit_id: "normative_4808"
+      source_span:
+        start:
+          offset: 6663
+          line: 75
+          column: 1
+        end:
+          offset: 7302
+          line: 75
+          column: 640
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_36257"
+      source_span:
+        start:
+          offset: 36370
+          line: 542
+          column: 1
+        end:
+          offset: 36851
+          line: 542
+          column: 482
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_36257"
+      source_span:
+        start:
+          offset: 36852
+          line: 543
+          column: 1
+        end:
+          offset: 37415
+          line: 543
+          column: 564
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_36257"
+      source_span:
+        start:
+          offset: 37416
+          line: 544
+          column: 1
+        end:
+          offset: 38103
+          line: 544
+          column: 688
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_47709"
+      source_span:
+        start:
+          offset: 47804
+          line: 581
+          column: 1
+        end:
+          offset: 48131
+          line: 581
+          column: 328
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_quantities"
+      identity_kind: "explicit"
+      unit_id: "normative_47709"
+      source_span:
+        start:
+          offset: 48132
+          line: 582
+          column: 1
+        end:
+          offset: 48595
+          line: 582
+          column: 464
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_47709"
+      source_span:
+        start:
+          offset: 48596
+          line: 583
+          column: 1
+        end:
+          offset: 49014
+          line: 583
+          column: 419
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_47709"
+      source_span:
+        start:
+          offset: 49015
+          line: 584
+          column: 1
+        end:
+          offset: 49471
+          line: 584
+          column: 457
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4808"
+      source_span:
+        start:
+          offset: 4808
+          line: 58
+          column: 1
+        end:
+          offset: 4829
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4808"
+      source_span:
+        start:
+          offset: 4857
+          line: 62
+          column: 1
+        end:
+          offset: 5746
+          line: 69
+          column: 165
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36257"
+      source_span:
+        start:
+          offset: 36257
+          line: 538
+          column: 1
+        end:
+          offset: 36297
+          line: 538
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_47709"
+      source_span:
+        start:
+          offset: 47709
+          line: 577
+          column: 1
+        end:
+          offset: 47731
+          line: 577
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:687756748b2df2593a9c6ebc59dc8775942c3661733ea3fa377cac4e67b63024"
+  generated_content_sha256: "sha256:e6ec8740ffe796cbeedc3408d875b0216c0f701445ae2cd701d4df4c87850392"

@@ -1,0 +1,131 @@
+{
+  "reviewer": "codex-primary-controller /root",
+  "reviewed_at_utc": "2026-11-08T07:08:58.845082+00:00",
+  "synthetic_only": true,
+  "not_defaults_ranges_or_factory_data": true,
+  "cases": [
+    {
+      "case": "unique first acceptance",
+      "inputs": {
+        "new_dispatch_kg": 80,
+        "new_closing_FG_kg": 20,
+        "old_FG_kg_excluded": 30,
+        "returns_retests_kg_excluded": 10
+      },
+      "root_computed": 100,
+      "expected": 100,
+      "unit": "kg accepted"
+    },
+    {
+      "case": "physical wet-mass ledger",
+      "inputs": {
+        "opening_WIP_kg": 5,
+        "issued_kg": 110,
+        "accepted_kg": 100,
+        "trim_kg": 10,
+        "dust_kg": 2,
+        "closing_WIP_kg": 3
+      },
+      "root_computed": 0,
+      "expected": 0,
+      "unit": "kg residual"
+    },
+    {
+      "case": "electricity unit conversion",
+      "inputs": {
+        "kWh": 12
+      },
+      "root_computed": 43.2,
+      "expected": 43.2,
+      "unit": "MJ"
+    },
+    {
+      "case": "electricity per accepted mass",
+      "inputs": {
+        "MJ": 43.2,
+        "accepted_kg": 100
+      },
+      "root_computed": 0.43200000000000005,
+      "expected": 0.432,
+      "unit": "MJ/kg"
+    },
+    {
+      "case": "old service original denominator",
+      "inputs": {
+        "service_MJ": 5,
+        "original_accepted_kg": 50,
+        "current_kg_ignored": 100
+      },
+      "root_computed": 0.1,
+      "expected": 0.1,
+      "unit": "MJ/kg original cohort"
+    },
+    {
+      "case": "PM measured rate",
+      "inputs": {
+        "C_mg_m3": 2,
+        "flow_m3_h": 100,
+        "duration_h": 5
+      },
+      "root_computed": 0.001,
+      "expected": 0.001,
+      "unit": "kg"
+    },
+    {
+      "case": "PM already integrated gas volume",
+      "inputs": {
+        "C_mg_m3": 2,
+        "integrated_m3": 500
+      },
+      "root_computed": 0.001,
+      "expected": 0.001,
+      "unit": "kg; do not multiply by duration again"
+    },
+    {
+      "case": "PM2.5–10 exclusive",
+      "inputs": {
+        "PM10_kg": 0.005,
+        "PM2_5_kg": 0.002
+      },
+      "root_computed": 0.003,
+      "expected": 0.003,
+      "unit": "kg"
+    },
+    {
+      "case": "PM above10 exclusive",
+      "inputs": {
+        "total_kg": 0.006,
+        "PM10_kg": 0.005
+      },
+      "root_computed": 0.001,
+      "expected": 0.001,
+      "unit": "kg"
+    },
+    {
+      "case": "gross packaging legs",
+      "inputs": {
+        "opening_kg": 5,
+        "receipts_kg": 10,
+        "dispatch_kg": 9,
+        "returnout_kg": 3,
+        "waste_kg": 1,
+        "closing_kg": 2
+      },
+      "root_computed": 0,
+      "expected": 0,
+      "unit": "kg residual"
+    },
+    {
+      "case": "physical loaded transport",
+      "inputs": {
+        "loaded_kg": 400,
+        "distance_km": 100
+      },
+      "root_computed": 40.0,
+      "expected": 40,
+      "unit": "tkm"
+    }
+  ],
+  "zero_or_missing_denominator": "retain raw amounts, no division or automatic zero; inconclusive",
+  "all_cases_passed": true
+}

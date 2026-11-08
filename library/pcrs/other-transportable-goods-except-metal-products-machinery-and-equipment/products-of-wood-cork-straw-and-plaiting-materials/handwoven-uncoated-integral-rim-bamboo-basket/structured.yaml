@@ -1,0 +1,756 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.handwoven-uncoated-integral-rim-bamboo-basket"
+  classification_refs: "CPC 3.0 31923; narrower"
+  covered_products: "Actual verified all-bamboo handleless uncoated accepted baskets with integral woven rims"
+  excluded_products: "Rattan, willow, grass and palm goods; liners, coatings, adhesives, hardware, handles and separately lashed rims; panels, mats and raw culms; chemical treatment, onsite heated processing, combustion or resin curing routes"
+  representative_product: "Integral-rim bamboo basket for non-food storage, with study-declared species, shape and specification"
+  production_route: "Purchased green strips → profiling → optional clean-water dampening → handweaving with continuous rim → ambient conditioning → first acceptance"
+  market_state: "Unpackaged complete accepted product at factory gate; contents excluded"
+functional_unit:
+  what: "Provide complete bamboo baskets of declared geometry and weaving quality for non-food storage"
+  how_much: "1 m3 accepted complete-basket output on the net bamboo-element geometric-volume basis of sections 4 and 8, potentially comprising many baskets"
+  how_well: "Actual integral rim, complete shape and declared defect acceptance; support any load/capacity claims with specification and tests, without a default"
+  how_long_or_cycle: "One first-acceptance manufacturing gate; no default lifetime, reuse cycles or plastic-basket equivalence"
+  reference_flow_link: "basket_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "foreground_dataset"
+      rule: "Include strip receipt and profiling, weaving/integral rim, ambient conditioning, inspection, rejects, rework, attributable utilities, water, incoming transport and actual waste treatment. UNIDO describes alternative chemical finishes; they are excluded by this deliberately narrower admission scope, not assumed absent industry-wide. Sources: unido-woven-bamboo-2008; mlit-bamboo-finishing-2020."
+      source_ids:
+        - mlit-bamboo-finishing-2020
+        - unido-woven-bamboo-2008
+    - rule_id: boundary_extend
+      applies_to: "foreground_dataset"
+      rule: "The unpackaged gate excludes transport packaging and downstream distribution/use/end-of-life of the basket; it does not exempt inbound packaging waste. Declare capital/tools, maintenance and ancillary coverage. Any actual additional material, fuel, emission, inbound packaging component or transport service requires a separate atomic exchange and compatible evidence before dataset completeness is claimed; do not force it into the bamboo row."
+      source_ids: []
+    - rule_id: boundary_provider
+      applies_to: "foreground_dataset"
+      rule: "A generic product UUID is not a verified provider. Link whole-basket output only to a provider using the same construction, gate, moisture and net bamboo-element geometric volume, or a measured compatible conversion. Capacity, envelope, skeletal or unknown volume cannot match by UUID alone."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased prepared green bamboo strips, uncoated, unglued and unpreserved, with actual moisture records"
+  starting_condition_role: "Production split and upstream interface, not exemption of bamboo cultivation, harvest, strip preparation and transport burdens"
+  product_classification_scope: "Only the narrower 31923 finished-product scope; green strips are a different-stage input"
+  recursive_input_rule: "Purchased same-category finished baskets cannot masquerade as new output; rework retains the original cohort and burdens, with no recount of a basket."
+  upstream_dataset_requirement: "Verify species, green state, treatment, gate, transport and reference-quantity compatibility; unknown supplier data remain a gap, not zero."
+  disclosure: "Disclose foreground boundary separately from upstream coverage, unresolved exchanges, allocation, opening/closing stock and uncertainty"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Bamboo, Rattan, Palm, and Grass Products"
+    uuid: "ab01bb2e-f55c-4ce6-9355-7c86f8a55576"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - "Whole-basket identity"
+    - "bamboo species"
+    - "supplier treatment"
+    - "actual BOM"
+    - "integral rim and no handles"
+    - "variant/specification"
+    - site
+    - "period and acceptance rules"
+    - "moisture condition and conditioning endpoint"
+    - "net bamboo-element geometric-volume definition"
+    - "measurement and uncertainty"
+    - sampling
+    - "first-acceptance cohort"
+    - "upstream and waste fate"
+reference_flows:
+  []
+measurement_rules:
+  - id: element_volume
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Measure net geometric volume inside the geometric boundaries of every bamboo element in complete baskets, including natural microscopic cellular porosity and excluding basket cavity, macroscopic weave gaps and external envelope. This is not pore-free cell-wall or skeletal volume; use cp_geometry. Sources: liang-bamboo-geometry-2026; phongphinittana-woven-bamboo-2025."
+  - id: geometry_method
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Measure actual curved centroid-path length and cross-section areas at low contact force for the actual variant. Length × width × thickness is allowed only for demonstrated uniform rectangular sections; otherwise integrate along the actual path with station refinement or validated 3D geometry. Count each element once and never subtract projected crossings. Sources: liang-bamboo-geometry-2026; phongphinittana-woven-bamboo-2025."
+  - id: same_denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Normalize every final exchange once by the same positive first-accepted whole-basket net element volume Q_V. Physical mass, dry matter, carbon, water and energy ledgers retain their original units. Basket volumes require measurement or a validated actual-variant sample estimate; no default density or universal volume per basket."
+  - id: energy_units
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert actual metered kWh only by 1 kWh = 3.6 MJ; electricity neither determines bamboo volume nor establishes a background provider."
+process_map:
+  - id: basket_manufacture
+    name: "Green-strip profiling, handweaving integral rim, ambient conditioning and first acceptance"
+    inclusion: "required"
+    inclusion_condition: "Actual production within this scope"
+    role: "foreground"
+    quantitative_reference: "basket_output"
+process_inventory:
+  - id: basket_manufacture
+    label: "Green-strip profiling, handweaving integral rim, ambient conditioning and first acceptance"
+    inputs:
+      product:
+        - row_id: green_strips
+          role: "Green bamboo strip input"
+          name: "Prepared green bamboo slats and strips"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c9008e6c-9bdf-49af-baf9-cdb134034396"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure this exchange separately using actual work orders, records and physical state."
+          amount:
+            expression: "Record net issued strip mass and moisture, including trimming losses and reject burdens attributable to first-accepted output; use the attributed normalized result of cp_activity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_activity
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+            ranges: []
+        - row_id: tap_water
+          role: "Dampening water supply"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure this exchange separately using actual work orders, records and physical state."
+          amount:
+            expression: "Include only actual clean-water dampening; meter supplied mass and record reuse, drainage and evaporation, without multiplying basket volume by water density. Use cp_water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+            ranges: []
+        - row_id: electricity
+          role: "Site electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Measure this exchange separately using actual work orders, records and physical state."
+          amount:
+            expression: "Only actual <1 kV grid-average consumption electricity at user; record attributable lighting, equipment and conditioning services from actual meters, converted and normalized in cp_activity. Handweaving alone does not prove zero utility use."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_activity
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: basket_output
+          role: "First-accepted complete bamboo basket output"
+          name: "Bamboo, Rattan, Palm, and Grass Products"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ab01bb2e-f55c-4ce6-9355-7c86f8a55576"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "The whole finished product crosses the first-acceptance gate on the declared geometric basis, using cp_geometry and cp_acceptance."
+          amount:
+            expression: "1 m3"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+                - liang-bamboo-geometry-2026
+                - phongphinittana-woven-bamboo-2025
+            ranges: []
+      waste:
+        - row_id: bamboo_offcut
+          role: "Bamboo trimming offcut"
+          name: "Uncoated unpreserved bamboo trimming offcut"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure this exchange separately using actual work orders, records and physical state."
+          amount:
+            expression: "Use cp_activity to weigh actual non-agglomerated offcuts leaving the process, recording moisture, form and receiver; internal reuse is not external waste or an avoided-burden credit."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_activity
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+            ranges: []
+        - row_id: basket_reject
+          role: "Unrecoverable basket reject"
+          name: "Uncoated all-bamboo basket reject"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure this exchange separately using actual work orders, records and physical state."
+          amount:
+            expression: "Use cp_activity to record final unrecoverable reject net mass, pre/post-first-acceptance status and actual treatment. Pre-acceptance rejects never enter Q_V; post-acceptance discard retains its original Q_V and is a separate original-cohort waste/service correction, never a cancellation or second acceptance."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_activity
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+            ranges: []
+        - row_id: dampening_effluent
+          role: "Dampening effluent"
+          name: "Chemical-additive-free bamboo dampening wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure this exchange separately using actual work orders, records and physical state."
+          amount:
+            expression: "Include only actual drainage; cp_water measures discharged mass, pollutant concentrations and treatment receiver; reused water is not counted again as fresh intake. Add substance-specific emissions for actual foreground treatment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+            ranges: []
+      elementary:
+        - row_id: evaporated_water
+          role: "Ambient conditioning water evaporation"
+          name: "Water vapour, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure this exchange separately using actual work orders, records and physical state."
+          amount:
+            expression: "Use the measured water balance in cp_water for net evaporation; distinguish incoming strip water, added water, atmospheric sorption, drainage and stock, without treating unverified total mass loss as water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - unido-woven-bamboo-2008
+                - mlit-bamboo-finishing-2020
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_cause
+    applies_to: "foreground_dataset"
+    rule: "Avoid allocation by metering work orders/operations. For shared lighting, dampening or equipment, use a documented physical causal driver such as metered machine time or occupied conditioning service, with period totals reconciled. Do not use nominal basket counts across unlike variants or assume mass and volume are interchangeable. This is a foreground collection rule, not an empirical universal allocation coefficient."
+    source_ids:
+      - ilcd-general-2010
+  - rule_id: allocation_reject
+    applies_to: "foreground_dataset"
+    rule: "No default co-product revenue, substitution credit or negative waste input. Internal reused offcuts retain inherited burdens and are not fresh purchases. External sale as a genuine co-product requires evidence of product quality, function, receiving market and documented subdivision/allocation before the dataset can be complete. Failed baskets/rework remain attached to their originating cohort."
+    source_ids:
+      - ilcd-general-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_geometry
+      process_id: "basket_manufacture"
+      flow_role: "basket_output"
+      record_type: "measurement"
+      raw_fields: "basket id; variant; species; unique components; completeness; moisture; conditioning endpoint; curved path and section profiles; calibration; sampling probabilities; uncertainty"
+      collection_method: "Execute geometry_complete, geometry_disassembly, geometry_integrate and geometry_sample below; retain actual method, instrument force, repeatability and validation."
+      unit: "m3"
+      frequency: "Each variant/production lot and change"
+      temporal_coverage: "Same acceptance period"
+      site_scope: "Actual site/variant"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Whole-basket photographs, component ledger, raw geometry, calibration, moisture, sampling and uncertainty propagation"
+    - protocol_id: cp_acceptance
+      process_id: "basket_manufacture"
+      flow_role: "basket_output"
+      record_type: "records"
+      raw_fields: "work order; unique basket id; first acceptance time; new dispatch; new closing finished stock; opening finished stock; returns; rework; variant volume"
+      collection_method: "Determine positive Q_V from first acceptance by basket or validated lot records; remove opening finished goods from dispatch and include newly accepted closing stock once."
+      unit: "m3"
+      frequency: "Each first acceptance and period reconciliation"
+      temporal_coverage: "Declared period with carryover trace"
+      site_scope: "Site and original cohort"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Acceptance, dispatch, stock and no-recount trail"
+    - protocol_id: cp_activity
+      process_id: "basket_manufacture"
+      flow_role: "green_strips; electricity; bamboo_offcut; basket_reject"
+      record_type: "records"
+      raw_fields: "raw amount for each atomic exchange; units; moisture; work order/cohort; raw/WIP/FG opening/closing; inherited burden vectors; prior normalization basis"
+      collection_method: "Weigh net materials and wastes, read electricity meters, attribute work orders, retain inherited vectors, and produce per-reference results through cohort_balance and normalize_volume below."
+      unit: "kg; MJ"
+      frequency: "Each lot/meter period"
+      temporal_coverage: "Same period with original-cohort trace"
+      site_scope: "Actual plant and supply-chain interface"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Scale/meter calibration, supplier records, allocation drivers and vector reconciliation"
+    - protocol_id: cp_water
+      process_id: "basket_manufacture"
+      flow_role: "tap_water; dampening_effluent; evaporated_water"
+      record_type: "measurement"
+      raw_fields: "supply mass; strip/WIP/FG moisture; atmospheric sorption; discharge; reuse; water stock change; concentration; receiver"
+      collection_method: "Measure actual supply/discharge and moisture, separate dry-matter and water balances and resolve closure uncertainty; density conversion needs evidence for the actual temperature/quality. Normalize attributable quantities by the same Q_V."
+      unit: "kg"
+      frequency: "Each lot and period closure"
+      temporal_coverage: "Consistent cohort and period"
+      site_scope: "Plant and discharge receiver"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Instruments, wet/dry basis, moisture samples, balance residual and uncertainty"
+  calculation_rules:
+    - id: accepted_volume
+      applies_to: "basket_output"
+      rule: "Q_V = sum of new first-accepted basket volumes; alternatively sum_h N_h*vbar_h for validated actual variant/lot strata, with sampling uncertainty."
+      inputs:
+        - cp_geometry
+        - cp_acceptance
+      output: "Q_V"
+      source_ids:
+        - liang-bamboo-geometry-2026
+        - phongphinittana-woven-bamboo-2025
+    - id: first_acceptance
+      applies_to: "basket_output"
+      rule: "Q_V equals new first-accepted dispatch plus new first-accepted closing FG on the same geometric basis, excluding opening FG, purchased finished baskets, returns, retests and already-counted rework. Unique first-acceptance IDs prevent double counting."
+      inputs:
+        - cp_acceptance
+      output: "Q_V"
+      source_ids: []
+    - id: cohort_balance
+      applies_to: "all inventory rows"
+      rule: "For exchange vector B keep original units: B_open_raw + B_open_WIP + B_open_FG + B_added = B_dispatched + B_close_raw + B_close_WIP + B_close_FG + B_other, each physical cohort counted once. B_dispatched denotes burdens on physical dispatch including opening FG; B_other is the separately attributed burden vector of other documented output/service cohorts; it cannot be an unexplained balancing residual or remove pre-acceptance loss burdens already charged to accepted production. This is only stock-location reconciliation. The distinct first-acceptance projection excludes opening FG dispatch and includes newly accepted closing FG once. Unresolved vectors remain debt."
+      inputs:
+        - cp_activity
+        - cp_acceptance
+      output: "reconciled original-unit cohort vectors"
+      source_ids: []
+    - id: normalize_volume
+      applies_to: "all inventory rows"
+      rule: "For each exchange i, I_i = B_i / Q_V, using its full attributable first-acceptance-cohort burden B_i and positive Q_V; the reference output is 1 m3. For an old service intensity H_i per m3, recover B_old_i = H_i * Q_V_original using the original accepted-cohort volume of that service; never multiply it by the current period denominator or divide a normalized intensity again. Transfer the resulting raw vector once to its original cohort. Later actual service B_service,c on old accepted output is a separate correction B_service,c / Q_V_original,c, with no new accepted output. Do not add old accepted production or services to a new-cohort numerator; selective subcohorts require evidenced attribution and matching original volume. For Q_V = 0 retain raw amounts and unresolved cohort state; do not divide or publish a complete normalized dataset."
+      inputs:
+        - cp_activity
+        - cp_water
+        - cp_geometry
+        - cp_acceptance
+      output: "I_i per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Check physical identity, moisture/treatment, gate, units and provider; blank UUID is not a zero exchange."
+      evidence: "Direct identities, supplier, actual BOM and fate records"
+    - id: dq_geometry
+      applies_to: "basket_output"
+      requirement: "Provide a feasible bounded geometry and sampling procedure for actual complete baskets; disclose pore convention, unrecovered geometry and capacity differences."
+      evidence: "cp_geometry raw measurements, validation and uncertainty"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Reconcile plant-period totals and cohort vectors; record each actual material, emission and waste separately, without zeroing background gaps."
+      evidence: "Bills, meters, original-unit physical balances, vector reconciliations and gap list"
+    - id: dq_limits
+      applies_to: "all inventory rows"
+      requirement: "Report year, geography, variant, sample applicability, technological representativeness and independent review state; do not turn one factory into an industry range."
+      evidence: "Dataset quality disclosure and review records"
+validation_rules:
+  - rule_id: validate_admission
+    applies_to: "foreground_dataset"
+    rule: "Reject application when actual basket construction, supplier treatment, handleless integral rim or uncoated all-bamboo BOM is unverified or incompatible. A source showing rattan binding, lacquer, glue or hardware cannot validate this route. Sources: mlit-bamboo-finishing-2020; unido-woven-bamboo-2008."
+    source_ids:
+      - mlit-bamboo-finishing-2020
+      - unido-woven-bamboo-2008
+  - rule_id: validate_quantity
+    applies_to: "foreground_dataset"
+    rule: "Require Q_V > 0, unique first-acceptance records, complete-element geometric volume and bounded uncertainty. Reject capacity/envelope/skeletal proxies, projected chords, nominal uniform strips without evidence, duplicated components, projected-crossing subtraction and mass-only disassembly recovery. Immersion of porous bamboo without validated absorption, air and swelling control is not an automatic alternative. ISO 22157 culm-specimen testing is not claimed as basket testing."
+    source_ids: []
+  - rule_id: validate_accounting
+    applies_to: "foreground_dataset"
+    rule: "Require every final inventory basis and linked protocol aggregation to use the same reference flow. Check material, water and burden ledgers separately, opening FG exclusion, new closing FG inclusion once, inherited WIP/raw vectors and original denominators for old services. Unresolved geometry, missing inherited vectors, Q_V = 0 or incompatible providers makes the affected dataset incomplete. A declared-basis checker cannot establish scientific approval or a measured factory result."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate manufacturing foreground; separately disclose matched upstream coverage"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Basket production modelling with matching actual construction, state, gate and net bamboo-element volume"
+  excluded_use: "Capacity-storage service, functional equivalence comparison, generic industry baskets, rattan/willow baskets, lifetime or methodology-approval claims"
+  required_metadata: "All required qualifiers, original-unit ledgers, cohorts, Q_V, variant sampling and source/provider compatibility"
+  required_quality_disclosure: "Missing identity/providers, geometry and sampling uncertainty, disassembly effects, stock traceability, allocation and independent review state"
+  update_trigger: "Reassess changes in construction, species, supplier treatment, route, measurement, sampling, acceptance basis, electricity or waste fate"
+data_sources:
+  - id: "mlit-bamboo-finishing-2020"
+    type: "official_guidance"
+    reference: "Japan Tourism Agency / MLIT, Bamboo Finishing Techniques, FY2020, p.1, Basket rims and Coatings. https://www.mlit.go.jp/tagengo-db/common/001565623.pdf"
+    used_for: "Integral rim continuation and uncoated construction; contrary rattan, tack and coating alternatives; no universal BOM."
+  - id: "unido-woven-bamboo-2008"
+    type: "official_guidance"
+    reference: "UNIDO / INBAR, Three Dimensional Woven Bamboo Products, 2008, printed pp.1–5,20–24. https://www.unido.org/publications/ot/9656608/pdf"
+    used_for: "Whole baskets, strip preparation, weaving and finishing; no chemical recipe, dimensions or industry factors adopted."
+  - id: "liang-bamboo-geometry-2026"
+    type: "literature"
+    reference: "Liang, Jiang and Tan, Effects of Heat Treatment on the Mechanical Properties and Thermal Stability of Bamboo, Polymers 18 (2026) 2098, §2.2 p.3. https://doi.org/10.3390/polym18172098"
+    used_for: "Direct dimensional geometric-volume principle for conditioned regular rectangular strips; not a basket standard, density or heat-treatment default."
+  - id: "phongphinittana-woven-bamboo-2025"
+    type: "literature"
+    reference: "Phongphinittana, Klangtup and Jearanaisilawong, Mechanical Properties of Asymmetric Woven Bamboo Structure from Bamboo Strips, Fibers 13 (2025) 18, pp.3–5, Fig.3. https://doi.org/10.3390/fib13020018"
+    used_for: "Curved warp, comparatively straight weft and inter-strip gaps support actual paths and element-volume definition; no specimen mechanical model, species, dimensions or gap values transferred."
+  - id: "ilcd-general-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook—General guide for LCA—Detailed guidance, March2010, §§7.9.2–7.9.3; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision and determining physical causality; actual work-order/shared-service and stock protocols are disclosed operational deductions, not factory shares or a basket-volume standard."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:76d8c2887d8457ba0f543f48a04fa09499b9638a12a8b248e3d071530795f6a4"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5799"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5799
+          line: 58
+          column: 1
+        end:
+          offset: 8345
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased prepared green bamboo strips, uncoated, unglued and unpreserved, with actual moisture records |\n| starting_condition_role | Production split and upstream interface, not exemption of bamboo cultivation, harvest, strip preparation and transport burdens |\n| product_classification_scope | Only the narrower 31923 finished-product scope; green strips are a different-stage input |\n| recursive_input_rule | Purchased same-category finished baskets cannot masquerade as new output; rework retains the original cohort and burdens, with no recount of a basket. |\n| upstream_dataset_requirement | Verify species, green state, treatment, gate, transport and reference-quantity compatibility; unknown supplier data remain a gap, not zero. |\n| disclosure | Disclose foreground boundary separately from upstream coverage, unresolved exchanges, allocation, opening/closing stock and uncertainty |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | foreground_dataset | Include strip receipt and profiling, weaving/integral rim, ambient conditioning, inspection, rejects, rework, attributable utilities, water, incoming transport and actual waste treatment. UNIDO describes alternative chemical finishes; they are excluded by this deliberately narrower admission scope, not assumed absent industry-wide. Sources: unido-woven-bamboo-2008; mlit-bamboo-finishing-2020. | mlit-bamboo-finishing-2020; unido-woven-bamboo-2008 |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_extend | foreground_dataset | The unpackaged gate excludes transport packaging and downstream distribution/use/end-of-life of the basket; it does not exempt inbound packaging waste. Declare capital/tools, maintenance and ancillary coverage. Any actual additional material, fuel, emission, inbound packaging component or transport service requires a separate atomic exchange and compatible evidence before dataset completeness is claimed; do not force it into the bamboo row. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_provider | foreground_dataset | A generic product UUID is not a verified provider. Link whole-basket output only to a provider using the same construction, gate, moisture and net bamboo-element geometric volume, or a measured compatible conversion. Capacity, envelope, skeletal or unknown volume cannot match by UUID alone. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 296
+              line: 8
+              column: 49
+          text: "# Handwoven uncoated integral-rim bamboo baskets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5799
+              line: 58
+              column: 1
+            end:
+              offset: 5820
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_16003"
+      family: "allocation"
+      span:
+        start:
+          offset: 16003
+          line: 227
+          column: 1
+        end:
+          offset: 17140
+          line: 237
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_cause | foreground_dataset | Avoid allocation by metering work orders/operations. For shared lighting, dampening or equipment, use a documented physical causal driver such as metered machine time or occupied conditioning service, with period totals reconciled. Do not use nominal basket counts across unlike variants or assume mass and volume are interchangeable. This is a foreground collection rule, not an empirical universal allocation coefficient. | ilcd-general-2010 |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_reject | foreground_dataset | No default co-product revenue, substitution credit or negative waste input. Internal reused offcuts retain inherited burdens and are not fresh purchases. External sale as a genuine co-product requires evidence of product quality, function, receiving market and documented subdivision/allocation before the dataset can be complete. Failed baskets/rework remain attached to their originating cohort. | ilcd-general-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 296
+              line: 8
+              column: 49
+          text: "# Handwoven uncoated integral-rim bamboo baskets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 16003
+              line: 227
+              column: 1
+            end:
+              offset: 16043
+              line: 227
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26983"
+      family: "validation"
+      span:
+        start:
+          offset: 26983
+          line: 276
+          column: 1
+        end:
+          offset: 28695
+          line: 290
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_admission | foreground_dataset | Reject application when actual basket construction, supplier treatment, handleless integral rim or uncoated all-bamboo BOM is unverified or incompatible. A source showing rattan binding, lacquer, glue or hardware cannot validate this route. Sources: mlit-bamboo-finishing-2020; unido-woven-bamboo-2008. | mlit-bamboo-finishing-2020; unido-woven-bamboo-2008 |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_quantity | foreground_dataset | Require Q_V > 0, unique first-acceptance records, complete-element geometric volume and bounded uncertainty. Reject capacity/envelope/skeletal proxies, projected chords, nominal uniform strips without evidence, duplicated components, projected-crossing subtraction and mass-only disassembly recovery. Immersion of porous bamboo without validated absorption, air and swelling control is not an automatic alternative. ISO 22157 culm-specimen testing is not claimed as basket testing. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_accounting | foreground_dataset | Require every final inventory basis and linked protocol aggregation to use the same reference flow. Check material, water and burden ledgers separately, opening FG exclusion, new closing FG inclusion once, inherited WIP/raw vectors and original denominators for old services. Unresolved geometry, missing inherited vectors, Q_V = 0 or incompatible providers makes the affected dataset incomplete. A declared-basis checker cannot establish scientific approval or a measured factory result. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 296
+              line: 8
+              column: 49
+          text: "# Handwoven uncoated integral-rim bamboo baskets"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26983
+              line: 276
+              column: 1
+            end:
+              offset: 27005
+              line: 276
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5799"
+      source_span:
+        start:
+          offset: 6877
+          line: 73
+          column: 1
+        end:
+          offset: 7368
+          line: 73
+          column: 492
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_extend"
+      identity_kind: "explicit"
+      unit_id: "normative_5799"
+      source_span:
+        start:
+          offset: 7441
+          line: 77
+          column: 1
+        end:
+          offset: 7931
+          line: 77
+          column: 491
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_5799"
+      source_span:
+        start:
+          offset: 8004
+          line: 81
+          column: 1
+        end:
+          offset: 8343
+          line: 81
+          column: 340
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_cause"
+      identity_kind: "explicit"
+      unit_id: "normative_16003"
+      source_span:
+        start:
+          offset: 16116
+          line: 231
+          column: 1
+        end:
+          offset: 16603
+          line: 231
+          column: 488
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_reject"
+      identity_kind: "explicit"
+      unit_id: "normative_16003"
+      source_span:
+        start:
+          offset: 16676
+          line: 235
+          column: 1
+        end:
+          offset: 17138
+          line: 235
+          column: 463
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_admission"
+      identity_kind: "explicit"
+      unit_id: "normative_26983"
+      source_span:
+        start:
+          offset: 27078
+          line: 280
+          column: 1
+        end:
+          offset: 27480
+          line: 280
+          column: 403
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_26983"
+      source_span:
+        start:
+          offset: 27553
+          line: 284
+          column: 1
+        end:
+          offset: 28082
+          line: 284
+          column: 530
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_accounting"
+      identity_kind: "explicit"
+      unit_id: "normative_26983"
+      source_span:
+        start:
+          offset: 28155
+          line: 288
+          column: 1
+        end:
+          offset: 28693
+          line: 288
+          column: 539
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5799"
+      source_span:
+        start:
+          offset: 5799
+          line: 58
+          column: 1
+        end:
+          offset: 5820
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5799"
+      source_span:
+        start:
+          offset: 5848
+          line: 62
+          column: 1
+        end:
+          offset: 6804
+          line: 69
+          column: 153
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_16003"
+      source_span:
+        start:
+          offset: 16003
+          line: 227
+          column: 1
+        end:
+          offset: 16043
+          line: 227
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26983"
+      source_span:
+        start:
+          offset: 26983
+          line: 276
+          column: 1
+        end:
+          offset: 27005
+          line: 276
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:76d8c2887d8457ba0f543f48a04fa09499b9638a12a8b248e3d071530795f6a4"
+  generated_content_sha256: "sha256:ce0ee2cdcd416303033af35515fd9cb0b238b514c69d94410f98bde9c2877d97"
