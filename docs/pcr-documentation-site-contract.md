@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-03
-lastReviewedNote: "Reviewed the existing adjacent-PCR reading-page optimization for a 45-PCR integration based on upstream main 31074a2ca. Reuse upstream search packing, inspector packs, navigation aliases and anchor-safety guards. Preserve logical search units, canonical/download bytes and source-bound retained routes; exact-source build and hosted qualification remain separate from methodology or publication approval."
-lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedAt: 2026-11-09
+lastReviewedNote: "Retain adjacent-PCR reading-page packing and add bounded search-layout selection plus optional inspector dictionary transport from fork source 7d0a48078779e09b3ca6aadf1b0bd619505303a4. Preserve exact logical/source/download bytes, native search semantics, legacy readers and existing budgets; exact-source builds and hosted qualification remain separate requirements."
+lastReviewedCommit: 9a753b7afac01f22a096b57cbce6cf22c85b9423
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -549,6 +549,17 @@ versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buck
 complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
 including the manifest, remain unchanged.
 
+The Node-only search layout planner evaluates bounded contiguous groupings of the
+same logical wires, retaining the original greedy layout as a candidate. Pack
+count and the sixteen-member limit are unchanged. It may spell non-ASCII
+dictionary characters as JSON Unicode escapes when this reduces measured gzip
+bytes without exceeding existing raw or restored-wire limits. Only the physical
+dictionary spelling changes; dictionary values, all records, native entries,
+logical order, hashes and search behavior remain unchanged. Generation restores
+every selected logical wire byte for byte before publishing the assets. Corpus
+auditing accepts only the exact canonical pack spelling or its exact dictionary-only
+escape variant, and retains physical hashes and complete budget accounting.
+
 `node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
 compares captured physical assets with repacked v7 files over the exact same
 logical wires, source identity, language and pack membership. It retains physical,
@@ -595,6 +606,20 @@ The reader retains support for older unkeyed single-record payloads, rejects
 unknown versions, duplicate or missing keys and malformed records, and preserves
 the inspector's visible retry behavior. Browser qualification exercises the actual
 inspector in both languages and for available historical releases.
+
+Inspector packs may use `schemaVersion: 2` dictionary transport when the complete
+encoded UTF-8 payload is smaller than the legacy positional pack. Repeated keys
+and string values share a deterministic dictionary; explicit tokens preserve
+numbers, strings, arrays, objects, property order and empty values. Unprofitable
+or more deeply nested data retains the legacy format, and the reader continues
+to accept version 1 and unkeyed originals. Before materializing any selected
+record, the dictionary reader validates every record, dictionary reference,
+duplicate key, token and nesting depth. It charges all restored JSON occurrences,
+including escapes, against the existing 25,000,000-byte ceiling; packs at or above
+that restored size are split or rejected. The 1,000,000-byte physical target,
+32-record limit and existing single-file budget remain unchanged. Generation and
+export verification retain exact per-record restoration checks; canonical source,
+server-side records, original downloads and reading content are unaffected.
 
 This is lossless file packing to reduce the number of exported transport files.
 Server-side record data, byte-exact raw downloads and complete static HTML remain
