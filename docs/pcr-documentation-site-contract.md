@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-11-10
-lastReviewedNote: "Integrate selected CPC04 repairs and the exact dictionary-spelling corpus audit from fc4a9b576e onto fork main 7d0a480787. Preserve the existing CPC3 source, bounded search layout, inspector dictionary limits, reserved reading-route protection, complete historical anchors and capacity gates. Scientific status, publication and deployment authority remain unchanged; exact-source qualification is separate."
-lastReviewedCommit: 7d0a48078779e09b3ca6aadf1b0bd619505303a4
+lastReviewedNote: "PR34: register 31 retained pre-packing routes for 28 newly added CPC3 language documents against actual source ad982; preserve 105 legacy documents, 131 routes, their original baseline and all published route/anchor evidence. Clarify additive source provenance without changing schemas, runtime algorithms, source fidelity, capacities or methodology authority."
+lastReviewedCommit: ad982a5ff6358155aefc694a9627590722def9f8
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -660,6 +660,7 @@ through exact same-record, same-language middleware aliases, not redirect HTML.
 `compatibility/packed-chapters.json` binds those retained pre-packing routes to
 baseline commit and canonical source hashes; `packed-chapter-anchors.json` separately
 retains all their original anchors. They are not claims of prior publication.
+The root `baselineCommit` retains the origin of the initial retained-route collection and is not advanced when independent new documents are registered. An additive registration preserves every existing document/route object and its order, and carries a separately reviewed receipt binding its actual source commit, canonical source hashes, complete pre-packing logical parts and anchors, and unique reading owners; it does not claim that new documents existed at the root baseline or were previously published.
 Existing published routes are flattened to final owners while their historical
 anchor ledger remains unchanged. All retained and published targets must exist in
 the ordinary document tree. The source-bound provider profile includes the added
