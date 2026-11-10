@@ -62,20 +62,15 @@ reference_flow_definition:
     - "actual nuclides/impurities and detection limits"
     - "receiving category with its actual definitions and acceptance tests"
     - "net wet-liquid mass excluding containers/solids"
-    - "uniquely first-released cohort Q and event IDs"
-    - "activity measurement time"
-    - "comparison date"
-    - "time zone"
-    - "uncertainty and supported decay method"
+    - "independently measured unique first receiver-ready-release wet-liquid event masses with locked original Q in kg plus event IDs/genealogy and disjoint same-basis D_new/FG_new/L_new covering net returns/losses/disposal/downgrading/accepted WIP"
+    - "activity measurement time/comparison date/time zone/uncertainty and supported decay method"
     - "raw/WIP/FG opening/closing stocks and inherited per-exchange vectors"
     - "usable retained solution"
     - "rejected/Q0/rework loads"
     - "metrology co-function and exchange-specific allocation"
-    - "actual container compatibility"
-    - "ownership and all returns/retirement"
+    - "actual container compatibility/ownership/all returns/retirement"
     - "matched source providers and original burden boundary"
-    - "actual environmental media/species"
-    - "nondetect policy and later-service corrections"
+    - "actual environmental media/species/nondetect policy and later-service corrections"
 reference_flows:
   []
 measurement_rules:
@@ -85,7 +80,7 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Use 1 kg net wet residual liquid, including its actual constituents but excluding container tare and separated solids; collect using cp_release."
+    rule: "Use 1 kg net wet residual liquid, including its actual constituents but excluding container tare and separated solids. Independently weigh each unique first receiver-ready-release event using cp_release; lock its original wet-liquid kg and event genealogy for Q. Later moisture/composition or activity changes do not redefine that event mass."
   - id: unit_basis
     applies_to: "all inventory rows"
     required_property_ref:
@@ -106,7 +101,7 @@ measurement_rules:
       name: "actual row property"
       uuid: ""
     required_unit: "per reference flow"
-    rule: "Assign raw exchange burdens and divide by original positive Q exactly once. Q counts new dispatch plus new closing released FG, excludes old FG, returns and retests. For Q zero or unknown retain raw loads without a normalized result."
+    rule: "Assign raw exchange burdens and divide by original positive Q exactly once. Q = sum(m_first,e) over unique first receiver-ready-release events e in net wet-liquid kg; never infer Q from dispatch or stocks. Independently reconcile Q = D_new + FG_new + L_new on the same original event basis; only evidenced zero other post-release destinations permits D_new + FG_new. Old FG, returns, retests and re-release add no Q. For Q zero or unknown retain raw loads without a normalized result."
 process_map:
   - id: residue_generation
     name: "Original use, residue generation, characterization and handoff"
@@ -314,7 +309,7 @@ process_inventory:
           flow_ref:
             uuid: "598474f7-e317-401d-b61a-9709b8af6c4f"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Whole aqueous Cs-137 chloride residual first characterized and released for the declared receiver category. Retain actual native Product flow type and physical waste status, without saleability. Exclude container and separately captured solids from wet-liquid mass."
+          description: "Whole aqueous Cs-137 chloride residual first characterized and released for the declared receiver category. Retain actual native Product flow type and physical waste status, without saleability. Exclude container and separately captured solids from wet-liquid mass. The 1 kg card is the normalized reference event output, not an additional physical Q output beside dispatch, stocks and waste; post-release fates retain the original event basis."
           amount:
             expression: "1 kg"
             value_mode: "fixed_value"
@@ -536,7 +531,7 @@ allocation_rules:
       - iaea-ssg45-2019
   - rule_id: al_cohort
     applies_to: "released cohorts"
-    rule: "New Q = newly first-released dispatch plus new closing released FG, once. Old FG dispatch, genuine returns, retests and internal circulation add no Q. Later storage, failed handoff, repeat characterization and real rework correct the original cohort numerator while retaining original Q."
+    rule: "Q is the independently measured sum of unique first receiver-ready-release event wet masses in kg. Reconcile the new cohort through disjoint, exhaustive Q = D_new + FG_new + L_new on its original acceptance basis; losses, disposal, downgrading and accepted material returned to WIP remain traced in L_new, never omitted. Only when all other post-release destinations are evidenced zero may D_new + FG_new be used as a bridge. Old FG dispatch, genuine returns, retests and re-release add no Q. Later storage, failed handoff, repeat characterization and real rework correct the original cohort numerator while retaining its original Q; failed/Q0 loads are not discarded."
     source_ids:
       - jrc-ilcd-2010
 dataset_production:
@@ -557,8 +552,8 @@ dataset_production:
       process_id: "residue_generation"
       flow_role: "finished"
       record_type: "raw event and stock ledger"
-      raw_fields: "cohort/first-event IDs; gross/tare/net liquid; new dispatch/new closing released FG; old FG; returns/retests; WIP; receiving tests/class; assay/nuclides/activity/time/uncertainty"
-      collection_method: "Use calibrated weighing and qualified characterization/receiver records; match source genealogy and count each first-ready cohort once regardless of dispatch date. Reweighing does not create Q."
+      raw_fields: "cohort and unique first-event IDs/time; independently measured original event gross/tare/net wet-liquid kg; original locked Q; source genealogy; gross dispatch and genuine returns; disjoint cut-off D_new and receiver-ready FG_new; every L_new substate including loss, disposal/scrap, downgrading, returned quarantine and accepted WIP/rework; opening old released FG and original cohort Q; pre-release WIP and Q0; actual current physical masses and separate original-event-basis conversions; receiving tests/class; assay/nuclides/activity/time/uncertainty"
+      collection_method: "Use calibrated weighing and qualified characterization/receiver records to measure each first receiver-ready event once, independently of dispatch/stocks. Trace each accepted parcel to one final D_new/FG_new/L_new state on its original wet-liquid basis; keep gross return/rework histories and original Q. Reweighing, rework or renewed release never creates Q; retain unresolved destinations/conversions and keep actual physical and activity ledgers separate."
       unit: "kg; composition; timestamped kBq"
       frequency: "each lot, actual interval and stock reconciliation"
       temporal_coverage: "actual source/use/cohort period and attributable later services"
@@ -616,7 +611,7 @@ dataset_production:
   calculation_rules:
     - id: calc_q
       applies_to: "finished"
-      rule: "Q = uniquely new first-released dispatch mass + new closing released FG mass. Old FG, returns, retests and recirculation add no new Q. Zero/unknown Q keeps raw loads without a unit result."
+      rule: "Q = sum(m_first,e) over unique first receiver-ready-release events e, each independently measured in net wet-liquid kg excluding container/solids; Q > 0 for normalization. Reconcile the separate disjoint exhaustive Q = D_new + FG_new + L_new on the original event basis, including all loss, disposal, downgraded and accepted-WIP states. The two-term bridge requires every other post-release destination evidenced zero. Old FG, returns, retests and repeated release add no Q. Zero/unknown Q keeps raw loads without a unit result."
       inputs:
         - cp_release
       output: "original positive Q or explicit unavailable result"
@@ -624,7 +619,7 @@ dataset_production:
         - jrc-ilcd-2010
     - id: calc_vectors
       applies_to: "all inventory rows"
-      rule: "Retain physical V and burden A independently for each exchange. Raw consumption carries opening raw burdens plus actual receipts less closing raw burdens. Carry opening WIP vectors forward, add newly attributable loads, retain closing WIP vectors separately and assign released vectors to original cohorts. Closing released FG already belongs to Q: do not subtract its burden again. Unknown/incompatible inherited vectors block completeness."
+      rule: "Retain physical V and burden A independently for each exchange. Raw consumption carries opening raw burdens plus actual receipts less closing raw burdens. Carry opening WIP vectors forward, add newly attributable loads, retain closing WIP vectors separately and assign released vectors to original cohorts. Closing released FG already belongs to its locked event cohort: do not subtract its burden again. Already-accepted material returned to WIP retains original Q and inherited vectors; re-release transfers state without new Q. Keep it distinct from never-accepted WIP and retain failed/Q0/rework services. Unknown/incompatible inherited vectors block completeness."
       inputs:
         - cp_source
         - cp_release
@@ -680,7 +675,7 @@ dataset_production:
         - iaea-ssg45-2019
     - id: acceptance_event_bridge
       applies_to: "all inventory rows"
-      rule: "Lock Q to unique independently measured first-acceptance events. Use the two-term dispatch/closing-stock bridge only when L_new is zero; otherwise reconcile disjoint D_new, F_new_close and actual post-acceptance net exits L_new on the original acceptance basis. Retain original event Q for later losses/services and prevent internal/return/rework throughput duplication. Do not add Q as an extra external output. Unresolved event/stock evidence blocks complete normalization."
+      rule: "Lock independently measured unique first-release Q in original wet-liquid kg. At the same cut-off D_new is net externally retained accepted material after genuine returns, FG_new is on-site receiver-ready released stock, and L_new contains every other disjoint accepted-material state: losses, disposal/scrap, downgrading, returned quarantine and accepted WIP/rework. Reconcile Q = D_new + FG_new + L_new with exhaustive parcel genealogy; only evidenced zero for all L_new substates permits the two-term bridge. A returned parcel is located once, and re-release from WIP adds no Q. Keep old opening FG and original cohort Q separate. Retain actual wet-liquid/element/species/nuclide ledgers and later exchange conversions independently; event-equivalent quantities are no extra physical outputs or activity-to-mass factors. Unresolved event, state or conversion evidence blocks complete normalization."
       inputs:
         - "original acceptance events"
         - "net parcel-state bridge"
@@ -708,7 +703,7 @@ validation_rules:
       - iaea-ssg45-2019
   - rule_id: val_account
     applies_to: "all inventory rows"
-    rule: "Reconcile raw/WIP/FG quantities, inherited vectors, original Q, genuine returns and real rework. Normalize once; zero/unknown Q gives no unit result. Check source-to-service/residue attribution and shared weights, without fictitious residue value."
+    rule: "Verify independent unique first receiver-ready-release wet-liquid event masses and locked original Q, plus disjoint exhaustive D_new/FG_new/L_new on the same basis with net returns, losses, disposal/scrap, downgrading and accepted WIP/rework. Reject Q inferred from dispatch or closing-FG movements. Allow a two-term reconciliation only when all other destinations are evidenced zero; keep Q measurement independent and reject repeated release as new Q. Reconcile old opening FG separately and retain original cohort Q for subsequent/failed/rework services and inherited vectors. Normalize once; zero/unknown Q or unresolved states/conversions gives no complete unit result. Check source-to-service/residue attribution and shared weights without fictitious residue value; actual material/species/nuclide balances stay independent."
     source_ids:
       - jrc-ilcd-2010
   - rule_id: val_balances
@@ -728,7 +723,7 @@ published_dataset_profile:
   downstream_use: "Same documented Cs-137 aqueous-residue route linked to compatible receiving management"
   allowed_use: "Physical generator-to-handoff residue inventory with metrology co-function explicit"
   excluded_use: "Dose, safety or legal compliance decisions; nuclear procedures; treatment performance; saleability/clearance; other nuclides/forms; full CPC coverage"
-  required_metadata: "source lot/certified-solution genealogy; actual CsCl/HCl/water/stable-carrier composition and independent chemical-assay limits; original civil use and no-further-use decision; actual nuclides/impurities and detection limits; receiving category with its actual definitions and acceptance tests; net wet-liquid mass excluding containers/solids; uniquely first-released cohort Q and event IDs; activity measurement time, comparison date, time zone, uncertainty and supported decay method; raw/WIP/FG opening/closing stocks and inherited per-exchange vectors; usable retained solution; rejected/Q0/rework loads; metrology co-function and exchange-specific allocation; actual container compatibility, ownership and all returns/retirement; matched source providers and original burden boundary; actual environmental media/species, nondetect policy and later-service corrections"
+  required_metadata: "source lot/certified-solution genealogy; actual CsCl/HCl/water/stable-carrier composition and independent chemical-assay limits; original civil use and no-further-use decision; actual nuclides/impurities and detection limits; receiving category with its actual definitions and acceptance tests; net wet-liquid mass excluding containers/solids; independently measured unique first receiver-ready-release wet-liquid event masses with locked original Q in kg plus event IDs/genealogy and disjoint same-basis D_new/FG_new/L_new covering net returns/losses/disposal/downgrading/accepted WIP; activity measurement time/comparison date/time zone/uncertainty and supported decay method; raw/WIP/FG opening/closing stocks and inherited per-exchange vectors; usable retained solution; rejected/Q0/rework loads; metrology co-function and exchange-specific allocation; actual container compatibility/ownership/all returns/retirement; matched source providers and original burden boundary; actual environmental media/species/nondetect policy and later-service corrections"
   required_quality_disclosure: "Unresolved nonreference identities/providers; allocation and uncertainty; stock/Q0/return corrections; actual class and monitoring limits; excluded downstream stages"
   update_trigger: "Source matrix, isotope impurities, route, receiver/class, Q convention, container or monitoring/provider boundary changes"
 data_sources:
@@ -750,18 +745,18 @@ data_sources:
     used_for: "Attributional subdivision and determining causality only; no radioactive-residue allocation coefficient"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3f918a111b4b08e9ecaf6b5c3a21901c2e3cfbe97c34699f501ee6589884abb3"
+  source_sha256: "sha256:cd56a2572c8a1f4e7875451f08cdb14b65cc80609beb80538890acc079f2d728"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7199"
+    - unit_id: "normative_7834"
       family: "system_boundary"
       span:
         start:
-          offset: 7199
+          offset: 7834
           line: 62
           column: 1
         end:
-          offset: 9493
+          offset: 10128
           line: 82
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Certified aqueous Cs-137 chloride calibration solution before actual civil use, with source genealogy and inherited burdens |\n| starting_condition_role | Original use/residue-generation foreground including metrology co-function, not purchased-waste packing |\n| product_classification_scope | Narrow aqueous calibration-residue subgroup of CPC33690; actual receiver low/intermediate category demonstrated |\n| recursive_input_rule | Each genuine external residue return retains original cohort and burden history; no new first-release Q |\n| upstream_dataset_requirement | Actual certified-solution and container providers; inherited burdens explicitly assigned across service/residue functions without zero-burden or recursive substitution |\n| disclosure | Generator handoff gate; off-site transport, treatment and disposal excluded; extended-system claims require their complete compatible links |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_original | all inventory rows | Include original civil use, residual formation, segregation, characterization and on-site handoff. Record actual additions individually; no isotope-production, separation, mixing or treatment operating procedure is prescribed. | `nist-cs137-2019`; `iaea-ssg45-2019` |\n| sb_identity | finished | Verify no further intended use, actual source matrix and nuclides, physical liquid state and documented receiving class/criteria. Keep differing nuclides, organic streams and solids separate. | `iaea-ssg45-2019` |\n| sb_stocks | all material gates | Preserve opening/closing raw, WIP and released-FG quantities with inherited exchange vectors. Include failed/Q0, start-stop, idle, rejected, cleaning, repeated characterization and rework loads. Cancel only matched internal transfers with equal state, amount, time and inherited vector. | `jrc-ilcd-2010` |\n| sb_atomic | all inventory rows | Add each actual energy carrier, chemical, container component, cleaning material, filter, waste stream and environmental species as an individual concrete exchange before claiming completeness. Stock retention and receiver transfer are not environmental discharge. | `iaea-ssg45-2019` |\n\n"
@@ -781,11 +776,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7199
+              offset: 7834
               line: 62
               column: 1
             end:
-              offset: 7220
+              offset: 7855
               line: 62
               column: 22
           text: "## 5. System Boundary"
@@ -801,18 +796,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_27322"
+    - unit_id: "normative_28136"
       family: "allocation"
       span:
         start:
-          offset: 27322
+          offset: 28136
           line: 395
           column: 1
         end:
-          offset: 28765
+          offset: 29960
           line: 404
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_subdivide | all inventory rows | Keep gross physical V separate from attributable A. Subdivide metrology use, residue-exclusive characterization/containment and common services using actual source lots, meters and duty records first. | `jrc-ilcd-2010` |\n| al_shared | shared source and services | Use evidenced determining physical causality per remaining shared exchange; weights across all co-functions sum to one. Liquid mass alone does not partition calibration service. If causality is unavailable retain the exchange and document a study-consistent justified alternative and sensitivity for review; no complete quantitative claim before closure. | `jrc-ilcd-2010` |\n| al_residue | finished | Do not invent a positive residue selling price or confuse a disposal-service payment with product revenue. No automatic avoided material, isotope-recovery or radioactive-decay credit. Physical waste status does not erase original source burdens. | `jrc-ilcd-2010`; `iaea-ssg45-2019` |\n| al_cohort | released cohorts | New Q = newly first-released dispatch plus new closing released FG, once. Old FG dispatch, genuine returns, retests and internal circulation add no Q. Later storage, failed handoff, repeat characterization and real rework correct the original cohort numerator while retaining original Q. | `jrc-ilcd-2010` |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| al_subdivide | all inventory rows | Keep gross physical V separate from attributable A. Subdivide metrology use, residue-exclusive characterization/containment and common services using actual source lots, meters and duty records first. | `jrc-ilcd-2010` |\n| al_shared | shared source and services | Use evidenced determining physical causality per remaining shared exchange; weights across all co-functions sum to one. Liquid mass alone does not partition calibration service. If causality is unavailable retain the exchange and document a study-consistent justified alternative and sensitivity for review; no complete quantitative claim before closure. | `jrc-ilcd-2010` |\n| al_residue | finished | Do not invent a positive residue selling price or confuse a disposal-service payment with product revenue. No automatic avoided material, isotope-recovery or radioactive-decay credit. Physical waste status does not erase original source burdens. | `jrc-ilcd-2010`; `iaea-ssg45-2019` |\n| al_cohort | released cohorts | Q is the independently measured sum of unique first receiver-ready-release event wet masses in kg. Reconcile the new cohort through disjoint, exhaustive Q = D_new + FG_new + L_new on its original acceptance basis; losses, disposal, downgrading and accepted material returned to WIP remain traced in L_new, never omitted. Only when all other post-release destinations are evidenced zero may D_new + FG_new be used as a bridge. Old FG dispatch, genuine returns, retests and re-release add no Q. Later storage, failed handoff, repeat characterization and real rework correct the original cohort numerator while retaining its original Q; failed/Q0 loads are not discarded. | `jrc-ilcd-2010` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -829,11 +824,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 27322
+              offset: 28136
               line: 395
               column: 1
             end:
-              offset: 27362
+              offset: 28176
               line: 395
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -849,18 +844,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40191"
+    - unit_id: "normative_44577"
       family: "validation"
       span:
         start:
-          offset: 40191
-          line: 441
+          offset: 44577
+          line: 445
           column: 1
         end:
-          offset: 41487
-          line: 450
+          offset: 46456
+          line: 454
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_reference | finished | Require one uniquely linked 1 kg liquid output, complete qualifiers, actual class proof and whole-residue native identity. Do not substitute useful certified solution, solid waste, handling service or pure isotope emission. | `iaea-ssg45-2019` |\n| val_account | all inventory rows | Reconcile raw/WIP/FG quantities, inherited vectors, original Q, genuine returns and real rework. Normalize once; zero/unknown Q gives no unit result. Check source-to-service/residue attribution and shared weights, without fictitious residue value. | `jrc-ilcd-2010` |\n| val_balances | all material and emission rows | Verify whole-material and elemental closure separately from species transformations and time-dependent activity. Inspect liquid retained in solids, container tare, source-water double counting, actual media and nondetect uncertainty. | `nist-cs137-2019`; `iaea-ssg45-2019` |\n| val_limits | all inventory rows | No completeness or cradle-to-grave claim with missing upstream burden, attribution, class/receiver or downstream links. This environmental PCR neither certifies safety nor authorizes radioactive activities or discharge. | `iaea-ssg45-2019`; `jrc-ilcd-2010` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_reference | finished | Require one uniquely linked 1 kg liquid output, complete qualifiers, actual class proof and whole-residue native identity. Do not substitute useful certified solution, solid waste, handling service or pure isotope emission. | `iaea-ssg45-2019` |\n| val_account | all inventory rows | Verify independent unique first receiver-ready-release wet-liquid event masses and locked original Q, plus disjoint exhaustive D_new/FG_new/L_new on the same basis with net returns, losses, disposal/scrap, downgrading and accepted WIP/rework. Reject Q inferred from dispatch or closing-FG movements. Allow a two-term reconciliation only when all other destinations are evidenced zero; keep Q measurement independent and reject repeated release as new Q. Reconcile old opening FG separately and retain original cohort Q for subsequent/failed/rework services and inherited vectors. Normalize once; zero/unknown Q or unresolved states/conversions gives no complete unit result. Check source-to-service/residue attribution and shared weights without fictitious residue value; actual material/species/nuclide balances stay independent. | `jrc-ilcd-2010` |\n| val_balances | all material and emission rows | Verify whole-material and elemental closure separately from species transformations and time-dependent activity. Inspect liquid retained in solids, container tare, source-water double counting, actual media and nondetect uncertainty. | `nist-cs137-2019`; `iaea-ssg45-2019` |\n| val_limits | all inventory rows | No completeness or cradle-to-grave claim with missing upstream burden, attribution, class/receiver or downstream links. This environmental PCR neither certifies safety nor authorizes radioactive activities or discharge. | `iaea-ssg45-2019`; `jrc-ilcd-2010` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -877,12 +872,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40191
-              line: 441
+              offset: 44577
+              line: 445
               column: 1
             end:
-              offset: 40213
-              line: 441
+              offset: 44599
+              line: 445
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -901,207 +896,207 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "sb_original"
       identity_kind: "explicit"
-      unit_id: "normative_7199"
+      unit_id: "normative_7834"
       source_span:
         start:
-          offset: 8282
+          offset: 8917
           line: 77
           column: 1
         end:
-          offset: 8586
+          offset: 9221
           line: 77
           column: 305
     - pointer: "/system_boundary/rules/1"
       rule_id: "sb_identity"
       identity_kind: "explicit"
-      unit_id: "normative_7199"
+      unit_id: "normative_7834"
       source_span:
         start:
-          offset: 8587
+          offset: 9222
           line: 78
           column: 1
         end:
-          offset: 8827
+          offset: 9462
           line: 78
           column: 241
     - pointer: "/system_boundary/rules/2"
       rule_id: "sb_stocks"
       identity_kind: "explicit"
-      unit_id: "normative_7199"
+      unit_id: "normative_7834"
       source_span:
         start:
-          offset: 8828
+          offset: 9463
           line: 79
           column: 1
         end:
-          offset: 9169
+          offset: 9804
           line: 79
           column: 342
     - pointer: "/system_boundary/rules/3"
       rule_id: "sb_atomic"
       identity_kind: "explicit"
-      unit_id: "normative_7199"
+      unit_id: "normative_7834"
       source_span:
         start:
-          offset: 9170
+          offset: 9805
           line: 80
           column: 1
         end:
-          offset: 9491
+          offset: 10126
           line: 80
           column: 322
     - pointer: "/allocation_rules/0"
       rule_id: "al_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_27322"
+      unit_id: "normative_28136"
       source_span:
         start:
-          offset: 27435
+          offset: 28249
           line: 399
           column: 1
         end:
-          offset: 27693
+          offset: 28507
           line: 399
           column: 259
     - pointer: "/allocation_rules/1"
       rule_id: "al_shared"
       identity_kind: "explicit"
-      unit_id: "normative_27322"
+      unit_id: "normative_28136"
       source_span:
         start:
-          offset: 27694
+          offset: 28508
           line: 400
           column: 1
         end:
-          offset: 28111
+          offset: 28925
           line: 400
           column: 418
     - pointer: "/allocation_rules/2"
       rule_id: "al_residue"
       identity_kind: "explicit"
-      unit_id: "normative_27322"
+      unit_id: "normative_28136"
       source_span:
         start:
-          offset: 28112
+          offset: 28926
           line: 401
           column: 1
         end:
-          offset: 28422
+          offset: 29236
           line: 401
           column: 311
     - pointer: "/allocation_rules/3"
       rule_id: "al_cohort"
       identity_kind: "explicit"
-      unit_id: "normative_27322"
+      unit_id: "normative_28136"
       source_span:
         start:
-          offset: 28423
+          offset: 29237
           line: 402
           column: 1
         end:
-          offset: 28763
+          offset: 29958
           line: 402
-          column: 341
+          column: 722
     - pointer: "/validation_rules/0"
       rule_id: "val_reference"
       identity_kind: "explicit"
-      unit_id: "normative_40191"
+      unit_id: "normative_44577"
       source_span:
         start:
-          offset: 40286
-          line: 445
+          offset: 44672
+          line: 449
           column: 1
         end:
-          offset: 40560
-          line: 445
+          offset: 44946
+          line: 449
           column: 275
     - pointer: "/validation_rules/1"
       rule_id: "val_account"
       identity_kind: "explicit"
-      unit_id: "normative_40191"
+      unit_id: "normative_44577"
       source_span:
         start:
-          offset: 40561
-          line: 446
+          offset: 44947
+          line: 450
           column: 1
         end:
-          offset: 40865
-          line: 446
-          column: 305
+          offset: 45834
+          line: 450
+          column: 888
     - pointer: "/validation_rules/2"
       rule_id: "val_balances"
       identity_kind: "explicit"
-      unit_id: "normative_40191"
+      unit_id: "normative_44577"
       source_span:
         start:
-          offset: 40866
-          line: 447
+          offset: 45835
+          line: 451
           column: 1
         end:
-          offset: 41190
-          line: 447
+          offset: 46159
+          line: 451
           column: 325
     - pointer: "/validation_rules/3"
       rule_id: "val_limits"
       identity_kind: "explicit"
-      unit_id: "normative_40191"
+      unit_id: "normative_44577"
       source_span:
         start:
-          offset: 41191
-          line: 448
+          offset: 46160
+          line: 452
           column: 1
         end:
-          offset: 41485
-          line: 448
+          offset: 46454
+          line: 452
           column: 295
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7199"
+      unit_id: "normative_7834"
       source_span:
         start:
-          offset: 7199
+          offset: 7834
           line: 62
           column: 1
         end:
-          offset: 7220
+          offset: 7855
           line: 62
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7199"
+      unit_id: "normative_7834"
       source_span:
         start:
-          offset: 7248
+          offset: 7883
           line: 66
           column: 1
         end:
-          offset: 8209
+          offset: 8844
           line: 73
           column: 157
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_27322"
+      unit_id: "normative_28136"
       source_span:
         start:
-          offset: 27322
+          offset: 28136
           line: 395
           column: 1
         end:
-          offset: 27362
+          offset: 28176
           line: 395
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40191"
+      unit_id: "normative_44577"
       source_span:
         start:
-          offset: 40191
-          line: 441
+          offset: 44577
+          line: 445
           column: 1
         end:
-          offset: 40213
-          line: 441
+          offset: 44599
+          line: 445
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1110,5 +1105,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3f918a111b4b08e9ecaf6b5c3a21901c2e3cfbe97c34699f501ee6589884abb3"
-  generated_content_sha256: "sha256:96db8b8da68fa5e40ba3996023a869ac94d650d8a6c4454febdc00205540cbca"
+    sha256: "sha256:cd56a2572c8a1f4e7875451f08cdb14b65cc80609beb80538890acc079f2d728"
+  generated_content_sha256: "sha256:a03d89bebf8312f7a6d8347e49058e2f08f5c92a02ba2cf9d6124316875d9763"
