@@ -99,7 +99,7 @@ measurement_rules:
       name: "Declared row property"
       uuid: ""
     required_unit: "per 1 kg reference flow"
-    rule: "Use cp_acceptance and cp_cohort_ledger. First-acceptance Q is unique newly accepted dispatch plus unique newly accepted closing finished stock, each once; exclude opening accepted stock, returns and retests. A later storage increment uses the same original accepted cohort Q0 and actual increment, without fresh acceptance. Missing/zero denominators retain raw totals and prohibit a normalized result."
+    rule: "Use cp_acceptance and cp_cohort_ledger. Q is the sum of unique first-acceptance whole-rod net kg from traceable existing records at the fixed gate, locked to each original event mass basis/reference date and uncertainty. Later dispatch, loss, scope exit or return to pending verification cannot shrink or increase Q. Exclude opening accepted stock, returns/retests and repeated record acceptance from new Q. Reconcile every net destination through acceptance_event_bridge; dispatch plus closing accepted stock is only a conditional zero-other-disposition simplification. Later services use original Q0 and actual increments without fresh acceptance. Missing/zero basis retains raw totals and blocks normalization; no new handling/weighing is prescribed."
   - id: activity_identity
     applies_to: "tritium_air, tritium_freshwater, carbon14_air, cesium137_freshwater"
     required_property_ref:
@@ -137,8 +137,8 @@ process_map:
   - id: rod_handover
     name: "Record-based acceptance and plant handover"
     inclusion: "required"
-    inclusion_condition: "Actual receiver acceptance or newly accepted closing stock; later increments retain original cohort"
-    role: "One unique whole-element reference output, without treating a retest/return as new output"
+    inclusion_condition: "Unique first gate acceptance from actual authorized records, including newly accepted closing stock and every later net destination; later increments retain original cohort"
+    role: "One unique whole-element reference coordinate, without treating dispatch, return, retest or renewed verification as additional first output"
     quantitative_reference: "per 1 kg reference flow"
 process_inventory:
   - id: rod_receipt
@@ -393,7 +393,7 @@ process_inventory:
           flow_ref:
             uuid: "28f5ac8d-dbfb-415d-afd2-36d0860a1cc3"
           property_unit: "Mass / kg"
-          description: "This is the entire physical element under declared custody. Preserve actual spent state, CN at-plant compatibility and the contrary native classification/admission record. A subsequent storage increment uses the same original accepted reference cohort; it does not manufacture or newly accept another rod."
+          description: "This is the entire physical element under declared custody. Preserve actual spent state, CN at-plant compatibility and the contrary native classification/admission record. The 1 kg card is the normalized unique first-acceptance reference coordinate, not another external mass output alongside dispatch and stock. A subsequent storage increment, linked return or repeated record verification retains the original accepted cohort and Q0; it does not manufacture or newly accept another rod. A later excluded state/disposition remains in the historical event bridge while its subsequent operations leave this method."
           amount:
             expression: "1 kg"
             value_mode: "fixed_value"
@@ -436,7 +436,7 @@ allocation_rules:
       - ilcd-allocation-2010
   - rule_id: allocation_rule_5
     applies_to: "foreground_burden_allocation"
-    rule: "Raw/WIP here means an already received eligible whole rod whose identity or gate acceptance is not yet complete; it does not authorize fuel fabrication or processing. Separate exchanges assigned to unfinished raw/WIP, newly accepted output, and later service for opening accepted stock. Carry unfinished-cohort burdens forward; normalize only the burden share attributable to the accepted cohort. Never divide the undivided facility total by new acceptance Q. A shared exchange is assigned once, and both its stock state and original dataset link remain visible."
+    rule: "Unaccepted raw/WIP here means already received intact whole rods whose identity or first gate acceptance remains incomplete; their burdens carry forward without new Q. Separately identify previously accepted rods returned to pending record/eligibility verification: they retain original Q/Q0 and their incremental services, never become never-accepted material and cannot also occupy closing accepted stock. Neither status authorizes fuel fabrication, physical rework or processing. Separate unfinished-cohort exchanges, all newly first-accepted destinations and later service for old accepted cohorts. Normalize only the evidenced accepted-cohort burden share by its original event quantity; never divide the undivided facility total by new Q. Assign each shared exchange and inherited vector once, preserving stock state and original dataset link."
     source_ids: []
 dataset_production:
   collection_protocols:
@@ -454,28 +454,28 @@ dataset_production:
       quality_evidence: "custody/receipt reconciliation; mass source/calibration if existing weighing used; expert state/geography/native admission"
     - protocol_id: cp_acceptance
       process_id: "rod_handover"
-      flow_role: "Unique accepted reference output"
-      record_type: "acceptance and stock register"
-      raw_fields: "identity; first acceptance date/gate; net mass; new dispatch; new closing accepted stock; opening accepted stock; returns/retests; accepted cohort Q0; original dataset link; mode"
-      collection_method: "Join acceptance and dispatch/stock records by unique identity and gate; exclude duplicates and previously accepted stocks; verify actual physical object and receiver acceptance. Aggregation detail: Q = unique new accepted dispatch + unique new accepted closing stock, each once; exclude opening accepted stock/returns/retests. Later increment denominator is original accepted Q0."
+      flow_role: "unique acceptance reference output"
+      record_type: "existing acceptance and stock registers"
+      raw_fields: "immutable rod/cohort id; unique first-acceptance date/gate; original net kg/basis/reference date/uncertainty; gross new dispatch and linked returns; new accepted closing stock; opening accepted stock and original Q0; each actual other net disposition/pending-verification stock or scope exit; repeat verification history; original dataset link and mode"
+      collection_method: "Link existing authorized acceptance, custody and stock records without new handling/weighing. Sum each unique first event once to lock Q, then reconcile D_new + F_new_close + L_new on that original whole-rod basis with linked current-state evidence and uncertainty; do not infer Q from remaining stock. Returns/retests/repeated acceptance add no Q. Dispatch plus closing accepted stock alone requires evidence of zero other dispositions. Earlier accepted cohorts and all their later services use original Q0."
       unit: "kg"
-      frequency: "each acceptance/dispatch and period close"
-      temporal_coverage: "same disclosed accounting period; original dates retained for later increments"
-      site_scope: "admitted same-state CN cohort"
+      frequency: "Each recorded event/movement and period close"
+      temporal_coverage: "Same declared period; later increments retain original dates"
+      site_scope: "Admitted same-state CN cohort; excluded states/dispositions recorded only as scope exits"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "unique-id reconciliation; positive denominator; receiver/stock sign-off; origin link and original acceptance quantities"
+      quality_evidence: "Unique-event trace; original positive denominator; full net destination and current-state reconciliation; receiver/stock signatures; original dataset/mass evidence"
     - protocol_id: cp_cohort_ledger
       process_id: "rod_receipt"
-      flow_role: "Stocks, inherited burdens and state/date transitions"
-      record_type: "physical and burden ledger"
-      raw_fields: "opening raw/WIP/accepted stocks; receipts; stage movements; dispatch; closing stocks; measured differences; each inherited burden; source datasets/gates; isotope/activity dates; mode"
-      collection_method: "Reconcile physical and inherited-burden records for the same cohort, avoiding internal-transfer duplication. Keep isotope/activity accounting separate from whole-rod mass. Aggregation detail: retain opening + receipt = dispatch + closing + evidenced physical differences with uncertainty; carry attributable inherited raw/WIP/accepted-stock burdens; normalize per 1 kg reference flow with the same Q or Q0"
-      unit: "kg and separately declared original burden/activity units"
-      frequency: "each transition and period close"
-      temporal_coverage: "continuous actual cohort history and selected interval"
-      site_scope: "same CN plant and actual upstream stage links"
+      flow_role: "stocks, inherited burdens and state/date changes"
+      record_type: "existing physical and burden ledgers"
+      raw_fields: "opening/closing raw/WIP/accepted stock by new/old immutable cohort; actual receipts, gross dispatch/linked returns, internal record-status transfers and external scope exits; original event mass and Q0; current mass/reference date/uncertainty; each inherited burden/source/stage; nuclide/activity dates and mode"
+      collection_method: "Reconcile actual opening stocks + actual receipts/returns = actual closing stocks + gross external dispatch/other exits using existing evidence; retain unexplained differences as findings, not assumed losses. Internal acceptance/pending-verification transfers cancel, and Q is not another physical output. Track current whole-rod mass separately from original event-basis destinations and date-resolved nuclide/activity ledgers; any actual conversion requires supported study evidence. Carry own-foreground vectors once, preserve provider overlap and all incremental original-cohort services. Normalize only the attributable exchanges by original Q or Q0."
+      unit: "kg; original burden/activity units kept separately"
+      frequency: "Each recorded change and period close"
+      temporal_coverage: "Actual continuous cohort history and selected interval"
+      site_scope: "Same CN plant and actual upstream stage links; scope exit separately bounded"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "stock bridge, documented difference/uncertainty, stage overlap check and unreconciled-item log"
+      quality_evidence: "Stock bridge, original-basis/current-state evidence, uncertainty, vector/stage overlap checks and unresolved findings"
     - protocol_id: cp_storage_utilities
       process_id: "rod_wet_storage"
       flow_role: "Electricity and makeup water"
@@ -527,17 +527,17 @@ dataset_production:
   calculation_rules:
     - id: unique_acceptance
       applies_to: "spent_rod_handover"
-      rule: "Q is the sum of net mass over the union of newly first-accepted dispatched rods and newly first-accepted closing accepted-stock rods; include each identity once. Opening accepted stock, returns and retests contribute no new acceptance. Missing/zero Q prohibits normalization."
+      rule: "Q = sum of traceable existing whole-rod net masses over unique first-acceptance events at the fixed gate, locked to the original mass basis/reference date and uncertainty. Each rod identity contributes once even if later returned, held pending verification, transferred out of scope or repeatedly verified. Opening accepted stock and repeated events never add to new Q. Reconcile the complete acceptance_event_bridge; do not replace Q with net dispatch plus remaining stock or invent a mass/decay correction. Missing/zero Q blocks normalization."
       inputs:
         - cp_acceptance
         - cp_rod_identity
-      output: "Q in kg and identity audit"
+      output: "locked Q in kg and identity audit"
       source_ids:
         - iaea-glossary-2022
         - gao-spent-fuel-2005
     - id: ledger_normalization
       applies_to: "all inventory rows"
-      rule: "For burden-bearing exchanges, first-acceptance normalized amount = the interval exchange share attributable to the newly accepted cohort plus that cohort's applicable inherited burden, divided by Q. Carry unfinished-cohort burdens forward and assign opening accepted-stock later service separately. Physical transfer rows retain their actual stock-reconciled whole masses without a second addition of inherited transfer quantities; the reference output remains 1 kg. Preserve every term, unit, origin and stock state."
+      rule: "For burden-bearing exchanges, normalize the newly accepted cohort's applicable inherited burden plus all attributable interval exchanges, including later service/loss/scope-exit burdens within the declared scope, by its original locked Q once. Unaccepted cohorts carry forward; earlier accepted-stock services use original Q0 separately and never shift into new Q. Carry inherited own-foreground vectors once and add actual incremental services once; do not re-add provider stages already included by linked datasets. Physical transfer rows retain actual reconciled whole masses without adding inherited transfer quantities; the normalized reference coordinate remains 1 kg. Keep every term/unit/origin/state/date and all unresolved basis evidence. No excluded nuclear operation is made applicable by attribution."
       inputs:
         - cp_cohort_ledger
         - cp_acceptance
@@ -547,7 +547,7 @@ dataset_production:
         - ilcd-allocation-2010
     - id: subsequent_storage
       applies_to: "all inventory rows"
-      rule: "Later normalized increment = exchanges attributable to that same original accepted cohort during the declared later interval divided by original Q0; keep Q0, original acceptance record and interval. No newly dispatched/returned rod creates new product acceptance and no original burden is added again."
+      rule: "Later normalized increment = actual attributable exchanges of the same original accepted cohort during the declared later in-scope interval divided by original Q0. Preserve Q0 and original event/basis/date even after return, pending verification, changed later destination or repeated record acceptance; do not add original burdens again or shift services to current new Q. WIP denotes record status only. Excluded changed-state/treatment stages remain outside this interval and require separate methods; retain the boundary/custody record and historic accepted burden without treating the new state as eligible output. Unknown/zero Q0 permits only an unresolved raw correction."
       inputs:
         - "original accepted Q0"
         - cp_acceptance
@@ -575,7 +575,7 @@ dataset_production:
       source_ids: []
     - id: physical_nuclide_ledgers
       applies_to: "receipt_rod, spent_rod_handover"
-      rule: "Reconcile whole-rod/element physical ledgers with evidenced losses and measurement uncertainty. Maintain each nuclide quantity/activity in a distinct date-resolved ledger; decay or species change requires actual supported study evidence and is not a mass-balance residual. Balance only genuinely conserved quantities; do not impose chemical-element or isotope conservation where actual supported nuclear change alters identity. Never force nuclide activity conservation or invent a half-life/conversion."
+      rule: "Reconcile actual whole-rod physical opening stocks + receipts/linked returns with closing stocks + gross external dispatch/other recorded exits, with no duplicate internal acceptance/status transfer and no additional Q output. Use actual state/date masses; original event-basis destination equivalents are a separate bridge, not extra physical mass. Loss, downgrade/waste designation or excluded state must be evidenced and bounded, never invented as a residual or authorization for handling/treatment; unresolved differences remain findings. Nuclide quantity/activity has its own date-resolved ledger: decay or species change needs actual supported study evidence and is not a mass residual. Balance only genuinely conserved quantities; do not force chemical-element/isotope conservation where supported nuclear change alters identity. Never force activity conservation or invent a half-life, activity-to-mass or mass/date adjustment."
       inputs:
         - cp_rod_identity
         - cp_cohort_ledger
@@ -585,12 +585,12 @@ dataset_production:
         - iaea-glossary-2022
     - id: acceptance_event_bridge
       applies_to: "all inventory rows"
-      rule: "Lock Q to unique independently measured first-acceptance events. Use the two-term dispatch/closing-stock bridge only when L_new is zero; otherwise reconcile disjoint D_new, F_new_close and actual post-acceptance net exits L_new on the original acceptance basis. Retain original event Q for later losses/services and prevent internal/return/rework throughput duplication. Do not add Q as an extra external output. Unresolved event/stock evidence blocks complete normalization."
+      rule: "Lock Q to unique first-acceptance whole-rod masses from existing independent traceable records. For only that newly first-accepted cohort (zero opening accepted stock), reconcile Q = D_new + F_new_close + L_new on the original event mass basis/reference date with evidence and uncertainty for any later-state conversion. D_new is gross eligible external handover dispatch minus linked actual returns; F_new_close is closing accepted stock; L_new covers every other mutually exclusive actual net destination, including intact pending-verification/returned WIP and evidenced out-of-scope custody, downgrade/waste designation or actual loss/state exit absent from both other terms. Actual excluded states, broken/cut/damaged rods or recovery/treatment are scope exits only, never newly admitted operations or eligible product. A returned parcel is removed from net dispatch and occupies its actual final accepted stock/pending/other destination once; gross loops/retests/repeated acceptance add nothing. A purely documentary 100 kg first event with 60 kg net handover, 30 kg accepted stock and 10 kg other recorded custody/status retains Q=100 kg, not 90 kg. Use dispatch plus accepted stock alone only with evidenced zero L_new. Original Q/Q0 and all applicable later services remain; never infer zero loss, physical disappearance, decay or a balancing adjustment. Unresolved basis/stock/destination evidence blocks complete normalization. Q is not an additional external output."
       inputs:
-        - "original acceptance events"
-        - "net parcel-state bridge"
-        - "original cohort quantities"
-      output: "auditable positive event Q and separate physical stock bridge"
+        - cp_acceptance
+        - cp_cohort_ledger
+        - cp_rod_identity
+      output: "locked event Q and complete separate original-basis net destination bridge"
       source_ids: []
   data_quality_requirements:
     - id: dq_native_admission
@@ -636,7 +636,7 @@ validation_rules:
       - ornl-full-length-rods-2020
   - rule_id: validate_acceptance_stock
     applies_to: "all inventory rows"
-    rule: "Verify unique first-acceptance dispatch plus closing accepted stock, with opening stock/return/retest exclusion, inherited raw/WIP/accepted burdens and raw stock bridge. Verify original Q0 for later intervals; retain raw quantities and fail normalized reporting for missing/zero basis."
+    rule: "Verify unique first events and locked original-basis Q, then complete disjoint D_new + F_new_close + L_new with net linked returns and every actual other disposition; reject unconditional dispatch-plus-stock, loss reducing Q, repeated acceptance adding Q, or accepted-stock/pending-WIP double location. Keep opening accepted stock/original Q0, inherited raw/WIP/accepted vectors and later services separate from new Q; no lost failed/pending-verification activity. Independently verify actual physical and dated nuclide ledgers, cancelling internal transfers and never adding Q to external outputs. Scope exits remain outside product/processing eligibility. Missing/zero Q/Q0 or unresolved conversion/history retains raw quantities and fails affected complete normalization."
     source_ids:
       - ilcd-allocation-2010
   - rule_id: validate_species_units
@@ -686,18 +686,18 @@ data_sources:
     used_for: "Direct assignment/virtual subdivision and flow-specific determining physical causality, including time-dependent services. Does not prescribe a nuclear storage driver or numeric factor."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:946323a5fbfa11fddde3877703dedeb0070835a15815844720de50f403bc15b6"
+  source_sha256: "sha256:f9696bbf506472416b0891fd9c92d98192a7b92ffae63e765e8df853d8a4c232"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8660"
+    - unit_id: "normative_9012"
       family: "system_boundary"
       span:
         start:
-          offset: 8660
+          offset: 9012
           line: 62
           column: 1
         end:
-          offset: 12090
+          offset: 12442
           line: 84
           column: 1
       markdown: "## 5. System Boundary\n\nThe boundary starts with already separated, identifiable intact spent rods and their inherited records. It accounts for receipt/inventory, actual wet-storage auxiliary exchanges and documented plant handover. Separate generation/fuel-origin, earlier assembly/rod preparation, off-site transport, dry storage, laboratory examination and disposal in the stage register. A foreign historical example cannot fill a missing CN stage or supplier inventory (`gao-spent-fuel-2005`, `ornl-full-length-rods-2020`).\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Already separately inventoried intact irradiated civilian UO2 PWR rods at a declared compatible CN plant receipt gate, with actual history, state, mass/date and inherited burdens |\n| starting_condition_role | Physical spent-element/custody transfer, without assigning a fresh-fuel function, recovery credit or nuclear processing recipe |\n| product_classification_scope | Narrower individual complete spent-element scope within CPC33720; the selected native's CPC33710 contrary metadata remains subject to independent admission |\n| recursive_input_rule | Match each same-category transfer by rod/cohort identity, whole mass, state and dates; retain physical quantities at both ends and cancel only genuine internal transfers on aggregation; later storage does not create a new acceptance cohort |\n| upstream_dataset_requirement | Link only actual compatible site/provider/time/state backgrounds; preserve origin and raw/WIP/accepted-stock burdens and explicit unlinked gaps. Do not double-add generation or management already included elsewhere. No zero upstream burden follows from spent/waste designation. |\n| disclosure | CN gate/native admission; actual completed storage interval; opening/closing raw, WIP and accepted stocks; first acceptance versus later increment; inherited burdens; containers, infrastructure and shared utilities; source monitoring coverage; legal custody, missing stages, receiver and nuclear expert approval |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| whole_element_gate | all processes | Preserve the complete rod as the physical reference entity. Begin only after documented separate-rod receipt; do not replace an assembly by a rod or import a removal/cutting procedure. | iaea-glossary-2022, ornl-full-length-rods-2020 |\n| cn_native_admission | receipt_rod, spent_rod_handover | Bind this native only to compatible actual CN at-plant delivery and origin. Independently adjudicate its opposing non-irradiated classification; reject any hard conflicting name/state/route/geography. Foreign sources are object/method evidence, never a CN site inventory or provider. | iaea-glossary-2022, gao-spent-fuel-2005, ornl-full-length-rods-2020 |\n| stage_register | all processes | Declare completed gates and dates; separate off-site transport and future treatment/disposal. Keep earlier generation and preparation burdens visible without double counting; unknown coverage is a gap, not zero. | iaea-glossary-2022, ilcd-allocation-2010 |\n| route_completeness | rod_wet_storage | Inventory every actual utility, material, secondary waste and source discharge as an atomic exchange. Extend the rows for actual treatment, maintenance, containers and attributable infrastructure; applicable unmeasured modules block a complete dataset. | ilcd-allocation-2010 |\n\n"
@@ -717,11 +717,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8660
+              offset: 9012
               line: 62
               column: 1
             end:
-              offset: 8681
+              offset: 9033
               line: 62
               column: 22
           text: "## 5. System Boundary"
@@ -737,18 +737,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_24414"
+    - unit_id: "normative_25833"
       family: "allocation"
       span:
         start:
-          offset: 24414
+          offset: 25833
           line: 288
           column: 1
         end:
-          offset: 26655
+          offset: 28361
           line: 299
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| direct_assignment | all processes | Subdivide/directly assign exchanges by actual rod/cohort and interval before allocating shared activity. Preserve each physical transfer and waste stream unallocated in the raw ledger. | ilcd-allocation-2010 |\n| shared_pool_causality | rod_wet_storage | Allocate each residual shared utility by documented causal service: use recorded attributable energy for thermal load when available; occupancy-time may serve only documented space/time-driven overhead. Mass-times-duration is not a universal proxy for cooling, activity or hazard. Record all served cohorts, drivers, denominator and sensitivity under cp_shared_services; absent a defensible driver, keep raw shared totals and an allocation gap. | ilcd-allocation-2010 |\n| no_recovery_credit | receipt_rod, spent_rod_handover | No co-product, economic value, avoided fresh fuel or recovery credit follows from this intact spent-rod handover. Any actual co-function requires separate evidence and review; physical radionuclide activity or contained U cannot allocate away custody transfers. | iaea-glossary-2022, ilcd-allocation-2010 |\n| inheritance_no_double_count | all processes | Carry attributable inherited raw/WIP/accepted-stock burdens by cohort, preserving their origin and scope. Do not assign old stock zero burdens or divide only new utility consumption by newly dispatched mass. Later increments retain original accepted Q0 and add only that interval's documented exchanges; do not add the original product/generation inventory again. | ilcd-allocation-2010 |\n\nRaw/WIP here means an already received eligible whole rod whose identity or gate acceptance is not yet complete; it does not authorize fuel fabrication or processing. Separate exchanges assigned to unfinished raw/WIP, newly accepted output, and later service for opening accepted stock. Carry unfinished-cohort burdens forward; normalize only the burden share attributable to the accepted cohort. Never divide the undivided facility total by new acceptance Q. A shared exchange is assigned once, and both its stock state and original dataset link remain visible.\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| direct_assignment | all processes | Subdivide/directly assign exchanges by actual rod/cohort and interval before allocating shared activity. Preserve each physical transfer and waste stream unallocated in the raw ledger. | ilcd-allocation-2010 |\n| shared_pool_causality | rod_wet_storage | Allocate each residual shared utility by documented causal service: use recorded attributable energy for thermal load when available; occupancy-time may serve only documented space/time-driven overhead. Mass-times-duration is not a universal proxy for cooling, activity or hazard. Record all served cohorts, drivers, denominator and sensitivity under cp_shared_services; absent a defensible driver, keep raw shared totals and an allocation gap. | ilcd-allocation-2010 |\n| no_recovery_credit | receipt_rod, spent_rod_handover | No co-product, economic value, avoided fresh fuel or recovery credit follows from this intact spent-rod handover. Any actual co-function requires separate evidence and review; physical radionuclide activity or contained U cannot allocate away custody transfers. | iaea-glossary-2022, ilcd-allocation-2010 |\n| inheritance_no_double_count | all processes | Carry attributable inherited raw/WIP/accepted-stock burdens by cohort, preserving their origin and scope. Do not assign old stock zero burdens or divide only new utility consumption by newly dispatched mass. Later increments retain original accepted Q0 and add only that interval's documented exchanges; do not add the original product/generation inventory again. | ilcd-allocation-2010 |\n\nUnaccepted raw/WIP here means already received intact whole rods whose identity or first gate acceptance remains incomplete; their burdens carry forward without new Q. Separately identify previously accepted rods returned to pending record/eligibility verification: they retain original Q/Q0 and their incremental services, never become never-accepted material and cannot also occupy closing accepted stock. Neither status authorizes fuel fabrication, physical rework or processing. Separate unfinished-cohort exchanges, all newly first-accepted destinations and later service for old accepted cohorts. Normalize only the evidenced accepted-cohort burden share by its original event quantity; never divide the undivided facility total by new Q. Assign each shared exchange and inherited vector once, preserving stock state and original dataset link.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -765,11 +765,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 24414
+              offset: 25833
               line: 288
               column: 1
             end:
-              offset: 24454
+              offset: 25873
               line: 288
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -785,18 +785,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41357"
+    - unit_id: "normative_46136"
       family: "validation"
       span:
         start:
-          offset: 41357
+          offset: 46136
           line: 339
           column: 1
         end:
-          offset: 43475
+          offset: 48743
           line: 350
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference_object | receipt_rod, spent_rod_handover | Reject whole-assembly, fresh-fuel, contained-U, fragment, breached/cut/damaged rod, non-UO2/non-PWR or service-output substitutions. Require entire rod/cladding/ends, actual spent state and permanent-removal evidence. | iaea-glossary-2022, ornl-full-length-rods-2020 |\n| validate_native_geography | reference binding | Require compatible actual CN at-plant origin/delivery and independent expert decision on contrary native CPC33710 classification. Any unresolved hard conflict or non-CN provider fails admission; US/IAEA principles cannot supply missing CN site facts. | gao-spent-fuel-2005, ornl-full-length-rods-2020 |\n| validate_acceptance_stock | all inventory rows | Verify unique first-acceptance dispatch plus closing accepted stock, with opening stock/return/retest exclusion, inherited raw/WIP/accepted burdens and raw stock bridge. Verify original Q0 for later intervals; retain raw quantities and fail normalized reporting for missing/zero basis. | ilcd-allocation-2010 |\n| validate_species_units | storage and releases | Keep whole mass, conserved element quantities, stored nuclide/activity and source releases separate; verify actual dates, receptor and units. Reject invented decay factors, per-rod masses and activity-to-mass conversions. | iaea-glossary-2022 |\n| validate_inventory_coverage | all processes | Require atomic actual flows, correct selected property/unit, protocols, allocation evidence and compatible provider/background. Unresolved secondary-waste identities or applicable unmeasured modules remain gaps; non-detects and incomplete monitoring do not prove zero. | ilcd-allocation-2010 |\n| validate_claim_limits | complete dataset | Declare the actual completed CN gate/interval, review limitations and unlinked stages. Do not claim operating/safety approval, complete fuel-cycle results, foreign case equivalence, final disposal or methodology approval from this inventory check. | iaea-glossary-2022, gao-spent-fuel-2005 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference_object | receipt_rod, spent_rod_handover | Reject whole-assembly, fresh-fuel, contained-U, fragment, breached/cut/damaged rod, non-UO2/non-PWR or service-output substitutions. Require entire rod/cladding/ends, actual spent state and permanent-removal evidence. | iaea-glossary-2022, ornl-full-length-rods-2020 |\n| validate_native_geography | reference binding | Require compatible actual CN at-plant origin/delivery and independent expert decision on contrary native CPC33710 classification. Any unresolved hard conflict or non-CN provider fails admission; US/IAEA principles cannot supply missing CN site facts. | gao-spent-fuel-2005, ornl-full-length-rods-2020 |\n| validate_acceptance_stock | all inventory rows | Verify unique first events and locked original-basis Q, then complete disjoint D_new + F_new_close + L_new with net linked returns and every actual other disposition; reject unconditional dispatch-plus-stock, loss reducing Q, repeated acceptance adding Q, or accepted-stock/pending-WIP double location. Keep opening accepted stock/original Q0, inherited raw/WIP/accepted vectors and later services separate from new Q; no lost failed/pending-verification activity. Independently verify actual physical and dated nuclide ledgers, cancelling internal transfers and never adding Q to external outputs. Scope exits remain outside product/processing eligibility. Missing/zero Q/Q0 or unresolved conversion/history retains raw quantities and fails affected complete normalization. | ilcd-allocation-2010 |\n| validate_species_units | storage and releases | Keep whole mass, conserved element quantities, stored nuclide/activity and source releases separate; verify actual dates, receptor and units. Reject invented decay factors, per-rod masses and activity-to-mass conversions. | iaea-glossary-2022 |\n| validate_inventory_coverage | all processes | Require atomic actual flows, correct selected property/unit, protocols, allocation evidence and compatible provider/background. Unresolved secondary-waste identities or applicable unmeasured modules remain gaps; non-detects and incomplete monitoring do not prove zero. | ilcd-allocation-2010 |\n| validate_claim_limits | complete dataset | Declare the actual completed CN gate/interval, review limitations and unlinked stages. Do not claim operating/safety approval, complete fuel-cycle results, foreign case equivalence, final disposal or methodology approval from this inventory check. | iaea-glossary-2022, gao-spent-fuel-2005 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -813,11 +813,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41357
+              offset: 46136
               line: 339
               column: 1
             end:
-              offset: 41379
+              offset: 46158
               line: 339
               column: 23
           text: "## 9. Validation Rules"
@@ -837,258 +837,258 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8660"
+      unit_id: "normative_9012"
       source_span:
         start:
-          offset: 8683
+          offset: 9035
           line: 64
           column: 1
         end:
-          offset: 9187
+          offset: 9539
           line: 64
           column: 505
     - pointer: "/system_boundary/rules/1"
       rule_id: "whole_element_gate"
       identity_kind: "explicit"
-      unit_id: "normative_8660"
+      unit_id: "normative_9012"
       source_span:
         start:
-          offset: 10789
+          offset: 11141
           line: 79
           column: 1
         end:
-          offset: 11063
+          offset: 11415
           line: 79
           column: 275
     - pointer: "/system_boundary/rules/2"
       rule_id: "cn_native_admission"
       identity_kind: "explicit"
-      unit_id: "normative_8660"
+      unit_id: "normative_9012"
       source_span:
         start:
-          offset: 11064
+          offset: 11416
           line: 80
           column: 1
         end:
-          offset: 11477
+          offset: 11829
           line: 80
           column: 414
     - pointer: "/system_boundary/rules/3"
       rule_id: "stage_register"
       identity_kind: "explicit"
-      unit_id: "normative_8660"
+      unit_id: "normative_9012"
       source_span:
         start:
-          offset: 11478
+          offset: 11830
           line: 81
           column: 1
         end:
-          offset: 11769
+          offset: 12121
           line: 81
           column: 292
     - pointer: "/system_boundary/rules/4"
       rule_id: "route_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_8660"
+      unit_id: "normative_9012"
       source_span:
         start:
-          offset: 11770
+          offset: 12122
           line: 82
           column: 1
         end:
-          offset: 12088
+          offset: 12440
           line: 82
           column: 319
     - pointer: "/allocation_rules/0"
       rule_id: "direct_assignment"
       identity_kind: "explicit"
-      unit_id: "normative_24414"
+      unit_id: "normative_25833"
       source_span:
         start:
-          offset: 24527
+          offset: 25946
           line: 292
           column: 1
         end:
-          offset: 24774
+          offset: 26193
           line: 292
           column: 248
     - pointer: "/allocation_rules/1"
       rule_id: "shared_pool_causality"
       identity_kind: "explicit"
-      unit_id: "normative_24414"
+      unit_id: "normative_25833"
       source_span:
         start:
-          offset: 24775
+          offset: 26194
           line: 293
           column: 1
         end:
-          offset: 25288
+          offset: 26707
           line: 293
           column: 514
     - pointer: "/allocation_rules/2"
       rule_id: "no_recovery_credit"
       identity_kind: "explicit"
-      unit_id: "normative_24414"
+      unit_id: "normative_25833"
       source_span:
         start:
-          offset: 25289
+          offset: 26708
           line: 294
           column: 1
         end:
-          offset: 25652
+          offset: 27071
           line: 294
           column: 364
     - pointer: "/allocation_rules/3"
       rule_id: "inheritance_no_double_count"
       identity_kind: "explicit"
-      unit_id: "normative_24414"
+      unit_id: "normative_25833"
       source_span:
         start:
-          offset: 25653
+          offset: 27072
           line: 295
           column: 1
         end:
-          offset: 26089
+          offset: 27508
           line: 295
           column: 437
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_rule_5"
       identity_kind: "snapshot_local"
-      unit_id: "normative_24414"
+      unit_id: "normative_25833"
       source_span:
         start:
-          offset: 26091
+          offset: 27510
           line: 297
           column: 1
         end:
-          offset: 26653
+          offset: 28359
           line: 297
-          column: 563
+          column: 850
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference_object"
       identity_kind: "explicit"
-      unit_id: "normative_41357"
+      unit_id: "normative_46136"
       source_span:
         start:
-          offset: 41452
+          offset: 46231
           line: 343
           column: 1
         end:
-          offset: 41784
+          offset: 46563
           line: 343
           column: 333
     - pointer: "/validation_rules/1"
       rule_id: "validate_native_geography"
       identity_kind: "explicit"
-      unit_id: "normative_41357"
+      unit_id: "normative_46136"
       source_span:
         start:
-          offset: 41785
+          offset: 46564
           line: 344
           column: 1
         end:
-          offset: 42137
+          offset: 46916
           line: 344
           column: 353
     - pointer: "/validation_rules/2"
       rule_id: "validate_acceptance_stock"
       identity_kind: "explicit"
-      unit_id: "normative_41357"
+      unit_id: "normative_46136"
       source_span:
         start:
-          offset: 42138
+          offset: 46917
           line: 345
           column: 1
         end:
-          offset: 42499
+          offset: 47767
           line: 345
-          column: 362
+          column: 851
     - pointer: "/validation_rules/3"
       rule_id: "validate_species_units"
       identity_kind: "explicit"
-      unit_id: "normative_41357"
+      unit_id: "normative_46136"
       source_span:
         start:
-          offset: 42500
+          offset: 47768
           line: 346
           column: 1
         end:
-          offset: 42794
+          offset: 48062
           line: 346
           column: 295
     - pointer: "/validation_rules/4"
       rule_id: "validate_inventory_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_41357"
+      unit_id: "normative_46136"
       source_span:
         start:
-          offset: 42795
+          offset: 48063
           line: 347
           column: 1
         end:
-          offset: 43136
+          offset: 48404
           line: 347
           column: 342
     - pointer: "/validation_rules/5"
       rule_id: "validate_claim_limits"
       identity_kind: "explicit"
-      unit_id: "normative_41357"
+      unit_id: "normative_46136"
       source_span:
         start:
-          offset: 43137
+          offset: 48405
           line: 348
           column: 1
         end:
-          offset: 43473
+          offset: 48741
           line: 348
           column: 337
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8660"
+      unit_id: "normative_9012"
       source_span:
         start:
-          offset: 8660
+          offset: 9012
           line: 62
           column: 1
         end:
-          offset: 8681
+          offset: 9033
           line: 62
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8660"
+      unit_id: "normative_9012"
       source_span:
         start:
-          offset: 9215
+          offset: 9567
           line: 68
           column: 1
         end:
-          offset: 10716
+          offset: 11068
           line: 75
           column: 329
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_24414"
+      unit_id: "normative_25833"
       source_span:
         start:
-          offset: 24414
+          offset: 25833
           line: 288
           column: 1
         end:
-          offset: 24454
+          offset: 25873
           line: 288
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41357"
+      unit_id: "normative_46136"
       source_span:
         start:
-          offset: 41357
+          offset: 46136
           line: 339
           column: 1
         end:
-          offset: 41379
+          offset: 46158
           line: 339
           column: 23
 projection_metadata:
@@ -1098,5 +1098,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:946323a5fbfa11fddde3877703dedeb0070835a15815844720de50f403bc15b6"
-  generated_content_sha256: "sha256:2165d372504e6e198460b130c20d07560a9a8596ebc84a5cb2a717b7cfa10ad4"
+    sha256: "sha256:f9696bbf506472416b0891fd9c92d98192a7b92ffae63e765e8df853d8a4c232"
+  generated_content_sha256: "sha256:d2a10f1b659830340f9a5cea2532e3a274608828e9597aa57d31264ff27b6f3f"
