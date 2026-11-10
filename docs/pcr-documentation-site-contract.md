@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-04
-lastReviewedNote: "Reviewed the scoped CPC3 source at 199860644 and its actual capacity and reserved-route shadowing failures. Bounded search layout selection, versioned inspector dictionary transport and audited current reading-page ownership preserve complete content, historical entries/anchors, existing guards and budgets. Inspector decoding preflights the whole restored pack; reading URLs avoid reserved origins and retained targets follow their complete actual anchor owner. The selected final source still requires fresh complete validation and documentation qualification; scientific status, publication and deployment authority are unchanged."
-lastReviewedCommit: 199860644655a82b5cc228523c930cd2082916d9
+lastReviewedAt: 2026-11-10
+lastReviewedNote: "Integrate selected CPC04 repairs and the exact dictionary-spelling corpus audit from fc4a9b576e onto fork main 7d0a480787. Preserve the existing CPC3 source, bounded search layout, inspector dictionary limits, reserved reading-route protection, complete historical anchors and capacity gates. Scientific status, publication and deployment authority remain unchanged; exact-source qualification is separate."
+lastReviewedCommit: 7d0a48078779e09b3ca6aadf1b0bd619505303a4
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -559,6 +559,12 @@ unchanged raw budget. Candidates must also retain the existing per-pack physical
 and summed restored-wire byte limits before selection. This does not change
 logical text buckets, engine exports,
 record fields, logical order, ranking, decoder versions or any size/expansion guard.
+
+Corpus auditing accepts only the exact canonical physical pack spelling or its
+exact dictionary-only Unicode-escape variant. It still verifies physical hashes,
+every restored logical wire, native engine exports, complete records, ordered
+query results and the full existing raw/gzip budgets. This compatibility does not
+permit arbitrary JSON rewrites or changes to non-dictionary fields.
 
 `node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
 compares captured physical assets with repacked v7 files over the exact same

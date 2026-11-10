@@ -3,10 +3,25 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {packSearchShards,unpackSearchFile,readSearchManifest,type SearchManifest,type SearchPhysicalFile} from '../lib/search-pack.ts';
+import {escapeSearchDictionary} from './search-layout.ts';
 type Layout={manifest:SearchManifest;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number};
 type Planner=(wires:readonly string[],commit:string,language:string)=>Layout;
 const commit='a'.repeat(40),language='zh-CN';
 const hash=(value:string|Uint8Array)=>'sha256:'+createHash('sha256').update(value).digest('hex');
+test('dictionary spelling preserves exact values and changes no record or native field',()=>{
+  const canonical=packSearchShards([wire(0,['中文','😀','\ud800','literal space','constructor'])],commit,language,0,7);
+  const escaped=escapeSearchDictionary(canonical);
+  assert.notEqual(escaped,canonical);
+  assert.deepEqual(JSON.parse(escaped),JSON.parse(canonical));
+  const original:unknown=JSON.parse(canonical);
+  assert.ok(original&&typeof original==='object'&&'dictionary' in original&&Array.isArray(original.dictionary));
+  const dictionary=JSON.stringify(original.dictionary),marker='"dictionary":'+dictionary;
+  const index=canonical.indexOf(marker),start=index+'"dictionary":'.length;
+  const expected=canonical.slice(0,start)+dictionary.replace(/[\u007f-\uffff]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'))+canonical.slice(start+dictionary.length);
+  assert.equal(escaped,expected);
+  assert.ok(escaped.includes('完整中文😀'),'record text retains its original spelling');
+  for(const bad of ['{}','{"dictionary":[1]}','{"dictionary":null}'])assert.throws(()=>escapeSearchDictionary(bad));
+});
 async function planner():Promise<Planner>{
   const module:unknown=await import(new URL('./search-layout.ts',import.meta.url).href).catch((error:unknown)=>{
     if(error&&typeof error==='object'&&Reflect.get(error,'code')==='ERR_MODULE_NOT_FOUND')return {};
