@@ -25,11 +25,11 @@ system_boundary:
         - ergon-bht-concentrate
     - rule_id: boundary_first_acceptance
       applies_to: "reference_product"
-      rule: "For positive Q, count uniquely newly accepted oil dispatched in this period plus newly accepted oil remaining in closing FG once. Opening already accepted FG, old returns, redelivery, internal transfers, repeated tests and conditioning throughput do not create Q. WIP/unaccepted oil is not closing accepted FG. Attribute post-acceptance losses and services to their original cohort, without re-acceptance or a second output."
+      rule: "Q>0 is the sum of whole-oil net kg independently measured at unique first-acceptance events in the declared period, locked to the original event, lot and acceptance basis. Reconcile the same newly accepted cohort with Q = D_new + FG_new + L_new: D_new is dispatch net of linked returns, FG_new is closing accepted FG, and L_new is all other net post-acceptance destinations, including actual net returns not already located in D_new/FG_new, losses, scrap, downgrade, use and closing transfer back to rework/WIP. The destinations must be mutually exclusive, exhaustive and measured on the same original acceptance basis, with measured conversions for composition/water changes. Only evidence of zero other net destinations permits Q = D_new + FG_new. Later losses never lower Q; opening FG, purchased oil, old returns, redelivery, internal loops, repeated tests and reacceptance never create Q. Never-accepted WIP is excluded from FG_new and Q; already accepted material in closing WIP is traced in L_new without a new event."
       source_ids: []
     - rule_id: boundary_stock_vectors
       applies_to: "oil_supply"
-      rule: "Maintain raw/WIP/FG masses and exchange-level inherited burden vectors separately at opening and closing; transfers move both. Withdrawals of opening stock bring their recorded inherited burdens; closing stocks retain appropriate upstream and current-stage burdens. Old-cohort storage/retest/return services belong to the original accepted cohort and its original accepted mass. Unknown inherited vectors or cohort denominator remain unknown."
+      rule: "Maintain raw/WIP/FG masses and exchange-level inherited burden vectors separately at opening and closing; transfers move both. Withdrawals of opening stock bring their recorded inherited burdens; closing stocks retain appropriate upstream and current-stage burdens. Actual failed batches, repeated conditioning, rework and losses retain attributable loads, even when they generate no new Q. Accepted material returned to WIP keeps its original event and burden vector; reacceptance never duplicates feed or Q. Old-cohort storage/retest/return services belong to the original accepted cohort and its original accepted mass Q0. Unknown inherited vectors or original Q0 remain unknown and prohibit normalized corrections."
       source_ids: []
     - rule_id: boundary_no_downstream
       applies_to: "oil_supply"
@@ -42,7 +42,7 @@ boundary_abstraction:
   product_classification_scope: "Narrow new inhibited petroleum transformer-oil category, independently assessed against current CPC3.0 residual exclusions"
   recursive_input_rule: "Internal oil recirculation is a stage transfer, not a fresh input or first acceptance. Purchased same-category oil and external returns need origin/state and inherited-burden evidence; used/recycled oil is outside this route"
   upstream_dataset_requirement: "Match each whole base oil/concentrate/utility to actual production route, gate, year, geography and amount basis; refining burdens and justified refinery coproduct allocation remain upstream"
-  disclosure: "Report receipt-to-factory-gate stages, acceptance Q, dispatch/FG bridge, physical and burden stocks, recirculation, returns, test/conditioning losses, source and provider limits"
+  disclosure: "Report receipt-to-factory-gate stages, event-locked Q/Q0, complete same-basis D_new/FG_new/L_new bridge, physical and burden stocks, recirculation, returns, test/conditioning losses, source and provider limits"
 reference_flow_definition:
   reference_amount: "1"
   product_flow_ref:
@@ -64,7 +64,8 @@ reference_flow_definition:
     - "actual blending/conditioning sequence and number of passes"
     - "net mass and temperature/density when volume is used"
     - "factory gate and packaging/storage boundary"
-    - "unique first-acceptance Q and dispatched/closing-FG split"
+    - "immutable unique first-acceptance events and original Q/Q0"
+    - "same-basis mutually exclusive exhaustive D_new/FG_new/L_new destinations and measured conversions"
     - "raw/WIP/FG physical stocks and inherited burden vectors by cohort"
     - "external returns/retests/old-cohort service links"
     - "broad native identity and33380 metadata debt"
@@ -77,14 +78,14 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Reference is 1 kg accepted whole liquid oil excluding detachable packaging. cp_acceptance measures net mass; volume requires measured batch density at matching temperature, not the example SDS density."
+    rule: "Reference is 1 kg accepted whole liquid oil excluding detachable packaging; Q is locked to original unique first-acceptance whole-oil mass, with measured conversions for later basis changes. cp_acceptance measures net mass; volume requires measured batch density at matching temperature, not the example SDS density."
   - id: same_reference_basis
     applies_to: "all inventory rows"
     required_property_ref:
       name: "Row-specific physical quantity or energy"
       uuid: ""
     required_unit: "per 1 kg reference flow"
-    rule: "Record raw amounts under the linked protocol, attribute their complete burden vectors to the relevant cohort, then divide once by its accepted mass. All cards and protocols declare this same basis."
+    rule: "Record raw amounts under the linked protocol, attribute their complete burden vectors to the relevant cohort, then divide once by its original event-locked accepted mass Q or old-cohort Q0, retaining actual failed/rework loads and post-acceptance losses. All cards and protocols declare this same basis."
   - id: whole_preparation
     applies_to: "all inventory rows"
     required_property_ref:
@@ -283,7 +284,7 @@ process_inventory:
           flow_ref:
             uuid: "53bd72ac-2f0a-4d18-aa9f-158c82b3578f"
           property_unit: "Mass / kg"
-          description: "Whole new inhibited petroleum mineral transformer oil after actual blend, conditioning, batch acceptance and included factory-supply operations. Retain full native at-plant/electrical-route context and the broader-comment/classification limitations in section3."
+          description: "Whole new inhibited petroleum mineral transformer oil after actual blend, conditioning, batch acceptance and included factory-supply operations. Retain full native at-plant/electrical-route context and the broader-comment/classification limitations in section3. This 1 kg reference row represents the unique first-acceptance accounting coordinate; record actual external dispatch/returns, losses and stocks once in the separate physical ledger, without adding Q as another external output."
           amount:
             expression: "1 kg"
             value_mode: "fixed_value"
@@ -487,14 +488,14 @@ dataset_production:
       process_id: "oil_supply"
       flow_role: "accepted_oil_and_stock"
       record_type: "cohort_release_ledger"
-      raw_fields: "new cohort id; recipe/assays; contract/standard edition; lab release; net whole mass; temperature/density if volume; first acceptance time; new dispatch and closing FG; opening FG; WIP; returns/retests/redelivery; physical/burden vectors"
-      collection_method: "Calibrated net tank/dispatch weighing or matched-temperature volumetry; reconcile unique batch acceptance to physical raw/WIP/FG and paired transfer records"
+      raw_fields: "cohort/lot id; immutable first-acceptance event id/time; independently measured net whole kg at that event; original acceptance basis; recipe/assays; contract/standard edition; lab release; temperature/density when volume is used; net D_new and linked returns; FG_new closing accepted stock; disjoint L_new loss/scrap/downgrade/use/net-return/rework-WIP destinations; opening raw/WIP/FG; gross transfers/retests/reacceptance; actual failed/rework operations; physical/burden vectors; basis conversions/uncertainty; Q; original Q0"
+      collection_method: "Calibrated net tank/scale weighing or matched-temperature volumetry at first acceptance. Lock Q to the sum of unique measured event masses, not dispatch or residual available stock. Reconcile exhaustive mutually exclusive D_new/FG_new/L_new for the same lots on the same original acceptance basis; subtract linked returns from dispatch and locate their net remaining destination once in FG_new or L_new. Retain separately actual-period external exchanges, all raw/WIP/FG stocks, paired internal transfers and original-cohort histories; gross passes and reacceptance add no Q"
       unit: "kg"
-      frequency: "Each acceptance, dispatch, return, retest and period stock close"
+      frequency: "Each first acceptance, dispatch, return, retest, reacceptance and period stock close"
       temporal_coverage: "Same actual complete period plus original-cohort histories"
       site_scope: "Complete blend/condition/release and included factory-supply operations"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Actual certificates, calibration, first-acceptance bridge, unique cohort links and inherited vectors"
+      quality_evidence: "Actual certificates, calibration, immutable event/lot links, complete same-basis destination bridge and inherited vectors"
     - protocol_id: cp_residue
       process_id: "oil_supply"
       flow_role: "external_waste_and_recovery"
@@ -522,14 +523,14 @@ dataset_production:
   calculation_rules:
     - id: accepted_once
       applies_to: "reference_product"
-      rule: "Q = D_new + F_new_close, where D_new is uniquely first-accepted oil dispatched and F_new_close is uniquely first-accepted oil held in closing accepted FG in this period; sets must be disjoint. Opening accepted FG, returned/retested/redelivered old oil and unaccepted WIP are excluded. Keep original accepted masses for older cohorts."
+      rule: "Q = sum of unique independently measured whole-oil net masses at first-acceptance events in the period. Keep immutable event/lot identity and original acceptance basis; opening FG, never-accepted WIP, purchases, old returns, retests, redelivery, reacceptance and internal throughput add no Q. Reconcile Q = D_new + FG_new + L_new using acceptance_event_bridge; only independently demonstrated zero other net post-acceptance destinations permits the two-term form Q = D_new + FG_new. Losses never shrink the event denominator; preserve original accepted masses Q0 for older cohorts and their services."
       inputs:
         - cp_acceptance
-      output: "Positive new accepted mass Q and separate older-cohort denominators"
+      output: "Positive locked new first-acceptance mass Q and separate original-cohort Q0"
       source_ids: []
     - id: normalize_once
       applies_to: "all inventory rows"
-      rule: "For each physical exchange direction i attributable to eligible accepted cohort c, report a_i,c = A_i,c / Q_c once, using the actual unallocated physical numerator A_i,c and that cohort's original accepted mass Q_c. Separately report its attributed environmental-burden vector B_c / Q_c, including inherited and genuine new service burdens. Neither vector allocation nor stock service attribution reduces actual physical movements. Do not add raw receipts to already stock-corrected consumption, or count both carried and newly purchased burden for the same oil. Do not divide physical coproducts by allocation shares. For Q_c = 0 or an unknown Q_c, retain raw numerators, stocks, vectors and unresolved attribution; do not divide, assume zero, discard failed runs or invent Q."
+      rule: "For each physical exchange direction i attributable to eligible accepted cohort c, report a_i,c = A_i,c / Q_c once, using actual unallocated physical numerator A_i,c and that cohort's original event-locked accepted mass Q_c. Separately report its attributed environmental-burden vector B_c / Q_c, including inherited loads once, actual failed/rework activities and genuine new services/losses within the declared scope. Old-cohort corrections retain original Q0. Neither loss nor later returns/reacceptance changes Q_c; reference_product=1 kg is an accounting coordinate, not an added external physical output. Neither vector allocation nor stock-service attribution reduces actual physical movements. Do not add raw receipts to stock-corrected consumption or duplicate carried and newly purchased burdens for the same oil. Do not divide physical coproducts by allocation shares. For Q_c=0 or unknown, retain raw numerators, stocks, vectors and unresolved attribution; do not divide, assume zero, discard failed runs or invent Q."
       inputs:
         - cp_material
         - cp_utility
@@ -541,7 +542,7 @@ dataset_production:
       source_ids: []
     - id: stock_and_physical
       applies_to: "oil_supply"
-      rule: "For each stage and the aggregate boundary, opening mass + actual receipts/transfers in = actual transfers/dispatch out + final wastes/emissions + closing mass, with internal links cancelled only at aggregation. Reconcile oil, BHT, carrier oil, water and nitrogen subaccounts and energy separately. Blending/dehydration separates constituents without an invented reaction term. For inherited burden vectors use opening vector + attributable additions = vectors transferred out + closing vector, with actual loss/service attribution documented; a physical closure does not establish an unknown burden vector."
+      rule: "For each stage and the aggregate boundary, opening mass + actual receipts/transfers in = actual transfers/dispatch out + final wastes/emissions + closing mass, with internal links cancelled only at aggregation. Include raw/WIP/FG stocks in this storage-inclusive physical boundary; use actual external dispatch and returns as gross paired records or a consistent net dispatch, never both. First acceptance Q and internal rework/reacceptance are not added external outputs. Keep these actual-period physical amounts separate from the same-acceptance-basis destination bridge, explicitly reconciling measured conversions. Reconcile oil, BHT, carrier oil, water and nitrogen subaccounts and energy separately. Blending/dehydration separates constituents without an invented reaction term. For inherited burden vectors use opening vector + attributable additions = vectors transferred out + closing vector, with actual loss/service attribution documented; a physical closure does not establish an unknown burden vector."
       inputs:
         - cp_material
         - cp_utility
@@ -575,10 +576,11 @@ dataset_production:
         - enervac-e865a
     - id: acceptance_event_bridge
       applies_to: "all inventory rows"
-      rule: "Lock Q to unique independently measured first-acceptance events. Use the two-term dispatch/closing-stock bridge only when L_new is zero; otherwise reconcile disjoint D_new, F_new_close and actual post-acceptance net exits L_new on the original acceptance basis. Retain original event Q for later losses/services and prevent internal/return/rework throughput duplication. Do not add Q as an extra external output. Unresolved event/stock evidence blocks complete normalization."
+      rule: "Lock Q to the sum of unique independently measured first-acceptance event masses. Check Q = D_new + FG_new + L_new with mutually exclusive exhaustive net destinations of the same cohort on its original acceptance basis: net dispatch after linked returns, closing accepted FG, and all other actual net returns/losses/scrap/downgrades/use/closing rework-WIP. Put linked returned parcels in FG_new or their actual L_new destination once, never a second generic return term. Reconcile measured water/composition/basis changes. For 100 kg first accepted, 60 kg net dispatch, 30 kg closing FG and 10 kg loss, Q=100 kg; 100 burden units/Q=1 unit/kg, whereas the incomplete 90 kg denominator gives an invalid 1.111... . The two-term bridge is valid only when all other net destinations are evidenced zero. Later losses/services retain original Q or Q0, and internal/return/rework/reacceptance throughput adds no Q or external output. Unexplained residuals remain unresolved, never zero loss or a rewritten Q."
       inputs:
+        - cp_acceptance
         - "original acceptance events"
-        - "net parcel-state bridge"
+        - "same-basis net destination records"
         - "original cohort quantities"
       output: "auditable positive event Q and separate physical stock bridge"
       source_ids: []
@@ -593,8 +595,8 @@ dataset_production:
       evidence: "Blend tickets, full composition certification and release assays"
     - id: dq_cohorts
       applies_to: "oil_supply"
-      requirement: "Reconcile first acceptance with disjoint new dispatch/closing FG; maintain raw/WIP/FG mass and burden histories; no stock drawdown, retest or return may mint new output."
-      evidence: "Cohort ledgers, paired transfers and inherited vectors"
+      requirement: "Reconcile unique event-locked first acceptance with the complete disjoint same-basis D_new/FG_new/L_new bridge, including post-acceptance losses and actual net-return destinations. Maintain raw/WIP/FG mass and burden histories and actual failed/rework loads once; stock drawdown, retests, returns or reacceptance cannot mint new output or reduce original Q. Preserve original Q0 for old-cohort services and explicit conversion/stock gaps."
+      evidence: "Immutable acceptance-event and cohort ledgers, complete net destinations, paired transfers and inherited vectors"
     - id: dq_coverage
       applies_to: "oil_supply"
       requirement: "Disclose monitoring period, loads, failed batches, missing species/provider bases, unknown opening vectors, zero-output work and measurement uncertainty. An unresolved quantity or identity is not a zero exchange."
@@ -613,7 +615,7 @@ validation_rules:
       - ergon-hyvolt-iii-2021
   - rule_id: validate_ledger
     applies_to: "oil_supply"
-    rule: "Check unique first acceptance, finite common denominator, original-cohort service attribution, physical and inherited-burden stocks, complete atomic exchanges, whole concentrate accounting, no double-normalization and explicit Q0 handling. Unsupported inherited burden is unresolved even when physical mass closes."
+    rule: "Check unique first-acceptance event masses, positive finite original denominator, exhaustive mutually exclusive same-basis D_new/FG_new/L_new, measured basis conversions and original-cohort Q0 service attribution. Reject shrinking Q after losses or minting Q from opening FG, net returns, WIP transfers or reacceptance. Retain actual failed/rework loads, physical raw/WIP/FG stocks and inherited vectors, complete atomic exchanges, whole concentrate accounting and no double-normalization. Acceptance events are not additional external physical outputs. Unsupported inherited burden or unexplained bridge residual remains unresolved even when physical mass closes; zero/unknown Q supports raw records only."
     source_ids: []
   - rule_id: validate_interfaces
     applies_to: "oil_supply"
@@ -626,7 +628,7 @@ published_dataset_profile:
   downstream_use: "secondary_dataset; background_dataset"
   allowed_use: "Declared petroleum mineral/DBPC route and factory gate, with actual qualified inputs, release and cohort/stock data"
   excluded_use: "Entire33390; upstream refinery production represented by this foreground alone; uninhibited/recycled/ester/silicone/GTL oils; transformer lifetime benefits or downstream services"
-  required_metadata: "Reference qualifiers, route, contract/grade/standard edition, full recipe, Q bridge, stock/vector histories, actual provider and treatment/emission interfaces"
+  required_metadata: "Reference qualifiers, route, contract/grade/standard edition, full recipe, immutable event Q/Q0 and complete same-basis D_new/FG_new/L_new bridge with conversions, stock/vector histories, actual provider and treatment/emission interfaces"
   required_quality_disclosure: "Broad native scope and33380 debt, classification acceptance status, missing native auxiliary identities, source/specification/quantity limits and zero-output/stock burdens"
   update_trigger: "Feed/concentrate/assay/route/conditioning or grade change; standard/contract changes; new identity/classification evidence; material stock/provider/monitoring changes"
 data_sources:
@@ -660,21 +662,21 @@ data_sources:
     used_for: "Historical broader33380 explicitly included insulating oils; counterevidence only, the listed one-to-many CPC2-to-2.1 correspondence does not establish adoption into currentCPC3.0"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ad89f97cb3eb64a83982be001d15413097fc2315c7fd4b948b6c0f0746153ac3"
+  source_sha256: "sha256:45f3251fc0ae142025c97cff2c55ee6c296daf5f06b55ab5957577940e295413"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8529"
+    - unit_id: "normative_8850"
       family: "system_boundary"
       span:
         start:
-          offset: 8529
+          offset: 8850
           line: 63
           column: 1
         end:
-          offset: 11515
+          offset: 12744
           line: 83
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased fully hydrotreated naphthenic oil and whole DBPC mineral-oil concentrate at receipt; actual opening raw/WIP/FG stock, packaging and carried burden vectors |\n| starting_condition_role | Foreground blending and conditioning boundary, not a zero-burden upstream cutoff |\n| product_classification_scope | Narrow new inhibited petroleum transformer-oil category, independently assessed against current CPC3.0 residual exclusions |\n| recursive_input_rule | Internal oil recirculation is a stage transfer, not a fresh input or first acceptance. Purchased same-category oil and external returns need origin/state and inherited-burden evidence; used/recycled oil is outside this route |\n| upstream_dataset_requirement | Match each whole base oil/concentrate/utility to actual production route, gate, year, geography and amount basis; refining burdens and justified refinery coproduct allocation remain upstream |\n| disclosure | Report receipt-to-factory-gate stages, acceptance Q, dispatch/FG bridge, physical and burden stocks, recirculation, returns, test/conditioning losses, source and provider limits |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete_unit | oil_supply | Include metering/blending, actual heating/vacuum/filtration, storage, all repeated passes, testing, rejected runs, cleaning, packaging and dispatch preparation. Record receipt, blending, conditioning and supply as separate tagged stages inside this integrated unit. Source machine performance is not a mandatory operating recipe. | `enervac-e865a`; `ergon-bht-concentrate` |\n| boundary_first_acceptance | reference_product | For positive Q, count uniquely newly accepted oil dispatched in this period plus newly accepted oil remaining in closing FG once. Opening already accepted FG, old returns, redelivery, internal transfers, repeated tests and conditioning throughput do not create Q. WIP/unaccepted oil is not closing accepted FG. Attribute post-acceptance losses and services to their original cohort, without re-acceptance or a second output. |  |\n| boundary_stock_vectors | oil_supply | Maintain raw/WIP/FG masses and exchange-level inherited burden vectors separately at opening and closing; transfers move both. Withdrawals of opening stock bring their recorded inherited burdens; closing stocks retain appropriate upstream and current-stage burdens. Old-cohort storage/retest/return services belong to the original accepted cohort and its original accepted mass. Unknown inherited vectors or cohort denominator remain unknown. |  |\n| boundary_no_downstream | oil_supply | Upstream refining and input transport remain linked backgrounds. Transformer manufacture, onsite filling, service oxidation/reinhibition and final disposal require distinct downstream models; no default longer-life credit is granted. | `iec-mineral-insulating-2020` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased fully hydrotreated naphthenic oil and whole DBPC mineral-oil concentrate at receipt; actual opening raw/WIP/FG stock, packaging and carried burden vectors |\n| starting_condition_role | Foreground blending and conditioning boundary, not a zero-burden upstream cutoff |\n| product_classification_scope | Narrow new inhibited petroleum transformer-oil category, independently assessed against current CPC3.0 residual exclusions |\n| recursive_input_rule | Internal oil recirculation is a stage transfer, not a fresh input or first acceptance. Purchased same-category oil and external returns need origin/state and inherited-burden evidence; used/recycled oil is outside this route |\n| upstream_dataset_requirement | Match each whole base oil/concentrate/utility to actual production route, gate, year, geography and amount basis; refining burdens and justified refinery coproduct allocation remain upstream |\n| disclosure | Report receipt-to-factory-gate stages, event-locked Q/Q0, complete same-basis D_new/FG_new/L_new bridge, physical and burden stocks, recirculation, returns, test/conditioning losses, source and provider limits |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete_unit | oil_supply | Include metering/blending, actual heating/vacuum/filtration, storage, all repeated passes, testing, rejected runs, cleaning, packaging and dispatch preparation. Record receipt, blending, conditioning and supply as separate tagged stages inside this integrated unit. Source machine performance is not a mandatory operating recipe. | `enervac-e865a`; `ergon-bht-concentrate` |\n| boundary_first_acceptance | reference_product | Q>0 is the sum of whole-oil net kg independently measured at unique first-acceptance events in the declared period, locked to the original event, lot and acceptance basis. Reconcile the same newly accepted cohort with Q = D_new + FG_new + L_new: D_new is dispatch net of linked returns, FG_new is closing accepted FG, and L_new is all other net post-acceptance destinations, including actual net returns not already located in D_new/FG_new, losses, scrap, downgrade, use and closing transfer back to rework/WIP. The destinations must be mutually exclusive, exhaustive and measured on the same original acceptance basis, with measured conversions for composition/water changes. Only evidence of zero other net destinations permits Q = D_new + FG_new. Later losses never lower Q; opening FG, purchased oil, old returns, redelivery, internal loops, repeated tests and reacceptance never create Q. Never-accepted WIP is excluded from FG_new and Q; already accepted material in closing WIP is traced in L_new without a new event. |  |\n| boundary_stock_vectors | oil_supply | Maintain raw/WIP/FG masses and exchange-level inherited burden vectors separately at opening and closing; transfers move both. Withdrawals of opening stock bring their recorded inherited burdens; closing stocks retain appropriate upstream and current-stage burdens. Actual failed batches, repeated conditioning, rework and losses retain attributable loads, even when they generate no new Q. Accepted material returned to WIP keeps its original event and burden vector; reacceptance never duplicates feed or Q. Old-cohort storage/retest/return services belong to the original accepted cohort and its original accepted mass Q0. Unknown inherited vectors or original Q0 remain unknown and prohibit normalized corrections. |  |\n| boundary_no_downstream | oil_supply | Upstream refining and input transport remain linked backgrounds. Transformer manufacture, onsite filling, service oxidation/reinhibition and final disposal require distinct downstream models; no default longer-life credit is granted. | `iec-mineral-insulating-2020` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -691,11 +693,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8529
+              offset: 8850
               line: 63
               column: 1
             end:
-              offset: 8550
+              offset: 8871
               line: 63
               column: 22
           text: "## 5. System Boundary"
@@ -711,15 +713,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_25837"
+    - unit_id: "normative_27294"
       family: "allocation"
       span:
         start:
-          offset: 25837
+          offset: 27294
           line: 370
           column: 1
         end:
-          offset: 27634
+          offset: 29091
           line: 379
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_trace_first | oil_supply | Subdivide batches/stages and meter or trace recipe/utility inputs first. Shared blending/vacuum loads use evidenced causal drivers, such as actual measured batch energy and pass time. If a residual common burden needs allocation among genuinely different oil grades, document the physical relationship, its measured shares and sensitivity before use; no universal mass, price or yield coefficient is prescribed. |  |\n| allocation_physical_separate | oil_supply | Close unallocated physical mass, water, oil/inhibitor constituents and energy before any environmental-burden allocation. Burden shares sum to one for the eligible outputs but do not scale away physical waste or coproduct mass. Ordinary blending has no invented chemical-reaction yield or reaction sink. |  |\n| allocation_recovery | rejected_oil | Waste remains a waste-service interface until actual receiver evidence establishes an independently marketable coproduct. Record recovery quantity, composition, destination and treatment inputs; grant no automatic displacement credit, zero-burden recycled oil or negative treatment amount. Internal recovered oil carries its original burdens and actual extra processing. |  |\n| allocation_stock_cohorts | oil_supply | Carry each opening/closing raw/WIP/FG stock's exchange-level burden vector with its physical cohort. Allocate failure/rework, stock losses and actual acceptance-stage service to the relevant accepted cohorts using disclosed evidence. Old-cohort services augment their original cohort vector and use its original accepted mass; they do not inflate current Q or pass into the current new cohort by convenience. |  |\n\n"
@@ -739,11 +741,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 25837
+              offset: 27294
               line: 370
               column: 1
             end:
-              offset: 25877
+              offset: 27334
               line: 370
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -759,18 +761,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_39966"
+    - unit_id: "normative_44311"
       family: "validation"
       span:
         start:
-          offset: 39966
+          offset: 44311
           line: 418
           column: 1
         end:
-          offset: 41424
+          offset: 46161
           line: 427
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference_product | Require one whole finished mineral-oil reference with net mass, real full Product/Mass/kg chain and declared route/gate; reject ingredient, emission, provider inventory, hard opposing family or unverified whole identity. |  |\n| validate_applicability | oil_supply | Verify new petroleum origin, actual inhibited transformer function, full recipe/mineral share and agreed release standard/edition. A generic name or native33380 tag cannot settle current33390; retain actual physical/specification and principal-function evidence for independent decision. | `un-cpc3-2025`; `iec-mineral-insulating-2020`; `ergon-hyvolt-iii-2021` |\n| validate_ledger | oil_supply | Check unique first acceptance, finite common denominator, original-cohort service attribution, physical and inherited-burden stocks, complete atomic exchanges, whole concentrate accounting, no double-normalization and explicit Q0 handling. Unsupported inherited burden is unresolved even when physical mass closes. |  |\n| validate_interfaces | oil_supply | Check stage links, actual conditioning passes, water/gas/oil constituent closure, receiver/compartment and provider quantity basis. Reject duplicate retained oil, whole concentrate plus its carrier purchase, arbitrary credits or unmeasured-zero releases. | `enervac-e865a`; `ergon-bht-concentrate` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | reference_product | Require one whole finished mineral-oil reference with net mass, real full Product/Mass/kg chain and declared route/gate; reject ingredient, emission, provider inventory, hard opposing family or unverified whole identity. |  |\n| validate_applicability | oil_supply | Verify new petroleum origin, actual inhibited transformer function, full recipe/mineral share and agreed release standard/edition. A generic name or native33380 tag cannot settle current33390; retain actual physical/specification and principal-function evidence for independent decision. | `un-cpc3-2025`; `iec-mineral-insulating-2020`; `ergon-hyvolt-iii-2021` |\n| validate_ledger | oil_supply | Check unique first-acceptance event masses, positive finite original denominator, exhaustive mutually exclusive same-basis D_new/FG_new/L_new, measured basis conversions and original-cohort Q0 service attribution. Reject shrinking Q after losses or minting Q from opening FG, net returns, WIP transfers or reacceptance. Retain actual failed/rework loads, physical raw/WIP/FG stocks and inherited vectors, complete atomic exchanges, whole concentrate accounting and no double-normalization. Acceptance events are not additional external physical outputs. Unsupported inherited burden or unexplained bridge residual remains unresolved even when physical mass closes; zero/unknown Q supports raw records only. |  |\n| validate_interfaces | oil_supply | Check stage links, actual conditioning passes, water/gas/oil constituent closure, receiver/compartment and provider quantity basis. Reject duplicate retained oil, whole concentrate plus its carrier purchase, arbitrary credits or unmeasured-zero releases. | `enervac-e865a`; `ergon-bht-concentrate` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -787,11 +789,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 39966
+              offset: 44311
               line: 418
               column: 1
             end:
-              offset: 39988
+              offset: 44333
               line: 418
               column: 23
           text: "## 9. Validation Rules"
@@ -811,206 +813,206 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_complete_unit"
       identity_kind: "explicit"
-      unit_id: "normative_8529"
+      unit_id: "normative_8850"
       source_span:
         start:
-          offset: 9823
+          offset: 10176
           line: 78
           column: 1
         end:
-          offset: 10237
+          offset: 10590
           line: 78
           column: 415
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_first_acceptance"
       identity_kind: "explicit"
-      unit_id: "normative_8529"
+      unit_id: "normative_8850"
       source_span:
         start:
-          offset: 10238
+          offset: 10591
           line: 79
           column: 1
         end:
-          offset: 10717
+          offset: 11670
           line: 79
-          column: 480
+          column: 1080
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_stock_vectors"
       identity_kind: "explicit"
-      unit_id: "normative_8529"
+      unit_id: "normative_8850"
       source_span:
         start:
-          offset: 10718
+          offset: 11671
           line: 80
           column: 1
         end:
-          offset: 11205
+          offset: 12434
           line: 80
-          column: 488
+          column: 764
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_no_downstream"
       identity_kind: "explicit"
-      unit_id: "normative_8529"
+      unit_id: "normative_8850"
       source_span:
         start:
-          offset: 11206
+          offset: 12435
           line: 81
           column: 1
         end:
-          offset: 11513
+          offset: 12742
           line: 81
           column: 308
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_trace_first"
       identity_kind: "explicit"
-      unit_id: "normative_25837"
+      unit_id: "normative_27294"
       source_span:
         start:
-          offset: 25950
+          offset: 27407
           line: 374
           column: 1
         end:
-          offset: 26406
+          offset: 27863
           line: 374
           column: 457
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_physical_separate"
       identity_kind: "explicit"
-      unit_id: "normative_25837"
+      unit_id: "normative_27294"
       source_span:
         start:
-          offset: 26407
+          offset: 27864
           line: 375
           column: 1
         end:
-          offset: 26761
+          offset: 28218
           line: 375
           column: 355
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_25837"
+      unit_id: "normative_27294"
       source_span:
         start:
-          offset: 26762
+          offset: 28219
           line: 376
           column: 1
         end:
-          offset: 27176
+          offset: 28633
           line: 376
           column: 415
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_stock_cohorts"
       identity_kind: "explicit"
-      unit_id: "normative_25837"
+      unit_id: "normative_27294"
       source_span:
         start:
-          offset: 27177
+          offset: 28634
           line: 377
           column: 1
         end:
-          offset: 27632
+          offset: 29089
           line: 377
           column: 456
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_39966"
+      unit_id: "normative_44311"
       source_span:
         start:
-          offset: 40061
+          offset: 44406
           line: 422
           column: 1
         end:
-          offset: 40329
+          offset: 44674
           line: 422
           column: 269
     - pointer: "/validation_rules/1"
       rule_id: "validate_applicability"
       identity_kind: "explicit"
-      unit_id: "normative_39966"
+      unit_id: "normative_44311"
       source_span:
         start:
-          offset: 40330
+          offset: 44675
           line: 423
           column: 1
         end:
-          offset: 40732
+          offset: 45077
           line: 423
           column: 403
     - pointer: "/validation_rules/2"
       rule_id: "validate_ledger"
       identity_kind: "explicit"
-      unit_id: "normative_39966"
+      unit_id: "normative_44311"
       source_span:
         start:
-          offset: 40733
+          offset: 45078
           line: 424
           column: 1
         end:
-          offset: 41085
+          offset: 45822
           line: 424
-          column: 353
+          column: 745
     - pointer: "/validation_rules/3"
       rule_id: "validate_interfaces"
       identity_kind: "explicit"
-      unit_id: "normative_39966"
+      unit_id: "normative_44311"
       source_span:
         start:
-          offset: 41086
+          offset: 45823
           line: 425
           column: 1
         end:
-          offset: 41422
+          offset: 46159
           line: 425
           column: 337
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8529"
+      unit_id: "normative_8850"
       source_span:
         start:
-          offset: 8529
+          offset: 8850
           line: 63
           column: 1
         end:
-          offset: 8550
+          offset: 8871
           line: 63
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8529"
+      unit_id: "normative_8850"
       source_span:
         start:
-          offset: 8578
+          offset: 8899
           line: 67
           column: 1
         end:
-          offset: 9750
+          offset: 10103
           line: 74
-          column: 195
+          column: 227
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_25837"
+      unit_id: "normative_27294"
       source_span:
         start:
-          offset: 25837
+          offset: 27294
           line: 370
           column: 1
         end:
-          offset: 25877
+          offset: 27334
           line: 370
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_39966"
+      unit_id: "normative_44311"
       source_span:
         start:
-          offset: 39966
+          offset: 44311
           line: 418
           column: 1
         end:
-          offset: 39988
+          offset: 44333
           line: 418
           column: 23
 projection_metadata:
@@ -1020,5 +1022,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ad89f97cb3eb64a83982be001d15413097fc2315c7fd4b948b6c0f0746153ac3"
-  generated_content_sha256: "sha256:f2047ba0171ebb751f0fe9f110a0a1482cf117a11d4ef61dc6f3d349f7b70a5b"
+    sha256: "sha256:45f3251fc0ae142025c97cff2c55ee6c296daf5f06b55ab5957577940e295413"
+  generated_content_sha256: "sha256:d33efd7b028cb340eaa421ad92c9f97d089f74deb2f813c0a777b5bfcc2a18ea"
