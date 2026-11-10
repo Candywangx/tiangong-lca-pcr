@@ -48,7 +48,7 @@ system_boundary:
         - jrc-refining-2015
     - rule_id: link_products
       applies_to: "reference_gas; propane; butane; naphtha"
-      rule: "Pair each own-use/export/storage outlet with the actual receiver, retaining product acceptance, outlet total, opening/closing stock, linepack, rejects and returns. The 1 m3 denominator is Q of unique first acceptance. New accepted closing finished-gas stock is included once; opening accepted stock, returns, retests, reacceptance and stock dispatch are not new Q. Supply-owned service combustion and unaccepted stock remain outside Q. Separate C3/C4/C5-plus product outlets remain full physical quantities."
+      rule: "Pair each own-use/export/storage outlet with its receiver, retaining acceptance events, gross outlets, linked returns, stocks/linepack and post-acceptance losses/downgrades/rework. The 1 m3 denominator is independently locked unique first acceptance Q, checked with disjoint exhaustive D_new + FG_new + L_new on its original basis. Opening or purchased accepted stock, return/retest/reacceptance and stock dispatch add no Q. Unaccepted WIP or supply-service fuel drawn before first acceptance adds no Q; later diversion of already accepted gas preserves Q and belongs once in L_new. Accepted product transferred to a separate refinery fuel receiver belongs once in D_new. Separate C3/C4/C5-plus outlets remain full physical quantities."
       source_ids:
         - jrc-refining-2015
     - rule_id: link_recovery
@@ -100,6 +100,8 @@ reference_flow_definition:
     - "foreground boundary"
     - "period/site"
     - "own use/export/flare"
+    - "unique first-acceptance event/cohort and locked original dry-volume basis"
+    - "complete D_new/FG_new/L_new destinations and inherited services"
     - "parent burden/allocation"
     - "provider quantity basis"
 reference_flows:
@@ -111,7 +113,7 @@ measurement_rules:
       name: "Volume"
       uuid: ""
     required_unit: "m3"
-    rule: "Collect unique first-accepted dry-gas output Q through cp_delivery at one declared reference temperature, absolute pressure, moisture and composition-specific compressibility basis. Preserve raw meter states; convert each new dispatch and closing accepted finished-gas stock/linepack component to this same basis before addition. No summing unlike raw m3/Nm3, no universal normal state, density or heating value. Verify provider/reference-state compatibility independently."
+    rule: "Q is the independently measured sum of unique first-acceptance event dry-gas volumes from cp_delivery, locked at the declared reference temperature, absolute pressure, moisture and acceptance-composition-specific compressibility. Reconcile all D_new, FG_new and L_new portions with acceptance_event_bridge on that original basis. Preserve raw meter states and measured mass/species records; actual later volumes with changed composition or phase are not automatically additive. No summing unlike raw m3/Nm3, universal normal state, density or heating value; verify provider/reference-state compatibility independently."
   - id: gas_state_conversion
     applies_to: "raw_gas; reference_gas; natural_gas"
     required_property_ref:
@@ -132,7 +134,7 @@ measurement_rules:
       name: "Recorded exchange property"
       uuid: ""
     required_unit: "Recorded exchange unit"
-    rule: "Retain raw exchange vectors, raw/WIP/finished-gas stocks and inherited service vectors by acceptance cohort. Same-cohort production totals are normalized by positive Q; opening finished-gas dispatch, return and retest do not create Q. Old-cohort services use that original accepted Q on its original declared volume basis; unknown or zero Q leaves raw totals with no division. Physical whole-mass/C/H/O/N/S/water/energy ledgers are independent of attributed environmental burdens."
+    rule: "Retain raw exchange vectors, raw/WIP/finished-gas stocks and inherited service vectors by acceptance cohort. Same-cohort production totals are normalized by positive Q; opening or purchased finished gas, stock dispatch, return, retest and reacceptance do not create Q. Accepted gas later lost, downgraded, scrapped or returned to WIP retains its original first event and services. Old-cohort services use that original Q/volume basis; unknown or zero Q leaves raw totals with no division. Physical whole-mass/C/H/O/N/S/water/energy ledgers are independent of event quantities and attributed burdens."
 process_map:
   - id: supply
     name: "Refinery light-gas separation, treatment and delivery"
@@ -335,7 +337,7 @@ process_inventory:
           flow_ref:
             uuid: "084a3bc0-51e3-4c71-bd26-236efaeba2b5"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "First-accepted dry-gas output at the metered on-site usage or storage handover; 1 m3. Q counts newly accepted production once, including new accepted gas still in closing finished-gas storage or linepack. Retain separate own-use, external-delivery and stock branches, their full physical volumes, and equal receiving inputs. Later dispatch of previously accepted stock is not new production. Do not identify this whole mixture as pure methane, ethane, hydrogen or natural gas. Preserve the separately measured pre-treatment and accepted post-treatment physical streams. A broad product-flow identity never supplies their composition, recovery, density, calorific value or upstream burden; these remain actual collection and provider requirements."
+          description: "First-accepted dry-gas output at the metered on-site usage or storage handover; 1 m3. Q counts unique first-accepted production once, including all later D_new/FG_new/L_new destinations on its locked original basis; post-acceptance loss or return to WIP does not reduce Q. Retain separate own-use, external-delivery and stock branches, their full physical volumes, and equal receiving inputs. First acceptance is not an extra external output; later dispatch of opening or purchased accepted stock, returns and reacceptance are not new production. Do not identify this whole mixture as pure methane, ethane, hydrogen or natural gas. Preserve the separately measured pre-treatment and accepted post-treatment physical streams. A broad product-flow identity never supplies their composition, recovery, density, calorific value or upstream burden; these remain actual collection and provider requirements."
           amount:
             expression: "1 m3"
             value_mode: "fixed_value"
@@ -830,14 +832,14 @@ dataset_production:
       process_id: "supply"
       flow_role: "reference_gas"
       record_type: "Unique first-acceptance ledger"
-      raw_fields: "cohort id; acceptance date/specification; new accepted dispatch; opening and closing accepted finished gas/linepack; unaccepted WIP; return/retest/reacceptance ids; own-use/export/flare branches; raw meter volumes and states; declared reference T/P/moisture; composition-specific Z; independently measured mass/density; NCV/GCV and basis"
-      collection_method: "Meter each actual acceptance/storage/header handover; reconcile ids and stocks. Convert every Q component to one declared reference state before summation using cp_delivery composition and measured/evidenced Z; retain raw states and separate moisture/condensate. First acceptance establishes the cohort, not dispatch or invoice."
+      raw_fields: "unique event/cohort id; first acceptance date/specification and independently measured locked dry volume; original composition/T/P/moisture/Z; gross new dispatch and linked returns; D_new; FG_new; each L_new loss/vent/flare/scrap/downgrade/net-return/rework-WIP destination; opening/closing accepted finished gas/linepack; purchased FG; pre-acceptance WIP/rejects; prior-event links for return/retest/reacceptance; own-use/export/service branches; raw meter volumes/states; independently measured mass/density/species; later composition/phase changes and additions; NCV/GCV and basis"
+      collection_method: "Meter the actual first acceptance/storage/header handover independently of dispatch/invoice and deduplicate event ids. Reconcile original events to exhaustive net destinations using acceptance_event_bridge. Convert same-mixture gas state with gas_state_conversion only within its scope; retain moisture/condensate and use measured mass/species/phase mapping for later changes. Paired gross transfers and linked returns remain auditable; no change of Q to force closure"
       unit: "kg; m3; MJ; composition"
       frequency: "Per handover/batch/continuous and event"
-      temporal_coverage: "Same representative period including opening/closing stocks"
+      temporal_coverage: "Same representative period including opening/closing stocks and original-cohort history"
       site_scope: "Declared gas-plant usage/storage acceptance gates and all destinations"
-      aggregation_rule: "Q = new accepted dispatch + new accepted closing finished gas, disjoint and state-compatible; exclude opening accepted stock/returns/retests; positive-known Q only"
-      quality_evidence: "Acceptance/specification records; paired meters; state/composition/Z evidence; unique cohort register; reconciliation"
+      aggregation_rule: "Q = sum of unique first-acceptance dry volumes; verify Q = D_new + FG_new + L_new on the locked original basis; two-term bridge only with evidenced absence of all other destinations; no new Q from opening/purchased FG or reacceptance; positive-known Q only"
+      quality_evidence: "Acceptance/specification records; paired meters; complete destination and return records; original state/composition/Z and mass/species evidence; unique cohort register; reconciliation"
     - protocol_id: cp_utilities
       process_id: "supply"
       flow_role: "electricity; steam; water; natural_gas; condensate_return"
@@ -925,7 +927,7 @@ dataset_production:
   calculation_rules:
     - id: normalize_records
       applies_to: "all inventory rows"
-      rule: "Let Q equal dry-gas volume newly dispatched after first acceptance plus new first-accepted closing finished-gas stock/linepack not already in that dispatch. Convert all terms to the same declared reference T/P/moisture/composition/Z basis. Count each production cohort once; exclude opening accepted finished gas, returns, retests, reacceptance, rejects, unaccepted WIP and internal transfers. Supply-owned service fuel is not product Q. Divide current-cohort production exchange totals by Q only when positive and known; output is 1 m3. Preserve full physical transfers and their stock reconciliation; attribute burdens separately. If Q is zero/unknown keep raw totals and no normalized inventory. Separate unlike specifications or quantity states into compatible groups."
+      rule: "Q is the independently measured sum of unique first-acceptance dry-gas event volumes at the fixed reference gate, not inferred from dispatch plus closing stock. Verify the complete acceptance_event_bridge on the original declared T/P/moisture/composition/Z basis before division. Opening/purchased accepted gas, returns, retests, reacceptance, pre-acceptance rejects/WIP and internal moves add no Q. Once accepted, later loss, rejection, downgrade, service-fuel diversion or transfer back to WIP does not subtract Q. Divide attributable current-cohort production exchange totals by positive known Q once; output is 1 m3. Retain failed-operation, rework, storage, retest and loss-related activities, attributed to their evidenced original cohort; no burden disappears or moves to new production merely because accepted gas changes state. Preserve full physical transfers/stock reconciliation separately from burden allocation. Zero/unknown Q keeps raw totals without normalization. Separate unlike specifications or quantity states into compatible groups."
       inputs:
         - cp_feed
         - cp_delivery
@@ -940,7 +942,7 @@ dataset_production:
       source_ids: []
     - id: balance_whole
       applies_to: "supply"
-      rule: "For the same boundary/period, sum physical whole-stream inputs minus outputs equals closing minus opening material stock. Include humidity, air/O2 and all actual exhaust constituents when combustion is inside the boundary. Count a whole solution or mixture once; its component ledger is a decomposition, not additional mass. Cancel internal pairs. No reaction mass creation/destruction term or fictitious closure flow is allowed."
+      rule: "For the same boundary/period, sum physical whole-stream inputs minus outputs equals closing minus opening material stock. Where the boundary includes finished-gas storage/linepack, use actual external transfers/releases and all raw/WIP/FG stock changes; first acceptance is an internal state change, not an extra output. Include humidity, air/O2 and all actual exhaust constituents when combustion is inside the boundary. Count a whole solution or mixture once; its component ledger is a decomposition, not additional mass. Cancel internal pairs/returns/rework; preserve external gross outward and linked returns separately. Keep these physical quantities independent of acceptance-event Q and allocation. No reaction mass creation/destruction term or fictitious closure flow is allowed."
       inputs:
         - cp_feed
         - cp_products
@@ -1008,18 +1010,21 @@ dataset_production:
       source_ids: []
     - id: acceptance_event_bridge
       applies_to: "all inventory rows"
-      rule: "Lock Q to unique independently measured first-acceptance events. Use the two-term dispatch/closing-stock bridge only when L_new is zero; otherwise reconcile disjoint D_new, F_new_close and actual post-acceptance net exits L_new on the original acceptance basis. Retain original event Q for later losses/services and prevent internal/return/rework throughput duplication. Do not add Q as an extra external output. Unresolved event/stock evidence blocks complete normalization."
+      rule: "Q = sum of independently measured unique first-acceptance dry-gas event volumes; lock each original event and cross-check Q = D_new + FG_new + L_new with zero opening stock for that newly accepted cohort. D_new is accepted product delivered to actual own-use/export receivers net of linked returns, FG_new is closing accepted finished gas/linepack, and L_new comprises every other net post-acceptance disposition: loss/leak/vent/flare, scrapping/disposal, downgrade, net return held outside FG, service-fuel diversion and closing rework/WIP or other custody. The three portions must be disjoint and exhaustive on the same original acceptance-composition/T/P/moisture/Z dry-volume basis. Deduct a linked return from D_new and assign it once to its actual closing FG/WIP/other destination; gross rework/reacceptance loops add neither Q nor another destination. Where composition, condensation, chemical reaction or phase changes, trace accepted-origin constituents by measured mass/species and map each portion to its original event-volume equivalent; do not add condensate m3 or flare-exhaust m3 to dry fuel-gas m3, apply same-mixture P/T/Z correction across species removal, or count later added material in Q. Keep actual mass/C/H/O/N/S/water/energy records separate. Q = D_new + FG_new is permitted only with evidence that all other post-acceptance destinations are absent and L_new = 0. For 100 m3 first accepted, 60 m3 net delivered, 30 m3 closing FG and 10 m3-equivalent post-acceptance loss on this basis, Q remains 100 m3, not 90 m3. Opening/purchased FG, retests and reacceptance create no Q; retain their original service vectors. Missing original quantities or unexplained bridge residuals remain unresolved and block complete normalization; never relock Q or assume zero loss."
       inputs:
-        - "original acceptance events"
-        - "net parcel-state bridge"
-        - "original cohort quantities"
-      output: "auditable positive event Q and separate physical stock bridge"
+        - cp_delivery
+        - cp_interfaces
+        - cp_scope
+        - cp_products
+        - cp_waste
+        - cp_air
+      output: "Auditable locked event Q and complete original-basis destination bridge, separate from physical and burden ledgers"
       source_ids: []
   data_quality_requirements:
     - id: quality_balance
       applies_to: "supply"
-      requirement: "Reconcile feed/makeup, gas/liquid/solid products, own use, waste, vent/flare and stocks through physical whole-mass/C/H/O/N/S/water/energy balances, with opening/closing stocks, carrier water, humidity, actual reaction-species changes, container returns and paired internal streams; investigate differences using propagated measurement uncertainty, without an invented closure tolerance."
-      evidence: "cp_scope"
+      requirement: "Reconcile feed/makeup, gas/liquid/solid products, own use, waste, vent/flare and stocks through physical whole-mass/C/H/O/N/S/water/energy balances, with opening/closing stocks, carrier water, humidity, actual reaction-species changes, container returns and paired internal streams. Separately reconcile independently measured unique first-acceptance Q to exhaustive D_new/FG_new/L_new, with original mixture/state evidence for post-acceptance changes, rework and net returns. Investigate differences using propagated uncertainty, without invented closure tolerance, zero loss or adjusted Q."
+      evidence: "cp_scope; cp_delivery; cp_interfaces"
     - id: quality_evidence
       applies_to: "all inventory rows"
       requirement: "Collect future actual SKU, composition, acceptance and amounts through real protocols; process literature is not a completed site survey, and single-site/historical values are not universal recipes or defaults."
@@ -1035,7 +1040,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_records
     applies_to: "supply"
-    rule: "Check bilingual reference, ordered rule/protocol ids, Q and cohort agreement, actual quality admission/storage/header gate, one thermodynamic basis for all Q terms, original-cohort service bases, complete physical and separate allocation ledgers, parent burdens and equal internal links. Missing records, provider incompatibility, zero/unknown denominators or unexplained balances prohibit a dataset completeness claim."
+    rule: "Check bilingual reference, ordered rule/protocol ids, deduplicated first events and locked Q, actual quality admission/storage/header gate, original-cohort service bases, complete physical and separate allocation ledgers, parent burdens and equal internal links. Require Q = D_new + FG_new + L_new with disjoint exhaustive net destinations and one original acceptance dry-gas T/P/moisture/composition/Z basis; two-term reduction requires evidenced absence of every other destination. Check losses, scrap, downgrade, net returns, closing rework/WIP and accepted-gas service diversion, without erasing their activities or adding Q from opening/purchased FG/reacceptance. Verify mass/species mapping across composition/phase changes and no duplicated returns/destination or first acceptance as extra physical output. Missing records, provider incompatibility, zero/unknown original denominators or unexplained balances prohibit dataset completeness."
     source_ids: []
 published_dataset_profile:
   dataset_role: "secondary_dataset; background_dataset"
@@ -1064,21 +1069,21 @@ data_sources:
     used_for: "Actual leak speciation, combustion concentration wet/dry and volume-state compatibility, HHV limitations of F factors, and sulphur-recovery event scope only; no historical emission factors or default recovery efficiencies; independence key: us-epa-refinery-protocol-2015"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:0b133e9a3da716358d2102dc79e429f4cd2075f56ec34c325ef958ef99f5a352"
+  source_sha256: "sha256:7c70cebef2e2c956a1402aad1ace66ecd33466f2f859c808444fa863d1ac619b"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7385"
+    - unit_id: "normative_7789"
       family: "system_boundary"
       span:
         start:
-          offset: 7385
+          offset: 7789
           line: 60
           column: 1
         end:
-          offset: 12678
+          offset: 13310
           line: 91
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified gas/liquid light ends from refinery parent processes with measured quantity/composition and parent burden |\n| starting_condition_role | Physical foreground inlet, not a zero-burden waste-gas assumption |\n| product_classification_scope | Refinery C1/C2 fuel-gas supply subset; no claim to complete CPC33429 coverage |\n| recursive_input_rule | Link actual refinery parent processes; match both ends of returned gas/recycled liquid, without repeated external purchases |\n| upstream_dataset_requirement | Verify refinery off-gas burdens, purchased materials, utilities and external sulphur recovery/wastewater treatment; disclose gaps |\n| disclosure | Ownership and interfaces of gas plant/amine loop/heating/flare/sulphur recovery/refinery combustion/export meters and internal links |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_supply | supply | Include actual separation, cleaning, regeneration, compression, cooling, metering, losses and supply-unit-owned utilities and flares. Link purchased utilities to compatible backgrounds; not every schematic operation is mandatory. | `jrc-refining-2015` |\n| boundary_combustion | reference_gas | After the supply outlet, refinery own-use combustion and external customer combustion are separate receiving processes. Retain full physical gas records and equal transfers; do not add downstream customer emissions to manufacture or delete refinery combustion. | `jrc-refining-2015` |\n| boundary_complete | supply | Add each actual feed, formulation component, refrigerant, waste, pollutant and particulate size separately from the equipment walkdown. Separate aqueous treatment handover from environmental discharge; retain gas/liquid/solid products and water/carbon/sulphur/energy interfaces. Known biogenic input requires a separate biogenic CO2 row and renewed applicability review; a GHG reporting convention cannot remove it from LCI. | `jrc-refining-2015` |\n\n### Physical Interfaces and Separate Service Burdens\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| link_ledgers | supply | These are interfaces to actual units and ledgers, not mandatory additional manufacturing processes. Record each stream once at the declared boundary; an internal link has two equal endpoints and cancels in the consolidated balance. Keep upstream burden inheritance, physical quantities and service attribution separate. |  |\n| link_feed | raw_gas; raw_condensate | Pair refinery-parent output with supply input using source-unit, stream id, period, phase, composition, moisture and quantity state; inherit documented parent burdens. A wet inlet volume is not automatically equal to dry product volume. | `jrc-refining-2015` |\n| link_loops | supply | Pair actual rich/lean amine, absorber gasoline recycle, flash gas returned to the fuel header, knockout condensate returned to refining and cooling-water/steam-return circuits. Record circulation, makeup, bleed, retained inventory and transfers separately; neither endpoint becomes a repeated purchase, sale or emission. | `jrc-refining-2015` |\n| link_products | reference_gas; propane; butane; naphtha | Pair each own-use/export/storage outlet with the actual receiver, retaining product acceptance, outlet total, opening/closing stock, linepack, rejects and returns. The 1 m3 denominator is Q of unique first acceptance. New accepted closing finished-gas stock is included once; opening accepted stock, returns, retests, reacceptance and stock dispatch are not new Q. Supply-owned service combustion and unaccepted stock remain outside Q. Separate C3/C4/C5-plus product outlets remain full physical quantities. | `jrc-refining-2015` |\n| link_recovery | acid_gas; spent_amine; wastewater; filter_solids; offspec_condensate | Pair each whole-mixture transfer with its actual recovery/treatment receiver. Retain H2S, CO2, hydrocarbons, salts, carrier water and moisture without replacing the whole stream with one species. Link recovered sulphur, water, tail gas and returned materials at the receiver; include actual receiver burdens once under the declared boundary/allocation. | `jrc-refining-2015`; `epa-refinery-monitoring-2015` |\n| link_combustion | supply | Identify actual supply-owned heater/flare operations and receiving refinery/customer combustion separately. For included operations retain air/O2, humidity, fuel, all actual exhaust constituents including N2/O2, recovered heat and losses; expand each required actual LCI exchange atomically. Do not manufacture a generic combustion or mixing process to complete a diagram. | `jrc-refining-2015` |\n| link_packaging | supply | Determine actual pipeline/bulk/container delivery, material stocks and returns. Add each actual packaging material, seal, replacement part, cleaning input and resulting waste as its own row when present. For reusable tanks/cylinders collect tare, fleet stock, fill/empty returns, heel, losses, cleaning/inspection/repair and measured service cycles; container mass is not gas mass or a fresh container purchase per fill. Include owned or supplier service burdens once and explain any exclusion. | `jrc-refining-2015`; `eu-pef-2021` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified gas/liquid light ends from refinery parent processes with measured quantity/composition and parent burden |\n| starting_condition_role | Physical foreground inlet, not a zero-burden waste-gas assumption |\n| product_classification_scope | Refinery C1/C2 fuel-gas supply subset; no claim to complete CPC33429 coverage |\n| recursive_input_rule | Link actual refinery parent processes; match both ends of returned gas/recycled liquid, without repeated external purchases |\n| upstream_dataset_requirement | Verify refinery off-gas burdens, purchased materials, utilities and external sulphur recovery/wastewater treatment; disclose gaps |\n| disclosure | Ownership and interfaces of gas plant/amine loop/heating/flare/sulphur recovery/refinery combustion/export meters and internal links |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_supply | supply | Include actual separation, cleaning, regeneration, compression, cooling, metering, losses and supply-unit-owned utilities and flares. Link purchased utilities to compatible backgrounds; not every schematic operation is mandatory. | `jrc-refining-2015` |\n| boundary_combustion | reference_gas | After the supply outlet, refinery own-use combustion and external customer combustion are separate receiving processes. Retain full physical gas records and equal transfers; do not add downstream customer emissions to manufacture or delete refinery combustion. | `jrc-refining-2015` |\n| boundary_complete | supply | Add each actual feed, formulation component, refrigerant, waste, pollutant and particulate size separately from the equipment walkdown. Separate aqueous treatment handover from environmental discharge; retain gas/liquid/solid products and water/carbon/sulphur/energy interfaces. Known biogenic input requires a separate biogenic CO2 row and renewed applicability review; a GHG reporting convention cannot remove it from LCI. | `jrc-refining-2015` |\n\n### Physical Interfaces and Separate Service Burdens\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| link_ledgers | supply | These are interfaces to actual units and ledgers, not mandatory additional manufacturing processes. Record each stream once at the declared boundary; an internal link has two equal endpoints and cancels in the consolidated balance. Keep upstream burden inheritance, physical quantities and service attribution separate. |  |\n| link_feed | raw_gas; raw_condensate | Pair refinery-parent output with supply input using source-unit, stream id, period, phase, composition, moisture and quantity state; inherit documented parent burdens. A wet inlet volume is not automatically equal to dry product volume. | `jrc-refining-2015` |\n| link_loops | supply | Pair actual rich/lean amine, absorber gasoline recycle, flash gas returned to the fuel header, knockout condensate returned to refining and cooling-water/steam-return circuits. Record circulation, makeup, bleed, retained inventory and transfers separately; neither endpoint becomes a repeated purchase, sale or emission. | `jrc-refining-2015` |\n| link_products | reference_gas; propane; butane; naphtha | Pair each own-use/export/storage outlet with its receiver, retaining acceptance events, gross outlets, linked returns, stocks/linepack and post-acceptance losses/downgrades/rework. The 1 m3 denominator is independently locked unique first acceptance Q, checked with disjoint exhaustive D_new + FG_new + L_new on its original basis. Opening or purchased accepted stock, return/retest/reacceptance and stock dispatch add no Q. Unaccepted WIP or supply-service fuel drawn before first acceptance adds no Q; later diversion of already accepted gas preserves Q and belongs once in L_new. Accepted product transferred to a separate refinery fuel receiver belongs once in D_new. Separate C3/C4/C5-plus outlets remain full physical quantities. | `jrc-refining-2015` |\n| link_recovery | acid_gas; spent_amine; wastewater; filter_solids; offspec_condensate | Pair each whole-mixture transfer with its actual recovery/treatment receiver. Retain H2S, CO2, hydrocarbons, salts, carrier water and moisture without replacing the whole stream with one species. Link recovered sulphur, water, tail gas and returned materials at the receiver; include actual receiver burdens once under the declared boundary/allocation. | `jrc-refining-2015`; `epa-refinery-monitoring-2015` |\n| link_combustion | supply | Identify actual supply-owned heater/flare operations and receiving refinery/customer combustion separately. For included operations retain air/O2, humidity, fuel, all actual exhaust constituents including N2/O2, recovered heat and losses; expand each required actual LCI exchange atomically. Do not manufacture a generic combustion or mixing process to complete a diagram. | `jrc-refining-2015` |\n| link_packaging | supply | Determine actual pipeline/bulk/container delivery, material stocks and returns. Add each actual packaging material, seal, replacement part, cleaning input and resulting waste as its own row when present. For reusable tanks/cylinders collect tare, fleet stock, fill/empty returns, heel, losses, cleaning/inspection/repair and measured service cycles; container mass is not gas mass or a fresh container purchase per fill. Include owned or supplier service burdens once and explain any exclusion. | `jrc-refining-2015`; `eu-pef-2021` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1095,11 +1100,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7385
+              offset: 7789
               line: 60
               column: 1
             end:
-              offset: 7406
+              offset: 7810
               line: 60
               column: 22
           text: "## 5. System Boundary"
@@ -1115,15 +1120,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_44280"
+    - unit_id: "normative_45067"
       family: "allocation"
       span:
         start:
-          offset: 44280
+          offset: 45067
           line: 638
           column: 1
         end:
-          offset: 46062
+          offset: 46849
           line: 647
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_parent | raw_gas; raw_condensate | Obtain refinery-parent off-gas/liquid burden and allocation evidence; retain full physical coproduct outputs including own use. Residual naming, own use or avoided flaring cannot establish zero burden or substitution credit. | `eu-pef-2021` |\n| allocation_services | supply | Attribute dedicated services using separate meters and process subdivision first; justify residual common-service allocation with measured drivers. Where a relevant physical causal relationship is unestablished, retain review and scenario sensitivity, without universal mass, heating-value or price shares. | `eu-pef-2021` |\n| allocation_service_account | supply | Keep compression, steam, cooling, treatment, loading, storage, container cleaning/maintenance, return and retest service vectors separate. Subdivide new production and each old accepted cohort before justified residual allocation. Attach inherited and later services to their original accepted cohort and original Q/volume basis, preserving the previous vector rather than replacing it. Unknown/zero original Q retains raw service totals without division; no reassignment to current Q, repeated product or automatic return credit. | `eu-pef-2021` |\n| allocation_ledgers | all inventory rows | Keep conserved physical gas/liquid/solid products, own use, flare, waste and stocks separate from attributed environmental burdens. Attribute burdens using justified allocation before dividing by total first-accepted dry-gas output Q; physical coproduct rows use full totals over the same original-cohort Q denominator, without mechanical multiplication by an environmental share. |  |\n\n"
@@ -1143,11 +1148,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 44280
+              offset: 45067
               line: 638
               column: 1
             end:
-              offset: 44320
+              offset: 45107
               line: 638
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1163,18 +1168,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_62151"
+    - unit_id: "normative_65513"
       family: "validation"
       span:
         start:
-          offset: 62151
+          offset: 65513
           line: 686
           column: 1
         end:
-          offset: 63552
+          offset: 67441
           line: 694
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference_gas | Verify the complete native whole-product identity, source-route, phase/composition qualifiers, reference property and unit chain before a reference link; for the broad Gas identity require the actual accepted refinery-mixture usage/storage gate. Contradictory positive origin/state/route fields block linkage until corrected or authoritatively resolved; a metadata debt cannot exempt them. Unknown future amounts remain collection requirements, not automatic zero. No natural-gas, pure-hydrogen or LPG substitution. |  |\n| validate_inventory | all inventory rows | Each row is one atomic exchange with actual compartment/species/fossil-biogenic origin/quantity definitions; failed infrastructure is not a no-match result. Keep concrete unresolved physical identities; no broad correction-flow substitution. |  |\n| validate_records | supply | Check bilingual reference, ordered rule/protocol ids, Q and cohort agreement, actual quality admission/storage/header gate, one thermodynamic basis for all Q terms, original-cohort service bases, complete physical and separate allocation ledgers, parent burdens and equal internal links. Missing records, provider incompatibility, zero/unknown denominators or unexplained balances prohibit a dataset completeness claim. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference_gas | Verify the complete native whole-product identity, source-route, phase/composition qualifiers, reference property and unit chain before a reference link; for the broad Gas identity require the actual accepted refinery-mixture usage/storage gate. Contradictory positive origin/state/route fields block linkage until corrected or authoritatively resolved; a metadata debt cannot exempt them. Unknown future amounts remain collection requirements, not automatic zero. No natural-gas, pure-hydrogen or LPG substitution. |  |\n| validate_inventory | all inventory rows | Each row is one atomic exchange with actual compartment/species/fossil-biogenic origin/quantity definitions; failed infrastructure is not a no-match result. Keep concrete unresolved physical identities; no broad correction-flow substitution. |  |\n| validate_records | supply | Check bilingual reference, ordered rule/protocol ids, deduplicated first events and locked Q, actual quality admission/storage/header gate, original-cohort service bases, complete physical and separate allocation ledgers, parent burdens and equal internal links. Require Q = D_new + FG_new + L_new with disjoint exhaustive net destinations and one original acceptance dry-gas T/P/moisture/composition/Z basis; two-term reduction requires evidenced absence of every other destination. Check losses, scrap, downgrade, net returns, closing rework/WIP and accepted-gas service diversion, without erasing their activities or adding Q from opening/purchased FG/reacceptance. Verify mass/species mapping across composition/phase changes and no duplicated returns/destination or first acceptance as extra physical output. Missing records, provider incompatibility, zero/unknown original denominators or unexplained balances prohibit dataset completeness. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1191,11 +1196,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 62151
+              offset: 65513
               line: 686
               column: 1
             end:
-              offset: 62173
+              offset: 65535
               line: 686
               column: 23
           text: "## 9. Validation Rules"
@@ -1215,271 +1220,271 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_supply"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 8364
+          offset: 8768
           line: 75
           column: 1
         end:
-          offset: 8646
+          offset: 9050
           line: 75
           column: 283
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_combustion"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 8647
+          offset: 9051
           line: 76
           column: 1
         end:
-          offset: 8971
+          offset: 9375
           line: 76
           column: 325
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_complete"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 8972
+          offset: 9376
           line: 77
           column: 1
         end:
-          offset: 9451
+          offset: 9855
           line: 77
           column: 480
     - pointer: "/system_boundary/rules/3"
       rule_id: "link_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 9578
+          offset: 9982
           line: 83
           column: 1
         end:
-          offset: 9928
+          offset: 10332
           line: 83
           column: 351
     - pointer: "/system_boundary/rules/4"
       rule_id: "link_feed"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 9929
+          offset: 10333
           line: 84
           column: 1
         end:
-          offset: 10229
+          offset: 10633
           line: 84
           column: 301
     - pointer: "/system_boundary/rules/5"
       rule_id: "link_loops"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 10230
+          offset: 10634
           line: 85
           column: 1
         end:
-          offset: 10598
+          offset: 11002
           line: 85
           column: 369
     - pointer: "/system_boundary/rules/6"
       rule_id: "link_products"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 10599
+          offset: 11003
           line: 86
           column: 1
         end:
-          offset: 11190
+          offset: 11822
           line: 86
-          column: 592
+          column: 820
     - pointer: "/system_boundary/rules/7"
       rule_id: "link_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 11191
+          offset: 11823
           line: 87
           column: 1
         end:
-          offset: 11688
+          offset: 12320
           line: 87
           column: 498
     - pointer: "/system_boundary/rules/8"
       rule_id: "link_combustion"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 11689
+          offset: 12321
           line: 88
           column: 1
         end:
-          offset: 12114
+          offset: 12746
           line: 88
           column: 426
     - pointer: "/system_boundary/rules/9"
       rule_id: "link_packaging"
       identity_kind: "explicit"
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 12115
+          offset: 12747
           line: 89
           column: 1
         end:
-          offset: 12676
+          offset: 13308
           line: 89
           column: 562
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_parent"
       identity_kind: "explicit"
-      unit_id: "normative_44280"
+      unit_id: "normative_45067"
       source_span:
         start:
-          offset: 44393
+          offset: 45180
           line: 642
           column: 1
         end:
-          offset: 44683
+          offset: 45470
           line: 642
           column: 291
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_services"
       identity_kind: "explicit"
-      unit_id: "normative_44280"
+      unit_id: "normative_45067"
       source_span:
         start:
-          offset: 44684
+          offset: 45471
           line: 643
           column: 1
         end:
-          offset: 45041
+          offset: 45828
           line: 643
           column: 358
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_service_account"
       identity_kind: "explicit"
-      unit_id: "normative_44280"
+      unit_id: "normative_45067"
       source_span:
         start:
-          offset: 45042
+          offset: 45829
           line: 644
           column: 1
         end:
-          offset: 45630
+          offset: 46417
           line: 644
           column: 589
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_44280"
+      unit_id: "normative_45067"
       source_span:
         start:
-          offset: 45631
+          offset: 46418
           line: 645
           column: 1
         end:
-          offset: 46060
+          offset: 46847
           line: 645
           column: 430
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_62151"
+      unit_id: "normative_65513"
       source_span:
         start:
-          offset: 62246
+          offset: 65608
           line: 690
           column: 1
         end:
-          offset: 62804
+          offset: 66166
           line: 690
           column: 559
     - pointer: "/validation_rules/1"
       rule_id: "validate_inventory"
       identity_kind: "explicit"
-      unit_id: "normative_62151"
+      unit_id: "normative_65513"
       source_span:
         start:
-          offset: 62805
+          offset: 66167
           line: 691
           column: 1
         end:
-          offset: 63095
+          offset: 66457
           line: 691
           column: 291
     - pointer: "/validation_rules/2"
       rule_id: "validate_records"
       identity_kind: "explicit"
-      unit_id: "normative_62151"
+      unit_id: "normative_65513"
       source_span:
         start:
-          offset: 63096
+          offset: 66458
           line: 692
           column: 1
         end:
-          offset: 63550
+          offset: 67439
           line: 692
-          column: 455
+          column: 982
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 7385
+          offset: 7789
           line: 60
           column: 1
         end:
-          offset: 7406
+          offset: 7810
           line: 60
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7385"
+      unit_id: "normative_7789"
       source_span:
         start:
-          offset: 7434
+          offset: 7838
           line: 64
           column: 1
         end:
-          offset: 8291
+          offset: 8695
           line: 71
           column: 150
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_44280"
+      unit_id: "normative_45067"
       source_span:
         start:
-          offset: 44280
+          offset: 45067
           line: 638
           column: 1
         end:
-          offset: 44320
+          offset: 45107
           line: 638
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_62151"
+      unit_id: "normative_65513"
       source_span:
         start:
-          offset: 62151
+          offset: 65513
           line: 686
           column: 1
         end:
-          offset: 62173
+          offset: 65535
           line: 686
           column: 23
 projection_metadata:
@@ -1489,5 +1494,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:0b133e9a3da716358d2102dc79e429f4cd2075f56ec34c325ef958ef99f5a352"
-  generated_content_sha256: "sha256:2640cf77d24787d674a1444473b8d43ec6f5665baa150d62516a752558e2439a"
+    sha256: "sha256:7c70cebef2e2c956a1402aad1ace66ecd33466f2f859c808444fa863d1ac619b"
+  generated_content_sha256: "sha256:0ff9cbb4cfa5140eeb4df6ba0e3cc781d137a5f732307be06e2475b653384644"
