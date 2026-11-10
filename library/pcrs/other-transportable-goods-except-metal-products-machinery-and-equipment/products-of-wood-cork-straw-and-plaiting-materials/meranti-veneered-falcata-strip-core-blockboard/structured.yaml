@@ -77,7 +77,7 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "B = B_c = unique first-quality accepted net panel mass in kg for completed cohort c at the declared acceptance gate, cp_output; exclude packaging and repeat acceptance of old output. For this completed cohort, B_c = newly first-accepted dispatch mass + newly first-accepted closing FG mass, with disjoint unique acceptance IDs; each newly accepted panel is counted once whether shipped or retained. Opening accepted FG, returns, retests and reacceptance add no B_c. A zero or missing B_c preserves raw ledgers and remains unresolved. Normalize only the prepared attributable exchange amount under normalize_mass. Retain measured final moisture; do not replace B with oven-dry wood mass."
+    rule: "B = B_c = Q = sum of independently measured unique first-quality acceptance event net panel masses in completed cohort c at the declared gate, cp_output; lock each event on its measured whole-panel moisture/composition basis and exclude packaging. Reconcile Q = D_new + FG_new + L_new under acceptance_event_bridge on that same acceptance basis; use Q = D_new + FG_new only when all other net dispositions are evidenced zero. Opening accepted FG, purchased finished panels, dispatch, returns, retests and reacceptance add no Q. Actual post-acceptance loss, downgrade, scrap or return to WIP never subtracts from locked Q. A zero or missing Q preserves raw ledgers and remains unresolved. Normalize only the prepared attributable exchange amount under normalize_mass. Do not replace accepted whole-panel mass with oven-dry wood, supplied adhesive solids or later dispatch mass."
   - id: wood_moisture
     applies_to: "wood material ledger"
     required_property_ref:
@@ -328,7 +328,7 @@ process_inventory:
           flow_ref:
             uuid: "00345bd0-3519-4462-bfd5-ea0dcb0fcfde"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "One accepted unfinished interior Meranti-veneered/Falcata-strip-core board at the first-acceptance gate after conditioning, trimming and sanding. Panel mass excludes packaging; same-product WIP remains in internal stage ledgers. Apply section3's whole-panel description and actual layer/provider compatibility requirements. The finished category flow is not the unveneered core or veneer component input."
+          description: "One accepted unfinished interior Meranti-veneered/Falcata-strip-core board at the first-acceptance gate after conditioning, trimming and sanding. Panel mass excludes packaging; B_c = Q is locked at unique first acceptance under acceptance_event_bridge. Unaccepted WIP remains in internal stage ledgers; accepted panels returned to WIP retain their original event/cohort and Q. The 1 kg reference is a normalization coordinate, not an additional physical shipment or inventory movement. Apply section3's whole-panel description and actual layer/provider compatibility requirements. The finished category flow is not the unveneered core or veneer component input."
           amount:
             expression: "1 kg"
             value_mode: "foreground_record"
@@ -349,7 +349,7 @@ process_inventory:
           name: "UF-bonded blockboard trimming waste"
           flow_type: "waste"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "Weigh bonded panel trimmings and rejected panels sent to the same declared waste route; retain reason/condition records. Keep resin content, moisture and destination. No combustion within the foreground."
+          description: "Weigh bonded panel trimmings and rejected panels sent to the same declared waste route; retain reason/condition and original cohort/acceptance records. Separate pre-acceptance rejects from post-acceptance scrap: only the latter enters L_new on the original acceptance basis, without reducing Q; actual waste mass and treatment burdens retain their measured state and original cohort. Keep resin content, moisture and destination. No combustion within the foreground."
           amount:
             expression: "x_norm = A_c / B, once, after the shared completed-cohort attribution; collect raw q_lot using cp_waste; B = B_c from cp_output."
             value_mode: "foreground_record"
@@ -626,7 +626,7 @@ allocation_rules:
       - frihart-wood-joining-2023
   - rule_id: a_waste
     applies_to: "blockboard_lamination"
-    rule: "Base route has one saleable panel product and exported treatment wastes: assign production burdens to accepted panels and include waste-treatment burdens without avoided-product credit. Internal rework remains within the same ledger. If residues become saleable co-products, their product identities and measured physical outputs must be added before choosing a documented causal allocation or an explicitly justified alternative; keep that burden ledger separate from mass balance. Do not relabel waste UUIDs as products. Prefer measured subdivision first; any true joint-product allocation requires documented study context and independently supported causal relationship, with the unallocated physical outputs preserved."
+    rule: "Base route has one saleable panel product and exported treatment wastes: assign production burdens to accepted panels and include waste-treatment burdens without avoided-product credit. Internal rework retains original physical transfers and burden history; post-acceptance loss, downgrade, scrap or rework does not reverse the first-acceptance event or reduce its Q. Actual later services and failed rework burdens stay with that original cohort and denominator. If residues become saleable co-products, their product identities and measured physical outputs must be added before choosing a documented causal allocation or an explicitly justified alternative; keep that burden ledger separate from mass balance. Do not relabel waste UUIDs as products. Prefer measured subdivision first; any true joint-product allocation requires documented study context and independently supported causal relationship, with the unallocated physical outputs preserved."
     source_ids:
       - jrc-ilcd-detailed-2010
 dataset_production:
@@ -635,14 +635,14 @@ dataset_production:
       process_id: "blockboard_lamination"
       flow_role: "finished_panel"
       record_type: "foreground_record"
-      raw_fields: "lot; species/layer construction; final moisture; net accepted mass B; rejected mass; package tare; cohort c; unique first acceptance ID/time/gate; B_c; newly accepted closing FG; old accepted FG dispatch/hold/return; raw/WIP/non-WIP/FG boundary placement"
-      collection_method: "Calibrated weighing after conditioning; reconcile grading/acceptance and packing records for same lot. Reconcile first acceptance to B_c independently of dispatch and accepted FG stocks."
+      raw_fields: "lot; species/layer construction; unique first acceptance ID/time/gate and original cohort c; locked event net mass and measured whole-panel moisture/composition; B_c = Q; package tare; disjoint D_new/FG_new/L_new parcel IDs; gross dispatch/linked returns/net dispatch; closing FG; actual loss/use/downgrade/scrap and closing return-to-WIP; rework/retest/reacceptance links; opening old FG and purchased finished-panel histories; actual later masses, component/H2O changes and acceptance-basis conversions; physical raw/WIP/non-WIP/FG boundaries"
+      collection_method: "Calibrated net weighing after conditioning and first-quality acceptance, independent of dispatch. Deduplicate event/parcel IDs and reconcile acceptance_event_bridge using signed net destinations; weigh actual later states separately and document measured conversion to each original event basis. Link pre- versus post-acceptance rejects to cp_waste, materials/recipe/water/emissions and original service histories. Missing disposition or basis evidence remains unresolved, never a balancing loss estimate."
       unit: "kg"
-      frequency: "Every lot; continuous utility logs; representative emission campaign"
+      frequency: "Every acceptance, custody/stock change and linked later service; utility logs and emission campaign"
       temporal_coverage: "Declared completion period plus linked original stock/service periods"
       site_scope: "One declared plant and matched route/lot"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibration; primary records; sampling/analysis; supplier definitions; stock/acceptance reconciliation"
+      aggregation_rule: "per 1 kg reference flow using locked Q, not dispatch plus residual stock"
+      quality_evidence: "Calibration; acceptance/parcel and net-return reconciliation; measured basis conversion; separate physical and burden ledgers"
     - protocol_id: cp_materials
       process_id: "blockboard_lamination"
       flow_role: "core_barecore; face_veneer; cross_veneer"
@@ -719,8 +719,8 @@ dataset_production:
       process_id: "blockboard_lamination"
       flow_role: "bonded_trim; sanding_dust; glue_residue"
       record_type: "foreground_record"
-      raw_fields: "atomic stream; actual wet/dry mass; moisture/solids; core/veneer/UF and inherited edge-binder composition; separately captured versus emitted; stocks/returns; original cohort; sales status; treatment destination"
-      collection_method: "Use separate bins/scales and consignment records for coarse bonded trim, collected sanding dust and uncured UF leftovers. Resolve actual internal returns against original histories separately from off-site treatment; pure-wood waste is not a bonded-panel substitute. Actual pre-bonding veneer rejects require their own specific flow and ledger."
+      raw_fields: "atomic stream; actual wet/dry mass; moisture/solids; core/veneer/UF and inherited edge-binder composition; separately captured versus emitted; stocks/returns; original cohort and first-acceptance ID; pre-acceptance reject versus post-acceptance scrap/loss; actual mass/state and original-acceptance-basis equivalent; sales status; treatment destination"
+      collection_method: "Use separate bins/scales and consignment records for coarse bonded trim, collected sanding dust and uncured UF leftovers. Resolve actual internal returns against original histories separately from off-site treatment; pure-wood waste is not a bonded-panel substitute. Actual pre-bonding veneer rejects require their own specific flow and ledger. Reconcile post-acceptance scrap with cp_output L_new once; keep actual waste mass and any moisture/chemical change separate from its acceptance-basis equivalent. Neither scrap nor failed rework cancels original Q or performed services."
       unit: "kg"
       frequency: "Every lot; continuous utility logs; representative emission campaign"
       temporal_coverage: "Declared completion period plus linked original stock/service periods"
@@ -754,7 +754,7 @@ dataset_production:
   calculation_rules:
     - id: normalize_mass
       applies_to: "all non-reference inventory exchanges after completed-cohort attribution"
-      rule: "x_norm = A_c / B; B = B_c; B > 0. Prepare A_c from raw q_lot and the supported stock/service histories by the shared cohort protocol; q_lot remains the raw observation, not A_c. Every Amount expression is this single quotient, never an instruction to divide x_norm again. Completed-cohort attribution applies to every protocol before normalization: B = B_c counts each first-quality accepted net panel at the actual declared gate once, including newly accepted closing finished goods (FG); old accepted FG, dispatch, hold, return or rework cannot create another B. Locate raw stores, unaccepted work in progress (WIP), unassigned non-WIP stores and accepted FG on their actual physical boundaries. Keep raw q_lot and actual throughput V in original units/states, wet/dry/component stocks and stage balances unallocated. Separately retain per-exchange inherited opening, current and closing burden/service vectors with provider, native unit, gate, phase, period, event ID and original cohort; physical closure alone does not attribute burdens. Prepare each exchange numerator A_c in its declared inventory unit from evidenced material use and services, documenting each conversion from retained native units: join supported opening raw/WIP histories to the completed cohort once, retain unreleased closing raw/WIP/non-WIP histories once for their actual later use, and do not deduct newly accepted closing FG from production or re-add old accepted production. Packaging receipts, issue/return, first use, wet stocks, reuse and acquisition/service histories follow the same rule; provider-included water/material/energy is charged once. Preserve actual failed/zero-output, idle, start/stop, cleanup and rework events and all later actual services of their original cohort, including old FG; add later services to the original cohort numerator against its original B_c, without new output. A hold/return cannot cancel performed services. Only evidenced wrong, duplicate or never-performed bookings may be corrected. Subdivide measured services or document supported causal attribution of shared meters, preserving the reconciled total; no default share or credit. Missing/unassignable history remains inconclusive, including zero-output histories without a supported cohort; never fabricate a later denominator. B > 0 permits one quotient A_c / B under normalize_mass; all Amount expressions denote that same prepared result, with no second division. This operational cohort protocol implements consistent scaling and full-cycle records, rather than a prescribed factory allocation key (jrc-ilcd-detailed-2010, §§7.4.2.5–7.4.2.9)."
+      rule: "x_norm = A_c / B; B = B_c = Q from acceptance_event_bridge; B > 0. Prepare A_c from raw q_lot and the supported stock/service histories by the shared cohort protocol; q_lot remains the raw observation, not A_c. Every Amount expression is this single quotient, never an instruction to divide x_norm again. Completed-cohort attribution applies to every protocol before normalization: B = B_c = Q counts unique measured first-quality acceptance events at the declared gate once, with the complete D_new/FG_new/L_new bridge; later loss, scrap, downgrade or return to WIP cannot shrink Q. Opening accepted FG, purchased finished panels, dispatch, hold, return or reacceptance cannot create another B. Locate raw stores, unaccepted work in progress (WIP), unassigned non-WIP stores and accepted FG on their actual physical boundaries. Keep raw q_lot and actual throughput V in original units/states, wet/dry/component stocks and stage balances unallocated. Separately retain per-exchange inherited opening, current and closing burden/service vectors with provider, native unit, gate, phase, period, event ID and original cohort; physical closure alone does not attribute burdens. Prepare each exchange numerator A_c in its declared inventory unit from evidenced material use and services, documenting each conversion from retained native units: join supported opening raw/WIP histories to the completed cohort once, retain unreleased closing raw/WIP/non-WIP histories once for their actual later use, and do not deduct newly accepted closing FG from production or re-add old accepted production. Carry-forward to a future first-acceptance denominator applies only to unaccepted material; accepted panels returned to WIP retain original Q and already performed services in their original accepted cohort. Packaging receipts, issue/return, first use, wet stocks, reuse and acquisition/service histories follow the same rule; provider-included water/material/energy is charged once. Preserve actual failed/zero-output, idle, start/stop, cleanup and rework events and all later actual services of their original cohort, including old FG, post-acceptance loss/scrap and failed rework; add later services to the original cohort numerator against its original locked B_c = Q, without new output. Never transfer old-cohort services to current Q; an unknown original Q retains raw records and an inconclusive result. A hold/return cannot cancel performed services. Only evidenced wrong, duplicate or never-performed bookings may be corrected. Subdivide measured services or document supported causal attribution of shared meters, preserving the reconciled total; no default share or credit. Missing/unassignable history remains inconclusive, including zero-output histories without a supported cohort; never fabricate a later denominator. B > 0 permits one quotient A_c / B under normalize_mass; all Amount expressions denote that same prepared result, with no second division. This operational cohort protocol implements consistent scaling and full-cycle records, rather than a prescribed factory allocation key (jrc-ilcd-detailed-2010, §§7.4.2.5–7.4.2.9)."
       inputs:
         - q_lot
         - A_c
@@ -763,6 +763,20 @@ dataset_production:
         - cp_output
         - "stock/service histories"
       output: "x_norm"
+      source_ids:
+        - jrc-ilcd-detailed-2010
+    - id: acceptance_event_bridge
+      applies_to: "finished_panel and its original completed cohort"
+      rule: "Q is the sum of locked unique first-acceptance event masses. Reconcile Q = D_new + FG_new + L_new using mutually exclusive signed net parcel/custody/destination records on each original whole-panel acceptance basis; the newly first-accepted cohort has zero opening stock. D_new is net accepted dispatch after linked returns, FG_new is closing accepted FG, and L_new is every other net post-acceptance disposition: loss, use, downgrade, scrap/waste and closing transfer back to rework/WIP. Gross internal loops are not extra dispositions; after reacceptance a parcel moves from closing WIP to FG or net dispatch once without another Q. Use the two-term bridge only when every other disposition is evidenced zero. For example, 100 kg first acceptance = 60 kg net dispatch + 30 kg closing FG + 10 kg post-acceptance loss; Q stays 100 kg. Retain actual masses at their actual moisture/composition separately; resolve water exchange, UF reaction/volatiles, added glue/water, trimming and changed material state from measured parcel/component histories with cp_materials/cp_recipe/cp_water/cp_emissions. The bridge tracks original accepted material equivalents, not later added material or a claim that wood/water/resin species are conserved; no generic dry-wood or glue-solids factor converts bonded board. Unresolved basis changes or destination residuals remain findings, never invented loss or a revised Q. Opening old FG and purchased finished panels remain separate cohorts/receipts; their sale, return or reacceptance cannot enter new Q. Original Q and attributed failed/later services persist even if all accepted material is lost. Acceptance and normalized reference output are not additional external physical outputs."
+      inputs:
+        - cp_output
+        - cp_materials
+        - cp_recipe
+        - cp_water
+        - cp_waste
+        - cp_emissions
+        - "original event/parcel and stock/service histories"
+      output: "Locked Q; disjoint acceptance-basis destination bridge; separate actual physical ledgers"
       source_ids:
         - jrc-ilcd-detailed-2010
     - id: dry_wood
@@ -829,7 +843,7 @@ dataset_production:
       source_ids: []
     - id: physical_balances
       applies_to: "unaltered ledgers at each actual physical boundary"
-      rule: "For total mass and elemental C/H/O separately: opening stock + all material boundary intake = closing stock + panel + exported residues + material emissions; include evidenced atmospheric uptake and packaging transfers, retain fossil/biogenic C origin, and set net chemical generation of conserved elements to zero. Report signed residuals and uncertainty; never adjust measured quantities or invent a closure tolerance. At the conversion/first-acceptance gate, panel output includes newly accepted closing FG outside that gate; the same panel cannot also be closing stock inside it. If an extended store ledger includes FG, use actual dispatch/transfers there and reconcile acceptance separately; never add manufacture output and the same closing FG. Actual named receipts/returns, carrier water and packaging/wet stocks belong on their real boundaries once, including provider-owned physical carriers without duplicating environmental burdens. Uncovered real entries remain named unresolved events; no whole-factory closure is asserted."
+      rule: "For total mass and elemental C/H/O separately: opening stock + all material boundary intake = closing stock + panel + exported residues + material emissions; include evidenced atmospheric uptake and packaging transfers, retain fossil/biogenic C origin, and set net chemical generation of conserved elements to zero. Report signed residuals and uncertainty; never adjust measured quantities or invent a closure tolerance. At the conversion/first-acceptance gate, panel output includes newly accepted closing FG outside that gate; the same panel cannot also be closing stock inside it. An acceptance event is not a separate physical flow in addition to actual gate transfers. If an extended store ledger includes FG, use actual net dispatch/transfers, losses and closing stocks there, including opening FG and actual purchased finished-panel receipts, and reconcile event Q separately under acceptance_event_bridge; never add manufacture acceptance and the same closing FG. Returned accepted WIP retains its event link while actual crossing transfers cancel on aggregation. Acceptance-basis equivalents are not substituted for measured wet/dry/component physical masses. Actual named receipts/returns, carrier water and packaging/wet stocks belong on their real boundaries once, including provider-owned physical carriers without duplicating environmental burdens. Uncovered real entries remain named unresolved events; no whole-factory closure is asserted."
       inputs:
         - cp_materials
         - cp_recipe
@@ -865,7 +879,7 @@ dataset_production:
       evidence: "unido-panel-adhesives-1977; frihart-wood-joining-2023; supplier/analytical records"
     - id: dq_scope
       applies_to: "period/site/basis"
-      requirement: "Preserve original record periods and cohort/gate/provider identities across stock and service histories; reconcile A_c with B_c rather than requiring all raw receipts/services to occur in one period. Report missing meters/tests, non-detect limits, seasonal/species/configuration changes and survey exclusions. No empirical range is imposed from another manufacturing route."
+      requirement: "Preserve original record periods and cohort/gate/provider identities across stock and service histories; reconcile A_c with locked B_c = Q and the complete acceptance_event_bridge rather than requiring all raw receipts/services to occur in one period. Missing event, net-return, disposition or acceptance-basis conversion evidence keeps normalization incomplete; physical closure alone cannot establish Q or burden attribution. Report missing meters/tests, non-detect limits, seasonal/species/configuration changes and survey exclusions. No empirical range is imposed from another manufacturing route."
       evidence: "Primary records and boundary disclosure"
 validation_rules:
   - rule_id: v_reference
@@ -882,7 +896,7 @@ validation_rules:
       - unido-panel-adhesives-1977
   - rule_id: v_measurement
     applies_to: "blockboard_lamination"
-    rule: "Normalize each attributed A_c once by positive B_c. Count each first acceptance once, including newly accepted closing FG; opening FG, returns, dispatch, retests and reacceptance do not create B_c. Verify inherited raw/WIP/FG burden and later-service vectors against the original cohort; zero/missing denominator remains raw and inconclusive. Preserve physical total-mass/elemental C/H/O and reactive-species ledgers separately. Require actual UF H2O formation/consumption and dry-species conversion evidence; do not force cure/water closure or treat supplied solids as conserved cured resin. Validate net heat independent-leg/meter boundary, actual streams/accumulation and h units/reference; no repeat integration or duplicated provider carrier burdens."
+    rule: "Normalize each attributed A_c once by positive B_c. Verify Q from unique measured first-acceptance events and reconcile the disjoint same-basis Q = D_new + FG_new + L_new bridge, including net returns, post-acceptance loss/scrap/downgrade and closing returned WIP. Two terms require evidenced zero other dispositions. Opening FG, purchased finished panels, returns, dispatch, retests and reacceptance do not create B_c or reduce locked Q; gross loops must not double-count parcels. Reject unexplained destination residuals or unsupported moisture/composition conversion; never replace whole accepted board with dry wood or supplied glue solids. Verify inherited raw/WIP/FG burden and later-service vectors against the original cohort; zero/missing denominator remains raw and inconclusive. Preserve physical total-mass/elemental C/H/O and reactive-species ledgers separately. Require actual UF H2O formation/consumption and dry-species conversion evidence; do not force cure/water closure or treat supplied solids as conserved cured resin. Validate net heat independent-leg/meter boundary, actual streams/accumulation and h units/reference; no repeat integration or duplicated provider carrier burdens."
     source_ids:
       - usda-wood-handbook-2021
       - frihart-wood-joining-2023
@@ -898,8 +912,8 @@ published_dataset_profile:
   downstream_use: "secondary_dataset; background_dataset"
   allowed_use: "Declared unfinished interior five-layer Meranti/Falcata purchased-barecore UF lamination after supplier compatibility and all identity/measurement gaps are closed"
   excluded_use: "Whole CPC 31422 coverage; all-veneer plywood; other core/face/adhesive constructions; marine/exterior, structural or lifetime equivalence; generic density/emission/recipe defaults"
-  required_metadata: "Layer/species/trade group/origin and tropical outer-ply proof; upstream barecore adhesive/burden boundary; geometry/axes/moisture; recipe/press acceptance; plant/time; original cohort and positive B_c; net heat boundary/h units/reference; allocation and exclusions"
-  required_quality_disclosure: "Native category applicability limits; unresolved UUID/provider matches; missing UF reaction extent and species measurements; residual/uncertainty of physical and burden ledgers; emissions coverage; no scientific/publication authority inferred from classification"
+  required_metadata: "Layer/species/trade group/origin and tropical outer-ply proof; upstream barecore adhesive/burden boundary; geometry/axes/moisture; recipe/press acceptance; plant/time; original cohort/event and positive locked B_c = Q; measured acceptance basis and complete D_new/FG_new/L_new bridge; net heat boundary/h units/reference; allocation and exclusions"
+  required_quality_disclosure: "Native category applicability limits; unresolved UUID/provider matches; missing UF reaction extent and species measurements; residual/uncertainty of acceptance-event bridge and separate physical/component/burden ledgers; emissions coverage; no scientific/publication authority inferred from classification"
   update_trigger: "Layer provenance/geometry, barecore supplier/edge glue, skin recipe, press, utility/provider boundary, packaging, waste status/destination or emission measurement change"
 data_sources:
   - id: "cbp-five-ply-blockboard-2011"
@@ -948,18 +962,18 @@ data_sources:
     used_for: "Qualitative trimming/sanding and captured-versus-emitted dust context. Broader plywood source does not establish this factory, abrasive type, recipe or numerical factors; actual consumable and stock protocols are disclosed operational deductions."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:0c2de913f496a0e2cbb74c3d9f7152ec583e24cf1e9dc1a7b439e7bb263e54dc"
+  source_sha256: "sha256:4304e0da9cd48953fd0ae721dee9522f8f6b24df486ba49b000add3bcf32b687"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_10618"
+    - unit_id: "normative_10808"
       family: "system_boundary"
       span:
         start:
-          offset: 10618
+          offset: 10808
           line: 67
           column: 1
         end:
-          offset: 13318
+          offset: 13508
           line: 86
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased dried, edge-jointed, unveneered Falcata solid-strip barecore; dry unbonded Meranti face/back and crossband sheets; supplied dry UF resin and dry NH4Cl |\n| starting_condition_role | Foreground procurement gate; upstream core production and its edge adhesive are retained in linked input datasets |\n| product_classification_scope | Narrower CPC 3.0 31422 physical subset; no classification inferred from a generic native flow |\n| recursive_input_rule | Purchased finished blockboard of the same category is a separate explicitly identified input; inherited burdens remain. It cannot substitute for unveneered barecore or create new output merely by resale/reacceptance. Unresolved recursive providers remain unresolved. |\n| upstream_dataset_requirement | Independently compatible barecore, unbonded veneer, chemical, utility, transport and waste-treatment datasets; retain geography, species, moisture, recipe/state, reference unit, gate and inherited burdens |\n| disclosure | State procurement gate, actual core/veneer species, upstream core adhesive and drying, plant/time, utilities, packaging, excluded services and foreground-only versus linked upstream completeness |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_procurement | `blockboard_lamination` | Include actual dry-input receipt/conditioning, glue mixing, crossband and face assembly, hot pressing, trimming/sanding, control devices, failed production, cleanup, packaging and first acceptance. Upstream barecore making and its glue are included through the purchased core exactly once. Materially different starts or adhesives require a boundary review. | fao-farm-structures-1986; unido-panel-adhesives-1977 |\n| b_provenance | `face_veneer`; `cross_veneer`; `core_barecore` | Verify outer Meranti tropical provenance and botanical/trade identity separately from crossbands and Falcata core. No tropical-core-only evidence qualifies. Inherited core edge adhesive and its fossil/biogenic constituents must be known; do not record upstream edge-glue consumption again as a foreground UF input. | cbp-five-ply-blockboard-2011; qld-meranti-timber |\n| b_no_hidden_inputs | `blockboard_lamination` | Each actual material, utility, waste and emission remains an atomic exchange with matched medium/state. Extra packaging, chemicals, fuel, oxidizer or on-site drying require individual rows and explicit scope extension before a complete dataset is claimed. Net hot-water energy and carrier ownership must match the provider boundary without double charging water. | jrc-ilcd-detailed-2010 |\n\n"
@@ -979,11 +993,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 10618
+              offset: 10808
               line: 67
               column: 1
             end:
-              offset: 10639
+              offset: 10829
               line: 67
               column: 22
           text: "## 5. System Boundary"
@@ -999,18 +1013,18 @@ normative_context:
               line: 11
               column: 1
           markdown: "---\npcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.meranti-veneered-falcata-strip-core-blockboard\nlanguage: en-US\nsync_with: pcr.zh-CN.md\nstatus: candidate\ncontent_maturity: authored_methodology\ntranslation_status: canonical\n\n---\n\n"
-    - unit_id: "normative_36801"
+    - unit_id: "normative_37511"
       family: "allocation"
       span:
         start:
-          offset: 36801
+          offset: 37511
           line: 485
           column: 1
         end:
-          offset: 38246
+          offset: 39186
           line: 492
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_physical | `blockboard_lamination` | Keep unallocated total-mass and elemental C/H/O ledgers for all stages, with fossil/biogenic carbon origin retained; reactions have zero net elemental generation. Track H2O, dry wood and adhesive species separately with measured or supported formation/consumption terms, not assumed conserved species. Internal transfers cancel only at aggregated boundary. Physical panel/waste quantities are never multiplied by environmental allocation shares. | usda-wood-handbook-2021; frihart-wood-joining-2023 |\n| a_waste | `blockboard_lamination` | Base route has one saleable panel product and exported treatment wastes: assign production burdens to accepted panels and include waste-treatment burdens without avoided-product credit. Internal rework remains within the same ledger. If residues become saleable co-products, their product identities and measured physical outputs must be added before choosing a documented causal allocation or an explicitly justified alternative; keep that burden ledger separate from mass balance. Do not relabel waste UUIDs as products. Prefer measured subdivision first; any true joint-product allocation requires documented study context and independently supported causal relationship, with the unallocated physical outputs preserved. | jrc-ilcd-detailed-2010 |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_physical | `blockboard_lamination` | Keep unallocated total-mass and elemental C/H/O ledgers for all stages, with fossil/biogenic carbon origin retained; reactions have zero net elemental generation. Track H2O, dry wood and adhesive species separately with measured or supported formation/consumption terms, not assumed conserved species. Internal transfers cancel only at aggregated boundary. Physical panel/waste quantities are never multiplied by environmental allocation shares. | usda-wood-handbook-2021; frihart-wood-joining-2023 |\n| a_waste | `blockboard_lamination` | Base route has one saleable panel product and exported treatment wastes: assign production burdens to accepted panels and include waste-treatment burdens without avoided-product credit. Internal rework retains original physical transfers and burden history; post-acceptance loss, downgrade, scrap or rework does not reverse the first-acceptance event or reduce its Q. Actual later services and failed rework burdens stay with that original cohort and denominator. If residues become saleable co-products, their product identities and measured physical outputs must be added before choosing a documented causal allocation or an explicitly justified alternative; keep that burden ledger separate from mass balance. Do not relabel waste UUIDs as products. Prefer measured subdivision first; any true joint-product allocation requires documented study context and independently supported causal relationship, with the unallocated physical outputs preserved. | jrc-ilcd-detailed-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1027,11 +1041,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36801
+              offset: 37511
               line: 485
               column: 1
             end:
-              offset: 36841
+              offset: 37551
               line: 485
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1047,18 +1061,18 @@ normative_context:
               line: 11
               column: 1
           markdown: "---\npcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.meranti-veneered-falcata-strip-core-blockboard\nlanguage: en-US\nsync_with: pcr.zh-CN.md\nstatus: candidate\ncontent_maturity: authored_methodology\ntranslation_status: canonical\n\n---\n\n"
-    - unit_id: "normative_57651"
+    - unit_id: "normative_62882"
       family: "validation"
       span:
         start:
-          offset: 57651
-          line: 533
+          offset: 62882
+          line: 534
           column: 1
         end:
-          offset: 59965
-          line: 542
+          offset: 65643
+          line: 543
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | `finished_panel` | Exactly one reference product output: 1 kg accepted net panel at measured moisture. Confirm actual tropical Meranti outer face and back, Meranti crossbands, Falcata solid-strip barecore, five layers, crossed axes and every qualifier. A native flow name or tropical core alone is insufficient. | cbp-five-ply-blockboard-2011; qld-meranti-timber |\n| v_route | `blockboard_lamination` | Verify purchased barecore and dry unbonded veneer procurement, upstream core adhesive/burdens, actual UF/NH4Cl/water recipe and bond acceptance. Reject all-veneer, three-layer, coated, alternative-adhesive or integrated core-production substitutes. Check independent supplier compatibility with the generic reference, including its full more-than-two-veneer/tropical-outer/crossed-grain description and narrower supplier qualifiers. | fao-farm-structures-1986; unido-panel-adhesives-1977 |\n| v_measurement | `blockboard_lamination` | Normalize each attributed A_c once by positive B_c. Count each first acceptance once, including newly accepted closing FG; opening FG, returns, dispatch, retests and reacceptance do not create B_c. Verify inherited raw/WIP/FG burden and later-service vectors against the original cohort; zero/missing denominator remains raw and inconclusive. Preserve physical total-mass/elemental C/H/O and reactive-species ledgers separately. Require actual UF H2O formation/consumption and dry-species conversion evidence; do not force cure/water closure or treat supplied solids as conserved cured resin. Validate net heat independent-leg/meter boundary, actual streams/accumulation and h units/reference; no repeat integration or duplicated provider carrier burdens. | usda-wood-handbook-2021; frihart-wood-joining-2023; jrc-ilcd-detailed-2010 |\n| v_emissions | `blockboard_lamination` | Check species, outdoor-air medium, disjoint particle cuts, control-device and fugitive coverage; collected dust is waste, not an emission. Distinguish inlet humidity, evaporated carrier water and actual cure reaction water. Missing measurements, unsupported absence, unresolved identities or allocation histories remain inconclusive. | frihart-wood-joining-2023; jrc-ilcd-detailed-2010 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | `finished_panel` | Exactly one reference product output: 1 kg accepted net panel at measured moisture. Confirm actual tropical Meranti outer face and back, Meranti crossbands, Falcata solid-strip barecore, five layers, crossed axes and every qualifier. A native flow name or tropical core alone is insufficient. | cbp-five-ply-blockboard-2011; qld-meranti-timber |\n| v_route | `blockboard_lamination` | Verify purchased barecore and dry unbonded veneer procurement, upstream core adhesive/burdens, actual UF/NH4Cl/water recipe and bond acceptance. Reject all-veneer, three-layer, coated, alternative-adhesive or integrated core-production substitutes. Check independent supplier compatibility with the generic reference, including its full more-than-two-veneer/tropical-outer/crossed-grain description and narrower supplier qualifiers. | fao-farm-structures-1986; unido-panel-adhesives-1977 |\n| v_measurement | `blockboard_lamination` | Normalize each attributed A_c once by positive B_c. Verify Q from unique measured first-acceptance events and reconcile the disjoint same-basis Q = D_new + FG_new + L_new bridge, including net returns, post-acceptance loss/scrap/downgrade and closing returned WIP. Two terms require evidenced zero other dispositions. Opening FG, purchased finished panels, returns, dispatch, retests and reacceptance do not create B_c or reduce locked Q; gross loops must not double-count parcels. Reject unexplained destination residuals or unsupported moisture/composition conversion; never replace whole accepted board with dry wood or supplied glue solids. Verify inherited raw/WIP/FG burden and later-service vectors against the original cohort; zero/missing denominator remains raw and inconclusive. Preserve physical total-mass/elemental C/H/O and reactive-species ledgers separately. Require actual UF H2O formation/consumption and dry-species conversion evidence; do not force cure/water closure or treat supplied solids as conserved cured resin. Validate net heat independent-leg/meter boundary, actual streams/accumulation and h units/reference; no repeat integration or duplicated provider carrier burdens. | usda-wood-handbook-2021; frihart-wood-joining-2023; jrc-ilcd-detailed-2010 |\n| v_emissions | `blockboard_lamination` | Check species, outdoor-air medium, disjoint particle cuts, control-device and fugitive coverage; collected dust is waste, not an emission. Distinguish inlet humidity, evaporated carrier water and actual cure reaction water. Missing measurements, unsupported absence, unresolved identities or allocation histories remain inconclusive. | frihart-wood-joining-2023; jrc-ilcd-detailed-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1075,12 +1089,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 57651
-              line: 533
+              offset: 62882
+              line: 534
               column: 1
             end:
-              offset: 57673
-              line: 533
+              offset: 62904
+              line: 534
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1099,168 +1113,168 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "b_procurement"
       identity_kind: "explicit"
-      unit_id: "normative_10618"
+      unit_id: "normative_10808"
       source_span:
         start:
-          offset: 11985
+          offset: 12175
           line: 82
           column: 1
         end:
-          offset: 12443
+          offset: 12633
           line: 82
           column: 459
     - pointer: "/system_boundary/rules/1"
       rule_id: "b_provenance"
       identity_kind: "explicit"
-      unit_id: "normative_10618"
+      unit_id: "normative_10808"
       source_span:
         start:
-          offset: 12444
+          offset: 12634
           line: 83
           column: 1
         end:
-          offset: 12877
+          offset: 13067
           line: 83
           column: 434
     - pointer: "/system_boundary/rules/2"
       rule_id: "b_no_hidden_inputs"
       identity_kind: "explicit"
-      unit_id: "normative_10618"
+      unit_id: "normative_10808"
       source_span:
         start:
-          offset: 12878
+          offset: 13068
           line: 84
           column: 1
         end:
-          offset: 13316
+          offset: 13506
           line: 84
           column: 439
     - pointer: "/allocation_rules/0"
       rule_id: "a_physical"
       identity_kind: "explicit"
-      unit_id: "normative_36801"
+      unit_id: "normative_37511"
       source_span:
         start:
-          offset: 36914
+          offset: 37624
           line: 489
           column: 1
         end:
-          offset: 37455
+          offset: 38165
           line: 489
           column: 542
     - pointer: "/allocation_rules/1"
       rule_id: "a_waste"
       identity_kind: "explicit"
-      unit_id: "normative_36801"
+      unit_id: "normative_37511"
       source_span:
         start:
-          offset: 37456
+          offset: 38166
           line: 490
           column: 1
         end:
-          offset: 38244
+          offset: 39184
           line: 490
-          column: 789
+          column: 1019
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_57651"
+      unit_id: "normative_62882"
       source_span:
         start:
-          offset: 57746
-          line: 537
+          offset: 62977
+          line: 538
           column: 1
         end:
-          offset: 58126
-          line: 537
+          offset: 63357
+          line: 538
           column: 381
     - pointer: "/validation_rules/1"
       rule_id: "v_route"
       identity_kind: "explicit"
-      unit_id: "normative_57651"
+      unit_id: "normative_62882"
       source_span:
         start:
-          offset: 58127
-          line: 538
+          offset: 63358
+          line: 539
           column: 1
         end:
-          offset: 58654
-          line: 538
+          offset: 63885
+          line: 539
           column: 528
     - pointer: "/validation_rules/2"
       rule_id: "v_measurement"
       identity_kind: "explicit"
-      unit_id: "normative_57651"
+      unit_id: "normative_62882"
       source_span:
         start:
-          offset: 58655
-          line: 539
+          offset: 63886
+          line: 540
           column: 1
         end:
-          offset: 59533
-          line: 539
-          column: 879
+          offset: 65211
+          line: 540
+          column: 1326
     - pointer: "/validation_rules/3"
       rule_id: "v_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_57651"
+      unit_id: "normative_62882"
       source_span:
         start:
-          offset: 59534
-          line: 540
+          offset: 65212
+          line: 541
           column: 1
         end:
-          offset: 59963
-          line: 540
+          offset: 65641
+          line: 541
           column: 430
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_10618"
+      unit_id: "normative_10808"
       source_span:
         start:
-          offset: 10618
+          offset: 10808
           line: 67
           column: 1
         end:
-          offset: 10639
+          offset: 10829
           line: 67
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_10618"
+      unit_id: "normative_10808"
       source_span:
         start:
-          offset: 10667
+          offset: 10857
           line: 71
           column: 1
         end:
-          offset: 11912
+          offset: 12102
           line: 78
           column: 212
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36801"
+      unit_id: "normative_37511"
       source_span:
         start:
-          offset: 36801
+          offset: 37511
           line: 485
           column: 1
         end:
-          offset: 36841
+          offset: 37551
           line: 485
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_57651"
+      unit_id: "normative_62882"
       source_span:
         start:
-          offset: 57651
-          line: 533
+          offset: 62882
+          line: 534
           column: 1
         end:
-          offset: 57673
-          line: 533
+          offset: 62904
+          line: 534
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1269,5 +1283,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:0c2de913f496a0e2cbb74c3d9f7152ec583e24cf1e9dc1a7b439e7bb263e54dc"
-  generated_content_sha256: "sha256:fa5050b7266d5e1fc1d6fae1ce2748ed09afa99fdba9e2e656faf44bddfc6299"
+    sha256: "sha256:4304e0da9cd48953fd0ae721dee9522f8f6b24df486ba49b000add3bcf32b687"
+  generated_content_sha256: "sha256:cc347977082c506582d2ec67547a0437da7998a153339cf1d4e6a4611cae977a"
