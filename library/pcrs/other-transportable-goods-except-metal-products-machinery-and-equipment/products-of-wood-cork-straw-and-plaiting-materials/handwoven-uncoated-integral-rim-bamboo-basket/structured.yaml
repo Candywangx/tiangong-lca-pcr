@@ -86,7 +86,7 @@ measurement_rules:
       name: "Volume"
       uuid: ""
     required_unit: "m3"
-    rule: "Normalize every final exchange once by the same positive first-accepted whole-basket net element volume Q_V. Physical mass, dry matter, carbon, water and energy ledgers retain their original units. Basket volumes require measurement or a validated actual-variant sample estimate; no default density or universal volume per basket."
+    rule: "Normalize each cohort's final exchange once by its positive event-locked first-accepted whole-basket net element volume Q_V (original Q_V_original for earlier accepted cohorts). Lock volume at each unique first-acceptance moisture/conditioning endpoint; later loss, moisture change, return, rework or reacceptance never cancels or increases that event volume. Keep physical mass, dry matter, carbon, water and energy in their own units. Basket volumes require measured geometry or a validated actual-variant sample estimate; no default density or universal volume per basket."
   - id: energy_units
     applies_to: "electricity"
     required_property_ref:
@@ -185,7 +185,7 @@ process_inventory:
           flow_ref:
             uuid: "ab01bb2e-f55c-4ce6-9355-7c86f8a55576"
           property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
-          description: "The whole finished product crosses the first-acceptance gate on the declared geometric basis, using cp_geometry and cp_acceptance."
+          description: "The whole finished product is measured at its unique first-acceptance event on the declared geometric and moisture basis, using cp_geometry and cp_acceptance. The locked event volume includes every later net destination under first_acceptance; dispatch, remaining FG and reacceptance cannot replace or increase it. This normalized coordinate is not a second physical output alongside external dispatch."
           amount:
             expression: "1 m3"
             value_mode: "calculated_value"
@@ -313,67 +313,79 @@ dataset_production:
       process_id: "basket_manufacture"
       flow_role: "basket_output"
       record_type: "records"
-      raw_fields: "work order; unique basket id; first acceptance time; new dispatch; new closing finished stock; opening finished stock; returns; rework; variant volume"
-      collection_method: "Determine positive Q_V from first acceptance by basket or validated lot records; remove opening finished goods from dispatch and include newly accepted closing stock once."
+      raw_fields: "immutable work order/cohort and basket id; unique first acceptance time; acceptance geometry, moisture and conditioning endpoint; original Q_V_original for older cohorts; gross dispatch and linked actual returns; separate new/old opening/closing FG and WIP; each net loss, discard, downgrade/use, out-of-scope transfer and returned/rework WIP; repeat inspection/reacceptance and physical re-entry/re-exit history; original-basis conversion and uncertainty"
+      collection_method: "Lock Q_V from unique first-acceptance basket or validated lot records, then reconcile the complete mutually exclusive destinations in first_acceptance on that original geometric basis. Exclude opening accepted FG, purchased finished baskets and repeated events from new Q_V, but retain their physical stocks and original-cohort services. Later losses and closing WIP remain in original Q_V; only evidenced zero other dispositions permits dispatch plus FG alone."
       unit: "m3"
-      frequency: "Each first acceptance and period reconciliation"
-      temporal_coverage: "Declared period with carryover trace"
-      site_scope: "Site and original cohort"
+      frequency: "Each acceptance, destination/movement and period reconciliation"
+      temporal_coverage: "Declared period with immutable carryover cohort trace"
+      site_scope: "Site and original cohort, event basis distinct from current physical state"
       aggregation_rule: "per reference flow"
-      quality_evidence: "Acceptance, dispatch, stock and no-recount trail"
+      quality_evidence: "Acceptance geometry, linked gross/net dispatch/returns, stock, all dispositions, conversion and no-recount trail"
     - protocol_id: cp_activity
       process_id: "basket_manufacture"
       flow_role: "green_strips; electricity; bamboo_offcut; basket_reject"
       record_type: "records"
-      raw_fields: "raw amount for each atomic exchange; units; moisture; work order/cohort; raw/WIP/FG opening/closing; inherited burden vectors; prior normalization basis"
-      collection_method: "Weigh net materials and wastes, read electricity meters, attribute work orders, retain inherited vectors, and produce per-reference results through cohort_balance and normalize_volume below."
+      raw_fields: "each atomic exchange raw amount/unit; current moisture and dry matter; immutable work order/cohort; separate raw/WIP/new FG/old FG opening/closing; actual external receipts, dispatch/returns, waste/release; paired internal rework/reacceptance transfers; inherited vectors; original accepted volume and prior normalization basis"
+      collection_method: "Weigh actual incoming, outgoing and stock materials/wastes, read meters and attribute complete work orders including failed/startup/rework activity. Reconcile whole-plant physical quantities separately from unique acceptance and burden vectors. Retain new and older accepted cohorts' post-acceptance losses/services, with their original locked volumes; carry inherited raw/WIP vectors once and add incremental operations once. Use cohort_balance and normalize_volume without reducing physical quantities by burden shares or re-purchasing internally returned bamboo."
       unit: "kg; MJ"
-      frequency: "Each lot/meter period"
+      frequency: "Each lot, movement and meter period"
       temporal_coverage: "Same period with original-cohort trace"
       site_scope: "Actual plant and supply-chain interface"
       aggregation_rule: "per reference flow"
-      quality_evidence: "Scale/meter calibration, supplier records, allocation drivers and vector reconciliation"
+      quality_evidence: "Scale/meter calibration, supplier records, allocation drivers, physical/event ledger and vector reconciliation"
     - protocol_id: cp_water
       process_id: "basket_manufacture"
       flow_role: "tap_water; dampening_effluent; evaporated_water"
       record_type: "measurement"
-      raw_fields: "supply mass; strip/WIP/FG moisture; atmospheric sorption; discharge; reuse; water stock change; concentration; receiver"
-      collection_method: "Measure actual supply/discharge and moisture, separate dry-matter and water balances and resolve closure uncertainty; density conversion needs evidence for the actual temperature/quality. Normalize attributable quantities by the same Q_V."
+      raw_fields: "supply mass; current strip/WIP/new and old FG moisture; declared dry/wet basis; atmospheric sorption; discharge; gross returns/dispatch; internal reuse; opening/closing water stocks; original cohort; concentrations and receiver"
+      collection_method: "Measure actual supply/discharge, current moisture and stock water on the same whole-plant period/boundary. Separate dry matter and water under physical_balance, retaining actual post-acceptance water changes and services with the original cohort. Internal reuse/rework transfers cancel; do not add acceptance volume as water/mass output or equate shrinking geometry to evaporation. Resolve closure uncertainty; any density conversion needs actual temperature/quality evidence. Normalize attributable water exchanges by the original event-locked cohort volume."
       unit: "kg"
-      frequency: "Each lot and period closure"
-      temporal_coverage: "Consistent cohort and period"
+      frequency: "Each lot/movement and period closure"
+      temporal_coverage: "Consistent original cohort and period"
       site_scope: "Plant and discharge receiver"
       aggregation_rule: "per reference flow"
-      quality_evidence: "Instruments, wet/dry basis, moisture samples, balance residual and uncertainty"
+      quality_evidence: "Instruments, wet/dry basis, moisture samples, physical closure residual, basis conversion and uncertainty"
   calculation_rules:
     - id: accepted_volume
       applies_to: "basket_output"
-      rule: "Q_V = sum of new first-accepted basket volumes; alternatively sum_h N_h*vbar_h for validated actual variant/lot strata, with sampling uncertainty."
+      rule: "Q_V = sum of immutable unique new first-acceptance V_j at each basket's declared acceptance moisture/conditioning endpoint; alternatively sum_h N_h*vbar_h for validated actual variant/lot first-acceptance strata, with sampling uncertainty. N_h counts first events once, not dispatch, repeat passes or residual available baskets. Lock the original geometric basis and uncertainty; later losses, reconditioning, rework or dimensional changes do not reset Q_V."
       inputs:
         - cp_geometry
         - cp_acceptance
-      output: "Q_V"
+      output: "event-locked Q_V"
       source_ids:
         - liang-bamboo-geometry-2026
         - phongphinittana-woven-bamboo-2025
     - id: first_acceptance
       applies_to: "basket_output"
-      rule: "Q_V equals new first-accepted dispatch plus new first-accepted closing FG on the same geometric basis, excluding opening FG, purchased finished baskets, returns, retests and already-counted rework. Unique first-acceptance IDs prevent double counting."
+      rule: "Q_V is the sum of unique first-acceptance event volumes, not a dispatch/stock-derived denominator. Reconcile Q_V = D_new + FG_new + Other_new for that newly accepted cohort (zero opening accepted stock): D_new is gross external dispatch minus linked actual returns; FG_new is closing accepted FG; Other_new covers all other mutually exclusive net destinations, including actual loss, scrap/test destruction, downgrade/use, out-of-scope transfer and closing returned/rework WIP. Use original acceptance-state net bamboo-element geometry for every term; trace original elements and measured moisture/dimension/removal changes to convert current fates to that basis, retaining bounded uncertainty. Current wet kg, changed-state volume, cavity/envelope and purchase volume are not substitutes. A return is removed from net dispatch and enters its actual final FG/WIP/other destination once; internal loops and reacceptance are not extra destinations. For 100 L accepted element volume, 60 L net dispatch + 30 L closing FG + 10 L loss retain Q_V=100 L=0.1 m3, not 90 L. Dispatch plus FG alone is allowed only with evidence that all other post-acceptance dispositions are zero. Exclude opening FG, purchased finished baskets and repeats from new Q_V; their services retain original Q_V_original. Never infer zero loss or invent a residual to force closure."
       inputs:
         - cp_acceptance
-      output: "Q_V"
+        - cp_geometry
+        - cp_activity
+      output: "locked Q_V and complete original-basis net destination bridge"
       source_ids: []
     - id: cohort_balance
       applies_to: "all inventory rows"
-      rule: "For exchange vector B keep original units: B_open_raw + B_open_WIP + B_open_FG + B_added = B_dispatched + B_close_raw + B_close_WIP + B_close_FG + B_other, each physical cohort counted once. B_dispatched denotes burdens on physical dispatch including opening FG; B_other is the separately attributed burden vector of other documented output/service cohorts; it cannot be an unexplained balancing residual or remove pre-acceptance loss burdens already charged to accepted production. This is only stock-location reconciliation. The distinct first-acceptance projection excludes opening FG dispatch and includes newly accepted closing FG once. Unresolved vectors remain debt."
+      rule: "Keep exchange vector B in original units: B_open_raw + B_open_WIP + B_open_FG + B_added = B_dispatched + B_close_raw + B_close_WIP + B_close_FG + B_other, each vector/location counted once. B_dispatched follows actual net dispatch after linked returns, including old FG; B_other is only separately evidenced burden attribution to other outputs/services, never an unexplained residual or removal of loss burdens already charged to accepted production. Internal FG/WIP/reacceptance transfers move inherited vectors once, without repeating prior wood or provider burdens; retain all current incremental operations. Stock-location vector reconciliation is distinct from first-acceptance attribution: all new accepted destinations, including later waste, downgrade, loss and WIP, retain their full original-cohort burdens and locked Q_V, while opening accepted FG stays under original Q_V_original. Supplier burdens already represented by the linked provider must not be added again as own-foreground history. Unresolved vectors remain debt."
       inputs:
         - cp_activity
         - cp_acceptance
       output: "reconciled original-unit cohort vectors"
       source_ids: []
+    - id: physical_balance
+      applies_to: "all inventory rows"
+      rule: "On the integrated plant boundary reconcile actual opening raw/WIP/accepted FG/residue stocks + actual external receipts/linked returns = actual closing stocks + gross external dispatch/other transfers + external wastes/releases, separately for dry bamboo and water on measured current-state kg. With dry-basis u=(wet-dry)/dry, dry kg=wet kg/(1+u) and contained water=wet-dry; a wet-basis result must be converted from its declared definition, never silently treated as u. Include measured dampening supply and atmospheric uptake in water inputs and actual drainage/evaporation in outputs; retained residues remain closing stock only. Internal acceptance, FG-to-WIP and repeat acceptance cancel; Q_V and its original-basis destination equivalents are not extra physical mass/volume outputs. Geometry can change with conditioning and rework, so do not assume geometric-volume conservation or infer dry matter/water from a default density. Keep gross material quantities independent of allocated vectors and investigate uncertainty without invented balancing flows."
+      inputs:
+        - cp_activity
+        - cp_water
+        - cp_geometry
+        - cp_acceptance
+      output: "separate actual dry-bamboo and water physical ledgers"
+      source_ids: []
     - id: normalize_volume
       applies_to: "all inventory rows"
-      rule: "For each exchange i, I_i = B_i / Q_V, using its full attributable first-acceptance-cohort burden B_i and positive Q_V; the reference output is 1 m3. For an old service intensity H_i per m3, recover B_old_i = H_i * Q_V_original using the original accepted-cohort volume of that service; never multiply it by the current period denominator or divide a normalized intensity again. Transfer the resulting raw vector once to its original cohort. Later actual service B_service,c on old accepted output is a separate correction B_service,c / Q_V_original,c, with no new accepted output. Do not add old accepted production or services to a new-cohort numerator; selective subcohorts require evidenced attribution and matching original volume. For Q_V = 0 retain raw amounts and unresolved cohort state; do not divide or publish a complete normalized dataset."
+      rule: "For each exchange i, I_i = B_i / Q_V, using its full attributable first-acceptance-cohort burden B_i and positive Q_V; the reference output is 1 m3. For an old service intensity H_i per m3, recover B_old_i = H_i * Q_V_original using the original accepted-cohort volume of that service; never multiply it by the current period denominator or divide a normalized intensity again. Transfer the resulting raw vector once to its original cohort. Later actual service B_service,c on old accepted output is a separate correction B_service,c / Q_V_original,c, with no new accepted output. Do not add old accepted production or services to a new-cohort numerator; selective subcohorts require evidenced attribution and matching original volume. Post-acceptance loss, discard, downgrade, returns and rework retain the original event volume and every applicable incremental burden even if no deliverable FG remains. If original volume/history is unknown, keep an unresolved raw service correction rather than dividing by current Q_V. For Q_V = 0 retain raw amounts and unresolved cohort state; do not divide or publish a complete normalized dataset."
       inputs:
         - cp_activity
         - cp_water
@@ -411,7 +423,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_accounting
     applies_to: "foreground_dataset"
-    rule: "Require every final inventory basis and linked protocol aggregation to use the same reference flow. Check material, water and burden ledgers separately, opening FG exclusion, new closing FG inclusion once, inherited WIP/raw vectors and original denominators for old services. Unresolved geometry, missing inherited vectors, Q_V = 0 or incompatible providers makes the affected dataset incomplete. A declared-basis checker cannot establish scientific approval or a measured factory result."
+    rule: "Require every final inventory basis and linked aggregation to match the original-cohort reference flow. Verify locked unique acceptance Q_V and complete same-basis D_new + FG_new + Other_new, including net returns, losses, discards, downgrades and closing WIP; reject unconditional dispatch-plus-FG, reacceptance adding Q_V, loss shrinking it or one body counted as both FG and WIP. Check actual material/water ledgers independently with internal transfers cancelled and acceptance not added to dispatch/closing FG. Retain opening FG, inherited raw/WIP vectors, failed/rework activity and old-cohort services under original volumes. Unresolved geometry/basis conversion, missing history/vectors, Q_V=0 or incompatible providers makes the affected dataset incomplete. A declared-basis check is not scientific approval or factory measurement."
     source_ids: []
 published_dataset_profile:
   dataset_role: "Factory-gate manufacturing foreground; separately disclose matched upstream coverage"
@@ -444,18 +456,18 @@ data_sources:
     used_for: "Attributional subdivision and determining physical causality; actual work-order/shared-service and stock protocols are disclosed operational deductions, not factory shares or a basket-volume standard."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:76d8c2887d8457ba0f543f48a04fa09499b9638a12a8b248e3d071530795f6a4"
+  source_sha256: "sha256:62968ac9169634d8e9ac20705506240452026289fad4fda1bbd85ce621475005"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5799"
+    - unit_id: "normative_6044"
       family: "system_boundary"
       span:
         start:
-          offset: 5799
+          offset: 6044
           line: 58
           column: 1
         end:
-          offset: 8345
+          offset: 8590
           line: 83
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased prepared green bamboo strips, uncoated, unglued and unpreserved, with actual moisture records |\n| starting_condition_role | Production split and upstream interface, not exemption of bamboo cultivation, harvest, strip preparation and transport burdens |\n| product_classification_scope | Only the narrower 31923 finished-product scope; green strips are a different-stage input |\n| recursive_input_rule | Purchased same-category finished baskets cannot masquerade as new output; rework retains the original cohort and burdens, with no recount of a basket. |\n| upstream_dataset_requirement | Verify species, green state, treatment, gate, transport and reference-quantity compatibility; unknown supplier data remain a gap, not zero. |\n| disclosure | Disclose foreground boundary separately from upstream coverage, unresolved exchanges, allocation, opening/closing stock and uncertainty |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | foreground_dataset | Include strip receipt and profiling, weaving/integral rim, ambient conditioning, inspection, rejects, rework, attributable utilities, water, incoming transport and actual waste treatment. UNIDO describes alternative chemical finishes; they are excluded by this deliberately narrower admission scope, not assumed absent industry-wide. Sources: unido-woven-bamboo-2008; mlit-bamboo-finishing-2020. | mlit-bamboo-finishing-2020; unido-woven-bamboo-2008 |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_extend | foreground_dataset | The unpackaged gate excludes transport packaging and downstream distribution/use/end-of-life of the basket; it does not exempt inbound packaging waste. Declare capital/tools, maintenance and ancillary coverage. Any actual additional material, fuel, emission, inbound packaging component or transport service requires a separate atomic exchange and compatible evidence before dataset completeness is claimed; do not force it into the bamboo row. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_provider | foreground_dataset | A generic product UUID is not a verified provider. Link whole-basket output only to a provider using the same construction, gate, moisture and net bamboo-element geometric volume, or a measured compatible conversion. Capacity, envelope, skeletal or unknown volume cannot match by UUID alone. |  |\n\n"
@@ -475,11 +487,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5799
+              offset: 6044
               line: 58
               column: 1
             end:
-              offset: 5820
+              offset: 6065
               line: 58
               column: 22
           text: "## 5. System Boundary"
@@ -495,15 +507,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_16003"
+    - unit_id: "normative_17230"
       family: "allocation"
       span:
         start:
-          offset: 16003
+          offset: 17230
           line: 227
           column: 1
         end:
-          offset: 17140
+          offset: 18367
           line: 237
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_cause | foreground_dataset | Avoid allocation by metering work orders/operations. For shared lighting, dampening or equipment, use a documented physical causal driver such as metered machine time or occupied conditioning service, with period totals reconciled. Do not use nominal basket counts across unlike variants or assume mass and volume are interchangeable. This is a foreground collection rule, not an empirical universal allocation coefficient. | ilcd-general-2010 |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_reject | foreground_dataset | No default co-product revenue, substitution credit or negative waste input. Internal reused offcuts retain inherited burdens and are not fresh purchases. External sale as a genuine co-product requires evidence of product quality, function, receiving market and documented subdivision/allocation before the dataset can be complete. Failed baskets/rework remain attached to their originating cohort. | ilcd-general-2010 |\n\n"
@@ -523,11 +535,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 16003
+              offset: 17230
               line: 227
               column: 1
             end:
-              offset: 16043
+              offset: 17270
               line: 227
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -543,18 +555,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_26983"
+    - unit_id: "normative_33975"
       family: "validation"
       span:
         start:
-          offset: 26983
-          line: 276
+          offset: 33975
+          line: 277
           column: 1
         end:
-          offset: 28695
-          line: 290
+          offset: 36038
+          line: 291
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_admission | foreground_dataset | Reject application when actual basket construction, supplier treatment, handleless integral rim or uncoated all-bamboo BOM is unverified or incompatible. A source showing rattan binding, lacquer, glue or hardware cannot validate this route. Sources: mlit-bamboo-finishing-2020; unido-woven-bamboo-2008. | mlit-bamboo-finishing-2020; unido-woven-bamboo-2008 |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_quantity | foreground_dataset | Require Q_V > 0, unique first-acceptance records, complete-element geometric volume and bounded uncertainty. Reject capacity/envelope/skeletal proxies, projected chords, nominal uniform strips without evidence, duplicated components, projected-crossing subtraction and mass-only disassembly recovery. Immersion of porous bamboo without validated absorption, air and swelling control is not an automatic alternative. ISO 22157 culm-specimen testing is not claimed as basket testing. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_accounting | foreground_dataset | Require every final inventory basis and linked protocol aggregation to use the same reference flow. Check material, water and burden ledgers separately, opening FG exclusion, new closing FG inclusion once, inherited WIP/raw vectors and original denominators for old services. Unresolved geometry, missing inherited vectors, Q_V = 0 or incompatible providers makes the affected dataset incomplete. A declared-basis checker cannot establish scientific approval or a measured factory result. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_admission | foreground_dataset | Reject application when actual basket construction, supplier treatment, handleless integral rim or uncoated all-bamboo BOM is unverified or incompatible. A source showing rattan binding, lacquer, glue or hardware cannot validate this route. Sources: mlit-bamboo-finishing-2020; unido-woven-bamboo-2008. | mlit-bamboo-finishing-2020; unido-woven-bamboo-2008 |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_quantity | foreground_dataset | Require Q_V > 0, unique first-acceptance records, complete-element geometric volume and bounded uncertainty. Reject capacity/envelope/skeletal proxies, projected chords, nominal uniform strips without evidence, duplicated components, projected-crossing subtraction and mass-only disassembly recovery. Immersion of porous bamboo without validated absorption, air and swelling control is not an automatic alternative. ISO 22157 culm-specimen testing is not claimed as basket testing. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_accounting | foreground_dataset | Require every final inventory basis and linked aggregation to match the original-cohort reference flow. Verify locked unique acceptance Q_V and complete same-basis D_new + FG_new + Other_new, including net returns, losses, discards, downgrades and closing WIP; reject unconditional dispatch-plus-FG, reacceptance adding Q_V, loss shrinking it or one body counted as both FG and WIP. Check actual material/water ledgers independently with internal transfers cancelled and acceptance not added to dispatch/closing FG. Retain opening FG, inherited raw/WIP vectors, failed/rework activity and old-cohort services under original volumes. Unresolved geometry/basis conversion, missing history/vectors, Q_V=0 or incompatible providers makes the affected dataset incomplete. A declared-basis check is not scientific approval or factory measurement. | |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -571,12 +583,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 26983
-              line: 276
+              offset: 33975
+              line: 277
               column: 1
             end:
-              offset: 27005
-              line: 276
+              offset: 33997
+              line: 277
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -595,155 +607,155 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_5799"
+      unit_id: "normative_6044"
       source_span:
         start:
-          offset: 6877
+          offset: 7122
           line: 73
           column: 1
         end:
-          offset: 7368
+          offset: 7613
           line: 73
           column: 492
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_extend"
       identity_kind: "explicit"
-      unit_id: "normative_5799"
+      unit_id: "normative_6044"
       source_span:
         start:
-          offset: 7441
+          offset: 7686
           line: 77
           column: 1
         end:
-          offset: 7931
+          offset: 8176
           line: 77
           column: 491
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_provider"
       identity_kind: "explicit"
-      unit_id: "normative_5799"
+      unit_id: "normative_6044"
       source_span:
         start:
-          offset: 8004
+          offset: 8249
           line: 81
           column: 1
         end:
-          offset: 8343
+          offset: 8588
           line: 81
           column: 340
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_cause"
       identity_kind: "explicit"
-      unit_id: "normative_16003"
+      unit_id: "normative_17230"
       source_span:
         start:
-          offset: 16116
+          offset: 17343
           line: 231
           column: 1
         end:
-          offset: 16603
+          offset: 17830
           line: 231
           column: 488
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_reject"
       identity_kind: "explicit"
-      unit_id: "normative_16003"
+      unit_id: "normative_17230"
       source_span:
         start:
-          offset: 16676
+          offset: 17903
           line: 235
           column: 1
         end:
-          offset: 17138
+          offset: 18365
           line: 235
           column: 463
     - pointer: "/validation_rules/0"
       rule_id: "validate_admission"
       identity_kind: "explicit"
-      unit_id: "normative_26983"
+      unit_id: "normative_33975"
       source_span:
         start:
-          offset: 27078
-          line: 280
+          offset: 34070
+          line: 281
           column: 1
         end:
-          offset: 27480
-          line: 280
+          offset: 34472
+          line: 281
           column: 403
     - pointer: "/validation_rules/1"
       rule_id: "validate_quantity"
       identity_kind: "explicit"
-      unit_id: "normative_26983"
+      unit_id: "normative_33975"
       source_span:
         start:
-          offset: 27553
-          line: 284
+          offset: 34545
+          line: 285
           column: 1
         end:
-          offset: 28082
-          line: 284
+          offset: 35074
+          line: 285
           column: 530
     - pointer: "/validation_rules/2"
       rule_id: "validate_accounting"
       identity_kind: "explicit"
-      unit_id: "normative_26983"
+      unit_id: "normative_33975"
       source_span:
         start:
-          offset: 28155
-          line: 288
+          offset: 35147
+          line: 289
           column: 1
         end:
-          offset: 28693
-          line: 288
-          column: 539
+          offset: 36036
+          line: 289
+          column: 890
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5799"
+      unit_id: "normative_6044"
       source_span:
         start:
-          offset: 5799
+          offset: 6044
           line: 58
           column: 1
         end:
-          offset: 5820
+          offset: 6065
           line: 58
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5799"
+      unit_id: "normative_6044"
       source_span:
         start:
-          offset: 5848
+          offset: 6093
           line: 62
           column: 1
         end:
-          offset: 6804
+          offset: 7049
           line: 69
           column: 153
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_16003"
+      unit_id: "normative_17230"
       source_span:
         start:
-          offset: 16003
+          offset: 17230
           line: 227
           column: 1
         end:
-          offset: 16043
+          offset: 17270
           line: 227
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_26983"
+      unit_id: "normative_33975"
       source_span:
         start:
-          offset: 26983
-          line: 276
+          offset: 33975
+          line: 277
           column: 1
         end:
-          offset: 27005
-          line: 276
+          offset: 33997
+          line: 277
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -752,5 +764,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:76d8c2887d8457ba0f543f48a04fa09499b9638a12a8b248e3d071530795f6a4"
-  generated_content_sha256: "sha256:ce0ee2cdcd416303033af35515fd9cb0b238b514c69d94410f98bde9c2877d97"
+    sha256: "sha256:62968ac9169634d8e9ac20705506240452026289fad4fda1bbd85ce621475005"
+  generated_content_sha256: "sha256:59b5d24d6fe9e0a41bed6f51afd18d304588e061fa0ec572e2b8040422e234ac"
