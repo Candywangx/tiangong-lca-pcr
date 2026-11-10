@@ -3,7 +3,7 @@ generated_from: markdown
 source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.five-layer-birch-faced-softwood-lumber-core-blockboard"
-  classification_refs: "CPC 3.0 31423; narrower product subset; 3142 residual solid-strip construction, not solely-sheet 31413. The official 31423 title and its explanatory plywood-sheet wording conflict; this rule does not assert an official correction or complete leaf coverage."
+  classification_refs: "CPC 3.0 31423 retained as a candidate narrower coverage association; mapping_acceptance = held_pending_classification_review under docs/adr/2026-11-10-hold-blockboard-cpc-associations.md. The 2026-11-06 batch-03 acceptance is historical and does not establish current positive mapping. Official 31413 notes include blockboard and central cores made from different materials, while 31423 also has crossed-veneer conditions; a solid-strip core cannot alone exclude 31413 or decide 31423. No replacement classification or whole-leaf coverage is asserted."
   covered_products: "Uncoated five-layer birch-faced pine/spruce strip-core blockboard with PVAc core joints and UF skin joints; both faces and crossbands botanically verified temperate Betula pendula/pubescens."
   excluded_products: "All-veneer plywood; coniferous or tropical faces; MDF/particle cores; two cores; three layers; overlays; structural or densified products; green-input/onsite-boiler routes."
   representative_product: "Net accepted sanded non-structural five-layer unfinished panel for subsequent furniture/joinery use; dimensions, adhesive recipe and performance are actual lot descriptors, not fixed defaults."
@@ -76,7 +76,7 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Reference output is 1 kg. Define Q as net accepted panel mass for the same completion cohort from cp_accept; every period exchange q is converted by normalize_reference: q_ref = q / Q. Q must be positive and measured; zero or missing Q leaves absolute amounts unnormalized and validation inconclusive."
+    rule: "Reference output is 1 kg. Q is the sum of independently weighed unique first-acceptance event net whole-panel masses for cohort c at the declared gate, locked at measured acceptance moisture/composition and excluding packaging, cp_accept. Reconcile Q = D_new + FG_new + L_new under unique_acceptance; only evidenced zero other destinations permit the two-term bridge. Returns, loss, downgrade, scrap and returned WIP never reduce original Q; old opening FG, purchased finished panels, dispatch, retests and reacceptance do not create Q. Every attributable exchange q is converted once by normalize_reference: q_ref = q / Q. Q must be positive and measured; zero/missing Q preserves absolute records and an inconclusive result. Do not replace whole-panel Q by oven-dry wood, glue solids or dispatch mass."
   - id: moisture_basis
     applies_to: "unbonded timber and veneers"
     required_property_ref:
@@ -321,7 +321,7 @@ process_inventory:
           flow_ref:
             uuid: "53392205-1fb0-44c6-a275-cd064bf6d54a"
           property_unit: "Mass / kg"
-          description: "Output is 1 kg net accepted unfinished panel; normalize by normalize_reference. Q counts unique first acceptance, including newly accepted closing finished goods, and excludes wrapping."
+          description: "Output is 1 kg net accepted unfinished panel; normalize by normalize_reference. Q locks unique first-acceptance events and reconciles all disjoint net destinations under unique_acceptance, including post-acceptance loss and closing returned WIP; wrapping is excluded. The normalized 1 kg is a reference coordinate, not an extra physical output or shipment. Reacceptance of returned panels retains original event/cohort Q."
           amount:
             expression: "1 kg"
             value_mode: "foreground_record"
@@ -360,7 +360,7 @@ process_inventory:
           name: "UF/PVAc-bonded birch-faced blockboard trimming waste"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Weigh bonded trim independently from clean shavings; record birch, core wood, cured adhesive and moisture constituents and verified treatment route."
+          description: "Weigh bonded trim independently from clean shavings; record birch, core wood, cured adhesive and moisture constituents and verified treatment route. Separate pre-acceptance rejects from post-acceptance scrap using original event/cohort links; the latter enters L_new on the original acceptance basis without reducing Q. Preserve actual measured waste mass/state and associated treatment and failed-rework burdens in their own original-cohort ledgers."
           amount:
             expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
             value_mode: "foreground_record"
@@ -582,7 +582,7 @@ allocation_rules:
       - corrim-western-plywood-2025
   - rule_id: a_ledgers
     applies_to: "all mass, species and burden accounts"
-    rule: "Physical conservation and environmental burden partition are different ledgers. Never multiply panel, water, adhesive or waste physical masses by burden shares. Internal rework retains all earlier material and service burdens, adds actual new service only, and cannot generate extra first-acceptance output."
+    rule: "Physical conservation and environmental burden partition are different ledgers. Never multiply panel, water, adhesive or waste physical masses by burden shares. Internal rework retains all earlier material and performed service burdens, adds actual new service only, and cannot generate extra first-acceptance output. Post-acceptance loss, scrap, downgrade or return to WIP cannot reverse Q; failed rework and later services remain attributable to the original cohort and its original Q, not current output or remaining stock."
     source_ids:
       - ilcd-handbook-2010
 dataset_production:
@@ -591,14 +591,14 @@ dataset_production:
       process_id: "birch_blockboard_manufacture"
       flow_role: "panel and cohort stocks"
       record_type: "foreground_record"
-      raw_fields: "panel ID; lot; first acceptance ID/time; net mass; package tare; construction/species; grade; moisture method; new accepted dispatch D; new accepted closing FG F; opening accepted FG; returns/retests/reacceptance; raw/WIP/FG location; original accepted cohort mass"
-      collection_method: "Calibrated net weighing after conditioning and grade/bond acceptance; reconcile unique IDs to dispatch and storage, separating newly accepted from previously accepted stock"
+      raw_fields: "panel/parcel ID; lot; first acceptance ID/time/gate; independently measured locked net mass and whole-panel acceptance moisture/composition; package tare; construction/species/grade; disjoint D_new/FG_new/L_new records; gross dispatch and linked returns; closing accepted FG; post-acceptance loss/use/downgrade/scrap; closing return-to-WIP; rework/retest/reacceptance links; old opening FG and purchased finished-panel receipts; original Q0/cohort; actual later masses and measured basis changes; raw/WIP/FG physical location"
+      collection_method: "Calibrated net weighing after conditioning and grade/bond acceptance, independent of sales/dispatch. Deduplicate original event/parcel IDs and reconcile the full unique_acceptance bridge with signed net destinations. Record actual later composition/moisture separately and convert to original acceptance equivalents only from measured matched parcel/component histories; coordinate cp_wood/cp_glue/cp_water/cp_residue/cp_emission. Missing event, net-return, destination or conversion evidence remains unresolved, not a balancing loss estimate"
       unit: "kg"
-      frequency: "Each accepted panel/lot and stock boundary"
+      frequency: "Each acceptance, custody/stock change and linked later service"
       temporal_coverage: "Completion period plus original stock/cohort periods"
       site_scope: "One factory and exact route/configuration"
-      aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Weighing calibration, acceptance tests, species records and ID deduplication"
+      aggregation_rule: "per 1 kg reference flow using locked Q"
+      quality_evidence: "Calibration, acceptance/parcel deduplication, net-return/destination evidence, measured basis conversion and original Q0/service history"
     - protocol_id: cp_wood
       process_id: "birch_blockboard_manufacture"
       flow_role: "core_timber; face_birch; cross_birch"
@@ -651,8 +651,8 @@ dataset_production:
       process_id: "birch_blockboard_manufacture"
       flow_role: "clean_shavings; bonded_trim; sanding_dust"
       record_type: "foreground_record"
-      raw_fields: "stage; wet mass; species; adhesive state; water/dry constituents; captured dust; internal transfers; opening/closing bin stocks; recipient/treatment; original burden history"
-      collection_method: "Separate and weigh unglued shavings, bonded trim and collected sanding dust; determine matrix-specific water and dry constituents; reconcile internal rework and offsite manifests"
+      raw_fields: "stage; wet mass; species; adhesive state; water/dry constituents; captured dust; internal transfers; opening/closing bin stocks; recipient/treatment; original cohort/first acceptance ID; pre-acceptance reject versus post-acceptance scrap/loss; actual state and original-acceptance-basis equivalent; original burden history"
+      collection_method: "Separate and weigh unglued shavings, bonded trim and collected sanding dust; determine matrix-specific water and dry constituents; reconcile internal rework and offsite manifests. Reconcile post-acceptance scrap once to cp_accept L_new, retaining actual wet/dry/component waste quantities separately; neither disposal nor failed rework cancels original Q or performed burdens"
       unit: "kg"
       frequency: "Each removal/return plus boundary stocks"
       temporal_coverage: "Same completion lots and carryover"
@@ -686,17 +686,21 @@ dataset_production:
   calculation_rules:
     - id: unique_acceptance
       applies_to: "panel"
-      rule: "Q = D + F, counting each newly accepted panel once at first acceptance; D is newly accepted dispatched mass and F is newly accepted closing finished-goods mass. Previously accepted opening FG, its dispatch, returns, retests, reacceptance and rejected/unaccepted WIP do not enter Q. D and F must be disjoint sets of unique first-acceptance IDs; a dispatch followed by return cannot count in both. A return does not create a new acceptance. Retain the original net accepted mass on that ID. Reconcile to unique net weighed first-acceptance IDs, not sales or all warehouse movements."
+      rule: "Q = sum of independently measured unique first-acceptance event net masses, locked at the declared gate on each original whole-panel moisture/composition basis. The complete bridge is Q = D_new + FG_new + L_new, using mutually exclusive signed net parcel/custody/destination records on that same basis and zero opening stock of this newly first-accepted cohort. D_new is net accepted dispatch after linked returns; FG_new is closing accepted FG; L_new is every other post-acceptance net destination, including actual loss/use/downgrade/scrap/waste and closing return to rework/WIP. Only if all other destinations are evidenced zero may Q = D_new + FG_new be used. A 100 kg acceptance = 60 kg net dispatch + 30 kg closing FG + 10 kg post-acceptance loss; Q stays 100 kg, not 90 kg. Internal gross loops and retest/reacceptance are not extra destinations or events; after reacceptance transfer a parcel once from closing WIP to FG/net dispatch without another Q. Old opening FG and purchased finished panels are separate original cohorts/receipts and do not enter new Q. Reconcile later moisture, PVAc/UF cure/volatiles, additions of glue/water, trimming and material state from actual matched parcel/component histories; original-acceptance equivalents do not include newly added material and are not physical mass replacements or an assumption of species conservation. Composite oven loss and generic wood/glue-solids factors do not establish the conversion. Unknown basis changes or unexplained destination residuals remain unresolved; never invent loss, reset Q or use sales/warehouse movements as event evidence. Preserve Q even if the whole accepted cohort is later lost."
       inputs:
-        - D
-        - F
         - cp_accept
-      output: "Q in kg"
+        - cp_wood
+        - cp_glue
+        - cp_water
+        - cp_residue
+        - cp_emission
+        - "event/parcel and net destination histories"
+      output: "Locked Q in kg and separate actual physical ledgers"
       source_ids:
         - ilcd-handbook-2010
     - id: normalize_reference
       applies_to: "every current-cohort exchange"
-      rule: "q_ref = q / Q; q is the actual exchange amount attributed to the same completed accepted cohort after stock and service reconciliation. Q is measured by cp_accept; Q > 0 is required. Retain kg/kg or MJ/kg as applicable; missing/zero Q leaves q absolute and result inconclusive."
+      rule: "q_ref = q / Q; q is the actual exchange amount attributed to the same completed accepted cohort after stock and service reconciliation. Q is independently measured and locked by cp_accept under unique_acceptance, not reconstructed from dispatch and remaining stock; Q > 0 is required. Include attributable failed/zero-output, idle/startup, cleanup, loss-related and rework services, retaining prior burdens once. Later accepted-cohort service uses original Q under old_cohort_service; missing attribution remains unresolved. Retain kg/kg or MJ/kg as applicable; missing/zero Q leaves q absolute and result inconclusive."
       inputs:
         - q
         - Q
@@ -707,7 +711,7 @@ dataset_production:
         - ilcd-handbook-2010
     - id: old_cohort_service
       applies_to: "later services on previously accepted FG"
-      rule: "s_ref,c = s_c / Q_c_original; s_c is measured later service assigned only to original accepted cohort c. Preserve the original accepted mass Q_c_original and earlier burdens even if only some stock is dispatched now. Never divide by current Q, remaining stock or dispatch mass. If original Q is missing/zero, retain unnormalized service and block completeness."
+      rule: "s_ref,c = s_c / Q_c_original; s_c is measured later service assigned only to original accepted cohort c. Q0 = Q_c_original is the locked original first-acceptance event sum. Preserve it and all earlier burdens even after loss, scrap, downgrade, return to WIP, unsuccessful rework or when only some stock is dispatched now. Attach all actual later material/energy/packaging/waste/emission services to that original cohort once, retaining failed services rather than cancelling them on return or failure. Never divide by current Q, remaining stock or dispatch mass. If original Q is missing/zero, retain unnormalized service and block completeness."
       inputs:
         - s_c
         - Q_c_original
@@ -719,7 +723,7 @@ dataset_production:
         - ilcd-handbook-2010
     - id: stock_conservation
       applies_to: "each stage and factory boundary"
-      rule: "Opening physical mass + external receipts + internal receipts = external outputs + internal transfers + closing mass, with all outputs including panel, residues and emissions. Internal transfers cancel once on factory aggregation. Maintain dry wood by species, adhesive constituents, H2O, fossil/biogenic C and measured uncertainty; internal reactions conserve total mass/elements, not necessarily individual species. Never force an unknown residual into emissions."
+      rule: "Opening physical mass + external receipts + internal receipts = external outputs + internal transfers + closing mass, with all outputs including panel, residues and emissions. At the manufacturing gate, actual newly accepted output is outside that gate and cannot also be inside closing stock. For an extended boundary containing FG, count opening FG, purchased finished-panel receipts, actual net dispatch/transfers, losses and closing stock; acceptance is an internal state event and cannot be an extra external output. Returned WIP keeps its original acceptance link. Internal transfers cancel once on factory aggregation. Keep measured physical masses at actual wet/dry/component states separate from original-acceptance equivalents. Maintain dry wood by species, adhesive constituents, H2O, fossil/biogenic C and measured uncertainty; internal reactions conserve total mass/elements, not necessarily individual species. Never force an unknown residual into emissions."
       inputs:
         - cp_wood
         - cp_glue
@@ -745,7 +749,7 @@ dataset_production:
         - usda-wood-handbook-2021
     - id: inherited_vectors
       applies_to: "raw/WIP/FG and services"
-      rule: "B_open + B_receipts + B_current_services = B_transferred + B_exported + B_close separately for each original material/service component. Carry prior embodied burdens through WIP and FG; add actual current services only once. Distinguish sold old FG from newly accepted current FG; unaccepted closing WIP retains its burdens instead of loading all current expense into Q."
+      rule: "B_open + B_receipts + B_current_services = B_transferred + B_exported + B_close separately for each original material/service component. Carry prior embodied burdens through WIP and FG; add actual current services only once. Distinguish sold old FG from newly accepted current FG; unaccepted closing WIP retains its burdens instead of loading all current expense into Q. Carry-forward to a future first-acceptance denominator applies only to unaccepted material; accepted panels returned to WIP retain original Q0 and already performed burdens, and add later services under old_cohort_service."
       inputs:
         - "All protocols"
         - "stage/cohort transfer records"
@@ -768,7 +772,7 @@ dataset_production:
       evidence: "cp_wood; cp_glue; cp_accept; jrc-european-birch-2016; paged-blockboard-2026"
     - id: dq_coverage
       applies_to: "quantities and period"
-      requirement: "Use a declared contiguous period representative of the actual route with beginning/end stocks and linked older cohorts; justify coverage and uncertainty rather than impose an invented year/volume threshold. Missing data, zero, non-detect and evidence-backed not-applicable states remain distinct."
+      requirement: "Use a declared contiguous period representative of the actual route with beginning/end stocks and linked older cohorts; justify coverage and uncertainty rather than impose an invented year/volume threshold. Missing data, zero, non-detect and evidence-backed not-applicable states remain distinct. Event Q, complete same-acceptance-basis destinations and original Q0/service attribution require independent evidence; a physical balance alone proves none of them."
       evidence: "Every protocol and primary source records"
     - id: dq_chemistry
       applies_to: "physical/species checks"
@@ -787,7 +791,7 @@ validation_rules:
       - jrc-european-birch-2016
   - rule_id: v_basis
     applies_to: "all exchanges"
-    rule: "Require measured unique-first-acceptance Q and consistent q/Q for the current cohort; check old-service/Q_c_original separately. Q=0, unknown Q or unknown original Q gives unnormalized records and inconclusive completeness, never zero impacts. Opening accepted FG, returns and retests must not increase Q."
+    rule: "Require measured unique-first-acceptance Q and consistent q/Q for the current cohort; check old-service/Q_c_original separately. Q=0, unknown Q or unknown original Q gives unnormalized records and inconclusive completeness, never zero impacts. Verify the full disjoint same-basis Q = D_new + FG_new + L_new bridge, net linked returns and all post-acceptance loss/scrap/downgrade/closing WIP; two terms require evidenced zero other destinations. Old opening FG, purchased finished panels, returns, dispatch, retests and reacceptance must not increase Q or reduce locked Q0. Reject unsupported moisture/composition conversion or unexplained residual; preserve failed rework/later service burdens against original Q0. Keep event equivalents separate from actual physical/component inventories."
     source_ids:
       - ilcd-handbook-2010
   - rule_id: v_balance
@@ -813,7 +817,7 @@ published_dataset_profile:
   allowed_use: "Assemble an explicitly scoped supplier-compatible cradle-to-gate model using matched upstream material/energy and treatment datasets; downstream furniture/joinery models retain this gate/state."
   excluded_use: "Whole-leaf classification coverage, conifer/tropical-faced or all-veneer substitution, structural claims, use-phase/chamber emissions, whole-life comparisons and universal density/recipe/factor defaults."
   required_metadata: "All reference qualifiers; stage/cohort/stock lineage; native flow/property/unit and provider identities; method boundary; actual test/measurement evidence; allocation and normalization equations; missing terms."
-  required_quality_disclosure: "Foreground-only versus assembled boundary; unknown reference/other UUIDs or providers; actual coverage/uncertainty/detection limits; botanical/chemistry gaps; scientific and translation review status."
+  required_quality_disclosure: "Foreground-only versus assembled boundary; unknown reference/other UUIDs or providers; actual coverage/uncertainty/detection limits; botanical/chemistry gaps; scientific and translation review status; held_pending_classification_review candidate association and decision ADR; original event Q/Q0, measured acceptance basis and complete net-destination residuals."
   update_trigger: "Changes in botanical supply, core/ply geometry, supplied adhesive formulation, voltage/heat source, measurement/stock/cohort basis, waste destination, native identity or new relevant evidence."
 data_sources:
   - id: "paged-blockboard-2026"
@@ -851,21 +855,25 @@ data_sources:
   - id: "un-cpc-3-2025"
     type: "official_guidance"
     reference: "United Nations Statistics Division, CPC Version3.0, 30June2025 explanatory notes and current subclass31423/parent3142; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/31423"
-    used_for: "Classification title and contradictory solely-veneer explanatory wording; preserves bounded classification uncertainty, no official correction inferred."
+    used_for: "The 31423 title and crossed-veneer conditions are considered alongside 31413 blockboard/core notes; they do not independently decide this solid-strip-core construction. No official correction or current mapping acceptance inferred."
+  - id: "un-cpc-31413-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version3.0 subclass31413, hierarchy and explanatory notes; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/31413"
+    used_for: "Contrary evidence: notes include blockboard and allow a central core of veneer or another material despite the solely-sheets hierarchy/title. A solid-strip core does not automatically exclude 31413; no reassignment or authoritative ruling inferred."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:92da9f51975cfff3748fb701fc44fff6b4a58380f252baacd8fff8c2a5a55218"
+  source_sha256: "sha256:e07ea3b265681c51c0415328bf0e7f08379eb785d530b07b9003da3cbae91346"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7417"
+    - unit_id: "normative_8565"
       family: "system_boundary"
       span:
         start:
-          offset: 7417
+          offset: 8565
           line: 58
           column: 1
         end:
-          offset: 9859
+          offset: 11007
           line: 77
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased kiln-dried untreated pine/spruce timber and dried unbonded birch veneer delivered at factory receiving; upstream forestry, sawing and drying belong to compatible upstream datasets. |\n| starting_condition_role | Foreground gate-to-gate dry-input manufacturing boundary; upstream burdens retained for cradle-to-gate assembly. |\n| product_classification_scope | Only the described five-layer birch-faced solid-strip product; classification does not choose a material or provider. |\n| recursive_input_rule | A purchased same-category panel enters once with its upstream dataset and original burden vector; it does not become new raw wood or increase first-acceptance Q through reacceptance. Base dry-input route excludes purchased-panel manufacture; a rework extension must retain its history and be disclosed. |\n| upstream_dataset_requirement | Match actual species, moisture, treatment, transport interface, adhesive supplied state, voltage and net-heat basis; unavailable matches remain explicit. |\n| disclosure | Declare all receipts/stocks/WIP/finished goods, utilities, adhesive route, packaging, emissions, residues and offsite treatment. Foreground-only data cannot represent forestry or full cradle-to-grave performance. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_operations | birch_blockboard_manufacture | Include machining/core glue, four-veneer layup and pressing, conditioning, trimming/sanding, extraction, washing, acceptance and actual packaging. Include idle/startup losses attributable to the cohort; do not infer a boiler from purchased heat. | unido-panel-adhesives-1977; epa-plywood-2002 |\n| b_stock | raw materials, WIP and accepted finished goods | Retain separate opening/receipt/consumption/transfer/closing mass, composition and inherited material/service burden vectors. Cancel internal transfers only at the aggregated factory boundary; no disappearance of pre-period burdens or duplicate upstream drying. | ilcd-handbook-2010 |\n| b_interfaces | supplier and treatment interfaces | Connect upstream provision and outbound waste treatment once at the declared interfaces. Do not treat captured dust or offsite wastewater as direct environmental releases; no default avoided-energy, recycling or carbon-storage credit. | ilcd-handbook-2010; epa-plywood-2002 |\n\n"
@@ -885,11 +893,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7417
+              offset: 8565
               line: 58
               column: 1
             end:
-              offset: 7438
+              offset: 8586
               line: 58
               column: 22
           text: "## 5. System Boundary"
@@ -905,18 +913,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_28652"
+    - unit_id: "normative_30338"
       family: "allocation"
       span:
         start:
-          offset: 28652
+          offset: 30338
           line: 448
           column: 1
         end:
-          offset: 30080
+          offset: 31985
           line: 456
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_single_product | scoped route | The base process has one accepted panel output and exported wastes. Assign its production burdens and required waste treatment to that panel cohort. Waste sale price alone does not prove a co-product. Retain physical residue masses unallocated and apply no avoided-product credit. | ilcd-handbook-2010 |\n| a_multifunction | genuinely joint production | First subdivide by measured stage/circuit/lot records and isolate panel-specific adhesives and packaging. If a saleable residue is an actual co-product, add its correct product identity, output amount, function and provider/market evidence, then justify causal allocation for only inseparable shared burdens; disclose alternatives and sensitivity. A regional softwood-plywood mass allocation is contextual evidence, not a mandatory rule for this purchased-dry-input hardwood-faced route. | ilcd-handbook-2010; corrim-western-plywood-2025 |\n| a_ledgers | all mass, species and burden accounts | Physical conservation and environmental burden partition are different ledgers. Never multiply panel, water, adhesive or waste physical masses by burden shares. Internal rework retains all earlier material and service burdens, adds actual new service only, and cannot generate extra first-acceptance output. | ilcd-handbook-2010 |\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_single_product | scoped route | The base process has one accepted panel output and exported wastes. Assign its production burdens and required waste treatment to that panel cohort. Waste sale price alone does not prove a co-product. Retain physical residue masses unallocated and apply no avoided-product credit. | ilcd-handbook-2010 |\n| a_multifunction | genuinely joint production | First subdivide by measured stage/circuit/lot records and isolate panel-specific adhesives and packaging. If a saleable residue is an actual co-product, add its correct product identity, output amount, function and provider/market evidence, then justify causal allocation for only inseparable shared burdens; disclose alternatives and sensitivity. A regional softwood-plywood mass allocation is contextual evidence, not a mandatory rule for this purchased-dry-input hardwood-faced route. | ilcd-handbook-2010; corrim-western-plywood-2025 |\n| a_ledgers | all mass, species and burden accounts | Physical conservation and environmental burden partition are different ledgers. Never multiply panel, water, adhesive or waste physical masses by burden shares. Internal rework retains all earlier material and performed service burdens, adds actual new service only, and cannot generate extra first-acceptance output. Post-acceptance loss, scrap, downgrade or return to WIP cannot reverse Q; failed rework and later services remain attributable to the original cohort and its original Q, not current output or remaining stock. | ilcd-handbook-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -933,11 +941,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 28652
+              offset: 30338
               line: 448
               column: 1
             end:
-              offset: 28692
+              offset: 30378
               line: 448
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -953,18 +961,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42672"
+    - unit_id: "normative_48402"
       family: "validation"
       span:
         start:
-          offset: 42672
+          offset: 48402
           line: 494
           column: 1
         end:
-          offset: 44564
+          offset: 50779
           line: 504
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | target product | Reject incompatible layer count, core, veneer species, tropical/unknown faces, adhesive formulation route or heat boundary; require all reference qualifiers. A manufacturer's generic birch variant is insufficient proof of botanical lot identity. | paged-blockboard-2026; jrc-european-birch-2016 |\n| v_basis | all exchanges | Require measured unique-first-acceptance Q and consistent q/Q for the current cohort; check old-service/Q_c_original separately. Q=0, unknown Q or unknown original Q gives unnormalized records and inconclusive completeness, never zero impacts. Opening accepted FG, returns and retests must not increase Q. | ilcd-handbook-2010 |\n| v_balance | mass, water and burdens | Check physical total/elemental and species balances separately, including raw/WIP/FG and inherited service vectors. Account for actual cure G/C and measurement uncertainty; do not repair missing chemistry by guessed water emissions or erase prior-period burdens. | usda-wood-handbook-2021; unido-panel-adhesives-1977 |\n| v_inventory | each native exchange | Require one atomic exchange per card; check actual Product/Waste/Elementary type, native reference property and complete unit-group conversion, supplier state and environmental compartment. Resolve missing reference/other UUIDs and providers before operational dataset use; report checks performed, skipped and unresolved separately. | ilcd-handbook-2010 |\n| v_release_scope | interpretation | Factory process data and foreground check results do not establish scientific approval, structural compliance, an EPD, acceptable indoor-air performance or whole-life environmental superiority. No independent review or publication status is implied by a projection/check pass. | paged-blockboard-2026; epa-plywood-2002 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | target product | Reject incompatible layer count, core, veneer species, tropical/unknown faces, adhesive formulation route or heat boundary; require all reference qualifiers. A manufacturer's generic birch variant is insufficient proof of botanical lot identity. | paged-blockboard-2026; jrc-european-birch-2016 |\n| v_basis | all exchanges | Require measured unique-first-acceptance Q and consistent q/Q for the current cohort; check old-service/Q_c_original separately. Q=0, unknown Q or unknown original Q gives unnormalized records and inconclusive completeness, never zero impacts. Verify the full disjoint same-basis Q = D_new + FG_new + L_new bridge, net linked returns and all post-acceptance loss/scrap/downgrade/closing WIP; two terms require evidenced zero other destinations. Old opening FG, purchased finished panels, returns, dispatch, retests and reacceptance must not increase Q or reduce locked Q0. Reject unsupported moisture/composition conversion or unexplained residual; preserve failed rework/later service burdens against original Q0. Keep event equivalents separate from actual physical/component inventories. | ilcd-handbook-2010 |\n| v_balance | mass, water and burdens | Check physical total/elemental and species balances separately, including raw/WIP/FG and inherited service vectors. Account for actual cure G/C and measurement uncertainty; do not repair missing chemistry by guessed water emissions or erase prior-period burdens. | usda-wood-handbook-2021; unido-panel-adhesives-1977 |\n| v_inventory | each native exchange | Require one atomic exchange per card; check actual Product/Waste/Elementary type, native reference property and complete unit-group conversion, supplier state and environmental compartment. Resolve missing reference/other UUIDs and providers before operational dataset use; report checks performed, skipped and unresolved separately. | ilcd-handbook-2010 |\n| v_release_scope | interpretation | Factory process data and foreground check results do not establish scientific approval, structural compliance, an EPD, acceptable indoor-air performance or whole-life environmental superiority. No independent review or publication status is implied by a projection/check pass. | paged-blockboard-2026; epa-plywood-2002 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -981,11 +989,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42672
+              offset: 48402
               line: 494
               column: 1
             end:
-              offset: 42694
+              offset: 48424
               line: 494
               column: 23
           text: "## 9. Validation Rules"
@@ -1005,193 +1013,193 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "b_operations"
       identity_kind: "explicit"
-      unit_id: "normative_7417"
+      unit_id: "normative_8565"
       source_span:
         start:
-          offset: 8840
+          offset: 9988
           line: 73
           column: 1
         end:
-          offset: 9182
+          offset: 10330
           line: 73
           column: 343
     - pointer: "/system_boundary/rules/1"
       rule_id: "b_stock"
       identity_kind: "explicit"
-      unit_id: "normative_7417"
+      unit_id: "normative_8565"
       source_span:
         start:
-          offset: 9183
+          offset: 10331
           line: 74
           column: 1
         end:
-          offset: 9528
+          offset: 10676
           line: 74
           column: 346
     - pointer: "/system_boundary/rules/2"
       rule_id: "b_interfaces"
       identity_kind: "explicit"
-      unit_id: "normative_7417"
+      unit_id: "normative_8565"
       source_span:
         start:
-          offset: 9529
+          offset: 10677
           line: 75
           column: 1
         end:
-          offset: 9857
+          offset: 11005
           line: 75
           column: 329
     - pointer: "/allocation_rules/0"
       rule_id: "a_single_product"
       identity_kind: "explicit"
-      unit_id: "normative_28652"
+      unit_id: "normative_30338"
       source_span:
         start:
-          offset: 28765
+          offset: 30451
           line: 452
           column: 1
         end:
-          offset: 29104
+          offset: 30790
           line: 452
           column: 340
     - pointer: "/allocation_rules/1"
       rule_id: "a_multifunction"
       identity_kind: "explicit"
-      unit_id: "normative_28652"
+      unit_id: "normative_30338"
       source_span:
         start:
-          offset: 29105
+          offset: 30791
           line: 453
           column: 1
         end:
-          offset: 29693
+          offset: 31379
           line: 453
           column: 589
     - pointer: "/allocation_rules/2"
       rule_id: "a_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_28652"
+      unit_id: "normative_30338"
       source_span:
         start:
-          offset: 29694
+          offset: 31380
           line: 454
           column: 1
         end:
-          offset: 30078
+          offset: 31983
           line: 454
-          column: 385
+          column: 604
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_42672"
+      unit_id: "normative_48402"
       source_span:
         start:
-          offset: 42767
+          offset: 48497
           line: 498
           column: 1
         end:
-          offset: 43092
+          offset: 48822
           line: 498
           column: 326
     - pointer: "/validation_rules/1"
       rule_id: "v_basis"
       identity_kind: "explicit"
-      unit_id: "normative_42672"
+      unit_id: "normative_48402"
       source_span:
         start:
-          offset: 43093
+          offset: 48823
           line: 499
           column: 1
         end:
-          offset: 43449
+          offset: 49664
           line: 499
-          column: 357
+          column: 842
     - pointer: "/validation_rules/2"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_42672"
+      unit_id: "normative_48402"
       source_span:
         start:
-          offset: 43450
+          offset: 49665
           line: 500
           column: 1
         end:
-          offset: 43808
+          offset: 50023
           line: 500
           column: 359
     - pointer: "/validation_rules/3"
       rule_id: "v_inventory"
       identity_kind: "explicit"
-      unit_id: "normative_42672"
+      unit_id: "normative_48402"
       source_span:
         start:
-          offset: 43809
+          offset: 50024
           line: 501
           column: 1
         end:
-          offset: 44204
+          offset: 50419
           line: 501
           column: 396
     - pointer: "/validation_rules/4"
       rule_id: "v_release_scope"
       identity_kind: "explicit"
-      unit_id: "normative_42672"
+      unit_id: "normative_48402"
       source_span:
         start:
-          offset: 44205
+          offset: 50420
           line: 502
           column: 1
         end:
-          offset: 44562
+          offset: 50777
           line: 502
           column: 358
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7417"
+      unit_id: "normative_8565"
       source_span:
         start:
-          offset: 7417
+          offset: 8565
           line: 58
           column: 1
         end:
-          offset: 7438
+          offset: 8586
           line: 58
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7417"
+      unit_id: "normative_8565"
       source_span:
         start:
-          offset: 7466
+          offset: 8614
           line: 62
           column: 1
         end:
-          offset: 8767
+          offset: 9915
           line: 69
           column: 230
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_28652"
+      unit_id: "normative_30338"
       source_span:
         start:
-          offset: 28652
+          offset: 30338
           line: 448
           column: 1
         end:
-          offset: 28692
+          offset: 30378
           line: 448
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42672"
+      unit_id: "normative_48402"
       source_span:
         start:
-          offset: 42672
+          offset: 48402
           line: 494
           column: 1
         end:
-          offset: 42694
+          offset: 48424
           line: 494
           column: 23
 projection_metadata:
@@ -1201,5 +1209,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:92da9f51975cfff3748fb701fc44fff6b4a58380f252baacd8fff8c2a5a55218"
-  generated_content_sha256: "sha256:dcb34fa7bc6b5a5eb7dd2a641da06f839b606c31e32ea1211243d93baf439612"
+    sha256: "sha256:e07ea3b265681c51c0415328bf0e7f08379eb785d530b07b9003da3cbae91346"
+  generated_content_sha256: "sha256:16c78efc6845a455cae5a068e033328a0b5bc8d1a64c310888ba623a44e53883"
