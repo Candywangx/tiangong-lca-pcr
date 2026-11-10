@@ -4,7 +4,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: reviewed
 ---
 
 # 单次投料电热旋转模塑PVC人形玩偶头部制造

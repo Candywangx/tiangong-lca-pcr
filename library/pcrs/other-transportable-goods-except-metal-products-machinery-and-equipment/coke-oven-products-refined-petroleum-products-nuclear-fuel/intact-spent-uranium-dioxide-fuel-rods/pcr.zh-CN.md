@@ -4,7 +4,7 @@ language: zh-CN
 status: candidate
 content_maturity: authored_methodology
 sync_with: pcr.en-US.md
-translation_status: aligned
+translation_status: reviewed
 ---
 
 # 厂内交接的完整单根压水堆二氧化铀乏燃料棒

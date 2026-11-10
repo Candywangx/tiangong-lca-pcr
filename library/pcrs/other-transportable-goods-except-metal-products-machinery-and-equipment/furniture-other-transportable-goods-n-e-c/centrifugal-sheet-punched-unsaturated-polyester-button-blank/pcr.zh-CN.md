@@ -4,7 +4,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: reviewed
 ---
 
 # 离心浇片冲切制造的实体聚酯纽扣坯

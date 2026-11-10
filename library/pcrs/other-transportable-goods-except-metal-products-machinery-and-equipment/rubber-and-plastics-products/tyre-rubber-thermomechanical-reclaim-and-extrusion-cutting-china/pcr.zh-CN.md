@@ -4,7 +4,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: reviewed
 ---
 
 # 中国轮胎橡胶热机械再生、挤出及裁切

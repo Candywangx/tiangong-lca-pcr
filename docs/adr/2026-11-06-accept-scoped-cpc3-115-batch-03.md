@@ -2,14 +2,17 @@
 title: Accept scoped CPC3 remaining-set batch 03
 docType: decision
 scope: repo
-status: accepted
+status: superseded
 authoritative: true
 owner: tiangong-lca-pcr
 language: en
-lastReviewedAt: 2026-11-06
+lastReviewedAt: 2026-11-10
+lastReviewedCommit: e860aa798440a06d2e384cadf48d50cc61aaf7f8
 ---
 
 # Scoped CPC3 remaining-set batch 03
+
+Both mapping acceptances below are historical and were superseded by the owner-directed [2026-11-10 classification hold](2026-11-10-hold-blockboard-cpc-associations.md). The semantic PCRs remain; the current mapping contains neither edge.
 
 Accept the two narrower associations below to independent substantive semantic PCRs in [the frozen115-code scope](../reviews/cpc3-115-20261106/frozen-targets.json). The owner authorized one independent PCR per target, true narrower boundaries, direct isolated sol/high authors without Harness, independent primary-controller acceptance and serial landing after full validation. Existing mapped records remain outside production. The third assigned target32141 retains its unresolved identity hold and receives no edge or completion credit.
 

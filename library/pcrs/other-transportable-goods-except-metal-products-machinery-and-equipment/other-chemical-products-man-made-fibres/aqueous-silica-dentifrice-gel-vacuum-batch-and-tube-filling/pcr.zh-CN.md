@@ -3,8 +3,8 @@ pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipm
 language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
-content_maturity: draft_methodology
-translation_status: aligned
+content_maturity: authored_methodology
+translation_status: reviewed
 ---
 
 # 水性二氧化硅洁牙凝胶真空批式制造与软管灌装

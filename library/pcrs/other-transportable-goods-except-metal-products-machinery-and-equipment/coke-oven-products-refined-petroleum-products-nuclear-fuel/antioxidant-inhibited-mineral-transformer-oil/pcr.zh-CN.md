@@ -4,7 +4,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: reviewed
 ---
 
 # 抗氧剂抑制型矿物变压器油

@@ -2,7 +2,7 @@
 pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.aqueous-caesium-137-calibration-residue
 language: zh-CN
 status: candidate
-translation_status: aligned
+translation_status: reviewed
 sync_with: pcr.en-US.md
 ---
 
@@ -433,7 +433,7 @@ NIST 证明真实铯-137校准溶液形态，并区分认证活度与未认证�
 | calc_material | source_solution, rinse_water, finished, glass_waste, wipe_waste, water_air | 逐材料及相关元素核对期初库存加外部投入与期末库存、外部输出及有证据转化。整液湿质量与不可加的组成分区分开。化学物种可反应，仍须在声明材料基准下核对元素闭合；相关时另列有证据的核嬗变/子核素项，不虚构衰变质量换算。调查余差并保留测量不确定度。 | cp_source; cp_release; cp_streams; cp_container; cp_emissions | 整材料及元素台账 | `nist-cs137-2019`; `iaea-ssg45-2019` |
 | calc_activity | finished, cs_air, cs_water | 按核素另存带实际测量/参考日期的活度台账。仅采用适用证书/合格衰变方法和有支持核数据，在有证据共同日期比较库存/转移活度；保留子核素身份及不确定度。活度减少不是溶液缺失质量。不跨衰变强制活度守恒，不虚构kg转Bq因子。 | cp_source; cp_release; cp_emissions | 带时刻活度对账 | `nist-cs137-2019`; `iaea-ssg45-2019` |
 | calc_outlet | cs_air, cs_water, hcl_air, water_air | 仅在单位和活度日期相容时对匹配浓度与出口量区间积分。记录实际物种/最终介质。容纳/接收者转移与直接排放分开，绝不再计为排放。 | cp_emissions | 物种/介质特定外部负荷 | `iaea-ssg45-2019` |
-| acceptance_event_bridge | all inventory rows | 以原液体湿质量kg锁定独立实测、唯一首次放行Q。同一截点D_new为扣除真实退回后外部净持有的已验收物料，FG_new为场内接收准备完成的已放行成品，L_new涵盖其余全部互斥已验收物料状态：损失、处置/报废、降级、退回待检和已验收WIP/返工。按穷尽份额谱系核对Q = D_new + FG_new + L_new；只有L_new所有子状态均有据为零才可用两项桥。退回份额只定位一次，回WIP再放行不新增Q。期初旧成品和原队列Q另列。实际液体湿质量/元素/物种/核素账及后续交换换算独立保留；事件等效量不是额外实物输出或活度转质量因子。事件、状态或换算证据未决时完整归一化不成立。 | original acceptance events; net parcel-state bridge; original cohort quantities | auditable positive event Q and separate physical stock bridge |  |
+| acceptance_event_bridge | all inventory rows | 以原液体湿质量kg锁定独立实测、唯一首次放行Q。同一截点D_new为扣除真实退回后外部净持有的已验收物料，FG_new为场内接收准备完成的已放行成品，L_new涵盖其余全部互斥已验收物料状态：损失、处置/报废、降级、退回待检和已验收WIP/返工。按穷尽份额谱系核对Q = D_new + FG_new + L_new；只有L_new所有子状态均有据为零才可用两项桥。退回份额只定位一次，回WIP再放行不新增Q。期初旧成品和原队列Q另列。实际液体湿质量/元素/物种/核素账及后续交换换算独立保留；事件等效量不是额外实物输出或活度转质量因子。事件、状态或换算证据未决时完整归一化不成立。 原验收材料组分与实测后加材料分开追溯。不得把存续已验收物料补回原 Q，同时又把同一已损失原水分或其他材料计入 L_new。 | original acceptance events; net parcel-state bridge; original cohort quantities | auditable positive event Q and separate physical stock bridge |  |
 
 ### 数据质量要求
 

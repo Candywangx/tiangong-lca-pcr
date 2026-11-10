@@ -4,7 +4,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: reviewed
 ---
 
 # 工厂装配的可运输木框架整栋建筑

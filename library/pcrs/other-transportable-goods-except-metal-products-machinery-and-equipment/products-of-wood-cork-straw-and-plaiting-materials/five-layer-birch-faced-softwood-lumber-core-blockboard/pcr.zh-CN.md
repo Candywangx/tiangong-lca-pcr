@@ -1,7 +1,7 @@
 ---
 pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.five-layer-birch-faced-softwood-lumber-core-blockboard
 language: zh-CN
-translation_status: aligned
+translation_status: reviewed
 status: candidate
 sync_with: pcr.en-US.md
 ---

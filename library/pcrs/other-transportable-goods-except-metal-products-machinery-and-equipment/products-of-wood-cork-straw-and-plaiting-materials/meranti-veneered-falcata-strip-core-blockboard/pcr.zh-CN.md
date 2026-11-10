@@ -4,7 +4,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: reviewed
 
 ---
 
@@ -18,16 +18,16 @@ CBP 保留样品的说明记载南洋楹边接木条芯、每侧两张柳桉单�
 
 选定前景从外购裸芯及干燥单板开始，覆盖调湿、UF 干树脂/干氯化铵/单独计量水配胶、横带及面板组坯、热压、裁边、砂光、验收及 PE 薄膜包装。UF 是 UNIDO 支持的声明技术选项，不是对 CBP 样品制造商用胶的断言。供应商芯板组装、实际边胶、锯材干燥及单板生产属于上游；完整负荷及材料组成随外购投入传递。本路线使用电网中压交流电和外购净热水供热，不含前景燃料燃烧。不含填料、覆层或涂层；实际新增化学品须先补充独立原子行并审查适用性。来源：`unido-panel-adhesives-1977`、`frihart-wood-joining-2023`。
 
-排除全单板热带胶合板（包括另有映射的 31412 类别）、针叶木外表层条芯板（31421）、非热带阔叶木外表层板（31423）、三层条芯板、含两个实心芯层的五层板、木片条芯板、MDF/刨花/空心芯、竹材、致密木、结构胶合木/LVL、涂饰板、室外/船用性能声明、一体化制芯/湿材干燥及其他表层胶路线。不移植其他路线的收率、胶量、密度、含水率、强度、寿命或排放范围。
+排除全单板热带胶合板、针叶木外表层条芯板、非热带阔叶木外表层板、三层条芯板、含两个实心芯层的五层板、木片条芯板、MDF/刨花/空心芯、竹材、致密木、结构胶合木/LVL、涂饰板、室外/船用性能声明、一体化制芯/湿材干燥及其他表层胶路线。不移植其他路线的收率、胶量、密度、含水率、强度、寿命或排放范围。
 
-CPC 3.0 31422 的关系为针对结构的 narrower。3142 是相对于仅由木片构成的 3141 的其他胶合板/饰面板分支。本结构由一个实心条芯和四张纹理交叉单板组成，且实际外层为热带木材，满足 31422 标题及多于两张单板示例的正向实物条件。但官方说明也在 3141 仅木片分支的 31411/31412/31413 下列入细木工板，此源文张力保留披露。导言的示例性质支持有说明的解释，不是官方勘误或 CPC 裁定。当前已接受分类决定保存在正式映射及独立验收证据中。该限定范围关系不建立整叶覆盖、独立科学批准或发布。来源：`un-cpc-notes-2025`、`un-cpc-explanatory-notes-xlsx-2025`、`un-cpc-introduction`。
+CPC 3.0 31422 关联是候选 narrower 解释，仓库维护者依据 docs/adr/2026-11-10-hold-blockboard-cpc-associations.md 暂缓其接受。实际四张柳桉单板／一个南洋楹实木条芯结构仍为语义产品边界。官方 31412／31413 说明明确包含细木工板并允许中央芯采用其他材料，31422／31423 也描述交叉多单板条件。不能仅凭实木条芯或仅木片分支标题排除 31412 或裁定 31422。原 batch-03 接受为历史记录，当前正向映射中没有该代码的边。制造商结构及原生 UUID 证据不是官方分类裁决。不主张替代分类、整叶覆盖、独立科学批准或发布。来源：`un-cpc-notes-2025`、`un-cpc-explanatory-notes-xlsx-2025`、`un-cpc-introduction`。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.meranti-veneered-falcata-strip-core-blockboard |
-| classification_refs | CPC 3.0 31422；四张柳桉单板/一个实心南洋楹条芯声明结构的 narrower 关系；当前已接受决定在 PCR 外记录 |
+| classification_refs | CPC 3.0 31422；声明四张柳桉单板／一个南洋楹实木条芯产品的候选 narrower 关联；依据 docs/adr/2026-11-10-hold-blockboard-cpc-associations.md 暂缓接受，等待分类裁定 |
 | covered_products | 未涂饰室内五层柳桉面背板及横带、南洋楹条芯板；外购裸芯 UF 胶合路线 |
 | excluded_products | 全单板胶合板及第 1 节排除的其他层/芯结构与路线 |
 | representative_product | 以实测最终含水率表征的未饰面验收柳桉饰面南洋楹条芯板 |
@@ -72,7 +72,7 @@ CPC 3.0 31422 的关系为针对结构的 narrower。3142 是相对于仅由木�
 | --- | --- |
 | declared_starting_condition | 外购干燥、边接、未贴面的南洋楹实心木条裸芯；干燥未胶合柳桉面背及横带单板；供应态 UF 干树脂和干 NH4Cl |
 | starting_condition_role | 前景采购门；上游制芯及实际边胶通过关联投入数据集保留 |
-| product_classification_scope | CPC 3.0 31422 较窄实物子集；不从通用原生流推断分类 |
+| product_classification_scope | 保留实物产品边界；候选31422关联处于维护者要求的暂缓接受状态，不进行已接受的自动分类选择；通用原生流不能裁定分类。 |
 | recursive_input_rule | 外购同类别成品条芯板是单独明确识别的投入；保留继承负荷，不能代替未贴面裸芯，转售/重复验收不能创造新产出；未解决的递归供应商保持未解决 |
 | upstream_dataset_requirement | 独立兼容的裸芯、未胶合单板、化学品、公用工程、运输及废物处理数据集；保留地理、树种、含水率、配方/状态、参考单位、边界门及继承负荷 |
 | disclosure | 说明采购门、实际芯/单板树种、上游芯胶及干燥、工厂/时间、公用工程、包装、排除服务及仅前景与关联上游的完整性 |

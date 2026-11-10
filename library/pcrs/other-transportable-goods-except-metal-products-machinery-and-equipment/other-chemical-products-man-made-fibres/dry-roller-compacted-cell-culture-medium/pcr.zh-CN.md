@@ -4,7 +4,7 @@ pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipm
 language: zh-CN
 status: candidate
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: reviewed
 sync_with: pcr.en-US.md
 ---
 

@@ -493,7 +493,7 @@ dataset_production:
         - usda-wood-handbook-2021
     - id: acceptance_event_bridge
       applies_to: "first-accepted body cohort"
-      rule: "D = sum of unique first-acceptance net kg, locked at the measured acceptance basis. Cross-check D = Dispatch_new + FG_new + Other_new: Dispatch_new is net external dispatch after linked returns, FG_new is closing accepted FG, and Other_new covers every mutually exclusive remaining net disposition, including actual loss, scrap, downgrade/use, transfer out of product scope and closing returned/rework WIP. These are destinations of the newly accepted cohort only (zero opening accepted stock), expressed on its original acceptance mass basis with measured moisture/composition conversion; not raw current wet masses when the basis changed. A returned body is removed from net dispatch and counted once in its actual final FG/WIP/other destination; gross loops/reacceptance are not extra destinations. A 100 kg first acceptance with 60 kg net dispatch, 30 kg FG and 10 kg loss retains D=100 kg. The two-term dispatch-plus-FG shortcut is allowed only with evidenced zero other dispositions. Never infer zero loss, reset D or invent a residual to close the bridge."
+      rule: "D = sum of unique first-acceptance net kg, locked at the measured acceptance basis. Cross-check D = Dispatch_new + FG_new + Other_new: Dispatch_new is net external dispatch after linked returns, FG_new is closing accepted FG, and Other_new covers every mutually exclusive remaining net disposition, including actual loss, scrap, downgrade/use, transfer out of product scope and closing returned/rework WIP. These are destinations of the newly accepted cohort only (zero opening accepted stock), expressed on its original acceptance mass basis with measured moisture/composition conversion; not raw current wet masses when the basis changed. A returned body is removed from net dispatch and counted once in its actual final FG/WIP/other destination; gross loops/reacceptance are not extra destinations. A 100 kg first acceptance with 60 kg net dispatch, 30 kg FG and 10 kg loss retains D=100 kg. The two-term dispatch-plus-FG shortcut is allowed only with evidenced zero other dispositions. Never infer zero loss, reset D or invent a residual to close the bridge. When surviving wood destinations are converted to their original acceptance moisture basis, moisture-only changes stay in the separate physical water ledger and are not also counted as whole-body loss in Other_new."
       inputs:
         - cp_release
         - cp_material
@@ -609,7 +609,7 @@ data_sources:
     used_for: "Bounded allocation case and packaging distinction; no regional mass share or universal allocation factor transferred"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:75fff630832a44cb16b3363f065cff1cd9777b78ceed6fe2fff65aa6b14bd015"
+  source_sha256: "sha256:6f48df89deb3e67aef0beefabdaa6bb3da97cbcab52b5682f7acf61c5d6f20fb"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6637"
@@ -708,15 +708,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_41526"
+    - unit_id: "normative_41741"
       family: "validation"
       span:
         start:
-          offset: 41526
+          offset: 41741
           line: 351
           column: 1
         end:
-          offset: 43695
+          offset: 43910
           line: 362
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| scope_gate | product and route | Require completed closed one-piece bare solid-coniferous frame with opening/rabbet and no retained nonwood material or finish. Uncut stock, continuous moulding and complete glazed frames are outside scope. | superbender-single-piece-frame-2013; ambiance-unfinished-frame |\n| reference_gate | frame_body | Exactly one explicit reference product output uses 1 kg with required form/state/provider qualifiers. Shared generic wood UUIDs do not replace row linkage or permit a supplier self-loop. | |\n| measurement_gate | all inventory rows | Check per-1-kg basis, linked protocols, finite positive event-locked D, complete acceptance_event_bridge and one normalization. Opening FG, returns and repeat gate exits must not increase new D; later losses must not shrink D. D=0/unknown D0 preserves physical/burden ledgers and blocks the affected normalized result; no count, dispatch, residual FG or wood-intake denominator substitution. | |\n| balances_gate | wood, dust, moisture, stocks | Separate physical V, allocated A and event-locked D. Verify dry_wood_closure gate-side stocks excluding post-gate accepted FG, paired actual re-entries/re-exits, full waste quantities and cohort vectors. Verify post-gate net destinations separately, and whole-site closure with internal gate transfers cancelled. Adding accepted FG plus first acceptance to one gate-output balance, omitting re-entry, counting reacceptance as new D, or double counting adhered dust, nested PM or whole packaging/components fails the model. | usda-wood-handbook-2021 |\n| identity_gate | every row | Exact official Chinese display, actual atomic physical state, property/unit, supplier/receiver compatibility and source restrictions are mandatory. UUID compliance metadata does not confer method or study approval. | |\n| uncertainty_gate | allocation and closure | Missing causal shares, composition, source compatibility, capture, stock history or measured uncertainty remains pending review; no invented residual correction or fixed yield. | corrim-northern-lumber-2025 |\n\n"
@@ -736,11 +736,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 41526
+              offset: 41741
               line: 351
               column: 1
             end:
-              offset: 41548
+              offset: 41763
               line: 351
               column: 23
           text: "## 9. Validation Rules"
@@ -799,79 +799,79 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "scope_gate"
       identity_kind: "explicit"
-      unit_id: "normative_41526"
+      unit_id: "normative_41741"
       source_span:
         start:
-          offset: 41621
+          offset: 41836
           line: 355
           column: 1
         end:
-          offset: 41928
+          offset: 42143
           line: 355
           column: 308
     - pointer: "/validation_rules/1"
       rule_id: "reference_gate"
       identity_kind: "explicit"
-      unit_id: "normative_41526"
+      unit_id: "normative_41741"
       source_span:
         start:
-          offset: 41929
+          offset: 42144
           line: 356
           column: 1
         end:
-          offset: 42151
+          offset: 42366
           line: 356
           column: 223
     - pointer: "/validation_rules/2"
       rule_id: "measurement_gate"
       identity_kind: "explicit"
-      unit_id: "normative_41526"
+      unit_id: "normative_41741"
       source_span:
         start:
-          offset: 42152
+          offset: 42367
           line: 357
           column: 1
         end:
-          offset: 42589
+          offset: 42804
           line: 357
           column: 438
     - pointer: "/validation_rules/3"
       rule_id: "balances_gate"
       identity_kind: "explicit"
-      unit_id: "normative_41526"
+      unit_id: "normative_41741"
       source_span:
         start:
-          offset: 42590
+          offset: 42805
           line: 358
           column: 1
         end:
-          offset: 43189
+          offset: 43404
           line: 358
           column: 600
     - pointer: "/validation_rules/4"
       rule_id: "identity_gate"
       identity_kind: "explicit"
-      unit_id: "normative_41526"
+      unit_id: "normative_41741"
       source_span:
         start:
-          offset: 43190
+          offset: 43405
           line: 359
           column: 1
         end:
-          offset: 43438
+          offset: 43653
           line: 359
           column: 249
     - pointer: "/validation_rules/5"
       rule_id: "uncertainty_gate"
       identity_kind: "explicit"
-      unit_id: "normative_41526"
+      unit_id: "normative_41741"
       source_span:
         start:
-          offset: 43439
+          offset: 43654
           line: 360
           column: 1
         end:
-          offset: 43693
+          offset: 43908
           line: 360
           column: 255
   diagnostics:
@@ -913,14 +913,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_41526"
+      unit_id: "normative_41741"
       source_span:
         start:
-          offset: 41526
+          offset: 41741
           line: 351
           column: 1
         end:
-          offset: 41548
+          offset: 41763
           line: 351
           column: 23
 projection_metadata:
@@ -930,5 +930,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:75fff630832a44cb16b3363f065cff1cd9777b78ceed6fe2fff65aa6b14bd015"
-  generated_content_sha256: "sha256:6e45edddb0b03f40d9634c5d850a94da0fce20f95806a2c1120b713079fe3dc6"
+    sha256: "sha256:6f48df89deb3e67aef0beefabdaa6bb3da97cbcab52b5682f7acf61c5d6f20fb"
+  generated_content_sha256: "sha256:d3f3ea2d5cb47856c558b489fa856ec380c7063f277380aa68aba093c666a128"

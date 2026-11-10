@@ -3,7 +3,7 @@ pcr_id: pcr.other-transportable-goods-except-metal-products-machinery-and-equipm
 language: zh-CN
 sync_with: pcr.en-US.md
 status: candidate
-translation_status: aligned
+translation_status: reviewed
 ---
 
 # 手工编织无涂层一体编口竹篮

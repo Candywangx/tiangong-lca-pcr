@@ -1,0 +1,425 @@
+{
+  "code": "31923",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "74d715da06b5755c8fc03f795145a6d49779ed4d77a7288746c796a414628dd6",
+    "pcr.en-US.md": "62968ac9169634d8e9ac20705506240452026289fad4fda1bbd85ce621475005",
+    "pcr.zh-CN.md": "c1a0ec55b202f854ee5de85b232cd41861d808cf1275021c3daf7c31fce7d26f",
+    "structured.yaml": "0f4022db6025553190566f57ccacd320f03497fd55ed1c1d92ad11d9f16791ac"
+  },
+  "author_commit": "49d078c2bd8d37dc53ccc1d36e55062667d1a071",
+  "complete_inputs_and_derivations": [
+    {
+      "id": "100-60-30-10-after-first-acceptance",
+      "inputs": {
+        "unique_first_acceptance_events": 100,
+        "fixture_measured_net_element_volume_per_event_m3": 0.001,
+        "acceptance_dry_basis_u": 0.1,
+        "net_dispatch_original_basis_L": 60,
+        "closing_FG_original_basis_L": 30,
+        "post_acceptance_discard_original_basis_L": 10,
+        "raw_strip_received_dry_kg": 55,
+        "raw_strip_u": 0.4,
+        "raw_strip_received_wet_kg": 77,
+        "dampening_supply_kg": 3,
+        "first_accepted_baskets_measured_dry_kg": 50,
+        "first_accepted_baskets_measured_wet_kg": 55,
+        "pre_acceptance_reject_dry_kg": 5,
+        "pre_acceptance_reject_u": 0.1,
+        "pre_acceptance_reject_wet_kg": 5.5,
+        "evaporation_kg": 19.5,
+        "post_acceptance_discard_dry_kg": 5,
+        "post_acceptance_discard_water_kg": 0.5,
+        "dispatch_dry_kg": 30,
+        "dispatch_water_kg": 3,
+        "closing_FG_dry_kg": 15,
+        "closing_FG_water_kg": 1.5
+      },
+      "derivations": [
+        {
+          "check": "unique_event_volume_m3",
+          "formula": "Q_V = 100 unique events * measured 0.001 m3/event = 0.1 m3; sample/geometry test inputs only",
+          "lhs": 0.1,
+          "rhs": 0.1,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "event_destination_L",
+          "formula": "100 L = D_new60 + FG_new30 + Other_new(discard10), all original acceptance geometry",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "dry_bamboo_kg",
+          "formula": "dry receipt55 = dispatch30 + FG15 + post-discard5 + pre-reject5; acceptance is internal",
+          "lhs": 55,
+          "rhs": 55,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "water_kg",
+          "formula": "strip water22 + dampening3 = dispatch3 + FG1.5 + post-discard0.5 + pre-reject0.5 + evaporation19.5",
+          "lhs": 25,
+          "rhs": 25,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_wet_mass_kg",
+          "formula": "receipt77 + dampening3 = dispatch33 + FG16.5 + post-discard5.5 + pre-reject5.5 + evaporation19.5",
+          "lhs": 80,
+          "rhs": 80,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "burden_normalization": {
+        "attributable_MJ": 100,
+        "correct": "100 MJ / original Q_V0.1 m3 = 1000 MJ/m3",
+        "old_two_term_denominator_m3": 0.09,
+        "old_wrong_intensity_MJ_per_m3": 1111.111111111111,
+        "lost_Q_not_cancelled": true
+      }
+    },
+    {
+      "id": "opening-FG-separate-from-new-Q",
+      "inputs_original_acceptance_L": {
+        "old_opening_FG": 20,
+        "old_original_Q0": 20,
+        "old_dispatch": 20,
+        "new_first_acceptance": 100,
+        "new_net_dispatch": 60,
+        "new_closing_FG": 30,
+        "new_post_acceptance_discard": 10
+      },
+      "derivations": [
+        {
+          "check": "old_remaining_stock",
+          "formula": "old opening FG20 = old dispatch20; no old FG remains",
+          "lhs": 20,
+          "rhs": 20,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "new_event_bridge",
+          "formula": "new Q100 = new dispatch60 + new FG30 + new discard10; old dispatch20 is excluded",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "accepted_stock_location_reconciliation",
+          "formula": "opening accepted FG20 + new acceptance100 = total net dispatch80 + closing FG30 + discard10; acceptance is internal relative to whole-plant material receipts",
+          "lhs": 120,
+          "rhs": 120,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "service_vectors_MJ": {
+        "old_original_burden": 20,
+        "old_incremental_factory_service": 4,
+        "old_service_correction": "4 MJ / original old Q0(0.020 m3) = 200 MJ/m3",
+        "old_burdens_or_volume_added_to_new": 0
+      }
+    },
+    {
+      "id": "opening-FG-and-new-old-return-to-WIP-reacceptance",
+      "inputs_original_acceptance_L": {
+        "old_opening_FG": 20,
+        "old_original_Q0": 20,
+        "new_unique_first_acceptance": 100,
+        "new_gross_dispatch": 65,
+        "linked_new_external_return": 5,
+        "new_net_dispatch": 60,
+        "new_FG_to_WIP": 20,
+        "new_repeat_exit": 10,
+        "new_rework_discard": 2,
+        "new_closing_WIP": 8,
+        "new_closing_FG": 30,
+        "old_FG_to_WIP": 10,
+        "old_repeat_exit": 8,
+        "old_rework_discard": 2,
+        "old_net_dispatch": 5,
+        "old_closing_FG": 13
+      },
+      "dry_kg_measured_fixture": {
+        "raw_receipt": 55,
+        "old_opening_FG": 10,
+        "new_first_acceptance": 50,
+        "pre_acceptance_reject": 5,
+        "new_return_to_WIP": 10,
+        "new_reexit": 5,
+        "new_rework_discard": 1,
+        "closing_new_WIP": 4,
+        "old_return_to_WIP": 5,
+        "old_reexit": 4,
+        "old_rework_discard": 1,
+        "new_net_dispatch": 30,
+        "old_dispatch": 2.5,
+        "new_closing_FG": 15,
+        "old_closing_FG": 6.5,
+        "external_return": 2.5,
+        "new_gross_dispatch": 32.5
+      },
+      "derivations": [
+        {
+          "check": "new_net_dispatch_L",
+          "formula": "65 gross new dispatch -5 actual linked return = 60 net; returned5 finally occupies FG and is not an extra loss",
+          "lhs": 60,
+          "rhs": 60,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "new_rework_split_original_L",
+          "formula": "new accepted-origin WIP20 = repeated exit10 + discard2 + closing WIP8; exits add zero new Q",
+          "lhs": 20,
+          "rhs": 20,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "old_rework_split_original_L",
+          "formula": "old accepted-origin WIP10 = repeated exit8 + discard2",
+          "lhs": 10,
+          "rhs": 10,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "new_event_bridge_L",
+          "formula": "new event Q100 = net dispatch60 + FG30 + Other_new(discard2+closing WIP8); no FG/WIP overlap",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "old_cohort_stock_L",
+          "formula": "opening old FG20 = old dispatch5 + FG13 + old discard2; original Q0 remains20",
+          "lhs": 20,
+          "rhs": 20,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site_dry_net_kg",
+          "formula": "old opening dry10 + fresh dry55 = net dispatch32.5 + FG21.5 + WIP4 + external rejects7 = 65; internal acceptance/rework cancel",
+          "lhs": 65,
+          "rhs": 65,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site_dry_gross_kg",
+          "formula": "opening10 + fresh55 + actual external return2.5 = gross dispatch35 + FG21.5 + WIP4 + waste7 = 67.5",
+          "lhs": 67.5,
+          "rhs": 67.5,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site_water_net_kg",
+          "formula": "old FG water1 + green strip water22 + dampening3 = net dispatch3.25 + FG2.15 + WIP0.4 + waste0.7 + evaporation19.5 = 26",
+          "lhs": 26,
+          "rhs": 26,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site_wet_net_kg",
+          "formula": "opening11 + raw77 + dampening3 = net dispatch35.75 + FG23.65 + WIP4.4 + waste7.7 + evaporation19.5 = 91",
+          "lhs": 91,
+          "rhs": 91,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "burden_vectors_MJ": {
+        "new_manufacturing_including_preacceptance_rejects": 100,
+        "new_incremental_rework": 8,
+        "new_total_per_m3": "(100+8)/0.1 =1080 MJ/m3",
+        "old_incremental_rework": 6,
+        "old_incremental_storage": 2,
+        "old_service_correction": "(6+2)/original 0.020 m3 =400 MJ/m3",
+        "old_original_20_MJ_readded": 0,
+        "old_services_shifted_to_new": 0
+      },
+      "notes": [
+        "All final new FG/WIP/reject material here is at measured u=0.1; these wet/dry mass values are independent fixture measurements, not inferred from the product Volume property.",
+        "Gross reacceptance volume18 L is physical movement, never new Q. WIP8 L in the bridge means original element geometry attributable to material now in WIP, not acceptance of an incomplete basket.",
+        "Original Q0 for the old cohort remains20 L; opening FG20 L is a stock observation, not authority to derive original Q0 in a real study. Unknown Q0 blocks normalization."
+      ]
+    },
+    {
+      "id": "moisture-and-geometry-change-never-reset-events",
+      "paired_fixture_measurements": {
+        "first_acceptance_cohort_L": 100,
+        "new_net_dispatch_original_basis_L": 60,
+        "discard_original_basis_L": 10,
+        "remaining_same_elements_acceptance_geometry_L": 30,
+        "remaining_same_elements_current_geometry_L": 31.5,
+        "remaining_dry_kg": 15,
+        "acceptance_u": 0.1,
+        "current_u": 0.2,
+        "acceptance_water_kg": 1.5,
+        "current_water_kg": 3,
+        "measured_atmospheric_water_uptake_kg": 1.5
+      },
+      "derivations": [
+        {
+          "check": "original_basis_FG_L",
+          "formula": "current measured same-element volume31.5 L * paired measured geometry ratio30/31.5 = original-basis FG30 L; this ratio is fixture-specific, not a universal correction",
+          "lhs": 30,
+          "rhs": 30,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "event_bridge_L",
+          "formula": "locked Q100 = dispatch60 + converted FG30 + discard10; do not add current31.5 L directly",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "post_acceptance_water_kg",
+          "formula": "opening FG water1.5 + measured atmospheric uptake1.5 = current FG water3; no evaporation inferred from volume",
+          "lhs": 3,
+          "rhs": 3,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "dry_mass_kg",
+          "formula": "same traced retained dry mass15 before and after moisture change; water uptake and geometry are independent measurements",
+          "lhs": 15,
+          "rhs": 15,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "gap_behavior": "Without paired geometry/traceability and bounded conversion uncertainty this bridge is unresolved. Do not adopt a nominal density or automatically derive geometry from moisture."
+    }
+  ],
+  "case_payload_sha256": "f8fc9e26cc53c3770fd5f9c3577ed0192812d8573cdfdc84c3a6ff406719d801",
+  "additional_basis_and_negative_cases": {},
+  "independently_recomputed_checks": [
+    {
+      "case": "event_L",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "locked100L=60D+30FG+10loss;0.1m3",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "dry_bamboo",
+      "left_terms": [
+        55
+      ],
+      "right_terms": [
+        30,
+        15,
+        5,
+        5
+      ],
+      "formula": "dry receipt55=dispatch+FG+post/pre rejects",
+      "recomputed_left": 55,
+      "recomputed_right": 55,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "water",
+      "left_terms": [
+        22,
+        3
+      ],
+      "right_terms": [
+        3,
+        1.5,
+        0.5,
+        0.5,
+        19.5
+      ],
+      "formula": "water input25=all measured water destinations",
+      "recomputed_left": 25,
+      "recomputed_right": 25,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_new_dry",
+      "left_terms": [
+        10,
+        55
+      ],
+      "right_terms": [
+        32.5,
+        21.5,
+        4,
+        7
+      ],
+      "formula": "whole-site dry65 includesold/new, no Q duplicate",
+      "recomputed_left": 65,
+      "recomputed_right": 65,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "wet_whole_site",
+      "left_terms": [
+        11,
+        77,
+        3
+      ],
+      "right_terms": [
+        35.75,
+        23.65,
+        4.4,
+        7.7,
+        19.5
+      ],
+      "formula": "wet91 with actual water/stock; distinct eventvolume",
+      "recomputed_left": 91,
+      "recomputed_right": 91,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "geometry_conversion",
+      "left_terms": [
+        30
+      ],
+      "right_terms": [
+        30
+      ],
+      "formula": "paired measured geometry ratio, no density default",
+      "recomputed_left": 30,
+      "recomputed_right": 30,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}
