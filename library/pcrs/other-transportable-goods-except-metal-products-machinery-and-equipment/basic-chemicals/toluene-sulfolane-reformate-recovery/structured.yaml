@@ -24,12 +24,12 @@ system_boundary:
         - jrc-lvoc-2017
     - rule_id: boundary_acceptance
       applies_to: "accepted_toluene"
-      rule: "Tag every first acceptance once. Q>0 equals newly accepted product dispatched in the period plus newly accepted closing finished stock, without opening finished stock, returns, retests, internal recycles or rejected output. Keep old and new acceptance cohorts apart. An already accepted lot rehandled this period never produces a second reference output."
+      rule: "Q>0 is the sum of net whole-product kg measured at unique first-acceptance events in the declared period, each immutable event/lot counted once on its original acceptance basis. Reconcile Q = D_new + FG_new + L_new for that same newly accepted cohort and basis: D_new is net dispatch after linked returns, FG_new is closing accepted FG, and L_new covers all other net post-acceptance destinations, including actual net returns not already in D_new/FG_new, loss, scrap, downgrade, use and closing transfer back to rework/WIP. Keep these destinations mutually exclusive and exhaustive, resolving basis changes from measured records. D_new+FG_new alone is permitted only with evidence that all other net destinations are zero. Later losses never lower Q; opening FG, purchased product, pre-acceptance rejects, returns, retests, reacceptance and internal gross loops never add Q. Old accepted lots retain their original Q0."
       source_ids:
         - jrc-ilcd-general-2010
     - rule_id: boundary_carry
       applies_to: "recovery_unit"
-      rule: "Carry raw-feed, solvent, bed, WIP and FG mass/component stocks with their accumulated upstream and operation burden vectors by lot/cohort. Carry partial raw/WIP burdens forward until acceptance; add only incremental processing, avoiding a second feed burden. Opening FG dispatch is a transfer of its original burden. Later service/return/repair corrections attach to the original accepted cohort and original accepted quantity Q0; never divide them by current Q. If Q0 is unknown, preserve raw unnormalised burdens and hold the correction, rather than inventing a denominator."
+      rule: "Carry raw-feed, solvent, bed, WIP and FG mass/component stocks with their accumulated upstream and operation burden vectors by lot/cohort. Carry partial raw/WIP burdens forward until first acceptance; add only incremental processing, including actual failed/rejected/rework operations attributable to the cohort, avoiding a second feed burden. Failed output creates no Q before its first acceptance. Accepted material returned to WIP retains its original event and burden vector; reacceptance adds no Q. Opening FG dispatch is a transfer of its original burden. Later storage/loss/return/repair service corrections attach to the original accepted cohort and original accepted quantity Q0; never divide them by current Q. If Q0 is unknown, preserve raw unnormalised burdens and hold the correction, rather than inventing a denominator."
       source_ids:
         - jrc-ilcd-general-2010
 boundary_abstraction:
@@ -60,7 +60,8 @@ reference_flow_definition:
     - "wet sulfolane reformate route"
     - "actual site/provider and period"
     - "feed readiness"
-    - "stock/acceptance cohort"
+    - "immutable first-acceptance event/cohort and Q/Q0"
+    - "same-basis D_new/FG_new/L_new destinations"
     - "upstream boundaries and allocation method"
 reference_flows:
   []
@@ -71,7 +72,7 @@ measurement_rules:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Use net whole liquid product mass, excluding tank/container tare; 1 kg reference flow is not multiplied by toluene assay. Measure assay separately with cp_reference."
+    rule: "Use net whole liquid product mass, excluding tank/container tare; 1 kg reference flow is not multiplied by toluene assay. Measure assay separately with cp_reference. First-acceptance Q is locked to the original whole-product event mass; later physical dispositions use measured conversions back to that same basis, not a new Q."
   - id: volume_mass
     applies_to: "reformate_feed; accepted_toluene; water_makeup; cooling_makeup"
     required_property_ref:
@@ -282,7 +283,7 @@ process_inventory:
           flow_ref:
             uuid: "33ac34b7-d691-4eda-8563-daef49a05157"
           property_unit: "Mass / kg"
-          description: "One accepted bulk liquid toluene product at the plant delivery gate. Keep net whole commercial product mass, measured toluene assay, water, benzene/non-aromatic impurities and acceptance specification. This is not a neat-component mass, solvent blend, spent solvent or transported-market product. Native generic production-mix identity does not prescribe technology shares or a provider."
+          description: "One accepted bulk liquid toluene product at the plant delivery gate. Keep net whole commercial product mass, measured toluene assay, water, benzene/non-aromatic impurities and acceptance specification. This is not a neat-component mass, solvent blend, spent solvent or transported-market product. Native generic production-mix identity does not prescribe technology shares or a provider. The 1 kg output is the unique first-acceptance reference coordinate; actual dispatch, closing stocks and post-acceptance loss are recorded once in the separate physical ledger. Later return/rework/reacceptance retains the original cohort and Q0."
           amount:
             expression: "1 kg"
             value_mode: "foreground_record"
@@ -682,14 +683,14 @@ dataset_production:
       process_id: "recovery_unit"
       flow_role: "accepted_toluene"
       record_type: "measurement"
-      raw_fields: "lot id; original cohort; first acceptance date; assay/water/impurities; specification; liquid state; tare/density; newly accepted dispatch; new closing FG; opening FG; returns; Q; Q0"
-      collection_method: "Calibrated net weighing or temperature-corrected tank gauging with measured compatible density; chromatographic assay and water analysis; reconcile sales, acceptance and stock by immutable lot identity."
+      raw_fields: "lot id; immutable first-acceptance event id/time; measured net accepted whole kg; original acceptance basis; assay/water/impurities; specification; liquid state; tare/density; net D_new dispatch and linked returns; FG_new closing accepted stock; disjoint L_new net return/loss/scrap/downgrade/use/rework-WIP destinations; opening FG; retests/reacceptance; failed/rework operations; basis conversions/uncertainty; Q; original Q0"
+      collection_method: "Calibrated net weighing or temperature-corrected tank gauging with measured compatible density; chromatographic assay and water analysis. Lock Q to the sum of unique measured first-acceptance event masses. Reconcile the same lots on the same acceptance basis using exhaustive mutually exclusive D_new/FG_new/L_new: subtract linked returns from dispatch and locate their remaining net destination once in FG_new or L_new; resolve actual basis changes without treating gross loops as new quantity. Reacceptance never changes Q. Preserve separate actual-period external exchanges and all raw/WIP/FG stocks."
       unit: "kg"
       frequency: "Every batch or continuous meter; full-period reconciliation"
       temporal_coverage: "One declared complete operating period including start/stop"
       site_scope: "Actual recovery unit and declared route"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "Calibration, raw assays, lot reconciliation and disclosed gaps"
+      quality_evidence: "Calibration, raw assays, immutable event records, complete lot destination reconciliation and disclosed gaps"
     - protocol_id: cp_material
       process_id: "recovery_unit"
       flow_role: "reformate_feed; sulfolane_makeup"
@@ -765,7 +766,7 @@ dataset_production:
   calculation_rules:
     - id: normalize_period
       applies_to: "all inventory rows"
-      rule: "Divide each cumulative physical exchange belonging to the newly accepted cohort, including inherited upstream/WIP terms and actual incremental operations, by positive first-acceptance Q; accepted_toluene equals 1 kg. Retain the unallocated ledger and units. Compute separately attributed burden vectors using subdivision and documented joint shares, then divide each cohort vector by its own accepted quantity. Never erase coproduct mass or move opening-FG service into current Q."
+      rule: "Divide each cumulative physical exchange belonging to the newly first-accepted cohort, including inherited upstream/WIP terms, actual failed/rework operations and post-acceptance services/losses within the declared scope, by event-locked positive Q; accepted_toluene equals 1 kg as a reference accounting coordinate, not an additional external physical output. Carry inherited vectors once and add incremental operations once. Retain unallocated physical ledgers and units. Compute separately attributed burden vectors using subdivision and documented joint shares, then divide each cohort vector by its own original accepted quantity Q or Q0. Never erase coproduct mass, shrink Q after losses, count reacceptance again or move opening-FG service into current Q."
       inputs:
         - cp_reference
         - "period records"
@@ -773,10 +774,21 @@ dataset_production:
       output: "per 1 kg reference flow"
       source_ids:
         - jrc-ilcd-general-2010
+    - id: acceptance_event_bridge
+      applies_to: "recovery_unit"
+      rule: "Q = sum of unique measured first-acceptance event masses on the declared whole-product acceptance basis; Q = D_new + FG_new + L_new is a complete same-basis destination check, not a replacement denominator. Net linked returns out of D_new must be located once in FG_new or their actual L_new destination; track internal transfers/reacceptance without adding gross passes. Reconcile measured composition/water/basis changes explicitly. For 100 kg first accepted, 60 kg net dispatched, 30 kg closing FG and 10 kg post-acceptance loss, Q=100 kg and an attributed burden of 100 units gives 100/100=1 unit/kg; the incomplete 90 kg denominator would give 100/90=1.111... and is invalid. Unexplained residuals remain unresolved; never infer zero loss or rewrite Q to force closure."
+      inputs:
+        - cp_reference
+        - "event ledger"
+        - "same-basis destination and stock records"
+      output: "locked Q and complete destination bridge"
+      source_ids:
+        - jrc-ilcd-general-2010
     - id: component_balance
       applies_to: "recovery_unit"
-      rule: "For each whole stream use measured component kg=whole kg times its measured mass fraction. For total mass and conserved elemental C/H/S, check input plus opening stocks equals outputs plus closing stocks, with zero net elemental generation. For each reactive chemical species X, including sulfolane degradation and water, use opening X + external input X + actual G_X = closing X + external output X + actual C_X; establish actual formation/consumption from matched analysis or supported stoichiometry with measured reaction extent. Unknown species conversion remains unresolved; do not impose species conservation or assume complete degradation. Retain measured losses and uncertainty. Keep raw/WIP/FG burden vectors separate from physical mass. Unknown residual is a finding, never a fictitious product or zero."
+      rule: "For each whole stream use measured component kg=whole kg times its measured mass fraction. For total mass and conserved elemental C/H/S, check external input plus opening raw/WIP/FG stocks equals actual external outputs plus closing raw/WIP/FG stocks, with zero net elemental generation. This storage-inclusive physical boundary uses net external dispatch and actual losses/waste/releases once; Q and internal acceptance/rework transfers are not additional external outputs. Keep actual-period physical amounts separate from same-acceptance-basis D_new/FG_new/L_new and reconcile conversions explicitly. For each reactive chemical species X, including sulfolane degradation and water, use opening X + external input X + actual G_X = closing X + external output X + actual C_X; establish actual formation/consumption from matched analysis or supported stoichiometry with measured reaction extent. Unknown species conversion remains unresolved; do not impose species conservation or assume complete degradation. Retain measured losses and uncertainty. Keep raw/WIP/FG burden vectors separate from physical mass. Unknown residual is a finding, never a fictitious product or zero."
       inputs:
+        - cp_reference
         - cp_material
         - cp_outputs
         - cp_wastes
@@ -820,8 +832,8 @@ dataset_production:
       evidence: "Full-period operations and missing-data register"
     - id: quality_cohorts
       applies_to: "cp_reference"
-      requirement: "Prove unique first acceptance and raw/WIP/FG carryover; retain original Q0 for any later service correction. Unknown old denominator permits only a raw correction record pending review. Record sampling and allocation uncertainty without invented tolerances."
-      evidence: "Lot-linked stock, burden vectors, calibration and acceptance records"
+      requirement: "Prove unique event-locked first-acceptance Q and the complete mutually exclusive same-basis D_new/FG_new/L_new bridge, including actual post-acceptance losses and net returns. Preserve raw/WIP/FG carryover and actual failed/rework burdens once, distinguish physical balances from acceptance events and retain original Q0 for all old-cohort service corrections. Unknown old denominator permits only a raw correction record pending review. Record sampling, basis-conversion and allocation uncertainty without invented tolerances."
+      evidence: "Immutable event/lot-linked stock and destination records, burden vectors, calibration and acceptance records"
 validation_rules:
   - rule_id: validate_identity
     applies_to: "accepted_toluene"
@@ -830,7 +842,7 @@ validation_rules:
       - jrc-lvoc-2017
   - rule_id: validate_quantities
     applies_to: "all inventory rows"
-    rule: "Require Q>0 and finite nonnegative physical quantities, common period and 1 kg basis in both languages. Test volume-density and fraction/percent conventions, full steam/return/water separation and mass/component closure against measured uncertainty. Reject double first acceptance, component-scaled product reference, recycling as fresh input and double steam heat burdens."
+    rule: "Require event-locked Q>0, finite nonnegative physical amounts, explicit signed net-return adjustments, a common period and the bilingual 1 kg basis. Verify unique first-acceptance masses and the exhaustive mutually exclusive same-basis D_new/FG_new/L_new bridge; later loss cannot reduce Q and opening FG, returns, reacceptance or internal loops cannot increase it. Test volume-density and fraction/percent conventions, full steam/return/water separation and storage-inclusive mass/component closure against measured uncertainty without adding Q as an external output. Keep failed/rework burdens and original-cohort Q0. Reject missing destinations, unexplained residuals, component-scaled product reference, recycling as fresh input and double steam heat burdens."
     source_ids:
       - jrc-lvoc-2017
       - jrc-ilcd-general-2010
@@ -850,7 +862,7 @@ published_dataset_profile:
   downstream_use: "secondary_dataset; background_dataset"
   allowed_use: "Declared bulk toluene recovery route at its verified plant gate, with complete actual upstream/treatment links and explicit allocation/cohort metadata"
   excluded_use: "Universal toluene production mix; other feed/solvent routes; pure-component quantity substitutes; completed comparative assertion or automatic avoided-gasoline credit"
-  required_metadata: "Reference qualifiers; site/time; feed composition/readiness; utilities and steam return; every coproduct/waste/air destination; stock and burden vectors; Q/Q0; actual allocation and provider pins"
+  required_metadata: "Reference qualifiers; site/time; feed composition/readiness; utilities and steam return; every coproduct/waste/air destination; stock and burden vectors; immutable acceptance events; Q/Q0; same-basis D_new/FG_new/L_new and basis conversions; actual allocation and provider pins"
   required_quality_disclosure: "Native classification debt; unresolved ordinary identities/providers; sampled conditions; analytical uncertainty; missing records; original-source limitations; allocation/price sensitivity; review and study states"
   update_trigger: "Feed readiness/composition, extraction technology/solvent, product gate/specification, steam/cooling/abatement, coproduct use, stock rules or allocation evidence changes"
 data_sources:
@@ -868,21 +880,21 @@ data_sources:
     used_for: "Independent vendor counterevidence distinguishes simplified ED Sulfolane for reformate-splitter overhead from traditional Sulfolane. Vendor purity/recovery/cost claims are not adopted for this wet liquid-liquid route."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:687756748b2df2593a9c6ebc59dc8775942c3661733ea3fa377cac4e67b63024"
+  source_sha256: "sha256:d8cb903575fd4f150b0985c5103cd16dc2d44eb66bba7b924477f834455828da"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4808"
+    - unit_id: "normative_5039"
       family: "system_boundary"
       span:
         start:
-          offset: 4808
+          offset: 5039
           line: 58
           column: 1
         end:
-          offset: 7304
+          offset: 8358
           line: 77
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual extraction-ready reformate received at the recovery unit, with feed composition and upstream readiness evidence |\n| starting_condition_role | foreground_entry |\n| product_classification_scope | CPC 3.0 34110; narrower |\n| recursive_input_rule | Purchased same-category toluene is an evidenced upstream input with burdens, never new recovered output or an internal recycle. Split it into an added atomic input and do not dilute it into production Q. |\n| upstream_dataset_requirement | Actual reformate provider includes reforming, splitting and required feed treatment; utility, solvent/clay and external treatment links match composition/property/gate |\n| disclosure | Record actual source plant, feed batch/readiness, all gates, utility return convention, outsourced treatment, omitted operations and inventory gaps |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | recovery_unit | Include receipt/storage, every extraction/recovery/regeneration/wash/clay/fractionation operation, internal transfers, start/stop/cleaning losses, loading and final releases. No upstream refinery unit is duplicated or assumed burden-free. Additional actual chemicals, packaging, regeneration or controls require individual physical exchanges before completeness. | `jrc-lvoc-2017` |\n| boundary_acceptance | accepted_toluene | Tag every first acceptance once. Q>0 equals newly accepted product dispatched in the period plus newly accepted closing finished stock, without opening finished stock, returns, retests, internal recycles or rejected output. Keep old and new acceptance cohorts apart. An already accepted lot rehandled this period never produces a second reference output. | `jrc-ilcd-general-2010` |\n| boundary_carry | recovery_unit | Carry raw-feed, solvent, bed, WIP and FG mass/component stocks with their accumulated upstream and operation burden vectors by lot/cohort. Carry partial raw/WIP burdens forward until acceptance; add only incremental processing, avoiding a second feed burden. Opening FG dispatch is a transfer of its original burden. Later service/return/repair corrections attach to the original accepted cohort and original accepted quantity Q0; never divide them by current Q. If Q0 is unknown, preserve raw unnormalised burdens and hold the correction, rather than inventing a denominator. | `jrc-ilcd-general-2010` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual extraction-ready reformate received at the recovery unit, with feed composition and upstream readiness evidence |\n| starting_condition_role | foreground_entry |\n| product_classification_scope | CPC 3.0 34110; narrower |\n| recursive_input_rule | Purchased same-category toluene is an evidenced upstream input with burdens, never new recovered output or an internal recycle. Split it into an added atomic input and do not dilute it into production Q. |\n| upstream_dataset_requirement | Actual reformate provider includes reforming, splitting and required feed treatment; utility, solvent/clay and external treatment links match composition/property/gate |\n| disclosure | Record actual source plant, feed batch/readiness, all gates, utility return convention, outsourced treatment, omitted operations and inventory gaps |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | recovery_unit | Include receipt/storage, every extraction/recovery/regeneration/wash/clay/fractionation operation, internal transfers, start/stop/cleaning losses, loading and final releases. No upstream refinery unit is duplicated or assumed burden-free. Additional actual chemicals, packaging, regeneration or controls require individual physical exchanges before completeness. | `jrc-lvoc-2017` |\n| boundary_acceptance | accepted_toluene | Q>0 is the sum of net whole-product kg measured at unique first-acceptance events in the declared period, each immutable event/lot counted once on its original acceptance basis. Reconcile Q = D_new + FG_new + L_new for that same newly accepted cohort and basis: D_new is net dispatch after linked returns, FG_new is closing accepted FG, and L_new covers all other net post-acceptance destinations, including actual net returns not already in D_new/FG_new, loss, scrap, downgrade, use and closing transfer back to rework/WIP. Keep these destinations mutually exclusive and exhaustive, resolving basis changes from measured records. D_new+FG_new alone is permitted only with evidence that all other net destinations are zero. Later losses never lower Q; opening FG, purchased product, pre-acceptance rejects, returns, retests, reacceptance and internal gross loops never add Q. Old accepted lots retain their original Q0. | `jrc-ilcd-general-2010` |\n| boundary_carry | recovery_unit | Carry raw-feed, solvent, bed, WIP and FG mass/component stocks with their accumulated upstream and operation burden vectors by lot/cohort. Carry partial raw/WIP burdens forward until first acceptance; add only incremental processing, including actual failed/rejected/rework operations attributable to the cohort, avoiding a second feed burden. Failed output creates no Q before its first acceptance. Accepted material returned to WIP retains its original event and burden vector; reacceptance adds no Q. Opening FG dispatch is a transfer of its original burden. Later storage/loss/return/repair service corrections attach to the original accepted cohort and original accepted quantity Q0; never divide them by current Q. If Q0 is unknown, preserve raw unnormalised burdens and hold the correction, rather than inventing a denominator. | `jrc-ilcd-general-2010` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -899,11 +911,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4808
+              offset: 5039
               line: 58
               column: 1
             end:
-              offset: 4829
+              offset: 5060
               line: 58
               column: 22
           text: "## 5. System Boundary"
@@ -919,15 +931,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36257"
+    - unit_id: "normative_37557"
       family: "allocation"
       span:
         start:
-          offset: 36257
+          offset: 37557
           line: 538
           column: 1
         end:
-          offset: 38105
+          offset: 39405
           line: 546
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | recovery_unit | Retain unallocated whole-stream mass/component/water/energy balances first. Subdivide metered operations and assign directly identifiable product storage, loading and dedicated column duties to the product that causes them. Keep raffinate, benzene and C8-plus product services, mixed residuals and shared solvent recovery visible; no physical coproduct quantity is scaled by an allocation share. | `jrc-ilcd-general-2010`; `jrc-lvoc-2017` |\n| allocation_causality | recovery_unit | For each remaining joint burden, test and document physical causality from measured component recovery and operation responses. Mass share is permissible only for a burden demonstrably driven by handled mass; use a relevant measured constituent share where composition causes the burden. Energy allocation is limited to actual useful energy products on an evidenced calorific/enthalpy basis; chemical BTX and raffinate are not all fuel services. No universal mass or heat-value default applies. | `jrc-ilcd-general-2010` |\n| allocation_residual | recovery_unit | For residual joint burdens without determining physical causality, use disclosed study-consistent economic shares a_i=m_i*p_i/sum(m_j*p_j) across actual useful co-products at their separation gates, using observed same-period net prices, consistent currency and positive value. Document missing/zero/negative-price cases for review, not fabricated shares. Test plausible price sensitivity; do not combine attributed burdens with avoided-product credits. Waste treatment remains with the causing process; internal solvent/water loops, condensate return and captured gas awaiting abatement have no saleable-product share. | `jrc-ilcd-general-2010` |\n\n"
@@ -947,11 +959,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 36257
+              offset: 37557
               line: 538
               column: 1
             end:
-              offset: 36297
+              offset: 37597
               line: 538
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -967,18 +979,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_47709"
+    - unit_id: "normative_51631"
       family: "validation"
       span:
         start:
-          offset: 47709
-          line: 577
+          offset: 51631
+          line: 578
           column: 1
         end:
-          offset: 49473
-          line: 586
+          offset: 53785
+          line: 587
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | accepted_toluene | Require one whole liquid commercial Toluene reference output and all qualifiers; reject styrene/polymer, solvent blend, emission, wrong market gate or component-only quantity. Missing core identity blocks usable methodology; generic name alone cannot verify a study. | `jrc-lvoc-2017` |\n| validate_quantities | all inventory rows | Require Q>0 and finite nonnegative physical quantities, common period and 1 kg basis in both languages. Test volume-density and fraction/percent conventions, full steam/return/water separation and mass/component closure against measured uncertainty. Reject double first acceptance, component-scaled product reference, recycling as fresh input and double steam heat burdens. | `jrc-lvoc-2017`; `jrc-ilcd-general-2010` |\n| validate_allocation | recovery_unit | Check every saleable output and branch point, evidence for subdivision/causality and residual economic shares. Shares sum to one only for the relevant useful co-functions; retain full physical outputs, no avoided-product credit, waste/return exclusions and original-cohort Q0. Unresolved allocation is study review, never a fabricated passing factor. | `jrc-ilcd-general-2010` |\n| validate_completeness | recovery_unit | Check final atmospheric species/phases, captured gas receiver, BTX/solvent water treatment, spent clay and solvent residue, supplier compatibility and stock vectors. Additional actual additives/emissions require atomic extensions. A passed structural/measurement check does not remove identity/provider/quantity gaps or confer scientific, translation or study approval. | `jrc-lvoc-2017`; `jrc-ilcd-general-2010` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | accepted_toluene | Require one whole liquid commercial Toluene reference output and all qualifiers; reject styrene/polymer, solvent blend, emission, wrong market gate or component-only quantity. Missing core identity blocks usable methodology; generic name alone cannot verify a study. | `jrc-lvoc-2017` |\n| validate_quantities | all inventory rows | Require event-locked Q>0, finite nonnegative physical amounts, explicit signed net-return adjustments, a common period and the bilingual 1 kg basis. Verify unique first-acceptance masses and the exhaustive mutually exclusive same-basis D_new/FG_new/L_new bridge; later loss cannot reduce Q and opening FG, returns, reacceptance or internal loops cannot increase it. Test volume-density and fraction/percent conventions, full steam/return/water separation and storage-inclusive mass/component closure against measured uncertainty without adding Q as an external output. Keep failed/rework burdens and original-cohort Q0. Reject missing destinations, unexplained residuals, component-scaled product reference, recycling as fresh input and double steam heat burdens. | `jrc-lvoc-2017`; `jrc-ilcd-general-2010` |\n| validate_allocation | recovery_unit | Check every saleable output and branch point, evidence for subdivision/causality and residual economic shares. Shares sum to one only for the relevant useful co-functions; retain full physical outputs, no avoided-product credit, waste/return exclusions and original-cohort Q0. Unresolved allocation is study review, never a fabricated passing factor. | `jrc-ilcd-general-2010` |\n| validate_completeness | recovery_unit | Check final atmospheric species/phases, captured gas receiver, BTX/solvent water treatment, spent clay and solvent residue, supplier compatibility and stock vectors. Additional actual additives/emissions require atomic extensions. A passed structural/measurement check does not remove identity/provider/quantity gaps or confer scientific, translation or study approval. | `jrc-lvoc-2017`; `jrc-ilcd-general-2010` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -995,12 +1007,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 47709
-              line: 577
+              offset: 51631
+              line: 578
               column: 1
             end:
-              offset: 47731
-              line: 577
+              offset: 51653
+              line: 578
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1019,181 +1031,181 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_4808"
+      unit_id: "normative_5039"
       source_span:
         start:
-          offset: 5819
+          offset: 6050
           line: 73
           column: 1
         end:
-          offset: 6236
+          offset: 6467
           line: 73
           column: 418
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_acceptance"
       identity_kind: "explicit"
-      unit_id: "normative_4808"
+      unit_id: "normative_5039"
       source_span:
         start:
-          offset: 6237
+          offset: 6468
           line: 74
           column: 1
         end:
-          offset: 6662
+          offset: 7458
           line: 74
-          column: 426
+          column: 991
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_carry"
       identity_kind: "explicit"
-      unit_id: "normative_4808"
+      unit_id: "normative_5039"
       source_span:
         start:
-          offset: 6663
+          offset: 7459
           line: 75
           column: 1
         end:
-          offset: 7302
+          offset: 8356
           line: 75
-          column: 640
+          column: 898
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_36257"
+      unit_id: "normative_37557"
       source_span:
         start:
-          offset: 36370
+          offset: 37670
           line: 542
           column: 1
         end:
-          offset: 36851
+          offset: 38151
           line: 542
           column: 482
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_causality"
       identity_kind: "explicit"
-      unit_id: "normative_36257"
+      unit_id: "normative_37557"
       source_span:
         start:
-          offset: 36852
+          offset: 38152
           line: 543
           column: 1
         end:
-          offset: 37415
+          offset: 38715
           line: 543
           column: 564
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residual"
       identity_kind: "explicit"
-      unit_id: "normative_36257"
+      unit_id: "normative_37557"
       source_span:
         start:
-          offset: 37416
+          offset: 38716
           line: 544
           column: 1
         end:
-          offset: 38103
+          offset: 39403
           line: 544
           column: 688
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_47709"
+      unit_id: "normative_51631"
       source_span:
         start:
-          offset: 47804
-          line: 581
+          offset: 51726
+          line: 582
           column: 1
         end:
-          offset: 48131
-          line: 581
+          offset: 52053
+          line: 582
           column: 328
     - pointer: "/validation_rules/1"
       rule_id: "validate_quantities"
       identity_kind: "explicit"
-      unit_id: "normative_47709"
+      unit_id: "normative_51631"
       source_span:
         start:
-          offset: 48132
-          line: 582
+          offset: 52054
+          line: 583
           column: 1
         end:
-          offset: 48595
-          line: 582
-          column: 464
+          offset: 52907
+          line: 583
+          column: 854
     - pointer: "/validation_rules/2"
       rule_id: "validate_allocation"
       identity_kind: "explicit"
-      unit_id: "normative_47709"
+      unit_id: "normative_51631"
       source_span:
         start:
-          offset: 48596
-          line: 583
+          offset: 52908
+          line: 584
           column: 1
         end:
-          offset: 49014
-          line: 583
+          offset: 53326
+          line: 584
           column: 419
     - pointer: "/validation_rules/3"
       rule_id: "validate_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_47709"
+      unit_id: "normative_51631"
       source_span:
         start:
-          offset: 49015
-          line: 584
+          offset: 53327
+          line: 585
           column: 1
         end:
-          offset: 49471
-          line: 584
+          offset: 53783
+          line: 585
           column: 457
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4808"
+      unit_id: "normative_5039"
       source_span:
         start:
-          offset: 4808
+          offset: 5039
           line: 58
           column: 1
         end:
-          offset: 4829
+          offset: 5060
           line: 58
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4808"
+      unit_id: "normative_5039"
       source_span:
         start:
-          offset: 4857
+          offset: 5088
           line: 62
           column: 1
         end:
-          offset: 5746
+          offset: 5977
           line: 69
           column: 165
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36257"
+      unit_id: "normative_37557"
       source_span:
         start:
-          offset: 36257
+          offset: 37557
           line: 538
           column: 1
         end:
-          offset: 36297
+          offset: 37597
           line: 538
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_47709"
+      unit_id: "normative_51631"
       source_span:
         start:
-          offset: 47709
-          line: 577
+          offset: 51631
+          line: 578
           column: 1
         end:
-          offset: 47731
-          line: 577
+          offset: 51653
+          line: 578
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1202,5 +1214,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:687756748b2df2593a9c6ebc59dc8775942c3661733ea3fa377cac4e67b63024"
-  generated_content_sha256: "sha256:e6ec8740ffe796cbeedc3408d875b0216c0f701445ae2cd701d4df4c87850392"
+    sha256: "sha256:d8cb903575fd4f150b0985c5103cd16dc2d44eb66bba7b924477f834455828da"
+  generated_content_sha256: "sha256:bd4947dc77eecf3c4dfdb459f4e722aa79b76845f11c9415df5fba5c1b3e9a1b"
