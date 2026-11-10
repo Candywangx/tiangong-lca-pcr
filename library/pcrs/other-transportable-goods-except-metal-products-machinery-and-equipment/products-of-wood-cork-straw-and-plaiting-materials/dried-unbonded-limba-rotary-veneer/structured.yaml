@@ -11,7 +11,7 @@ product_category_identity:
   market_state: "Unbonded, unbacked, untreated, dried intermediate sheet at first final manufacturing acceptance; later dispatch services remain linked to that same cohort; packaging excluded from reference wood mass"
 functional_unit:
   what: "Provide limba veneer as an intermediate sheet for a declared subsequent use"
-  how_much: "1 kg net newly first-accepted sheet at its measured first-acceptance moisture, whether newly dispatched or held as accepted closing finished goods"
+  how_much: "1 kg net newly first-accepted sheet at its measured first-acceptance moisture; the unique event quantity remains locked through later dispatch, closing FG and all other post-acceptance dispositions"
   how_well: "Identified Terminalia superba; rotary cut; thickness ≤6 mm; actual grade, dimensions and customer moisture acceptance declared; no durability or structural-panel equivalence"
   how_long_or_cycle: "One manufacturing first-acceptance cohort; later storage, dispatch, return or retest services stay with the original cohort; no installed service life assigned"
   reference_flow_link: "limba_delivery"
@@ -50,7 +50,7 @@ boundary_abstraction:
   declared_starting_condition: "Identified untreated limba logs received at mill gate, including bark where present; moisture and stock recorded"
   starting_condition_role: "Foreground intake fact; upstream forestry, harvest and freight burdens remain in linked log supply"
   product_classification_scope: "Limba subset of tropical non-coniferous thin sheets ≤6 mm; classification does not establish forest provenance or method applicability"
-  recursive_input_rule: "Purchased veneer is outside this log-to-sheet route. Keep raw, WIP and accepted-FG stock identities and inherited vectors; internal rework/repeat drying/returns/reacceptance never create a second first-accepted output. External same-category sheet input requires a reviewed purchased-sheet route."
+  recursive_input_rule: "Purchased veneer is outside this log-to-sheet route. Keep raw, WIP and accepted-FG stock identities and inherited vectors; internal rework/repeat drying/returns/reacceptance never create a second first-accepted output. External same-category sheet input requires a reviewed purchased-sheet route; receipt, retest or dispatch of purchased finished sheets never adds log-fed production Q_new."
   upstream_dataset_requirement: "Match log species/provenance, forestry/land-use treatment and mill delivery gate; match electricity voltage/geography/period and actual net steam supply boundary; link treatment of each exported waste"
   disclosure: "Declare intake, first-acceptance and dispatch gates; Q_new and original old-cohort denominators; inherited stock vectors; utility suppliers and separate steam/process-water circuits; route exclusions, forest/land-use coverage, freight ownership, storage losses, infrastructure, unmeasured exchanges and background mismatches"
 reference_flow_definition:
@@ -72,7 +72,10 @@ reference_flow_definition:
     - "sheet grade and rejects"
     - "first-acceptance moisture on dry basis and sampling"
     - "original accepted net wood mass and cohort id/date"
-    - "newly accepted dispatch and newly accepted closing finished goods"
+    - "independently measured unique event Q_new and original cohort Q0"
+    - "mutually exclusive net dispatch D_new"
+    - "closing accepted FG_new and every other post-acceptance destination L_new"
+    - "measured current-to-original moisture conversion and parcel genealogy"
     - "opening raw/WIP/accepted-FG and carried quantity/burden vectors"
     - "returns/retests/reacceptance and later services"
     - "conditioning/dryer steam boundary and condensate ledger"
@@ -89,7 +92,7 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Reference quantity is 1 kg net wood at first final manufacturing acceptance after the declared drying, grading and final trim. For a reporting period define Q_new=D_new+A_new: newly first-accepted dispatch plus newly first-accepted closing finished goods, each lot once at its original acceptance moisture/mass. Exclude packaging, rejects, opening accepted FG, returns, retests and reacceptance. Inherited raw/WIP vectors follow their eventual accepted cohort. Later old-cohort services use only its original accepted net mass. Q_new=0 or an unavailable original denominator stays unnormalized/unresolved; use cp_lot."
+    rule: "Reference quantity is 1 kg net wood at unique first final manufacturing acceptance after the declared drying, grading and final trim. Independently sum those event masses into Q_new, locking each measured event net mass and dry-basis moisture u0 to parcel genealogy and its original cohort denominator Q0. Check Q_new=D_new+FG_new+L_new under acceptance_event_bridge using disjoint exhaustive destinations on that same basis. The two-term form applies only with evidence that L_new=0. Packaging and pre-acceptance rejects are excluded; later loss/scrap/downgrade does not reduce Q0. Opening accepted FG, purchased finished sheets, returns, retests and reacceptance add no new event quantity. Inherited never-accepted raw/WIP vectors follow eventual first acceptance; later services and failed rework retain original Q0. Q_new=0 or an unavailable original denominator stays unnormalized/unresolved; use cp_lot and cp_moisture."
   - id: moisture_basis
     applies_to: "wood inputs, veneer and solid residues"
     required_property_ref:
@@ -895,7 +898,7 @@ process_inventory:
           flow_ref:
             uuid: "0857dea2-e29d-4414-bce7-f9cf3372a229"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Only this product output is the quantitative reference, booked once at first final manufacturing acceptance. Newly accepted dispatch and accepted closing FG form Q_new; opening accepted FG, returns, retests and reacceptance do not form new reference output. Packaging and rejects are excluded. Later dispatch services retain this original denominator."
+          description: "Only this product output is the quantitative reference, booked once at first final manufacturing acceptance. Q_new is independently measured from unique first-acceptance events; reconcile its net dispatch D_new, accepted closing FG_new and every other post-acceptance disposition L_new under acceptance_event_bridge. Opening accepted FG, purchased finished sheets, returns, retests and reacceptance do not form new reference output. Packaging and pre-acceptance rejects are excluded, while post-acceptance loss or rejection never subtracts the locked event quantity. Later services, including failed rework, retain original Q0. This reference event is not an additional physical export to add to actual dispatch, waste and closing stock."
           amount:
             expression: "1 kg"
             value_mode: "foreground_record"
@@ -934,7 +937,7 @@ process_inventory:
           name: "Discarded untreated dry limba veneer sheet"
           flow_type: "waste"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Retain defect and lot evidence; a damaged/rejected sheet is not accepted reference output."
+          description: "Retain defect, lot and original acceptance evidence, distinguishing pre-acceptance rejection from later damage or failed rework. A sheet rejected before first acceptance creates no event Q; a previously accepted sheet later scrapped retains original Q0 and its actual production, rework and treatment vectors, with its net destination in L_new once. Internal return to WIP is stock/transfer, not external waste; other actual loss or downgrade requires its own physical destination and applicable atomic exchange."
           amount:
             expression: "Weigh unmarketable dry sheets and trim, including damage and rejected repeat-dry lots; exclude sold_dry_trim. Assign the measured quantity to its first-acceptance cohort or carried unfinished-stock vector; do not pool old-stock services with new production."
             value_mode: "foreground_record"
@@ -1042,19 +1045,19 @@ dataset_production:
       process_id: "log_prepare_dispatch"
       flow_role: "wood intake and reference output"
       record_type: "weighing and lot ledger"
-      raw_fields: "lot id; first-acceptance cohort id/date/moisture/original accepted net kg; D_new; A_new; Q_new; opening/closing raw/WIP/accepted-FG masses and quantity/burden vectors; material/cohort transfers; dispatched old FG; returns/retests/reacceptance; later-service quantities and original denominators; botanical species/provenance/treatment; received logs; rejects; thickness/grade; storage exposure"
-      collection_method: "Use calibrated scales and remove tare/packaging at intake, first final acceptance and dispatch. Identify every first-accepted lot once; reconcile D_new+A_new at original acceptance state separately from opening accepted FG and returns. Preserve inherited raw/WIP/FG vectors and assign transfers without duplicate burdens. Measure later dispatch moisture/mass separately without resetting original accepted kg; link all later services to their original cohort and denominator. Retain raw quantities when Q_new=0 or that denominator is missing."
+      raw_fields: "immutable lot/parcel genealogy; unique first-acceptance id/date; original accepted net kg Q0 and dry-basis u0; independent event sum Q_new; gross dispatch and linked returns; disjoint D_new, FG_new and each L_new disposition; current mass/moisture and original-basis conversion; pre/post-acceptance rejects, biological/handling loss, scrap, downgrade, use and rework/WIP; actual failed activity/reacceptance; opening/closing raw/WIP/accepted-FG masses and inherited quantity/burden vectors; purchased finished-sheet movements; old FG dispatch; later services and original denominators; botanical species/provenance/treatment; received logs; thickness/grade; storage exposure"
+      collection_method: "Use calibrated scales and remove tare/packaging at intake, first final acceptance and dispatch. Independently sum unique event masses for Q_new and reconcile Q_new=D_new+FG_new+L_new on original acceptance moisture under acceptance_event_bridge, separating opening accepted FG and purchased finished sheets. Trace returns to their final net destination once. Preserve inherited raw/never-accepted-WIP/FG vectors without duplicate burdens; accepted rework stays with original Q0. Measure actual later mass/moisture, loss and failed activity separately without resetting the denominator. Retain raw quantities when Q_new=0 or an original denominator is missing."
       unit: "kg; mm"
       frequency: "each lot and stock reconciliation"
       temporal_coverage: "declared reporting period including seasonal supply changes"
       site_scope: "one identified limba line and its storage areas"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale certificates; lot/stock links; species and treatment evidence; delivery acceptance"
+      quality_evidence: "scale certificates; original event and complete destination records; lot/moisture genealogy; species/treatment evidence; actual failed-activity records"
     - protocol_id: cp_moisture
       process_id: "log_prepare_peel_dry_dispatch"
       flow_role: "wet and oven-dry wood basis"
       record_type: "paired test record"
-      raw_fields: "sample location; lot; pass number; sheet position; wet sample mass; constant oven-dry mass; meter indication; target and measured exit moisture; rejected/redried mass; cohort id; original accepted net kg; new/old/unfinished-stock attribution"
+      raw_fields: "sample location; lot; pass number; sheet position; wet sample mass; constant oven-dry mass; meter indication; target and measured exit moisture; original u0 and current u_j paired with parcel genealogy for acceptance-equivalent mass; rejected/redried mass; cohort id; original accepted net kg; new/old/unfinished-stock attribution"
       collection_method: "Immediately protect and weigh representative samples; oven-dry to constant mass using a documented wood method; validate species/thickness-adjusted rapid measurements against paired oven samples. Sample across sheet and lot, including wetter portions; assess volatile-extractive bias in oven mass loss and retain its uncertainty; do not prescribe a lumber oven schedule as a veneer dryer setting. Keep quantities assigned to their source cohort or unfinished-stock vector; never divide an old-cohort service by unrelated new output."
       unit: "kg; fraction dry basis"
       frequency: "intake; every dryer pass; first final acceptance; each later dispatch/retest; each residue stream"
@@ -1103,7 +1106,7 @@ dataset_production:
       flow_role: "solid residues, co-products and rejects"
       record_type: "destination ledger"
       raw_fields: "species; source stage; lot; green/dry state; wet mass; dry-basis moisture; stock; product/waste status; contract; treatment or purchaser; value; cohort id; original accepted net kg; new/old/unfinished-stock attribution"
-      collection_method: "Weigh each separate stream; measure its own moisture; reconcile sale, waste transfer and stock. Record reject reason and actual separation node; no class-wide yield inference. Keep quantities assigned to their source cohort or unfinished-stock vector; never divide an old-cohort service by unrelated new output."
+      collection_method: "Weigh each separate stream; measure its own moisture; reconcile sale, waste transfer and stock. Link pre/post-acceptance loss, scrap, downgrade and rework destinations to cp_lot once. Record reject reason and actual separation node; no class-wide yield inference. Keep quantities assigned to their source cohort or unfinished-stock vector; never divide an old-cohort service by unrelated new output."
       unit: "kg; monetary unit identified"
       frequency: "each dispatch/container and batch reject"
       temporal_coverage: "full same period including storage damage"
@@ -1135,9 +1138,19 @@ dataset_production:
       aggregation_rule: "per 1 kg reference flow"
       quality_evidence: "test method; blank/detection data; operating and control logs; uncertainty; unmeasured coverage"
   calculation_rules:
+    - id: acceptance_event_bridge
+      applies_to: "all inventory rows"
+      rule: "Independently lock Q_new=sum(unique first-acceptance net wood masses). Cross-check Q_new=D_new+FG_new+L_new with disjoint exhaustive net destinations under the section 8 bridge; each parcel uses its measured original dry-basis u0. Convert current destination mass by m_eq,j=m_current,j/(1+u_j)*(1+u0_j); retain actual dry-wood and water ledgers separately. L_new includes all actual post-acceptance net returns outside FG, losses, scrap, downgrade, use and closing rework/WIP. Linked returns reduce gross dispatch and enter only their final destination; loops/reacceptance do not add Q. Use two terms only if L_new=0 is evidenced. At 100 kg acceptance, 60 kg net dispatch, 30 kg FG and 10 kg loss, Q_new=100 kg, not 90 kg. Failed rework and later services keep original Q0; Q is not an extra external physical export. Unresolved moisture/genealogy/destination evidence blocks complete reconciliation."
+      inputs:
+        - cp_lot
+        - cp_moisture
+        - cp_residues
+        - "original event and destination records"
+      output: "locked event Q_new and complete same-basis destination bridge"
+      source_ids: []
     - id: period_intensity
       applies_to: "all inventory rows"
-      rule: "For new first-accepted cohorts Q_new=D_new+A_new at original first-acceptance net kg. The attributable quantity vector N_new combines inherited consumed raw/WIP vectors with actual added services assigned to that new accepted output, without duplicating prior quantities or including retained raw/WIP or old FG. For Q_new>0, intensity=N_new/Q_new. Keep incomplete-cohort vectors as stock. For an older accepted cohort, supplement intensity=actual later service vector/original accepted net kg and append it once to the inherited vector. Do not use unrelated Q_new, current shipment kg, returned/retested quantity or reacceptance as a substitute denominator. At Q_new=0, retain new/unfinished quantities without division; if an original denominator is absent, keep the old supplement unnormalized and unresolved."
+      rule: "Use independently measured unique-event Q_new, verified under acceptance_event_bridge, at original first-acceptance net kg. N_new combines inherited consumed raw/never-accepted-WIP vectors with all actual attributable production, later services, failed rework and treatment additions, each once; exclude untouched raw/never-accepted-WIP and old FG vectors. For Q_new>0, intensity=N_new/Q_new. Carry never-accepted unfinished vectors as stock. Previously accepted rework always keeps its original cohort Q0, never a new first acceptance. For an older cohort, service supplement=actual later activity vector/original Q0; append once even when rework has zero successful output. Do not use unrelated Q_new, current shipment, returned/retested kg, remaining saleable kg or reacceptance as denominator. Q_new=0 retains new/unfinished quantities without division; missing original Q0 leaves old services unnormalized/unresolved. Physical quantities, event denominators and allocated burdens remain separate."
       inputs:
         - cp_lot
         - "applicable quantity protocol"
@@ -1145,7 +1158,7 @@ dataset_production:
       source_ids: []
     - id: dry_wood_account
       applies_to: "all wood streams"
-      rule: "For each separate stream, u=(wet mass−oven-dry mass)/oven-dry mass and dry wood=wet mass/(1+u). Reconcile physical received wood and all opening raw/WIP/FG against dispatch, closing raw/WIP/FG, distinct residues/rejects and measured losses; first acceptance is an internal classification, not an additional physical export. Separately reconcile Q_new and inherited cohort vectors so closing newly accepted FG is not counted twice. Preserve each residual and moisture-state change."
+      rule: "For each separate stream, u=(wet mass−oven-dry mass)/oven-dry mass and dry wood=wet mass/(1+u). Reconcile physical received wood and all opening raw/WIP/FG against dispatch, closing raw/WIP/FG, distinct residues/rejects and measured losses; first acceptance is an internal classification, not an additional physical export. Include external returns once and keep all external destinations disjoint; internal rework transfers cancel. Separately reconcile unique-event Q_new, the complete acceptance_event_bridge and inherited cohort vectors so closing newly accepted FG or accepted rework is not counted twice. Preserve each residual and moisture-state change; never relabel unexplained imbalance as measured loss or adjust Q to close it."
       inputs:
         - cp_lot
         - cp_moisture
@@ -1163,7 +1176,7 @@ dataset_production:
         - epa-veneer-2002
     - id: repeat_account
       applies_to: "dry"
-      rule: "Retain each actual dryer pass and its heat, electricity, measured moisture, rejected mass and accepted destination. Sum repeat consumption without counting the same sheet mass as newly produced; separately record final rejects. Do not impute a second pass to every limba lot."
+      rule: "Retain each actual dryer pass and its heat, electricity, measured moisture, rejected mass and accepted destination, including all failed attempts. Sum repeat consumption once; before first acceptance it follows the eventual cohort or never-accepted WIP, and after first acceptance it follows unchanged original Q0 even with zero successful rework output. Reacceptance never creates new Q; separately record final rejects and closing rework destinations under acceptance_event_bridge. Do not impute a second pass to every limba lot."
       inputs:
         - cp_moisture
         - cp_lot
@@ -1191,7 +1204,7 @@ dataset_production:
         - epa-veneer-2002
     - id: water_account
       applies_to: "dryer_water; conditioning_water; conditioning_wastewater"
-      rule: "Keep two linked but distinct balances. Process water: wood moisture plus new tap-water makeup equals moisture in accepted/stock wood and residues plus process wastewater, process evaporation and the disclosed residual. Utility circuit: inlet steam/condensate mass equals returned condensate plus documented utility stock change and each real separately identified loss/release; retain compatible inlet/return enthalpies for net heat. In the selected indirect conditioning/coils route, no utility steam mass enters process contact water or wood. Do not treat utility venting as wood evaporation or duplicate returned water. Any direct injection/contact or coil leak into the process needs route review and an explicit atomic mass input; it is not covered silently."
+      rule: "Keep two linked but distinct balances. Process water over the full mill including FG storage: water in actual received wood and external returns plus opening wood/water stocks and new tap-water makeup equals water in actual external wood/residue transfers, closing raw/WIP/FG and water stocks, process wastewater and evaporation, with the residual disclosed. Internal acceptance Q and rework are not additional physical water outputs; no accepted FG is counted both at acceptance and in closing stock. Utility circuit: inlet steam/condensate mass equals returned condensate plus documented utility stock change and each real separately identified loss/release; retain compatible inlet/return enthalpies for net heat. In the selected indirect conditioning/coils route, no utility steam mass enters process contact water or wood. Do not treat utility venting as wood evaporation or duplicate returned water. Any direct injection/contact or coil leak into the process needs route review and an explicit atomic mass input; it is not covered silently."
       inputs:
         - cp_water
         - cp_moisture
@@ -1242,7 +1255,7 @@ validation_rules:
       - usda-wood-moisture-2021
   - rule_id: validate_lot
     applies_to: "foreground_dataset_conformance"
-    rule: "Reconcile first-acceptance ids and Q_new=D_new+A_new, once at original acceptance moisture/mass, against raw/WIP/FG and stock transfers. Exclude opening accepted FG, returns, retests, reacceptance and repeat throughput from new Q. Preserve inherited raw/WIP/FG quantity and burden vectors. Verify every later old-cohort service uses its original accepted net kg and is appended once; Q_new=0 or missing original denominators stays unnormalized/unresolved. Reference wood excludes packaging."
+    rule: "Independently verify unique event ids/masses for Q_new and the complete Q_new=D_new+FG_new+L_new bridge on original acceptance moisture under acceptance_event_bridge; two terms require proven L_new=0. Audit measured parcel conversions, mutually exclusive linked net returns, loss/scrap/downgrade/use and closing rework/WIP. Reject a denominator inferred from remaining saleable stock, omitted losses, duplicated destinations or Q added as an extra external physical export. Opening accepted FG, purchased finished sheets, returns, retests, reacceptance and repeat throughput add no new Q. Preserve inherited raw/never-accepted-WIP/FG quantity and burden vectors; accepted rework stays with original Q0. Every actual later service, including failed rework with no successful output, uses original Q0 once and retains its load. Q_new=0 or missing original denominators stays unnormalized/unresolved; missing event/moisture/destination evidence blocks complete reconciliation. Reference wood excludes packaging."
     source_ids:
       - fao-tropical-utilization
       - usda-wood-moisture-2021
@@ -1263,7 +1276,7 @@ published_dataset_profile:
   downstream_use: "secondary_dataset; background_dataset"
   allowed_use: "Subsequent veneering/plywood input with matching species, route, grade, first-acceptance moisture/mass and supplier definitions. State whether later storage/packing/dispatch services have actually been appended; a closing-FG first-acceptance dataset is not complete dispatch-gate coverage until then. Disclose review and gaps."
   excluded_use: "Other tropical species or generic tropical blend; sliced/sawn/green/bonded/treated product; on-site combustion route; complete panel or installed-service comparison; assumed durability or phytosanitary approval"
-  required_metadata: "All reference qualifiers; supplier/forest and treatment provenance; original first-acceptance ids/masses/moisture; opening/closing raw/WIP/FG vectors and transfers; Q_new components; returns/retests and old-cohort supplements; moisture/pass history; separate process-water/steam mass/enthalpy accounts; physical/allocation ledgers; actual dispatch-service coverage"
+  required_metadata: "All reference qualifiers; supplier/forest and treatment provenance; original first-acceptance ids/masses/moisture; opening/closing raw/WIP/FG vectors and transfers; independently measured event Q_new/Q0, disjoint D_new/FG_new/L_new and measured original-basis conversions; net returns/retests, failed rework and old-cohort supplements; moisture/pass history; separate process-water/steam mass/enthalpy accounts; physical/allocation ledgers; actual dispatch-service coverage"
   required_quality_disclosure: "Sampling/meter uncertainty; storage losses and rejects; unnormalized Q_new=0 or missing-denominator quantities; inherited vectors and unfinished-stock coverage; pending later dispatch services; blank UUIDs, unmeasured scope, background compatibility, allocation sensitivity and independent review state"
   update_trigger: "Changed species/forest source, treatment status, cutting/drying/heat route, moisture or quality target, packaging, emission controls, allocation/destination, reference identity or new evidence"
 data_sources:
@@ -1293,21 +1306,21 @@ data_sources:
     used_for: "Physical mass-allocation and product-specific packaging method precedent only; softwood survey amounts, species and shares are not limba evidence"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:de8b90fefdf25d71beba61f7b43b706c2854efa4ac0b613aa3482c144e9da2b6"
+  source_sha256: "sha256:05c7ffd7e7be85c28f5faa342810752c6ed773c5b5e5e86ff08d024024ed0b3a"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8246"
+    - unit_id: "normative_8789"
       family: "system_boundary"
       span:
         start:
-          offset: 8246
+          offset: 8789
           line: 64
           column: 1
         end:
-          offset: 11789
+          offset: 12426
           line: 85
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified untreated limba logs received at mill gate, including bark where present; moisture and stock recorded |\n| starting_condition_role | Foreground intake fact; upstream forestry, harvest and freight burdens remain in linked log supply |\n| product_classification_scope | Limba subset of tropical non-coniferous thin sheets ≤6 mm; classification does not establish forest provenance or method applicability |\n| recursive_input_rule | Purchased veneer is outside this log-to-sheet route. Keep raw, WIP and accepted-FG stock identities and inherited vectors; internal rework/repeat drying/returns/reacceptance never create a second first-accepted output. External same-category sheet input requires a reviewed purchased-sheet route. |\n| upstream_dataset_requirement | Match log species/provenance, forestry/land-use treatment and mill delivery gate; match electricity voltage/geography/period and actual net steam supply boundary; link treatment of each exported waste |\n| disclosure | Declare intake, first-acceptance and dispatch gates; Q_new and original old-cohort denominators; inherited stock vectors; utility suppliers and separate steam/process-water circuits; route exclusions, forest/land-use coverage, freight ownership, storage losses, infrastructure, unmeasured exchanges and background mismatches |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_species | Use supplier and lot evidence to identify Terminalia superba and segregate its accepted output, residues and rejects. Unknown mixtures fail applicability. Record plantation/natural-forest provenance without assuming that tropical origin establishes land-use neutrality. | `itto-limba`; `un-cpc-3` |\n| boundary_stages | Include log storage loss, debarking/bucking, conditioning, peeling, clipping, drying, cooling, repeated passes, grading, trim, packaging actually used and associated wastewater/emissions. The end gate precedes adhesive composing, layup or downstream pressing. | `epa-veneer-2002`; `usda-wood-moisture-2021` |\n| boundary_utility | Use electric drives and purchased steam only. Steam heats the conditioning bath and dryer air through closed indirect heat exchangers/coils, with no designed steam contact with wood or process water. Preserve the utility steam/condensate mass, state, enthalpy, return, stock and loss ledger separately from the process-water balance. Do not duplicate supplier fuel/boiler emissions. Direct injection/contact, coil leakage into process water, combustion or diesel handling requires route review and explicit atomic mass exchanges before application. | `epa-veneer-2002` |\n| boundary_repeat | Preserve original-lot and first-acceptance-cohort identity through moisture sorting, every repeat pass, storage, dispatch, return and retest. Add actual service quantities to that cohort, never create another accepted-output quantity or transfer old-cohort services to new output. No universal repeat rate or Terminalia temperature schedule is inferred. | `fao-tropical-utilization`; `epa-veneer-2002` |\n| boundary_completeness | Physical inputs/outputs must close across stock, water and dry wood with stated uncertainty. Record additional actual exchanges separately, disclose any excluded capital/infrastructure scope and keep unresolved identities or unmeasured releases visible. Untreated sheet manufacture gives no preservation or end-use approval. | `itto-limba`; `usda-wood-moisture-2021` |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified untreated limba logs received at mill gate, including bark where present; moisture and stock recorded |\n| starting_condition_role | Foreground intake fact; upstream forestry, harvest and freight burdens remain in linked log supply |\n| product_classification_scope | Limba subset of tropical non-coniferous thin sheets ≤6 mm; classification does not establish forest provenance or method applicability |\n| recursive_input_rule | Purchased veneer is outside this log-to-sheet route. Keep raw, WIP and accepted-FG stock identities and inherited vectors; internal rework/repeat drying/returns/reacceptance never create a second first-accepted output. External same-category sheet input requires a reviewed purchased-sheet route; receipt, retest or dispatch of purchased finished sheets never adds log-fed production Q_new. |\n| upstream_dataset_requirement | Match log species/provenance, forestry/land-use treatment and mill delivery gate; match electricity voltage/geography/period and actual net steam supply boundary; link treatment of each exported waste |\n| disclosure | Declare intake, first-acceptance and dispatch gates; Q_new and original old-cohort denominators; inherited stock vectors; utility suppliers and separate steam/process-water circuits; route exclusions, forest/land-use coverage, freight ownership, storage losses, infrastructure, unmeasured exchanges and background mismatches |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_species | Use supplier and lot evidence to identify Terminalia superba and segregate its accepted output, residues and rejects. Unknown mixtures fail applicability. Record plantation/natural-forest provenance without assuming that tropical origin establishes land-use neutrality. | `itto-limba`; `un-cpc-3` |\n| boundary_stages | Include log storage loss, debarking/bucking, conditioning, peeling, clipping, drying, cooling, repeated passes, grading, trim, packaging actually used and associated wastewater/emissions. The end gate precedes adhesive composing, layup or downstream pressing. | `epa-veneer-2002`; `usda-wood-moisture-2021` |\n| boundary_utility | Use electric drives and purchased steam only. Steam heats the conditioning bath and dryer air through closed indirect heat exchangers/coils, with no designed steam contact with wood or process water. Preserve the utility steam/condensate mass, state, enthalpy, return, stock and loss ledger separately from the process-water balance. Do not duplicate supplier fuel/boiler emissions. Direct injection/contact, coil leakage into process water, combustion or diesel handling requires route review and explicit atomic mass exchanges before application. | `epa-veneer-2002` |\n| boundary_repeat | Preserve original-lot and first-acceptance-cohort identity through moisture sorting, every repeat pass, storage, dispatch, return and retest. Add actual service quantities to that cohort, never create another accepted-output quantity or transfer old-cohort services to new output. No universal repeat rate or Terminalia temperature schedule is inferred. | `fao-tropical-utilization`; `epa-veneer-2002` |\n| boundary_completeness | Physical inputs/outputs must close across stock, water and dry wood with stated uncertainty. Record additional actual exchanges separately, disclose any excluded capital/infrastructure scope and keep unresolved identities or unmeasured releases visible. Untreated sheet manufacture gives no preservation or end-use approval. | `itto-limba`; `usda-wood-moisture-2021` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1324,11 +1337,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8246
+              offset: 8789
               line: 64
               column: 1
             end:
-              offset: 8267
+              offset: 8810
               line: 64
               column: 22
           text: "## 5. System Boundary"
@@ -1344,15 +1357,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_51318"
+    - unit_id: "normative_53000"
       family: "allocation"
       span:
         start:
-          offset: 51318
+          offset: 53000
           line: 791
           column: 1
         end:
-          offset: 53044
+          offset: 54726
           line: 800
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_separate | First subdivide metered stages and directly assign burdens to their actual operation/lot. Drying and repeats follow the wood actually dried; packaging follows the actual packed product. Earlier green residues do not receive later drying burdens. | `corrim-allocation-2025`; `epa-veneer-2002` |\n| allocation_mass | For remaining inseparable common burdens at a documented separation node, apply measured oven-dry mass shares among the continuing wood stream (accepted veneer only at the final node) and genuine saleable wood co-products leaving that node. Record all candidate products, moisture, stock and the numerator/denominator; disclose this as a chosen physical allocation rule and test an economic-share sensitivity when values materially differ. CORRIM is method precedent from softwood plywood, not evidence that limba has the same shares. | `corrim-allocation-2025`; `usda-wood-moisture-2021` |\n| allocation_waste | Document product versus waste status by actual contracts and destinations. Waste is not an allocation co-product merely because it is recovered or burned elsewhere. Include the responsibility for treatment; no assumed avoided-fuel credit. Retain sold/waste quantities as disjoint flows. | `corrim-allocation-2025` |\n| allocation_ledgers | Preserve the complete pre-allocation physical wood, water, residue and emission ledger. Allocate burdens in a separate linked ledger; never multiply physical output mass by an allocation fraction to force a material balance. Internal rework and repeat drying have no co-product share. | `corrim-allocation-2025`; `fao-tropical-utilization` |\n\n"
@@ -1372,11 +1385,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 51318
+              offset: 53000
               line: 791
               column: 1
             end:
-              offset: 51358
+              offset: 53040
               line: 791
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1392,18 +1405,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_71285"
+    - unit_id: "normative_78850"
       family: "validation"
       span:
         start:
-          offset: 71285
-          line: 849
+          offset: 78850
+          line: 856
           column: 1
         end:
-          offset: 73426
-          line: 859
+          offset: 81509
+          line: 866
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_identity | Exactly one reference output is limba_delivery, 1 kg net sheet mass, with the verified tropical product UUID and all required limba/route/moisture/thickness qualifiers. Species alone does not establish untreated state, supplier provenance or a compatible background. | `itto-limba`; `un-cpc-3` |\n| validate_route | Verify electric handling, external steam, closed indirect conditioning heat exchangers/dryer coils and unbonded first-acceptance gate. Check separate utility mass/enthalpy and process-water ledgers, actual utility losses and explicit atomic release coverage. Direct steam contact/injection, coil leakage into process water, combustion, treatment, composing, backing or alternate cutting route cannot pass by omission; require route review and the actual exchanges. | `epa-veneer-2002`; `usda-wood-moisture-2021` |\n| validate_lot | Reconcile first-acceptance ids and Q_new=D_new+A_new, once at original acceptance moisture/mass, against raw/WIP/FG and stock transfers. Exclude opening accepted FG, returns, retests, reacceptance and repeat throughput from new Q. Preserve inherited raw/WIP/FG quantity and burden vectors. Verify every later old-cohort service uses its original accepted net kg and is appended once; Q_new=0 or missing original denominators stays unnormalized/unresolved. Reference wood excludes packaging. | `fao-tropical-utilization`; `usda-wood-moisture-2021` |\n| validate_physical | Dry-wood/water residuals, allocation shares and dedicated downstream burdens must be traceable. No product/waste overlap, mass balance by allocation, duplicate steam supply fuel or overlapping PM bins. Do not add a VOC total to its individual constituents. | `corrim-allocation-2025`; `epa-veneer-2002` |\n| validate_limits | Unknown UUIDs, missing sample distributions, unmeasured emissions, incompatible net-steam references and omitted scope remain explicit gaps. No zero from missing records, no whole-site completeness from a method check, and no durability claim for untreated limba. | `itto-limba`; `epa-veneer-2002` |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_identity | Exactly one reference output is limba_delivery, 1 kg net sheet mass, with the verified tropical product UUID and all required limba/route/moisture/thickness qualifiers. Species alone does not establish untreated state, supplier provenance or a compatible background. | `itto-limba`; `un-cpc-3` |\n| validate_route | Verify electric handling, external steam, closed indirect conditioning heat exchangers/dryer coils and unbonded first-acceptance gate. Check separate utility mass/enthalpy and process-water ledgers, actual utility losses and explicit atomic release coverage. Direct steam contact/injection, coil leakage into process water, combustion, treatment, composing, backing or alternate cutting route cannot pass by omission; require route review and the actual exchanges. | `epa-veneer-2002`; `usda-wood-moisture-2021` |\n| validate_lot | Independently verify unique event ids/masses for Q_new and the complete Q_new=D_new+FG_new+L_new bridge on original acceptance moisture under acceptance_event_bridge; two terms require proven L_new=0. Audit measured parcel conversions, mutually exclusive linked net returns, loss/scrap/downgrade/use and closing rework/WIP. Reject a denominator inferred from remaining saleable stock, omitted losses, duplicated destinations or Q added as an extra external physical export. Opening accepted FG, purchased finished sheets, returns, retests, reacceptance and repeat throughput add no new Q. Preserve inherited raw/never-accepted-WIP/FG quantity and burden vectors; accepted rework stays with original Q0. Every actual later service, including failed rework with no successful output, uses original Q0 once and retains its load. Q_new=0 or missing original denominators stays unnormalized/unresolved; missing event/moisture/destination evidence blocks complete reconciliation. Reference wood excludes packaging. | `fao-tropical-utilization`; `usda-wood-moisture-2021` |\n| validate_physical | Dry-wood/water residuals, allocation shares and dedicated downstream burdens must be traceable. No product/waste overlap, mass balance by allocation, duplicate steam supply fuel or overlapping PM bins. Do not add a VOC total to its individual constituents. | `corrim-allocation-2025`; `epa-veneer-2002` |\n| validate_limits | Unknown UUIDs, missing sample distributions, unmeasured emissions, incompatible net-steam references and omitted scope remain explicit gaps. No zero from missing records, no whole-site completeness from a method check, and no durability claim for untreated limba. | `itto-limba`; `epa-veneer-2002` |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1420,12 +1433,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 71285
-              line: 849
+              offset: 78850
+              line: 856
               column: 1
             end:
-              offset: 71307
-              line: 849
+              offset: 78872
+              line: 856
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1444,233 +1457,233 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_species"
       identity_kind: "explicit"
-      unit_id: "normative_8246"
+      unit_id: "normative_8789"
       source_span:
         start:
-          offset: 9728
+          offset: 10365
           line: 79
           column: 1
         end:
-          offset: 10047
+          offset: 10684
           line: 79
           column: 320
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_stages"
       identity_kind: "explicit"
-      unit_id: "normative_8246"
+      unit_id: "normative_8789"
       source_span:
         start:
-          offset: 10048
+          offset: 10685
           line: 80
           column: 1
         end:
-          offset: 10376
+          offset: 11013
           line: 80
           column: 329
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_utility"
       identity_kind: "explicit"
-      unit_id: "normative_8246"
+      unit_id: "normative_8789"
       source_span:
         start:
-          offset: 10377
+          offset: 11014
           line: 81
           column: 1
         end:
-          offset: 10968
+          offset: 11605
           line: 81
           column: 592
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_repeat"
       identity_kind: "explicit"
-      unit_id: "normative_8246"
+      unit_id: "normative_8789"
       source_span:
         start:
-          offset: 10969
+          offset: 11606
           line: 82
           column: 1
         end:
-          offset: 11392
+          offset: 12029
           line: 82
           column: 424
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_8246"
+      unit_id: "normative_8789"
       source_span:
         start:
-          offset: 11393
+          offset: 12030
           line: 83
           column: 1
         end:
-          offset: 11787
+          offset: 12424
           line: 83
           column: 395
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_separate"
       identity_kind: "explicit"
-      unit_id: "normative_51318"
+      unit_id: "normative_53000"
       source_span:
         start:
-          offset: 51412
+          offset: 53094
           line: 795
           column: 1
         end:
-          offset: 51729
+          offset: 53411
           line: 795
           column: 318
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_mass"
       identity_kind: "explicit"
-      unit_id: "normative_51318"
+      unit_id: "normative_53000"
       source_span:
         start:
-          offset: 51730
+          offset: 53412
           line: 796
           column: 1
         end:
-          offset: 52340
+          offset: 54022
           line: 796
           column: 611
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_waste"
       identity_kind: "explicit"
-      unit_id: "normative_51318"
+      unit_id: "normative_53000"
       source_span:
         start:
-          offset: 52341
+          offset: 54023
           line: 797
           column: 1
         end:
-          offset: 52677
+          offset: 54359
           line: 797
           column: 337
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_ledgers"
       identity_kind: "explicit"
-      unit_id: "normative_51318"
+      unit_id: "normative_53000"
       source_span:
         start:
-          offset: 52678
+          offset: 54360
           line: 798
           column: 1
         end:
-          offset: 53042
+          offset: 54724
           line: 798
           column: 365
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_71285"
+      unit_id: "normative_78850"
       source_span:
         start:
-          offset: 71361
-          line: 853
+          offset: 78926
+          line: 860
           column: 1
         end:
-          offset: 71678
-          line: 853
+          offset: 79243
+          line: 860
           column: 318
     - pointer: "/validation_rules/1"
       rule_id: "validate_route"
       identity_kind: "explicit"
-      unit_id: "normative_71285"
+      unit_id: "normative_78850"
       source_span:
         start:
-          offset: 71679
-          line: 854
+          offset: 79244
+          line: 861
           column: 1
         end:
-          offset: 72211
-          line: 854
+          offset: 79776
+          line: 861
           column: 533
     - pointer: "/validation_rules/2"
       rule_id: "validate_lot"
       identity_kind: "explicit"
-      unit_id: "normative_71285"
+      unit_id: "normative_78850"
       source_span:
         start:
-          offset: 72212
-          line: 855
+          offset: 79777
+          line: 862
           column: 1
         end:
-          offset: 72777
-          line: 855
-          column: 566
+          offset: 80860
+          line: 862
+          column: 1084
     - pointer: "/validation_rules/3"
       rule_id: "validate_physical"
       identity_kind: "explicit"
-      unit_id: "normative_71285"
+      unit_id: "normative_78850"
       source_span:
         start:
-          offset: 72778
-          line: 856
+          offset: 80861
+          line: 863
           column: 1
         end:
-          offset: 73104
-          line: 856
+          offset: 81187
+          line: 863
           column: 327
     - pointer: "/validation_rules/4"
       rule_id: "validate_limits"
       identity_kind: "explicit"
-      unit_id: "normative_71285"
+      unit_id: "normative_78850"
       source_span:
         start:
-          offset: 73105
-          line: 857
+          offset: 81188
+          line: 864
           column: 1
         end:
-          offset: 73424
-          line: 857
+          offset: 81507
+          line: 864
           column: 320
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8246"
+      unit_id: "normative_8789"
       source_span:
         start:
-          offset: 8246
+          offset: 8789
           line: 64
           column: 1
         end:
-          offset: 8267
+          offset: 8810
           line: 64
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8246"
+      unit_id: "normative_8789"
       source_span:
         start:
-          offset: 8295
+          offset: 8838
           line: 68
           column: 1
         end:
-          offset: 9674
+          offset: 10311
           line: 75
           column: 342
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_51318"
+      unit_id: "normative_53000"
       source_span:
         start:
-          offset: 51318
+          offset: 53000
           line: 791
           column: 1
         end:
-          offset: 51358
+          offset: 53040
           line: 791
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_71285"
+      unit_id: "normative_78850"
       source_span:
         start:
-          offset: 71285
-          line: 849
+          offset: 78850
+          line: 856
           column: 1
         end:
-          offset: 71307
-          line: 849
+          offset: 78872
+          line: 856
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1679,5 +1692,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:de8b90fefdf25d71beba61f7b43b706c2854efa4ac0b613aa3482c144e9da2b6"
-  generated_content_sha256: "sha256:bf9090aba7b06d4b9ed7bb9afcf9df96d5116c48f2fc509ac349c7d5d67e9745"
+    sha256: "sha256:05c7ffd7e7be85c28f5faa342810752c6ed773c5b5e5e86ff08d024024ed0b3a"
+  generated_content_sha256: "sha256:1a4bc2db1f2c877f83b8619d9bdefc526fed7afde4abf3a6f4ae9e326aa04559"
