@@ -12,7 +12,7 @@ product_category_identity:
 functional_unit:
   what: "Supply first-accepted manufactured solid thorium dioxide at the fixed manufacturer factory gate"
   how_much: "1 kg"
-  how_well: "Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; independently measured first-acceptance net whole-product Q plus cohort links; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity"
+  how_well: "Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; immutable independently measured first-acceptance net whole-product event Q plus original Q0 and cohort links plus complete same-basis D_new/FG_new/L_new destinations and measured conversions; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity"
   how_long_or_cycle: "Gate supply in one declared reporting period; storage duration recorded separately"
   reference_flow_link: "reference_product"
 system_boundary:
@@ -38,7 +38,7 @@ boundary_abstraction:
   product_classification_scope: "Solid ThO2 subset of CPC33630, not its mixed complete category"
   recursive_input_rule: "Purchased same-category feed links a distinct upstream provider; cancel internal movements/returns without new supply or credit"
   upstream_dataset_requirement: "Require physical supplied-compound, transport, original packaging, electricity, water and actual waste-treatment background coverage; disclose each gap"
-  disclosure: "Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; independently measured first-acceptance net whole-product Q plus cohort links; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity"
+  disclosure: "Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; immutable independently measured first-acceptance net whole-product event Q plus original Q0 and cohort links plus complete same-basis D_new/FG_new/L_new destinations and measured conversions; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity"
 reference_flow_definition:
   reference_amount: "1"
   product_flow_ref:
@@ -52,7 +52,7 @@ reference_flow_definition:
   required_qualifiers:
     - "Manufactured single-species solid ThO2 plus CAS 1314-20-1"
     - "actual SKU/lot plus supplier and origin"
-    - "independently measured first-acceptance net whole-product Q plus cohort links"
+    - "immutable independently measured first-acceptance net whole-product event Q plus original Q0 and cohort links plus complete same-basis D_new/FG_new/L_new destinations and measured conversions"
     - "composition plus assay denominator plus free moisture and structural water"
     - "civilian intended use"
     - "original container/packaging plus tare"
@@ -74,7 +74,7 @@ measurement_rules:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Q is independently measured net whole-solid-product mass first accepted at this fixed gate during the reporting period: new dispatch plus newly accepted closing finished stock, each counted once. Exclude opening already accepted finished stock, returns, retests, relabeling and internal transfers from new Q. cp_reference_product records Q and unique first-acceptance lot/event links. Every card uses per 1 kg reference flow."
+    rule: "Q is the sum of independently measured net whole-solid-product kg at unique first-acceptance events at this fixed gate in the period, locked to immutable original event/lot records and original acceptance basis. Reconcile Q = D_new + FG_new + L_new for the same newly accepted cohort on that same basis: net dispatch after linked returns, closing accepted FG and all other net post-acceptance destinations, including actual net returns not already in D_new/FG_new, loss, scrap, downgrade, use and closing transfer to rework/WIP. Destinations must be mutually exclusive and exhaustive; measured composition/moisture/basis changes require explicit conversions. Only evidence that all other net destinations are zero permits Q = D_new + FG_new. Later losses never lower Q; opening already accepted FG, returns, retests, reacceptance, relabeling and internal transfers add no Q. Never-accepted WIP adds no Q; previously accepted material in closing WIP belongs to L_new. cp_reference_product records Q, original Q0 and unique events. All cards use per 1 kg reference flow."
   - id: compound_element_activity
     applies_to: "reference_product, feed_tho2, waste_tho2, th232_air, th232_water"
     required_property_ref:
@@ -196,7 +196,7 @@ process_inventory:
           flow_ref:
             uuid: "f9e02fdf-db98-4802-9f1d-10d680f67065"
           property_unit: "Mass / kg"
-          description: "Exactly 1 kg of first-accepted net whole manufactured solid ThO2 at the declared manufacturer factory gate, excluding container and packaging. Retain lot assay and moisture. Q includes newly accepted dispatch and newly accepted closing finished stock once; old accepted stock, returns and retests cannot generate another output. Physical delivery and first acceptance remain separately observable."
+          description: "Exactly 1 kg of first-accepted net whole manufactured solid ThO2 at the declared manufacturer factory gate, excluding container and packaging. Retain lot assay and moisture. Q is the sum of unique first-acceptance event masses, reconciled with complete same-basis D_new/FG_new/L_new destinations. Later losses do not reduce Q; old accepted stock, returns, retests and reacceptance add no event quantity. This normalized reference row is an accounting coordinate, not an additional physical external output; actual net dispatch, losses and stocks are recorded independently once."
           amount:
             expression: "1 kg"
             value_mode: "fixed_value"
@@ -358,14 +358,14 @@ dataset_production:
       process_id: "gate"
       flow_role: "reference_product"
       record_type: "first acceptance ledger"
-      raw_fields: "unique lot/event; first acceptance time/criterion; measured gross and tare; net whole-product mass; new dispatch; newly accepted closing finished stock; opening accepted stock; return/retest flag; assay/moisture basis; original cohort Q"
-      collection_method: "Use calibrated scales and independent acceptance records; deduplicate lot/event identifiers. Reconcile newly accepted dispatch plus newly accepted closing finished stock against independent first-acceptance records. Exclude packaging and all previously accepted quantities from Q."
+      raw_fields: "immutable lot/event id; first-acceptance time/criterion; independently measured gross/tare/net whole-product kg at that event; original acceptance basis; net D_new and linked returns; FG_new closing accepted stock; disjoint L_new loss/scrap/downgrade/use/net-return/closing rework-WIP destinations; opening raw/WIP/FG; gross transfers/retests/reacceptance; actual failed/rework services within scope; assay/moisture and measured basis conversions; uncertainty; locked Q; original cohort Q0"
+      collection_method: "Use calibrated scales and independent first-acceptance records; deduplicate immutable event/lot identifiers and lock Q to their measured net masses. Reconcile complete same-cohort same-original-basis Q = D_new + FG_new + L_new, with mutually exclusive exhaustive destinations. Subtract linked returns from dispatch and locate their remaining net destination once in FG_new or actual L_new; never add gross loops or reacceptance to Q. Exclude packaging and previously accepted events from new Q; preserve separate physical stocks/external movements and original Q0."
       unit: "kg"
       frequency: "each lot/event and period totals"
       temporal_coverage: "same declared reporting period"
       site_scope: "selected actual supply gate and all applicable stages"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "original metrology, calibration, transfers, analyses and completeness evidence"
+      quality_evidence: "original metrology, calibration, immutable events, complete same-basis destination records, analyses and completeness evidence"
     - protocol_id: cp_waste_tho2
       process_id: "gate"
       flow_role: "waste_tho2"
@@ -418,8 +418,8 @@ dataset_production:
       process_id: "gate"
       flow_role: "scope and attribution"
       record_type: "site ledger"
-      raw_fields: "actual route/boundary map; internal paired links; first-acceptance Q; exchange-specific shared drivers; raw/WIP/finished opening/closing stock; inherited and current burden vectors; prior-cohort service; upstream coverage; no-flow evidence"
-      collection_method: "Reconcile physical-before-allocation and burden-after-allocation ledgers; review actual causal drivers and provider coverage"
+      raw_fields: "actual route/boundary map; internal paired links; unique first-acceptance events and Q; complete same-basis D_new/FG_new/L_new with measured conversions; exchange-specific shared drivers; raw/WIP/FG opening/closing stocks; inherited and current burden vectors; original Q0 and prior-cohort services; actual failed/rework loads within scope; upstream coverage; no-flow evidence"
+      collection_method: "Reconcile separate physical-before-allocation, acceptance-event/destination and burden-after-allocation ledgers; review actual causal drivers and provider coverage. Preserve actual failed/rework services and old-cohort Q0 without changing the locked acceptance event quantity."
       unit: "kg; m3; MJ; kBq"
       frequency: "each period"
       temporal_coverage: "same reporting period"
@@ -429,7 +429,7 @@ dataset_production:
   calculation_rules:
     - id: period_normalization
       applies_to: "all inventory rows"
-      rule: "Keep complete-period raw boundary exchanges, including actual failures, rejects, rework, standby, cleaning and zero-output intervals. Apply demonstrated exchange-specific shared drivers to burdens after conserving physical quantities. Reconcile raw/WIP/finished stocks and inherited vectors under acceptance_stock_vectors, then divide each burden assigned to the new accepted cohort by its positive Q once. The reference product is 1 kg. Collection and card division denote this same final reporting operation, not a second division."
+      rule: "Keep complete-period raw boundary exchanges, including actual failures, rejects, rework, standby, cleaning, post-acceptance losses and zero-output intervals within the declared gate scope. Apply demonstrated exchange-specific shared drivers to burdens after preserving physical quantities. Reconcile raw/WIP/FG stocks and inherited vectors under acceptance_stock_vectors, then divide each exchange or burden assigned to the new first-accepted cohort by its original event-locked positive Q once. Old-cohort corrections retain original Q0. Later losses, return-to-WIP or reacceptance change no original denominator. The reference product is 1 kg as an event accounting coordinate, not an additional physical external output. Collection and card division denote this same final reporting operation, not a second division."
       inputs:
         - "period records"
         - Q
@@ -451,7 +451,7 @@ dataset_production:
         - epa-marlap19-2004
     - id: acceptance_stock_vectors
       applies_to: "all inventory rows"
-      rule: "Q equals independently measured newly accepted dispatch plus newly accepted closing finished stock; count each first-acceptance event once. Preserve separate opening and closing raw-material, work-in-progress and finished-product stocks with historical per-exchange burden vectors and original gate/product/route/state/cohort links. For each exchange e, reconcile opening inherited burden plus current attributable complete-period burden equals burden assigned to newly accepted output plus closing carried burden plus separately disclosed other-output or prior-cohort service burden. This is a burden identity, not a physical-output formula. Old finished-stock dispatch, returns, retests and internal transfers do not enlarge Q or reset inherited burden. Later storage/dispatch service for previously accepted output is attached to that original cohort and its original accepted Q; never divide it by new Q. Missing inherited vectors or unresolved cohort attribution keeps the normalized result incomplete. If Q is zero or not evidenced, retain raw totals and all stocks/vectors, hold unit results and do not borrow another denominator."
+      rule: "Q is the sum of unique independently measured first-acceptance event whole-product masses, locked on the original acceptance basis. Reconcile the exhaustive mutually exclusive same-basis D_new/FG_new/L_new bridge under acceptance_event_bridge; only independently evidenced zero other net post-acceptance destinations permits the two-term form. Preserve separate opening/closing raw/WIP/FG stocks with historical per-exchange burden vectors and original gate/product/route/state/cohort links. For each exchange e, reconcile opening inherited burden plus current attributable complete-period burden equals burden assigned to newly accepted output plus closing carried burden plus separately disclosed other-output or prior-cohort service burden. Actual failed/rework/handling/loss services within scope retain their causal burdens once. This is a burden identity, not a physical-output formula. Old FG dispatch, returns, retests, internal transfers and reacceptance neither enlarge Q nor reset inherited burdens; later losses never shrink Q. Accepted material returned to WIP carries its original event and vector. Later storage/dispatch/return services attach to the original accepted cohort and original positive Q0, never new Q. Missing inherited vectors or unresolved attribution keeps results incomplete. Zero or unevidenced Q/Q0 retains raw totals and all stocks/vectors, holds unit results and cannot borrow another denominator."
       inputs:
         - cp_reference_product
         - cp_site
@@ -474,10 +474,11 @@ dataset_production:
         - jrc-ilcd-lci-2010
     - id: acceptance_event_bridge
       applies_to: "all inventory rows"
-      rule: "Lock Q to unique independently measured first-acceptance events. Use the two-term dispatch/closing-stock bridge only when L_new is zero; otherwise reconcile disjoint D_new, F_new_close and actual post-acceptance net exits L_new on the original acceptance basis. Retain original event Q for later losses/services and prevent internal/return/rework throughput duplication. Do not add Q as an extra external output. Unresolved event/stock evidence blocks complete normalization."
+      rule: "Lock Q to the sum of unique independently measured first-acceptance event whole-product masses. Reconcile Q = D_new + FG_new + L_new for the same cohort on the same original acceptance basis: net dispatch after linked returns, closing accepted FG and all other net post-acceptance destinations, including actual net returns/losses/scrap/downgrade/use/closing rework-WIP. The three terms must be mutually exclusive and exhaustive; put linked returned parcels in FG_new or actual L_new once, never an added gross-return term. Explicitly reconcile measured water/composition/basis changes. For 100 kg first accepted, 60 kg net dispatch, 30 kg closing FG and 10 kg loss, Q=100 kg; 100 attributed burden units/Q=1 unit/kg, whereas an incomplete 90 kg denominator gives an invalid 1.111... . Only demonstrated zero other net destinations permits the two-term bridge. Later loss/services retain original Q or Q0; internal/return/rework/reacceptance throughput adds no Q or external output. Actual event and destination evidence remains unresolved if incomplete; never assume zero loss or rewrite Q to force closure. This mass bridge does not infer isotope activity, equilibrium or releases."
       inputs:
+        - cp_reference_product
         - "original acceptance events"
-        - "net parcel-state bridge"
+        - "same-basis net destination records"
         - "original cohort quantities"
       output: "auditable positive event Q and separate physical stock bridge"
       source_ids: []
@@ -488,7 +489,7 @@ dataset_production:
       evidence: "merchant/lot originals, measured composition, provider definition and raw database metadata"
     - id: measurement_quality
       applies_to: "gate"
-      requirement: "Q is independent and positive; preserve whole-compound mass, elemental quantities, isotope activity, container and moisture accounts separately. No universal purity, yield, consumption, clean-up efficiency, emission, activity or dose."
+      requirement: "Q is independently event-measured and positive, with complete mutually exclusive same-basis D_new/FG_new/L_new destinations and explicit measured conversions. Preserve original Q0, actual failed/rework loads within scope, and separate whole-compound mass, elemental quantities, isotope activity, container and moisture records. No universal purity, yield, consumption, clean-up efficiency, emission, activity or dose."
       evidence: "cp_reference_product; cp_site; epa-marlap19-2004"
     - id: coverage_quality
       applies_to: "gate"
@@ -502,7 +503,7 @@ validation_rules:
       - merck-thoria-89170
   - rule_id: validate_balance
     applies_to: "gate"
-    rule: "Both renderings use 1 kg; every row and collection aggregation uses the same Q; exactly one final product output. Reconcile physical mass/water/element ledgers within measurement uncertainty and disclose residuals. Measure feed, product, waste, environmental outputs and stocks separately, never derive product as feed minus assumed waste."
+    rule: "Both renderings use 1 kg; every row and collection aggregation uses the same event-locked cohort Q or original old-cohort Q0; exactly one reference product coordinate. Reconcile actual physical mass/water/element ledgers including opening/closing raw/WIP/FG, external dispatch/returns and actual waste/releases within measured uncertainty; disclose residuals. First acceptance and internal rework/reacceptance are not additional external outputs. Keep this storage-inclusive physical account separate from the same-acceptance-basis mass bridge and independent isotope-activity records. Measure feed, product, waste, environmental outputs and stocks independently, never derive product as feed minus assumed waste."
     source_ids:
       - epa-marlap19-2004
   - rule_id: validate_release
@@ -512,7 +513,7 @@ validation_rules:
       - epa-marlap19-2004
   - rule_id: validate_cohort
     applies_to: "gate"
-    rule: "Check unique first-acceptance Q against independent raw acceptance records and both new dispatch and newly accepted closing finished stock. Require separate raw/WIP/finished physical stocks and conserved inherited/current per-exchange burden vectors; old stock dispatch and returns/retests cannot enlarge Q. Keep later service with original accepted cohort Q. Q zero/missing, missing raw data or missing inherited vectors blocks unit results while preserving raw totals and reviewable gaps."
+    rule: "Check event-locked unique first-acceptance Q against independent raw event/lot records and the complete mutually exclusive same-original-basis D_new/FG_new/L_new bridge with measured conversions. Later losses cannot reduce Q; opening FG, returns/retests, transfers to WIP and reacceptance cannot increase it. Require separate raw/WIP/FG physical stocks and conserved inherited/current per-exchange burden vectors, retaining actual failed/rework/handling/loss loads within scope. Later services use original accepted cohort Q0, not new Q. Q/Q0 zero/missing, incomplete destination/event evidence, missing raw data or inherited vectors blocks unit results while preserving raw totals and reviewable gaps."
     source_ids:
       - jrc-ilcd-lci-2010
 published_dataset_profile:
@@ -520,7 +521,7 @@ published_dataset_profile:
   downstream_use: "Qualified supplied-gate data only after independent complete dataset acceptance; methodology authorship does not establish scientific review or dataset qualification"
   allowed_use: "Bounded civilian solid-ThO2 supply LCA; disclose gate increment separately from results including upstream coverage"
   excluded_use: "Whole-CPC proxy; other chemical/physical states; purification/separation/enrichment/fuel or weapons manufacturing; dose/safety/compliance determinations; waste-disposal service as product supply"
-  required_metadata: "Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; independently measured first-acceptance net whole-product Q plus cohort links; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity"
+  required_metadata: "Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; immutable independently measured first-acceptance net whole-product event Q plus original Q0 and cohort links plus complete same-basis D_new/FG_new/L_new destinations and measured conversions; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity"
   required_quality_disclosure: "identity gaps; upstream/site coverage; uncertainty/detection capability; attribution drivers; background property/quantity bases; physical and burden-ledger completeness"
   update_trigger: "Changed species/supply state/actual route, provider or background definition; additional actual streams/monitoring; reference-UUID resolution; source/boundary/attribution revision"
 data_sources:
@@ -546,21 +547,21 @@ data_sources:
     used_for: "Complete operating-cycle coverage and raw-exchange scaling to matching reference output. First-acceptance deduplication, conserved stock/cohort burden vectors and nonpositive-Q hold are conservative PCR consistency rules derived from these principles; no literal handbook ledger formula, thoria production quantity or recipe is claimed."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:01d1447c9b1a21a3561fe43f454f8fc3fdaf28f733c8fcce3011a286ff471f24"
+  source_sha256: "sha256:8f14283efad8b64318121a40cc2a7a4b86eafb46c1c442f335006afffc7e23a3"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_7821"
+    - unit_id: "normative_8692"
       family: "system_boundary"
       span:
         start:
-          offset: 7821
+          offset: 8692
           line: 59
           column: 1
         end:
-          offset: 10471
+          offset: 11456
           line: 78
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Supplied already manufactured single-species solid ThO2 lot in original container awaiting this plant gate first acceptance; declare manufacture endpoint and receiving gate and first-acceptance criterion |\n| starting_condition_role | supplied intermediate |\n| product_classification_scope | Solid ThO2 subset of CPC33630, not its mixed complete category |\n| recursive_input_rule | Purchased same-category feed links a distinct upstream provider; cancel internal movements/returns without new supply or credit |\n| upstream_dataset_requirement | Require physical supplied-compound, transport, original packaging, electricity, water and actual waste-treatment background coverage; disclose each gap |\n| disclosure | Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; independently measured first-acceptance net whole-product Q plus cohort links; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_supplier | gate | This PCR selects a partial supply gate boundary. Account from declared supplied-material starting gate to fixed manufacturer factory delivery gate; supplier burdens are not zero and endpoints prevent double counting of manufacture/transport/packaging. | merck-thoria-89170 |\n| boundary_controls | gate | Include measured storage/dispatch and actual cleaning/incident energy, water, residues, wastewater and releases; a no-release sealed-container claim requires coverage evidence. Add every actual fuel, cleaner, packaging component, filter, wipe and pollutant as its own atomic row without positive defaults. | jrc-sic-2007 |\n| boundary_identity | gate | Exclude purification/separation, enrichment and manufacturing operating instructions. Original-container supply does not establish complete upstream manufacture; report missing coverage separately. | merck-thoria-89170 |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Supplied already manufactured single-species solid ThO2 lot in original container awaiting this plant gate first acceptance; declare manufacture endpoint and receiving gate and first-acceptance criterion |\n| starting_condition_role | supplied intermediate |\n| product_classification_scope | Solid ThO2 subset of CPC33630, not its mixed complete category |\n| recursive_input_rule | Purchased same-category feed links a distinct upstream provider; cancel internal movements/returns without new supply or credit |\n| upstream_dataset_requirement | Require physical supplied-compound, transport, original packaging, electricity, water and actual waste-treatment background coverage; disclose each gap |\n| disclosure | Manufactured single-species solid ThO2 plus CAS 1314-20-1; actual SKU/lot plus supplier and origin; immutable independently measured first-acceptance net whole-product event Q plus original Q0 and cohort links plus complete same-basis D_new/FG_new/L_new destinations and measured conversions; composition plus assay denominator plus free moisture and structural water; civilian intended use; original container/packaging plus tare; fixed receiving and manufacturer factory delivery gates plus first-acceptance criterion; native production mix at plant plus finished manufactured state; upstream manufacture/transport/packaging coverage; reporting period plus storage duration; electricity supply plus voltage; actual cleaning/incident scope; residue/waste receivers; radionuclide species plus activity unit plus sample basis plus reference date plus uncertainty and detection capability; no default purity or yield or recipe or energy intensity or activity |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_supplier | gate | This PCR selects a partial supply gate boundary. Account from declared supplied-material starting gate to fixed manufacturer factory delivery gate; supplier burdens are not zero and endpoints prevent double counting of manufacture/transport/packaging. | merck-thoria-89170 |\n| boundary_controls | gate | Include measured storage/dispatch and actual cleaning/incident energy, water, residues, wastewater and releases; a no-release sealed-container claim requires coverage evidence. Add every actual fuel, cleaner, packaging component, filter, wipe and pollutant as its own atomic row without positive defaults. | jrc-sic-2007 |\n| boundary_identity | gate | Exclude purification/separation, enrichment and manufacturing operating instructions. Original-container supply does not establish complete upstream manufacture; report missing coverage separately. | merck-thoria-89170 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -577,11 +578,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 7821
+              offset: 8692
               line: 59
               column: 1
             end:
-              offset: 7842
+              offset: 8713
               line: 59
               column: 22
           text: "## 5. System Boundary"
@@ -597,15 +598,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_19172"
+    - unit_id: "normative_20338"
       family: "allocation"
       span:
         start:
-          offset: 19172
+          offset: 20338
           line: 235
           column: 1
         end:
-          offset: 20099
+          offset: 21265
           line: 242
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivision | gate | Prefer measured direct attribution and subdivision; assess subdivision/system expansion before partitioning shared services by an empirically demonstrated physical relation. Specific energy/transport rules prevail. This PCR presumes neither co-products nor shares; cp_site records actual drivers and coverage. Activity is not an automatic allocation key. | ef-allocation-2021 |\n| allocation_physical_ledger | gate | Retain unallocated physical mass, water and radionuclide ledgers separately from allocated burdens and provider allocation. Do not multiply measured product/waste output by burden shares. Internal links have equal quantities at both ends; returns, captured powder and waste shipment are not automatic co-products or avoided-burden credits. | ef-allocation-2021 |\n\n"
@@ -625,11 +626,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 19172
+              offset: 20338
               line: 235
               column: 1
             end:
-              offset: 19212
+              offset: 20378
               line: 235
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -645,18 +646,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33659"
+    - unit_id: "normative_37632"
       family: "validation"
       span:
         start:
-          offset: 33659
+          offset: 37632
           line: 279
           column: 1
         end:
-          offset: 35480
+          offset: 40039
           line: 288
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference_product | Confirm the native whole-product reference chain and exact solid-ThO2 qualifiers together; missing chemical identity cannot be replaced by another oxide, ore, element or radioactive elementary flow. A broader native identity cannot establish the required chemical or provider evidence by itself. | merck-thoria-89170 |\n| validate_balance | gate | Both renderings use 1 kg; every row and collection aggregation uses the same Q; exactly one final product output. Reconcile physical mass/water/element ledgers within measurement uncertainty and disclose residuals. Measure feed, product, waste, environmental outputs and stocks separately, never derive product as feed minus assumed waste. | epa-marlap19-2004 |\n| validate_release | th232_air, th232_water | Match isotope and compartment/subcompartment/time; use Radioactivity/kBq rather than Mass/kg. Wastewater sent to treatment is not an additional site freshwater release. Separate treatment release and retention; cross-identify PM mass and radionuclide activity ledgers to avoid duplicate radiological characterization. Missing/unknown measurements remain unresolved. | epa-marlap19-2004 |\n| validate_cohort | gate | Check unique first-acceptance Q against independent raw acceptance records and both new dispatch and newly accepted closing finished stock. Require separate raw/WIP/finished physical stocks and conserved inherited/current per-exchange burden vectors; old stock dispatch and returns/retests cannot enlarge Q. Keep later service with original accepted cohort Q. Q zero/missing, missing raw data or missing inherited vectors blocks unit results while preserving raw totals and reviewable gaps. | jrc-ilcd-lci-2010 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference_product | Confirm the native whole-product reference chain and exact solid-ThO2 qualifiers together; missing chemical identity cannot be replaced by another oxide, ore, element or radioactive elementary flow. A broader native identity cannot establish the required chemical or provider evidence by itself. | merck-thoria-89170 |\n| validate_balance | gate | Both renderings use 1 kg; every row and collection aggregation uses the same event-locked cohort Q or original old-cohort Q0; exactly one reference product coordinate. Reconcile actual physical mass/water/element ledgers including opening/closing raw/WIP/FG, external dispatch/returns and actual waste/releases within measured uncertainty; disclose residuals. First acceptance and internal rework/reacceptance are not additional external outputs. Keep this storage-inclusive physical account separate from the same-acceptance-basis mass bridge and independent isotope-activity records. Measure feed, product, waste, environmental outputs and stocks independently, never derive product as feed minus assumed waste. | epa-marlap19-2004 |\n| validate_release | th232_air, th232_water | Match isotope and compartment/subcompartment/time; use Radioactivity/kBq rather than Mass/kg. Wastewater sent to treatment is not an additional site freshwater release. Separate treatment release and retention; cross-identify PM mass and radionuclide activity ledgers to avoid duplicate radiological characterization. Missing/unknown measurements remain unresolved. | epa-marlap19-2004 |\n| validate_cohort | gate | Check event-locked unique first-acceptance Q against independent raw event/lot records and the complete mutually exclusive same-original-basis D_new/FG_new/L_new bridge with measured conversions. Later losses cannot reduce Q; opening FG, returns/retests, transfers to WIP and reacceptance cannot increase it. Require separate raw/WIP/FG physical stocks and conserved inherited/current per-exchange burden vectors, retaining actual failed/rework/handling/loss loads within scope. Later services use original accepted cohort Q0, not new Q. Q/Q0 zero/missing, incomplete destination/event evidence, missing raw data or inherited vectors blocks unit results while preserving raw totals and reviewable gaps. | jrc-ilcd-lci-2010 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -673,11 +674,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 33659
+              offset: 37632
               line: 279
               column: 1
             end:
-              offset: 33681
+              offset: 37654
               line: 279
               column: 23
           text: "## 9. Validation Rules"
@@ -697,167 +698,167 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_supplier"
       identity_kind: "explicit"
-      unit_id: "normative_7821"
+      unit_id: "normative_8692"
       source_span:
         start:
-          offset: 9564
+          offset: 10549
           line: 74
           column: 1
         end:
-          offset: 9867
+          offset: 10852
           line: 74
           column: 304
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_controls"
       identity_kind: "explicit"
-      unit_id: "normative_7821"
+      unit_id: "normative_8692"
       source_span:
         start:
-          offset: 9868
+          offset: 10853
           line: 75
           column: 1
         end:
-          offset: 10219
+          offset: 11204
           line: 75
           column: 352
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_identity"
       identity_kind: "explicit"
-      unit_id: "normative_7821"
+      unit_id: "normative_8692"
       source_span:
         start:
-          offset: 10220
+          offset: 11205
           line: 76
           column: 1
         end:
-          offset: 10469
+          offset: 11454
           line: 76
           column: 250
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_19172"
+      unit_id: "normative_20338"
       source_span:
         start:
-          offset: 19285
+          offset: 20451
           line: 239
           column: 1
         end:
-          offset: 19696
+          offset: 20862
           line: 239
           column: 412
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_physical_ledger"
       identity_kind: "explicit"
-      unit_id: "normative_19172"
+      unit_id: "normative_20338"
       source_span:
         start:
-          offset: 19697
+          offset: 20863
           line: 240
           column: 1
         end:
-          offset: 20097
+          offset: 21263
           line: 240
           column: 401
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_33659"
+      unit_id: "normative_37632"
       source_span:
         start:
-          offset: 33754
+          offset: 37727
           line: 283
           column: 1
         end:
-          offset: 34114
+          offset: 38087
           line: 283
           column: 361
     - pointer: "/validation_rules/1"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_33659"
+      unit_id: "normative_37632"
       source_span:
         start:
-          offset: 34115
+          offset: 38088
           line: 284
           column: 1
         end:
-          offset: 34504
+          offset: 38851
           line: 284
-          column: 390
+          column: 764
     - pointer: "/validation_rules/2"
       rule_id: "validate_release"
       identity_kind: "explicit"
-      unit_id: "normative_33659"
+      unit_id: "normative_37632"
       source_span:
         start:
-          offset: 34505
+          offset: 38852
           line: 285
           column: 1
         end:
-          offset: 34938
+          offset: 39285
           line: 285
           column: 434
     - pointer: "/validation_rules/3"
       rule_id: "validate_cohort"
       identity_kind: "explicit"
-      unit_id: "normative_33659"
+      unit_id: "normative_37632"
       source_span:
         start:
-          offset: 34939
+          offset: 39286
           line: 286
           column: 1
         end:
-          offset: 35478
+          offset: 40037
           line: 286
-          column: 540
+          column: 752
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_7821"
+      unit_id: "normative_8692"
       source_span:
         start:
-          offset: 7821
+          offset: 8692
           line: 59
           column: 1
         end:
-          offset: 7842
+          offset: 8713
           line: 59
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_7821"
+      unit_id: "normative_8692"
       source_span:
         start:
-          offset: 7870
+          offset: 8741
           line: 63
           column: 1
         end:
-          offset: 9491
+          offset: 10476
           line: 70
-          column: 860
+          column: 974
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_19172"
+      unit_id: "normative_20338"
       source_span:
         start:
-          offset: 19172
+          offset: 20338
           line: 235
           column: 1
         end:
-          offset: 19212
+          offset: 20378
           line: 235
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33659"
+      unit_id: "normative_37632"
       source_span:
         start:
-          offset: 33659
+          offset: 37632
           line: 279
           column: 1
         end:
-          offset: 33681
+          offset: 37654
           line: 279
           column: 23
 projection_metadata:
@@ -867,5 +868,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:01d1447c9b1a21a3561fe43f454f8fc3fdaf28f733c8fcce3011a286ff471f24"
-  generated_content_sha256: "sha256:f53d26b1bbcd22dfc39b36173134b697f2bcc50dc75a7198a562988b5aa94532"
+    sha256: "sha256:8f14283efad8b64318121a40cc2a7a4b86eafb46c1c442f335006afffc7e23a3"
+  generated_content_sha256: "sha256:ac268a7461b939eee20614b8c79e80d7a4eb53b1fe62fb7a9ef58fc8ff66a04b"
