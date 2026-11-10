@@ -8,7 +8,7 @@ product_category_identity:
   excluded_products: "Other species, rough-squared or precision-profiled final products, sawnwood, sleepers, coatings, other preservatives, reused and engineered wood"
   representative_product: "Radiata pine peeled whole roundwood treated with purchased whole aqueous Tanalith C Oxide Liquor, diluted with separately supplied water, by full-cell vacuum-pressure treatment and ambient fixation/air conditioning"
   production_route: "Untreated log receipt → peeling and end trimming → air predrying → initial vacuum → flooding under vacuum → pressure impregnation → pressure release/drain/recovery → final vacuum → contained fixation/air conditioning → quality release, identification and storage → factory gate"
-  market_state: "New accepted treated rough roundwood at measured dispatch moisture, including retained water and preservative; packaging excluded from reference mass"
+  market_state: "New accepted treated rough roundwood at declared first-acceptance moisture/fixation state, including retained water and preservative; packaging excluded from reference mass; measure and reconcile any later dispatch-state change"
 functional_unit:
   what: "Supply the selected CCA-preserved radiata pine whole rough roundwood at the manufacturing gate"
   how_much: "1 kg net accepted final product"
@@ -85,7 +85,7 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "Measure new accepted net finished mass Q with cp_lot, excluding packaging, at one declared moisture/fixation gate. All inventory amounts use per 1 kg reference flow."
+    rule: "Q is the sum of independent unique first-acceptance event net masses measured with cp_lot at one declared moisture/fixation gate, excluding packaging. Lock each piece/cohort and its dry wood, retained water and non-water preservative basis; subsequent dispatch, loss, return or reacceptance cannot redefine Q. All inventory amounts use per 1 kg reference flow."
   - id: chemical_basis
     applies_to: "whole preservative and its composition ledger"
     required_property_ref:
@@ -265,7 +265,7 @@ process_inventory:
           flow_ref:
             uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
-          description: "The unique finished reference output after actual fixation/air-conditioning and acceptance. Net mass includes retained water and non-water preservative, excludes packaging, and is measured at the declared moisture gate. Newly accepted closing FG is included in Q once; return/retest is not new production."
+          description: "The unique finished reference output after actual fixation/air-conditioning and acceptance. Net mass includes retained water and non-water preservative, excludes packaging, and is measured at the declared moisture gate. The finished row represents the unique first-acceptance reference, not an extra physical dispatch. Lock acceptance-state net masses in Q once and reconcile all later destinations with acceptance_event_bridge; opening or purchased FG, returns and reacceptance do not add Q."
           amount:
             expression: "1 kg"
             value_mode: "fixed_value"
@@ -815,14 +815,14 @@ dataset_production:
       process_id: "waterborne_treatment"
       flow_role: "finished"
       record_type: "weighing/acceptance and stock"
-      raw_fields: "lot and cohort; Pinus radiata; dimensions; sapwood; gate; net mass; tare; moisture/water; retained non-water chemicals; penetration and assay zone; fixation test; pass/fail/rework; opening/closing FG and WIP"
-      collection_method: "Calibrated net weighing and representative state-specific analysis at the declared release gate; reconcile accepted pieces to stock and dispatch records; distinguish newly produced acceptance from old FG, return and retest"
+      raw_fields: "lot/cohort and unique piece/event IDs; first-acceptance time and locked net mass; Pinus radiata; dimensions; sapwood; gate; tare; dry wood; moisture/retained water; non-water preservative and Cu/Cr/As basis; penetration/assay zone; fixation test; pass/fail/rework and prior acceptance link; opening/closing FG and WIP; purchased FG; gross dispatch and linked returns; D_new; FG_new; separate loss/scrap/downgrade/net-return/rework-WIP destinations within L_new; later moisture/chemical changes"
+      collection_method: "Calibrated net weighing and representative state-specific analysis at the declared first-release gate. Deduplicate first-acceptance events; preserve actual wet masses and measured component/state conversions. Reconcile the complete same-cohort acceptance_event_bridge, assigning every portion once after netting linked returns/internal loops. Separate opening or purchased FG and reacceptance from new production; retain their activity and original burden vectors"
       unit: "kg"
-      frequency: "each lot and release"
-      temporal_coverage: "complete campaign and connected opening/closing stocks"
+      frequency: "each event, transfer and release"
+      temporal_coverage: "complete campaign and connected opening/closing stocks and prior acceptance history"
       site_scope: "one actual site and defined product state"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "calibration; sampling representativeness; lab basis; rejection and release records"
+      quality_evidence: "calibration; event/cohort traceability; sampling and lab basis; dispatch/return/stock/destination records; measured state-conversion evidence"
     - protocol_id: cp_inputs
       process_id: "waterborne_treatment"
       flow_role: "wood and untreated outputs"
@@ -922,13 +922,24 @@ dataset_production:
   calculation_rules:
     - id: normalize_lot
       applies_to: "all inventory rows"
-      rule: "For each exchange, normalized amount = attributable current-production exchange total / new accepted net final mass Q; final product = 1 kg. First convert original units, integrate actual rates, subdivide dedicated activities and attribute each shared exchange by its actual cause. Apply only a justified residual burden share A before the single division. Gross physical V is never multiplied by A. Q = new accepted dispatch + new accepted closing FG, without counting a new closing FG quantity again; exclude opening FG, returns and retests. Track accepted production by unique physical cohort. New accepted dispatch and new accepted closing FG are disjoint parts of that cohort, and opening WIP carries its prior vector into the newly accepted cohort. For work on previously accepted opening FG or returned goods, carry the incremental vector back to that original cohort and its original accepted mass; do not add it to the new cohort numerator or create new Q. If the original denominator or vector is unavailable, keep that activity separately unresolved. Q = 0 leaves an unnormalized load/stock ledger, not zero burden."
+      rule: "For each exchange, normalized amount = attributable current-production exchange total / independently locked unique first-acceptance mass Q; final product = 1 kg. First convert original units, integrate actual rates, subdivide dedicated activities and attribute each shared exchange by its actual cause. Apply only a justified residual burden share A before the single division. Gross physical V is never multiplied by A. Verify Q with acceptance_event_bridge, not dispatch plus closing FG alone. Opening WIP carries its prior vector into its first-accepted cohort. Include failed-charge, loss, scrap, downgrade and rework activities in their evidenced cohort attribution; no activity disappears when saleable mass falls. For work on previously accepted opening FG, purchased FG or returned/reaccepted wood, retain the incremental vector with its original cohort and original acceptance basis; do not put it in a new cohort numerator or create new Q. If that original basis or vector is unavailable, keep the activity separately unresolved. Q = 0 leaves an unnormalized load/stock ledger, not zero burden."
       inputs:
         - "raw records"
         - "stage attribution"
         - "stock vectors"
         - cp_lot
       output: "per 1 kg reference flow"
+      source_ids: []
+    - id: acceptance_event_bridge
+      applies_to: "first-accepted treated-roundwood cohort"
+      rule: "Q = sum of independently measured unique first-acceptance event masses. Cross-check Q = D_new + FG_new + L_new for that campaign cohort with zero opening first-accepted cohort stock. D_new is net dispatch after linked returns, FG_new is closing accepted FG, and L_new covers every other net post-acceptance destination: measured losses, scrap, downgrade, net returns held outside accepted FG, and closing transfer back to rework/WIP or other custody. All terms are kg on the same locked whole-product acceptance basis, including dry wood, retained water and non-water CCA material, excluding packaging; portions are mutually exclusive and exhaustive. A returned piece is removed from D_new and assigned once to its actual closing FG/WIP/other destination, never also added as an extra loss. Internal gross loops and reacceptance do not add Q or a second destination. Reconcile later moisture or CCA-loading changes with measured component records; separate later additions from acceptance-origin material and record actual losses once. Convert measured piece/count/solid-volume records only with compatible actual mass/density and geometry/state evidence; retention-assay-zone kg/m3 is not whole-log mass. Q = D_new + FG_new is allowed only when every other post-acceptance destination is evidenced absent and L_new = 0. For 100 kg first accepted, 60 kg net dispatched, 30 kg closing FG and 10 kg post-acceptance loss, Q remains 100 kg, not 90 kg. Opening FG, purchased FG and retest/reacceptance add no Q; burdens remain with their original cohort. An unexplained gap stays unresolved, never changes Q or becomes assumed zero loss."
+      inputs:
+        - cp_lot
+        - cp_inputs
+        - cp_chemicals
+        - cp_water
+        - cp_waste
+      output: "locked Q and complete cohort destination bridge"
       source_ids: []
     - id: constituent_supply
       applies_to: "whole liquor composition subledger"
@@ -941,7 +952,7 @@ dataset_production:
       source_ids: []
     - id: balance_separate
       applies_to: "physical stage ledger"
-      rule: "Opening stock + external input + internal receipt = gross external output + internal issue + closing stock + independently quantified loss for each compatible phase/element. Close dry wood, actual water, Cu, Cr, As and carbon independently; final wet wood = dry wood + retained water + retained non-water material on compatible measured bases. Chemical reactions change speciation, not element totals. Do not sum wood/water/element subledgers or solve several unknown releases with one residual."
+      rule: "Opening stock + external input + internal receipt = gross external output + internal issue + closing stock + independently quantified loss for each compatible phase/element. For the integrated boundary including FG storage, count actual external dispatch/transfers and all closing raw/WIP/FG stocks; first acceptance is an internal state change, not an additional external output. Keep this physical ledger separate from acceptance_event_bridge and burden share A; cancel internal rework/return loops at the integrated boundary. Close dry wood, actual water, Cu, Cr, As and carbon independently; final wet wood = dry wood + retained water + retained non-water material on compatible measured bases. Record later water loss or chemical additions/removals on their actual physical basis without relocking Q. Reactions change speciation, not element totals. Do not sum wood/water/element subledgers or solve several unknown releases with one residual."
       inputs:
         - cp_inputs
         - cp_chemicals
@@ -986,7 +997,7 @@ dataset_production:
       evidence: "cp_lot; tpaa-treatment-guidelines; usda-wood-handbook-2021"
     - id: dq_stocks
       applies_to: "complete campaign"
-      requirement: "Reconcile raw/unused/WIP/new FG/old FG and reusable stocks by physical cohort and each flow's inherited vector. Include failed batches, startup, shutdown, idle and cleaning; returned/retested wood creates no new Q. Preserve actual quantity, burden, identity and source-data gaps separately."
+      requirement: "Reconcile raw/unused/WIP/new FG/old FG/purchased FG and reusable stocks by physical cohort and each flow's inherited vector. Include failed batches, startup, shutdown, idle, cleaning and all post-acceptance loss/return/rework activities. Opening FG, purchased FG, internal returns and retesting/reacceptance create no new Q. Reconcile unique events to disjoint exhaustive D_new, FG_new and L_new on the locked acceptance basis; keep physical stock/component ledgers separate. Preserve actual quantity, burden, identity and source-data gaps separately."
       evidence: "cp_inputs; cp_lot; cp_pack; cp_qc"
     - id: dq_coverage
       applies_to: "all exchanges"
@@ -999,7 +1010,7 @@ validation_rules:
     source_ids: []
   - rule_id: validate_balances
     applies_to: "foreground_dataset_conformance"
-    rule: "Require positive new accepted Q for a per-kg dataset, common bilingual basis, unit/rate/scope conversions before one attribution/normalization, physical V independent of A, linked phase/element/wood/water/carbon ledgers and all stock vectors. Keep Q = 0 campaigns and inspection Qc/H burdens visible without inventing production."
+    rule: "Require positive independently measured unique first-acceptance Q for a per-kg dataset and the same EN/ZH acceptance basis. Verify event deduplication and Q = D_new + FG_new + L_new using mutually exclusive exhaustive same-cohort records, including all net returns, losses, scrap, downgrades and closing rework/WIP; reject the two-term shortcut unless every other post-acceptance destination is evidenced absent. Verify measured moisture/CCA-loading and volume/mass conversions, no duplicate destination/adjustment, no Q from opening/purchased FG or reacceptance, and no forced residual closure. Keep actual physical V independent of A and Q, including FG stock without adding first acceptance again, with linked phase/element/wood/water/carbon ledgers and all inherited vectors. Preserve Q = 0 campaigns and inspection Qc/H or failed/rework burdens without inventing production."
     source_ids: []
   - rule_id: validate_releases
     applies_to: "foreground_dataset_conformance"
@@ -1053,18 +1064,18 @@ data_sources:
     used_for: "Attributional subdivision, exchange-specific determining physical causality, residual same-condition process-gate market values, and conservation of allocated inventory; no default physical key, full-conformance claim or adoption of recycling/substitution formulae"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:15dcf9b7fc30a17053104e020f66bc1910f9a64112fd87008ac5b57a1ff72ade"
+  source_sha256: "sha256:da4e676e52d56a5c3e5a134bf4f386e19b5777f7668efad6a360daee2db49487"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8601"
+    - unit_id: "normative_8874"
       family: "system_boundary"
       span:
         start:
-          offset: 8601
+          offset: 8874
           line: 69
           column: 1
         end:
-          offset: 12225
+          offset: 12498
           line: 91
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | New untreated Pinus radiata whole logs received at the treatment plant with documented bark, moisture, geometry and upstream preparation history |\n| starting_condition_role | Inherited upstream product input; foreground is rough-roundwood preparation and preservation |\n| product_classification_scope | The selected CCA-treated whole roundwood subset of CPC 3.0 31310; no claim to every product in the leaf |\n| recursive_input_rule | Previously treated wood is excluded. Never reset inherited wood, water, chemicals or carbon to virgin zero-burden material or recursively repeat the same provider. |\n| upstream_dataset_requirement | One actual provider per supplied exchange; match botanical species, forestry/harvesting, delivered gate/transport, preparation and any supplier drying/heating, moisture/mass, formulation manufacture, water and electricity. Retain gaps rather than borrow another PCR's provider. |\n| disclosure | Starting gate and history; stage and stock coverage; actual recipe and supplier; conditioning and controls; inherited burden vectors; allocation; packaging custody; recipient and waste treatment; omitted downstream service life/end-of-life |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_new` | Inherit forestry, harvesting, log processing, transport and any supplier drying/conditioning from matched upstream supply. Do not count these again in the foreground. Gate-to-gate data are not cradle-to-gate data when upstream coverage is incomplete. |  |\n| `boundary_route` | Keep separate stage records for peeling/trimming, predrying, mixing, each vacuum/pressure phase, drainage/recovery, fixation/air conditioning, inspection, rework and storage within one integrated unit. Include start/stop, failed charges, idle auxiliaries, cleaning and actual waste controls; missing production does not erase loads. | `epa-ap42-wood-preserving-1999` |\n| `boundary_chemical` | Whole purchased aqueous CCA liquor is one actual supplier product. Connect its manufacture once; do not also purchase its analytical oxides/elements or contained water in the inventory. Add only separately crossing water/chemicals with their own actual identities. Internal recovery and recirculation are gross physical transfers, not repeated external purchases. |  |\n| `boundary_fixation` | Include actual fixation hold, drip recovery and moisture change before release. Trace source, weather/temperature, time, assays and acceptance records. Historical handbook examples do not define a required duration, recipe, retention, pressure or temperature. Actual steam, kiln or hot-water use requires its measured heat/water/condensate and complete route inventory. | `usda-wood-handbook-2021` |\n| `boundary_waste` | Track each external CCA-contaminated solid, spent liquor, sludge and wastewater separately by actual wet composition, recipient, transport and treatment. Contained pollutants are not direct elementary releases. Keep storage/runoff and fugitive sources; accepted-product in-service leaching and end-of-life are outside this manufacturing gate. No automatic clean-biomass fate or recovery/substitution/energy credit. | `epa-ap42-wood-preserving-1999` |\n| `boundary_packaging` | Include actual identification and binding materials and all externally received reusable packaging in a complete physical custody ledger. An order price or separate invoice does not define first physical receipt or burden ownership. No default package mass or assumed container reuse count is supplied. |  |\n\n"
@@ -1084,11 +1095,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8601
+              offset: 8874
               line: 69
               column: 1
             end:
-              offset: 8622
+              offset: 8895
               line: 69
               column: 22
           text: "## 5. System Boundary"
@@ -1104,15 +1115,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_51849"
+    - unit_id: "normative_52309"
       family: "allocation"
       span:
         start:
-          offset: 51849
+          offset: 52309
           line: 610
           column: 1
         end:
-          offset: 54245
+          offset: 54705
           line: 621
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nUse subdivision, exchange-specific determining physical causality and, only for unresolved inseparable residual burdens, same-gate market values. This is the selected attributional partition approach; the ILCD source supports that hierarchy, not an assertion of full ILCD conformance or adoption of its reuse/recycling formulae. [`jrc-ilcd-allocation-2010`.]\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_stages` | Establish gross physical totals, unit/rate/scope conversions, directly dedicated loads and stage subdivision first. Attribute each remaining shared exchange using its own demonstrated physical cause (actual machine time/load, treated charge occupancy, measured pump work or handling activity), not one common output-mass fraction for every exchange. These are declared foreground modelling rules, not allocation authority inferred from a manufacturer's process description. | `jrc-ilcd-allocation-2010` |\n| `allocate_coproducts` | Determine actual co-product versus waste status from useful function, destination and contemporaneous transactions. Treatment/fixation loads cannot be assigned to untreated bark or chips removed earlier. Only a genuinely inseparable residual shared burden may use economic allocation after subdivision and causal physical attribution cannot resolve it; use actual same-period, same-gate, same-condition quantities and net values, with transport/quality/moisture consistency and sensitivity. Unknown values are not invented. | `jrc-ilcd-allocation-2010` |\n| `allocate_physical` | Keep full physical output vector V and material/element/water balances independent of burden share A. Carry flow-specific inherited burden vectors through raw/unused material, WIP, finished goods and reusable packaging. Divide the attributed current-production vector by positive new accepted Q once. Do not apply A to physical coproduct masses, multiply upstream providers twice, or award recovery, substitution or energy credits. | `jrc-ilcd-allocation-2010` |\n| `allocate_service` | Inspection/retesting service quantity Qc or actual service hours H describe a purchased service, not new wood production. Attribute its burden to the actual inspected lots including failed/returned stock; do not replace the wood denominator with tests, hours, sales or retested product mass. | `jrc-ilcd-allocation-2010` |\n\n"
@@ -1132,11 +1143,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 51849
+              offset: 52309
               line: 610
               column: 1
             end:
-              offset: 51889
+              offset: 52349
               line: 610
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1152,18 +1163,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_68622"
+    - unit_id: "normative_72216"
       family: "validation"
       span:
         start:
-          offset: 68622
-          line: 657
+          offset: 72216
+          line: 658
           column: 1
         end:
-          offset: 70621
-          line: 667
+          offset: 74765
+          line: 668
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_identity` | Exactly one finished Product output is linked by finished; check full botanical species, rough whole-log shape, aqueous CCA formulation, route, gate and provider. Recheck native full name/comments, type, property/unit and official Chinese displays for each adopted UUID. Generic Wood material requires explicit qualified exchange compatibility; it grants neither provider approval nor automatic matching. |  |\n| `validate_balances` | Require positive new accepted Q for a per-kg dataset, common bilingual basis, unit/rate/scope conversions before one attribution/normalization, physical V independent of A, linked phase/element/wood/water/carbon ledgers and all stock vectors. Keep Q = 0 campaigns and inspection Qc/H burdens visible without inventing production. |  |\n| `validate_releases` | Distinguish contained waste, direct fresh-water discharge and air releases; actual Cu/As/Cr-state and wood VOC/biogenic CO2 identities, with post-control/fugitive coverage. Retain biogenic CO2 in LCI when actually released, without repeating inherited forestry uptake or assigning an impact-method credit. No nested PM duplication or assumed zero from low general waterborne emissions. | `epa-ap42-wood-preserving-1999` |\n| `validate_claims` | Verify current site/date/product pesticide-use requirements, actual release specification and receiver permission with applicable documents. Historical technical sources do not confer current legal authorization, safety, treatment performance or disposal permission. Disclose remaining data gaps and scientific uncertainty; this method is not a compliance certificate. |  |\n| `validate_packaging` | Check first external physical receipt separately from invoice/procurement and burden ownership, physical N on receiving side, genuine same-item ER, all stock states and preserved vectors; no unknown-history zero or duplicate container/component production. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_identity` | Exactly one finished Product output is linked by finished; check full botanical species, rough whole-log shape, aqueous CCA formulation, route, gate and provider. Recheck native full name/comments, type, property/unit and official Chinese displays for each adopted UUID. Generic Wood material requires explicit qualified exchange compatibility; it grants neither provider approval nor automatic matching. |  |\n| `validate_balances` | Require positive independently measured unique first-acceptance Q for a per-kg dataset and the same EN/ZH acceptance basis. Verify event deduplication and Q = D_new + FG_new + L_new using mutually exclusive exhaustive same-cohort records, including all net returns, losses, scrap, downgrades and closing rework/WIP; reject the two-term shortcut unless every other post-acceptance destination is evidenced absent. Verify measured moisture/CCA-loading and volume/mass conversions, no duplicate destination/adjustment, no Q from opening/purchased FG or reacceptance, and no forced residual closure. Keep actual physical V independent of A and Q, including FG stock without adding first acceptance again, with linked phase/element/wood/water/carbon ledgers and all inherited vectors. Preserve Q = 0 campaigns and inspection Qc/H or failed/rework burdens without inventing production. |  |\n| `validate_releases` | Distinguish contained waste, direct fresh-water discharge and air releases; actual Cu/As/Cr-state and wood VOC/biogenic CO2 identities, with post-control/fugitive coverage. Retain biogenic CO2 in LCI when actually released, without repeating inherited forestry uptake or assigning an impact-method credit. No nested PM duplication or assumed zero from low general waterborne emissions. | `epa-ap42-wood-preserving-1999` |\n| `validate_claims` | Verify current site/date/product pesticide-use requirements, actual release specification and receiver permission with applicable documents. Historical technical sources do not confer current legal authorization, safety, treatment performance or disposal permission. Disclose remaining data gaps and scientific uncertainty; this method is not a compliance certificate. |  |\n| `validate_packaging` | Check first external physical receipt separately from invoice/procurement and burden ownership, physical N on receiving side, genuine same-item ER, all stock states and preserved vectors; no unknown-history zero or duplicate container/component production. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1180,12 +1191,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 68622
-              line: 657
+              offset: 72216
+              line: 658
               column: 1
             end:
-              offset: 68644
-              line: 657
+              offset: 72238
+              line: 658
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1204,319 +1215,319 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_new"
       identity_kind: "explicit"
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 9937
+          offset: 10210
           line: 84
           column: 1
         end:
-          offset: 10211
+          offset: 10484
           line: 84
           column: 275
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 10212
+          offset: 10485
           line: 85
           column: 1
         end:
-          offset: 10601
+          offset: 10874
           line: 85
           column: 390
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_chemical"
       identity_kind: "explicit"
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 10602
+          offset: 10875
           line: 86
           column: 1
         end:
-          offset: 10994
+          offset: 11267
           line: 86
           column: 393
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_fixation"
       identity_kind: "explicit"
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 10995
+          offset: 11268
           line: 87
           column: 1
         end:
-          offset: 11418
+          offset: 11691
           line: 87
           column: 424
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_waste"
       identity_kind: "explicit"
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 11419
+          offset: 11692
           line: 88
           column: 1
         end:
-          offset: 11890
+          offset: 12163
           line: 88
           column: 472
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_packaging"
       identity_kind: "explicit"
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 11891
+          offset: 12164
           line: 89
           column: 1
         end:
-          offset: 12223
+          offset: 12496
           line: 89
           column: 333
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 51891
+          offset: 52351
           line: 612
           column: 1
         end:
-          offset: 52249
+          offset: 52709
           line: 612
           column: 359
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_stages"
       identity_kind: "explicit"
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 52303
+          offset: 52763
           line: 616
           column: 1
         end:
-          offset: 52829
+          offset: 53289
           line: 616
           column: 527
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_coproducts"
       identity_kind: "explicit"
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 52830
+          offset: 53290
           line: 617
           column: 1
         end:
-          offset: 53410
+          offset: 53870
           line: 617
           column: 581
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_physical"
       identity_kind: "explicit"
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 53411
+          offset: 53871
           line: 618
           column: 1
         end:
-          offset: 53897
+          offset: 54357
           line: 618
           column: 487
     - pointer: "/allocation_rules/4"
       rule_id: "allocate_service"
       identity_kind: "explicit"
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 53898
+          offset: 54358
           line: 619
           column: 1
         end:
-          offset: 54243
+          offset: 54703
           line: 619
           column: 346
     - pointer: "/validation_rules/0"
       rule_id: "validate_identity"
       identity_kind: "explicit"
-      unit_id: "normative_68622"
+      unit_id: "normative_72216"
       source_span:
         start:
-          offset: 68698
-          line: 661
+          offset: 72292
+          line: 662
           column: 1
         end:
-          offset: 69131
-          line: 661
+          offset: 72725
+          line: 662
           column: 434
     - pointer: "/validation_rules/1"
       rule_id: "validate_balances"
       identity_kind: "explicit"
-      unit_id: "normative_68622"
+      unit_id: "normative_72216"
       source_span:
         start:
-          offset: 69132
-          line: 662
+          offset: 72726
+          line: 663
           column: 1
         end:
-          offset: 69490
-          line: 662
-          column: 359
+          offset: 73634
+          line: 663
+          column: 909
     - pointer: "/validation_rules/2"
       rule_id: "validate_releases"
       identity_kind: "explicit"
-      unit_id: "normative_68622"
+      unit_id: "normative_72216"
       source_span:
         start:
-          offset: 69491
-          line: 663
+          offset: 73635
+          line: 664
           column: 1
         end:
-          offset: 69936
-          line: 663
+          offset: 74080
+          line: 664
           column: 446
     - pointer: "/validation_rules/3"
       rule_id: "validate_claims"
       identity_kind: "explicit"
-      unit_id: "normative_68622"
+      unit_id: "normative_72216"
       source_span:
         start:
-          offset: 69937
-          line: 664
+          offset: 74081
+          line: 665
           column: 1
         end:
-          offset: 70332
-          line: 664
+          offset: 74476
+          line: 665
           column: 396
     - pointer: "/validation_rules/4"
       rule_id: "validate_packaging"
       identity_kind: "explicit"
-      unit_id: "normative_68622"
+      unit_id: "normative_72216"
       source_span:
         start:
-          offset: 70333
-          line: 665
+          offset: 74477
+          line: 666
           column: 1
         end:
-          offset: 70619
-          line: 665
+          offset: 74763
+          line: 666
           column: 287
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 8601
+          offset: 8874
           line: 69
           column: 1
         end:
-          offset: 8622
+          offset: 8895
           line: 69
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8601"
+      unit_id: "normative_8874"
       source_span:
         start:
-          offset: 8650
+          offset: 8923
           line: 73
           column: 1
         end:
-          offset: 9883
+          offset: 10156
           line: 80
           column: 257
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 51849
+          offset: 52309
           line: 610
           column: 1
         end:
-          offset: 51889
+          offset: 52349
           line: 610
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 51891
+          offset: 52351
           line: 612
           column: 1
         end:
-          offset: 52249
+          offset: 52709
           line: 612
           column: 359
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 52303
+          offset: 52763
           line: 616
           column: 1
         end:
-          offset: 52829
+          offset: 53289
           line: 616
           column: 527
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 52830
+          offset: 53290
           line: 617
           column: 1
         end:
-          offset: 53410
+          offset: 53870
           line: 617
           column: 581
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 53411
+          offset: 53871
           line: 618
           column: 1
         end:
-          offset: 53897
+          offset: 54357
           line: 618
           column: 487
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
-      unit_id: "normative_51849"
+      unit_id: "normative_52309"
       source_span:
         start:
-          offset: 53898
+          offset: 54358
           line: 619
           column: 1
         end:
-          offset: 54243
+          offset: 54703
           line: 619
           column: 346
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_68622"
+      unit_id: "normative_72216"
       source_span:
         start:
-          offset: 68622
-          line: 657
+          offset: 72216
+          line: 658
           column: 1
         end:
-          offset: 68644
-          line: 657
+          offset: 72238
+          line: 658
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1525,5 +1536,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:15dcf9b7fc30a17053104e020f66bc1910f9a64112fd87008ac5b57a1ff72ade"
-  generated_content_sha256: "sha256:49e7024f2e983c9d52b1ec921f4789d30894a32d5072b29394660e1eb0bc4adc"
+    sha256: "sha256:da4e676e52d56a5c3e5a134bf4f386e19b5777f7668efad6a360daee2db49487"
+  generated_content_sha256: "sha256:cce2592ec2b065e1091a5381636d85f002c7ee8c81a9edb5d0be3f0ca81eabb1"
