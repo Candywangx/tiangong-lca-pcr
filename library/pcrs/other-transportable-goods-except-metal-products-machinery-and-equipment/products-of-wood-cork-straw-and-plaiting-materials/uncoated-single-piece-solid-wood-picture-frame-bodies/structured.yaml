@@ -19,7 +19,7 @@ system_boundary:
   rules:
     - rule_id: system_boundary_rule_1
       applies_to: "foreground_system_boundary"
-      rule: "Include blank preparation, test cuts, drilling, central cutout, routing, sanding, dust collection, extraction/compressor electricity where present, acceptance/rework, cleanup and actual packing within one foreground unit. Outsourced machining must be represented once at its actual service gate. Include its energy/material/waste inventory or the corresponding complete service provider, never both. Wood-carbon stock is not an automatic negative emission. No onsite kiln, steam, fuel combustion or chemical finishing is included in this supported dry electric-machining route. Their actual use fails route applicability and requires method extension."
+      rule: "The dry-wood physical production boundary ends at the completed body's quality-acceptance gate. Its opening/closing stocks contain only material physically inside that gate: raw wood, WIP (including accepted-origin rework returned inside), internal templates and residue stocks; accepted FG outside the gate is excluded. Record every actual accepted-to-WIP re-entry and subsequent gate exit at its then-current mass/moisture, even when an old cohort returns. First acceptance is an event subset of gate exits, not an additional output alongside them. FG storage, dispatch, returns and packing after that gate are separate custody/service ledgers of the original cohort. Include blank preparation, test cuts, drilling, central cutout, routing, sanding, dust collection, extraction/compressor electricity where present, acceptance/rework, cleanup and actual packing services within the foreground inventory scope; the dry-wood gate ledger and the service scope are explicitly distinguished. Outsourced machining must be represented once at its actual service gate. Include its energy/material/waste inventory or the corresponding complete service provider, never both. Wood-carbon stock is not an automatic negative emission. No onsite kiln, steam, fuel combustion or chemical finishing is included in this supported dry electric-machining route. Their actual use fails route applicability and requires method extension."
       source_ids: []
 boundary_abstraction:
   declared_starting_condition: "Purchased dry untreated unglued solid-coniferous-wood slab at plant receipt, before frame machining"
@@ -62,7 +62,7 @@ measurement_rules:
       name: "Mass"
       uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
     required_unit: "kg"
-    rule: "D is the measured net mass of bodies first accepted during the stated period/configuration, including newly accepted closing finished stock; exclude packaging, opening accepted stock, returns and repeated inspection. Calibrated net weighing and unique acceptance-event records establish D. Count and dimensions are cross-checks, never the denominator."
+    rule: "D is the sum of unique first-acceptance event net masses during the stated period/configuration, locked at each completed bare body's actual acceptance moisture. Newly accepted closing FG and all later dispositions remain part of D. Exclude packaging, opening accepted stock, returns and repeat acceptance from new D. Calibrated net weighing and immutable body/cohort-event links establish D; count and dimensions are cross-checks only. Reconcile all dispositions through acceptance_event_bridge without resetting D to dispatch or remaining stock."
   - id: wood_moisture
     applies_to: "wood and wood residues"
     required_property_ref:
@@ -105,7 +105,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Purchased dry untreated unglued solid-coniferous-wood slab, including actual moisture. Record species, dimensions, gate, dry conditioning and supplier. The broad identity describes supplied wood material; the upstream provider must supply this slab rather than a finished frame."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -125,7 +125,7 @@ process_inventory:
           property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
           description: "Meter cutting, drilling, routing, sanding, extraction and actual auxiliary electricity by stage. The native flow is CN customer-side below-1-kV alternating current. Site/year/grid/provider and delivery-loss compatibility require confirmation; it is not a universal grid dataset."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -145,7 +145,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Actual paper-backed abrasive sheet used for dry wood sanding; weigh whole supplied sheet, track grit/backing/binder and exhausted stock. Its native furniture-plant CN context does not establish this factory or provider. Do not also buy its embedded abrasive mineral."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -165,7 +165,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Conditional actual corrugated carton. Native furnish is 16.6% primary and 83.4% recycled fibre; require actual whole-carton furnish/grade and provider compatibility or resolve another carton identity. This is neither a prescribed recipe nor a default consumption. Carton remains outside net frame mass."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -189,7 +189,7 @@ process_inventory:
           flow_ref:
             uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "The complete accepted uncoated frame body contains only one-piece solid coniferous wood and actual contained water. Net quality-release mass excludes all packaging. Wood material is the whole physical output here, not a substitute for a glazed multi-material frame."
+          description: "The complete accepted uncoated frame body contains only one-piece solid coniferous wood and actual contained water. Net quality-release mass excludes all packaging. The 1 kg card is the normalized first-acceptance reference coordinate, not an extra external dispatch or a second copy of the physical gate output. Actual first and repeat gate crossings are retained separately under dry_wood_closure. Wood material represents the complete body here; it cannot substitute for a glazed multi-material frame."
           amount:
             expression: "1 kg"
             value_mode: "calculated_value"
@@ -211,7 +211,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Only a separately accepted non-waste solid-wood central cutout sold as a specified usable blank. Record its full actual dimensions, species, moisture, mass and buyer gate. A residual sold for disposal remains waste. Internally reused cutouts remain internal stock, not this external coproduct."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -232,7 +232,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "One segregated stream of untreated solid-wood cutting rejects/offcuts sent as industrial waste. Qualify unagglomerated chunks, species, moisture, contamination and actual receiver. No agglomerated-scrap identity, inferred recycling or avoided-product credit."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -252,7 +252,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Collected untreated sawing/routing/sanding dust sent as waste, excluding dust still adhered to abrasive. Weigh its actual wet state and stock changes. Native untreated combustion/recovery wording does not select a treatment plant or authorize credits."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -272,7 +272,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "One segregated spent paper-backed abrasive stream with its adhered wood dust, measured as the whole outgoing solid. Broad Waste solid is conditional on actual receiver acceptance and contamination; no paint-booth or blasting-residue route is inferred. Never count adhered dust again in sawdust."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -292,7 +292,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Conditional segregated cardboard packaging trim/damaged cartons, weighed separately. The native comment contains a 2% expert estimate; reject that estimate for this site and measure the actual stream, stock and receiver."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -313,7 +313,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Actual outdoor PM2.5 mass from tested stack/fugitive release; exclude collected dust and indoor occupational exposure. Use a compatible unspecified-air flow only with actual outdoor discharge metadata."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -333,7 +333,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Actual outdoor particles above PM2.5 and through PM10, as a disjoint bin on the same sampling/filterable basis. It is not a second total PM10 quantity."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -353,7 +353,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Actual outdoor particles above PM10, matched to the other bins and total particulate definition. Missing size data remain a gap, not an assumed distribution."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -373,7 +373,7 @@ process_inventory:
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
           description: "Actual positive moisture loss to outdoor air during machining/conditioning only when supported by wood/water stock balance and release pathway. Do not confuse wet-wood mass change with dry-wood scrap or infer net uptake as a negative emission."
           amount:
-            expression: "Collect actual attributable period quantity under the per-exchange rules above and divide by D once; retain the gross physical ledger."
+            expression: "Collect the actual cohort-attributable exchange quantity under the per-exchange cohort rules above and divide once by its locked D (original D0 for earlier accepted cohorts); retain the gross physical ledger."
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -399,26 +399,26 @@ dataset_production:
       process_id: "body_machining"
       flow_role: "frame_body and denominator D"
       record_type: "primary measured records"
-      raw_fields: "SKU; species; dimensions; unique first release event/time; accepted net mass; moisture; opening/closing raw/WIP/finished stocks; inherited per-exchange vectors; rejected/returned/reworked history; dispatch"
-      collection_method: "Calibrated net weighing of the completed bare body; match unique geometry acceptance and reconcile first release with dispatch plus newly accepted closing stock. Exclude packaging and opening accepted goods; retain nonproduction repair work separately."
+      raw_fields: "SKU; species; dimensions; immutable body/cohort ID; first acceptance event/time, net kg and moisture; original D0 for older cohorts; gate-side raw/WIP/templates/residue stocks and separate accepted FG stocks; linked gross dispatch/returns; every loss, downgrade, waste and WIP re-entry/re-exit with mass/moisture/time/destination; inherited per-exchange vectors"
+      collection_method: "Calibrated net weighing at the completed bare-body first acceptance; lock D by unique events. Reconcile complete mutually exclusive net destinations on the original acceptance basis through acceptance_event_bridge, including post-acceptance loss and closing WIP. Record every actual physical re-entry/re-exit at current mass for dry_wood_closure; reacceptance never adds D. Keep older FG/return services under original D0, with unknown history unresolved. Exclude packaging."
       unit: "kg"
-      frequency: "each lot and period close"
-      temporal_coverage: "declared production period including failed/idle intervals"
-      site_scope: "actual plant and one configuration"
+      frequency: "each event, movement and period close"
+      temporal_coverage: "declared production period plus inherited cohort history, including failed/idle intervals"
+      site_scope: "actual plant and one configuration; production gate separate from post-gate custody/services"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "scale calibration, acceptance drawing, stock and unique-event reconciliation"
+      quality_evidence: "scale calibration, acceptance drawing, cohort/event and complete destination/gate reconciliation"
     - protocol_id: cp_material
       process_id: "body_machining"
       flow_role: "slab, sandpaper, reusable_cutout"
       record_type: "primary measured records"
-      raw_fields: "row_id; supplier; actual SKU/species/grade; original unit; received/consumed/returned mass; moisture samples; stock transfer; template life; cutout buyer specification and full mass"
-      collection_method: "Weigh separate wood and whole abrasive streams; retain actual dry-basis wood samples and calibration. Distinguish internal reusable templates from external input and accepted non-waste cutout sales. Record tool/template consumption or outsourced service once."
+      raw_fields: "row_id; supplier; actual SKU/species/grade; original unit; external receipt/consumption/return; current mass/moisture by stream; gate-side opening/closing raw/WIP/template/residue stocks; linked internal transfer and accepted-origin re-entry/re-exit; template life; cutout buyer specification and full mass; inherited cohort vector"
+      collection_method: "Weigh separate wood and whole abrasive streams; sample actual dry-basis moisture at every distinct state. Distinguish production-gate stocks from post-gate accepted FG, actual external receipts from internal transfers, and internal templates from accepted non-waste cutout sales. Pair both sides of rework crossings; no second wood purchase or first-acceptance event. Record tool/template consumption or outsourced service once."
       unit: "kg"
-      frequency: "each lot and stock movement"
-      temporal_coverage: "same production period"
-      site_scope: "actual stage, material and configuration"
+      frequency: "each lot and stock/gate movement"
+      temporal_coverage: "same production period plus inherited cohort history"
+      site_scope: "actual stage, gate side, material and configuration"
       aggregation_rule: "per 1 kg reference flow"
-      quality_evidence: "supplier specification, sample method, inventory and buyer evidence"
+      quality_evidence: "supplier specification, sample method, stock/crossing/cohort and buyer evidence"
     - protocol_id: cp_energy
       process_id: "body_machining"
       flow_role: "electricity"
@@ -447,8 +447,8 @@ dataset_production:
       process_id: "body_machining"
       flow_role: "each segregated waste"
       record_type: "primary measured records"
-      raw_fields: "row_id; origin stage; wet mass; moisture/contamination; stock; waste status; actual receiver; transport; treatment boundary"
-      collection_method: "Weigh each stream independently and reconcile material stocks. Keep cutting rejects, collected dust, abrasive with adhered dust, and carton waste separate; no source-comment percentage or assumed treatment credit."
+      raw_fields: "row_id; origin stage, gate side and original cohort; wet mass; moisture/contamination; stock; waste status; actual receiver; transport; treatment boundary"
+      collection_method: "Weigh each stream independently and reconcile gate-side stocks. Separate pre-gate waste, accepted-origin rework waste inside the gate, and post-gate FG loss/waste outside it; each actual waste enters one physical balance only. Preserve its original cohort attribution. Keep cutting rejects, collected dust, abrasive with adhered dust, and carton waste separate; no source-comment percentage or assumed treatment credit."
       unit: "kg"
       frequency: "each movement and period close"
       temporal_coverage: "same production period"
@@ -459,7 +459,7 @@ dataset_production:
       process_id: "body_machining"
       flow_role: "each outdoor PM bin and water vapour"
       record_type: "primary measured records"
-      raw_fields: "row_id; stack/fugitive point; concentration; gas-flow/time/dry-wet/standard basis; PM size cuts/filterable scope; control/capture; wood-water stocks; actual outdoor compartment"
+      raw_fields: "row_id; stack/fugitive point; concentration; gas-flow/time/dry-wet/standard basis; PM size cuts/filterable scope; control/capture; gate-side wood-water stocks; current moisture of every gate crossing; original cohort; actual outdoor compartment"
       collection_method: "Use matched outdoor emission tests or a documented site mass balance with uncertainty. Distinguish collected residues, indoor air and outdoor releases. Do not infer PM fractions or wood-water evaporation from unpaired samples. Add any actual non-PM species separately."
       unit: "kg"
       frequency: "each test and represented operating interval"
@@ -470,26 +470,48 @@ dataset_production:
   calculation_rules:
     - id: period_normalization
       applies_to: "all inventory rows except frame_body"
-      rule: "inventory amount = actual attributable period quantity / D. Keep original numerator unit; D is cp_release first-accepted bare frame mass. Determine causal shares and inherited stock vectors before dividing once; D=0 preserves an unnormalized ledger and blocks reporting a normalized inventory. Gross physical quantities are retained separately from attributed numerators."
+      rule: "Inventory amount = actual cohort-attributable exchange quantity / its event-locked D (original D0 for an earlier accepted cohort). Keep original numerator units; determine causal shares and inherited raw/WIP vectors before dividing once. Include all applicable post-acceptance services and failed/rework activity of that cohort; never shift old FG/return services to new D. D=0 or unknown D0 preserves an unnormalized ledger and blocks the affected normalized result. Physical gate crossings, external dispatch and full waste quantities remain separate from attributed numerators and the 1 kg reference coordinate."
       inputs:
-        - "actual attributable period quantity"
-        - D
+        - "cohort-attributable exchange quantities"
+        - "D/D0"
         - cp_release
+        - "inherited vectors"
       output: "amount per 1 kg reference flow"
       source_ids: []
     - id: dry_wood_closure
-      applies_to: "slab, frame_body, reusable_cutout, wood_offcut, sawdust"
-      rule: "For each stream dry mass = wet mass / (1 + u). Reconcile opening dry stock + received dry wood against closing dry stock + first-accepted frame dry wood + external cutout dry wood + each dry waste/release. Include adhered wood dust in its abrasive-waste subledger without purchasing it again. Use actual uncertainty to investigate residuals, not an invented tolerance."
+      applies_to: "slab, frame_body, reusable_cutout, wood_offcut, sawdust and wood in abrasive_waste"
+      rule: "For each actual stock/stream/crossing dry mass = current wet mass / (1 + sampled u). Production-gate balance: opening inside-gate dry stock + actual external dry-wood receipts + accepted-side dry-wood re-entries = closing inside-gate dry stock + actual gross body gate exits + external cutout dry wood + actual external raw-wood returns + actual external dry-wood waste transfers/releases from inside the gate. Residues retained inside remain closing stock, never a simultaneous waste output. Inside-gate stock includes raw/WIP/templates/residues and physically returned accepted-origin WIP, but excludes accepted FG outside the gate. Gross body exits include unique first exits and every actual repeat exit; use the paired physical re-entry once on the input side, never a second purchase or new D. Do not add dispatch, post-gate FG or post-gate losses to this gate balance. Retain a separate whole-site stock/dispatch check, where acceptance/rework transfers cancel and first acceptance is not an external output. Include adhered wood dust only in the abrasive-waste wood subledger; exclude paper, grit and water from dry wood. Investigate residuals using actual uncertainty, never an invented tolerance."
       inputs:
-        - "stream weights"
+        - "actual stream/crossing/stock weights"
         - "sampled u"
         - cp_material
         - cp_release
         - cp_waste
         - cp_emission
-      output: "dry-wood closure"
+      output: "dry-wood physical gate closure separate from acceptance-event ledger"
       source_ids:
         - usda-wood-handbook-2021
+    - id: acceptance_event_bridge
+      applies_to: "first-accepted body cohort"
+      rule: "D = sum of unique first-acceptance net kg, locked at the measured acceptance basis. Cross-check D = Dispatch_new + FG_new + Other_new: Dispatch_new is net external dispatch after linked returns, FG_new is closing accepted FG, and Other_new covers every mutually exclusive remaining net disposition, including actual loss, scrap, downgrade/use, transfer out of product scope and closing returned/rework WIP. These are destinations of the newly accepted cohort only (zero opening accepted stock), expressed on its original acceptance mass basis with measured moisture/composition conversion; not raw current wet masses when the basis changed. A returned body is removed from net dispatch and counted once in its actual final FG/WIP/other destination; gross loops/reacceptance are not extra destinations. A 100 kg first acceptance with 60 kg net dispatch, 30 kg FG and 10 kg loss retains D=100 kg. The two-term dispatch-plus-FG shortcut is allowed only with evidenced zero other dispositions. Never infer zero loss, reset D or invent a residual to close the bridge."
+      inputs:
+        - cp_release
+        - cp_material
+        - cp_waste
+        - "measured basis conversions"
+      output: "locked D and complete net destination reconciliation"
+      source_ids: []
+    - id: stocks_and_services
+      applies_to: "raw/WIP and accepted cohorts"
+      rule: "Keep opening accepted FG and earlier accepted returns under their immutable original cohort and D0; they cannot contribute to new D. Transfer inherited own-foreground per-exchange vectors with raw/WIP once, add current incremental operations once, and avoid adding supplier burdens already represented by the linked provider. Actual return, storage, packing, retest and rework services and their losses remain attached to that original accepted cohort, including when it re-enters the gate and is accepted again. Re-entry/re-exit is physical movement only, not new procurement, first acceptance or repetition of the original burden. Retain full physical streams separately from allocated vectors; unknown D0/history remains an unnormalized unresolved correction."
+      inputs:
+        - cp_release
+        - cp_material
+        - cp_energy
+        - cp_packaging
+        - cp_waste
+      output: "cohort vectors, stocks and service corrections"
+      source_ids: []
     - id: pm_partition
       applies_to: "pm_fine, pm_mid, pm_coarse"
       rule: "On the same measured source/time/filterable definition: fine = PM2.5; middle = PM10 - PM2.5; coarse = total PM - PM10. Require total PM >= PM10 >= PM2.5 >= 0; unmatched cut points or missing measurements block bin inference. Do not sum nested PM totals as separate releases."
@@ -500,9 +522,9 @@ dataset_production:
       source_ids: []
     - id: water_closure
       applies_to: "water_vapour"
-      rule: "Derive positive evaporative loss only from actual water input, retained wood/residue water and opening/closing water stocks on matched scope. Resolve air exchange/uptake and measurement uncertainty; moisture decrease alone is insufficient. Do not count contained water twice as an extra purchased input."
+      rule: "On the same production-gate boundary as dry_wood_closure, reconcile water in opening inside-gate stocks + actual external receipts + actual accepted-side re-entries against closing inside-gate stocks + every actual gross body exit + external cutouts + external raw-wood returns + actual external waste transfers and outdoor water releases; retained residues remain closing stock only. Use measured current moisture for each physical crossing; accepted FG/dispatch outside the gate and first-acceptance event totals are not extra terms. Post-gate water changes require their own matched custody/service balance and original cohort attribution. Resolve actual air exchange/uptake and uncertainty; moisture decrease alone cannot establish an outdoor emission. Contained water is not an extra purchased input."
       inputs:
-        - "actual wet/dry weights and stock changes"
+        - "actual wet/dry crossing weights and gate-side stock changes"
         - cp_material
         - cp_release
         - cp_waste
@@ -544,11 +566,11 @@ validation_rules:
     source_ids: []
   - rule_id: measurement_gate
     applies_to: "all inventory rows"
-    rule: "Check per-1-kg basis, linked collection protocols, finite positive D and one final normalization. Failed D=0 remains a disclosed physical/burden ledger; no count or wood-intake denominator substitution."
+    rule: "Check per-1-kg basis, linked protocols, finite positive event-locked D, complete acceptance_event_bridge and one normalization. Opening FG, returns and repeat gate exits must not increase new D; later losses must not shrink D. D=0/unknown D0 preserves physical/burden ledgers and blocks the affected normalized result; no count, dispatch, residual FG or wood-intake denominator substitution."
     source_ids: []
   - rule_id: balances_gate
     applies_to: "wood, dust, moisture, stocks"
-    rule: "Separate physical V from attributed A; retain all full outgoing quantities, same-period stock changes and inherited vectors. Double counting adhered dust, nested PM or received whole packaging/components fails the model."
+    rule: "Separate physical V, allocated A and event-locked D. Verify dry_wood_closure gate-side stocks excluding post-gate accepted FG, paired actual re-entries/re-exits, full waste quantities and cohort vectors. Verify post-gate net destinations separately, and whole-site closure with internal gate transfers cancelled. Adding accepted FG plus first acceptance to one gate-output balance, omitting re-entry, counting reacceptance as new D, or double counting adhered dust, nested PM or whole packaging/components fails the model."
     source_ids:
       - usda-wood-handbook-2021
   - rule_id: identity_gate
@@ -587,21 +609,21 @@ data_sources:
     used_for: "Bounded allocation case and packaging distinction; no regional mass share or universal allocation factor transferred"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:8cde6b60a0f02d3026f3f55121d15ab78e36ba9df08219ce2e97505bd2c71629"
+  source_sha256: "sha256:75fff630832a44cb16b3363f065cff1cd9777b78ceed6fe2fff65aa6b14bd015"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6441"
+    - unit_id: "normative_6637"
       family: "system_boundary"
       span:
         start:
-          offset: 6441
+          offset: 6637
           line: 60
           column: 1
         end:
-          offset: 8174
+          offset: 9137
           line: 75
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased dry untreated unglued solid-coniferous-wood slab at plant receipt, before frame machining |\n| starting_condition_role | Foreground receiving gate, linked to upstream supplied-stock production and delivery |\n| product_classification_scope | Completed one-piece frame body within CPC31914; the input slab is not itself the frame |\n| recursive_input_rule | No purchased frame bodies in this primary machining route. Preserve slab/frame gate qualifiers even when their broad material UUID is equal; no self-provider loop |\n| upstream_dataset_requirement | Actual slab provider covering forestry, sawing, drying and preceding shaping as applicable; actual consumable supply and incoming transport; no burden-free purchased wood |\n| disclosure | Receiving and release gates; outsourced flattening/sanding; source and destination transport; machinery/extraction; rejects/stocks; packaging; downstream finishing/glazing exclusions and all unclosed upstream gaps |\n\nInclude blank preparation, test cuts, drilling, central cutout, routing, sanding, dust collection, extraction/compressor electricity where present, acceptance/rework, cleanup and actual packing within one foreground unit. Outsourced machining must be represented once at its actual service gate. Include its energy/material/waste inventory or the corresponding complete service provider, never both. Wood-carbon stock is not an automatic negative emission. No onsite kiln, steam, fuel combustion or chemical finishing is included in this supported dry electric-machining route. Their actual use fails route applicability and requires method extension.\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased dry untreated unglued solid-coniferous-wood slab at plant receipt, before frame machining |\n| starting_condition_role | Foreground receiving gate, linked to upstream supplied-stock production and delivery |\n| product_classification_scope | Completed one-piece frame body within CPC31914; the input slab is not itself the frame |\n| recursive_input_rule | No purchased frame bodies in this primary machining route. Preserve slab/frame gate qualifiers even when their broad material UUID is equal; no self-provider loop |\n| upstream_dataset_requirement | Actual slab provider covering forestry, sawing, drying and preceding shaping as applicable; actual consumable supply and incoming transport; no burden-free purchased wood |\n| disclosure | Receiving and release gates; outsourced flattening/sanding; source and destination transport; machinery/extraction; rejects/stocks; packaging; downstream finishing/glazing exclusions and all unclosed upstream gaps |\n\nThe dry-wood physical production boundary ends at the completed body's quality-acceptance gate. Its opening/closing stocks contain only material physically inside that gate: raw wood, WIP (including accepted-origin rework returned inside), internal templates and residue stocks; accepted FG outside the gate is excluded. Record every actual accepted-to-WIP re-entry and subsequent gate exit at its then-current mass/moisture, even when an old cohort returns. First acceptance is an event subset of gate exits, not an additional output alongside them. FG storage, dispatch, returns and packing after that gate are separate custody/service ledgers of the original cohort. Include blank preparation, test cuts, drilling, central cutout, routing, sanding, dust collection, extraction/compressor electricity where present, acceptance/rework, cleanup and actual packing services within the foreground inventory scope; the dry-wood gate ledger and the service scope are explicitly distinguished. Outsourced machining must be represented once at its actual service gate. Include its energy/material/waste inventory or the corresponding complete service provider, never both. Wood-carbon stock is not an automatic negative emission. No onsite kiln, steam, fuel combustion or chemical finishing is included in this supported dry electric-machining route. Their actual use fails route applicability and requires method extension.\n\n"
       headings:
         - kind: "heading"
           span:
@@ -618,11 +640,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6441
+              offset: 6637
               line: 60
               column: 1
             end:
-              offset: 6462
+              offset: 6658
               line: 60
               column: 22
           text: "## 5. System Boundary"
@@ -638,15 +660,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_23714"
+    - unit_id: "normative_26378"
       family: "allocation"
       span:
         start:
-          offset: 23714
+          offset: 26378
           line: 311
           column: 1
         end:
-          offset: 25160
+          offset: 27824
           line: 317
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\nFirst subdivide actual operations and use direct material/energy records. The central cutout can be a usable co-product, an internal template/blank, or waste; buyer acceptance, actual specification, legal status and disposition establish its role, not positive sale value alone. Keep its full physical mass regardless of the burden share. Internal reuse is not an external coproduct or a second purchase.\n\nFor an unavoidable joint operation, identify which outputs actually share each exchange. Attribute stock-preparation burdens using a demonstrated physical relationship on a consistent dry-wood or other justified basis; attribute frame-only rabbet/profile machining, acceptance, packaging and associated emissions to the frame. Frame dust or reject mass is not a market-output denominator. A regional lumber study's mass allocation and finished-product packaging treatment are a case, not a universal frame allocation factor [corrim-northern-lumber-2025]. If no physical relationship is defensible, explain why before applying same-period, same-gate economic allocation to the remaining shared burdens using actual quantities and prices, with sensitivity and price coverage disclosed. Missing causes/prices remain unresolved. Never apply one revenue/mass share to every process exchange, reduce physical outgoing quantities by burden shares, or award unspecified recycling/avoided-product credits.\n\n"
@@ -666,11 +688,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 23714
+              offset: 26378
               line: 311
               column: 1
             end:
-              offset: 23754
+              offset: 26418
               line: 311
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -686,18 +708,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_33777"
+    - unit_id: "normative_41526"
       family: "validation"
       span:
         start:
-          offset: 33777
-          line: 349
+          offset: 41526
+          line: 351
           column: 1
         end:
-          offset: 35455
-          line: 360
+          offset: 43695
+          line: 362
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| scope_gate | product and route | Require completed closed one-piece bare solid-coniferous frame with opening/rabbet and no retained nonwood material or finish. Uncut stock, continuous moulding and complete glazed frames are outside scope. | superbender-single-piece-frame-2013; ambiance-unfinished-frame |\n| reference_gate | frame_body | Exactly one explicit reference product output uses 1 kg with required form/state/provider qualifiers. Shared generic wood UUIDs do not replace row linkage or permit a supplier self-loop. | |\n| measurement_gate | all inventory rows | Check per-1-kg basis, linked collection protocols, finite positive D and one final normalization. Failed D=0 remains a disclosed physical/burden ledger; no count or wood-intake denominator substitution. | |\n| balances_gate | wood, dust, moisture, stocks | Separate physical V from attributed A; retain all full outgoing quantities, same-period stock changes and inherited vectors. Double counting adhered dust, nested PM or received whole packaging/components fails the model. | usda-wood-handbook-2021 |\n| identity_gate | every row | Exact official Chinese display, actual atomic physical state, property/unit, supplier/receiver compatibility and source restrictions are mandatory. UUID compliance metadata does not confer method or study approval. | |\n| uncertainty_gate | allocation and closure | Missing causal shares, composition, source compatibility, capture, stock history or measured uncertainty remains pending review; no invented residual correction or fixed yield. | corrim-northern-lumber-2025 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| scope_gate | product and route | Require completed closed one-piece bare solid-coniferous frame with opening/rabbet and no retained nonwood material or finish. Uncut stock, continuous moulding and complete glazed frames are outside scope. | superbender-single-piece-frame-2013; ambiance-unfinished-frame |\n| reference_gate | frame_body | Exactly one explicit reference product output uses 1 kg with required form/state/provider qualifiers. Shared generic wood UUIDs do not replace row linkage or permit a supplier self-loop. | |\n| measurement_gate | all inventory rows | Check per-1-kg basis, linked protocols, finite positive event-locked D, complete acceptance_event_bridge and one normalization. Opening FG, returns and repeat gate exits must not increase new D; later losses must not shrink D. D=0/unknown D0 preserves physical/burden ledgers and blocks the affected normalized result; no count, dispatch, residual FG or wood-intake denominator substitution. | |\n| balances_gate | wood, dust, moisture, stocks | Separate physical V, allocated A and event-locked D. Verify dry_wood_closure gate-side stocks excluding post-gate accepted FG, paired actual re-entries/re-exits, full waste quantities and cohort vectors. Verify post-gate net destinations separately, and whole-site closure with internal gate transfers cancelled. Adding accepted FG plus first acceptance to one gate-output balance, omitting re-entry, counting reacceptance as new D, or double counting adhered dust, nested PM or whole packaging/components fails the model. | usda-wood-handbook-2021 |\n| identity_gate | every row | Exact official Chinese display, actual atomic physical state, property/unit, supplier/receiver compatibility and source restrictions are mandatory. UUID compliance metadata does not confer method or study approval. | |\n| uncertainty_gate | allocation and closure | Missing causal shares, composition, source compatibility, capture, stock history or measured uncertainty remains pending review; no invented residual correction or fixed yield. | corrim-northern-lumber-2025 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -714,12 +736,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 33777
-              line: 349
+              offset: 41526
+              line: 351
               column: 1
             end:
-              offset: 33799
-              line: 349
+              offset: 41548
+              line: 351
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -738,168 +760,168 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_6441"
+      unit_id: "normative_6637"
       source_span:
         start:
-          offset: 7521
+          offset: 7717
           line: 73
           column: 1
         end:
-          offset: 8172
+          offset: 9135
           line: 73
-          column: 652
+          column: 1419
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_23714"
+      unit_id: "normative_26378"
       source_span:
         start:
-          offset: 23756
+          offset: 26420
           line: 313
           column: 1
         end:
-          offset: 24160
+          offset: 26824
           line: 313
           column: 405
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_23714"
+      unit_id: "normative_26378"
       source_span:
         start:
-          offset: 24162
+          offset: 26826
           line: 315
           column: 1
         end:
-          offset: 25158
+          offset: 27822
           line: 315
           column: 997
     - pointer: "/validation_rules/0"
       rule_id: "scope_gate"
       identity_kind: "explicit"
-      unit_id: "normative_33777"
+      unit_id: "normative_41526"
       source_span:
         start:
-          offset: 33872
-          line: 353
+          offset: 41621
+          line: 355
           column: 1
         end:
-          offset: 34179
-          line: 353
+          offset: 41928
+          line: 355
           column: 308
     - pointer: "/validation_rules/1"
       rule_id: "reference_gate"
       identity_kind: "explicit"
-      unit_id: "normative_33777"
+      unit_id: "normative_41526"
       source_span:
         start:
-          offset: 34180
-          line: 354
+          offset: 41929
+          line: 356
           column: 1
         end:
-          offset: 34402
-          line: 354
+          offset: 42151
+          line: 356
           column: 223
     - pointer: "/validation_rules/2"
       rule_id: "measurement_gate"
       identity_kind: "explicit"
-      unit_id: "normative_33777"
+      unit_id: "normative_41526"
       source_span:
         start:
-          offset: 34403
-          line: 355
+          offset: 42152
+          line: 357
           column: 1
         end:
-          offset: 34651
-          line: 355
-          column: 249
+          offset: 42589
+          line: 357
+          column: 438
     - pointer: "/validation_rules/3"
       rule_id: "balances_gate"
       identity_kind: "explicit"
-      unit_id: "normative_33777"
+      unit_id: "normative_41526"
       source_span:
         start:
-          offset: 34652
-          line: 356
+          offset: 42590
+          line: 358
           column: 1
         end:
-          offset: 34949
-          line: 356
-          column: 298
+          offset: 43189
+          line: 358
+          column: 600
     - pointer: "/validation_rules/4"
       rule_id: "identity_gate"
       identity_kind: "explicit"
-      unit_id: "normative_33777"
+      unit_id: "normative_41526"
       source_span:
         start:
-          offset: 34950
-          line: 357
+          offset: 43190
+          line: 359
           column: 1
         end:
-          offset: 35198
-          line: 357
+          offset: 43438
+          line: 359
           column: 249
     - pointer: "/validation_rules/5"
       rule_id: "uncertainty_gate"
       identity_kind: "explicit"
-      unit_id: "normative_33777"
+      unit_id: "normative_41526"
       source_span:
         start:
-          offset: 35199
-          line: 358
+          offset: 43439
+          line: 360
           column: 1
         end:
-          offset: 35453
-          line: 358
+          offset: 43693
+          line: 360
           column: 255
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6441"
+      unit_id: "normative_6637"
       source_span:
         start:
-          offset: 6441
+          offset: 6637
           line: 60
           column: 1
         end:
-          offset: 6462
+          offset: 6658
           line: 60
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6441"
+      unit_id: "normative_6637"
       source_span:
         start:
-          offset: 6490
+          offset: 6686
           line: 64
           column: 1
         end:
-          offset: 7519
+          offset: 7715
           line: 71
           column: 231
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_23714"
+      unit_id: "normative_26378"
       source_span:
         start:
-          offset: 23714
+          offset: 26378
           line: 311
           column: 1
         end:
-          offset: 23754
+          offset: 26418
           line: 311
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_33777"
+      unit_id: "normative_41526"
       source_span:
         start:
-          offset: 33777
-          line: 349
+          offset: 41526
+          line: 351
           column: 1
         end:
-          offset: 33799
-          line: 349
+          offset: 41548
+          line: 351
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -908,5 +930,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:8cde6b60a0f02d3026f3f55121d15ab78e36ba9df08219ce2e97505bd2c71629"
-  generated_content_sha256: "sha256:bbac5f1c2f66eb25bc4e0c090c32aa6c65cf660bb60d342042392b4ad223488c"
+    sha256: "sha256:75fff630832a44cb16b3363f065cff1cd9777b78ceed6fe2fff65aa6b14bd015"
+  generated_content_sha256: "sha256:6e45edddb0b03f40d9634c5d850a94da0fce20f95806a2c1120b713079fe3dc6"
