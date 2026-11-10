@@ -1084,7 +1084,7 @@ dataset_production:
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_growout_aqueous_pollutants
       applies_to: "growout; Outputs; Elementary flows"
-      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Individual growout pollutants discharged directly to seawater. Instantiate only evidenced substance rows, e.g. measured ammonium ion versus ammonia-N, nitrate versus nitrate-N, phosphate versus P and organic carbon on its stated basis; subtract inlet background using compatible mass and water records. Do not label nutrient removal as an avoided burden. <br> - Flow property / unit: Mass / kg <br> - Amount rule: Measured attributable instance amount per 1 kg reference flow; preserve raw node/period quantity and native unit. <br> - Value mode: Foreground record (foreground_record) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Collected record (collected_record) <br> - Collection protocol: cp_growout <br> - Range: Unresolved instance-specific range evidence; no empirical bound supplied <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_growout_aqueous_pollutants <br> - Unit: kg <br> - Basis: per 1 kg reference flow; U_growout_aqueous_pollutants must be established for this actual instance <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
+      requirement: "Identify each actual physically or chemically specific exchange within this collection scope and add an independent inventory card; this collection scope is not a flow. Establish substance/species, state, flow type, property, native unit, quantity, evidence, normalization, destination and UUID separately for each card. Do not copy an aggregate quantity, common upper bound or UUID onto its members. Determine final direction and product/waste/elementary type from each actual source and fate; the collection scope does not assign a universal exchange type. Collection scope: Individual growout pollutants discharged directly to seawater. Instantiate only evidenced substance rows, e.g. measured ammonium ion versus ammonia-N, nitrate versus nitrate-N, phosphate versus P and organic carbon on its stated basis; use water_pollutant_balance to calculate actual outfall substance mass from matched discharge concentration and volume with explicit species/element and unit conversions. Retain compatible inlet background, stocks and biological retention in the separate balance ledger; do not subtract inlet background from this outfall exchange. Outfall-minus-inlet increment is diagnostic only and cannot replace this exchange or create a nutrient-removal credit. Retain raw samples and volumes as collected records, and mark concentration/volume-derived or reference-normalized exchange amounts as calculated values with their formula and provenance. <br> - Flow property / unit: Mass / kg <br> - Amount rule: Calculate outfall substance mass under water_pollutant_balance, then apply period_attribution once for the same accepted reference mass; retain raw node/period concentration, volume, species basis, conversion and native unit. <br> - Value mode: Calculated value (calculated_value) <br> - Specificity: Site-specific (site_specific) <br> - Normalization basis: per 1 kg reference flow <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Calculated from collection (calculated_from_collection) <br> - Collection protocol: cp_growout <br> - Range: Unresolved instance-specific range evidence; no empirical bound supplied <br> - Range role: Uncertainty range (uncertainty_range) <br> - Lower: 0 <br> - Upper: U_growout_aqueous_pollutants <br> - Unit: kg <br> - Basis: per 1 kg reference flow; U_growout_aqueous_pollutants must be established for this actual instance <br> - Basis kind: Reference flow (reference_flow) <br> - Evidence kind: Reasoned estimate (reasoned_estimate)"
       evidence: "Node collection protocol, original records and individual identity, quantity, range and destination evidence"
     - id: collect_growout_air_releases
       applies_to: "growout; Outputs; Elementary flows"
@@ -1295,7 +1295,7 @@ data_sources:
     used_for: "Algebraic final reference normalization only; not empirical yield or internal transfer amount"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:7797fe16f475d577bb163cb5a2344e5c13e226fc8c47bb6df1d274bc2b53920f"
+  source_sha256: "sha256:d5ff97f8383e8dcdd51b7c734ae33e89a651f659fa9fa756e253bfa7b1adf52f"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5420"
@@ -1394,15 +1394,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_166330"
+    - unit_id: "normative_166980"
       family: "validation"
       span:
         start:
-          offset: 166330
+          offset: 166980
           line: 840
           column: 1
         end:
-          offset: 169040
+          offset: 169690
           line: 852
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `validation_scope` | reference | Require S. droebachiensis, hatchery origin, Maine land-based V-trough RAS/formulated-feed history, whole native test/spines, live never-frozen state and actual first physical receipt. Excluded routes or missing acceptance cannot be relabelled to pass. | |\n| `validation_mass` | all nodes | Check calibrated receipt net mass, positive A, final 1 kg, native units, feed/water/count conversions and exact matched transfer state/mass/count, including carrying matter and both holding branches. Internal quantities need not equal 1 kg. | mass-normalization-identity |\n| `validation_outputs` | all nodes | Account every intended grade/destination and retained/returned cohort separately from wastes; require receipt/stock gate and burden ownership, no duplicated final output and no environmental credit. Include collection independent of growth and sorting's incident matter. | |\n| `validation_periods` | nursery; growout; shared assets | Reconcile run/period/cohort boundaries, cleaning/changeover/repair/replacement/termination, failed periods, mortality, open stock and shared service fractions. Require attribution rationale, actual service-life evidence and sensitivity; prevent repeated asset or complete-service components. | |\n| `validation_fates` | water; wastes; direct releases | Require actual supplier/abstraction distinction, wastewater treatment versus direct discharge, carrier water versus pollutant species, chemical/N/P/carbon/medium basis and fossil/biogenic distinction. Unknown fate or release is unresolved, not zero. | |\n| `validation_states` | nursery; holding; all applicable collection obligations | Select actual observed active/absent state and populate zero/one/multiple concrete instances with own quantity, native unit, recipient and verified UUID. Missing state, symbolic U_row, identity or method evidence must remain disclosed; checker success is not publication readiness. | |\n| `validate_atomic_completion` | all applicable per-flow collection obligations and final exchanges | Final dataset completion and validation require every actual exchange to have an independent atomic card and its own quantity, property/native unit, collection or calculation evidence, range/uncertainty evidence, normalization, actual destination and verified UUID. Unknown identity, activity state, quantity, range evidence or fate blocks completion; it is never zero, a presumed bypass or permission to omit an obligation. Every important concrete flow retains its own range/uncertainty evidence collection duty; a symbolic upper bound is not an empirical range. | |\n\n"
@@ -1422,11 +1422,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 166330
+              offset: 166980
               line: 840
               column: 1
             end:
-              offset: 166352
+              offset: 167002
               line: 840
               column: 23
           text: "## 9. Validation Rules"
@@ -1563,92 +1563,92 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validation_scope"
       identity_kind: "explicit"
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 166425
+          offset: 167075
           line: 844
           column: 1
         end:
-          offset: 166715
+          offset: 167365
           line: 844
           column: 291
     - pointer: "/validation_rules/1"
       rule_id: "validation_mass"
       identity_kind: "explicit"
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 166716
+          offset: 167366
           line: 845
           column: 1
         end:
-          offset: 167022
+          offset: 167672
           line: 845
           column: 307
     - pointer: "/validation_rules/2"
       rule_id: "validation_outputs"
       identity_kind: "explicit"
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 167023
+          offset: 167673
           line: 846
           column: 1
         end:
-          offset: 167334
+          offset: 167984
           line: 846
           column: 312
     - pointer: "/validation_rules/3"
       rule_id: "validation_periods"
       identity_kind: "explicit"
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 167335
+          offset: 167985
           line: 847
           column: 1
         end:
-          offset: 167689
+          offset: 168339
           line: 847
           column: 355
     - pointer: "/validation_rules/4"
       rule_id: "validation_fates"
       identity_kind: "explicit"
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 167690
+          offset: 168340
           line: 848
           column: 1
         end:
-          offset: 167999
+          offset: 168649
           line: 848
           column: 310
     - pointer: "/validation_rules/5"
       rule_id: "validation_states"
       identity_kind: "explicit"
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 168000
+          offset: 168650
           line: 849
           column: 1
         end:
-          offset: 168367
+          offset: 169017
           line: 849
           column: 368
     - pointer: "/validation_rules/6"
       rule_id: "validate_atomic_completion"
       identity_kind: "explicit"
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 168368
+          offset: 169018
           line: 850
           column: 1
         end:
-          offset: 169038
+          offset: 169688
           line: 850
           column: 671
   diagnostics:
@@ -1690,14 +1690,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_166330"
+      unit_id: "normative_166980"
       source_span:
         start:
-          offset: 166330
+          offset: 166980
           line: 840
           column: 1
         end:
-          offset: 166352
+          offset: 167002
           line: 840
           column: 23
 projection_metadata:
@@ -1707,5 +1707,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7797fe16f475d577bb163cb5a2344e5c13e226fc8c47bb6df1d274bc2b53920f"
-  generated_content_sha256: "sha256:1da279d1e9d38ab197ffef0d1ea58f26006a15cba7dcc6ebbed99e032e1be9eb"
+    sha256: "sha256:d5ff97f8383e8dcdd51b7c734ae33e89a651f659fa9fa756e253bfa7b1adf52f"
+  generated_content_sha256: "sha256:3afa2133def6334b4a5dedc3ecd3eb86dd08440a4e5f1d019a864f41bfc16d8e"

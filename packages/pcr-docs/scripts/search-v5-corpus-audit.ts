@@ -8,6 +8,7 @@ import { Index } from 'flexsearch';
 import { isUnknownRecord } from '../../pcr-core/src/types.ts';
 import { searchTerms } from '../lib/search-terms.ts';
 import { readSearchManifest, unpackSearchFile, packSearchShards } from '../lib/search-pack.ts';
+import { escapeSearchDictionary } from './search-layout.ts';
 import { encodeSearchEntries, decodeSearchEntries, readSearchTermDictionary, SEARCH_SCORE_SLOTS } from '../lib/search-wire.ts';
 import type { SearchWireEntries } from '../lib/search-wire.ts';
 type AuditRecord = Record<string, unknown> & {content: string};
@@ -51,7 +52,10 @@ for (const language of ['en-US', 'zh-CN']) {
       const data: unknown = JSON.parse(bytes.toString('utf8'));
       assert.ok(isUnknownRecord(data) && Array.isArray(data.dictionary));
       dictionaryTerms += data.dictionary.length;
-      assert.equal(packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,parsed.schemaVersion),bytes.toString("utf8"));
+      const canonicalPack = packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,parsed.schemaVersion);
+      const physicalPack = bytes.toString('utf8');
+      assert.ok(physicalPack === canonicalPack || parsed.schemaVersion === 7 && physicalPack === escapeSearchDictionary(canonicalPack),
+        'Physical search bytes must equal the canonical encoding or its exact dictionary-only escape variant');
       const baseline=Buffer.from(packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,5));
       const oldFile={...file,bytes:baseline.length,gzipBytes:gzipSync(baseline,{level:9}).length,sha256:"sha256:"+hash(baseline)};
       assert.deepEqual(await unpackSearchFile({...parsed,schemaVersion:5},oldFile,baseline,bytes=>"sha256:"+hash(bytes)),members);

@@ -9,7 +9,7 @@ const hash=(text:string)=>'sha256:'+createHash('sha256').update(text).digest('he
 const gzip=(text:string)=>gzipSync(text,{level:9}).length;
 const transport=(payload:string):Transport=>({payload,bytes:Buffer.byteLength(payload),gzipBytes:gzip(payload),sha256:hash(payload)});
 /** Only physical JSON string spelling changes; dictionary values/order remain exact. */
-function escapedDictionary(payload:string):string{
+export function escapeSearchDictionary(payload:string):string{
   const parsed:unknown=JSON.parse(payload);
   if(!isUnknownRecord(parsed)||!Array.isArray(parsed.dictionary)||!parsed.dictionary.every(v=>typeof v==='string'))throw Error('Invalid search dictionary');
   const dictionary=JSON.stringify(parsed.dictionary),key='"dictionary":'+dictionary,at=payload.indexOf(key);
@@ -29,7 +29,7 @@ export function planSearchPacks(wires:readonly string[],sourceCommit:string,lang
   function segment(start:number,end:number){
     const key=start+':'+end,known=segments.get(key);if(known)return known;
     const native=transport(packSearchShards(wires.slice(start,end),sourceCommit,language,start,7));
-    const escaped=escapedDictionary(native.payload),alternative=escaped===native.payload?native:transport(escaped);
+    const escaped=escapeSearchDictionary(native.payload),alternative=escaped===native.payload?native:transport(escaped);
     const best=alternative.bytes<=SEARCH_RAW_LIMIT&&alternative.gzipBytes<native.gzipBytes?alternative:native;
     const result={native,best};segments.set(key,result);return result;
   }
