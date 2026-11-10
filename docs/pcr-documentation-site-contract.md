@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-11-10
-lastReviewedNote: "PR34: register 31 retained pre-packing routes for 28 newly added CPC3 language documents against actual source ad982; preserve 105 legacy documents, 131 routes, their original baseline and all published route/anchor evidence. Clarify additive source provenance without changing schemas, runtime algorithms, source fidelity, capacities or methodology authority."
-lastReviewedCommit: ad982a5ff6358155aefc694a9627590722def9f8
+lastReviewedNote: "PR34: retain additive reading-route provenance and add explicit lossless search transport v8 after the complete bilingual build exceeded the fixed gzip limit. Preserve v1-7 readers, exact logical/native/record bytes, ranking, first-appearance identity and all physical/expansion budgets; require fresh complete source-bound qualification."
+lastReviewedCommit: 485cd6ebf8d727e7878632a0d861365d255dc2ee
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -549,8 +549,41 @@ versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buck
 complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
 including the manifest, remain unchanged.
 
+Search manifest version 8 uses envelope `schemaVersion: 4` and
+`encoding: "v4-columnar-new-reuse-ranked-split-vlq"`. It retains the original
+first-appearance term dictionary and every ordered logical v4 wire. Its five
+numeric channels contain term commands, ranked score headers, posting lengths,
+signed predicted first values and unsigned remaining posting deltas. A map with
+negative remaining deltas, unsupported shapes, oversized integers or insufficient
+shared expansion budget retains its original native numeric columns.
+
+Term command zero introduces the next dictionary ID. A positive command is one
+plus the zigzag delta from the previous reused ID in that map; new terms do not
+change that predictor. Reuse state resets per map, while the next new ID advances
+through every map in original shard/key order, including native fallbacks. Reuse
+cannot name an unintroduced term, native columns cannot skip a new ID, and all
+dictionary entries must be introduced. The restored original term-ID deltas,
+not the command stream, enter the existing logical-wire checks.
+
+The 1,023 legal score headers have a fixed corpus-independent rank: headers whose
+declared length equals the mask's bit length come first, then mask popcount and
+the original numeric header break ties. This bijection preserves trailing empty
+slots. Nonempty postings retain v7's previous-first-value predictor independently
+for each of the nine score slots; first and remaining values occupy separate
+channels without reordering the restored postings. Empty lists consume neither.
+
+V8 retains complete unique channel ownership, canonical bounded VLQs, header and
+posting-count checks, finite predictor arithmetic and the same shared 20 MB numeric
+expansion budget. The budget accounts for the original term/header digit lengths,
+slot vectors, posting arrays and restored first values as well as decoded channels;
+short term commands and small header ranks cannot conceal larger restoration.
+Physical bytes, summed restored-wire bytes, final logical hashes and record counts
+remain independently checked. Readers and canonical writer bytes for v1-7 remain
+compatible; older Workers reject the v8 manifest. A new transport does not alter
+source text, independent logical indexes, engine exports, record fields or ranking.
+
 The generator retains the original sixteen-member greedy layout as a candidate
-and compares a bounded set of consecutive pack boundaries near balanced cuts.
+and compares v7 and v8 over a bounded set of consecutive pack boundaries near balanced cuts.
 At each cut position it retains at most sixteen paths. Physical dictionary strings
 may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
 gzip is smaller; dictionary values and first-appearance order remain exact. The
@@ -561,13 +594,13 @@ logical text buckets, engine exports,
 record fields, logical order, ranking, decoder versions or any size/expansion guard.
 
 Corpus auditing accepts only the exact canonical physical pack spelling or its
-exact dictionary-only Unicode-escape variant. It still verifies physical hashes,
+exact dictionary-only Unicode-escape variant for v7/v8. It still verifies physical hashes,
 every restored logical wire, native engine exports, complete records, ordered
 query results and the full existing raw/gzip budgets. This compatibility does not
 permit arbitrary JSON rewrites or changes to non-dictionary fields.
 
 `node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
-compares captured physical assets with repacked v7 files over the exact same
+compares captured physical assets with repacked v8 files over the exact same
 logical wires, source identity, language and pack membership. It retains physical,
 logical, native-export and complete-record hashes and both full manifest costs.
 A baseline may be over budget; that diagnostic does not qualify it for browser

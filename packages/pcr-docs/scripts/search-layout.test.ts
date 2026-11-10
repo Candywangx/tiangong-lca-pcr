@@ -76,3 +76,14 @@ test('layout preserves the restored-wire limit even when a smaller physical pack
   const layout=(await planner())(wires,commit,language);
   assert.doesNotThrow(()=>readSearchManifest(layout.manifest,language),'compression must preserve every original expansion guard');
 });
+test('an unavailable v8 layout cannot suppress an eligible v7 layout',async()=>{
+  const terms=Array.from({length:5000},(_,i)=>'term-'+i);
+  const source={entries:{map:[terms,terms.map(()=>513),terms.map(()=>[1000,-1,2])]},columnarMaps:['map'],records:[{content:''}]};
+  source.records[0]!.content='x'.repeat(19_999_000-Buffer.byteLength(JSON.stringify(source)));
+  const wires=[JSON.stringify(source)],baseline=greedy(wires);
+  assert.ok(baseline.rawBytes<20_000_000);
+  assert.ok(Buffer.byteLength(packSearchShards(wires,commit,language,0,8))>20_000_000,'negative-remainder native fallback is too large');
+  const layout=(await planner())(wires,commit,language);
+  assert.equal(layout.manifest.schemaVersion,7);
+  assert.doesNotThrow(()=>readSearchManifest(layout.manifest,language));
+});

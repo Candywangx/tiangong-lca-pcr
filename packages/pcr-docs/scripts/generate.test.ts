@@ -228,7 +228,7 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.equal(search.schemaVersion, 7, "physical packs preserve independent v4 logical indexes");
+      assert.ok(search.schemaVersion===7||search.schemaVersion===8, "physical packs preserve independent v4 logical indexes");
       assert.equal(search.language, language);
       const packed=readSearchManifest(search,language);
       assert.ok(packed.files.length > 0);

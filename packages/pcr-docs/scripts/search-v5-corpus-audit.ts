@@ -16,7 +16,7 @@ type RebuiltIndex = SearchWireEntries & {records: AuditRecord[]};
 interface PhysicalPack {bytes: Buffer; data: Record<string, unknown>; rebuilt: (RebuiltIndex | undefined)[]; gzipBytes: number}
 interface CorpusReport {
   language: string; logical_shards: number; physical_packs: number; dictionary_terms: number;
-  records: number; export_keys: number; v4: {rawBytes: number; gzipBytes: number}; current: {rawBytes: number; gzipBytes: number}; transport_version: number; baseline_v5?: {rawBytes: number; gzipBytes: number}; baseline_v6?: {rawBytes: number; gzipBytes: number};
+  records: number; export_keys: number; v4: {rawBytes: number; gzipBytes: number}; current: {rawBytes: number; gzipBytes: number}; transport_version: number; baseline_v5?: {rawBytes: number; gzipBytes: number}; baseline_v6?: {rawBytes: number; gzipBytes: number}; baseline_v7?: {rawBytes: number; gzipBytes: number};
   gzip_saved_bytes: number; gzip_reduction_percent: number; exact_roundtrip: true;
   matching_query_comparisons: number; native_export_hashes_sha256: string; full_record_hashes_sha256: string;
 }
@@ -36,8 +36,8 @@ for (const language of ['en-US', 'zh-CN']) {
   const manifestBytes = fs.readFileSync(path.join(exportRoot,'generated/search',language,'manifest.json'));
   const manifest: unknown = JSON.parse(manifestBytes.toString('utf8'));
   assert.ok(isUnknownRecord(manifest));
-  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7);
-  let baselineV5: {rawBytes:number;gzipBytes:number}|undefined, baselineV6: {rawBytes:number;gzipBytes:number}|undefined;
+  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8);
+  let baselineV5: {rawBytes:number;gzipBytes:number}|undefined, baselineV6: {rawBytes:number;gzipBytes:number}|undefined, baselineV7: {rawBytes:number;gzipBytes:number}|undefined;
   const dictionary = manifest.termDictionary === undefined ? undefined : readSearchTermDictionary(manifest.termDictionary);
   const physical = new Map<string, PhysicalPack>();
   const logical: {data: Record<string, unknown>; descriptor: Record<string, unknown>; pack: PhysicalPack; version: 4 | 5}[] = [];
@@ -45,7 +45,7 @@ for (const language of ['en-US', 'zh-CN']) {
   if (Object.hasOwn(manifest, 'files')) {
     assert.ok(!Object.hasOwn(manifest, 'shards') && !Object.hasOwn(manifest, 'termDictionary'));
     const parsed = readSearchManifest(manifest, language);
-    const baselineFiles=[], baselineFiles6=[];let baselineRaw=0,baselineGzip=0,baselineRaw6=0,baselineGzip6=0;
+    const baselineFiles=[], baselineFiles6=[], baselineFiles7=[];let baselineRaw=0,baselineGzip=0,baselineRaw6=0,baselineGzip6=0,baselineRaw7=0,baselineGzip7=0;
     for (const file of parsed.files) {
       const bytes = fs.readFileSync(path.join(exportRoot, file.url));
       const members = await unpackSearchFile(parsed, file, bytes, bytes => 'sha256:' + hash(bytes));
@@ -54,7 +54,7 @@ for (const language of ['en-US', 'zh-CN']) {
       dictionaryTerms += data.dictionary.length;
       const canonicalPack = packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,parsed.schemaVersion);
       const physicalPack = bytes.toString('utf8');
-      assert.ok(physicalPack === canonicalPack || parsed.schemaVersion === 7 && physicalPack === escapeSearchDictionary(canonicalPack),
+      assert.ok(physicalPack === canonicalPack || (parsed.schemaVersion === 7 || parsed.schemaVersion === 8) && physicalPack === escapeSearchDictionary(canonicalPack),
         'Physical search bytes must equal the canonical encoding or its exact dictionary-only escape variant');
       const baseline=Buffer.from(packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,5));
       const oldFile={...file,bytes:baseline.length,gzipBytes:gzipSync(baseline,{level:9}).length,sha256:"sha256:"+hash(baseline)};
@@ -64,6 +64,11 @@ for (const language of ['en-US', 'zh-CN']) {
       const oldFile6={...file,bytes:baseline6.length,gzipBytes:gzipSync(baseline6,{level:9}).length,sha256:"sha256:"+hash(baseline6)};
       assert.deepEqual(await unpackSearchFile({...parsed,schemaVersion:6},oldFile6,baseline6,bytes=>"sha256:"+hash(bytes)),members);
       baselineFiles6.push(oldFile6);baselineRaw6+=oldFile6.bytes;baselineGzip6+=oldFile6.gzipBytes;
+      const canonical7=packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,7),escaped7=escapeSearchDictionary(canonical7);
+      const baseline7=Buffer.from(Buffer.byteLength(escaped7)<=20_000_000&&gzipSync(escaped7,{level:9}).length<gzipSync(canonical7,{level:9}).length?escaped7:canonical7);
+      const oldFile7={...file,bytes:baseline7.length,gzipBytes:gzipSync(baseline7,{level:9}).length,sha256:'sha256:'+hash(baseline7)};
+      assert.deepEqual(await unpackSearchFile({...parsed,schemaVersion:7},oldFile7,baseline7,bytes=>'sha256:'+hash(bytes)),members);
+      baselineFiles7.push(oldFile7);baselineRaw7+=oldFile7.bytes;baselineGzip7+=oldFile7.gzipBytes;
       const pack: PhysicalPack = {bytes, data, rebuilt: [], gzipBytes: gzipSync(bytes, {level:9}).length};
       assert.equal(pack.gzipBytes, file.gzipBytes);
       physical.set(file.url, pack);
@@ -73,6 +78,8 @@ for (const language of ['en-US', 'zh-CN']) {
     baselineV5={rawBytes:baselineRaw+Buffer.byteLength(baselineManifest),gzipBytes:baselineGzip+gzipSync(baselineManifest,{level:9}).length};
     const baselineManifest6=JSON.stringify({...parsed,schemaVersion:6,files:baselineFiles6});
     baselineV6={rawBytes:baselineRaw6+Buffer.byteLength(baselineManifest6),gzipBytes:baselineGzip6+gzipSync(baselineManifest6,{level:9}).length};
+    const baselineManifest7=JSON.stringify({...parsed,schemaVersion:7,files:baselineFiles7});
+    baselineV7={rawBytes:baselineRaw7+Buffer.byteLength(baselineManifest7),gzipBytes:baselineGzip7+gzipSync(baselineManifest7,{level:9}).length};
   } else {
     assert.equal(manifest.schemaVersion,5);
     assert.ok(Array.isArray(manifest.shards));
@@ -126,7 +133,7 @@ for (const language of ['en-US', 'zh-CN']) {
   // Every manifest is real transport, charged once in full to the language budget.
   raw5+=manifestBytes.length;gzip5+=gzipSync(manifestBytes,{level:9}).length;
   assert.ok(raw5<=20_000_000&&gzip5<=4_000_000,language+' budget');
-  report.push({language,logical_shards:logical.length,physical_packs:physical.size,dictionary_terms:dictionaryTerms,records,export_keys:keys,v4:{rawBytes:raw4,gzipBytes:gzip4},current:{rawBytes:raw5,gzipBytes:gzip5},transport_version:manifest.schemaVersion,...(baselineV5?{baseline_v5:baselineV5}:{}),...(baselineV6?{baseline_v6:baselineV6}:{}),gzip_saved_bytes:gzip4-gzip5,gzip_reduction_percent:(gzip4-gzip5)/gzip4*100,exact_roundtrip:true,matching_query_comparisons:queries,native_export_hashes_sha256:hash(JSON.stringify(exportHashes)),full_record_hashes_sha256:hash(JSON.stringify(recordHashes))});
+  report.push({language,logical_shards:logical.length,physical_packs:physical.size,dictionary_terms:dictionaryTerms,records,export_keys:keys,v4:{rawBytes:raw4,gzipBytes:gzip4},current:{rawBytes:raw5,gzipBytes:gzip5},transport_version:manifest.schemaVersion,...(baselineV5?{baseline_v5:baselineV5}:{}),...(baselineV6?{baseline_v6:baselineV6}:{}),...(baselineV7?{baseline_v7:baselineV7}:{}),gzip_saved_bytes:gzip4-gzip5,gzip_reduction_percent:(gzip4-gzip5)/gzip4*100,exact_roundtrip:true,matching_query_comparisons:queries,native_export_hashes_sha256:hash(JSON.stringify(exportHashes)),full_record_hashes_sha256:hash(JSON.stringify(recordHashes))});
 }
 fs.mkdirSync('.reports',{recursive:true});
 fs.writeFileSync('.reports/search-v5-corpus.json',JSON.stringify(report,null,2)+'\n');
