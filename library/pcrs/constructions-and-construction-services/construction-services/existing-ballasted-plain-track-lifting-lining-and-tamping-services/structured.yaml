@@ -449,8 +449,8 @@ dataset_production:
       process_id: "track_geometry_correction"
       flow_role: "Fuel/electricity, burns and returns"
       record_type: "tank and meter records"
-      raw_fields: "campaign_id; window_id; period_id; event_id; machine_id; fuel_identity; engine_technology; load_mode; operating_duration_s; idle_duration_s; initial_tank_kg; volume_m3; density_kg_per_m3; temperature_degC; fuel_gross_kg; fuel_return_kg; recovered_fuel_waste_kg; uncontained_fuel_kg; final_tank_kg; meter_start_kWh; meter_end_kWh; charging_losses_kWh; opening_stock_burden; opening_stock_used_kg; closing_stock_carried_burden; stock_burden_source; supplier_scope; uncertainty"
-      collection_method: "Record actual fuel supplied and tanks in net mass with meter/temperature/density conversion evidence when native volume is used; assign complete activity and idle windows to jobs. Gross physical supplied fuel remains the boundary input; separately document opening_stock_used_kg and its inherited material burden and closing_stock_carried_burden, with source-period linkage. Use total opening/closing tank quantities only once in burn_balance. Do not add a second opening-draw physical exchange or deduct closing stock twice; reconcile the stock-burden bridge with actual consumed/returned/waste/released outlets and carried-forward material burden. Derive burn from mutually exclusive outlets, not nameplate power. Meter electricity imports and actual charging scope; provider-inclusive operation is excluded."
+      raw_fields: "campaign_id; window_id; period_id; event_id; machine_id; fuel_identity; engine_technology; load_mode; operating_duration_s; idle_duration_s; initial_tank_kg; volume_m3; density_kg_per_m3; temperature_degC; fuel_gross_kg; fuel_return_kg; recovered_fuel_waste_kg; uncontained_fuel_kg; final_tank_kg; meter_start_kWh; meter_end_kWh; charging_losses_kWh; opening_stock_burden; opening_stock_used_kg; closing_stock_carried_burden; stock_burden_source; supplier_scope; uncertainty; separately_retained_unburned_fuel_kg; retained_in_final_tank_kg; retained_fuel_custody_id"
+      collection_method: "Record actual fuel supplied and tanks in net mass with meter/temperature/density conversion evidence when native volume is used; assign complete activity and idle windows to jobs. Gross physical supplied fuel remains the boundary input; separately document opening_stock_used_kg and its inherited material burden and closing_stock_carried_burden, with source-period linkage. Use total opening/closing tank quantities only once in burn_balance. Do not add a second opening-draw physical exchange or deduct closing stock twice; reconcile the stock-burden bridge with actual consumed/returned/waste/released outlets and carried-forward material burden. Derive burn from mutually exclusive outlets, not nameplate power. Meter electricity imports and actual charging scope; provider-inclusive operation is excluded. separately_retained_unburned_fuel_kg is independently measured fuel retained outside final_tank_kg, returns, recovered waste and uncontained releases. Retained fuel already included in final_tank_kg is excluded from this separate term. Partition incident retained_residue_kg between these two storage locations with custody evidence; unknown partition blocks derived burn. This is a nonadditive unburned inventory audit, not another supply, waste or emission exchange."
       unit: "kg; m3; kg/m3; degC; kWh; s"
       frequency: "Each tank/meter event and operating window"
       temporal_coverage: "All campaign windows, setup/repeats/cleanup and linked source periods"
@@ -509,8 +509,8 @@ dataset_production:
       process_id: "track_geometry_correction"
       flow_role: "Spill partition and recovery"
       record_type: "incident and cleanup custody record"
-      raw_fields: "campaign_id; window_id; period_id; incident_id; fluid_identity; composition_source; total_spill_kg; recovered_fluid_kg; absorbent_input_kg; contaminated_solids_kg; retained_residue_kg; uncontained_fluid_kg; species; evidenced_actual_constituent_fraction; constituent_fraction_source; constituent_fraction_basis; uncontained_species_kg; receiving_medium; receiver; waste_transfer_id; uncertainty"
-      collection_method: "Map each incident total to mutually exclusive recovered fluid waste, retained residue and uncontained_fluid_kg. Collect evidenced_actual_constituent_fraction, its source and mass basis separately to derive each actual species/medium release; a partial reported species sum is not the whole fluid mass. Record supplied absorbent separately and distinguish its mass from recovered fluid. Link recovered fuel component to fuel burn balance. Do not subtract total spill after subtracting its component outlets; unknown fate remains unresolved."
+      raw_fields: "campaign_id; window_id; period_id; incident_id; fluid_identity; composition_source; total_spill_kg; recovered_fluid_kg; absorbent_input_kg; contaminated_solids_kg; retained_residue_kg; uncontained_fluid_kg; species; evidenced_actual_constituent_fraction; constituent_fraction_source; constituent_fraction_basis; uncontained_species_kg; receiving_medium; receiver; waste_transfer_id; uncertainty; separately_retained_unburned_fuel_kg; retained_in_final_tank_kg; retained_fuel_custody_id"
+      collection_method: "Map each incident total to mutually exclusive recovered fluid waste, retained residue and uncontained_fluid_kg. Collect evidenced_actual_constituent_fraction, its source and mass basis separately to derive each actual species/medium release; a partial reported species sum is not the whole fluid mass. Record supplied absorbent separately and distinguish its mass from recovered fluid. Link recovered fuel component to fuel burn balance. Do not subtract total spill after subtracting its component outlets; unknown fate remains unresolved. separately_retained_unburned_fuel_kg is independently measured fuel retained outside final_tank_kg, returns, recovered waste and uncontained releases. Retained fuel already included in final_tank_kg is excluded from this separate term. Partition incident retained_residue_kg between these two storage locations with custody evidence; unknown partition blocks derived burn. This is a nonadditive unburned inventory audit, not another supply, waste or emission exchange."
       unit: "kg; constituent mass fraction kg/kg"
       frequency: "Every actual spill/leak and cleanup transfer"
       temporal_coverage: "All campaign windows, setup/repeats/cleanup and linked source periods"
@@ -836,7 +836,7 @@ dataset_production:
       source_ids: []
     - id: burn_balance
       applies_to: "atom_req_track_geometry_correction_fuel_gross; atom_req_track_geometry_correction_exhaust_species"
-      rule: "burned_fuel_kg = initial_tank_kg + fuel_gross_kg - final_tank_kg - fuel_return_kg - recovered_fuel_waste_kg - uncontained_fuel_kg; every outlet is mutually exclusive. Retained incident residue is included in final attributable inventory or a separately recorded unburned outlet. No second total-spill subtraction."
+      rule: "burned_fuel_kg = initial_tank_kg + fuel_gross_kg - final_tank_kg - fuel_return_kg - recovered_fuel_waste_kg - uncontained_fuel_kg - separately_retained_unburned_fuel_kg; every outlet is mutually exclusive. Retained incident residue is included in final attributable inventory or a separately recorded unburned outlet. No second total-spill subtraction. separately_retained_unburned_fuel_kg is independently measured fuel retained outside final_tank_kg, returns, recovered waste and uncontained releases. Retained fuel already included in final_tank_kg is excluded from this separate term. Partition incident retained_residue_kg between these two storage locations with custody evidence; unknown partition blocks derived burn. This is a nonadditive unburned inventory audit, not another supply, waste or emission exchange."
       inputs:
         - cp_energy
         - cp_incidents
@@ -1120,7 +1120,7 @@ data_sources:
     used_for: "Physical cycle, under-sleeper filling/compaction, condition-dependent settings and repeats; research examples not generic ranges"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:b8d2f364b3e4ae3dd011e7df4cf6fb57f9f35a9b779ec6e47498acafdf650274"
+  source_sha256: "sha256:a151744c1a33a27082cb0542e870c83ab24ff57afb9483587284ce444bc67c83"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5533"
@@ -1219,15 +1219,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_129376"
+    - unit_id: "normative_131004"
       family: "validation"
       span:
         start:
-          offset: 129376
+          offset: 131004
           line: 428
           column: 1
         end:
-          offset: 146883
+          offset: 148511
           line: 461
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `gate_complete` | accepted_track_geometry_service | Require qualified prestate, approved targets, calibrated pre/post geometry and support/profile/stability evidence, actual adopted tolerance source, closed campaign defects and authorised handback/restrictions. No unaccepted interval or repeated pass inflates L. | plasser-tamping-precision; plasser-tamping-control |\n| `run_complete` | track_geometry_correction | Reconcile every campaign/window, setup/changeover/idle/cleanup, failure, retest and prescribed stability action to an owner and period; accepted output excludes unresolved rejects. |  |\n| `material_balance` | material flows | Check net-tare gross receipts and opening/closing stock against mutually exclusive use/incorporation, actual outward returns, waste and evidenced species releases. Dry solids, water, retained host moisture and weather are distinct terms. Investigate residuals; unknown residual is not automatic emission. |  |\n| tine_stock_draw_once | tine_components_tamping_tine; atom_req_track_geometry_correction_tine_components | For each applicable child, reconcile raw O/R/C and actual fates/cohorts to tine_stock_draw; confirm one acquisition owner, one attribution and S/L normalization once. Check closing already excluded and the same stock-burden bridge not applied again. Retain nonreturned waste/loss supply and actual treatment, positive actual usable exits and owned rework. Unknown is incomplete. |  |\n| `fuel_balance` | atom_req_track_geometry_correction_fuel_gross; atom_req_track_geometry_correction_fuel_return; atom_req_track_geometry_correction_recovered_spill_waste; atom_req_track_geometry_correction_exhaust_species; atom_req_track_geometry_correction_oil_release_species | Separate fuel receipt, opening/closing inventory, return, waste and incident-release fractions to derive burned fuel. Partition each spill total into recovered fluid, retained residue and actual uncontained fluid; derive species/medium releases only from the evidenced uncontained partition. Assign retained residue to closing inventory or its distinct unburned outlet once; do not subtract incident total again. Match factors to fuel/engine/mode and units. |  |\n| `assets_complete` | atom_req_track_geometry_correction_shared_asset_service | Require complete-life phases, all consumers/periods, observed/forecast labels, replacement/termination/EOL scenarios and source/denominator uncertainty; block missing coverage. Exclude direct fuel/spares already recorded and provider-included capital. |  |\n| `identity_ranges` | all inventory rows | Verify each actual distinct material/provider/substance and its property/unit before final exchange; no speculative generic UUID, substance or particle fraction. Replace explicit Range evidence needs using actual route records or disclose unbounded uncertainty; checker pass is not quantity or external identity evidence. |  |\n| atom_req_track_geometry_correction_fuel_gross_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_fuel_gross and atom_req_track_geometry_correction_fuel_gross: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_tine_components_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_tine_components and atom_req_track_geometry_correction_tine_components: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_other_spares_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_other_spares and atom_req_track_geometry_correction_other_spares: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_mobilisation_transport_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_mobilisation_transport and atom_req_track_geometry_correction_mobilisation_transport: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_stability_service_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_stability_service and atom_req_track_geometry_correction_stability_service: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_shared_asset_service_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_shared_asset_service and atom_req_track_geometry_correction_shared_asset_service: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_packaging_supply_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_packaging_supply and atom_req_track_geometry_correction_packaging_supply: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_water_withdrawal_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_water_withdrawal and atom_req_track_geometry_correction_water_withdrawal: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_fuel_return_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_fuel_return and atom_req_track_geometry_correction_fuel_return: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_other_product_returns_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_other_product_returns and atom_req_track_geometry_correction_other_product_returns: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_ballast_solid_waste_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_ballast_solid_waste and atom_req_track_geometry_correction_ballast_solid_waste: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_removed_fluid_waste_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_removed_fluid_waste and atom_req_track_geometry_correction_removed_fluid_waste: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_wear_parts_waste_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_wear_parts_waste and atom_req_track_geometry_correction_wear_parts_waste: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_packaging_waste_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_packaging_waste and atom_req_track_geometry_correction_packaging_waste: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_recovered_spill_waste_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_recovered_spill_waste and atom_req_track_geometry_correction_recovered_spill_waste: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_exhaust_species_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_exhaust_species and atom_req_track_geometry_correction_exhaust_species: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_dust_species_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_dust_species and atom_req_track_geometry_correction_dust_species: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_oil_release_species_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_oil_release_species and atom_req_track_geometry_correction_oil_release_species: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n| atom_req_track_geometry_correction_water_release_complete | track_geometry_correction | Before final foreground completion, execute cp_atom_req_track_geometry_correction_water_release and atom_req_track_geometry_correction_water_release: all actual children in this role require one concrete object/state/medium and one explicit exchange property/unit, independent original quantity and evidenced conversion if needed, exact identity/support and reconciled owner/stock/fate/transfer scope. Each group is separate; no heterogeneous sum, guessed absence, parent-total/Range copying or duplicate assembly/provider/carrier burdens. Unresolved evidence means incomplete; pcr:check does not automatically execute or prove actual site roster completion. |  |\n\n\n\n"
@@ -1247,11 +1247,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 129376
+              offset: 131004
               line: 428
               column: 1
             end:
-              offset: 129398
+              offset: 131026
               line: 428
               column: 23
           text: "## 9. Validation Rules"
@@ -1440,339 +1440,339 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "gate_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 129471
+          offset: 131099
           line: 432
           column: 1
         end:
-          offset: 129841
+          offset: 131469
           line: 432
           column: 371
     - pointer: "/validation_rules/1"
       rule_id: "run_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 129842
+          offset: 131470
           line: 433
           column: 1
         end:
-          offset: 130074
+          offset: 131702
           line: 433
           column: 233
     - pointer: "/validation_rules/2"
       rule_id: "material_balance"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 130075
+          offset: 131703
           line: 434
           column: 1
         end:
-          offset: 130424
+          offset: 132052
           line: 434
           column: 350
     - pointer: "/validation_rules/3"
       rule_id: "tine_stock_draw_once"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 130425
+          offset: 132053
           line: 435
           column: 1
         end:
-          offset: 130916
+          offset: 132544
           line: 435
           column: 492
     - pointer: "/validation_rules/4"
       rule_id: "fuel_balance"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 130917
+          offset: 132545
           line: 436
           column: 1
         end:
-          offset: 131660
+          offset: 133288
           line: 436
           column: 744
     - pointer: "/validation_rules/5"
       rule_id: "assets_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 131661
+          offset: 133289
           line: 437
           column: 1
         end:
-          offset: 131997
+          offset: 133625
           line: 437
           column: 337
     - pointer: "/validation_rules/6"
       rule_id: "identity_ranges"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 131998
+          offset: 133626
           line: 438
           column: 1
         end:
-          offset: 132367
+          offset: 133995
           line: 438
           column: 370
     - pointer: "/validation_rules/7"
       rule_id: "atom_req_track_geometry_correction_fuel_gross_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 132368
+          offset: 133996
           line: 439
           column: 1
         end:
-          offset: 133112
+          offset: 134740
           line: 439
           column: 745
     - pointer: "/validation_rules/8"
       rule_id: "atom_req_track_geometry_correction_tine_components_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 133113
+          offset: 134741
           line: 440
           column: 1
         end:
-          offset: 133872
+          offset: 135500
           line: 440
           column: 760
     - pointer: "/validation_rules/9"
       rule_id: "atom_req_track_geometry_correction_other_spares_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 133873
+          offset: 135501
           line: 441
           column: 1
         end:
-          offset: 134623
+          offset: 136251
           line: 441
           column: 751
     - pointer: "/validation_rules/10"
       rule_id: "atom_req_track_geometry_correction_mobilisation_transport_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 134624
+          offset: 136252
           line: 442
           column: 1
         end:
-          offset: 135404
+          offset: 137032
           line: 442
           column: 781
     - pointer: "/validation_rules/11"
       rule_id: "atom_req_track_geometry_correction_stability_service_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 135405
+          offset: 137033
           line: 443
           column: 1
         end:
-          offset: 136170
+          offset: 137798
           line: 443
           column: 766
     - pointer: "/validation_rules/12"
       rule_id: "atom_req_track_geometry_correction_shared_asset_service_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 136171
+          offset: 137799
           line: 444
           column: 1
         end:
-          offset: 136945
+          offset: 138573
           line: 444
           column: 775
     - pointer: "/validation_rules/13"
       rule_id: "atom_req_track_geometry_correction_packaging_supply_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 136946
+          offset: 138574
           line: 445
           column: 1
         end:
-          offset: 137708
+          offset: 139336
           line: 445
           column: 763
     - pointer: "/validation_rules/14"
       rule_id: "atom_req_track_geometry_correction_water_withdrawal_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 137709
+          offset: 139337
           line: 446
           column: 1
         end:
-          offset: 138471
+          offset: 140099
           line: 446
           column: 763
     - pointer: "/validation_rules/15"
       rule_id: "atom_req_track_geometry_correction_fuel_return_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 138472
+          offset: 140100
           line: 447
           column: 1
         end:
-          offset: 139219
+          offset: 140847
           line: 447
           column: 748
     - pointer: "/validation_rules/16"
       rule_id: "atom_req_track_geometry_correction_other_product_returns_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 139220
+          offset: 140848
           line: 448
           column: 1
         end:
-          offset: 139997
+          offset: 141625
           line: 448
           column: 778
     - pointer: "/validation_rules/17"
       rule_id: "atom_req_track_geometry_correction_ballast_solid_waste_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 139998
+          offset: 141626
           line: 449
           column: 1
         end:
-          offset: 140769
+          offset: 142397
           line: 449
           column: 772
     - pointer: "/validation_rules/18"
       rule_id: "atom_req_track_geometry_correction_removed_fluid_waste_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 140770
+          offset: 142398
           line: 450
           column: 1
         end:
-          offset: 141541
+          offset: 143169
           line: 450
           column: 772
     - pointer: "/validation_rules/19"
       rule_id: "atom_req_track_geometry_correction_wear_parts_waste_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 141542
+          offset: 143170
           line: 451
           column: 1
         end:
-          offset: 142304
+          offset: 143932
           line: 451
           column: 763
     - pointer: "/validation_rules/20"
       rule_id: "atom_req_track_geometry_correction_packaging_waste_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 142305
+          offset: 143933
           line: 452
           column: 1
         end:
-          offset: 143064
+          offset: 144692
           line: 452
           column: 760
     - pointer: "/validation_rules/21"
       rule_id: "atom_req_track_geometry_correction_recovered_spill_waste_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 143065
+          offset: 144693
           line: 453
           column: 1
         end:
-          offset: 143842
+          offset: 145470
           line: 453
           column: 778
     - pointer: "/validation_rules/22"
       rule_id: "atom_req_track_geometry_correction_exhaust_species_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 143843
+          offset: 145471
           line: 454
           column: 1
         end:
-          offset: 144602
+          offset: 146230
           line: 454
           column: 760
     - pointer: "/validation_rules/23"
       rule_id: "atom_req_track_geometry_correction_dust_species_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 144603
+          offset: 146231
           line: 455
           column: 1
         end:
-          offset: 145353
+          offset: 146981
           line: 455
           column: 751
     - pointer: "/validation_rules/24"
       rule_id: "atom_req_track_geometry_correction_oil_release_species_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 145354
+          offset: 146982
           line: 456
           column: 1
         end:
-          offset: 146125
+          offset: 147753
           line: 456
           column: 772
     - pointer: "/validation_rules/25"
       rule_id: "atom_req_track_geometry_correction_water_release_complete"
       identity_kind: "explicit"
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 146126
+          offset: 147754
           line: 457
           column: 1
         end:
-          offset: 146879
+          offset: 148507
           line: 457
           column: 754
   diagnostics:
@@ -1814,14 +1814,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_129376"
+      unit_id: "normative_131004"
       source_span:
         start:
-          offset: 129376
+          offset: 131004
           line: 428
           column: 1
         end:
-          offset: 129398
+          offset: 131026
           line: 428
           column: 23
 projection_metadata:
@@ -1831,5 +1831,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:b8d2f364b3e4ae3dd011e7df4cf6fb57f9f35a9b779ec6e47498acafdf650274"
-  generated_content_sha256: "sha256:ee6c0f6fe730cf9e467fc38bb27ee50440f348a1f3a896c40c73bc03b695885c"
+    sha256: "sha256:a151744c1a33a27082cb0542e870c83ab24ff57afb9483587284ce444bc67c83"
+  generated_content_sha256: "sha256:9e8b4e21cd43e14460484e612ba851ca8e79e33a6ee19550bebc3a474c9b6e47"

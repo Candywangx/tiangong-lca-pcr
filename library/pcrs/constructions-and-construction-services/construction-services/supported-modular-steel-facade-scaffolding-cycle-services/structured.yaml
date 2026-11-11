@@ -474,9 +474,9 @@ process_inventory:
           flow_ref:
             uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Include actual diesel burned by owned equipment or separately metered duties attributable to this episode, including attributable idle, tests and rework. Exclude fuel already covered by a provider service. Range evidence need: equipment and interval logs plus calibrated stock or meter reconciliation; useful lifting work cannot substitute for consumed fuel mass."
+          description: "Record the actual attributable diesel supply under diesel_supply_and_fates, including nonreturned unburned waste/loss; supplied fuel and burned activity are distinct. Retain actual batch/state density evidence for any volume conversion. The native diesel identity supplies no grade, fossil fraction, density or heating value. Range evidence need: independent stock, receipt, usable-return and fate measurements over the full owned duty and accepted denominator; a burned-fuel range cannot establish a supply range. Do not duplicate provider-covered fuel."
           amount:
-            expression: "Each concrete identity/state/receiver has its independently measured or evidenced calculated episode numerator divided once by accepted A, following section 8 cycle numerator rules"
+            expression: "fuel_supply_kg / A"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -1212,8 +1212,8 @@ dataset_production:
       process_id: "scaffold_cycle"
       flow_role: "fuel; electricity; supplied water"
       record_type: "phase-indexed foreground event record"
-      raw_fields: "event/lot/configuration ID; process/phase/time; owner; role; actual identity/current state; native amount/unit; measured same-state bridge; receiver/medium; evidence; uncertainty"
-      collection_method: "Read calibrated fuel/utility meters and opening/closing stocks over the entire owned duty, idle, test and rework intervals. Record supply identity and meter topology; reconcile every consumer and provider-covered quantities before episode attribution. Convert native units only using an independently evidenced same-state bridge."
+      raw_fields: "event/lot/configuration ID; process/phase/time; owner; role; actual identity/current state; native amount/unit; measured same-state bridge; receiver/medium; evidence; uncertainty; O_kg; R_net_kg; C_intact_carried_kg; U_usable_outward_kg; fuel_supply_kg; burned_kg; nonburned_waste_kg; nonburned_release_kg; nonburned_retained_kg; fate_event_ids; fuel_source_cohort; attribution_scope; provider_coverage"
+      collection_method: "Read calibrated fuel/utility meters and opening/closing stocks over the entire owned duty, idle, test and rework intervals. Record supply identity and meter topology; reconcile every consumer and provider-covered quantities before episode attribution. Convert native units only using an independently evidenced same-state bridge. Use diesel_supply_and_fates for the mandatory supply/burn distinction, stock carry, exclusive fates and consumed-only usable-return convention. Keep raw operands in kg before the single final normalization."
       unit: "kg; kWh"
       frequency: "each event and interval boundary"
       temporal_coverage: "full issue-to-return episode, including unavailability and rework"
@@ -1323,6 +1323,22 @@ dataset_production:
       output: "fossil-carbon QA"
       source_ids:
         - carbon-oxidation-identity
+    - id: diesel_supply_and_fates
+      applies_to: "diesel_fuel; fossil_co2_air"
+      rule: "For each actual fuel identity and same attributed event/period use net-of-tare external receipts R, carried opening O, intact reusable closing C and evidenced actual usable outward return U, all in kg. This PCR uses the consumed-only fuel-supply representation: fuel_supply_kg = O + R - C - U. Include all nonreturned unburned waste/loss in that upstream product input; retain opening/closing source-cohort burden once, and do not add a return credit or another return exchange for U. diesel_fuel amount = fuel_supply_kg / A once. Actual burned_kg is an independent measured combustion activity, or is derived only from a complete mutually exclusive audit: burned_kg = fuel_supply_kg - nonburned_waste_kg - nonburned_release_kg - nonburned_retained_kg. Unburned material already assigned to C or U is not subtracted again; retained incident material outside those pools is independently evidenced. Unknown loss is a gap, not inferred burn or zero. Record actual final waste identities/receivers and species/media releases separately under the original refinement duties; an uncontained whole-fuel audit is not a generic elementary exchange and waste carrier/contained fuel are nonadditive. Keep separately evidenced fossil burned carbon for the CO2 method, with actual fuel composition; no default oxidation fraction. Reconcile provider coverage separately for fuel supply, combustion and each waste/release fate. Exclude only the evidenced same-boundary overlap for that component and add uncovered components once; partial provider coverage never authorizes either an omitted component or recharging an already included one. All setup, idle, tests and rework remain included. Physical closure uses raw O + R against C + U + independently measured burned_kg + nonburned_waste_kg + nonburned_release_kg + nonburned_retained_kg, all at the same cutoff/scope, with measured uncertainty. The net exchange fuel_supply_kg is not inserted again as raw R in that closure. When burn is independently measured, the same equality is a QA check, not a method to fill unknown outlets."
+      inputs:
+        - cp_scaffold_cycle_utility
+        - O_kg
+        - R_net_kg
+        - C_intact_carried_kg
+        - U_usable_outward_kg
+        - burned_kg
+        - nonburned_waste_kg
+        - nonburned_release_kg
+        - nonburned_retained_kg
+        - A
+      output: "Supply kg per reference and separate burned-kg audit"
+      source_ids: []
     - id: atomic_child_normalization
       applies_to: "replacement_kit_products_standard; replacement_kit_products_ledger; replacement_kit_products_deck; replacement_kit_products_brace; replacement_kit_products_access; replacement_kit_products_guardrail; replacement_kit_products_tie; replacement_kit_products_base; consumed_sole_boards_board; consumed_anchors_ties_anchor; consumed_anchors_ties_tie; consumed_anchors_ties_attachment; protective_sheet_net_products_sheet; protective_sheet_net_products_net; cleaning_maintenance_products_cleaner; cleaning_maintenance_products_lubricant; cleaning_maintenance_products_abrasive; cleaning_maintenance_products_cloth; hired_equipment_services_lifting; hired_equipment_services_access; hired_equipment_services_logistics; usable_material_exits_consumed_sole_boards_board; usable_material_exits_consumed_anchors_ties_anchor; usable_material_exits_consumed_anchors_ties_tie; usable_material_exits_consumed_anchors_ties_attachment; usable_material_exits_protective_sheet_net_products_sheet; usable_material_exits_protective_sheet_net_products_net; usable_material_exits_cleaning_maintenance_products_cleaner; usable_material_exits_cleaning_maintenance_products_lubricant; usable_material_exits_cleaning_maintenance_products_abrasive; usable_material_exits_cleaning_maintenance_products_cloth; discarded_kit_waste_replacement_kit_products_standard; discarded_kit_waste_replacement_kit_products_ledger; discarded_kit_waste_replacement_kit_products_deck; discarded_kit_waste_replacement_kit_products_brace; discarded_kit_waste_replacement_kit_products_access; discarded_kit_waste_replacement_kit_products_guardrail; discarded_kit_waste_replacement_kit_products_tie; discarded_kit_waste_replacement_kit_products_base; support_sheet_residue_waste_board; support_sheet_residue_waste_anchor; support_sheet_residue_waste_tie; support_sheet_residue_waste_sheet; support_sheet_residue_waste_net"
       rule: "Record independent_physical_quantity separately by atomic_flow_row_id; actual_<row_id>_quantity is its named alias only, never a copied family amount. Materials retain original CP per-identity/state gross/net stock and outward-return conventions; transfers use actual paired custody quantity; usable exits and wastes use independent actual fate quantities. Number-of-items owned asset equivalents use this PCR original job_driver/full_life_driver complete-life fraction including manufacture, maintenance, replacement and end of life, with every consumer and a positive complete denominator. Duration/h service children instead use actual attributable job hours with the matching complete-life burden per hour; never multiply hours by the fraction again. Purchased services use only actual complete physical tasks whose real contract defines Item(s), with original actual attribution; hours, days and prices cannot become event counts. atomic_child_intensity = independent_physical_quantity / A, where A is positive unique surveyed accepted facade-elevation area in m2 of one stable configuration and fully closed scaffold episode under the original acceptance rule; A=0 blocks normalization. Non-exchange parent role ledgers and original CP operands retain their stock, transfer, closure and ownership functions, without adding a second exchange or changing the method."
@@ -1396,7 +1412,7 @@ dataset_production:
       evidence: "cp_scaffold_cycle_material; actual_child_register; parent_ledger_id"
     - id: atomic_usable_material_exits
       applies_to: "scaffold_cycle; cp_scaffold_cycle_material"
-      requirement: "Former usable_material_exits is a mandatory non-exchange refinement scope and custody/closure ledger key, not a mixed quantity-bearing inventory card. Preserve the original scope: Record a product exit only for concrete material with independently evidenced availability, current state and actual receiver. Used reusable kit returning to stock is an asset-state event, not an intact-unused consumable return. Named children cover only the listed conditional objects; every other real independent object remains required in the actual register. At this node use the original CP to collect each object's identity/state/medium or receiver, one fixed property/unit, independent quantity/conversion, activation or evidenced absence, source-ledger event, ownership and upstream coverage. The PCR denominator, stock/fate, allocation and closure methods remain unchanged; foreground records cannot choose a different method. Parent totals are non-exchange diagnostics, never copied to children or summed across unlike units as an exchange; do not duplicate a complete formulation/assembly/actual mixed carrier as constituents. Incomplete actual roster, quantity, identity/support, method or coverage blocks final foreground completion, never zero, implicit nonapplicability or manifest-only disclosure."
+      requirement: "Former usable_material_exits is a mandatory non-exchange refinement scope and custody/closure ledger key, not a mixed quantity-bearing inventory card. Preserve the original scope: Record a product exit only for concrete material with independently evidenced availability, current state and actual receiver. Used reusable kit returning to stock is an asset-state event, not an intact-unused consumable return. Named children cover only the listed conditional objects; every other real independent object remains required in the actual register. At this node use the original CP to collect each object's identity/state/medium or receiver, one fixed property/unit, independent quantity/conversion, activation or evidenced absence, source-ledger event, ownership and upstream coverage. The PCR denominator, stock/fate, allocation and closure methods remain unchanged; foreground records cannot choose a different method. Parent totals are non-exchange diagnostics, never copied to children or summed across unlike units as an exchange; do not duplicate a complete formulation/assembly/actual mixed carrier as constituents. Incomplete actual roster, quantity, identity/support, method or coverage blocks final foreground completion, never zero, implicit nonapplicability or manifest-only disclosure. Actual usable diesel U follows the consumed-only diesel_supply_and_fates ledger and is not another product-exit exchange or credit under this requirement. Retain its physical custody and original burden attribution as nonadditive evidence."
       evidence: "cp_scaffold_cycle_material; actual_child_register; parent_ledger_id"
     - id: atomic_returnable_packaging_exit
       applies_to: "scaffold_cycle; cp_scaffold_cycle_material"
@@ -1552,6 +1568,10 @@ validation_rules:
     applies_to: "actual internal child source and recipient transfers"
     rule: "Verify actual source/receipt evidence, original physical quantities/units and ownership for the same material/state/event/gate. Traceable reuse of the same signed measurement is allowed; copied parent totals, overwritten receipts and forced unknown equality are prohibited. Unexplained differences without uncertainty, actual loss or state-transition responsibility evidence block completion; verify exactly one normalization per card."
     source_ids: []
+  - rule_id: validate_diesel_supply_fates
+    applies_to: "diesel_fuel; fossil_co2_air"
+    rule: "Check diesel supply includes nonreturned unburned fates, with stocks/usable returns deducted once under diesel_supply_and_fates. Check combustion uses burned_kg only; each actual waste/release/retained fate has independent identity, quantity and ownership evidence. Unknown fate or provider overlap blocks completion; do not make a balancing emission or return credit."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "Foreground scaffolding-cycle data package with process/lifecyclemodel projections"
   downstream_use: "secondary_dataset; background_dataset"
@@ -1591,7 +1611,7 @@ data_sources:
     used_for: "Molecular mass constraint only; no empirical fuel factor, complete oxidation or invented external publication."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c9990574993b001908f24a704ba2229a634bdf9a0ef61362efe1e401bf5ee29a"
+  source_sha256: "sha256:1aa9988cb7d4057588f4410fff1e22e98077a57b0bf552fb0020ce473fa61189"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5106"
@@ -1642,15 +1662,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_166844"
+    - unit_id: "normative_166873"
       family: "allocation"
       span:
         start:
-          offset: 166844
+          offset: 166873
           line: 1253
           column: 1
         end:
-          offset: 168991
+          offset: 169020
           line: 1264
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| direct_episode | scaffold_cycle | Attribute direct events to the actual configuration and phase first; all erection, idle, unavailable, test, dismantling and ordinary rework burdens belonging to this episode remain in its numerator. Repeated inspections or use periods do not create additional accepted area. | cycle-normalization-method |\n| shared_consumers | scaffold_cycle | Enumerate every real kit, auxiliary equipment and meter consumer and relevant period, including outside consumers. Subdivide actual measured use first; allocate only the remaining shared burden by a documented causal capacity/use basis with exclusive shares and uncertainty. Reconcile the whole provider/meter total before dividing this episode share by A. | asset-attribution-method |\n| asset_coverage | scaffold_cycle | Keep scaffold-kit occupation and auxiliary hired equipment mutually exclusive for each actual asset. Count provider-included manufacture, fuel and maintenance once. For self-owned assets require evidenced service capacity/lifetime, actual use, wear, repair and damage/retirement attribution, or declare a gap. No assumed reuse count and no full new-kit manufacture per deployment. | asset-attribution-method |\n| replacement_and_return | scaffold_cycle | Avoid charging the same replacement manufacture both as consumed product and unadjusted kit-service manufacture. Used kit return records its worn/cleaned/repair state and is not unused input return. Product/waste exits retain real recipients; return or recycling alone supplies no automatic substitution credit. | asset-attribution-method; compatible-pool-ledger-method |\n| rejected_cycle | scaffold_cycle | Link failed inspection, repeat joining, cleaning, quarantine, approved repair and exit decisions to the originating kit/configuration. Retain their actual burdens and unresolved fates. A partial handover, changed cohort or open return ledger cannot be allocated into a fictitious completed service output. | cycle-normalization-method; compatible-pool-ledger-method |\n\n\n"
@@ -1670,11 +1690,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 166844
+              offset: 166873
               line: 1253
               column: 1
             end:
-              offset: 166884
+              offset: 166913
               line: 1253
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1690,18 +1710,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_231744"
+    - unit_id: "normative_234800"
       family: "validation"
       span:
         start:
-          offset: 231744
-          line: 1325
+          offset: 234800
+          line: 1326
           column: 1
         end:
-          offset: 242827
-          line: 1353
+          offset: 246320
+          line: 1355
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| accepted_gate | reference_service | Require positive independently measured A, inspected handover, dated availability closure, dismantling and reconciled component return/repair/discard plus owned restoration. Count each accepted elevation once; verify all required qualifiers and separate changed geometry. | cycle-normalization-method |\n| identity_and_activation | all inventory rows | Resolve each instantiated concrete identity, state, property, unit and receiver before final exchange delivery. Report actual occurrence as yes/no/unresolved with evidence; no evidence is not zero. A verified UUID does not prove quantity or activation. Use unspecified-air fixed identities only for that compartment. | compatible-pool-ledger-method |\n| phase_and_asset_coverage | scaffold_cycle | Check phase event continuity, kit/component identities and every shared consumer/period. Verify one owner and no duplicate kit, manufacture, maintenance, fuel or meter burden. Check failed/reworked states against their actual fate and prohibit unaccepted service in the denominator. | asset-attribution-method; cycle-normalization-method |\n| physical_qa | all inventory rows | Reconcile compatible material/current-state/constituent pools with opening and closing stocks and separately observed additions. Test water-only and fuel-carbon constraints separately. Never balance fuel kg against CO2 kg or invent oxygen, waste, dust, vapour or other exchanges from residuals. | compatible-pool-ledger-method; carbon-oxidation-identity |\n| range_and_gaps | all inventory rows | Retain the two supported unchanged reference_service/fossil_co2_air ranges and every current card independent evidence needs; the former count of 25 rows is no longer a current inventory claim. Assess physical constraints using measured inputs and exclusive fates; disclose range/state/support/asset-attribution gaps and block unsupported final quantities without invented bounds. | cycle-normalization-method; compatible-pool-ledger-method |\n| report_completeness | foreground dataset | Report accepted input, performed and skipped checks, findings, uncertainty and completeness. An automated structural pass does not certify engineering compliance, final UUID readiness or closure of an incomplete cycle. | cycle-normalization-method |\n| close_atomic_replacement_kit_products | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_replacement_kit_products is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_consumed_sole_boards | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_consumed_sole_boards is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_consumed_anchors_ties | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_consumed_anchors_ties is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_protective_sheet_net_products | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_protective_sheet_net_products is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_cleaning_maintenance_products | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_cleaning_maintenance_products is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_hired_equipment_services | scaffold_cycle; cp_scaffold_cycle_asset | Block final foreground completion until every actual object in atomic_hired_equipment_services is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_packaging_received | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_packaging_received is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_usable_material_exits | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_usable_material_exits is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_returnable_packaging_exit | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_returnable_packaging_exit is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_discarded_kit_waste | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_discarded_kit_waste is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_support_sheet_residue_waste | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_support_sheet_residue_waste is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_packaging_waste | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_packaging_waste is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_other_engine_species_air | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_other_engine_species_air is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_physical_particulate_air | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_physical_particulate_air is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_volatile_species_air | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_volatile_species_air is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_specific_direct_water_releases | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_specific_direct_water_releases is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| atomic_pair_provenance_complete | actual internal child source and recipient transfers | Verify actual source/receipt evidence, original physical quantities/units and ownership for the same material/state/event/gate. Traceable reuse of the same signed measurement is allowed; copied parent totals, overwritten receipts and forced unknown equality are prohibited. Unexplained differences without uncertainty, actual loss or state-transition responsibility evidence block completion; verify exactly one normalization per card. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| accepted_gate | reference_service | Require positive independently measured A, inspected handover, dated availability closure, dismantling and reconciled component return/repair/discard plus owned restoration. Count each accepted elevation once; verify all required qualifiers and separate changed geometry. | cycle-normalization-method |\n| identity_and_activation | all inventory rows | Resolve each instantiated concrete identity, state, property, unit and receiver before final exchange delivery. Report actual occurrence as yes/no/unresolved with evidence; no evidence is not zero. A verified UUID does not prove quantity or activation. Use unspecified-air fixed identities only for that compartment. | compatible-pool-ledger-method |\n| phase_and_asset_coverage | scaffold_cycle | Check phase event continuity, kit/component identities and every shared consumer/period. Verify one owner and no duplicate kit, manufacture, maintenance, fuel or meter burden. Check failed/reworked states against their actual fate and prohibit unaccepted service in the denominator. | asset-attribution-method; cycle-normalization-method |\n| physical_qa | all inventory rows | Reconcile compatible material/current-state/constituent pools with opening and closing stocks and separately observed additions. Test water-only and fuel-carbon constraints separately. Never balance fuel kg against CO2 kg or invent oxygen, waste, dust, vapour or other exchanges from residuals. | compatible-pool-ledger-method; carbon-oxidation-identity |\n| range_and_gaps | all inventory rows | Retain the two supported unchanged reference_service/fossil_co2_air ranges and every current card independent evidence needs; the former count of 25 rows is no longer a current inventory claim. Assess physical constraints using measured inputs and exclusive fates; disclose range/state/support/asset-attribution gaps and block unsupported final quantities without invented bounds. | cycle-normalization-method; compatible-pool-ledger-method |\n| report_completeness | foreground dataset | Report accepted input, performed and skipped checks, findings, uncertainty and completeness. An automated structural pass does not certify engineering compliance, final UUID readiness or closure of an incomplete cycle. | cycle-normalization-method |\n| close_atomic_replacement_kit_products | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_replacement_kit_products is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_consumed_sole_boards | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_consumed_sole_boards is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_consumed_anchors_ties | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_consumed_anchors_ties is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_protective_sheet_net_products | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_protective_sheet_net_products is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_cleaning_maintenance_products | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_cleaning_maintenance_products is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_hired_equipment_services | scaffold_cycle; cp_scaffold_cycle_asset | Block final foreground completion until every actual object in atomic_hired_equipment_services is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_packaging_received | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_packaging_received is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_usable_material_exits | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_usable_material_exits is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_returnable_packaging_exit | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_returnable_packaging_exit is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_discarded_kit_waste | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_discarded_kit_waste is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_support_sheet_residue_waste | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_support_sheet_residue_waste is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_packaging_waste | scaffold_cycle; cp_scaffold_cycle_material | Block final foreground completion until every actual object in atomic_packaging_waste is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_other_engine_species_air | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_other_engine_species_air is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_physical_particulate_air | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_physical_particulate_air is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_volatile_species_air | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_volatile_species_air is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| close_atomic_specific_direct_water_releases | scaffold_cycle; cp_scaffold_cycle_release | Block final foreground completion until every actual object in atomic_specific_direct_water_releases is reconciled to independent actual child exchanges or evidenced nonactivation. Check one property/unit, independent physical quantity normalized by the original reference denominator, source/fate/period, one burden owner and the original stock/WIP/rework closure. Candidate structural success cannot close this method gate. |  |\n| atomic_pair_provenance_complete | actual internal child source and recipient transfers | Verify actual source/receipt evidence, original physical quantities/units and ownership for the same material/state/event/gate. Traceable reuse of the same signed measurement is allowed; copied parent totals, overwritten receipts and forced unknown equality are prohibited. Unexplained differences without uncertainty, actual loss or state-transition responsibility evidence block completion; verify exactly one normalization per card. |  |\n| validate_diesel_supply_fates | diesel_fuel; fossil_co2_air | Check diesel supply includes nonreturned unburned fates, with stocks/usable returns deducted once under diesel_supply_and_fates. Check combustion uses burned_kg only; each actual waste/release/retained fate has independent identity, quantity and ownership evidence. Unknown fate or provider overlap blocks completion; do not make a balancing emission or return credit. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1718,12 +1738,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 231744
-              line: 1325
+              offset: 234800
+              line: 1326
               column: 1
             end:
-              offset: 231766
-              line: 1325
+              offset: 234822
+              line: 1326
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1820,367 +1840,380 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "direct_episode"
       identity_kind: "explicit"
-      unit_id: "normative_166844"
+      unit_id: "normative_166873"
       source_span:
         start:
-          offset: 166957
+          offset: 166986
           line: 1257
           column: 1
         end:
-          offset: 167298
+          offset: 167327
           line: 1257
           column: 342
     - pointer: "/allocation_rules/1"
       rule_id: "shared_consumers"
       identity_kind: "explicit"
-      unit_id: "normative_166844"
+      unit_id: "normative_166873"
       source_span:
         start:
-          offset: 167299
+          offset: 167328
           line: 1258
           column: 1
         end:
-          offset: 167722
+          offset: 167751
           line: 1258
           column: 424
     - pointer: "/allocation_rules/2"
       rule_id: "asset_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_166844"
+      unit_id: "normative_166873"
       source_span:
         start:
-          offset: 167723
+          offset: 167752
           line: 1259
           column: 1
         end:
-          offset: 168168
+          offset: 168197
           line: 1259
           column: 446
     - pointer: "/allocation_rules/3"
       rule_id: "replacement_and_return"
       identity_kind: "explicit"
-      unit_id: "normative_166844"
+      unit_id: "normative_166873"
       source_span:
         start:
-          offset: 168169
+          offset: 168198
           line: 1260
           column: 1
         end:
-          offset: 168584
+          offset: 168613
           line: 1260
           column: 416
     - pointer: "/allocation_rules/4"
       rule_id: "rejected_cycle"
       identity_kind: "explicit"
-      unit_id: "normative_166844"
+      unit_id: "normative_166873"
       source_span:
         start:
-          offset: 168585
+          offset: 168614
           line: 1261
           column: 1
         end:
-          offset: 168988
+          offset: 169017
           line: 1261
           column: 404
     - pointer: "/validation_rules/0"
       rule_id: "accepted_gate"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 231839
-          line: 1329
+          offset: 234895
+          line: 1330
           column: 1
         end:
-          offset: 232179
-          line: 1329
+          offset: 235235
+          line: 1330
           column: 341
     - pointer: "/validation_rules/1"
       rule_id: "identity_and_activation"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 232180
-          line: 1330
+          offset: 235236
+          line: 1331
           column: 1
         end:
-          offset: 232579
-          line: 1330
+          offset: 235635
+          line: 1331
           column: 400
     - pointer: "/validation_rules/2"
       rule_id: "phase_and_asset_coverage"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 232580
-          line: 1331
+          offset: 235636
+          line: 1332
           column: 1
         end:
-          offset: 232965
-          line: 1331
+          offset: 236021
+          line: 1332
           column: 386
     - pointer: "/validation_rules/3"
       rule_id: "physical_qa"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 232966
-          line: 1332
+          offset: 236022
+          line: 1333
           column: 1
         end:
-          offset: 233358
-          line: 1332
+          offset: 236414
+          line: 1333
           column: 393
     - pointer: "/validation_rules/4"
       rule_id: "range_and_gaps"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 233359
-          line: 1333
+          offset: 236415
+          line: 1334
           column: 1
         end:
-          offset: 233841
-          line: 1333
+          offset: 236897
+          line: 1334
           column: 483
     - pointer: "/validation_rules/5"
       rule_id: "report_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 233842
-          line: 1334
+          offset: 236898
+          line: 1335
           column: 1
         end:
-          offset: 234136
-          line: 1334
+          offset: 237192
+          line: 1335
           column: 295
     - pointer: "/validation_rules/6"
       rule_id: "close_atomic_replacement_kit_products"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 234137
-          line: 1335
+          offset: 237193
+          line: 1336
           column: 1
         end:
-          offset: 234648
-          line: 1335
+          offset: 237704
+          line: 1336
           column: 512
     - pointer: "/validation_rules/7"
       rule_id: "close_atomic_consumed_sole_boards"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 234649
-          line: 1336
+          offset: 237705
+          line: 1337
           column: 1
         end:
-          offset: 235152
-          line: 1336
+          offset: 238208
+          line: 1337
           column: 504
     - pointer: "/validation_rules/8"
       rule_id: "close_atomic_consumed_anchors_ties"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 235153
-          line: 1337
+          offset: 238209
+          line: 1338
           column: 1
         end:
-          offset: 235658
-          line: 1337
+          offset: 238714
+          line: 1338
           column: 506
     - pointer: "/validation_rules/9"
       rule_id: "close_atomic_protective_sheet_net_products"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 235659
-          line: 1338
+          offset: 238715
+          line: 1339
           column: 1
         end:
-          offset: 236180
-          line: 1338
+          offset: 239236
+          line: 1339
           column: 522
     - pointer: "/validation_rules/10"
       rule_id: "close_atomic_cleaning_maintenance_products"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 236181
-          line: 1339
+          offset: 239237
+          line: 1340
           column: 1
         end:
-          offset: 236702
-          line: 1339
+          offset: 239758
+          line: 1340
           column: 522
     - pointer: "/validation_rules/11"
       rule_id: "close_atomic_hired_equipment_services"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 236703
-          line: 1340
+          offset: 239759
+          line: 1341
           column: 1
         end:
-          offset: 237211
-          line: 1340
+          offset: 240267
+          line: 1341
           column: 509
     - pointer: "/validation_rules/12"
       rule_id: "close_atomic_packaging_received"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 237212
-          line: 1341
+          offset: 240268
+          line: 1342
           column: 1
         end:
-          offset: 237711
-          line: 1341
+          offset: 240767
+          line: 1342
           column: 500
     - pointer: "/validation_rules/13"
       rule_id: "close_atomic_usable_material_exits"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 237712
-          line: 1342
+          offset: 240768
+          line: 1343
           column: 1
         end:
-          offset: 238217
-          line: 1342
+          offset: 241273
+          line: 1343
           column: 506
     - pointer: "/validation_rules/14"
       rule_id: "close_atomic_returnable_packaging_exit"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 238218
-          line: 1343
+          offset: 241274
+          line: 1344
           column: 1
         end:
-          offset: 238731
-          line: 1343
+          offset: 241787
+          line: 1344
           column: 514
     - pointer: "/validation_rules/15"
       rule_id: "close_atomic_discarded_kit_waste"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 238732
-          line: 1344
+          offset: 241788
+          line: 1345
           column: 1
         end:
-          offset: 239233
-          line: 1344
+          offset: 242289
+          line: 1345
           column: 502
     - pointer: "/validation_rules/16"
       rule_id: "close_atomic_support_sheet_residue_waste"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 239234
-          line: 1345
+          offset: 242290
+          line: 1346
           column: 1
         end:
-          offset: 239751
-          line: 1345
+          offset: 242807
+          line: 1346
           column: 518
     - pointer: "/validation_rules/17"
       rule_id: "close_atomic_packaging_waste"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 239752
-          line: 1346
+          offset: 242808
+          line: 1347
           column: 1
         end:
-          offset: 240245
-          line: 1346
+          offset: 243301
+          line: 1347
           column: 494
     - pointer: "/validation_rules/18"
       rule_id: "close_atomic_other_engine_species_air"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 240246
-          line: 1347
+          offset: 243302
+          line: 1348
           column: 1
         end:
-          offset: 240756
-          line: 1347
+          offset: 243812
+          line: 1348
           column: 511
     - pointer: "/validation_rules/19"
       rule_id: "close_atomic_physical_particulate_air"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 240757
-          line: 1348
+          offset: 243813
+          line: 1349
           column: 1
         end:
-          offset: 241267
-          line: 1348
+          offset: 244323
+          line: 1349
           column: 511
     - pointer: "/validation_rules/20"
       rule_id: "close_atomic_volatile_species_air"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 241268
-          line: 1349
+          offset: 244324
+          line: 1350
           column: 1
         end:
-          offset: 241770
-          line: 1349
+          offset: 244826
+          line: 1350
           column: 503
     - pointer: "/validation_rules/21"
       rule_id: "close_atomic_specific_direct_water_releases"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 241771
-          line: 1350
+          offset: 244827
+          line: 1351
           column: 1
         end:
-          offset: 242293
-          line: 1350
+          offset: 245349
+          line: 1351
           column: 523
     - pointer: "/validation_rules/22"
       rule_id: "atomic_pair_provenance_complete"
       identity_kind: "explicit"
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 242294
-          line: 1351
+          offset: 245350
+          line: 1352
           column: 1
         end:
-          offset: 242825
-          line: 1351
+          offset: 245881
+          line: 1352
           column: 532
+    - pointer: "/validation_rules/23"
+      rule_id: "validate_diesel_supply_fates"
+      identity_kind: "explicit"
+      unit_id: "normative_234800"
+      source_span:
+        start:
+          offset: 245882
+          line: 1353
+          column: 1
+        end:
+          offset: 246318
+          line: 1353
+          column: 437
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -2208,27 +2241,27 @@ normative_context:
           column: 202
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_166844"
+      unit_id: "normative_166873"
       source_span:
         start:
-          offset: 166844
+          offset: 166873
           line: 1253
           column: 1
         end:
-          offset: 166884
+          offset: 166913
           line: 1253
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_231744"
+      unit_id: "normative_234800"
       source_span:
         start:
-          offset: 231744
-          line: 1325
+          offset: 234800
+          line: 1326
           column: 1
         end:
-          offset: 231766
-          line: 1325
+          offset: 234822
+          line: 1326
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2237,5 +2270,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c9990574993b001908f24a704ba2229a634bdf9a0ef61362efe1e401bf5ee29a"
-  generated_content_sha256: "sha256:543ed37ef31cbb7cd13572fa50149097fc4ad5d301f873d86a4d3fe946bacf5c"
+    sha256: "sha256:1aa9988cb7d4057588f4410fff1e22e98077a57b0bf552fb0020ce473fa61189"
+  generated_content_sha256: "sha256:c367b3a4ebed2389d220223465dbb05d3ba84338ac3250f1454f4e3f7924ac89"

@@ -48,9 +48,9 @@ sync_with: pcr.en-US.md
 | rule_id | 适用于 | 必需属性（`required_property`） | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
 | `net_area` | reference product | Area `93a60a56-a3c8-19da-a746-0800200c9a66` | m2 | 按经核实尺寸或测量结果取得验收净墙面面积；扣除未涂装洞口，洞口侧壁单独记录。各层面积及返工遍数面积不增加验收净面积。 |
-| `wet_supply_mass` | waterborne_finish; waterborne_primer; repair_compounds | Mass | kg | 区分湿态供应产品质量、干膜固体质量和VOC质量。体积转质量须采用同配方同温度基准的实测或供应商产品密度。 |
+| `wet_supply_mass` | refine_waterborne_finish; waterborne_primer; refine_repair_compounds | Mass | kg | 区分湿态供应产品质量、干膜固体质量和VOC质量。体积转质量须采用同配方同温度基准的实测或供应商产品密度。 |
 | `emission_identity` | `refine_finish_air_species`要求细化的实际交换; `refine_prepare_air_particles`要求细化的实际交换 | Mass | kg | 每条排放保留物质或粒径身份及接收介质；总VOC含量及捕集粉尘为支持记录，不自动等同基本流排放。 |
-| `transport_work` | contractor_transport | Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` | t*km | 采用Units of mass*length `838aaa21-0117-11db-92e3-0800200c9a66`，参考t*km系数1。按可归属吨数及公里数计算；kg*km除以1000转为t*km。保留实际车辆、载荷及路线，避免重复调动。 |
+| `transport_work` | refine_contractor_transport | Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` | t*km | 采用Units of mass*length `838aaa21-0117-11db-92e3-0800200c9a66`，参考t*km系数1。按可归属吨数及公里数计算；kg*km除以1000转为t*km。保留实际车辆、载荷及路线，避免重复调动。 |
 
 ## 5. 系统边界
 
@@ -92,28 +92,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 轻微修补材料 (`repair_compounds`)
-
-逐项记录修补配方及湿态供应质量；不包括石膏板制造和大面积抹灰。
-
-- 选定流：实际使用的石膏或相容填补材料
-- 流属性/单位：Mass / kg
-- 数量规则：依据cp_prepare记录按验收净面积计算实际可归属kg；保留全部返工消耗。
-- 数值来源模式：计算值 (`calculated_value`)
-- 适用范围：现场特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流 (`reference_flow`)
-- 证据类型：由采集数据计算 (`calculated_from_collection`)
-- 采集协议：`cp_prepare`
-
-- 数量范围：暂定宽泛筛选估算；以独立审查证据替代
-  - 范围角色：质量校验阈值 (`qa_guardrail`)
-  - 下限：0
-  - 上限：1
-  - 单位：kg
-  - 基准：每参考流
-  - 基准类型：参考流 (`reference_flow`)
-  - 证据类型：有依据的估计 (`reasoned_estimate`)
 
 ###### 单独供应的涂装保护片材 (`protection_consumables_protective_sheet`)
 
@@ -177,28 +155,6 @@ sync_with: pcr.en-US.md
   - 基准类型：参考流 (`reference_flow`)
   - 证据类型：有依据的估计 (`reasoned_estimate`)
 
-###### 承包商可归属运输服务 (`contractor_transport`)
-
-按车辆和载荷具体化的条件性运输服务卡；本节点一次性承担全施工批次调动及可归属返程；已含于采购数据集的供应商运输不重复计入。
-
-- 选定流：实际材料及设备运输服务
-- 流属性/单位：Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` / t*km
-- 数量规则：依据cp_prepare记录按验收净面积计算实际可归属t*km；保留全部返工消耗。
-- 数值来源模式：计算值 (`calculated_value`)
-- 适用范围：现场特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流 (`reference_flow`)
-- 证据类型：由采集数据计算 (`calculated_from_collection`)
-- 采集协议：`cp_prepare`
-
-- 数量范围：暂定宽泛筛选估算；以独立审查证据替代
-  - 范围角色：质量校验阈值 (`qa_guardrail`)
-  - 下限：0
-  - 上限：5
-  - 单位：t*km
-  - 基准：每参考流
-  - 基准类型：参考流 (`reference_flow`)
-  - 证据类型：有依据的估计 (`reasoned_estimate`)
 
 ##### 废物流
 
@@ -273,28 +229,6 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 水性面漆 (`waterborne_finish`)
-
-条件性统括卡：分开产品及颜色；记录湿态领用量、期初期末库存、退料、溢洒及实际层数；升转质量时保留密度。
-
-- 选定流：实际使用的室内建筑墙面水性涂料
-- 流属性/单位：Mass / kg
-- 数量规则：依据cp_finish记录按验收净面积计算实际可归属kg；保留全部返工消耗。
-- 数值来源模式：计算值 (`calculated_value`)
-- 适用范围：现场特定 (`site_specific`)
-- 归一化基准：每参考流
-- 基准类型：参考流 (`reference_flow`)
-- 证据类型：由采集数据计算 (`calculated_from_collection`)
-- 采集协议：`cp_finish`
-
-- 数量范围：暂定宽泛筛选估算；以独立审查证据替代
-  - 范围角色：质量校验阈值 (`qa_guardrail`)
-  - 下限：0.03
-  - 上限：3
-  - 单位：kg
-  - 基准：每参考流
-  - 基准类型：参考流 (`reference_flow`)
-  - 证据类型：有依据的估计 (`reasoned_estimate`)
 
 ###### 指定水性底漆 (`waterborne_primer`)
 
@@ -543,8 +477,8 @@ sync_with: pcr.en-US.md
 | rule_id | 适用对象 | 公式或规则（`formula_or_rule`） | 输入（`inputs`） | 输出（`output`） | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `area_normalization` | 所有清单行 | 验收净面积A_accepted > 0时，对实际节点归属批总量逐项计算Q_i = Q_lot_i / A_accepted × 1 m2，保留原分子单位、原总量及节点归属。验收面积为零时不能形成验收服务数据集。参考输出采用自身cp_finish验收面积记录，归一化为1 m2。 | cp_prepare; cp_finish; 实际节点批总量; 验收净面积 | 每参考流数量 |  |
-| `stock_reconciliation` | waterborne_finish; waterborne_primer; repair_compounds; `protection_consumables_protective_sheet` | 核算用量=期初库存+接收量-期末库存-转出本批次账务边界且未计入期末库存的可用退料。可用退料若已计入期末库存，不得再次扣减。将核算用量与单独追踪的实际施涂/消耗材料、废物及其他有记录去向平衡；不得仅凭采购票据确定施涂量。在area_normalization前保留账务边界、原单位及退料归属。 | cp_prepare; cp_finish; 期初库存; 接收量; 期末库存; 互斥可用退料; 施涂/消耗和废物记录 | 归一化前平衡的实际批用量 |  |
-| `wet_mass_conversion` | waterborne_finish; waterborne_primer; repair_compounds | 记录的供应体积乘以相容基准的产品特定密度；同时保留原体积及转换湿质量。不允许通用涂料密度。 | supplier density; recorded volume | 湿态产品kg |  |
+| `stock_reconciliation` | refine_waterborne_finish; waterborne_primer; refine_repair_compounds; `protection_consumables_protective_sheet` | 核算用量=期初库存+接收量-期末库存-转出本批次账务边界且未计入期末库存的可用退料。可用退料若已计入期末库存，不得再次扣减。将核算用量与单独追踪的实际施涂/消耗材料、废物及其他有记录去向平衡；不得仅凭采购票据确定施涂量。在area_normalization前保留账务边界、原单位及退料归属。 | cp_prepare; cp_finish; 期初库存; 接收量; 期末库存; 互斥可用退料; 施涂/消耗和废物记录 | 归一化前平衡的实际批用量 |  |
+| `wet_mass_conversion` | refine_waterborne_finish; waterborne_primer; refine_repair_compounds | 记录的供应体积乘以相容基准的产品特定密度；同时保留原体积及转换湿质量。不允许通用涂料密度。 | supplier density; recorded volume | 湿态产品kg |  |
 | `species_emissions` | `refine_finish_air_species`要求细化的实际交换 | 采用实测物种释放量，或以实际施涂产品、涂层保留量、捕集废物及释放比例建立有记录的物种特定物料平衡。一致记录室内释放及室外转移，避免重复释放。EPA描述基于活动及含量的估算，但不为本PCR提供普适物种分配。 | cp_finish; product composition; release evidence | 排向所声明空气介质的物种kg | `epa-eiip-architectural-coating-1995` |
 
 ### 数据质量要求
@@ -562,6 +496,9 @@ sync_with: pcr.en-US.md
 | `refine_finish_air_species` | 独立细化的实际交换 | 本范围属于强制前景数据采集与闭合要求，不是泛化流交换。须保留原对象、条件、实际发生、物态、供应或接收交付点、库存退回、废物释放及资源负担义务。每项实际交换须独立确定准确身份、真实服务参考、唯一属性和单位、独立数量及适用方法、不确定性和保管去向；CP辅助单位不产生额外交换视图。未知不等于零，不得虚构材料、物种或服务方名册，不得分摊集合总量。筛选证据须匹配具体交换，旧集合区间不得复制或分给子流。 原适用范围及证据要求：条件性统括卡：须明确物质或物种、施工状态含量基准、释放比例及接收空气区室。法规总VOC含量不代表单一物种流或自动全释放因子；数据集中须明确保留未分物种缺口。 未由已知条件子卡完整规定的实际身份、真实原生参考和数量须继续强制细化；未完成时阻断数据集完成。此要求本身不创建交换，不以未绑定占位卡替代细化。 实际采用粒径分级时，各粒径分段必须互不重叠，不得将存在包含关系的累计粒径数据直接相加。 | `cp_finish`; 实际独立记录及身份／单位证据 |
 | `atomic_exchange_identity_unit` | all inventory rows | 每项具体流卡只识别一种实际独立供给的产品SKU或配方、完整组件、完整单一职能或真实完整有界服务方服务、实际废物整体及状态接收方，或物质粒径及接收介质，且只有一种属性和一个单位。实际不同身份须有独立数量和记录，不得合为集合交换。完整产品或载体含其内含物一次。同一未改变SKU状态的供给与可用退回，以及实物匹配的内部发送接收，使用同一选定属性单位；kg和件数、MJ和kWh等辅助读数不加和，不产生重复交换。身份、发生、数量或原生参考缺失是缺口，不是零。 任何合并分母均须保留原验收配置分层、状态交付点及因果归属；不得把不等价线路、路线、产品或工单按等价数量盲目相除。 | 实际身份、单位、保管及独立数量证据 |
 | `asset_final_normalization_once` | all inventory rows | 资产当量公式已除以N、D或A时，其结果就是最终每参考流数量。全寿命份额及验收产出归一化与通用归一化规则是同一次操作，不再除一次该分母。完整生命周期上游负担只应用一次。实际完整服务方事件仍计真实事件量，不套用自有资产份额。 | 实际身份、单位、保管及独立数量证据 |
+| refine_waterborne_finish | finish | 独立确定实际刷涂/滚涂的每项室内建筑墙面水性面漆配方/SKU、供应湿态及提供者交付点。产品或颜色配方实际属于不同流身份时须独立记录，不合为一个涂料身份。逐身份采集湿质量、期初期末完好库存、收货、实际可用退回、溢洒、全部涂层、换料及返工；升转kg时保留实际状态密度。各实际涂料子流使用Mass/kg、原stock_reconciliation及wet_mass_conversion方法，并按原唯一验收净面积只归一化一次。保留来源特定组分和释放去向证据、残余/废物保管及真实干燥验收，不设默认涂层次数、排放份额或面漆配方。 这是强制采集/细化要求，不是带数量的交换。数据集完成前，每项实际独立身份/状态/交付点须有独立卡片、数量、唯一属性/单位及可核验身份依据。发生未知不得记零。不得将原集合总量或Range复制或分摊为子流数量/范围；子流筛选范围须有独立适用证据。缺真实身份、数量、方法或换算即阻断完成；有证据的未发生单独记录。 | cp_finish; 独立身份、库存/活动、保管及换算证据 |
+| refine_contractor_transport | prepare | 按运输方式、车辆/载荷范围、提供者、路线和交付点明确每项真实材料或设备货运服务。由实测payload_t乘真实载货distance_km及有证据的本批因果份额，或等价且已核验的承运活动记录，独立确定相容t*km并核对全部消费者。每项实际服务单列为Goods transport (mass*distance)/t*km交换，按验收面积只归一化一次。全批调动及可归属返程由此一次承担，不虚构空驶载荷。真实原生参考不同时须另建匹配属性/单位的交换并提供相容计算依据，不将数值直接改标为t*km。排除采购数据集已含上游供应商运输，核对提供者服务及直接车辆覆盖。 这是强制采集/细化要求，不是带数量的交换。数据集完成前，每项实际独立身份/状态/交付点须有独立卡片、数量、唯一属性/单位及可核验身份依据。发生未知不得记零。不得将原集合总量或Range复制或分摊为子流数量/范围；子流筛选范围须有独立适用证据。缺真实身份、数量、方法或换算即阻断完成；有证据的未发生单独记录。 | cp_prepare; 独立身份、库存/活动、保管及换算证据 |
+| refine_repair_compounds | prepare | 对每项实际使用的石膏基或其他相容轻微修补配方，独立明确准确供应身份/SKU、湿态及供应方交付点。替代配方不是同一条流。按配方采集期初库存、净收货、完好期末、真实可用退回、实际安装使用、全部返工及未退回废物/损失。各实际子流固定Mass/kg；按stock_reconciliation归属本批的实际湿供应质量，仅一次除以cp_finish签认验收净面积。仍排除石膏板制造和大面积抹灰。其他实际配方即使未列示例也必须记录，不虚构默认配方或重复采购内含成分。 这是强制采集/细化要求，不是带数量的交换。数据集完成前，每项实际独立身份/状态/交付点须有独立卡片、数量、唯一属性/单位及可核验身份依据。发生未知不得记零。不得将原集合总量或Range复制或分摊为子流数量/范围；子流筛选范围须有独立适用证据。缺真实身份、数量、方法或换算即阻断完成；有证据的未发生单独记录。 | cp_prepare; 独立身份、库存/活动、保管及换算证据 |
 
 ## 9. 校验规则
 
@@ -576,6 +513,9 @@ sync_with: pcr.en-US.md
 | `atomization_prepare_air_particles_complete` | 独立细化的实际交换 | 逐项要求适用实际交换有独立数量、准确身份状态交付点以及唯一属性和单位，保留原完整协议、归一化、库存退回、废物释放及共享资源归属。必要子流、原生参考或数量未知时不得完成数据集；有证据的未发生与缺失区分。不得分摊集合总量、复制集合数值范围，或重复计算载体内含物及供货包已含部件。 须以实际记录完成`refine_prepare_air_particles`；必要细化尚未解决时阻断数据集。 |  |
 | `atomization_finish_air_species_complete` | 独立细化的实际交换 | 逐项要求适用实际交换有独立数量、准确身份状态交付点以及唯一属性和单位，保留原完整协议、归一化、库存退回、废物释放及共享资源归属。必要子流、原生参考或数量未知时不得完成数据集；有证据的未发生与缺失区分。不得分摊集合总量、复制集合数值范围，或重复计算载体内含物及供货包已含部件。 须以实际记录完成`refine_finish_air_species`；必要细化尚未解决时阻断数据集。 |  |
 | `validate_atomic_exchange_unit_and_normalization` | all inventory rows | 每项具体流卡只识别一种实际独立供给的产品SKU或配方、完整组件、完整单一职能或真实完整有界服务方服务、实际废物整体及状态接收方，或物质粒径及接收介质，且只有一种属性和一个单位。实际不同身份须有独立数量和记录，不得合为集合交换。完整产品或载体含其内含物一次。同一未改变SKU状态的供给与可用退回，以及实物匹配的内部发送接收，使用同一选定属性单位；kg和件数、MJ和kWh等辅助读数不加和，不产生重复交换。身份、发生、数量或原生参考缺失是缺口，不是零。 资产当量公式已除以N、D或A时，其结果就是最终每参考流数量。全寿命份额及验收产出归一化与通用归一化规则是同一次操作，不再除一次该分母。完整生命周期上游负担只应用一次。实际完整服务方事件仍计真实事件量，不套用自有资产份额。 |  |
+| atomization_waterborne_finish_complete | finish | 须以独立实际记录完成refine_waterborne_finish，每项身份/状态/交付点仅对应原子流。不得使用集合卡、复制总量或沿用集合Range；缺必要子流、数量、属性/单位或范围证据即阻断完成。保留原库存、归一化、退回、废物及提供者责任规则。 |  |
+| atomization_contractor_transport_complete | prepare | 须以独立实际记录完成refine_contractor_transport，每项身份/状态/交付点仅对应原子流。不得使用集合卡、复制总量或沿用集合Range；缺必要子流、数量、属性/单位或范围证据即阻断完成。保留原库存、归一化、退回、废物及提供者责任规则。 |  |
+| atomization_repair_compounds_complete | prepare | 须以独立实际记录完成refine_repair_compounds，每项身份/状态/交付点仅对应原子流。不得使用集合卡、复制总量或沿用集合Range；缺必要子流、数量、属性/单位或范围证据即阻断完成。保留原库存、归一化、退回、废物及提供者责任规则。 |  |
 
 ## 10. 发布数据集画像
 

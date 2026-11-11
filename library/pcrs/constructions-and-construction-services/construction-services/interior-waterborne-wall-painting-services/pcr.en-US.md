@@ -47,9 +47,9 @@ This PCR covers brush or roller application of waterborne architectural coatings
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | `net_area` | reference product | Area `93a60a56-a3c8-19da-a746-0800200c9a66` | m2 | Measure accepted net wall surface area from verified dimensions or survey; deduct unpainted openings and record reveals separately. Coat area and rework-pass area do not enlarge accepted net area. |
-| `wet_supply_mass` | waterborne_finish; waterborne_primer; repair_compounds | Mass | kg | Keep wet supplied product mass distinct from dry film solids and VOC mass. Convert volume using product-specific measured or supplier density on the same formulation and temperature basis. |
+| `wet_supply_mass` | refine_waterborne_finish; waterborne_primer; refine_repair_compounds | Mass | kg | Keep wet supplied product mass distinct from dry film solids and VOC mass. Convert volume using product-specific measured or supplier density on the same formulation and temperature basis. |
 | `emission_identity` | actual exchanges required by `refine_finish_air_species`; actual exchanges required by `refine_prepare_air_particles` | Mass | kg | Keep substance or particle-size identity and receiving medium with each emission; total VOC content and captured dust are supporting records, not automatically elementary emissions. |
-| `transport_work` | contractor_transport | Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` | t*km | Use Units of mass*length `838aaa21-0117-11db-92e3-0800200c9a66`, reference t*km factor 1. Calculate from attributable tonnes and kilometres; kg*km converts to t*km by dividing by 1000. Retain actual vehicle/load/route and avoid duplicate mobilization. |
+| `transport_work` | refine_contractor_transport | Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` | t*km | Use Units of mass*length `838aaa21-0117-11db-92e3-0800200c9a66`, reference t*km factor 1. Calculate from attributable tonnes and kilometres; kg*km converts to t*km by dividing by 1000. Retain actual vehicle/load/route and avoid duplicate mobilization. |
 
 ## 5. System Boundary
 
@@ -91,28 +91,6 @@ Production is a room/colour/coating-system campaign, not a continuous factory li
 
 ##### Product flows
 
-###### Minor repair compounds (`repair_compounds`)
-
-Record each repair formulation and wet supplied mass; exclude plasterboard manufacture and major plastering.
-
-- Selected flow: Gypsum or compatible spackling compounds actually used
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate actual attributable kg from cp_prepare records per accepted net area; retain all rework consumption.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_prepare`
-
-- Range: Provisional broad screening estimate; replace with independent reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg
-  - Basis: per reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Separately supplied painting protective sheeting (`protection_consumables_protective_sheet`)
 
@@ -176,28 +154,6 @@ Record vacuum or other preparation equipment metering or power and operating tim
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Contractor attributable transport services (`contractor_transport`)
-
-Conditional umbrella for vehicle and load-specific services; own all campaign mobilization here once, including return trips where attributable; omit upstream supplier transport already included in a purchased dataset.
-
-- Selected flow: Actual material and equipment transport services
-- Flow property / unit: Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` / t*km
-- Amount rule: Calculate actual attributable t*km from cp_prepare records per accepted net area; retain all rework consumption.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_prepare`
-
-- Range: Provisional broad screening estimate; replace with independent reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 5
-  - Unit: t*km
-  - Basis: per reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -272,28 +228,6 @@ Conditional on wet cleaning: record collected volume, composition and treatment 
 
 ##### Product flows
 
-###### Waterborne finish coatings (`waterborne_finish`)
-
-Conditional umbrella: separate products and colours; record wet mass issued, opening and closing stock, returns, spill and coat count, retaining density if litres are converted.
-
-- Selected flow: Actual waterborne interior architectural wall coatings
-- Flow property / unit: Mass / kg
-- Amount rule: Calculate actual attributable kg from cp_finish records per accepted net area; retain all rework consumption.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Normalization basis: per reference flow
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_finish`
-
-- Range: Provisional broad screening estimate; replace with independent reviewed evidence
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.03
-  - Upper: 3
-  - Unit: kg
-  - Basis: per reference flow
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ###### Specified waterborne primers (`waterborne_primer`)
 
@@ -542,8 +476,8 @@ Apply area_normalization and stock_reconciliation below to each lot; retain orig
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `area_normalization` | all inventory rows | For accepted net area A_accepted > 0, calculate Q_i = Q_lot_i / A_accepted × 1 m2 for each actual node-attributable lot total, preserving the original numerator unit, original totals and node ownership. Zero accepted area cannot form an accepted-service dataset. The reference output uses its own cp_finish accepted-area record and normalizes to 1 m2. | cp_prepare; cp_finish; actual node lot totals; accepted net area | Amounts per reference flow |  |
-| `stock_reconciliation` | waterborne_finish; waterborne_primer; repair_compounds; `protection_consumables_protective_sheet` | Accounted use = opening stock + receipts - closing stock - usable returns transferred outside this lot accounting boundary and not already included in closing stock. A usable return already counted in closing stock must not be subtracted again. Reconcile accounted use to separately traced applied/consumed material, waste and other documented exits; invoices alone do not determine applied paint. Retain the ledger boundary, original units and return ownership before area_normalization. | cp_prepare; cp_finish; opening stock; receipts; closing stock; exclusive usable returns; applied/consumed and waste records | Reconciled actual lot use before normalization |  |
-| `wet_mass_conversion` | waterborne_finish; waterborne_primer; repair_compounds | Multiply recorded supplied volume by product-specific density on a compatible basis; retain both original volume and converted wet mass. No generic paint density is permitted. | supplier density; recorded volume | Wet product kg |  |
+| `stock_reconciliation` | refine_waterborne_finish; waterborne_primer; refine_repair_compounds; `protection_consumables_protective_sheet` | Accounted use = opening stock + receipts - closing stock - usable returns transferred outside this lot accounting boundary and not already included in closing stock. A usable return already counted in closing stock must not be subtracted again. Reconcile accounted use to separately traced applied/consumed material, waste and other documented exits; invoices alone do not determine applied paint. Retain the ledger boundary, original units and return ownership before area_normalization. | cp_prepare; cp_finish; opening stock; receipts; closing stock; exclusive usable returns; applied/consumed and waste records | Reconciled actual lot use before normalization |  |
+| `wet_mass_conversion` | refine_waterborne_finish; waterborne_primer; refine_repair_compounds | Multiply recorded supplied volume by product-specific density on a compatible basis; retain both original volume and converted wet mass. No generic paint density is permitted. | supplier density; recorded volume | Wet product kg |  |
 | `species_emissions` | actual exchanges required by `refine_finish_air_species` | Use measured species release or a documented species-specific material balance of actually applied products, retained coating, captured waste and emitted fractions. Record indoor release and any outdoor transfer consistently, avoiding duplicate releases. EPA describes activity/content-based estimation but provides no universal species split for this PCR. | cp_finish; product composition; release evidence | Species kg to declared air medium | `epa-eiip-architectural-coating-1995` |
 
 ### Data Quality Requirements
@@ -561,6 +495,9 @@ Apply area_normalization and stock_reconciliation below to each lot; retain orig
 | `refine_finish_air_species` | actual independently refined exchanges | Preserve this actual collection and closure scope as a mandatory dataset-production requirement: Conditional umbrella: require substance or species identity, as-applied content basis, emitted fraction and receiving air compartment. A regulatory total VOC content is not a species flow or an automatic complete-release factor; retain unspeciated gaps explicitly in the dataset. Independently establish every actual identity, state, real provider/receiver and exactly one exchange property/unit before constructing its flow card. Each actual exchange requires its own recorded quantity and applicable method, uncertainty and custody/fate coverage. Auxiliary CP units do not authorize extra exchange views. Actual occurrence unknown is not zero; never invent a material/species/provider list or split a parent total. Quantitative screening evidence must fit each actual exchange; a former family interval cannot be copied or divided into child ranges. Further actual identities not fully specified by the conditional children require mandatory refinement and prevent dataset completion; this requirement is not itself a flow exchange. Actual substance, disjoint particle-size fraction and air/water/soil receiving compartment; matched measurement or species/activity factor, whole-fluid composition/fate audit, capture and uncertainty; unknown is not zero. | `cp_finish`; actual independent records and identity/unit evidence |
 | `atomic_exchange_identity_unit` | all inventory rows | Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. Any pooled denominator must retain the original accepted configuration strata, state/gate and causal attribution; do not divide unlike circuits, routes, products or jobs as if they were equivalent. | actual identity, unit, custody and independent quantity evidence |
 | `asset_final_normalization_once` | all inventory rows | An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions. | actual identity, unit, custody and independent quantity evidence |
+| refine_waterborne_finish | finish | Independently identify every actual waterborne interior architectural wall finish formulation/SKU, supplied wet state and provider gate used by brush/roller. Distinct products or colour formulations that have different flow identities need separate independent records, never a summed coating identity. Collect wet mass, opening and closing intact stock, receipts, actual usable returns, spills, all coats, changes and rework by identity; record actual state density when litres are converted to kg. Each actual coating child uses Mass/kg, the original stock_reconciliation and wet_mass_conversion methods and the original unique accepted net area once. Preserve source-specific constituent and release-fate evidence, residual/waste custody and actual drying acceptance; no default coat count, emission fraction or finish formulation. This is a mandatory collection/refinement requirement, not a quantity-bearing exchange. Before dataset completion create one card per actual independent identity/state/gate, with its own quantity, one property/unit and verifiable identity evidence. Unknown occurrence is not zero. No former family total or Range may be copied or divided into child quantities/ranges; derive any child screen only from independently applicable evidence. Missing actual identity, quantity, method or conversion blocks completion; record evidenced nonoccurrence separately. | cp_finish; independent identity, stock/activity, custody and conversion evidence |
+| refine_contractor_transport | prepare | Identify every actual vehicle/load-specific material or equipment freight service by mode, vehicle/load scope, provider, route and gate. Independently determine its compatible t*km from measured payload_t times actual loaded distance_km and the evidenced causal campaign share, or an equivalent verified carrier activity record; reconcile all consumers. Keep each actual service as one separate Goods transport (mass*distance)/t*km exchange normalized once by accepted area. Own all campaign mobilization here once, including attributable return scope; never invent empty-leg payload. A service whose real native reference differs requires a separate matching-property/unit exchange and evidenced compatible calculation, not a numerical relabelling to t*km. Exclude upstream supplier transport already included in the purchased dataset and reconcile provider/direct-vehicle coverage. This is a mandatory collection/refinement requirement, not a quantity-bearing exchange. Before dataset completion create one card per actual independent identity/state/gate, with its own quantity, one property/unit and verifiable identity evidence. Unknown occurrence is not zero. No former family total or Range may be copied or divided into child quantities/ranges; derive any child screen only from independently applicable evidence. Missing actual identity, quantity, method or conversion blocks completion; record evidenced nonoccurrence separately. | cp_prepare; independent identity, stock/activity, custody and conversion evidence |
+| refine_repair_compounds | prepare | For each actually used gypsum-based or other compatible minor-repair formulation, determine its exact supplied identity/SKU, wet state and supplier gate independently. The alternative formulations are not one flow. Collect opening stock, net receipts, intact closing, actual usable returns, installed use, all rework and nonreturned loss/waste by formulation. Fix each actual child to Mass/kg; actual wet supplied mass attributable to this campaign is normalized once by the signed cp_finish accepted net area under stock_reconciliation. Keep plasterboard manufacture and major plastering excluded. Actual other formulations remain mandatory even if not listed in an example; no invented default formulation or ingredient repurchase. This is a mandatory collection/refinement requirement, not a quantity-bearing exchange. Before dataset completion create one card per actual independent identity/state/gate, with its own quantity, one property/unit and verifiable identity evidence. Unknown occurrence is not zero. No former family total or Range may be copied or divided into child quantities/ranges; derive any child screen only from independently applicable evidence. Missing actual identity, quantity, method or conversion blocks completion; record evidenced nonoccurrence separately. | cp_prepare; independent identity, stock/activity, custody and conversion evidence |
 
 ## 9. Validation Rules
 
@@ -575,6 +512,9 @@ Apply area_normalization and stock_reconciliation below to each lot; retain orig
 | `atomization_prepare_air_particles_complete` | actual independently refined exchanges | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_prepare_air_particles` with actual records; unresolved required expansion blocks the dataset. |  |
 | `atomization_finish_air_species_complete` | actual independently refined exchanges | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_finish_air_species` with actual records; unresolved required expansion blocks the dataset. |  |
 | `validate_atomic_exchange_unit_and_normalization` | all inventory rows | Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions. |  |
+| atomization_waterborne_finish_complete | finish | Require completion of refine_waterborne_finish using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules. |  |
+| atomization_contractor_transport_complete | prepare | Require completion of refine_contractor_transport using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules. |  |
+| atomization_repair_compounds_complete | prepare | Require completion of refine_repair_compounds using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules. |  |
 
 ## 10. Published Dataset Profile
 

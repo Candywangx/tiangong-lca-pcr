@@ -24,7 +24,7 @@ study. No platform lookup or external source download was performed to assemble 
 
 ## Current content and historical records
 
-[Current readback](current-review.json) binds all 63 PCRs to their 252 canonical
+[Pre-repair readback](current-review.json) binds all 63 PCRs to their 252 canonical
 file hashes at commit `05b1b5804d3b6b2ab83d2bd2cce41b5a2d06a256`. All are
 `candidate` / `authored_methodology`, with Chinese translation `aligned`.
 The previous read-only review ran all 63 target checks on these identical bytes:
@@ -55,7 +55,7 @@ report hash is also recorded in the index.
 
 The 26 bound inventory occurrences use the five native flows above. Their types,
 Mass/kg chain, receiving-air compartments and Chinese names were compared with
-the current cards. The remaining 2,848 inventory identities and all 63 reference
+the pre-repair cards. The remaining 2,848 inventory identities and all 63 reference
 product identities are unbound; actual resolution and applicable foreground
 evidence remain required. A missing UUID does not establish platform absence.
 
@@ -66,7 +66,7 @@ exact file bytes. For entries marked `none; exact historical bytes` or
 `none; exact JSONL bytes`, the packaged hash must also equal `source_sha256`.
 For extracted native datasets, compare the declared JSON pointer in the original
 response only when that original local envelope is available; it is not claimed
-to be bundled. Current canonical hashes can be checked directly from the PCRs.
+to be bundled. The pre-repair canonical hashes identify that earlier source version; use the maintenance readback below for the repaired files.
 
 Local hashes detect changes relative to this retained package. They are not
 provider signatures and do not prove current platform state. Nested references
@@ -77,3 +77,18 @@ empirical scientific evidence have not been newly retrieved or certified.
 The previously disclosed full-library event-log integrity test failure also
 reproduced on clean target main. Full-library completion and hosted qualification
 must not be inferred from this evidence repair or the target-check results.
+
+## Content repairs — 2026-11-11
+
+[Maintenance readback](content-repair-20261111.json) records the nine PCRs repaired
+from source commit `d7947e1d74bdd3df1d5c0a7c6311fffbda0ca288`, their current four-file
+hashes, actual targeted validation, formula scenarios and remaining limitations.
+It supersedes the pre-repair hashes and card counts only for those records; the
+historical evidence index and native snapshots are unchanged. The repaired corpus
+has 2,871 inventory cards per language, including the same 26 bound occurrences;
+2,845 inventory identities and all 63 reference product identities remain unbound.
+The three removed painting collection cards survive as mandatory non-exchange
+refinement requirements, so their physical coverage has not been discarded.
+All records retain candidate/authored_methodology and Chinese aligned status.
+Target checks and this repair do not establish scientific approval or a fresh
+platform verification.

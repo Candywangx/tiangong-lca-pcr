@@ -79,7 +79,7 @@ measurement_rules:
     required_unit: "m2"
     rule: "Measure accepted net wall surface area from verified dimensions or survey; deduct unpainted openings and record reveals separately. Coat area and rework-pass area do not enlarge accepted net area."
   - id: wet_supply_mass
-    applies_to: "waterborne_finish; waterborne_primer; repair_compounds"
+    applies_to: "refine_waterborne_finish; waterborne_primer; refine_repair_compounds"
     required_property_ref:
       name: "Mass"
       uuid: ""
@@ -93,7 +93,7 @@ measurement_rules:
     required_unit: "kg"
     rule: "Keep substance or particle-size identity and receiving medium with each emission; total VOC content and captured dust are supporting records, not automatically elementary emissions."
   - id: transport_work
-    applies_to: "contractor_transport"
+    applies_to: "refine_contractor_transport"
     required_property_ref:
       name: "Goods transport (mass*distance)"
       uuid: "838aaa20-0117-11db-92e3-0800200c9a66"
@@ -117,32 +117,6 @@ process_inventory:
     label: "Minor preparation and campaign mobilization"
     inputs:
       product:
-        - row_id: repair_compounds
-          role: "Minor repair compounds"
-          name: "Gypsum or compatible spackling compounds actually used"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record each repair formulation and wet supplied mass; exclude plasterboard manufacture and major plastering."
-          amount:
-            expression: "Calculate actual attributable kg from cp_prepare records per accepted net area; retain all rework consumption."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_prepare
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "1"
-                unit: "kg"
-                basis: "per reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: protection_consumables_protective_sheet
           role: "Separately supplied painting protective sheeting"
           name: "Separately supplied painting protective sheeting"
@@ -209,32 +183,6 @@ process_inventory:
                 lower: "0"
                 upper: "2"
                 unit: "kWh"
-                basis: "per reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
-        - row_id: contractor_transport
-          role: "Contractor attributable transport services"
-          name: "Actual material and equipment transport services"
-          flow_type: "product"
-          property_unit: "Goods transport (mass*distance) 838aaa20-0117-11db-92e3-0800200c9a66 / t*km"
-          description: "Conditional umbrella for vehicle and load-specific services; own all campaign mobilization here once, including return trips where attributable; omit upstream supplier transport already included in a purchased dataset."
-          amount:
-            expression: "Calculate actual attributable t*km from cp_prepare records per accepted net area; retain all rework consumption."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_prepare
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0"
-                upper: "5"
-                unit: "t*km"
                 basis: "per reference flow"
                 basis_kind: "reference_flow"
                 evidence_kind: "reasoned_estimate"
@@ -315,32 +263,6 @@ process_inventory:
     label: "Brush/roller coating, drying, cleanup and acceptance"
     inputs:
       product:
-        - row_id: waterborne_finish
-          role: "Waterborne finish coatings"
-          name: "Actual waterborne interior architectural wall coatings"
-          flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Conditional umbrella: separate products and colours; record wet mass issued, opening and closing stock, returns, spill and coat count, retaining density if litres are converted."
-          amount:
-            expression: "Calculate actual attributable kg from cp_finish records per accepted net area; retain all rework consumption."
-            value_mode: "calculated_value"
-            specificity: "site_specific"
-            basis:
-              text: "per reference flow"
-              kind: "reference_flow"
-            evidence:
-              kind: "calculated_from_collection"
-              collection_protocol_id: cp_finish
-              source_ids: []
-            ranges:
-              - role: qa_guardrail
-                lower: "0.03"
-                upper: "3"
-                unit: "kg"
-                basis: "per reference flow"
-                basis_kind: "reference_flow"
-                evidence_kind: "reasoned_estimate"
-                source_ids: []
         - row_id: waterborne_primer
           role: "Specified waterborne primers"
           name: "Actual compatible waterborne wall primer where specified"
@@ -635,7 +557,7 @@ dataset_production:
       output: "Amounts per reference flow"
       source_ids: []
     - id: stock_reconciliation
-      applies_to: "waterborne_finish; waterborne_primer; repair_compounds; protection_consumables_protective_sheet"
+      applies_to: "refine_waterborne_finish; waterborne_primer; refine_repair_compounds; protection_consumables_protective_sheet"
       rule: "Accounted use = opening stock + receipts - closing stock - usable returns transferred outside this lot accounting boundary and not already included in closing stock. A usable return already counted in closing stock must not be subtracted again. Reconcile accounted use to separately traced applied/consumed material, waste and other documented exits; invoices alone do not determine applied paint. Retain the ledger boundary, original units and return ownership before area_normalization."
       inputs:
         - cp_prepare
@@ -648,7 +570,7 @@ dataset_production:
       output: "Reconciled actual lot use before normalization"
       source_ids: []
     - id: wet_mass_conversion
-      applies_to: "waterborne_finish; waterborne_primer; repair_compounds"
+      applies_to: "refine_waterborne_finish; waterborne_primer; refine_repair_compounds"
       rule: "Multiply recorded supplied volume by product-specific density on a compatible basis; retain both original volume and converted wet mass. No generic paint density is permitted."
       inputs:
         - "supplier density"
@@ -710,6 +632,18 @@ dataset_production:
       applies_to: "all inventory rows"
       requirement: "An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions."
       evidence: "actual identity, unit, custody and independent quantity evidence"
+    - id: refine_waterborne_finish
+      applies_to: "finish"
+      requirement: "Independently identify every actual waterborne interior architectural wall finish formulation/SKU, supplied wet state and provider gate used by brush/roller. Distinct products or colour formulations that have different flow identities need separate independent records, never a summed coating identity. Collect wet mass, opening and closing intact stock, receipts, actual usable returns, spills, all coats, changes and rework by identity; record actual state density when litres are converted to kg. Each actual coating child uses Mass/kg, the original stock_reconciliation and wet_mass_conversion methods and the original unique accepted net area once. Preserve source-specific constituent and release-fate evidence, residual/waste custody and actual drying acceptance; no default coat count, emission fraction or finish formulation. This is a mandatory collection/refinement requirement, not a quantity-bearing exchange. Before dataset completion create one card per actual independent identity/state/gate, with its own quantity, one property/unit and verifiable identity evidence. Unknown occurrence is not zero. No former family total or Range may be copied or divided into child quantities/ranges; derive any child screen only from independently applicable evidence. Missing actual identity, quantity, method or conversion blocks completion; record evidenced nonoccurrence separately."
+      evidence: "cp_finish; independent identity, stock/activity, custody and conversion evidence"
+    - id: refine_contractor_transport
+      applies_to: "prepare"
+      requirement: "Identify every actual vehicle/load-specific material or equipment freight service by mode, vehicle/load scope, provider, route and gate. Independently determine its compatible t*km from measured payload_t times actual loaded distance_km and the evidenced causal campaign share, or an equivalent verified carrier activity record; reconcile all consumers. Keep each actual service as one separate Goods transport (mass*distance)/t*km exchange normalized once by accepted area. Own all campaign mobilization here once, including attributable return scope; never invent empty-leg payload. A service whose real native reference differs requires a separate matching-property/unit exchange and evidenced compatible calculation, not a numerical relabelling to t*km. Exclude upstream supplier transport already included in the purchased dataset and reconcile provider/direct-vehicle coverage. This is a mandatory collection/refinement requirement, not a quantity-bearing exchange. Before dataset completion create one card per actual independent identity/state/gate, with its own quantity, one property/unit and verifiable identity evidence. Unknown occurrence is not zero. No former family total or Range may be copied or divided into child quantities/ranges; derive any child screen only from independently applicable evidence. Missing actual identity, quantity, method or conversion blocks completion; record evidenced nonoccurrence separately."
+      evidence: "cp_prepare; independent identity, stock/activity, custody and conversion evidence"
+    - id: refine_repair_compounds
+      applies_to: "prepare"
+      requirement: "For each actually used gypsum-based or other compatible minor-repair formulation, determine its exact supplied identity/SKU, wet state and supplier gate independently. The alternative formulations are not one flow. Collect opening stock, net receipts, intact closing, actual usable returns, installed use, all rework and nonreturned loss/waste by formulation. Fix each actual child to Mass/kg; actual wet supplied mass attributable to this campaign is normalized once by the signed cp_finish accepted net area under stock_reconciliation. Keep plasterboard manufacture and major plastering excluded. Actual other formulations remain mandatory even if not listed in an example; no invented default formulation or ingredient repurchase. This is a mandatory collection/refinement requirement, not a quantity-bearing exchange. Before dataset completion create one card per actual independent identity/state/gate, with its own quantity, one property/unit and verifiable identity evidence. Unknown occurrence is not zero. No former family total or Range may be copied or divided into child quantities/ranges; derive any child screen only from independently applicable evidence. Missing actual identity, quantity, method or conversion blocks completion; record evidenced nonoccurrence separately."
+      evidence: "cp_prepare; independent identity, stock/activity, custody and conversion evidence"
 validation_rules:
   - rule_id: reference_conformance
     applies_to: "accepted_painting_service"
@@ -749,6 +683,18 @@ validation_rules:
     applies_to: "all inventory rows"
     rule: "Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions."
     source_ids: []
+  - rule_id: atomization_waterborne_finish_complete
+    applies_to: "finish"
+    rule: "Require completion of refine_waterborne_finish using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules."
+    source_ids: []
+  - rule_id: atomization_contractor_transport_complete
+    applies_to: "prepare"
+    rule: "Require completion of refine_contractor_transport using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules."
+    source_ids: []
+  - rule_id: atomization_repair_compounds_complete
+    applies_to: "prepare"
+    rule: "Require completion of refine_repair_compounds using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "Foreground contractor painting-service data package"
   downstream_use: "secondary_dataset; background_dataset"
@@ -768,18 +714,18 @@ data_sources:
     used_for: "Application/drying release pathways and activity/content estimation approach; no universal species fractions"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:c8d6ff24e0d370e1b5f6260961edd74e30585df11c734984289e95f1685f8f7d"
+  source_sha256: "sha256:5a94ae71827ad36faea6446232bf1591cf934ca89f4c43eb4a7f48becaeea265"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4286"
+    - unit_id: "normative_4307"
       family: "system_boundary"
       span:
         start:
-          offset: 4286
+          offset: 4307
           line: 54
           column: 1
         end:
-          offset: 7265
+          offset: 7286
           line: 77
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Installed gypsum/plaster interior wall accepted for minor preparation; substrate ownership and prior works remain outside the service inventory |\n| starting_condition_role | Existing parent surface condition, not a free wall-material input or output |\n| product_classification_scope | A narrower service subset of CPC 54730 Painting services |\n| recursive_input_rule | Subcontracted same-category painting must be represented once as a purchased verified service or decomposed foreground work, never both; retain subcontract boundaries and area |\n| upstream_dataset_requirement | Link coating, primer, repair, water, electricity, consumables and transport inputs to compatible upstream datasets; missing links remain explicit. Do not import wall production into the service reference |\n| disclosure | Report starting wall condition, excluded prior works, supplier-dataset transport coverage, shared asset attribution, hazards and excluded future maintenance |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `scope_eligibility` | foreground_system_boundary | This PCR covers brush or roller application of waterborne architectural coatings to installed gypsum-board or plaster interior walls handed over ready for normal minor preparation. It includes minor cleaning and patching, the specified primer if used, all actual finish coats, drying, touch-up, tool cleanup and acceptance in one contractor campaign. Substrate manufacture and installation, extensive replastering, hazardous coating removal, exterior work, spray application, solvent industrial coatings, waterproofing, road markings and future maintenance repainting are excluded. This service boundary is an authored modelling choice; UFGS supports the preparation/application distinction rather than a universal coat count. |  |\n| `service_gate` | all processes | Include campaign minor preparation through accepted coating, cleanup and defect closure. Installed substrate manufacture/installation stays outside; document deviations before reuse. | `ufgs-architectural-coatings-2026` |\n| `actual_system` | finish | Record actual primer decision, layer count, coating identities, drying and application conditions; no fixed two-coat assumption. | `ufgs-architectural-coatings-2026` |\n| `shared_assets` | prepare; finish | Identify shared task lighting, ventilation, electrical supply and reusable tools, list prepare and finish consumers and campaign periods, and record one owner for each shared event. Retain operating and replacement burdens where attributable; disclose capital-equipment treatment. |  |\n| `waste_gate` | prepare; finish | Track residue and wash-water handover and treatment destinations separately from direct releases; cleaning and residual paint storage follow the declared site management plan. | `ufgs-architectural-coatings-2026` |\n\n"
@@ -799,11 +745,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4286
+              offset: 4307
               line: 54
               column: 1
             end:
-              offset: 4307
+              offset: 4328
               line: 54
               column: 22
           text: "## 5. System Boundary"
@@ -819,16 +765,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_30889"
+    - unit_id: "normative_27608"
       family: "allocation"
       span:
         start:
-          offset: 30889
-          line: 518
+          offset: 27608
+          line: 452
           column: 1
         end:
-          offset: 31984
-          line: 526
+          offset: 28703
+          line: 460
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `campaign_attribution` | prepare; finish | Subdivide records by campaign, room and node first. Attribute shared electricity by metering or documented power-time; shared transport by measured load-distance and reusable consumables by documented usage and replacement. Reconcile consumer shares to one total per period; use area allocation only for homogeneous same-system campaigns with justified evidence. |  |\n| `rework_retention` | finish | Retain failed-coat removal, extra coating, energy and cleanup with the producing campaign; count final accepted area once. Downgrade, recovery or discard requires an actual destination and no automatic avoided-product credit. |  |\n| `no_coproduct` | all processes | The defined route has one service output. Returned usable paint is a stock correction. No paint-leftover, waste or existing-wall coproduct allocation is allowed. If a real independently marketed coproduct arises, document a separately reviewed method before reuse. |  |\n\n"
       headings:
@@ -847,12 +793,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 30889
-              line: 518
+              offset: 27608
+              line: 452
               column: 1
             end:
-              offset: 30929
-              line: 518
+              offset: 27648
+              line: 452
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -867,18 +813,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_48493"
+    - unit_id: "normative_49733"
       family: "validation"
       span:
         start:
-          offset: 48493
-          line: 565
+          offset: 49733
+          line: 502
           column: 1
         end:
-          offset: 53911
-          line: 579
+          offset: 56420
+          line: 519
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `reference_conformance` | accepted_painting_service | Require positive measured net area, matching service output/property/unit and a signed acceptance record; count no unresolved rejected area or duplicate coat area. |  |\n| `campaign_completeness` | prepare; finish | Every material, cleaning, changeover, rework, residue and emission event links to one campaign and producing node. Confirm shared asset consumers and period shares sum to one owned event total. |  |\n| `coating_quality` | finish | Verify declared project requirements, actual layer count, drying and closed defects against acceptance evidence; do not substitute a generic prescribed coat count. | `ufgs-architectural-coatings-2026` |\n| `release_and_waste` | actual exchanges required by `refine_prepare_air_particles`; actual exchanges required by `refine_finish_air_species`; finish_wastewater | Require emission species/size and air medium and separate captured waste/wastewater destination; missing speciation is incomplete evidence, not zero VOC. Check material and water reconciliations and avoid emission/treatment double counting. | `epa-eiip-architectural-coating-1995` |\n| `atomization_protection_consumables_complete` | `protection_consumables_protective_sheet` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_protection_consumables` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_prepare_residue_complete` | `prepare_residue_sanding_residue`; `prepare_residue_repair_debris` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_prepare_residue` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_prepare_air_particles_complete` | actual independently refined exchanges | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_prepare_air_particles` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_finish_air_species_complete` | actual independently refined exchanges | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_finish_air_species` with actual records; unresolved required expansion blocks the dataset. |  |\n| `validate_atomic_exchange_unit_and_normalization` | all inventory rows | Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `reference_conformance` | accepted_painting_service | Require positive measured net area, matching service output/property/unit and a signed acceptance record; count no unresolved rejected area or duplicate coat area. |  |\n| `campaign_completeness` | prepare; finish | Every material, cleaning, changeover, rework, residue and emission event links to one campaign and producing node. Confirm shared asset consumers and period shares sum to one owned event total. |  |\n| `coating_quality` | finish | Verify declared project requirements, actual layer count, drying and closed defects against acceptance evidence; do not substitute a generic prescribed coat count. | `ufgs-architectural-coatings-2026` |\n| `release_and_waste` | actual exchanges required by `refine_prepare_air_particles`; actual exchanges required by `refine_finish_air_species`; finish_wastewater | Require emission species/size and air medium and separate captured waste/wastewater destination; missing speciation is incomplete evidence, not zero VOC. Check material and water reconciliations and avoid emission/treatment double counting. | `epa-eiip-architectural-coating-1995` |\n| `atomization_protection_consumables_complete` | `protection_consumables_protective_sheet` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_protection_consumables` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_prepare_residue_complete` | `prepare_residue_sanding_residue`; `prepare_residue_repair_debris` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_prepare_residue` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_prepare_air_particles_complete` | actual independently refined exchanges | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_prepare_air_particles` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_finish_air_species_complete` | actual independently refined exchanges | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_finish_air_species` with actual records; unresolved required expansion blocks the dataset. |  |\n| `validate_atomic_exchange_unit_and_normalization` | all inventory rows | Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions. |  |\n| atomization_waterborne_finish_complete | finish | Require completion of refine_waterborne_finish using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules. |  |\n| atomization_contractor_transport_complete | prepare | Require completion of refine_contractor_transport using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules. |  |\n| atomization_repair_compounds_complete | prepare | Require completion of refine_repair_compounds using independent actual records and one atomic flow per identity/state/gate. No family card, copied total or inherited family Range is permitted; missing required child, quantity, property/unit or scope evidence blocks completion. Preserve original inventory/normalization/return/waste and provider ownership rules. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -895,12 +841,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 48493
-              line: 565
+              offset: 49733
+              line: 502
               column: 1
             end:
-              offset: 48515
-              line: 565
+              offset: 49755
+              line: 502
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -919,272 +865,311 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "scope_eligibility"
       identity_kind: "explicit"
-      unit_id: "normative_4286"
+      unit_id: "normative_4307"
       source_span:
         start:
-          offset: 5451
+          offset: 5472
           line: 71
           column: 1
         end:
-          offset: 6235
+          offset: 6256
           line: 71
           column: 785
     - pointer: "/system_boundary/rules/1"
       rule_id: "service_gate"
       identity_kind: "explicit"
-      unit_id: "normative_4286"
+      unit_id: "normative_4307"
       source_span:
         start:
-          offset: 6236
+          offset: 6257
           line: 72
           column: 1
         end:
-          offset: 6492
+          offset: 6513
           line: 72
           column: 257
     - pointer: "/system_boundary/rules/2"
       rule_id: "actual_system"
       identity_kind: "explicit"
-      unit_id: "normative_4286"
+      unit_id: "normative_4307"
       source_span:
         start:
-          offset: 6493
+          offset: 6514
           line: 73
           column: 1
         end:
-          offset: 6689
+          offset: 6710
           line: 73
           column: 197
     - pointer: "/system_boundary/rules/3"
       rule_id: "shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_4286"
+      unit_id: "normative_4307"
       source_span:
         start:
-          offset: 6690
+          offset: 6711
           line: 74
           column: 1
         end:
-          offset: 7013
+          offset: 7034
           line: 74
           column: 324
     - pointer: "/system_boundary/rules/4"
       rule_id: "waste_gate"
       identity_kind: "explicit"
-      unit_id: "normative_4286"
+      unit_id: "normative_4307"
       source_span:
         start:
-          offset: 7014
+          offset: 7035
           line: 75
           column: 1
         end:
-          offset: 7263
+          offset: 7284
           line: 75
           column: 250
     - pointer: "/allocation_rules/0"
       rule_id: "campaign_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_30889"
+      unit_id: "normative_27608"
       source_span:
         start:
-          offset: 31002
-          line: 522
+          offset: 27721
+          line: 456
           column: 1
         end:
-          offset: 31414
-          line: 522
+          offset: 28133
+          line: 456
           column: 413
     - pointer: "/allocation_rules/1"
       rule_id: "rework_retention"
       identity_kind: "explicit"
-      unit_id: "normative_30889"
+      unit_id: "normative_27608"
       source_span:
         start:
-          offset: 31415
-          line: 523
+          offset: 28134
+          line: 457
           column: 1
         end:
-          offset: 31677
-          line: 523
+          offset: 28396
+          line: 457
           column: 263
     - pointer: "/allocation_rules/2"
       rule_id: "no_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_30889"
+      unit_id: "normative_27608"
       source_span:
         start:
-          offset: 31678
-          line: 524
+          offset: 28397
+          line: 458
           column: 1
         end:
-          offset: 31982
-          line: 524
+          offset: 28701
+          line: 458
           column: 305
     - pointer: "/validation_rules/0"
       rule_id: "reference_conformance"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 48588
-          line: 569
+          offset: 49828
+          line: 506
           column: 1
         end:
-          offset: 48812
-          line: 569
+          offset: 50052
+          line: 506
           column: 225
     - pointer: "/validation_rules/1"
       rule_id: "campaign_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 48813
-          line: 570
+          offset: 50053
+          line: 507
           column: 1
         end:
-          offset: 49057
-          line: 570
+          offset: 50297
+          line: 507
           column: 245
     - pointer: "/validation_rules/2"
       rule_id: "coating_quality"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 49058
-          line: 571
+          offset: 50298
+          line: 508
           column: 1
         end:
-          offset: 49291
-          line: 571
+          offset: 50531
+          line: 508
           column: 234
     - pointer: "/validation_rules/3"
       rule_id: "release_and_waste"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 49292
-          line: 572
+          offset: 50532
+          line: 509
           column: 1
         end:
-          offset: 49737
-          line: 572
+          offset: 50977
+          line: 509
           column: 446
     - pointer: "/validation_rules/4"
       rule_id: "atomization_protection_consumables_complete"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 49738
-          line: 573
+          offset: 50978
+          line: 510
           column: 1
         end:
-          offset: 50460
-          line: 573
+          offset: 51700
+          line: 510
           column: 723
     - pointer: "/validation_rules/5"
       rule_id: "atomization_prepare_residue_complete"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 50461
-          line: 574
+          offset: 51701
+          line: 511
           column: 1
         end:
-          offset: 51194
-          line: 574
+          offset: 52434
+          line: 511
           column: 734
     - pointer: "/validation_rules/6"
       rule_id: "atomization_prepare_air_particles_complete"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 51195
-          line: 575
+          offset: 52435
+          line: 512
           column: 1
         end:
-          offset: 51912
-          line: 575
+          offset: 53152
+          line: 512
           column: 718
     - pointer: "/validation_rules/7"
       rule_id: "atomization_finish_air_species_complete"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 51913
-          line: 576
+          offset: 53153
+          line: 513
           column: 1
         end:
-          offset: 52624
-          line: 576
+          offset: 53864
+          line: 513
           column: 712
     - pointer: "/validation_rules/8"
       rule_id: "validate_atomic_exchange_unit_and_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 52625
-          line: 577
+          offset: 53865
+          line: 514
           column: 1
         end:
-          offset: 53909
-          line: 577
+          offset: 55149
+          line: 514
           column: 1285
+    - pointer: "/validation_rules/9"
+      rule_id: "atomization_waterborne_finish_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_49733"
+      source_span:
+        start:
+          offset: 55150
+          line: 515
+          column: 1
+        end:
+          offset: 55570
+          line: 515
+          column: 421
+    - pointer: "/validation_rules/10"
+      rule_id: "atomization_contractor_transport_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_49733"
+      source_span:
+        start:
+          offset: 55571
+          line: 516
+          column: 1
+        end:
+          offset: 55998
+          line: 516
+          column: 428
+    - pointer: "/validation_rules/11"
+      rule_id: "atomization_repair_compounds_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_49733"
+      source_span:
+        start:
+          offset: 55999
+          line: 517
+          column: 1
+        end:
+          offset: 56418
+          line: 517
+          column: 420
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4286"
+      unit_id: "normative_4307"
       source_span:
         start:
-          offset: 4286
+          offset: 4307
           line: 54
           column: 1
         end:
-          offset: 4307
+          offset: 4328
           line: 54
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4286"
+      unit_id: "normative_4307"
       source_span:
         start:
-          offset: 4335
+          offset: 4356
           line: 58
           column: 1
         end:
-          offset: 5358
+          offset: 5379
           line: 65
           column: 174
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_30889"
+      unit_id: "normative_27608"
       source_span:
         start:
-          offset: 30889
-          line: 518
+          offset: 27608
+          line: 452
           column: 1
         end:
-          offset: 30929
-          line: 518
+          offset: 27648
+          line: 452
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_48493"
+      unit_id: "normative_49733"
       source_span:
         start:
-          offset: 48493
-          line: 565
+          offset: 49733
+          line: 502
           column: 1
         end:
-          offset: 48515
-          line: 565
+          offset: 49755
+          line: 502
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1193,5 +1178,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:c8d6ff24e0d370e1b5f6260961edd74e30585df11c734984289e95f1685f8f7d"
-  generated_content_sha256: "sha256:44c41a385d8cdbbedcfead2d16acf5d481853c45ca52cd3b667c60ad708caff0"
+    sha256: "sha256:5a94ae71827ad36faea6446232bf1591cf934ca89f4c43eb4a7f48becaeea265"
+  generated_content_sha256: "sha256:61f7a19aec8440b2f28f440343abdc3bcc05f9a5ff0cd56dd40caa93bf80065e"
