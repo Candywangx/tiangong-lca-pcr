@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-11-10
-lastReviewedNote: "Integrate selected CPC04 repairs and the exact dictionary-spelling corpus audit from fc4a9b576e onto fork main 7d0a480787. Preserve the existing CPC3 source, bounded search layout, inspector dictionary limits, reserved reading-route protection, complete historical anchors and capacity gates. Scientific status, publication and deployment authority remain unchanged; exact-source qualification is separate."
-lastReviewedCommit: 7d0a48078779e09b3ca6aadf1b0bd619505303a4
+lastReviewedNote: "PR34: owner-authorized bounded Next tree packing preserves original URLs and bytes, with compiled binding, source-bound provider profile 2 and complete transport verification; preserve fixed physical/search budgets and require fresh full qualification."
+lastReviewedCommit: 2002efdfc6d10f8dbf1db082c11662c817718c0b
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -110,7 +110,8 @@ before removing any duplicate file from the new owned export; it publishes a
 source-bound `generated/static-route-aliases.json` with each original URL, retained
 target, byte count and SHA-256. Verification requires the complete current route
 inventory and exact target bytes. Missing, malformed, foreign-source or unequal
-pairs fail the build. Other Next navigation payloads remain physical and unchanged.
+pairs fail the build. Next tree payloads use the bounded transport below; all other
+Next navigation payloads remain physical and unchanged.
 
 EdgeOne internal rewrites retain HTTP 200 access to `/__next._full.txt` and every
 nested `/*/__next._full.txt`, serving `/index.txt` and `/:splat/index.txt`
@@ -123,6 +124,44 @@ representatives, checks both original and target URLs with and without queries,
 and requires exact decoded bytes, MIME, revalidation and nosniff behavior. Existing
 HTML, raw-download, search and browser-navigation checks remain required. Static
 configuration alone does not establish actual provider rewrite behavior.
+
+### Bounded Next tree transport
+
+The owner-authorized PR34 storage exception packs only `__next._tree.txt` files.
+It preserves every original URL and byte, without redirecting the request or changing
+HTML, source downloads, page payloads or the full/index alias contract. Preparation
+compares every original before mutation and independently derives complete route
+coverage from physical `index.txt` files. A changed original fails the handoff.
+The strict fewer-than-20,000 physical-file limit remains unchanged.
+
+The first hexadecimal SHA-256 digit of the canonical encoded URL selects one of at
+most 16 packs. Each pack is bounded to 512 rows and 1,000,000 bytes; the manifest is
+bounded to 16,384 bytes and the compilation binding to 4,096 bytes. Content-addressed
+filenames, exact lengths, source identity, body hashes, canonical base64, route
+uniqueness and the complete namespace are verified before acceptance. No undeclared
+pack, missing route or physical tree shadow is eligible for sealing or import.
+
+Provider profile 2 binds the runtime source closure and the final non-null
+`generated/navigation-binding.json`. The provider entry imports that literal JSON
+from the verified owned export at compilation; it never fetches a mutable latest
+binding. Next also compiles this entry before producing its static export, so the
+Next stage may create an owned temporary `null` compilation slot when none exists.
+Static export does not execute this middleware. Cleanup removes only that unchanged
+owned slot; final export, product sealing and provider import reject an unbound
+profile. The final provider compilation uses the verified non-null binding, and
+Next's intermediate middleware bundle is not a deployed artifact. Existing profile
+1 artifacts retain their original verification path.
+
+The shared runtime serves GET and HEAD at the original tree URL, preserves query
+semantics, and returns exact decoded bytes with text/plain, nosniff, revalidation
+and a content hash ETag. Unknown routes and other methods retain normal routing;
+invalid or unavailable authenticated data returns a non-cacheable 503. Each fetch
+has a ten-second deadline and a decoded-byte bound, including compressed responses.
+Each of at most two cached origins shares one manifest request, at most one pending
+request per bucket and two decoded cached packs. The sealed local server executes
+this same source-owned handler and forwards its Response. Product probes bind the
+whole transport plus root/English/Chinese original URL responses; these checks do
+not replace the complete browser suite or establish live provider deployment.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -549,8 +588,41 @@ versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buck
 complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
 including the manifest, remain unchanged.
 
+Search manifest version 8 uses envelope `schemaVersion: 4` and
+`encoding: "v4-columnar-new-reuse-ranked-split-vlq"`. It retains the original
+first-appearance term dictionary and every ordered logical v4 wire. Its five
+numeric channels contain term commands, ranked score headers, posting lengths,
+signed predicted first values and unsigned remaining posting deltas. A map with
+negative remaining deltas, unsupported shapes, oversized integers or insufficient
+shared expansion budget retains its original native numeric columns.
+
+Term command zero introduces the next dictionary ID. A positive command is one
+plus the zigzag delta from the previous reused ID in that map; new terms do not
+change that predictor. Reuse state resets per map, while the next new ID advances
+through every map in original shard/key order, including native fallbacks. Reuse
+cannot name an unintroduced term, native columns cannot skip a new ID, and all
+dictionary entries must be introduced. The restored original term-ID deltas,
+not the command stream, enter the existing logical-wire checks.
+
+The 1,023 legal score headers have a fixed corpus-independent rank: headers whose
+declared length equals the mask's bit length come first, then mask popcount and
+the original numeric header break ties. This bijection preserves trailing empty
+slots. Nonempty postings retain v7's previous-first-value predictor independently
+for each of the nine score slots; first and remaining values occupy separate
+channels without reordering the restored postings. Empty lists consume neither.
+
+V8 retains complete unique channel ownership, canonical bounded VLQs, header and
+posting-count checks, finite predictor arithmetic and the same shared 20 MB numeric
+expansion budget. The budget accounts for the original term/header digit lengths,
+slot vectors, posting arrays and restored first values as well as decoded channels;
+short term commands and small header ranks cannot conceal larger restoration.
+Physical bytes, summed restored-wire bytes, final logical hashes and record counts
+remain independently checked. Readers and canonical writer bytes for v1-7 remain
+compatible; older Workers reject the v8 manifest. A new transport does not alter
+source text, independent logical indexes, engine exports, record fields or ranking.
+
 The generator retains the original sixteen-member greedy layout as a candidate
-and compares a bounded set of consecutive pack boundaries near balanced cuts.
+and compares v7 and v8 over a bounded set of consecutive pack boundaries near balanced cuts.
 At each cut position it retains at most sixteen paths. Physical dictionary strings
 may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
 gzip is smaller; dictionary values and first-appearance order remain exact. The
@@ -561,13 +633,13 @@ logical text buckets, engine exports,
 record fields, logical order, ranking, decoder versions or any size/expansion guard.
 
 Corpus auditing accepts only the exact canonical physical pack spelling or its
-exact dictionary-only Unicode-escape variant. It still verifies physical hashes,
+exact dictionary-only Unicode-escape variant for v7/v8. It still verifies physical hashes,
 every restored logical wire, native engine exports, complete records, ordered
 query results and the full existing raw/gzip budgets. This compatibility does not
 permit arbitrary JSON rewrites or changes to non-dictionary fields.
 
 `node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
-compares captured physical assets with repacked v7 files over the exact same
+compares captured physical assets with repacked v8 files over the exact same
 logical wires, source identity, language and pack membership. It retains physical,
 logical, native-export and complete-record hashes and both full manifest costs.
 A baseline may be over budget; that diagnostic does not qualify it for browser
@@ -660,6 +732,7 @@ through exact same-record, same-language middleware aliases, not redirect HTML.
 `compatibility/packed-chapters.json` binds those retained pre-packing routes to
 baseline commit and canonical source hashes; `packed-chapter-anchors.json` separately
 retains all their original anchors. They are not claims of prior publication.
+The root `baselineCommit` retains the origin of the initial retained-route collection and is not advanced when independent new documents are registered. An additive registration preserves every existing document/route object and its order, and carries a separately reviewed receipt binding its actual source commit, canonical source hashes, complete pre-packing logical parts and anchors, and unique reading owners; it does not claim that new documents existed at the root baseline or were previously published.
 Existing published routes are flattened to final owners while their historical
 anchor ledger remains unchanged. All retained and published targets must exist in
 the ordinary document tree. The source-bound provider profile includes the added
