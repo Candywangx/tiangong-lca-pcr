@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-04
-lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
-lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
+lastReviewedAt: 2026-11-11
+lastReviewedCommit: 51c0842c67b14ba886e2edee2846e26eefac030f
+lastReviewedNote: "PR34: owner-authorized bounded Next tree storage with exact original URL/byte restoration, source-bound provider profile 2 and verified compilation binding. PCR/module identity, mapping, publication, scientific and study qualification contracts remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -286,7 +286,10 @@ required; declared optional language artifacts are verified and preserved.
 
 Published chapter aliases use the exact source-owned root `middleware.ts` profile. The sealed
 `generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
-anchors and the importer rechecks actual source bytes before atomic handoff. Native history normalization
+anchors and the importer rechecks actual source bytes before atomic handoff. Provider profile 2
+adds bounded, content-addressed Next tree packs and a verified compilation binding; the source-owned
+handler restores original navigation URLs and bytes. Other navigation files and all source downloads
+retain their physical contracts. Native history normalization
 and provider compilation do not authorize deployment or promote methodology states.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,

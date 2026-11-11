@@ -1,4 +1,4 @@
-import {createProviderRuntime,PROVIDER_RUNTIME_FILE,PROVIDER_RUNTIME_PATHS} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
+import {createProviderRuntime,PROVIDER_RUNTIME_FILE,PROVIDER_RUNTIME_PATHS,NAVIGATION_RUNTIME_PATHS} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import test, { type TestContext } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -28,7 +28,7 @@ const writeJson = (file: string, value: unknown) => write(file, JSON.stringify(v
 const git = (root: string, ...args: string[]) => execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 
 async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; identity: ProductIdentity }) => void = () => {},
-  { producerNode = process.versions.node, producerNpm = "11.17.0", productVersion = "0.3.0", providerRuntime = false }: { producerNode?: string; producerNpm?: string; productVersion?: string; providerRuntime?: boolean } = {}) {
+  { producerNode = process.versions.node, producerNpm = "11.17.0", productVersion = "0.3.0", providerRuntime = false, navigationRuntime = false }: { producerNode?: string; producerNpm?: string; productVersion?: string; providerRuntime?: boolean; navigationRuntime?: boolean } = {}) {
   const owned = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), "pcr-materializer-test-"));
   t.after(() => fs.rmSync(owned, { recursive: true, force: true }));
   const root = path.join(owned, "source"); fs.mkdirSync(root);
@@ -44,7 +44,8 @@ async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; id
   ] as const) writeJson(path.join(root, relative), { name, private: true, version: config.version });
   write(path.join(root, "library/catalog.yaml"), "schema_version: 1\n");
   write(path.join(root, "classifications/example.txt"), "Source evidence remains unchanged.\n");
-  if(providerRuntime){for(const file of PROVIDER_RUNTIME_PATHS)write(path.join(root,file),file.endsWith('.json')?JSON.stringify({schemaVersion:1,entries:[{from:'/en/docs/pcr/a/b/c/chapters/old/',to:'/en/docs/pcr/a/b/c/',anchor:'section'}]}):'export {};\n');}
+  if(providerRuntime||navigationRuntime){for(const file of PROVIDER_RUNTIME_PATHS)write(path.join(root,file),file.endsWith('.json')?JSON.stringify({schemaVersion:1,entries:[{from:'/en/docs/pcr/a/b/c/chapters/old/',to:'/en/docs/pcr/a/b/c/',anchor:'section'}]}):'export {};\n');}
+  if(navigationRuntime)for(const file of NAVIGATION_RUNTIME_PATHS)write(path.join(root,file),'export {};\n');
   git(root, "add", "-A");
   git(root, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "--quiet", "-m", "fixture");
   const identity = readProductIdentity(root);
@@ -62,14 +63,15 @@ async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; id
     releaseVersion: identity.version, releaseTag: identity.tag, sourceFingerprint: identity.sourceFingerprint,
     counts: { pcrs: 1, pages: 2, languages: 2, sourceBytes: 50 } });
   writeJson(path.join(webDir, "edgeone.json"), { headers: [], redirects: [], ...(requiresStaticRouteAliases(productVersion) ? { rewrites: STATIC_ROUTE_REWRITES } : {}) });
-  if (requiresStaticRouteAliases(productVersion)) {
+  if(providerRuntime||navigationRuntime){write(path.join(webDir,'en/docs/pcr/a/b/c/index.html'),'<h2 id="section">Published chapter</h2>');writeJson(path.join(webDir,PROVIDER_RUNTIME_FILE),createProviderRuntime(root,identity.sourceCommit));}
+  if (requiresStaticRouteAliases(productVersion)||navigationRuntime) {
     for (const source of STATIC_ROUTE_ALIAS_PROBE_SOURCES) {
       const target = source.replace("__next._full.txt", "index.txt"), payload = "Exact current native navigation " + target;
       write(path.join(webDir, source.slice(1)), payload); write(path.join(webDir, target.slice(1)), payload);
+      if(navigationRuntime)write(path.join(webDir,source.replace('__next._full.txt','__next._tree.txt').slice(1)),'Exact current native tree '+target);
     }
     prepareStaticRouteAliases(webDir, identity.sourceCommit);
   }
-  if(providerRuntime){write(path.join(webDir,'en/docs/pcr/a/b/c/index.html'),'<h2 id="section">Published chapter</h2>');writeJson(path.join(webDir,PROVIDER_RUNTIME_FILE),createProviderRuntime(root,identity.sourceCommit));}
   const probes = createWebProbes({ webDir });
   mutateWeb({ webDir, identity });
   const releasePath = "/tiangong-lca/pcr/releases/download/" + identity.tag + "/", manifestUrl = `https://github.com${releasePath}release.json`;
@@ -482,7 +484,7 @@ test("the provider importer loads without npm-installed dependencies", t => {
   const owned = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-importer-no-install-"));
   t.after(() => fs.rmSync(owned, { recursive: true, force: true }));
   const source = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-  for (const relative of ["builder", "packages/pcr-core", "packages/pcr-docs/scripts"])
+  for (const relative of ["builder", "packages/pcr-core", "packages/pcr-docs/scripts", "packages/pcr-docs/lib/navigation-trees.ts"])
     fs.cpSync(path.join(source, relative), path.join(owned, relative), { recursive: true,
       filter: file => !file.split(path.sep).includes("node_modules") });
   assert.equal(fs.existsSync(path.join(owned, "node_modules")), false);
@@ -526,4 +528,33 @@ test('provider import rechecks closure at the actual atomic swap boundary',async
 test('provider import accepts the complete sealed middleware profile without modifying source',async t=>{
  const f=await fixture(t,()=>{},{providerRuntime:true});await materializeProductWeb(f.options);
  assert.deepEqual(readProductIdentity(f.root),f.identity);assert.ok(fs.existsSync(path.join(f.root,'packages/pcr-docs/out',PROVIDER_RUNTIME_FILE)));
+});
+
+
+test('profile 2 navigation closure survives sealed archive import and atomic provider asset handoff',async t=>{
+ const f=await fixture(t,()=>{},{navigationRuntime:true,productVersion:'0.4.10'});
+ const {verifyNavigationTrees}=await import('../../packages/pcr-docs/scripts/navigation-tree-export.ts');
+ assert.ok(f.manifest.web.probes.navigation);assert.ok(f.manifest.web.probes.providerRuntime);
+ await materializeProductWeb(f.options);
+ const out=path.join(f.root,'packages/pcr-docs/out'),verified=verifyNavigationTrees(out,f.identity.sourceCommit,true)!;
+ const profile=JSON.parse(fs.readFileSync(path.join(out,PROVIDER_RUNTIME_FILE),'utf8')) as {schemaVersion:number;navigationBinding:unknown};
+ assert.equal(profile.schemaVersion,2);assert.ok(profile.navigationBinding);
+ for(const source of STATIC_ROUTE_ALIAS_PROBE_SOURCES){
+  const tree=source.replace('__next._full.txt','__next._tree.txt'),target=source.replace('__next._full.txt','index.txt');
+  assert.equal(fs.existsSync(path.join(out,tree.slice(1))),false);
+  assert.equal(Buffer.from(present(verified.rows.get(tree)).body).toString(),'Exact current native tree '+target);
+ }
+ for(const probe of [f.manifest.web.probes.navigation.binding,f.manifest.web.probes.navigation.manifest,...f.manifest.web.probes.navigation.packs]){
+  const file=probe.path.slice(1);assert.equal(fs.statSync(path.join(out,file)).ino,fs.statSync(path.join(f.root,'.edgeone/assets',file)).ino);
+ }
+ assert.deepEqual(readProductIdentity(f.root),f.identity);assert.deepEqual(fs.readdirSync(f.scratchBase),[]);
+});
+for(const change of ['missing','substituted'] as const)test('profile 2 '+change+' pack with recomputed outer archive cannot replace prior output',async t=>{
+ const f=await fixture(t,({webDir})=>{
+  const binding=JSON.parse(fs.readFileSync(path.join(webDir,'generated/navigation-binding.json'),'utf8')) as {manifest:{url:string}};
+  const manifest=JSON.parse(fs.readFileSync(path.join(webDir,binding.manifest.url.slice(1)),'utf8')) as {packs:{url:string}[]};
+  const pack=path.join(webDir,present(manifest.packs[0]).url.slice(1));
+  if(change==='missing')fs.unlinkSync(pack);else write(pack,'coherently archived substituted pack');
+ },{navigationRuntime:true,productVersion:'0.4.10'});
+ await assert.rejects(materializeProductWeb(f.options),/navigation|artifact|Invalid/iu);previousIsIntact(f);
 });

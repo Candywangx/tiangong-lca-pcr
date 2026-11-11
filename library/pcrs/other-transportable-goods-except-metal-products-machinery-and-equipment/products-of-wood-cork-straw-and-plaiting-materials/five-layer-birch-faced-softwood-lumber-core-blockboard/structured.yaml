@@ -1,0 +1,1213 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.five-layer-birch-faced-softwood-lumber-core-blockboard"
+  classification_refs: "CPC 3.0 31423 retained as a candidate narrower coverage association; mapping_acceptance = held_pending_classification_review under docs/adr/2026-11-10-hold-blockboard-cpc-associations.md. The 2026-11-06 batch-03 acceptance is historical and does not establish current positive mapping. Official 31413 notes include blockboard and central cores made from different materials, while 31423 also has crossed-veneer conditions; a solid-strip core cannot alone exclude 31413 or decide 31423. No replacement classification or whole-leaf coverage is asserted."
+  covered_products: "Uncoated five-layer birch-faced pine/spruce strip-core blockboard with PVAc core joints and UF skin joints; both faces and crossbands botanically verified temperate Betula pendula/pubescens."
+  excluded_products: "All-veneer plywood; coniferous or tropical faces; MDF/particle cores; two cores; three layers; overlays; structural or densified products; green-input/onsite-boiler routes."
+  representative_product: "Net accepted sanded non-structural five-layer unfinished panel for subsequent furniture/joinery use; dimensions, adhesive recipe and performance are actual lot descriptors, not fixed defaults."
+  production_route: "Dry timber sizing and core gluing; four separate birch veneer layup; UF hot pressing with purchased heat; conditioning and finish; first acceptance and wrapping."
+  market_state: "Factory gate accepted unfinished panel; packaging reported separately; no service-life or whole-life function claimed."
+functional_unit:
+  what: "Supply an unfinished birch-faced strip-core panel as an intermediate for specified furniture or joinery."
+  how_much: "1 kg net accepted panel at declared final moisture, excluding packaging."
+  how_well: "Actual five-layer construction, species, dimensions, grain axes, bonding quality and agreed non-structural grade demonstrated per lot; no universal strength or moisture rating."
+  how_long_or_cycle: "One completion/first-acceptance cohort at factory gate; downstream lifetime is outside this reference."
+  reference_flow_link: "panel"
+system_boundary:
+  rules:
+    - rule_id: b_operations
+      applies_to: "birch_blockboard_manufacture"
+      rule: "Include machining/core glue, four-veneer layup and pressing, conditioning, trimming/sanding, extraction, washing, acceptance and actual packaging. Include idle/startup losses attributable to the cohort; do not infer a boiler from purchased heat."
+      source_ids:
+        - unido-panel-adhesives-1977
+        - epa-plywood-2002
+    - rule_id: b_stock
+      applies_to: "raw materials, WIP and accepted finished goods"
+      rule: "Retain separate opening/receipt/consumption/transfer/closing mass, composition and inherited material/service burden vectors. Cancel internal transfers only at the aggregated factory boundary; no disappearance of pre-period burdens or duplicate upstream drying."
+      source_ids:
+        - ilcd-handbook-2010
+    - rule_id: b_interfaces
+      applies_to: "supplier and treatment interfaces"
+      rule: "Connect upstream provision and outbound waste treatment once at the declared interfaces. Do not treat captured dust or offsite wastewater as direct environmental releases; no default avoided-energy, recycling or carbon-storage credit."
+      source_ids:
+        - ilcd-handbook-2010
+        - epa-plywood-2002
+boundary_abstraction:
+  declared_starting_condition: "Purchased kiln-dried untreated pine/spruce timber and dried unbonded birch veneer delivered at factory receiving; upstream forestry, sawing and drying belong to compatible upstream datasets."
+  starting_condition_role: "Foreground gate-to-gate dry-input manufacturing boundary; upstream burdens retained for cradle-to-gate assembly."
+  product_classification_scope: "Only the described five-layer birch-faced solid-strip product; classification does not choose a material or provider."
+  recursive_input_rule: "A purchased same-category panel enters once with its upstream dataset and original burden vector; it does not become new raw wood or increase first-acceptance Q through reacceptance. Base dry-input route excludes purchased-panel manufacture; a rework extension must retain its history and be disclosed."
+  upstream_dataset_requirement: "Match actual species, moisture, treatment, transport interface, adhesive supplied state, voltage and net-heat basis; unavailable matches remain explicit."
+  disclosure: "Declare all receipts/stocks/WIP/finished goods, utilities, adhesive route, packaging, emissions, residues and offsite treatment. Foreground-only data cannot represent forestry or full cradle-to-grave performance."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Veneered panels and similar laminated wood, with at least one outer ply of non-coniferous wood other than tropical"
+    uuid: "53392205-1fb0-44c6-a275-cd064bf6d54a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "plant and period"
+    - "core species"
+    - "each veneer botanical species and harvest origin"
+    - "five layers and grain axes"
+    - "dry-input moisture"
+    - "supplied PVAc and UF compositions"
+    - dimensions
+    - "final moisture and measurement method"
+    - "net accepted mass"
+    - "unique first-acceptance cohort"
+    - "grade/bond tests"
+    - "electricity voltage and provider"
+    - "net heat interface"
+    - "stock/burden history"
+    - "packaging/treatment scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference output is 1 kg. Q is the sum of independently weighed unique first-acceptance event net whole-panel masses for cohort c at the declared gate, locked at measured acceptance moisture/composition and excluding packaging, cp_accept. Reconcile Q = D_new + FG_new + L_new under unique_acceptance; only evidenced zero other destinations permit the two-term bridge. Returns, loss, downgrade, scrap and returned WIP never reduce original Q; old opening FG, purchased finished panels, dispatch, retests and reacceptance do not create Q. Every attributable exchange q is converted once by normalize_reference: q_ref = q / Q. Q must be positive and measured; zero/missing Q preserves absolute records and an inconclusive result. Do not replace whole-panel Q by oven-dry wood, glue solids or dispatch mass."
+  - id: moisture_basis
+    applies_to: "unbonded timber and veneers"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass m and dry-basis moisture u using sampled oven-dry mass; dry wood d = m / (1 + u); water w = m - d. Percentage dry-basis moisture is divided by 100 before use. Do not use a wet-basis fraction in this formula; adhesive-bearing panels/residues need a matrix-valid water method, not automatic oven-loss-as-water. Sources: usda-wood-handbook-2021."
+  - id: energy_conversion
+    applies_to: "electricity and press heat"
+    required_property_ref:
+      name: "Net calorific value for the selected electricity identity; heat property remains unresolved"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert electricity 1 kWh = 3.6 MJ; retain the native selected energy property. Heat requires verified delivered enthalpy and compatible property/unit support; never convert gross heat into delivered net heat by relabelling."
+  - id: count_volume
+    applies_to: "weighed panel lots"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Sum individually measured net masses. Counts or cubic metres are descriptors unless same-lot density at the same moisture and geometry is measured; no manufacturer density range or nominal thickness substitutes for Q."
+process_map:
+  - id: birch_blockboard_manufacture
+    name: "Dry-input machining/core gluing → birch layup/hot press → condition/trim/sand → acceptance/wrap"
+    inclusion: "required"
+    inclusion_condition: "Exact scoped species, construction and adhesive/heat route"
+    role: "Foreground aggregated manufacturing process with stage-resolved records; intermediate core/panel transfers remain internal"
+    quantitative_reference: "1 kg net accepted reference panel"
+process_inventory:
+  - id: birch_blockboard_manufacture
+    label: "Dry-input machining/core gluing → birch layup/hot press → condition/trim/sand → acceptance/wrap"
+    inputs:
+      product:
+        - row_id: core_timber
+          role: "Core-strip stock"
+          name: "Sawn coniferous timber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50904047-e5b0-4110-990a-53751d250267"
+          property_unit: "Mass / kg"
+          description: "Kiln-dried untreated pine or spruce only, supplier-verified species and moisture; weigh withdrawals including machining loss. No green lumber, hardwood core or forest/drying duplication."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - usda-wood-handbook-2021
+                - paged-blockboard-2026
+            ranges: []
+        - row_id: face_birch
+          role: "Birch face/back veneer"
+          name: "Dried unbonded temperate birch face veneer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Exactly the two outer sheets; record face/back botanical identity separately, thickness, grain axis and dry-matter/water composition; no bonded plywood or decorative film substitution."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - paged-blockboard-2026
+                - jrc-european-birch-2016
+            ranges: []
+        - row_id: cross_birch
+          role: "Birch crossband veneer"
+          name: "Dried unbonded temperate birch crossband veneer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Two inner veneer sheets, one each side of the strip core, with grain perpendicular to core and faces. Track separately from outer sheets even when suppliers are shared."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wood
+              source_ids:
+                - paged-blockboard-2026
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: pvac
+          role: "Core edge adhesive"
+          name: "Supplied aqueous polyvinyl acetate wood adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh supplied wet adhesive for strip-edge joints with formulation and water/non-water constituents. Generic adhesive, pure polymer and polyvinyl alcohol are not interchangeable."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glue
+              source_ids:
+                - unido-panel-adhesives-1977
+            ranges: []
+        - row_id: uf_mix
+          role: "Veneer bonding adhesive"
+          name: "Supplied ready-to-use aqueous urea-formaldehyde wood-bonding adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record whole supplied formulated mixture crossing the gate, separately from PVAc; supplier must identify actual hardener/filler and wet composition. Do not also count embedded resin, hardener, filler or carrier water. No in-plant formulation covered."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glue
+              source_ids:
+                - epa-plywood-2002
+                - unido-panel-adhesives-1977
+            ranges: []
+        - row_id: electricity
+          role: "Plant electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Only matching customer-side 1–35 kV AC; convert meter kWh to MJ by 3.6. Reconcile non-overlapping core, press, extraction, finishing and packing circuits. Other voltages require an independently verified flow."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: heat
+          role: "Press-circuit purchased heat"
+          name: "Purchased net hot-water heat at press-circuit interface"
+          flow_type: "product"
+          property_unit: "Delivered thermal energy (identity unresolved) / MJ"
+          description: "Meter delivered-minus-return enthalpy at named boundary; supplier must exclude upstream losses from delivered amount. A gross-calorific-value flow or fuel mass cannot stand for this heat. Onsite boilers are outside this route."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: wash_water
+          role: "Equipment cleaning water"
+          name: "Purchased tap water for adhesive-equipment washing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meter external washing water only; use measured density for volume conversion. Recirculated water is an internal transfer; supplied adhesive carrier water is embedded, never another fresh-water input."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: pe_wrap
+          role: "Dispatch wrapping film"
+          name: "Polyethylene wrapping film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh net film attached to accepted lots plus observed film losses; opening/closing film rolls and earlier accepted lots retain their cohorts. Add each actual other package component as a separate card before use."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-handbook-2010
+            ranges: []
+        - row_id: abrasive
+          role: "Sanding consumable"
+          name: "Aluminium-oxide coated abrasive paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When sanding uses this paper, collect net replaced mass and backing/coating specification. Other abrasive types require distinct exchanges; do not silently omit them."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: panel
+          role: "Accepted reference panel"
+          name: "Veneered panels and similar laminated wood, with at least one outer ply of non-coniferous wood other than tropical"
+          flow_type: "product"
+          flow_ref:
+            uuid: "53392205-1fb0-44c6-a275-cd064bf6d54a"
+          property_unit: "Mass / kg"
+          description: "Output is 1 kg net accepted unfinished panel; normalize by normalize_reference. Q locks unique first-acceptance events and reconciles all disjoint net destinations under unique_acceptance, including post-acceptance loss and closing returned WIP; wrapping is excluded. The normalized 1 kg is a reference coordinate, not an extra physical output or shipment. Reacceptance of returned panels retains original event/cohort Q."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_accept
+              source_ids:
+                - paged-blockboard-2026
+            ranges: []
+      waste:
+        - row_id: clean_shavings
+          role: "Pre-glue machining shavings"
+          name: "Untreated coniferous machining shavings waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh exported untreated shavings before any glue contact and disclose destination. Internal reuse is a transfer with retained burdens, never export and fresh input simultaneously."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: bonded_trim
+          role: "Bonded panel edge trim"
+          name: "UF/PVAc-bonded birch-faced blockboard trimming waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh bonded trim independently from clean shavings; record birch, core wood, cured adhesive and moisture constituents and verified treatment route. Separate pre-acceptance rejects from post-acceptance scrap using original event/cohort links; the latter enters L_new on the original acceptance basis without reducing Q. Preserve actual measured waste mass/state and associated treatment and failed-rework burdens in their own original-cohort ledgers."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: sanding_dust
+          role: "Collected sanding dust"
+          name: "UF/PVAc-containing blockboard sanding dust waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh captured sanding dust with collection-system stocks; do not count captured matter as an air emission or assume untreated sawdust composition."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: pvac_waste
+          role: "Edge-glue leftover"
+          name: "Uncured PVAc wood-adhesive residue waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh exported PVAc residue; retain wet composition and tank stocks. Separate from UF residue; record internal return separately."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glue
+              source_ids:
+                - unido-panel-adhesives-1977
+            ranges: []
+        - row_id: uf_waste
+          role: "Bonding-glue leftover"
+          name: "Uncured formulated UF wood-adhesive residue waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh exported UF-mixture residue with actual hardener/filler state and wet composition; cured lumps need their own physical record and treatment matching."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glue
+              source_ids:
+                - unido-panel-adhesives-1977
+            ranges: []
+        - row_id: wash_effluent
+          role: "Offsite wash-water waste"
+          name: "Adhesive-equipment wash wastewater to offsite treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure exported wash wastewater, suspended solids and dissolved constituents; offsite treatment is a waste exchange, not direct elementary discharge to water."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: film_waste
+          role: "Wrapping offcuts"
+          name: "Polyethylene wrapping-film trimming waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Count only film lost during wrapping, with polymer and recipient evidence; no generic mixed-plastic substitution."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-handbook-2010
+            ranges: []
+        - row_id: spent_abrasive
+          role: "Spent sanding paper"
+          name: "Spent aluminium-oxide coated abrasive paper waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh spent paper plus adhered dust; subtract that adhered dust from separately weighed captured dust to avoid double count, using measured composition."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+      elementary:
+        - row_id: formaldehyde_air
+          role: "Formaldehyde released to air"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-941b-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measure post-control stack and fugitive formaldehyde mass during production/conditioning and reconcile retained content. Selected native compartment is emissions to air, unspecified; refine only with verified actual compartment. Finished-product chamber class is not a factory emission factor."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: methanol_air
+          role: "Methanol released to air"
+          name: "Methanol emitted to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify if present in supplier adhesive or observed exhaust; retain detection limits and non-detect status. Do not assume zero or substitute total VOC mass."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: dust_air
+          role: "Uncaptured filterable wood dust"
+          name: "Filterable wood particulate matter emitted to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure post-control and fugitive particulate mass with method/capture scope; no simultaneous total-PM and size-fraction double count. This exchange excludes captured dust."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - epa-plywood-2002
+            ranges: []
+        - row_id: water_vapour
+          role: "Evaporated water"
+          name: "Water vapour emitted to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Determine actual water loss from matched measurements and supported species accounting, including adhesive cure formation/consumption where proven. Neither glue solids loss nor forced residual closure proves vapour mass."
+          amount:
+            expression: "q / Q for the completed cohort; cp_accept provides Q; retain unknown quantities as missing, never default zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - usda-wood-handbook-2021
+                - unido-panel-adhesives-1977
+            ranges: []
+allocation_rules:
+  - rule_id: a_single_product
+    applies_to: "scoped route"
+    rule: "The base process has one accepted panel output and exported wastes. Assign its production burdens and required waste treatment to that panel cohort. Waste sale price alone does not prove a co-product. Retain physical residue masses unallocated and apply no avoided-product credit."
+    source_ids:
+      - ilcd-handbook-2010
+  - rule_id: a_multifunction
+    applies_to: "genuinely joint production"
+    rule: "First subdivide by measured stage/circuit/lot records and isolate panel-specific adhesives and packaging. If a saleable residue is an actual co-product, add its correct product identity, output amount, function and provider/market evidence, then justify causal allocation for only inseparable shared burdens; disclose alternatives and sensitivity. A regional softwood-plywood mass allocation is contextual evidence, not a mandatory rule for this purchased-dry-input hardwood-faced route."
+    source_ids:
+      - ilcd-handbook-2010
+      - corrim-western-plywood-2025
+  - rule_id: a_ledgers
+    applies_to: "all mass, species and burden accounts"
+    rule: "Physical conservation and environmental burden partition are different ledgers. Never multiply panel, water, adhesive or waste physical masses by burden shares. Internal rework retains all earlier material and performed service burdens, adds actual new service only, and cannot generate extra first-acceptance output. Post-acceptance loss, scrap, downgrade or return to WIP cannot reverse Q; failed rework and later services remain attributable to the original cohort and its original Q, not current output or remaining stock."
+    source_ids:
+      - ilcd-handbook-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_accept
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "panel and cohort stocks"
+      record_type: "foreground_record"
+      raw_fields: "panel/parcel ID; lot; first acceptance ID/time/gate; independently measured locked net mass and whole-panel acceptance moisture/composition; package tare; construction/species/grade; disjoint D_new/FG_new/L_new records; gross dispatch and linked returns; closing accepted FG; post-acceptance loss/use/downgrade/scrap; closing return-to-WIP; rework/retest/reacceptance links; old opening FG and purchased finished-panel receipts; original Q0/cohort; actual later masses and measured basis changes; raw/WIP/FG physical location"
+      collection_method: "Calibrated net weighing after conditioning and grade/bond acceptance, independent of sales/dispatch. Deduplicate original event/parcel IDs and reconcile the full unique_acceptance bridge with signed net destinations. Record actual later composition/moisture separately and convert to original acceptance equivalents only from measured matched parcel/component histories; coordinate cp_wood/cp_glue/cp_water/cp_residue/cp_emission. Missing event, net-return, destination or conversion evidence remains unresolved, not a balancing loss estimate"
+      unit: "kg"
+      frequency: "Each acceptance, custody/stock change and linked later service"
+      temporal_coverage: "Completion period plus original stock/cohort periods"
+      site_scope: "One factory and exact route/configuration"
+      aggregation_rule: "per 1 kg reference flow using locked Q"
+      quality_evidence: "Calibration, acceptance/parcel deduplication, net-return/destination evidence, measured basis conversion and original Q0/service history"
+    - protocol_id: cp_wood
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "core_timber; face_birch; cross_birch"
+      record_type: "foreground_record"
+      raw_fields: "supplier and botanical species; harvest origin; treatment and dry state; wet and oven-dry sample masses; dimensions/grain axes; receipts/use/returns; opening/closing raw and WIP stocks; dry wood and water constituents; inherited burden vectors"
+      collection_method: "Weigh lot withdrawals and stage transfers; sample unbonded wood separately by species and ply role for validated moisture analysis; trace each sheet to layup"
+      unit: "kg"
+      frequency: "Every lot and opening/closing stock"
+      temporal_coverage: "Same completion period with retained incoming stock history"
+      site_scope: "Same plant and lots as cp_accept"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Supplier certificates, sampling method, scales, kiln/start-state evidence and layup records"
+    - protocol_id: cp_glue
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "pvac; uf_mix; pvac_waste; uf_waste"
+      record_type: "foreground_record"
+      raw_fields: "supplied wet mass; formulation; PVAc versus UF; water/non-water components; actual hardener/filler; batch losses; opening/closing tank/WIP states; interface spread; clamp/press times/temperature/pressure; cure extent; supported water generation G and consumption C; original burdens"
+      collection_method: "Weigh whole supplied mixtures separately, reconcile applied/returned/residue masses; supplier composition plus matrix-valid water/volatile analysis. Establish actual same-lot foreground cure G/C by supported stoichiometry with measured reaction extent or validated matched analysis; retain unknown when evidence is absent"
+      unit: "kg"
+      frequency: "Each glue batch and press lot"
+      temporal_coverage: "Completion period plus inherited adhesive/WIP history"
+      site_scope: "Same factory and product lots"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Formulation/SDS, composition analysis, scales, process logs, bond tests and actual cure evidence"
+    - protocol_id: cp_energy
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "electricity; heat; later services on old accepted stock"
+      record_type: "foreground_record"
+      raw_fields: "circuit/meter; voltage; kWh/MJ; supply/return mass and enthalpy; operating/idle hours; lot/stage; shared services attribution; actual service period; original accepted cohort and original Q; inherited opening/current/closing burden vectors"
+      collection_method: "Read non-overlapping meters and reconcile invoices; measure net delivered press heat at named interface. Trace later storage/repacking/rework service to its original accepted cohort, never use current first-acceptance Q for an old cohort"
+      unit: "MJ"
+      frequency: "Continuous meters; each period and service event"
+      temporal_coverage: "Completion period plus service events and original cohort periods"
+      site_scope: "Matching plant/interface/supplier"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration, time-matched invoices, enthalpy method, voltage and provider compatibility"
+    - protocol_id: cp_water
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "wash_water; wash_effluent"
+      record_type: "foreground_record"
+      raw_fields: "fresh water mass/volume and density; recycle transfers; wastewater mass; dissolved/solid components; tank opening/closing stocks; destination; embedded adhesive water ownership"
+      collection_method: "Meter external water and wastewater, weigh/convert only with measured density; collect compositional analysis and reconcile tanks; exclude internal recirculation from external totals"
+      unit: "kg"
+      frequency: "Each washing event and period boundary"
+      temporal_coverage: "Same lots/period and tank carryover"
+      site_scope: "Same plant with named offsite treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meters, density/laboratory records and treatment consignment"
+    - protocol_id: cp_residue
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "clean_shavings; bonded_trim; sanding_dust"
+      record_type: "foreground_record"
+      raw_fields: "stage; wet mass; species; adhesive state; water/dry constituents; captured dust; internal transfers; opening/closing bin stocks; recipient/treatment; original cohort/first acceptance ID; pre-acceptance reject versus post-acceptance scrap/loss; actual state and original-acceptance-basis equivalent; original burden history"
+      collection_method: "Separate and weigh unglued shavings, bonded trim and collected sanding dust; determine matrix-specific water and dry constituents; reconcile internal rework and offsite manifests. Reconcile post-acceptance scrap once to cp_accept L_new, retaining actual wet/dry/component waste quantities separately; neither disposal nor failed rework cancels original Q or performed burdens"
+      unit: "kg"
+      frequency: "Each removal/return plus boundary stocks"
+      temporal_coverage: "Same completion lots and carryover"
+      site_scope: "Same plant and actual waste recipient"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scales, compositional analysis, physical segregation and waste tickets"
+    - protocol_id: cp_pack
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "pe_wrap; abrasive; film_waste; spent_abrasive"
+      record_type: "foreground_record"
+      raw_fields: "polymer/backing specification; receipt/use/closing stocks; net package tare; replaced abrasive mass; adhered dust; waste route; acceptance cohort; later repacking event"
+      collection_method: "Weigh each actual consumable and its losses independently; reconcile rolls/paper stocks; remove adhered-dust overlap; connect packaging placed on old FG to original accepted cohort"
+      unit: "kg"
+      frequency: "Each lot, changeover and service event"
+      temporal_coverage: "Completion and original accepted-cohort periods"
+      site_scope: "Exact plant/line and dispatch cohorts"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Tare/weighing records, material specification and waste manifests"
+    - protocol_id: cp_emission
+      process_id: "birch_blockboard_manufacture"
+      flow_role: "formaldehyde_air; methanol_air; dust_air; water_vapour"
+      record_type: "foreground_record"
+      raw_fields: "emission species/compartment; stack flow; inlet/outlet concentrations; time; capture efficiency; fugitive method; detection limit; condensation/retained mass; water-specific method; actual cure G/C; operating state"
+      collection_method: "Integrate measured post-control concentration times matched gas volume and operating time, add non-overlapping fugitive mass and retain uncertainty. Resolve water separately from non-water volatiles and adhesive reactions; no generic VOC, chamber-test or softwood survey factor substitutes"
+      unit: "kg"
+      frequency: "Representative campaign covering actual steady/startup/idle states, reconciled to complete period"
+      temporal_coverage: "Same completion lots and stocks"
+      site_scope: "Factory air releases; treatment external"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Accredited method, full test conditions, detection limits, operating coverage and reconciliation"
+  calculation_rules:
+    - id: unique_acceptance
+      applies_to: "panel"
+      rule: "Q = sum of independently measured unique first-acceptance event net masses, locked at the declared gate on each original whole-panel moisture/composition basis. The complete bridge is Q = D_new + FG_new + L_new, using mutually exclusive signed net parcel/custody/destination records on that same basis and zero opening stock of this newly first-accepted cohort. D_new is net accepted dispatch after linked returns; FG_new is closing accepted FG; L_new is every other post-acceptance net destination, including actual loss/use/downgrade/scrap/waste and closing return to rework/WIP. Only if all other destinations are evidenced zero may Q = D_new + FG_new be used. A 100 kg acceptance = 60 kg net dispatch + 30 kg closing FG + 10 kg post-acceptance loss; Q stays 100 kg, not 90 kg. Internal gross loops and retest/reacceptance are not extra destinations or events; after reacceptance transfer a parcel once from closing WIP to FG/net dispatch without another Q. Old opening FG and purchased finished panels are separate original cohorts/receipts and do not enter new Q. Reconcile later moisture, PVAc/UF cure/volatiles, additions of glue/water, trimming and material state from actual matched parcel/component histories; original-acceptance equivalents do not include newly added material and are not physical mass replacements or an assumption of species conservation. Composite oven loss and generic wood/glue-solids factors do not establish the conversion. Unknown basis changes or unexplained destination residuals remain unresolved; never invent loss, reset Q or use sales/warehouse movements as event evidence. Preserve Q even if the whole accepted cohort is later lost."
+      inputs:
+        - cp_accept
+        - cp_wood
+        - cp_glue
+        - cp_water
+        - cp_residue
+        - cp_emission
+        - "event/parcel and net destination histories"
+      output: "Locked Q in kg and separate actual physical ledgers"
+      source_ids:
+        - ilcd-handbook-2010
+    - id: normalize_reference
+      applies_to: "every current-cohort exchange"
+      rule: "q_ref = q / Q; q is the actual exchange amount attributed to the same completed accepted cohort after stock and service reconciliation. Q is independently measured and locked by cp_accept under unique_acceptance, not reconstructed from dispatch and remaining stock; Q > 0 is required. Include attributable failed/zero-output, idle/startup, cleanup, loss-related and rework services, retaining prior burdens once. Later accepted-cohort service uses original Q under old_cohort_service; missing attribution remains unresolved. Retain kg/kg or MJ/kg as applicable; missing/zero Q leaves q absolute and result inconclusive."
+      inputs:
+        - q
+        - Q
+        - cp_accept
+        - "linked collection protocol"
+      output: "q_ref per 1 kg reference panel"
+      source_ids:
+        - ilcd-handbook-2010
+    - id: old_cohort_service
+      applies_to: "later services on previously accepted FG"
+      rule: "s_ref,c = s_c / Q_c_original; s_c is measured later service assigned only to original accepted cohort c. Q0 = Q_c_original is the locked original first-acceptance event sum. Preserve it and all earlier burdens even after loss, scrap, downgrade, return to WIP, unsuccessful rework or when only some stock is dispatched now. Attach all actual later material/energy/packaging/waste/emission services to that original cohort once, retaining failed services rather than cancelling them on return or failure. Never divide by current Q, remaining stock or dispatch mass. If original Q is missing/zero, retain unnormalized service and block completeness."
+      inputs:
+        - s_c
+        - Q_c_original
+        - cp_accept
+        - cp_energy
+        - cp_pack
+      output: "Original-cohort added service vector"
+      source_ids:
+        - ilcd-handbook-2010
+    - id: stock_conservation
+      applies_to: "each stage and factory boundary"
+      rule: "Opening physical mass + external receipts + internal receipts = external outputs + internal transfers + closing mass, with all outputs including panel, residues and emissions. At the manufacturing gate, actual newly accepted output is outside that gate and cannot also be inside closing stock. For an extended boundary containing FG, count opening FG, purchased finished-panel receipts, actual net dispatch/transfers, losses and closing stock; acceptance is an internal state event and cannot be an extra external output. Returned WIP keeps its original acceptance link. Internal transfers cancel once on factory aggregation. Keep measured physical masses at actual wet/dry/component states separate from original-acceptance equivalents. Maintain dry wood by species, adhesive constituents, H2O, fossil/biogenic C and measured uncertainty; internal reactions conserve total mass/elements, not necessarily individual species. Never force an unknown residual into emissions."
+      inputs:
+        - cp_wood
+        - cp_glue
+        - cp_water
+        - cp_residue
+        - cp_emission
+        - cp_accept
+      output: "Auditable unallocated physical and elemental ledgers"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: water_species
+      applies_to: "actual H2O balance"
+      rule: "H2O_open + H2O_external_in + G_H2O = H2O_external_out + H2O_close + C_H2O at aggregated boundary. Include timber/veneer/adhesive/product/waste water and actual evaporation; G/C are actual foreground reaction terms supported by cp_glue, not assumed zero, complete cure or generic resin synthesis. Upstream adhesive synthesis is not a second foreground term. Missing G/C or matrix-valid water data leaves this check inconclusive."
+      inputs:
+        - cp_glue
+        - cp_wood
+        - cp_water
+        - cp_emission
+        - cp_residue
+      output: "Water balance and explicit unresolved terms"
+      source_ids:
+        - unido-panel-adhesives-1977
+        - usda-wood-handbook-2021
+    - id: inherited_vectors
+      applies_to: "raw/WIP/FG and services"
+      rule: "B_open + B_receipts + B_current_services = B_transferred + B_exported + B_close separately for each original material/service component. Carry prior embodied burdens through WIP and FG; add actual current services only once. Distinguish sold old FG from newly accepted current FG; unaccepted closing WIP retains its burdens instead of loading all current expense into Q. Carry-forward to a future first-acceptance denominator applies only to unaccepted material; accepted panels returned to WIP retain original Q0 and already performed burdens, and add later services under old_cohort_service."
+      inputs:
+        - "All protocols"
+        - "stage/cohort transfer records"
+      output: "Reconciled environmental burden vector"
+      source_ids:
+        - ilcd-handbook-2010
+    - id: electricity_units
+      applies_to: "electricity"
+      rule: "MJ = 3.6 × kWh, then attribute by actual circuit/cohort and apply normalize_reference or old_cohort_service as appropriate."
+      inputs:
+        - cp_energy
+        - "Q or Q_c_original"
+      output: "MJ/kg for correct cohort"
+      source_ids:
+        - ilcd-handbook-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and inputs"
+      requirement: "Prove each outer/crossband botanical species and origin, strip-core construction, axes and actual adhesive state. Common names, generic database labels and manufacturers' example variants do not prove a supplier lot."
+      evidence: "cp_wood; cp_glue; cp_accept; jrc-european-birch-2016; paged-blockboard-2026"
+    - id: dq_coverage
+      applies_to: "quantities and period"
+      requirement: "Use a declared contiguous period representative of the actual route with beginning/end stocks and linked older cohorts; justify coverage and uncertainty rather than impose an invented year/volume threshold. Missing data, zero, non-detect and evidence-backed not-applicable states remain distinct. Event Q, complete same-acceptance-basis destinations and original Q0/service attribution require independent evidence; a physical balance alone proves none of them."
+      evidence: "Every protocol and primary source records"
+    - id: dq_chemistry
+      applies_to: "physical/species checks"
+      requirement: "Preserve supplied wet mixtures, separate physical mass from burden allocation, measure relevant water/volatile constituents and actual UF cure terms. A measured total loss or generic resin reaction cannot close an individual-species account."
+      evidence: "cp_glue; cp_emission; cp_residue"
+    - id: dq_linkage
+      applies_to: "upstream and treatment"
+      requirement: "Flow identity does not prove provider compatibility. Verify actual property, reference unit/group, geography, date, moisture, voltage, supplied-mixture composition, waste adhesive state and recipient; keep unavailable bindings unresolved."
+      evidence: "Complete native records plus supplier/treatment evidence"
+validation_rules:
+  - rule_id: v_scope
+    applies_to: "target product"
+    rule: "Reject incompatible layer count, core, veneer species, tropical/unknown faces, adhesive formulation route or heat boundary; require all reference qualifiers. A manufacturer's generic birch variant is insufficient proof of botanical lot identity."
+    source_ids:
+      - paged-blockboard-2026
+      - jrc-european-birch-2016
+  - rule_id: v_basis
+    applies_to: "all exchanges"
+    rule: "Require measured unique-first-acceptance Q and consistent q/Q for the current cohort; check old-service/Q_c_original separately. Q=0, unknown Q or unknown original Q gives unnormalized records and inconclusive completeness, never zero impacts. Verify the full disjoint same-basis Q = D_new + FG_new + L_new bridge, net linked returns and all post-acceptance loss/scrap/downgrade/closing WIP; two terms require evidenced zero other destinations. Old opening FG, purchased finished panels, returns, dispatch, retests and reacceptance must not increase Q or reduce locked Q0. Reject unsupported moisture/composition conversion or unexplained residual; preserve failed rework/later service burdens against original Q0. Keep event equivalents separate from actual physical/component inventories."
+    source_ids:
+      - ilcd-handbook-2010
+  - rule_id: v_balance
+    applies_to: "mass, water and burdens"
+    rule: "Check physical total/elemental and species balances separately, including raw/WIP/FG and inherited service vectors. Account for actual cure G/C and measurement uncertainty; do not repair missing chemistry by guessed water emissions or erase prior-period burdens."
+    source_ids:
+      - usda-wood-handbook-2021
+      - unido-panel-adhesives-1977
+  - rule_id: v_inventory
+    applies_to: "each native exchange"
+    rule: "Require one atomic exchange per card; check actual Product/Waste/Elementary type, native reference property and complete unit-group conversion, supplier state and environmental compartment. Resolve missing reference/other UUIDs and providers before operational dataset use; report checks performed, skipped and unresolved separately."
+    source_ids:
+      - ilcd-handbook-2010
+  - rule_id: v_release_scope
+    applies_to: "interpretation"
+    rule: "Factory process data and foreground check results do not establish scientific approval, structural compliance, an EPD, acceptable indoor-air performance or whole-life environmental superiority. No independent review or publication status is implied by a projection/check pass."
+    source_ids:
+      - paged-blockboard-2026
+      - epa-plywood-2002
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing unit-process dataset for the specifically qualified unfinished five-layer birch-faced strip-core panel."
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Assemble an explicitly scoped supplier-compatible cradle-to-gate model using matched upstream material/energy and treatment datasets; downstream furniture/joinery models retain this gate/state."
+  excluded_use: "Whole-leaf classification coverage, conifer/tropical-faced or all-veneer substitution, structural claims, use-phase/chamber emissions, whole-life comparisons and universal density/recipe/factor defaults."
+  required_metadata: "All reference qualifiers; stage/cohort/stock lineage; native flow/property/unit and provider identities; method boundary; actual test/measurement evidence; allocation and normalization equations; missing terms."
+  required_quality_disclosure: "Foreground-only versus assembled boundary; unknown reference/other UUIDs or providers; actual coverage/uncertainty/detection limits; botanical/chemistry gaps; scientific and translation review status; held_pending_classification_review candidate association and decision ADR; original event Q/Q0, measured acceptance basis and complete net-destination residuals."
+  update_trigger: "Changes in botanical supply, core/ply geometry, supplied adhesive formulation, voltage/heat source, measurement/stock/cohort basis, waste destination, native identity or new relevant evidence."
+data_sources:
+  - id: "paged-blockboard-2026"
+    type: "literature"
+    reference: "PAGED Plywood S.A., Paged Blockboard technical data sheet, 1 April 2026, pp.1–3; https://pagedplywood.com/wp-content/uploads/2026/04/20260401_TDS_Paged-Blockboard_EN.pdf"
+    used_for: "Actual solid-softwood-strip core with two birch/alder or pine veneer layers each side, unfinished non-structural product. Only birch subset used; no numeric performance, botanical supplier identity, recipe or factory inventory transferred."
+  - id: "paged-blockboard-2020"
+    type: "literature"
+    reference: "PAGED, Paged Blockboard product specification sheet, February 2020; https://www.pagedplywood.com/wp-content/uploads/2020/08/Paged_Blockboard_ProductSpecificationSheet_022020.pdf"
+    used_for: "Historical manufacturer corroboration of five-layer solid core and birch outer variant; same manufacturer is not an independent second source. No species/recipe/factor inference."
+  - id: "jrc-european-birch-2016"
+    type: "official_guidance"
+    reference: "Beck, Caudullo, de Rigo and Tinner, European Atlas of Forest Tree Species, 2016, pp.70–73, Betula pendula, Betula pubescens and other birches in Europe; https://forest.jrc.ec.europa.eu/media/atlas/Betula_spp.pdf"
+    used_for: "Botanical broadleaved European birch context; lot identity and harvest origin still need supplier evidence. No tree-to-panel quantity transfer."
+  - id: "unido-panel-adhesives-1977"
+    type: "official_guidance"
+    reference: "UNIDO ID/WG.248/9, Industrial application and formulation of synthetic resin adhesives in the wood based panel industry, 10 October 1977, section2.2 printed p.15 and section3.1; https://downloads.unido.org/ot/47/90/4790807/00001-10000_07656.pdf"
+    used_for: "Historical PVAc strip-edge gluing versus thermosetting skin bonding context; not proof of current supplier formulation, use rate, cure extent or performance."
+  - id: "usda-wood-handbook-2021"
+    type: "handbook"
+    reference: "USDA Forest Products Laboratory, Wood handbook—wood as an engineering material, FPL-GTR-282, 2021, chapters4,10,11; https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
+    used_for: "Unbonded-wood moisture basis and composite/adhesive/ply context; composite oven loss is not universally water, and no density/yield/cure factor is adopted."
+  - id: "epa-plywood-2002"
+    type: "official_guidance"
+    reference: "US EPA AP-42 section10.5 Plywood Manufacturing, January2002, pp.10.5-1–4; https://www.epa.gov/sites/default/files/2020-10/documents/c10s05.pdf"
+    used_for: "Qualitative UF interior bonding, pressing, finishing, extraction and emission-source questions. Broader plywood process includes upstream routes outside this dry-input boundary; no numerical recipe, press setting or emission factor adopted."
+  - id: "ilcd-handbook-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for Life Cycle Assessment—Detailed guidance, first edition March2010, section7.9; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision and transparent multifunctionality; foreground stock/cohort protocols implement auditable physical and burden accounting, not an official factory default."
+  - id: "corrim-western-plywood-2025"
+    type: "literature"
+    reference: "CORRIM, Life Cycle Assessment of Softwood Plywood Production—Western Region, edited22July2025, section3.2.6; https://corrim.org/wp-content/uploads/2025/07/LCA-Report-Western-Plywood-Report-Final-07222025.pdf"
+    used_for: "Counterexample of regional softwood integrated-route mass allocation and product-specific packaging; not direct evidence for this route's factors, density, yields, adhesive recipe or mandatory allocation."
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version3.0, 30June2025 explanatory notes and current subclass31423/parent3142; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/31423"
+    used_for: "The 31423 title and crossed-veneer conditions are considered alongside 31413 blockboard/core notes; they do not independently decide this solid-strip-core construction. No official correction or current mapping acceptance inferred."
+  - id: "un-cpc-31413-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version3.0 subclass31413, hierarchy and explanatory notes; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/31413"
+    used_for: "Contrary evidence: notes include blockboard and allow a central core of veneer or another material despite the solely-sheets hierarchy/title. A solid-strip core does not automatically exclude 31413; no reassignment or authoritative ruling inferred."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:e07ea3b265681c51c0415328bf0e7f08379eb785d530b07b9003da3cbae91346"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8565"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8565
+          line: 58
+          column: 1
+        end:
+          offset: 11007
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased kiln-dried untreated pine/spruce timber and dried unbonded birch veneer delivered at factory receiving; upstream forestry, sawing and drying belong to compatible upstream datasets. |\n| starting_condition_role | Foreground gate-to-gate dry-input manufacturing boundary; upstream burdens retained for cradle-to-gate assembly. |\n| product_classification_scope | Only the described five-layer birch-faced solid-strip product; classification does not choose a material or provider. |\n| recursive_input_rule | A purchased same-category panel enters once with its upstream dataset and original burden vector; it does not become new raw wood or increase first-acceptance Q through reacceptance. Base dry-input route excludes purchased-panel manufacture; a rework extension must retain its history and be disclosed. |\n| upstream_dataset_requirement | Match actual species, moisture, treatment, transport interface, adhesive supplied state, voltage and net-heat basis; unavailable matches remain explicit. |\n| disclosure | Declare all receipts/stocks/WIP/finished goods, utilities, adhesive route, packaging, emissions, residues and offsite treatment. Foreground-only data cannot represent forestry or full cradle-to-grave performance. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_operations | birch_blockboard_manufacture | Include machining/core glue, four-veneer layup and pressing, conditioning, trimming/sanding, extraction, washing, acceptance and actual packaging. Include idle/startup losses attributable to the cohort; do not infer a boiler from purchased heat. | unido-panel-adhesives-1977; epa-plywood-2002 |\n| b_stock | raw materials, WIP and accepted finished goods | Retain separate opening/receipt/consumption/transfer/closing mass, composition and inherited material/service burden vectors. Cancel internal transfers only at the aggregated factory boundary; no disappearance of pre-period burdens or duplicate upstream drying. | ilcd-handbook-2010 |\n| b_interfaces | supplier and treatment interfaces | Connect upstream provision and outbound waste treatment once at the declared interfaces. Do not treat captured dust or offsite wastewater as direct environmental releases; no default avoided-energy, recycling or carbon-storage credit. | ilcd-handbook-2010; epa-plywood-2002 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 8
+              column: 1
+            end:
+              offset: 357
+              line: 8
+              column: 101
+          text: "# Five-layer birch-faced softwood lumber-core blockboard with PVAc core gluing and UF veneer bonding"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8565
+              line: 58
+              column: 1
+            end:
+              offset: 8586
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_30338"
+      family: "allocation"
+      span:
+        start:
+          offset: 30338
+          line: 448
+          column: 1
+        end:
+          offset: 31985
+          line: 456
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_single_product | scoped route | The base process has one accepted panel output and exported wastes. Assign its production burdens and required waste treatment to that panel cohort. Waste sale price alone does not prove a co-product. Retain physical residue masses unallocated and apply no avoided-product credit. | ilcd-handbook-2010 |\n| a_multifunction | genuinely joint production | First subdivide by measured stage/circuit/lot records and isolate panel-specific adhesives and packaging. If a saleable residue is an actual co-product, add its correct product identity, output amount, function and provider/market evidence, then justify causal allocation for only inseparable shared burdens; disclose alternatives and sensitivity. A regional softwood-plywood mass allocation is contextual evidence, not a mandatory rule for this purchased-dry-input hardwood-faced route. | ilcd-handbook-2010; corrim-western-plywood-2025 |\n| a_ledgers | all mass, species and burden accounts | Physical conservation and environmental burden partition are different ledgers. Never multiply panel, water, adhesive or waste physical masses by burden shares. Internal rework retains all earlier material and performed service burdens, adds actual new service only, and cannot generate extra first-acceptance output. Post-acceptance loss, scrap, downgrade or return to WIP cannot reverse Q; failed rework and later services remain attributable to the original cohort and its original Q, not current output or remaining stock. | ilcd-handbook-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 8
+              column: 1
+            end:
+              offset: 357
+              line: 8
+              column: 101
+          text: "# Five-layer birch-faced softwood lumber-core blockboard with PVAc core gluing and UF veneer bonding"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 30338
+              line: 448
+              column: 1
+            end:
+              offset: 30378
+              line: 448
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48402"
+      family: "validation"
+      span:
+        start:
+          offset: 48402
+          line: 494
+          column: 1
+        end:
+          offset: 50779
+          line: 504
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | target product | Reject incompatible layer count, core, veneer species, tropical/unknown faces, adhesive formulation route or heat boundary; require all reference qualifiers. A manufacturer's generic birch variant is insufficient proof of botanical lot identity. | paged-blockboard-2026; jrc-european-birch-2016 |\n| v_basis | all exchanges | Require measured unique-first-acceptance Q and consistent q/Q for the current cohort; check old-service/Q_c_original separately. Q=0, unknown Q or unknown original Q gives unnormalized records and inconclusive completeness, never zero impacts. Verify the full disjoint same-basis Q = D_new + FG_new + L_new bridge, net linked returns and all post-acceptance loss/scrap/downgrade/closing WIP; two terms require evidenced zero other destinations. Old opening FG, purchased finished panels, returns, dispatch, retests and reacceptance must not increase Q or reduce locked Q0. Reject unsupported moisture/composition conversion or unexplained residual; preserve failed rework/later service burdens against original Q0. Keep event equivalents separate from actual physical/component inventories. | ilcd-handbook-2010 |\n| v_balance | mass, water and burdens | Check physical total/elemental and species balances separately, including raw/WIP/FG and inherited service vectors. Account for actual cure G/C and measurement uncertainty; do not repair missing chemistry by guessed water emissions or erase prior-period burdens. | usda-wood-handbook-2021; unido-panel-adhesives-1977 |\n| v_inventory | each native exchange | Require one atomic exchange per card; check actual Product/Waste/Elementary type, native reference property and complete unit-group conversion, supplier state and environmental compartment. Resolve missing reference/other UUIDs and providers before operational dataset use; report checks performed, skipped and unresolved separately. | ilcd-handbook-2010 |\n| v_release_scope | interpretation | Factory process data and foreground check results do not establish scientific approval, structural compliance, an EPD, acceptable indoor-air performance or whole-life environmental superiority. No independent review or publication status is implied by a projection/check pass. | paged-blockboard-2026; epa-plywood-2002 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 8
+              column: 1
+            end:
+              offset: 357
+              line: 8
+              column: 101
+          text: "# Five-layer birch-faced softwood lumber-core blockboard with PVAc core gluing and UF veneer bonding"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48402
+              line: 494
+              column: 1
+            end:
+              offset: 48424
+              line: 494
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_8565"
+      source_span:
+        start:
+          offset: 9988
+          line: 73
+          column: 1
+        end:
+          offset: 10330
+          line: 73
+          column: 343
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_8565"
+      source_span:
+        start:
+          offset: 10331
+          line: 74
+          column: 1
+        end:
+          offset: 10676
+          line: 74
+          column: 346
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_8565"
+      source_span:
+        start:
+          offset: 10677
+          line: 75
+          column: 1
+        end:
+          offset: 11005
+          line: 75
+          column: 329
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_single_product"
+      identity_kind: "explicit"
+      unit_id: "normative_30338"
+      source_span:
+        start:
+          offset: 30451
+          line: 452
+          column: 1
+        end:
+          offset: 30790
+          line: 452
+          column: 340
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_multifunction"
+      identity_kind: "explicit"
+      unit_id: "normative_30338"
+      source_span:
+        start:
+          offset: 30791
+          line: 453
+          column: 1
+        end:
+          offset: 31379
+          line: 453
+          column: 589
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_ledgers"
+      identity_kind: "explicit"
+      unit_id: "normative_30338"
+      source_span:
+        start:
+          offset: 31380
+          line: 454
+          column: 1
+        end:
+          offset: 31983
+          line: 454
+          column: 604
+    - pointer: "/validation_rules/0"
+      rule_id: "v_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_48402"
+      source_span:
+        start:
+          offset: 48497
+          line: 498
+          column: 1
+        end:
+          offset: 48822
+          line: 498
+          column: 326
+    - pointer: "/validation_rules/1"
+      rule_id: "v_basis"
+      identity_kind: "explicit"
+      unit_id: "normative_48402"
+      source_span:
+        start:
+          offset: 48823
+          line: 499
+          column: 1
+        end:
+          offset: 49664
+          line: 499
+          column: 842
+    - pointer: "/validation_rules/2"
+      rule_id: "v_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_48402"
+      source_span:
+        start:
+          offset: 49665
+          line: 500
+          column: 1
+        end:
+          offset: 50023
+          line: 500
+          column: 359
+    - pointer: "/validation_rules/3"
+      rule_id: "v_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_48402"
+      source_span:
+        start:
+          offset: 50024
+          line: 501
+          column: 1
+        end:
+          offset: 50419
+          line: 501
+          column: 396
+    - pointer: "/validation_rules/4"
+      rule_id: "v_release_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_48402"
+      source_span:
+        start:
+          offset: 50420
+          line: 502
+          column: 1
+        end:
+          offset: 50777
+          line: 502
+          column: 358
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8565"
+      source_span:
+        start:
+          offset: 8565
+          line: 58
+          column: 1
+        end:
+          offset: 8586
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8565"
+      source_span:
+        start:
+          offset: 8614
+          line: 62
+          column: 1
+        end:
+          offset: 9915
+          line: 69
+          column: 230
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_30338"
+      source_span:
+        start:
+          offset: 30338
+          line: 448
+          column: 1
+        end:
+          offset: 30378
+          line: 448
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48402"
+      source_span:
+        start:
+          offset: 48402
+          line: 494
+          column: 1
+        end:
+          offset: 48424
+          line: 494
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e07ea3b265681c51c0415328bf0e7f08379eb785d530b07b9003da3cbae91346"
+  generated_content_sha256: "sha256:16c78efc6845a455cae5a068e033328a0b5bc8d1a64c310888ba623a44e53883"

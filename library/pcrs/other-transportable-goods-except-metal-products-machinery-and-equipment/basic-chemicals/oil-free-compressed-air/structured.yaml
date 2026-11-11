@@ -1,0 +1,1163 @@
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.oil-free-compressed-air"
+  classification_refs: "CPC 3.0 34250; narrower product and route boundary"
+  covered_products: "Nondried industrial compressed air at the station outlet from the stated route"
+  excluded_products: "Other chemicals, mercury species, amalgams, pure gases and the excluded routes above"
+  representative_product: "Aftercooled/separated compressed air in the measured delivered state"
+  production_route: "Intake filtration → dry oil-free screw compression/intercooling → aftercooling/separation → station receiver when present → delivery; isolated lubrication and maintenance accompany operation"
+  market_state: "Gaseous mixture at the station interface; declared pressure, temperature, moisture and quality"
+functional_unit:
+  what: "Account for newly first-accepted industrial compressed air meeting declared station-supply pressure/quality at the product-accounting acceptance gate, with actual in-scope postgate fates and service disclosed"
+  how_much: "1 m3 newly first-accepted compressed-air wet mixture at one declared actual station-supply reference state P_ref_abs/T_ref_K/vapor-composition/Z_ref. Q is the sum of unique measured actual first-acceptance event volumes; subsequent leaks or other fates do not cancel acceptance. This production-accounting reference is not an additional external physical output or an assertion that all accepted gas is dispatched"
+  how_well: "The same declared outlet gate, dry oil-free screw route, pressure, temperature, humidity/pressure dew point, particle and oil acceptance; nonbreathing and not separately dried. Different composition/quality regimes require separate datasets unless a measured fully reconciled conversion establishes equivalence"
+  how_long_or_cycle: "One representative common production period including loaded/unloaded operation, start/stop, standby, rejected operation and maintenance; previously accepted stock keeps its original cohort and denominator"
+  reference_flow_link: "delivered_air"
+system_boundary:
+  rules:
+    - rule_id: station_complete
+      applies_to: "compression-station"
+      rule: "Aggregate intake filtration, compression, intercooling, aftercooling, separation, actual receiver, drains, controls, isolated lubrication and maintenance into one foreground unit while retaining stage meters. Internal gas transfers have equal physical quantities at both ends and are not a second product output with the reference UUID."
+      source_ids:
+        - eu-ene-bref
+        - doe-compressed-air
+        - atlas-zrzt
+    - rule_id: boundary_fates
+      applies_to: "all waste outputs"
+      rule: "Distinguish waste sent for treatment from direct air/water-body release by actual receiver. Cover actual station air outlets; oil-free labelling cannot omit known releases. Actual direct liquid release or additional emitted species requires added verified atomic rows for its exact species/compartment before inventory completeness is claimed."
+      source_ids:
+        - eu-ene-bref
+        - doe-compressed-air
+        - atlas-zrzt
+    - rule_id: route_configuration
+      applies_to: "compression-station"
+      rule: "Verify model OEM circuit and actual modifications; do not treat a dryer-equipped or water-injected configuration as this scope. If external cooling water, glycol coolant or another formulation is actually used, add its individual supply/waste rows and review applicability instead of assuming zero use."
+      source_ids:
+        - eu-ene-bref
+        - doe-compressed-air
+        - atlas-zrzt
+    - rule_id: asset_material_completeness
+      applies_to: "compression-station"
+      rule: "Equipment manufacture is outside the foreground transformation but its attributable service burden is retained through providers. Inventory actual packing, seals, lubricant, first fill, replacements and removed assets independently by their concrete physical identities, including returns/reuse/stocks; provider-included components must be reconciled without duplicate mass or burdens."
+      source_ids:
+        - ilcd-general-guide
+        - doe-compressed-air
+boundary_abstraction:
+  declared_starting_condition: "Actual ambient intake and supplied electricity, makeup materials and equipment providers at declared interfaces"
+  starting_condition_role: "Foreground station operating entry; upstream supplies linked separately"
+  product_classification_scope: "Narrow compressed-air subset of CPC34250; no inferred common chemistry"
+  recursive_input_rule: "This route does not purchase same-category compressed-air feed; actual boosting or purchased-air configurations exceed this boundary and must not be recursively unfolded"
+  upstream_dataset_requirement: "Each supply requires actual geographic/temporal/technology, delivered-state, property/unit and boundary compatibility; each waste requires actual treatment linkage, not a provider inferred from UUID"
+  disclosure: "Delivery interface, included equipment components/first fill, actual coolant, stocks, missing measurements, anomalies and all boundary extensions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Compressed air"
+    uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - "station product-accounting acceptance gate after final cooler/separator and tests"
+    - "external physical boundary plus included receiver/linepack and actual first-acceptance point"
+    - "model and dry oil-free configuration"
+    - "actual cooling/coolant circuit and no dryer"
+    - "one actual supply reference state P_ref_abs/T_ref_K/vapor-composition/Z_ref"
+    - "raw P_abs and gauge-to-absolute relation"
+    - "raw T_K"
+    - "RH/pressure dew point and water-vapor fraction"
+    - "gas composition and validated density/EOS/Z"
+    - "calibration and original meter convention/compensation"
+    - "provider quantity convention and verified same-state conversion"
+    - "actual particle/oil acceptance limits and tests"
+    - "common period and unique first-acceptance event IDs with measured volume increments"
+    - "authoritative locked positive Q from events"
+    - "disjoint same-basis net D_new/F_new_close/L_new fate bridge including all in-scope postgate exits"
+    - "opening/closing raw/WIP/old/new accepted gas and liquid stocks"
+    - "returns/recirculation/rework lineage without repeated acceptance"
+    - "full unallocated Qt_i physical and energy ledgers"
+    - "per-exchange Qb_i actual new-cohort attribution and inherited not-embedded raw/WIP demand"
+    - "old accepted-stock service with original Q"
+    - "asset/provider boundaries and causal service fractions/lifetime evidence"
+    - "electricity geography/voltage"
+reference_flows:
+  []
+measurement_rules:
+  - id: volume_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Q = sum_e(v_e) over unique actual first-acceptance events from cp_delivery; each v_e is a nonoverlapping measured newly accepted gas quantity converted to the one declared reference state. Preserve event IDs/lineage and locked Q after acceptance, including gas later leaked/relieved/withdrawn/downgraded/reworked. Reconcile Q = D_new + F_new_close + L_new using disjoint actual net postgate fates within the same period and scope: net external dispatch, closing accepted stock and all other net fates. D_new + F_new_close alone is valid only after proving L_new = 0. Returns/gross loops/retests and repeated acceptance of the same gas do not add events; unaccepted raw/WIP and opening accepted gas add no new Q. Actual measurement/identity corrections need a traceable event-history correction, never cancellation because of a later loss. Incompatible fate bases leave an unresolved bridge, not a replacement Q. Q must be positive for normalization; zero/unknown Q retains raw records and unknown normalized values. No default state/density/Z or double meter compensation."
+  - id: mass_closure
+    applies_to: "ambient_air, delivered_air, vented_air, condensate, cooling_water, cooling_waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use cp_air, cp_delivery and cp_wastes to transform each measured gas-volume increment to wet mass using density validated for its own P_abs, T, RH, composition and Z. Delivered_air remains a Volume reference; its mass is an analytical ledger, not a second exchange. Reconcile oxygen, nitrogen, other dry components and vapor/liquid water using measured composition and the same wet/dry mass basis. Condensate is inlet moisture separated at each actual drain. Constituent analyses partition bulk air; do not add them again as independent air inputs/outputs. Retain gas and liquid stock changes and uncertainty."
+  - id: electric_energy
+    applies_to: "electricity_mv, electricity_lv"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the original Net calorific value property; convert metered kWh using the unit-group factor 1 kWh = 3.6 MJ, without interpreting this as delivered heat. Include fans, controls and actual auxiliaries; do not replace measured energy with nameplate kW times undifferentiated hours."
+process_map:
+  - id: compression_station
+    name: "Oil-free air-cooled screw compressed-air station"
+    inclusion: "required"
+    inclusion_condition: "Declared route and outlet after cooler/separator"
+    role: "foreground production"
+    quantitative_reference: "1 m3 newly first-accepted at declared actual supply state and gate"
+process_inventory:
+  - id: compression_station
+    label: "Oil-free air-cooled screw compressed-air station"
+    inputs:
+      product:
+        - row_id: electricity_mv
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This UUID is for CN grid-average consumption mix, to user, at 1–35 kV. Use it only for a verified compatible Chinese supply at the measured station boundary; another geography or supply mix requires its own verified atomic electricity identity. Include attributable transformer losses when station motors are downstream. Do not also book the same energy at low voltage."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort provider/resource demand from cp_energy with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: electricity_lv
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This UUID is for CN grid-average consumption mix, to user, at <1 kV. Use it only for a verified compatible Chinese supply at the measured station boundary; another geography or supply mix requires its own verified atomic electricity identity. Select the actual supply interface; this row and electricity_mv are alternative interfaces for the same supply, not additive representations."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort provider/resource demand from cp_energy with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: gear_lubricant
+          role: "Compressor bearing and gear lubricating oil"
+          name: "Compressor bearing and gear lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual supplied lubricant formulation, with SKU, base fluid, additives and viscosity declared. It lubricates bearings/gears isolated from the compression chamber; oil-free compression does not mean lubricant-free equipment. Record replacement and makeup, excluding internal circulation and the initial fill already included in the equipment provider. No petroleum/PAO recipe is prescribed."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort provider/resource demand from cp_materials with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: inlet_filter
+          role: "Compressor inlet air filter element"
+          name: "Compressor inlet air filter element"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual replacement inlet filter element, including its integral housing only if supplied together. Obtain net mass and media composition from the actual part. An internal-combustion-engine filter or coolant-mist cartridge is not a compatible substitute."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort provider/resource demand from cp_materials with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: oil_filter
+          role: "Compressor lubricant filter element"
+          name: "Compressor lubricant filter element"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual replacement filter element in the isolated gear lubricant circuit; record part, media, dry net mass and service interval separately from the inlet air filter."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort provider/resource demand from cp_materials with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: compressor_asset
+          role: "Air or vacuum pumps, air or other gas compressors"
+          name: "Air or vacuum pumps, air or other gas compressors"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7c9988b6-d0cf-4a08-801a-097d31f374d7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The named calculation rule asset_service applies exactly to compressor_asset and receiver_asset and is implemented by cp_assets with cp_delivery. Its period product-accounting numerator S_asset is actual allocated manufacturing/service-exposure provider demand in kg for newly accepted production, including traced inherited WIP service and current attributable service once; old accepted-stock service stays with its original cohort. It is not equipment physically consumed at the gas station. Amount S_asset / Q performs the same once-only period normalization as other input rows. The full measured net-mass × causal-service-fraction relationship remains in asset_service; no count-to-kg product conversion is implied. Preserve complete physical incoming/removed/returned/reused assets and stocks separately. This broad identity locates one actual manufactured oil-free air-cooled dry screw package, not a mixture of machines. Declare model, net equipment mass and whether motor, intercooler, aftercooler, controls, fans and first fill are included. Attribute embodied equipment burden using asset_service with demonstrated physical service causality and actual service/lifetime evidence; no per-machine mass or lifetime is assumed."
+          amount:
+            expression: "S_asset / Q; S_asset is the period newly accepted-product equipment-provider numerator in kg collected and reconciled by cp_assets and cp_cohorts; Q is the same positive accepted m3 from cp_delivery; divide once, with no physical machine-mass consumption claim"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: receiver_asset
+          role: "Steel compressed-air receiver vessel"
+          name: "Steel compressed-air receiver vessel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The named calculation rule asset_service applies exactly to compressor_asset and receiver_asset and is implemented by cp_assets with cp_delivery. Its period product-accounting numerator S_asset is actual allocated manufacturing/service-exposure provider demand in kg for newly accepted production, including traced inherited WIP service and current attributable service once; old accepted-stock service stays with its original cohort. It is not equipment physically consumed at the gas station. Amount S_asset / Q performs the same once-only period normalization as other input rows. The full measured net-mass × causal-service-fraction relationship remains in asset_service; no count-to-kg product conversion is implied. Preserve complete physical incoming/removed/returned/reused assets and stocks separately. Conditional on an actual separate steel receiver inside the station boundary. Record manufactured vessel net mass, pressure certification and provider boundary. Include it once; do not rebook a receiver already included with the compressor package."
+          amount:
+            expression: "S_asset / Q; S_asset is the period newly accepted-product equipment-provider numerator in kg collected and reconciled by cp_assets and cp_cohorts; Q is the same positive accepted m3 from cp_delivery; divide once, with no physical machine-mass consumption claim"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: cooling_water
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on documented actual deionised-water makeup/service fill in an auxiliary cooling circuit. Air-cooled describes heat rejection, not proof of zero liquid inventory. Only external added water is counted, not recirculation. A glycol/inhibited premix is a different formulated flow and requires its own atomic row and supplier identity before dataset completion."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort provider/resource demand from cp_materials with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: ambient_air
+          role: "air"
+          name: "air"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa4-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Ambient atmospheric intake: Resources / Resources from air / Renewable material resources from air. Measure intake wet mass from calibrated flow, pressure, temperature, humidity, composition and validated density; include intake losses and stock changes. Do not substitute a pollutant emission or technosphere instrument-air record."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort provider/resource demand from cp_air with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+    outputs:
+      product:
+        - row_id: delivered_air
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "The sole product-accounting reference is newly first-accepted nondried compressed air after station cooling/separation and actual acceptance tests, at the declared gate and supply state. Exactly 1 m3 of wet mixture uses the same basis as the unique actual event volumes defining Q. It is not an additional external physical output: actual net dispatch, closing stock and other in-scope postgate fates are separately reconciled without duplicating gas quantities. Moisture is a measured qualifier, not an extra product. No intermediate copy of this reference UUID is created."
+          amount:
+            expression: "1 m3"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_delivery
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+      waste:
+        - row_id: condensate
+          role: "Compressed-air separator condensate for wastewater treatment"
+          name: "Compressed-air separator condensate for wastewater treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Liquid water condensed from intake humidity and actually drained, sampled for contaminants. Declare drain points, wet mass, composition and sewer/off-site receiver. It is untreated waste sent to a treatment provider, not an elementary water discharge, product water or saleable by-product. A treatment-specific wastewater UUID is not evidence for this untreated stream."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_wastes with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: spent_lubricant
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Collect actual spent bearing/gear lubricant; declare base fluid, contamination and receiving treatment. The broad used-oil identity does not establish recycling, incineration or a disposal dataset. Do not combine it with aqueous separator condensate."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_wastes with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: spent_inlet_filter
+          role: "Spent compressor inlet air filter element"
+          name: "Spent compressor inlet air filter element"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One discarded inlet element with retained dust; measure gross discarded mass and identify media and contamination. Dust still retained in this element is not emitted particulate matter. Record separately collected loose dust as a further atomic waste only when it actually occurs."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_wastes with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: spent_oil_filter
+          role: "Spent compressor lubricant filter element"
+          name: "Spent compressor lubricant filter element"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One discarded lubricant-circuit filter, with residual oil and contamination recorded. State whether drained oil is weighed separately and avoid counting that oil again in both filter and spent_lubricant."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_wastes with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: cooling_waste
+          role: "Spent auxiliary cooling-circuit water"
+          name: "Spent auxiliary cooling-circuit water"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual disposal of water from the auxiliary loop; declare impurities, service event and actual treatment receiver separately from atmospheric condensate. A glycol/inhibited mixture must be a distinct formulated waste row. No direct water-body discharge is assumed."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_wastes with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+      elementary:
+        - row_id: vented_air
+          role: "used air"
+          name: "used air"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ae96-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Bulk wet carrier released from blow-off, relief, drains and station leakage to air, unspecified subcompartment. Identify each actual outlet and ventilation to outdoor air. Preserve the physical bulk-gas ledger; this carrier row does not replace pollutant-specific elementary exchanges or assert impact characterization. Exclude separately counted pollutant mass from the summed carrier mass."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_air with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: particulate_air
+          role: "Particulate matter, particle size unspecified"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on measured particulate release across the environmental boundary. Use a nonoverlapping measured size-unspecified particulate fraction, excluding separately inventoried lubricant aerosol. Verify sampling definition, composition, recovery and actual outdoor-air pathway. If size is known, resolve the corresponding disjoint size fractions; do not add PM2.5, PM10 and total PM as independent masses. No clinker example factor is used."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_emissions with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: oil_aerosol
+          role: "Compressor gear-lubricant aerosol to outdoor air"
+          name: "Compressor gear-lubricant aerosol to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on observed lubricant aerosol release despite chamber isolation, such as a vent or maintenance leak. Declare actual formulation/species and outlet; do not assign a generic glycerin or correction flow. Split chemically identified species when the monitoring and database definitions require it. Reconcile its inclusion in total particulate sampling so it is counted once."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_emissions with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+        - row_id: rejected_heat
+          role: "Rejected compression heat to outdoor air"
+          name: "Rejected compression heat to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Thermal energy / MJ"
+          description: "Thermal energy rejected through intercoolers, aftercoolers, lubricant coolers and actual fan ventilation to outdoor air; this is neither a water-body thermal release nor sold heat. Use cp_heat measurements/validated heat accounting, recording cooling airflow, temperature, humidity, rejection pathway, boundaries and uncertainty. Retain other heat transfers and do not automatically assign an unclosed residual to this exchange."
+          amount:
+            expression: "Qb_i / Q; Qb_i is this row's actual new-cohort attributed output/effect with its source/date/receiver from cp_heat with cp_cohorts, including only compatible consumed prior foreground vectors not already in linked providers. Retain full unallocated Qt_i/physical stocks separately; old accepted-stock service keeps original Q. This model amount does not scale real gross physical outputs or imply a second external gas output; unknown attribution remains unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - eu-ene-bref
+                - doe-compressed-air
+                - atlas-zrzt
+            ranges: []
+allocation_rules:
+  - rule_id: air_product_only
+    applies_to: "compression-station"
+    rule: "There is one reference air product and no assumed coproduct. Condensate, used oil and spent elements link to treatment under their actual waste identities, without water-product or recycling credits. Preserve rejected heat in the energy ledger; this non-exported-heat route does not invent a sold-heat product. If useful heat is actually exported, record its receiver, measured transfer and useful-temperature/service basis as a distinct product exchange and review the boundary extension; no automatic avoided-heat credit."
+    source_ids:
+      - eu-ene-bref
+      - doe-compressed-air
+      - atlas-zrzt
+  - rule_id: physical_before_burden
+    applies_to: "all inventory rows"
+    rule: "Retain the complete physical wet/dry air, water, oil, filter and stock ledger before a separate allocated-burden ledger. For users with the same pressure/quality, share common station burdens by measured accepted outlet volumes on identical actual state/composition conventions; differing pressure/quality first requires separated measured operating regimes rather than mechanical volume allocation. Do not multiply physical outputs or internal links by burden-allocation shares."
+    source_ids:
+      - ilcd-general-guide
+      - doe-compressed-air
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_delivery
+      process_id: "compression_station"
+      flow_role: "authoritative first-acceptance event Q and disjoint postgate fate bridge"
+      record_type: "site measurement"
+      raw_fields: "fixed acceptance gate and external physical boundary; OEM circuit; event/cohort id and lineage; nonoverlapping measured first-accepted increments v_e; acceptance time/test; locked original Q and correction trail; net D_new; F_new_close; each net L_new fate with date/receiver; pre/post-acceptance rejection distinction; opening old FG; old dispatch; returns/gross recirculation/retests/rework; raw/WIP; counter resets; raw P_abs/gauge offset; T_K; RH/dew point; vapor/composition; Z/EOS/density; meter compensation; provider basis; receiver/linepack and liquid stocks"
+      collection_method: "Use calibrated gas meters and concurrent acceptance/state records to identify each real first event and measure its new nonoverlapping quantity at the same reference state. Lock Q from events; postgate losses never reverse first acceptance. Independently reconcile disjoint net D_new/F_new_close/L_new from actual transfer/stock/outlet records within the same period; match returns and repeated passages by lineage instead of adding gross crossings. Quantify all in-scope postgate fates, or leave the bridge incomplete; use the two-term bridge only with evidenced zero other fates. For mixed receiver cohorts use traceable transfers or validated mixing/component balances with uncertainty. State/composition conversion and moisture phase changes need actual supported correspondence; no generic standard state, assumed density or duplicate correction."
+      unit: "m3"
+      frequency: "Each actual first acceptance, fate/transfer and opening/closing survey"
+      temporal_coverage: "Common period including startup/standby/rejected operation; original acceptance dates retained"
+      site_scope: "Actual product-accounting gate, external physical boundary, included receiver/linepack and actual outlets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Unique measured acceptance-event register, locked-Q history, disjoint net fate/stock bridge, actual state/quality/calibration/EOS records and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "compression_station"
+      flow_role: "complete station electricity Qt_energy"
+      record_type: "site measurement"
+      raw_fields: "country/grid; voltage and transformer boundary; meter start/end; timestamped actual active power; load/unload/start/stop/standby; fans/controls/drains; electrical reuse/export; Q"
+      collection_method: "Calibrated active-energy submeter or time integral of measured active kW over each actual operating regime; include all actual auxiliaries and attributable transformer losses. Reconcile complete unallocated station energy, then implement station_ratio with cp_cohorts to form actual new-cohort Qb_i and separate old-stock service before normalization; no nameplate-power or default power-factor estimate and no duplicate voltage interface."
+      unit: "kWh; MJ"
+      frequency: "Each representative regime and service event"
+      temporal_coverage: "Same period as Q"
+      site_scope: "Actual station electricity interface"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, actual power/energy logs and supplier/attribution reconciliation"
+    - protocol_id: cp_materials
+      process_id: "compression_station"
+      flow_role: "actual material consumption"
+      record_type: "site measurement"
+      raw_fields: "SKU; composition; net mass; receipts; opening/closing stock; service events; internal circulation; Q"
+      collection_method: "Calibrated weighing and inventory reconciliation by each individual supplied lubricant, filter or makeup water; retain actual SDS/part specification and first-fill boundary. Use station_ratio with cp_cohorts for actual new-cohort consumption/provider demand, compatible inherited-not-embedded quantities and separate old-recipient service; raw receipts and stocks remain complete."
+      unit: "kg"
+      frequency: "Each representative regime and service event"
+      temporal_coverage: "Common declared period covering shifts/loads"
+      site_scope: "Actual station boundary"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, raw records, stock/delivery reconciliation and uncertainty"
+    - protocol_id: cp_assets
+      process_id: "compression_station"
+      flow_role: "actual period allocated provider numerator S_asset for compressor_asset and receiver_asset; full physical fleet ledger separately"
+      record_type: "measured/recorded foreground service and asset records"
+      raw_fields: "exact asset row/id/model/configuration; manufactured mass kg; actual counts; traceable weighing; provider unit/reference property/boundary; full asset opening/purchases/transfers/returns/closing/scrap; component/first-fill packaging and seals; period duty/duration and all served uses; lifetime/retirement evidence or explicit scenario; previous allocated fractions; current f_service_j by recipient cohort; u_provider_j; inherited-to-new service; S_current; S_asset; service recipient cohort; original denominator; Q"
+      collection_method: "Use calibrated weighing or traceable same-configuration net-mass records and actual fleet counts. Reconcile opening + receipts/transfers in = closing + returns/transfers out + scrap with no invented physical consumption. Separately implement asset_service for the exact asset rows: derive each causal fraction from measured actual service and evidenced lifetime, sum compatible provider kg × current new-production fractions as S_current; add only the traced inherited raw/WIP service actually consumed to form S_asset. Keep old finished-stock service separate with its original Q. Link all recipient cohorts to cp_delivery and cp_cohorts. Retain initial manufacture and distinct maintenance providers, remaining life, reuse/retirement and sensitivity. An unresolved kg-based receiver provider is an explicit gap, not zero."
+      unit: "kg provider-equivalent per period; kg/count/duty units in separate raw ledgers"
+      frequency: "Each asset/service/retirement event and period closing"
+      temporal_coverage: "Common period plus full lifetime/prior attribution evidence"
+      site_scope: "Each actual compressor package and separate receiver, their compatible provider boundaries and served cohorts"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Actual asset/mass/duty records; full physical fleet equation; provider/component boundary; causal lifetime scenario; prior fraction ledger; S_asset arithmetic and independent dimensional review"
+    - protocol_id: cp_air
+      process_id: "compression_station"
+      flow_role: "complete intake, vent and gas-stock mass"
+      record_type: "site measurement"
+      raw_fields: "outlet-specific flow/counter; P_abs; T; RH/vapor fraction; measured dry composition including oxygen/nitrogen; validated density/EOS/Z; blow-off/relief/drain leaks; external blowdown; internal recirculation; gas/liquid stocks; Q"
+      collection_method: "Survey all actual outlets and measure gas flow under each load regime. For each volume increment use its own validated wet-gas density; retain measured mass fractions for oxygen, nitrogen, other dry components and water separately. Reconcile actual accepted gas, vapor, each drain condensate, emissions, reuse and stocks, including pre/post-acceptance and new/old cohorts. Use station_ratio with cp_cohorts for the model Qb_i only; raw physical totals are not reduced by burden shares. Internal recirculation has equal incoming/outgoing quantities and is not a second external exchange."
+      unit: "kg"
+      frequency: "Each regime and actual release event"
+      temporal_coverage: "Same period as Q"
+      site_scope: "Complete station intake, final separator, receiver and all actual gas outlets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Circuit/outlet map, calibrated measurements, composition, conversion and uncertainty"
+    - protocol_id: cp_wastes
+      process_id: "compression_station"
+      flow_role: "each actual waste"
+      record_type: "site measurement"
+      raw_fields: "stream; wet mass; moisture; contamination/species; drained oil split; receiver; transport/treatment; stocks; Q"
+      collection_method: "Weigh each segregated waste and retain representative analysis and transfer records. Identify actual sewer/off-site receiver; verify any actual direct environmental liquid outlet separately. Preserve complete physical Qt_i; use cp_cohorts and station_ratio to trace actual new-cohort Qb_i and separate old service without reducing actual waste output."
+      unit: "kg"
+      frequency: "Each representative regime and service event"
+      temporal_coverage: "Common declared period covering shifts/loads"
+      site_scope: "Actual station boundary"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, raw records, stock/delivery reconciliation and uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "compression_station"
+      flow_role: "actual particulate and lubricant aerosol"
+      record_type: "site measurement"
+      raw_fields: "outlet; outdoor pathway; sample definition; blank; recovery; size cut; species/composition; flow; operating hours; uncertainty; Q"
+      collection_method: "Survey actual vents/leaks and maintenance releases, then sample with a documented applicable measurement method. Report positive, nondetect and absent evidence distinctly; quantify nonoverlapping pollutant fractions and preserve oil-aerosol/PM overlap reconciliation. Preserve full measured source Qt_i; separately use station_ratio and cp_cohorts for evidenced new-cohort attribution Qb_i and old-cohort additions, never changing actual release records."
+      unit: "kg"
+      frequency: "Each representative regime and service event"
+      temporal_coverage: "Common declared period covering shifts/loads"
+      site_scope: "Actual station boundary"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, raw records, stock/delivery reconciliation and uncertainty"
+    - protocol_id: cp_heat
+      process_id: "compression_station"
+      flow_role: "Heat to air"
+      record_type: "site measurement"
+      raw_fields: "cooling airflow; inlet/outlet temperature and humidity; density/enthalpy; outlet; boundary; regime; uncertainty; Q"
+      collection_method: "Measure calibrated cooling flow and inlet/outlet states at actual cooler/ventilation outlets and calculate net heat by applicable validated enthalpy relationships. Retain radiation, other transfers and balance residuals; avoid recounting internal coolant circulation. Keep full physical Qt_heat; separately implement station_ratio with cp_cohorts for actual new-cohort Qb_i and old service, never filling a missing measurement with an energy residual."
+      unit: "MJ"
+      frequency: "Each representative regime"
+      temporal_coverage: "Common declared period"
+      site_scope: "Actual station boundary and outdoor receiving air"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, actual circuit and energy ledger"
+    - protocol_id: cp_cohorts
+      process_id: "compression_station"
+      flow_role: "raw/WIP/FG inheritance, per-exchange Qb_i and original-cohort service vectors"
+      record_type: "site records"
+      raw_fields: "cohort/event id; original gate/date/state/measured basis; original Q for accepted gas and raw numerator for unaccepted WIP; locked first-event quantities; disjoint D_new/F_new_close/L_new and each fate; full Qt_i by flow/source/date/receiver; current actual new/old/unfinished/other recipient quantities and causal drivers; N_i_to_new; compatible inherited I_i_to_new and provider-embedded flag; Qb_i; raw/material/gas opening/receipts/consumption/closing; returns/loops/retests; provider boundaries; service vectors and unknown origins"
+      collection_method: "Reconcile chronological event/transfer/outlet and validated receiver mixing records without repeating a first acceptance. Implement station_ratio and cohort_carry for each actual row: trace current new-cohort consumption/outputs before allocating genuinely shared effects by evidenced per-exchange causality; retain the full unallocated physical Qt_i. Add only consumed prior foreground raw/WIP exchange vectors not already inside linked input providers, preserving original flow/unit/source/date. Background-embedded burdens remain decomposition only. Keep old accepted-stock manufacture and added current service separately with original Q. Unresolved recipient/stock/state/provider evidence leaves Qb_i unknown, not Qt_i automatically assigned to new production."
+      unit: "raw kg/m3 and exact provider/service/emission units kept separately"
+      frequency: "Each movement/first event/fate and attribution interval; period close"
+      temporal_coverage: "Original cohorts plus common new period; original exchange dates retained"
+      site_scope: "Complete declared station stocks, all served recipients, actual source boundaries and providers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Unique-event and fate bridge; raw stock/whole-output closure; original denominators/vectors; per-exchange recipient/causal shares and provider-overlap audit; missing-history disclosure"
+  calculation_rules:
+    - id: station_ratio
+      applies_to: "all inventory rows"
+      rule: "qphysical_i = Qt_i / Q is unallocated physical analysis only, never the selected linked new-product quantity. For each ordinary row, Qb_i = N_i_to_new + I_i_to_new and a_i = Qb_i / Q once. N_i_to_new is the actually traced current new-cohort exchange/provider demand; remaining genuinely shared effects require evidenced per-exchange causal attribution across all served recipients. Exclude old-FG/unfinished/other-recipient portions and retain their own ledgers/bases. I_i_to_new contains only traceable prior foreground exchanges carried by consumed raw/WIP, with matching actual flow/provider unit/boundary and no overlap with any linked input provider; embedded upstream burdens are decomposition, never extra foreground demand/emissions. Preserve inherited source/date/medium; a carried historical emission is not a new current release. Keep incompatible sources/units/states in distinct subrecords. Actual gross physical outputs, stock/transfer quantities and reference gas are not multiplied by environmental burden shares. Q is locked actual first-event production, reconciled to disjoint D_new/F_new_close/L_new, not another external physical output; delivered_air is the 1 m3 product-accounting reference. For compressor_asset and receiver_asset use Qb_asset = S_asset from the complete named asset_service relation and asset_per_m3 = S_asset / Q once; neither is physical equipment consumption. Old-stock services keep original Q, and unknown Qb_i/Q remains unavailable rather than assuming full Qt_i."
+      inputs:
+        - Qt_i
+        - N_i_to_new
+        - I_i_to_new
+        - Qb_i
+        - S_asset
+        - Q
+        - cp_delivery
+        - cp_assets
+        - cp_cohorts
+      output: "separate full physical ledger and actual new-cohort linked exchange/provider demand per reference flow"
+      source_ids:
+        - doe-compressed-air
+        - ilcd-general-guide
+    - id: gas_volume_conditions
+      applies_to: "ambient_air, delivered_air, vented_air"
+      rule: "For each raw increment, wet mass = raw volume × validated density(raw P_abs, T_K, vapor/composition, Z). Convert that same mass to reference volume = mass / density(P_ref_abs, T_ref_K, same composition, Z_ref); retain meter algorithm and any already applied compensation. For identical composition only, equivalent EOS notation is V_ref = V_raw × (P_raw_abs/P_ref_abs) × (T_ref_K/T_raw_K) × (Z_ref/Z_raw). Use actual absolute pressure, Kelvin temperature and validated compressibility; do not assume Z=1. Different water fractions or condensation require actual component/water balances and measured conditioning, not this same-composition shortcut. Separate incompatible state/composition regimes. Wet/dry, actual/free-air/standard and provider bases remain explicit. No generic density or source-example reference state."
+      inputs:
+        - cp_air
+        - cp_delivery
+        - "measured volume/mass"
+        - "concurrent raw state/composition"
+        - "declared reference state"
+        - "validated meter/EOS"
+      output: "complete physical gas masses and same-basis accepted Q with uncertainty"
+      source_ids:
+        - nist-gas-flow
+        - doe-compressed-air
+    - id: asset_service
+      applies_to: "compressor_asset, receiver_asset"
+      rule: "For one compatible mass-based asset current-service contribution: q_ref = q_item × f_service / Q; q_item is its actual collected identified-equipment net mass in kg, not a gas-product denominator; q_ref is allocated provider-equivalent kg per 1 m3 reference flow. General period form: S_current = sum_j(u_provider_j × f_service_j_to_new); S_asset = S_inherited_to_new + S_current; asset_per_m3 = S_asset / Q. S_inherited_to_new is traced previously incurred foreground asset demand carried by raw/WIP actually consumed in new production and not already included in a linked input provider. Service embedded in a material/WIP background provider is retained as a decomposition vector inside that provider, never booked again as these equipment rows; old finished-gas service is excluded. For a fresh single mass-based asset contribution with no inherited service, u_provider_j = q_item_j and the original formula is exactly retained. Sums retain each provider/asset family separately; incompatible provider units or boundaries cannot be pooled. cp_assets retains every asset id, actual measured mass/count, provider unit/boundary, measured causal period service, total lifetime service, remaining attribution, retirements and scenarios. f_service_j_to_new is the dimensionless current service share attributable to new production, separated from all old finished-stock and other-service shares. Each f_service_j is dimensionless and justified for that specific asset by actual duty/duration or demonstrably causal same-state output service, including rejected/idle duty when causal; no universal volume fraction. A volume fraction is allowed only when period/lifetime accepted volume genuinely determines that asset service, using the same actual first-acceptance-event gate/counting policy and with other uses and state/quality bases reconciled. Different assets may need different fractions. All life/cohort fractions sum at most one; keep prior service allocations and avoid resetting the full manufacturing burden on reuse. These two inventory rows require a compatible kg-based provider; a provider expressed in items needs an explicitly measured configuration-specific kg/item relationship and property/unit reconciliation before linking, otherwise retain a provider gap. Physical fleet movements and submaterial/first-fill ledgers remain separate; do not book both whole-package manufacture and its included components. Do not divide S_asset or q_ref twice. No default weight, lifetime, duty, fraction or reuse credit."
+      inputs:
+        - q_item
+        - u_provider_j
+        - f_service_j
+        - f_service_j_to_new
+        - S_inherited_to_new
+        - S_current
+        - S_asset
+        - Q
+        - cp_assets
+        - cp_delivery
+        - cp_cohorts
+      output: "S_asset in provider-equivalent kg for each asset row and asset_per_m3 in kg per 1 m3; q_ref equivalence retained"
+      source_ids:
+        - ilcd-general-guide
+    - id: actual_power_integral
+      applies_to: "electricity_mv, electricity_lv"
+      rule: "Qt_energy_MJ = 3.6 × integral of measured active power P_kW over time in hours, including all actual station loads at the selected interface. Prefer calibrated meter energy differences; reconcile the two methods and do not add both. Retain complete unallocated energy, actual stock/reuse/export and measured heat/gas transfers before any burden allocation."
+      inputs:
+        - cp_energy
+        - "time-resolved actual power or calibrated energy counter"
+      output: "complete station electricity MJ"
+      source_ids:
+        - doe-compressed-air
+    - id: cohort_carry
+      applies_to: "all inventory rows"
+      rule: "For each physical stock, opening + actual receipts/transfers/production = closing + dispatch/consumption/transfers/rejects with actual gas-state/component/water changes. Carry inherited burden/service vectors with traced consumed quantities and original bases; do not add provider-embedded vectors twice. New Q = sum_e(v_e) of unique actual first events and remains locked after postgate loss/rework. Independently reconcile Q = D_new + F_new_close + L_new for disjoint same-basis net fates; the two-term bridge applies only when L_new is evidenced zero. Gross loops/returns/retests do not repeat events, and a returned parcel has one net fate. Old accepted gas adds no new Q and keeps its original denominator/service history. Current new-product Qb_i excludes old/unfinished/other recipients; unknown inherited/attribution/state vectors remain unknown. No forced quotient for zero/unknown Q and no duplicated external physical output for event Q."
+      inputs:
+        - cp_cohorts
+        - cp_delivery
+        - cp_assets
+        - "actual acceptance/fate/stock/transfer/recipient records"
+        - "original cohort denominators/vectors"
+      output: "complete physical stock/fate bridge, locked event Q and separate actual new/old cohort exchange/service numerators"
+      source_ids:
+        - ilcd-general-guide
+        - doe-compressed-air
+  data_quality_requirements:
+    - id: same_period
+      applies_to: "all inventory rows"
+      requirement: "Common period/configuration and locked actual first-event Q; retain postgate fates, actual new/old recipients, anomalies, gaps, start/stop and low loads"
+      evidence: "cp_delivery; cp_energy; cp_materials"
+    - id: physical_ledgers
+      applies_to: "compression-station"
+      requirement: "Reconcile dry air, water, oil and filter mass/stocks separately; Close the complete unallocated station control-volume energy ledger with measured electricity and all incoming/outgoing gas, liquid, heat, work and energy-stock changes; use validated actual-state enthalpies, including vapor/condensation and actual reuse. Disclose residuals/uncertainty rather than forcing an imbalance into an invented emission"
+      evidence: "cp_air; cp_materials; cp_wastes; cp_energy"
+    - id: provider_basis
+      applies_to: "all product inputs"
+      requirement: "Verify flow identity, reference property/unit, actual supplied state and provider quantity definition separately; a matching name is not provider compatibility"
+      evidence: "Actual supplier/provider originals and metering definitions"
+    - id: emission_completeness
+      applies_to: "all elementary outputs"
+      requirement: "Detection limit is not zero; positive emissions need actual species/medium; avoid total-PM/oil-aerosol duplication; absence requires documented survey scope, not invented survey results"
+      evidence: "cp_emissions; cp_wastes"
+    - id: asset_dimension_review
+      applies_to: "compressor_asset, receiver_asset"
+      requirement: "Independently verify the full named asset_service formula, exact asset/provider units, measured period numerator, positive Q, causal lifetime fraction and cohort history using reproducible dimensional and stock examples. A finite common-reference measurement pass establishes the explicit period basis only; it does not establish generic mathematical typing, physical validity or scientific approval of asset service attribution."
+      evidence: "cp_assets; cp_delivery; cp_cohorts; actual provider originals; independent review"
+    - id: cohort_numerator
+      applies_to: "all inventory rows"
+      requirement: "Every selected ordinary new-product amount is actual Qb_i/Q and each asset amount is S_asset/Q. Verify measured current recipients and consumed prior foreground not-embedded vectors before calculation; preserve full raw Qt_i and all physical outputs without burden-share scaling. Old accepted-stock service remains with original Q. Unsupported attribution or a missing postgate fate/state bridge prevents a complete dataset."
+      evidence: "cp_cohorts; cp_delivery; all linked row protocols; original provider/source/stock records"
+validation_rules:
+  - rule_id: reference_unique
+    applies_to: "delivered_air"
+    rule: "Exactly one 1 m3 Volume product-accounting reference at the declared state. Reproduce positive locked Q from actual unique nonoverlapping first-acceptance events; subsequent leakage/relief/downgrade never erases an accepted event. Reconcile disjoint same-period same-basis net D_new/F_new_close/L_new; use D_new+F_new_close alone only if all other postgate net fates are proved absent. Reject gross loops, duplicate returned quantities, old-FG dispatch and retests as new acceptance. Q is not a second physical external output. Check all model-card Qb_i, old-cohort original bases, actual state/provider compatibility and complete unallocated raw outputs/stock/component/energy closure separately."
+    source_ids:
+      - eu-ene-bref
+      - doe-compressed-air
+      - atlas-zrzt
+  - rule_id: route_and_balance
+    applies_to: "compression-station"
+    rule: "Check actual oil-free dry screws, air cooling, absence of separate drying, boundary components and OEM/modified circuit. Reconcile wet/dry gas, water, oil and energy ledgers separately and assess residuals within measurement uncertainty. Unverified coolant composition or quantity cannot be declared conforming."
+    source_ids:
+      - eu-ene-bref
+      - doe-compressed-air
+      - atlas-zrzt
+  - rule_id: exact_id_and_fate
+    applies_to: "all inventory rows"
+    rule: "Verify each UUID with name, CAS where applicable, route, compartment, reference property and unit. An empty UUID remains a concrete atomic flow but has incomplete linkage; unresolved identity/supply/treatment compatibility cannot be reported as a complete dataset. Add atomic rows for actual additional exchanges first."
+    source_ids:
+      - eu-ene-bref
+      - doe-compressed-air
+      - atlas-zrzt
+  - rule_id: no_proxy_emissions
+    applies_to: "all elementary outputs"
+    rule: "Do not replace pollutants with bulk carrier air, another industry wastewater or correction flows. Verify indoor-to-outdoor vent paths, aqueous-waste receivers and any direct water-body outlet. Use actual measurements/validated calculations for emissions, without default positives or fabricated zeroes."
+    source_ids:
+      - eu-ene-bref
+      - doe-compressed-air
+      - atlas-zrzt
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "First-acceptance production-gate compressed-air inventory at verified pressure/quality/volume basis; actual net dispatch and all in-scope postgate fates disclosed"
+  allowed_use: "Complete linked compressed air for this route and declared first-acceptance quantity basis; downstream physically dispatched-air demand requires its own verified gate/quantity correspondence and provider compatibility, with postgate losses explicit"
+  excluded_use: "Whole CPC34250, other chemicals, equipment manufacture, medical air, dried products, high-pressure bottles and completeness claims with missing medium/provider linkage"
+  required_metadata: "All reference qualifiers, locked actual acceptance events, disjoint same-period net D/FG/L bridge, physical external boundary, cohort-specific Qb_i and unallocated Qt_i, original old-stock denominators, inherited-not-embedded demands, geography, OEM circuit, metering, upstream/waste providers and gaps"
+  required_quality_disclosure: "Calibration, coverage, uncertainty, detection limits, residuals, lifetime scenarios and identity/provider debt"
+  update_trigger: "Changes to equipment/coolant/drying/delivery pressure-quality, volume convention, load, supply or treatment provider"
+data_sources:
+  - id: "eu-ene-bref"
+    type: "official_guidance"
+    reference: "European Commission, Reference Document on Best Available Techniques for Energy Efficiency, February 2009, corrected 09/2021. §3.7, printed pp.206–214 / PDF pp.238–246; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2021-09/ENE_Adopted_02-2009corrected20210914.pdf; retrieved 2026-10-13T18:10:42.859Z"
+    used_for: "Horizontal station architecture, pressure/purity/demand, components and emission survey; no statistical savings or universal recipe"
+  - id: "doe-compressed-air"
+    type: "official_guidance"
+    reference: "U.S. Department of Energy, Improving Compressed Air System Performance: A Sourcebook for Industry, Third Edition, 2016, DOE/EE-1340. Printed pp.8,11,14–15,60–61,84 / PDF pp.13,16,19–20,65–66,89; https://www.govinfo.gov/content/pkg/GOVPUB-E-PURL-gpo176573/pdf/GOVPUB-E-PURL-gpo176573.pdf; retrieved 2026-10-13T18:10:38.197Z"
+    used_for: "Oil-free isolated lubrication, accessories/condensate, simultaneous flow-pressure-energy metering and volume convention; no injected-lubricant data or example quantities"
+  - id: "atlas-zrzt"
+    type: "handbook"
+    reference: "Atlas Copco, Oil-free rotary screw compressors ZR/ZT 110-160 (FF), undated brochure. Printed/PDF pp.7,16–18,22; https://www.atlascopco.com/content/dam/atlas-copco/compressor-technique/oil-free-air/documents/ZRZT-110-160-%28VSD%29-FF.pdf; retrieved 2026-10-13T18:10:38.311Z"
+    used_for: "Producer oil-free air-cooled diagram, isolated oil loop, separation, optional drying and FAD limitations; model evidence, no default quantity; repeated water-flow text needs actual OEM circuit clarification"
+  - id: "nist-gas-flow"
+    type: "official_guidance"
+    reference: "Wright et al., NIST SP 250-80, Gas Flowmeter Calibrations with the Working Gas Flow Standard, 2009. §§6,8–10, printed pp.8,13–15 / PDF pp.10,15–17; https://doi.org/10.6028/NIST.SP.250-80; retrieved 2026-10-13T18:14:57.112Z"
+    used_for: "Calibration, actual local state/composition, mass↔volume density relationship and uncertainty; dry calibration gas/reference conditions are not nondried-product defaults"
+  - id: "ilcd-general-guide"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General guide for Life Cycle Assessment—Detailed guidance, first edition March 2010, DOI 10.2788/38479. §§7.2.1,7.9.3.2; printed pp.154–155,257–263 / PDF pp.174–175,277–283; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf; retrieved 2026-10-13T18:15:00.159Z"
+    used_for: "Complete capital/maintenance boundaries and causally justified service allocation; no compressor-specific weight, lifetime or universal volume allocation"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:490640c6426083a9a7e0eb38a258dd23632779911f4d400a4779c55d210dc9f9"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8753"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8753
+          line: 60
+          column: 1
+        end:
+          offset: 11624
+          line: 80
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual ambient intake and supplied electricity, makeup materials and equipment providers at declared interfaces |\n| starting_condition_role | Foreground station operating entry; upstream supplies linked separately |\n| product_classification_scope | Narrow compressed-air subset of CPC34250; no inferred common chemistry |\n| recursive_input_rule | This route does not purchase same-category compressed-air feed; actual boosting or purchased-air configurations exceed this boundary and must not be recursively unfolded |\n| upstream_dataset_requirement | Each supply requires actual geographic/temporal/technology, delivered-state, property/unit and boundary compatibility; each waste requires actual treatment linkage, not a provider inferred from UUID |\n| disclosure | Delivery interface, included equipment components/first fill, actual coolant, stocks, missing measurements, anomalies and all boundary extensions |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `station_complete` | compression-station | Aggregate intake filtration, compression, intercooling, aftercooling, separation, actual receiver, drains, controls, isolated lubrication and maintenance into one foreground unit while retaining stage meters. Internal gas transfers have equal physical quantities at both ends and are not a second product output with the reference UUID. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n| `boundary_fates` | all waste outputs | Distinguish waste sent for treatment from direct air/water-body release by actual receiver. Cover actual station air outlets; oil-free labelling cannot omit known releases. Actual direct liquid release or additional emitted species requires added verified atomic rows for its exact species/compartment before inventory completeness is claimed. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n| `route_configuration` | compression-station | Verify model OEM circuit and actual modifications; do not treat a dryer-equipped or water-injected configuration as this scope. If external cooling water, glycol coolant or another formulation is actually used, add its individual supply/waste rows and review applicability instead of assuming zero use. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n| `asset_material_completeness` | compression-station | Equipment manufacture is outside the foreground transformation but its attributable service burden is retained through providers. Inventory actual packing, seals, lubricant, first fill, replacements and removed assets independently by their concrete physical identities, including returns/reuse/stocks; provider-included components must be reconciled without duplicate mass or burdens. | `ilcd-general-guide`, `doe-compressed-air` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 9
+              column: 1
+            end:
+              offset: 288
+              line: 9
+              column: 59
+          text: "# Oil-free compressed air from an air-cooled screw station"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8753
+              line: 60
+              column: 1
+            end:
+              offset: 8774
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_38986"
+      family: "allocation"
+      span:
+        start:
+          offset: 38986
+          line: 416
+          column: 1
+        end:
+          offset: 40300
+          line: 423
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `air_product_only` | compression-station | There is one reference air product and no assumed coproduct. Condensate, used oil and spent elements link to treatment under their actual waste identities, without water-product or recycling credits. Preserve rejected heat in the energy ledger; this non-exported-heat route does not invent a sold-heat product. If useful heat is actually exported, record its receiver, measured transfer and useful-temperature/service basis as a distinct product exchange and review the boundary extension; no automatic avoided-heat credit. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n| `physical_before_burden` | all inventory rows | Retain the complete physical wet/dry air, water, oil, filter and stock ledger before a separate allocated-burden ledger. For users with the same pressure/quality, share common station burdens by measured accepted outlet volumes on identical actual state/composition conventions; differing pressure/quality first requires separated measured operating regimes rather than mechanical volume allocation. Do not multiply physical outputs or internal links by burden-allocation shares. | `ilcd-general-guide`, `doe-compressed-air` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 9
+              column: 1
+            end:
+              offset: 288
+              line: 9
+              column: 59
+          text: "# Oil-free compressed air from an air-cooled screw station"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 38986
+              line: 416
+              column: 1
+            end:
+              offset: 39026
+              line: 416
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_66249"
+      family: "validation"
+      span:
+        start:
+          offset: 66249
+          line: 470
+          column: 1
+        end:
+          offset: 68374
+          line: 479
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `reference_unique` | delivered_air | Exactly one 1 m3 Volume product-accounting reference at the declared state. Reproduce positive locked Q from actual unique nonoverlapping first-acceptance events; subsequent leakage/relief/downgrade never erases an accepted event. Reconcile disjoint same-period same-basis net D_new/F_new_close/L_new; use D_new+F_new_close alone only if all other postgate net fates are proved absent. Reject gross loops, duplicate returned quantities, old-FG dispatch and retests as new acceptance. Q is not a second physical external output. Check all model-card Qb_i, old-cohort original bases, actual state/provider compatibility and complete unallocated raw outputs/stock/component/energy closure separately. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n| `route_and_balance` | compression-station | Check actual oil-free dry screws, air cooling, absence of separate drying, boundary components and OEM/modified circuit. Reconcile wet/dry gas, water, oil and energy ledgers separately and assess residuals within measurement uncertainty. Unverified coolant composition or quantity cannot be declared conforming. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n| `exact_id_and_fate` | all inventory rows | Verify each UUID with name, CAS where applicable, route, compartment, reference property and unit. An empty UUID remains a concrete atomic flow but has incomplete linkage; unresolved identity/supply/treatment compatibility cannot be reported as a complete dataset. Add atomic rows for actual additional exchanges first. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n| `no_proxy_emissions` | all elementary outputs | Do not replace pollutants with bulk carrier air, another industry wastewater or correction flows. Verify indoor-to-outdoor vent paths, aqueous-waste receivers and any direct water-body outlet. Use actual measurements/validated calculations for emissions, without default positives or fabricated zeroes. | `eu-ene-bref`, `doe-compressed-air`, `atlas-zrzt` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 230
+              line: 9
+              column: 1
+            end:
+              offset: 288
+              line: 9
+              column: 59
+          text: "# Oil-free compressed air from an air-cooled screw station"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 66249
+              line: 470
+              column: 1
+            end:
+              offset: 66271
+              line: 470
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "station_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_8753"
+      source_span:
+        start:
+          offset: 9854
+          line: 75
+          column: 1
+        end:
+          offset: 10289
+          line: 75
+          column: 436
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_fates"
+      identity_kind: "explicit"
+      unit_id: "normative_8753"
+      source_span:
+        start:
+          offset: 10290
+          line: 76
+          column: 1
+        end:
+          offset: 10728
+          line: 76
+          column: 439
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "route_configuration"
+      identity_kind: "explicit"
+      unit_id: "normative_8753"
+      source_span:
+        start:
+          offset: 10729
+          line: 77
+          column: 1
+        end:
+          offset: 11133
+          line: 77
+          column: 405
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "asset_material_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_8753"
+      source_span:
+        start:
+          offset: 11134
+          line: 78
+          column: 1
+        end:
+          offset: 11622
+          line: 78
+          column: 489
+    - pointer: "/allocation_rules/0"
+      rule_id: "air_product_only"
+      identity_kind: "explicit"
+      unit_id: "normative_38986"
+      source_span:
+        start:
+          offset: 39099
+          line: 420
+          column: 1
+        end:
+          offset: 39721
+          line: 420
+          column: 623
+    - pointer: "/allocation_rules/1"
+      rule_id: "physical_before_burden"
+      identity_kind: "explicit"
+      unit_id: "normative_38986"
+      source_span:
+        start:
+          offset: 39722
+          line: 421
+          column: 1
+        end:
+          offset: 40298
+          line: 421
+          column: 577
+    - pointer: "/validation_rules/0"
+      rule_id: "reference_unique"
+      identity_kind: "explicit"
+      unit_id: "normative_66249"
+      source_span:
+        start:
+          offset: 66344
+          line: 474
+          column: 1
+        end:
+          offset: 67134
+          line: 474
+          column: 791
+    - pointer: "/validation_rules/1"
+      rule_id: "route_and_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_66249"
+      source_span:
+        start:
+          offset: 67135
+          line: 475
+          column: 1
+        end:
+          offset: 67546
+          line: 475
+          column: 412
+    - pointer: "/validation_rules/2"
+      rule_id: "exact_id_and_fate"
+      identity_kind: "explicit"
+      unit_id: "normative_66249"
+      source_span:
+        start:
+          offset: 67547
+          line: 476
+          column: 1
+        end:
+          offset: 67965
+          line: 476
+          column: 419
+    - pointer: "/validation_rules/3"
+      rule_id: "no_proxy_emissions"
+      identity_kind: "explicit"
+      unit_id: "normative_66249"
+      source_span:
+        start:
+          offset: 67966
+          line: 477
+          column: 1
+        end:
+          offset: 68372
+          line: 477
+          column: 407
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8753"
+      source_span:
+        start:
+          offset: 8753
+          line: 60
+          column: 1
+        end:
+          offset: 8774
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8753"
+      source_span:
+        start:
+          offset: 8802
+          line: 64
+          column: 1
+        end:
+          offset: 9781
+          line: 71
+          column: 163
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_38986"
+      source_span:
+        start:
+          offset: 38986
+          line: 416
+          column: 1
+        end:
+          offset: 39026
+          line: 416
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_66249"
+      source_span:
+        start:
+          offset: 66249
+          line: 470
+          column: 1
+        end:
+          offset: 66271
+          line: 470
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:490640c6426083a9a7e0eb38a258dd23632779911f4d400a4779c55d210dc9f9"
+  generated_content_sha256: "sha256:f68d7ee8c404acb70af7cf3d37c89fdbec4915973246471f5f223e07478f45cb"

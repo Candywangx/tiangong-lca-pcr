@@ -1,0 +1,338 @@
+{
+  "code": "31511",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "f8224ee2150a04ba26e4ff882d16deb0d741479f226abb24c498edaf081d2bcd",
+    "pcr.en-US.md": "19acb68d426bc3fc0e47570184d31b1b2b915f80d262e238e7e7801fdbd5d3e8",
+    "pcr.zh-CN.md": "c41d04bf843867cf3385489c23135121de9a42af1d534bc5db3c1980a43862cb",
+    "structured.yaml": "223da8c2ac18ae1d24c1163096c4d1a121cbe27cc2482a789a2e63db9e54e037"
+  },
+  "author_commit": "a5979ac7e42ae6c1476c6ef42fed0939d6c971b9",
+  "complete_inputs_and_derivations": [
+    {
+      "case": "first_acceptance_with_post_acceptance_loss",
+      "inputs": {
+        "unique_first_acceptance_events": [
+          {
+            "id": "A1",
+            "net_wood_kg": 100,
+            "dry_basis_moisture": 0.12
+          }
+        ],
+        "D_new_kg": 60,
+        "FG_new_kg": 30,
+        "L_new_loss_kg": 10,
+        "all_destination_dry_basis_moisture": 0.12,
+        "cohort_burden_units": 100
+      },
+      "derivation": [
+        "Q=sum(unique event masses)=100 kg",
+        "D_new+FG_new+L_new=60+30+10=100 kg",
+        "All destinations use u0=0.12; no moisture conversion difference.",
+        "Dry wood: 100/1.12=(60+30+10)/1.12=625/7 kg",
+        "Correct normalization=100/100=1 unit/kg; incomplete two-term denominator=90 kg gives 100/90=10/9 units/kg."
+      ],
+      "computed": {
+        "Q_kg": {
+          "exact": "100",
+          "decimal": 100
+        },
+        "bridge_kg": {
+          "exact": "100",
+          "decimal": 100
+        },
+        "dry_wood_kg": {
+          "exact": "625/7",
+          "decimal": 89.28571428571429
+        },
+        "correct_burden_per_kg": {
+          "exact": "1",
+          "decimal": 1
+        },
+        "incorrect_two_term_burden_per_kg": {
+          "exact": "10/9",
+          "decimal": 1.1111111111111112
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "linked_return_closing_rework_and_reacceptance",
+      "inputs": {
+        "original_event_Q0_kg": 100,
+        "u0": 0.12,
+        "gross_dispatch_kg": 65,
+        "linked_customer_return_kg": 5,
+        "closing_FG_before_rework_completion_kg": 20,
+        "closing_rework_WIP_kg": 10,
+        "post_acceptance_scrap_kg": 10,
+        "WIP_contents": "5 kg customer-returned plus 5 kg transferred from accepted FG; disjoint from closing FG",
+        "rework_completion_later": {
+          "reaccepted_into_FG_kg": 6,
+          "failed_and_scrapped_kg": 4,
+          "actual_rework_electricity_kWh": 8
+        },
+        "all_mass_quantities_on_original_acceptance_basis": true
+      },
+      "derivation": [
+        "Before rework completion: D_new=65-5=60 kg; FG_new=20 kg; L_new=10 kg closing WIP+10 kg scrap=20 kg.",
+        "Bridge: Q0=60+20+20=100 kg. The returned 5 kg is subtracted from dispatch and counted only within closing WIP.",
+        "After rework completion: 10 kg WIP -> 6 kg reaccepted FG+4 kg failed scrap. No new first-acceptance event.",
+        "Final bridge over the original cohort lifetime: Q0=60+(20+6)+(10+4)=100 kg; WIP is no longer simultaneously counted.",
+        "Actual 8 kWh rework service remains 8/100=0.08 kWh/kg of original Q0, not 8/6 and not charged to an unrelated new-production Q."
+      ],
+      "computed": {
+        "D_new_kg": 60,
+        "intermediate_bridge_kg": 100,
+        "final_bridge_kg": 100,
+        "additional_Q_from_reacceptance_kg": 0,
+        "rework_electricity_per_original_kg": {
+          "exact": "2/25",
+          "decimal": 0.08
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "entire_rework_attempt_fails_in_later_period",
+      "inputs": {
+        "original_Q0_kg": 100,
+        "original_cohort_burden_units": 100,
+        "later_rework_input_kg_original_basis": 10,
+        "successful_output_kg": 0,
+        "failed_scrap_kg": 10,
+        "actual_failed_activity_burden_units": 12,
+        "new_period_unique_first_acceptance_Q_kg": 0
+      },
+      "derivation": [
+        "Original event Q0 remains 100 kg; moving 10 kg from rework to scrap changes the original L destination only.",
+        "The failed activity is 12 units despite zero successful output. Retain the original 100 units and actual 12 units once.",
+        "Original cumulative cohort result=(100+12)/100=1.12 units/kg; separately traceable service addition=12/100=0.12 units/kg.",
+        "New-period Q=0 emits no new-production per-kg result. Neither 12/0 nor 12/another cohort Q is permitted."
+      ],
+      "computed": {
+        "original_Q0_kg": 100,
+        "new_Q_kg": 0,
+        "cumulative_burden_per_original_kg": {
+          "exact": "28/25",
+          "decimal": 1.12
+        },
+        "failed_service_per_original_kg": {
+          "exact": "3/25",
+          "decimal": 0.12
+        },
+        "new_production_normalization": "prohibited"
+      },
+      "pass": true
+    },
+    {
+      "case": "opening_FG_and_purchased_finished_sheets_do_not_add_Q",
+      "inputs": {
+        "old_cohort_original_Q0_kg": 80,
+        "opening_accepted_FG_kg": 40,
+        "old_FG_dispatch_kg": 30,
+        "old_FG_closing_kg": 10,
+        "old_cohort_original_production_burden_units": 80,
+        "old_FG_actual_dispatch_service_units": 8,
+        "purchased_finished_sheets_kg": 20,
+        "purchased_sheet_dispatch_kg": 15,
+        "purchased_sheet_closing_kg": 5,
+        "new_unique_first_acceptance_Q_kg": 100,
+        "new_D_kg": 60,
+        "new_FG_kg": 30,
+        "new_post_acceptance_loss_kg": 10,
+        "all_finished_sheet_dry_basis_moisture": 0.12,
+        "external_log_input_kg": 168,
+        "log_dry_basis_moisture": 0.6,
+        "pre_acceptance_external_wood_waste_dry_kg": {
+          "exact": "110/7",
+          "decimal": 15.714285714285714
+        }
+      },
+      "derivation": [
+        "New Q=100 kg only. Old dispatch 30 kg and purchased dispatch 15 kg add zero; 60+30+10=100 is the new-cohort destination bridge.",
+        "Old cohort: opening 40=dispatch30+closing10; later service=8/old original Q0 of 80=0.1 units/kg. Inherited 80-unit production is not rebooked in the new cohort.",
+        "Purchased finished sheets: 20=15+5 kg, kept outside the log-fed route pending method review; no production acceptance event is created.",
+        "Whole-mill dry ledger uses actual physical inputs, external destinations and all stocks. First acceptance Q is an internal event and appears neither as extra external input nor extra output.",
+        "Dry inputs=40/1.12+20/1.12+168/1.6=1110/7 kg.",
+        "Closing dry stock=(10+5+30)/1.12=1125/28 kg; dry dispatch=(30+15+60)/1.12=375/4 kg; post-acceptance dry loss=10/1.12=125/14 kg; pre-acceptance waste=168/1.6-100/1.12=110/7 kg.",
+        "Dry outputs+closing=1125/28+375/4+125/14+110/7=1110/7 kg. Adding Q/1.12 again would incorrectly add 625/7 kg."
+      ],
+      "computed": {
+        "new_Q_kg": 100,
+        "opening_and_purchased_event_increment_kg": 0,
+        "old_service_units_per_original_kg": {
+          "exact": "1/10",
+          "decimal": 0.1
+        },
+        "physical_dry_lhs_kg": {
+          "exact": "1110/7",
+          "decimal": 158.57142857142858
+        },
+        "physical_dry_rhs_kg": {
+          "exact": "1110/7",
+          "decimal": 158.57142857142858
+        },
+        "physical_residual_dry_kg": {
+          "exact": "0",
+          "decimal": 0
+        },
+        "incorrect_extra_Q_dry_kg": {
+          "exact": "625/7",
+          "decimal": 89.28571428571429
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "measured_destination_moisture_conversion",
+      "inputs": {
+        "unique_event_Q_kg": 100,
+        "original_dry_basis_u0": 0.12,
+        "D_current_kg": 55,
+        "D_current_u": 0.1,
+        "FG_current_kg": 35,
+        "FG_current_u": 0.25,
+        "independently_measured_loss_dry_kg": {
+          "exact": "79/7",
+          "decimal": 11.285714285714286
+        }
+      },
+      "derivation": [
+        "D_eq=55/(1+0.10)*(1+0.12)=56 kg original-acceptance equivalent.",
+        "FG_eq=35/(1+0.25)*(1+0.12)=31.36 kg original-acceptance equivalent.",
+        "Measured dry loss=79/7 kg; L_eq=(79/7)*1.12=12.64 kg.",
+        "Q=56+31.36+12.64=100 kg. Moisture changes stay in the water ledger; do not subtract them from Q or count the same surviving dry wood as loss."
+      ],
+      "computed": {
+        "D_eq_kg": {
+          "exact": "56",
+          "decimal": 56
+        },
+        "FG_eq_kg": {
+          "exact": "784/25",
+          "decimal": 31.36
+        },
+        "L_eq_kg": {
+          "exact": "316/25",
+          "decimal": 12.64
+        },
+        "loss_dry_kg": {
+          "exact": "79/7",
+          "decimal": 11.285714285714286
+        },
+        "bridge_kg": {
+          "exact": "100",
+          "decimal": 100
+        }
+      },
+      "pass": true
+    }
+  ],
+  "case_payload_sha256": "1ba0426583afdea2b733b6dc64556277d1e4a062c849d371468ec686febc3724",
+  "additional_basis_and_negative_cases": {},
+  "independently_recomputed_checks": [
+    {
+      "case": "loss",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "100=60+30+10 all at original measuredu0",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "net_return_WIP",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        20,
+        10,
+        10
+      ],
+      "formula": "100=60net+20FG+10WIP+10scrap",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "later_failed_rework",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        26,
+        14
+      ],
+      "formula": "oldWIP10 becomes6FG+4scrap without Q",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "moisture_bridge",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        56,
+        31.360000000000003,
+        12.640000000000002
+      ],
+      "formula": "100=56+31.36+12.64 original-u0 equivalent; actual water separately",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "failed_service",
+      "left_terms": [
+        1.12
+      ],
+      "right_terms": [
+        1.12
+      ],
+      "formula": "all actual failed service retained under originalQ0",
+      "recomputed_left": 1.12,
+      "recomputed_right": 1.12,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "whole_mill_dry",
+      "left_terms": [
+        35.71428571428571,
+        17.857142857142854,
+        105
+      ],
+      "right_terms": [
+        40.17857142857142,
+        93.74999999999999,
+        8.928571428571427,
+        15.714285714285714
+      ],
+      "formula": "opening/purchased/log dry input = all actual destinations; Q not extra output",
+      "recomputed_left": 158.57142857142856,
+      "recomputed_right": 158.57142857142856,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}
