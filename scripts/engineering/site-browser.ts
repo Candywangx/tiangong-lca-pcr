@@ -367,7 +367,7 @@ function currentNetworkIdle(page:Page):()=>Promise<void> {
  };
 }
 async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{width:number;height:number},documentPath:string,languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
- const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
+ const {checks}=evidence;
  for(const scenario of browserLanguageScenarios(languageCodes)){
   const context=await browser.newContext({viewport,locale:scenario.languages[0]??languageCodes.en!});
   try {
@@ -408,21 +408,33 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
   await selectLanguage('English');assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),'en');
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');checks.push('manual English selection persists for next neutral entry');
  }finally{await context.close();}
+ await checkBlockedStorageLanguagePreference(browser,origin,viewport,languageCodes,evidence);
+}
+/** Exercise storage denial against the shipped selector; phase observation never changes error policy. */
+export async function checkBlockedStorageLanguagePreference(browser:Browser,origin:string,viewport:{width:number;height:number},languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence,observePhase:(phase:string)=>void=()=>{}):Promise<void>{
+ const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
  const blocked=await browser.newContext({viewport,locale:'en-US'});
  try {
   await blocked.addInitScript(()=>{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>{throw new Error('Storage blocked for qualification');}});});
   const page=await blocked.newPage(),errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
-  const trace=observeSiteRequests(page,{engine:evidence.engine,viewport:evidence.viewport},failedRequests,prefetchUrls);trace.setPhase('blocked-storage-entry');
+  const trace=observeSiteRequests(page,{engine:evidence.engine,viewport:evidence.viewport},failedRequests,prefetchUrls);
+  const setPhase=(value:string)=>{trace.setPhase(value);observePhase(value);};setPhase('blocked-storage-entry');
   try {const waitForCurrentRequests=currentNetworkIdle(page);
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');
   await settleLanguage(page,languageCodes.en!);
-  trace.setPhase('blocked-storage-select');await openLanguageSelector(page);
-  await page.getByRole('button',{name:'中文',exact:true}).last().click();await page.waitForURL(origin+'/zh/');await settleLanguage(page,languageCodes.zh!);await waitForCurrentRequests();trace.setPhase('blocked-storage-reload');await page.reload({waitUntil:'networkidle'});
+  setPhase('blocked-storage-select');await openLanguageSelector(page);
+  setPhase('blocked-storage-menu-ready');
+  // Same-document entry and opening the menu can start work after lifecycle idle.
+  // Finish those requests before the qualifier intentionally replaces the document.
+  await waitForCurrentRequests();
+  setPhase('blocked-storage-navigate');
+  await page.getByRole('button',{name:'中文',exact:true}).last().click();await page.waitForURL(origin+'/zh/');await settleLanguage(page,languageCodes.zh!);await waitForCurrentRequests();setPhase('blocked-storage-reload');await page.reload({waitUntil:'networkidle'});
   for(const request of failedRequests)if(isCancelledSitePrefetch(request,prefetchUrls))ignoredPrefetchAborts.push(request.url);
   assert.equal(new URL(page.url()).pathname,'/zh/');assert.deepEqual(errors,[]);assert.deepEqual(failedRequests.filter(request=>!isCancelledSitePrefetch(request,prefetchUrls)),[]);checks.push('blocked storage permits fallback, manual Chinese and localized reload');
   }finally{trace.stop();}
  }finally{await blocked.close();}
 }
+
 interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
 export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserEngine,origin:string,proof:ProviderRuntime,report:string):Promise<ChapterCompatibilityEvidence[]>{
  const results:ChapterCompatibilityEvidence[]=[];
