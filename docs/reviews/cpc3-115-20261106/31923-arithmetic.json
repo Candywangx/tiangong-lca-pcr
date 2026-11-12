@@ -1,0 +1,129 @@
+{
+  "reviewer": "codex-primary-controller /root",
+  "reviewed_at_utc": "2026-11-08T07:08:58.845082+00:00",
+  "synthetic_only": true,
+  "not_defaults_ranges_or_factory_data": true,
+  "cases": [
+    {
+      "case": "uniform rectangular component",
+      "inputs": {
+        "length_m": 1,
+        "width_m": 0.02,
+        "thickness_m": 0.002
+      },
+      "root_computed": 4e-05,
+      "expected": 4e-05,
+      "unit": "m3 component"
+    },
+    {
+      "case": "curved component with linearly varying area",
+      "inputs": {
+        "actual_path_m": 1.2,
+        "A0_m2": 1e-05,
+        "A1_m2": 3e-05,
+        "assumption": "centroid-normal sections, linear A(s), no missing components"
+      },
+      "root_computed": 2.4e-05,
+      "expected": 2.4e-05,
+      "unit": "m3 component"
+    },
+    {
+      "case": "complete toy set no projected-crossing subtraction",
+      "inputs": {
+        "component_volumes_m3": [
+          4e-05,
+          2.4e-05
+        ]
+      },
+      "root_computed": 6.400000000000001e-05,
+      "expected": 6.4e-05,
+      "unit": "m3 toy complete set, not representative basket"
+    },
+    {
+      "case": "new dispatch plus new closing FG",
+      "inputs": {
+        "N1": 20,
+        "measured_v1_m3": 0.0001,
+        "N2": 30,
+        "measured_v2_m3": 0.0002,
+        "old_FG_m3_excluded": 0.001
+      },
+      "root_computed": 0.008,
+      "expected": 0.008,
+      "unit": "m3 accepted"
+    },
+    {
+      "case": "inherited plus current accepted burden",
+      "inputs": {
+        "raw_MJ": 0.2,
+        "WIP_MJ": 0.3,
+        "current_MJ": 1.1,
+        "accepted_m3": 0.008
+      },
+      "root_computed": 200.0,
+      "expected": 200,
+      "unit": "MJ/m3"
+    },
+    {
+      "case": "original normalized vector recovered once",
+      "inputs": {
+        "old_intensity_MJ_m3": 100,
+        "original_m3": 0.005
+      },
+      "root_computed": 0.5,
+      "expected": 0.5,
+      "unit": "MJ; same inherited vector, not an additional charge"
+    },
+    {
+      "case": "later old-cohort service correction",
+      "inputs": {
+        "service_MJ": 0.1,
+        "original_accepted_m3": 0.005
+      },
+      "root_computed": 20.0,
+      "expected": 20,
+      "unit": "MJ/m3 original cohort"
+    },
+    {
+      "case": "dry-matter balance",
+      "inputs": {
+        "in_kg": 5.6,
+        "accepted_kg": 5,
+        "offcut_kg": 0.4,
+        "reject_kg": 0.2
+      },
+      "root_computed": -3.885780586188048e-16,
+      "expected": 0,
+      "unit": "kg residual"
+    },
+    {
+      "case": "water balance",
+      "inputs": {
+        "strip_kg": 2.4,
+        "supply_kg": 4,
+        "accepted_kg": 0.5,
+        "offcut_kg": 0.1,
+        "reject_kg": 0.1,
+        "drain_kg": 0.2,
+        "evaporation_kg": 5.5
+      },
+      "root_computed": 8.881784197001252e-16,
+      "expected": 0,
+      "unit": "kg residual"
+    },
+    {
+      "case": "measured synthetic carbon terms",
+      "inputs": {
+        "in_kg": 2.8,
+        "accepted_kg": 2.5,
+        "offcut_kg": 0.2,
+        "reject_kg": 0.1
+      },
+      "root_computed": -1.942890293094024e-16,
+      "expected": 0,
+      "unit": "kg residual; no assumed carbon fraction"
+    }
+  ],
+  "zero_or_missing_denominator": "retain raw amounts, no division or automatic zero; inconclusive",
+  "all_cases_passed": true
+}

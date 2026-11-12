@@ -1,0 +1,75 @@
+import fs from "node:fs";
+import path from "node:path";
+import assert from "node:assert/strict";
+import {createHash} from "node:crypto";
+import {pathToFileURL} from "node:url";
+import {execFileSync} from "node:child_process";
+import {parseHTML} from "../packages/pcr-docs/node_modules/linkedom/esm/index.js";
+import {renderMarkdown,finalizePart,verifyRenderedBlocks,sha256} from "../packages/pcr-docs/scripts/markdown.ts";
+import {parseSiteManifest} from "../packages/pcr-docs/lib/site-contracts.ts";
+import {parseGenerationReport} from "../packages/pcr-docs/scripts/generation-report.ts";
+import type {SourceBlock} from "../packages/pcr-docs/scripts/markdown.ts";
+const baseline=fs.realpathSync(process.argv[2]!),output=path.resolve(process.argv[3]!);
+assert.ok(!fs.existsSync(output));fs.mkdirSync(output,{recursive:true});
+const root=fs.realpathSync(process.cwd()),git=(...args:string[])=>execFileSync("git",args,{encoding:"utf8"}).trim();
+const sourceCommit=git("rev-parse","HEAD");
+const siteBytes=fs.readFileSync(path.join(baseline,"site.json")),reportBytes=fs.readFileSync(path.join(baseline,"report.json"));
+const site=parseSiteManifest(siteBytes),report=parseGenerationReport(reportBytes.toString("utf8"));
+assert.equal(site.sourceCommit,report.sourceCommit);
+const previousRenderer: {renderMarkdown: typeof renderMarkdown} = await import(pathToFileURL(fs.readFileSync(".reports/baseline-renderer-path.txt","utf8").trim()).href);
+const documentsByPath=new Map(report.documents.map(document=>[document.sourcePath,document]));
+for(const record of site.records)for(const language of ["en-US","zh-CN"])assert.ok(documentsByPath.has(path.posix.join(record.sourcePath,"pcr."+language+".md")));
+assert.equal(site.records.length,1541);
+const sourceGroups: {sourcePath:string;sourceSha256:string;oldParts:number;newParts:number;flattenedHastSha256:string;unchangedPartsMetadata:boolean}[]=[];
+const escape=(text:string)=>text.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+const selected=report.documents,results=[];
+let checkedPages=0,newPages=0,changed=0;
+for(const [index,document]of selected.entries()){
+ const source=fs.readFileSync(path.join(root,document.sourcePath),"utf8");assert.equal(sha256(source),document.sourceSha256);
+ const old=JSON.parse(fs.readFileSync(path.join(baseline,document.inventoryPath),"utf8")) as {nodes:SourceBlock[];pages:{url:string;sourceNodeIds:string[]}[];anchorTargets:Record<string,string>};
+ const pages=site.pages.filter(page=>page.sourcePath===document.sourcePath).sort((a,b)=>a.part!.index-b.part!.index);
+ assert.equal(pages.length,document.pages);
+ const originalRendered=previousRenderer.renderMarkdown(source,document.sourcePath);
+ const rendered=renderMarkdown(source,document.sourcePath);assert.deepEqual(rendered.inventory,old.nodes);assert.deepEqual(rendered.inventory,originalRendered.inventory);
+ assert.deepEqual(rendered.parts.flatMap(part=>part.nodes),originalRendered.parts.flatMap(part=>part.nodes));
+ if(rendered.parts.length===originalRendered.parts.length)assert.deepEqual(rendered.parts,originalRendered.parts);
+ for(const part of rendered.parts){const original=originalRendered.parts.find(before=>before.sourceNodeIds[0]===part.sourceNodeIds[0]);assert.ok(original);assert.deepEqual(part.context,original.context);}
+ sourceGroups.push({sourcePath:document.sourcePath,sourceSha256:document.sourceSha256,oldParts:originalRendered.parts.length,newParts:rendered.parts.length,flattenedHastSha256:sha256(JSON.stringify(rendered.parts.flatMap(part=>part.nodes))),unchangedPartsMetadata:rendered.parts.length===originalRendered.parts.length});
+ const urls=rendered.parts.map((part,i)=>i?pages[0]!.url+"chapters/"+part.slug+"/":pages[0]!.url);
+ const anchors=new Map(rendered.parts.flatMap((part,i)=>part.anchors.map(anchor=>[anchor,urls[i]+"#"+encodeURIComponent(anchor)] as const)));
+ for(const [alias,id]of Object.entries(rendered.anchorAliases)){const target=anchors.get(id);assert.ok(target);anchors.set(alias,target);}
+ assert.deepEqual([...anchors.keys()].sort(),Object.keys(old.anchorTargets).sort());
+ const before=old.pages.flatMap(page=>page.sourceNodeIds),after=rendered.parts.flatMap(part=>part.sourceNodeIds);
+ assert.deepEqual(after,before);assert.equal(new Set(after).size,rendered.inventory.length);
+ const newOwners=new Map(rendered.parts.flatMap((part,i)=>part.sourceNodeIds.map(id=>[id,urls[i]!] as const)));
+ for(const page of pages){
+  const title=page.sourceHeadingId?`<h1 id="${escape(page.sourceHeadingAnchor!)}" data-source-node="${page.sourceHeadingId}">${escape(rendered.title)}</h1>`:"";
+  const body=fs.readFileSync(path.join(baseline,page.htmlPath!),"utf8");
+  const dom=parseHTML("<html><body>"+title+body+"</body></html>").document;
+  verifyRenderedBlocks(dom,old.nodes,page.sourceNodeIds);
+ }
+ const candidate=[];
+ for(const [i,part]of rendered.parts.entries()){
+  const html=finalizePart(part,{hrefForAnchor:id=>{const target=anchors.get(rendered.anchorAliases[id]??id);assert.ok(target);return target;}});
+  const title=part.sourceHeadingId?`<h1 id="${escape(rendered.sourceHeadingAnchor!)}" data-source-node="${part.sourceHeadingId}">${escape(rendered.title)}</h1>`:"";
+  const dom=parseHTML("<html><body>"+title+html+"</body></html>").document;
+  verifyRenderedBlocks(dom,rendered.inventory,part.sourceNodeIds);
+  for(const anchor of part.anchors)assert.ok(dom.getElementById(anchor),document.sourcePath+" missing "+anchor);
+  candidate.push({url:urls[i],sourceNodeIds:part.sourceNodeIds,anchors:part.anchors,context:part.context,htmlBytes:Buffer.byteLength(html),htmlSha256:sha256(html)});
+ }
+ checkedPages+=pages.length;newPages+=candidate.length;
+ if(pages.length!==candidate.length){
+  changed++;
+  const key=createHash("sha256").update(document.sourcePath).digest("hex").slice(0,24),file="documents/"+key+".json";
+  const partRouting=old.pages.map(page=>{const targets=[...new Set(page.sourceNodeIds.map(id=>newOwners.get(id)))];assert.equal(targets.length,1);return{oldUrl:page.url,newUrl:targets[0],sourceNodeIds:page.sourceNodeIds};});
+  const anchorRouting=Object.entries(old.anchorTargets).map(([anchor,oldTarget])=>({anchor,oldTarget,newTarget:anchors.get(anchor)}));
+  const detail={sourcePath:document.sourcePath,sourceSha256:document.sourceSha256,sourceNodeInventorySha256:sha256(JSON.stringify(old.nodes)),allSourceBlocksPresentOnceInOriginalRenderedOrder:true,originalAndCandidateRenderedInventoriesVerified:true,partRouting,anchorRouting,candidate};
+  fs.mkdirSync(path.join(output,"documents"),{recursive:true});fs.writeFileSync(path.join(output,file),JSON.stringify(detail,null,2)+"\n");
+  results.push({sourcePath:document.sourcePath,sourceSha256:document.sourceSha256,oldPages:pages.length,newPages:candidate.length,detail:file,detailSha256:sha256(fs.readFileSync(path.join(output,file)))});
+ }
+ if((index+1)%25===0)console.log(JSON.stringify({event:"chapter-layout-audit",checked:index+1,total:selected.length,oldPages:checkedPages,newPages}));
+}
+const saved=checkedPages-newPages;
+const summary={purpose:"Rendered-inventory, exact flattened HAST and route comparison over all baseline source documents; not a complete product qualification",baselineSourceCommit:site.sourceCommit,engineeringSourceCommit:sourceCommit,baselineSiteSha256:sha256(siteBytes),baselineReportSha256:sha256(reportBytes),softTargetBytes:180000,tailThresholdBytes:117000,coalescingCeilingBytes:540000,selectedDocuments:selected.length,changedDocuments:changed,oldSelectedPages:checkedPages,newSelectedPages:newPages,savedPages:saved,baselineActualExportFilesAfterExistingAliasProjection:21625,projectedExportFiles:21625-saved*4,projectionRequiresFreshActualBuild:true,requiredPcrSourceGroups:site.records.length*2,completeRequiredLanguages:true,allFlattenedHastExactlyEqual:true,unaffectedPartsMetadataExactlyEqual:true,allOriginalSourceBytesUnchanged:true,originalAndCandidateRenderedInventoriesVerified:true,allSourceBlocksPresentOnceInOriginalRenderedOrder:true,records:results};
+fs.writeFileSync(path.join(output,"source-groups.json"),JSON.stringify(sourceGroups,null,2)+"\n");
+fs.writeFileSync(path.join(output,"summary.json"),JSON.stringify(summary,null,2)+"\n");console.log(JSON.stringify({...summary,records:undefined},null,2));

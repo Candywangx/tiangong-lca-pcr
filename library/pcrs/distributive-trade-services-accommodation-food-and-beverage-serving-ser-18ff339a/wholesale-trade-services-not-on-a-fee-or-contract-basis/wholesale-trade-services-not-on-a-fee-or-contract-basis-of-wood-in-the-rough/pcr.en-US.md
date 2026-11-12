@@ -1,8 +1,552 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-wood-in-the-rough
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Wholesale trade services, not on a fee or contract basis, of wood in the rough
+# Own-account wholesale of fresh bark-on Norway spruce sawlogs
+
+## 1. Scope and Applicability
+
+Actual freshlyharvested BARK-ON NORWAY SPRUCE (Picea abies) SAWLOGS, prepared at the actual source gate and received for ambient own-account B2B stock/condition/handling and FINAL commercial acceptance. Exclude sawnwood, veneer/pulp/fuel/other species/loggrades, merchant felling/extraction/delimbing/bucking/debarking/sawing/kilndrying/preservation/repack/use, retail/feeagency/storage-only. Actual additional operations require route review. Incoming logs are distinct from sawnproduct: no sawn moisture/density/dimension/grade defaults.
+
+This service add-on excludes all actual complete prepared-log upstream incllostcommodity. Separate matched sourcegate plus real receipt-haul coverage must reach the actual receiving state without gaps/overlap; required additional demand/missingstages ACTUALLY integrated outsideonce with completedstatus/link/nativequantity/timezone/source/owner/stage-losscoverage after exclusive terminal assignment and identicalbaselinecoverage beforechainready. Material03111 roadside producer can be upstream only if actualspecies/grade/state/gate/coverage match; its1m3solidUNDERBARK/loadingreadyROADSIDE and conditionalcompletedfeed entry do not replace FINALCount wholesale. Do not repeat growth/harvest/preparation or omit actual beyondgate receipttransport. Real merchant/receiver transport-treatment once; logs/bark/water nonexchange stock, no automatic growth/sequestration/decay emissions.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-wood-in-the-rough |
+| classification_refs | CPC3 61093 woodinrough, narrower03111 freshbark-on Piceaabies sawlogs only |
+| covered_products | Actual freshbarkon Norwayspruce sawlog ambient owned-resold FINAL B2B consignmentservice |
+| excluded_products | Other species/usegrades/sawnproducts/merchant forestharvest-extract-preparation-debark-saw-dry-preserve/use; retail/agency/storageonly |
+| representative_product | Actualspecies/lot/logIDs/sawgrade/solid-stack/under-overbark/native dimensions-scaling/water-density/netmass-support/state receiving and FINALgate |
+| production_route | Actualpreparedsource loggate + matched actualreceipttransport -> ownershipreceive/ambientstock/conditionhandling -> FINAL B2Bacceptance/resale |
+| market_state | Physical merchantCount; actual wood-bark-water/logvolume-mass-count nonexchangeaudit, not forestgrowth/sawnwood output |
+
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Completed own-account fresh bark-on Norway-spruce sawlog wholesale consignment |
+| How much | 1 Item(s) |
+| How well | Actual freshbarkon Piceaabies sawlog speciesgradequantity-state/scaling/businessacceptance sourced, no timberperformance/futuredrying guarantee |
+| How long or cycle | Actualreceipt-to-FINAL, stock/reporting periods/fullassetphases, noacceptance resources retained |
+| reference_flow_link | `accepted_service` |
+
+| Field | Value |
+| --- | --- |
+| reference_amount | 1 |
+| reference_product_flow | Completed own-account fresh bark-on Norway-spruce sawlog wholesale consignment |
+| reference_flow_property | Count `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| reference_unit_group | Count unit group `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| reference_unit | Item(s) |
+| required_qualifiers | consignment_id; merchant_purchase_ownership_resale; actual_B2B_buyer; FINAL_gate_time_source_reversals; Picea_abies_species_lot_log_ids; fresh_harvest_bark_on_sawlog_grade; actual_prepared_source_receiving_gate; solid_versus_stacked_volume_basis; underbark_overbark_wood_bark_denominator; native_dimensions_scaleformula_calibration; actual_barkcorrection_sample_source; water_wetdry_definitions_sample; representative_density_temperature_native_source; netmass_support_count_state_genealogy; actual_start_end_timezone_duration_source; source_terminal_baseline_completedintegration_receipthaul_owner |
+
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| log_volume | nonexchange logaudit | Actual solidwood Volume; Count; Length | Native length/diameter and m3 with solid-stack/under-overbark basis | Actualspeciesgrade/logIDs, calibrated scaleformula and all native dimension/input/rounding/taper/sample/source evidence. Solidwood not stackvoid volume; stack-to-solid only actualcompatible stackingfactor, no universal taper/dimension/tabledefaults or garbledOCRformula. | forest-research-sawlog-tables-1987 |
+| bark_denominator | wood/bark volumeviews | Volume and volume ratio, NOT mass fraction | Compatible m3wood-under/m3bark/m3over; ratio or percent | For sameactualdefinitions/sample r_bark=V_bark/V_under, V_over=V_under*(1+r_bark), V_under=V_over/(1+r_bark). Percentfirst/100 only actualpercent of UNDERBARKWOODVOLUME. Not bark/overbarkmass or bark/overbarkvolume, not inferred barkmass or merchantdebarking. Actual localcorrection/source required, not oldtablepercentage. | forest-research-sawlog-tables-1987 |
+| water_density_mass | actual wood/bark/water massstate | Mass; water-only fraction/ratio; matched Mass/Volume density | Native mass/volume/density/temperature units with samplebasis | Water-only same-sample w_wet=m_water/m_as_received; m_nonwater=m_as_received*(1-w_wet); compatible r_dry=m_water/m_nonwater gives w_wet=r_dry/(1+r_dry), percentfirst. LODothervolatile notwater/drywoodloss. Density conversion only actual species/component/bark-volume/moisture-state/tempunit/source; sawn density/moisture not freshlog defaults. Netmass excludes actual cargo-external support tare, retains bark/water. | metsa-spruce-log-sawn-boundary |
+| FINAL_reference | serviceinventory | Count denominator; each actual physical row property | Item(s) denominator; native row unit per Item(s) | Actualmerchantpurchase/ownership/resale/B2Bbuyer/FINALgate-time-source/reversals establish uniqueN. Complete alluser/event/period native physical assignment then positiveN once, N0resources retainednodivision. Underbarkm3producer not Countservice identity. |  |
+
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Actual freshharvest bark-on Piceaabies sawlog preparedsource/receiving gate, speciesgrade/logIDs/scaling/solidstack/under-overbark/nativewater-density-mass/support/state |
+| starting_condition_role | Inherited completeprepared freshlogs for wholesale, not standingforest or sawn/dried/treated wood |
+| product_classification_scope | Narrower61093/03111 Norway spruce bark-on sawlogs only, not allroughwood/veneer/pulp/fuel logs |
+| recursive_input_rule | Tradedwood/bark/water/retainedsupport/returns/closing nonexchange stock, not consumedtimber/water or newforestgrowth. No recursive samewholesale sale. |
+| upstream_dataset_requirement | Actualcomplete prepared-log sourcegate plus matched real receipttransport coverage once incllostcommodity, outside service. Existing03111m3solidUNDERBARK/loadingreadyROADSIDE producer possibleonlyactualspeciesgrade-state-gate/sourcecoverage match; conditionalcompletedfeed bypasses alreadycompleted duties without dropping upstream. Assemble actualbeyondgatehaul/missingstages/requiredadditionaldemand outsideonce after identicalbaselinecoverage/exclusiveterminalowners, with actualcompletedintegration qty-status-link-timezone-source-owner-coverage beforechainready. |
+| disclosure | Actual loglot/speciesgrade/freshbarkon/sourcegate/scaleformula-dimension-calibration/barkratio-denominator/samplewaterdensity/netmass-support/time/FINAL, complete source-terminal-baseline-additionalintegration/receipttransport and resource/provider/asset/freight/receiver owners/unknowns |
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| source_once | commodityinterface | Preparedlog including lostupstream and real receipt-haul outsidecoverage once, actualmerchant/receiver treatment once. Producer m3roadside notFINALCount; matchedfeed cannot duplicate growth/harvest/preparation or omit beyondgate transport. |  |
+| source_limits | spruce_sawlog_wholesale | Metsa incominglogs differ from debarked/sawn/dried output; no transfer of sawnmoisture/density. FR1987secondedition/1998reprint scaling context not universal taper/length/tablebarkpercent; only actual underbarkwoodvolume ratio definitions, no garbledOCRformula or volumepercent-as-masspercent. | metsa-spruce-log-sawn-boundary; forest-research-sawlog-tables-1987 |
+| stock_not_growth | state/fates | Attachedbark not automatic debarking, watermasschange/unknownresidual not drywoodloss/decayCO2/dust/zero or merchantstockgrowth/sequestration. Actualcollectedwoodbark versus wholelog/mixedwaste/fluid/species exclusive. |  |
+
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| spruce_sawlog_wholesale | Fresh bark-on spruce sawlog merchant receipt and FINAL handover | required | Actual freshbarkon Norwayspruce sawlog owned/resold FINAL B2Bacceptance | Receipt/documentvisual speciesgrade/scalingstate/stock/handling/handover without forestry-processing/use | `accepted_service` |
+
+Consignments overlap yardbatches/continuoussupport. Link actual speciesgrade/scalingrecords/condition and existing or actual representative measurements, cleanup/changeover/idle/cancelled/failed/rejected/quarantined/unfinished/dispatch/FINAL events to lotperiod. No everylog debark/saw/dry test. Stain/split/barkloss/wetchange/downgrade follow actual supplierreturn/closingpending/usefulotheruse/receiverdiscard, not automatic wholelogloss/emission. Realnew contracted operations reviewed; actualsamples removal/return/fate once. N0 retains period-event/evidencedcohort resources without division/drop; positiveFINALN once.
+
+### Process: Fresh bark-on spruce sawlog merchant receipt and FINAL handover (`spruce_sawlog_wholesale`)
+
+#### Inputs
+
+##### Product flows
+
+###### Actual alternating-current electricity at point of use (`electricity_ac`)
+
+Only actual alternating-current electricity crossing this node boundary and not already inside a complete provider. The identity leaves provider, voltage, generation mix and delivery-loss allocation unspecified; collect them where required. Its ILCD reference property is named Net calorific value but the verified electricity flow defines an electrical-energy basis of 1 MJ; native kWh uses exactly 3.6 MJ per kWh, never a fuel heating-value factor. Direct-current or another unmatched electricity state stays in the residual requirement.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_energy
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+Range evidence need: Actual meters/intervals and complete allusers including idle/failed/unfinished with provider scope, no kWh per log or forest rotation.
+
+###### Actual liquid treated tap-water supply (`facility_water_liquid_tap`)
+
+Applicable only when the actual source is treated tap water supplied for the declared use. Preserve actual supplier, quality, temperature/state and provider boundary; do not assume that every water supply is tap water. Ice, bottled/mineral/reclaimed/untreated water and direct environmental withdrawal stay in their actual separate identities. Keep the parent native mass or volume basis. For any final mass-reference conversion, require actual compatible density/state evidence; the catalogue secondary-volume relationship is not a default site density.
+
+- Selected flow: Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual supplysource/purpose/nativevolume and independent fates; purchasedwater not wastevolume/moisture.
+
+###### Actual independently recorded synthetic detergent supply (`operating_supplies_synthetic_detergent`)
+
+Only actual synthetic surfactant detergent identified by product/formulation, supplied state and use records. Measure net supplied material excluding package tare; retain concentrate/dilution-water distinctions and never count whole formulation and components additively. Soap, disinfectants, wipes, filters and other materials remain under their separate actual identities; no cleaning recipe, dose or occurrence is assumed.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual use/incident/net stock/composition/spentcarrier evidence, not bark/woodmass as consumed input.
+
+###### Actual separately identified supplied diesel fuel (`fuel_supply_diesel_supply`)
+
+Only actual independently identified diesel within this operating-fuel requirement. The generic identity is Mass/kg; record actual fuel formulation, supplier, supply gate and native stock scope. When native quantity is litres, final kg conversion requires actual compatible density, temperature/state, mass-per-volume unit and source; no catalogue default density or heating value. Supplied stock and burned fuel are separate records. Other fuels remain residual and neither fuel purchase nor unexplained imbalance proves combustion or emissions.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Volume / L
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Native opening/NETreceipts/closing/fates and applicable fuelidentity/densitytemperature/conversions; receipts notburn.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Completed own-account fresh bark-on Norway-spruce sawlog wholesale consignment (`accepted_service`)
+
+One real unique FINAL B2B consignment of freshlyharvested bark-on Piceaabies sawlogs at actualprepared receivinggate. Actual loggrade/volumeconvention/wetmass/state/time qualify, not logpiece/m3/tonne or growingwood.
+
+- Selected flow: Completed own-account fresh bark-on Norway-spruce sawlog wholesale consignment
+- Flow property / unit: Count / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: `fixed_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_consignment`
+
+Range evidence need: Purchaseownershipresale/B2Bbuyer/FINALgate-source/reversals, species-lot-log IDs/grade/solid-stack/bark/water/scaling/nativeqty/time/source proof. No sawn moisture/density defaults.
+
+##### Waste flows
+
+###### Discarded complete fresh bark-on Norway-spruce sawlog (`discarded_logs_atomic_case`)
+
+Conditional on independently recorded actual Discarded complete fresh bark-on Norway-spruce sawlog. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `discarded_logs`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+
+- Selected flow: Discarded complete fresh bark-on Norway-spruce sawlog
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_logs
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_logs`
+
+Range evidence need: Actualfate/receiver/nativeweight-volume-count correspondence/moisture/bark/sourcegate/treatment; no residualloss=CO2 or recyclingcredit.
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| alluser_resources | service | Directactualtrace OR quantity×compatible target_driver/positive COMPLETE all_consumer_driver nativeunit-basis-method-state-time-source; allusers/periods/idle/cancelledfailedquarantinedunfinished retained. UniqueFINALN ownership-resale/B2Bgate/reversals divides assignedtotal once onlyN>0, N0retained, no logvolume-price defaultdriver. |  |
+| source_completed_once | commodity | Direct actual measured/traced assigned_gate_demand with nativeqty/state/directevidence/exclusiveterminals OR actual_source_gate_quantity×target_driver/source_all_terminal_driver. Positive COMPLETE allterminal FINALaccepted/usefulother/returns/closing/provenloss eachqtyunitbasismethodstatetimesourcelinkowner, noaccepted-only/direct-driveroverlay/unknownzero. Sourceassignedbaselineadditional nativequantities/conversions/exclusivelossowner and actualspeciesgrade-bark-state-gate/receipttransportcoverage match. Samebaseline stage/losscoverage then requiredadditional/missingstages ACTUALLY integrated outsideonce completedstatus/nativeqty/link/timezone/source/owner/coverage; pending notchainready. |  |
+| supply_stock | supplies | S=assignedopening+NETactualmaterialreceipts-closinginclretainedrecovery. Receipts exclude supplycontainertare. Choose exactly one: (1) gross S/N as INPUT and actual matched unused external return/N as a separate OUTPUT; (2) consumed-only (S-return)/N as INPUT and OMIT that matched return OUTPUT. Do not add return quantity to input or deduct it twice; internalrecoveryclosing, no log-bark recovery against unrelatedsupply/negativecredit. |  |
+| fullasset | assets/providers | Actual used_driver/COMPLETE lifetime_all_consumer_driver nativeunits/basis/method/state/time/source fullmanufacture-maintenance-realreplacement-EOL everyconsumerperiod. Observed+sourcedremaining/termination uncertainty/sensitivity/update, oneasset OR lifecycleprovider/N once, no forestrotation default. |  |
+| exclusive_fates | stock/receiver | Wholebarkonwetlog versus actualseparatewood/bark/support/receivedmixedcarrier-absorbedfluid-fragments/freecontainedwater/directspecies nonadditive/exclusive. Actualreceivertransporttreatment once afterproviderscope; usefulother/downgrade notautomaticwaste/credit, waterlossnotdrywoodloss/CO2. |  |
+| commodity_link_scope | nonexchange commodity interface | Keep actual original-gate stock and completed external integration at their recorded raw quantities. Declare source_assignment_scope_id, actual target_consignment_ids/target_cohort_id and source_assignment_quantity_basis: single_consignment_case, target_cohort_total or already_per_reference. For a raw target-cohort total, source_link_per_service_quantity=source_link_assigned_raw_quantity/same_target_scope_N ONLY when the positive N covers exactly that assigned target scope, with actual native units/state/source and acceptance-reversal evidence; use that interface once when combining with 1 accepted_service. A single-consignment case with N=1 and an already-per-reference quantity are not divided again. Do not divide actual external stock/stage-integration records by service N or use whole-source-cohort N for a narrower assigned target; preserve raw quantities and an explicit once-only link. |  |
+
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_consignment | spruce_sawlog_wholesale | accepted_service | actualFINAL merchantacceptance | consignment_id; merchant_id; purchase_evidence; ownership_evidence; resale_evidence; business_buyer_id; acceptance_gate; acceptance_time; acceptance_source; reversal_ids; reversal_status_source; unique_FINAL_accepted_ids; N; N_period_cohort; model_SKU_lot_ids; log_component_support_genealogy; actual_BOM; completeness_condition_evidence; buyer_criteria_source; start_time; start_time_source; end_time; end_time_source; time_zone; time_unit; duration; duration_unit; duration_method; duration_source; site_id; campaign_id; reporting_period; cancelled_failed_rejected_unfinished_ids; no_acceptance_resource_owner; attribution_owner | Actual purchase/ownership/resale/B2Bbuyer/FINALgate-time-source/resolvedreversals establish uniqueFINALN byperiodcohort, not logs/m3/tonnes. Supplierreceipt alone insufficient. Keep canceledfailedquarantinedunfinished resources/timezone/duration unit-method-source, N0nodivision. | Actual Count Item(s), native timestamps/duration | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_logs | spruce_sawlog_wholesale | nonexchange logs/wood-bark-water; discarded_logs | actualspecies-scale-state-source audit | species; species_source; log_ids; source_lot_id; harvest_date; harvest_date_source; sawlog_grade; grade_source; fresh_bark_on_state; condition; condition_method; condition_time; condition_source; prepared_source_gate; receiving_gate; gate_match_evidence; upstream_stage_coverage; producer_reference_basis; roadside_to_receipt_transport_owner; roadside_to_receipt_transport_coverage; log_count; log_count_unit; log_count_basis; log_count_method; log_count_state; log_count_sample_time; log_count_source; actual_repeat_count; actual_repeat_count_unit; actual_repeat_count_basis; actual_repeat_count_method; actual_repeat_count_state; actual_repeat_count_sample_time; actual_repeat_count_source; quantity_each_or_total; volume_solid_or_stack; volume_under_or_overbark; length; length_unit; length_basis; length_method; length_state; length_sample_time; length_source; diameter; diameter_unit; diameter_basis; diameter_method; diameter_state; diameter_sample_time; diameter_source; diameter_position; rounding_method; actual_taper; actual_taper_unit; actual_taper_basis; actual_taper_method; actual_taper_state; actual_taper_sample_time; actual_taper_source; scale_formula_id; scale_formula_body; scale_formula_source; scale_formula_input_records; scale_input_id; scale_input_quantity; scale_input_quantity_unit; scale_input_quantity_basis; scale_input_quantity_method; scale_input_quantity_state; scale_input_quantity_sample_time; scale_input_quantity_source; scale_calibration; scale_calibration_time; scale_calibration_source; V_under; V_under_unit; V_under_basis; V_under_method; V_under_state; V_under_sample_time; V_under_source; V_bark; V_bark_unit; V_bark_basis; V_bark_method; V_bark_state; V_bark_sample_time; V_bark_source; V_over; V_over_unit; V_over_basis; V_over_method; V_over_state; V_over_sample_time; V_over_source; V_stack; V_stack_unit; V_stack_basis; V_stack_method; V_stack_state; V_stack_sample_time; V_stack_source; stacking_factor; stacking_factor_unit; stacking_factor_basis; stacking_factor_method; stacking_factor_state; stacking_factor_sample_time; stacking_factor_source; r_bark; r_bark_unit; r_bark_basis; r_bark_method; r_bark_state; r_bark_sample_time; r_bark_source; bark_percent; bark_percent_unit; bark_percent_basis; bark_percent_method; bark_percent_state; bark_percent_sample_time; bark_percent_source; bark_ratio_denominator; bark_correction_method; bark_correction_source; sample_ids; sample_representativeness; sample_definition_match; m_as_received; m_as_received_unit; m_as_received_basis; m_as_received_method; m_as_received_state; m_as_received_sample_time; m_as_received_source; m_water; m_water_unit; m_water_basis; m_water_method; m_water_state; m_water_sample_time; m_water_source; water_fraction; water_fraction_unit; water_fraction_basis; water_fraction_method; water_fraction_state; water_fraction_sample_time; water_fraction_source; dry_water_ratio; dry_water_ratio_unit; dry_water_ratio_basis; dry_water_ratio_method; dry_water_ratio_state; dry_water_ratio_sample_time; dry_water_ratio_source; water_definition; nonwater_definition; percent_conversion_factor; percent_conversion_unit; percent_conversion_basis; percent_conversion_method; percent_conversion_state; percent_conversion_time; percent_conversion_source; LOD_value; LOD_value_unit; LOD_value_basis; LOD_value_method; LOD_value_state; LOD_value_sample_time; LOD_value_source; LOD_other_volatiles_evidence; density; density_unit; density_basis; density_component_bark_basis; density_method; density_state; density_sample_time; density_temperature; density_temperature_unit; density_temperature_source; density_source; native_conversion_factor; native_conversion_unit; native_conversion_basis; native_conversion_method; native_conversion_state; native_conversion_time; native_conversion_source; log_component_genealogy; wood_bark_water_view; support_tare_scope; receiver_disposition_decision; receiver_decision_source; actual_native_quantity; native_unit; quantity_basis; quantity_method; quantity_state; quantity_sample_time; quantity_source; gross_mass; gross_unit; gross_basis; gross_method; gross_state; gross_sample_time; gross_source; packaging_tare; packaging_unit; packaging_basis; packaging_method; packaging_state; packaging_sample_time; packaging_source; net_finished_mass; net_mass_unit; net_mass_basis; net_mass_method; net_mass_state; net_mass_sample_time; net_mass_source; component_identity; component_quantity; component_unit; component_basis; component_method; component_state; component_sample_time; component_source; temperature; temperature_unit; temperature_source; opening; supplier_external_receipts; buyer_returns; closing; business_buyer_dispatch; supplier_returns; useful_other_exits; actual_discard; net_sample_removal; unknown_residual; stock_unit; stock_basis; stock_method; stock_state; stock_sample_time; stock_source; disposition_ids; receiver; treatment_coverage; actual_source_gate_quantity; source_gate_unit; source_gate_basis; source_gate_method; source_gate_state; source_gate_sample_time; source_gate_quantity_source; source_complete_stage_evidence; assignment_view; assigned_gate_demand; assigned_gate_demand_unit; assigned_gate_demand_basis; assigned_gate_demand_method; assigned_gate_demand_state; assigned_gate_demand_sample_time; assigned_gate_demand_source; direct_assignment_evidence; exclusive_terminal_links; target_driver; target_driver_unit; target_driver_basis; target_driver_method; target_driver_state; target_driver_sample_time; target_driver_source; source_all_terminal_driver; source_all_terminal_driver_unit; source_all_terminal_driver_basis; source_all_terminal_driver_method; source_all_terminal_driver_state; source_all_terminal_driver_sample_time; source_all_terminal_driver_source; competing_terminal_driver_records; terminal_record_quantity; terminal_record_unit; terminal_record_basis; terminal_record_method; terminal_record_state; terminal_record_sample_time; terminal_record_source; terminal_record_link; terminal_record_owner; original_gate_conversion_method; original_gate_conversion_factor; original_gate_conversion_unit; original_gate_conversion_basis; original_gate_conversion_state; original_gate_conversion_time; original_gate_conversion_source; baseline_demand; baseline_demand_unit; baseline_demand_basis; baseline_demand_method; baseline_demand_state; baseline_demand_sample_time; baseline_demand_source; baseline_stage_loss_coverage; additional_gate_demand; additional_gate_demand_unit; additional_gate_demand_basis; additional_gate_demand_method; additional_gate_demand_state; additional_gate_demand_sample_time; additional_gate_demand_source; exclusive_loss_assignment; commodity_adjustment_owner; required_stage_coverage_records; additional_integration_status; additional_integration_quantity; additional_integration_quantity_unit; additional_integration_quantity_basis; additional_integration_quantity_method; additional_integration_quantity_state; additional_integration_quantity_sample_time; additional_integration_quantity_source; additional_integration_link_id; integration_method; integration_time; integration_source; integration_owner; integration_time_zone; integration_time_source; integration_completed_status; integration_completed_link; integration_stage_loss_coverage; source_assignment_scope_id; source_assignment_quantity_basis; target_consignment_ids; target_cohort_id; source_quantity_already_per_reference; external_raw_integration_quantity_preserved; once_only_service_link_evidence; source_link_assigned_raw_quantity; source_link_assigned_raw_quantity_unit; source_link_assigned_raw_quantity_basis; source_link_assigned_raw_quantity_method; source_link_assigned_raw_quantity_state; source_link_assigned_raw_quantity_source; source_link_assigned_raw_quantity_sample_time; same_target_scope_N; same_target_scope_N_unit; same_target_scope_N_basis; same_target_scope_N_method; same_target_scope_N_state; same_target_scope_N_source; same_target_scope_N_sample_time; source_link_per_service_quantity; source_link_per_service_quantity_unit; source_link_per_service_quantity_basis; source_link_per_service_quantity_method; source_link_per_service_quantity_state; source_link_per_service_quantity_source; source_link_per_service_quantity_sample_time; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation | Actual Piceaabies/freshharvest/barkon/sawgrade/logIDs and source-receiving gates. Preserve every native dimension/diameterposition/rounding/scaleformula-input record/unit-basis-method-state-sampletime-source/calibration/sample; localactualtaper/barkcorrection, no tabledefaults. V_under/V_bark/V_over/V_stack/stackingfactor/r_bark/barkpercent each own native6metadata/definitions/population, underbarkwoodvolume ratio notoverbarkmass or volume-as-mass. Independent actual wood/bark/water/density-temperatureunit and wet/drywater definitions/percentconversion, LODother notwater. Complete wetnetmass excludes only actualexternal supports, no loss-inferred species or forceddebark/dry. Shared stock metadata applies compatible opening/supplierexternalreceipt/buyerreturn/closing/businessbuyerdispatch/supplierreturn/usefulother/discard/netsample; receipts exclude buyerreturns/internalmoves, dispatch excludes otherexits, internalmoves cancel. Sourceassignedbaselineadditional native6metadata/directactualtrace OR positiveCOMPLETE terminalrecords inclclosingreturnsusefulotherprovenloss eachqtyunitbasismethodstatetimesourcelinkowner/exclusiveloss/conversion/samebaselinecoverage match actualspeciesgrade-state-gate; producer1m3underbarkroadside possibleonly match and actualbeyondgate receipttransport once. Requiredadditional/missingstages ACTUALLY integrated outsideonce completedstatus/nativeqty/link/timezone/source/owner/stage-losscoverage beforechainready. Unknownresidual no automatic drywoodloss/growth/decay/emission/zero. Attribute only the individually identified physical case; retain other source-linked actual fates separately. Each native record belongs to exactly one exchange and any whole total is a non-additive audit. | Actual native logcount/length-diameter/solid-stack barkvolume/water-density-mass units | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_energy | spruce_sawlog_wholesale | electricity and actualburn | meter/burn interval | meter_id; energy_quantity; energy_unit; meter_start; meter_end; interval; source; operation_purpose; burn_quantity; burn_unit; burn_basis; burn_source; fuel_identity; conversion_factor; conversion_unit; conversion_basis; conversion_source; event_ids; period_ids; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; attribution_share; provider_coverage; target_driver_basis; all_consumer_driver_basis; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Actualfacility meters/independentburn nativequantity/unit-basis-method-state-time-source/conversions, completeallusers-periods inclidlefailedundone; no forestharvest/sawmill energy from merchandise. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | ActualkWh/nativeburn units | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_supplies | spruce_sawlog_wholesale | facility_water; new_outer_protection; operating_supplies; fuel_supply; usable_supply_returns | NETmaterial/matchedreturn | supply_SKU; purpose; composition; composition_basis; composition_source; provenance_owner; period; opening; external_receipts_net; closing_including_retained_recovery; native_unit; quantity_basis; quantity_source; usable_external_return; return_unit; return_recipient; matched_input_id; matched_state_scope; internal_loop; retained_recovery; waste_quantity; waste_unit; burn_quantity; burn_unit; actual_fate_source; accounting_view; conversion_factor; conversion_unit; conversion_basis; conversion_source; density; density_unit; density_temperature; temperature_unit; density_source; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; attribution_share; provider_coverage; target_driver_basis; all_consumer_driver_basis; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | NET actualmaterial receipts exclude supplycontainertare not grosspackmass. Shared native6metadata covers compatible opening/receipt/closing/recovery/return/fate; differingcomponents ownunits. ActualSKU-purpose-composition/conditionalcleanup, S=opening+NETreceipt-closinginclretainedrecovery, gross+matchedunusedreturn OR consumed-only OMITmatchedoutlet. Nativeconversion/densitytemperature/completealluser drivers/source/recipient, no commoditywood-bark against unrelated supply/negativecredit. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. Any litre-to-kg diesel conversion requires actual compatible density, temperature/state, mass-per-volume unit and source; no default conversion. | Actual supplynativephysicalunit | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_assets | spruce_sawlog_wholesale | shared_assets | fullalluserassetlife | asset_id; manufacture_scope; maintenance_scope; replacement_events; end_of_life_scope; provider_scope; consumers; periods; used_driver; used_driver_unit; used_driver_basis; used_driver_source; observed_life_driver; observed_driver_unit; observed_history_source; remaining_life_driver; remaining_driver_unit; remaining_evidence_source; termination_evidence; lifetime_all_consumer_driver; lifetime_driver_unit; lifetime_driver_basis; lifetime_driver_source; conversion_factor; conversion_unit; conversion_source; uncertainty; sensitivity; update_trigger; attribution_owner; already_per_reference; observed_driver_basis; remaining_driver_basis; conversion_basis; target_driver; target_driver_unit; target_driver_basis; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_basis; all_consumer_driver_source; attribution_share; used_driver_method; used_driver_state; used_driver_sample_time; observed_driver_method; observed_driver_state; observed_driver_sample_time; remaining_driver_method; remaining_driver_state; remaining_driver_sample_time; lifetime_driver_method; lifetime_driver_state; lifetime_driver_sample_time | Actualyard/facility/handling/scales/reusableaids everyconsumer/node/period fullmanufacture-maintenance-replacement-EOL. used_driver/observed_life_driver(observed_driver_*)/remaining_life_driver(remaining_driver_*)/lifetime_all_consumer_driver(lifetime_driver_*) ownnative6metadata; compatibleconversion, observed+sourcedremainder/termination/uncertainty/sensitivity/update, oneasset OR lifecycleprovider/N once. No forestrotation shortcut. | Actualused/observed/remaining/lifetime driverunits; supportedasset-equivalentItem(s) | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_providers | spruce_sawlog_wholesale | provider_services | actualphysicalresultcoverage | provider_id; event_id; native_result; result_unit; result_basis; result_source; service_scope; measurement_method; sample_ids; sample_representativeness; sample_removed; sample_return; sample_fate; material_coverage; energy_coverage; asset_coverage; freight_coverage; receiver_treatment_coverage; excluded_testing_scope; period; conversion_factor; conversion_unit; conversion_source; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; attribution_owner; target_driver_basis; all_consumer_driver_basis; attribution_share; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time | Performedresult ownnative6metadata and materialenergyassetfreightreceiver scope. Supplierforestpreparation/scalingrecords not merchantharvest-processing. Actualrepresentativesample population/removalreturnfateowner, changedreal contractedoperations reviewed. | Actualprovider-nativephysicalresultunit | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_freight | spruce_sawlog_wholesale | freight | uniqueload-leg THATrecordshare | load_id; leg_id; cargo_ids; load_quantity; load_unit; load_basis_each_or_total; load_source; repeated_load_count; repeated_load_count_unit; repeated_load_count_basis; repeated_load_count_method; repeated_load_count_state; repeated_load_count_sample_time; repeated_load_count_source; repetition_source; actual_packed_payload; payload_unit; payload_state; payload_source; vehicle_gross; vehicle_gross_unit; gross_source; vehicle_noncargo_tare; noncargo_tare_unit; tare_source; original_cargo_pack; added_cargo_pack; retained_moisture_finish; load_conversion_factor; load_conversion_unit; load_conversion_basis; load_conversion_source; distance; distance_unit; distance_source; distance_conversion_factor; distance_conversion_unit; distance_conversion_basis; distance_conversion_source; empty_return_coverage; delivered_provider_coverage; target_driver; target_driver_unit; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_source; that_record_share; unique_scope_owner; already_per_reference; gross_conversion_factor; gross_conversion_unit; gross_conversion_basis; gross_conversion_source; tare_conversion_factor; tare_conversion_unit; tare_conversion_basis; tare_conversion_source; target_driver_basis; all_consumer_driver_basis; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; payload_basis; payload_method; payload_sample_time; gross_method; gross_state; gross_sample_time; tare_basis; tare_method; tare_state; tare_sample_time; distance_basis; distance_method; distance_state; distance_sample_time; that_record_share_basis; that_record_share_source; gross_basis | Actualpackedpayload OR same-state vehiclegross minus ONLYvehicle/noncargotare retains wetwood/bark/allcargo supports. Gross/tare nativebasis separate EACH/TOTAL, eachpayloadgross-tare-distance-conversion-share ownnative6metadata; repeated_load_count ownnative6, EACHactualcountonce/TOTALunchanged. sum(unique loadleg: packedkg×actualkm×that_record_share), THATrecord completealluser share INSIDEsum then positiveFINALN once unless alreadynormalized; N0retained. Actual pre-receipt source-to-receiving haul remains in matched commodity upstream outside service; do not repeat it here. Actual service dispatch/supply/receiver legs, emptyreturn/provider owner once. | Actualnativepackedmass-distance compatiblyconvertedkg*km | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_fates | spruce_sawlog_wholesale | environmental_water; other_wastes; contained_liquid_wastes; water_outfalls | actualsource-receiver mixed/freefluid | event_id; source_location; receiving_location; receiving_medium; flow_identity; native_quantity; native_unit; quantity_basis; quantity_source; interval; composition; composition_basis; composition_source; fate_basis; fate_source; mixed_receiver_mass; mixed_mass_unit; mixed_mass_basis; mixed_mass_source; carrier_mass; carrier_unit; carrier_basis; carrier_source; absorbed_liquid_mass; absorbed_liquid_unit; absorbed_liquid_basis; absorbed_liquid_source; collected_fragment_mass; collected_fragment_unit; collected_fragment_basis; collected_fragment_source; free_liquid_volume; liquid_volume_unit; liquid_volume_source; density; density_unit; density_temperature; temperature_unit; density_source; conversion_factor; conversion_unit; conversion_basis; conversion_source; receiver; receiver_transport_scope; receiver_treatment_scope; provider_coverage; nonadditive_view; attribution_owner; target_driver; target_driver_unit; target_driver_basis; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_basis; all_consumer_driver_source; attribution_share; record_method; record_state; record_sample_time; record_source; carrier_method; carrier_state; carrier_sample_time; absorbed_liquid_method; absorbed_liquid_state; absorbed_liquid_sample_time; collected_fragment_method; collected_fragment_state; collected_fragment_sample_time; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time | Independent actualsourcewater/receivedmixedsolids/freecontainedfluid/directoutfall; carrier/absorbedfluid/wood-barkfragment ownnative6metadata, wholemixture-components nonadditive. Eachfreefluid identity/state-volume-composition/receivertransporttreatment nativeevidence, applicable densitytemperature/conversions. Logwaterchange/rain/supplywater not measured discharge; no automaticdrywoodmass. | Actualnative mixedmass/freefluidvolume/waterunits | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+| cp_releases | spruce_sawlog_wholesale | direct_species | actualspecies-mediumfactorcoverage | event_id; species_identity; particle_size; receiving_medium; measurement; measurement_unit; measurement_basis; measurement_source; activity; activity_unit; activity_basis; activity_source; factor; factor_unit; factor_basis; factor_source; factor_coverage; burn_fraction; burn_fraction_source; composition; composition_unit; composition_basis; composition_source; fate_fraction; fate_basis; fate_source; conversion_factor; conversion_unit; conversion_basis; conversion_source; temperature; temperature_unit; temperature_source; pressure; pressure_unit; pressure_source; time_interval; period; provider_coverage; nonadditive_owner; target_driver; target_driver_unit; target_driver_basis; target_driver_source; all_consumer_driver; all_consumer_driver_unit; all_consumer_driver_basis; all_consumer_driver_source; attribution_share; attribution_owner; record_method; record_state; record_sample_time; record_source; target_driver_method; target_driver_state; target_driver_sample_time; all_consumer_driver_method; all_consumer_driver_state; all_consumer_driver_sample_time; measurement_method; measurement_state; measurement_sample_time; activity_method; activity_state; activity_sample_time; factor_method; factor_state; factor_reference_time; composition_method; composition_state; composition_sample_time; fate_method; fate_state; fate_time; conversion_method; conversion_state; conversion_time | Actualexactspecies/particle/medium measurement OR compatible realserviceactivity×factor eachnative6metadata/coverage; completefraction-covering speciesfactors notmultipliedagain, requiredfraction/gasconversion once actualtemperature-pressure-unit-source. No automaticgrowth/sequestration/decay/CO2/dust/zero from moisturedifference/residual or producerforestry factors. | Actualnativespeciesquantity compatiblyconvertedkg | Each actualevent/meterinterval, originals traceable | Actualreceipt-to-FINAL/stockreportingperiods/fullassetphases | Actualmerchantfacility/allusers and declaredproviders/receivers | per reference flow | Originalquantity/unit/basis/method/state/sampletime/source/calibration/representativeness/coverage/uncertainty |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| physical_resources | service | N=unique real FINAL B2Bownership-resale acceptance afterreversals. Directtrace OR quantity×compatible target_driver/positiveCOMPLETE all_consumer_driver retains native6metadata/allusers-periods-idlefailedunfinished. Assignedtotal/positiveN once, N0burdenperiodcohort retained. | cp_consignment; cp_energy; cp_supplies; cp_assets; cp_providers; cp_freight; cp_fates; cp_releases | Actual per-reference physicalservice |  |
+| log_stock | commodity | Compatible opening+supplier_external_receipts+buyer_returns-closing-business_buyer_dispatch-supplier_returns-useful_other_exits-actual_discard-net_sample_removal=unknown_residual. Receipts exclude buyerreturns/internalmoves, dispatch excludes separateexits, internalmoves cancel. Same actualwood-bark-water/native volume-mass-state pool, actuallogIDs/countgenealogy/EACHrepeatonceTOTALunchanged. Waterchange/barkdetach/downgrade/residual not automaticdrywoodloss/CO2/zero. | cp_logs | Native stock/exclusive actualfates |  |
+| bark_volume | nonexchange audit | Sameactualdefinitions/sample r_bark=V_bark/V_under. V_over=V_under*(1+r_bark); V_under=V_over/(1+r_bark). If actual bark_percent is Vbark/Vunder×100, r_bark=bark_percent/100 (percentfirst); no oldtable value or overbarkmass denominator/volumepercent-to-mass conversion. Vsolid=V_stack*stacking_factor only actualsamebarkstate/lot calibrated compatiblefactor, notuniversal. Actualscaleformula/inputrecords/calibration/representativeness govern measured volumes, no copiedgarbledOCRformula. | cp_logs | Separate under-overbark/stack-solid views |  |
+| water_mass | nonexchange audit | Only sameactualsample water-only w_wet=m_water/m_as_received: m_water=m_as_received*w_wet; m_nonwater=m_as_received*(1-w_wet); compatible r_dry=m_water/m_nonwater gives w_wet=r_dry/(1+r_dry), percentfirst. Wholebarkon mass m_as_received=V_over*density*native_conversion_factor only actualwholebarkon freshstate representative matched density/unit/temperature/source, not underbarkwooddensity/sawn values. Independent componentdensity applies only itsownmatchedvolume. net_finished_mass=gross_mass-packaging_tare only compatibleactualexternal-support scope, retainingbarkwater. LODothervolatile notwater/woodloss/emission. | cp_logs | Nonadditive actualwater/density/mass views |  |
+| completed_source | commodity | Directactual sourced assigned_gate_demand/exclusiveproof OR actual_source_gate_quantity×target_driver/source_all_terminal_driver; positiveCOMPLETE terminal FINALaccepted/usefulother/returns/closing/provenloss eachqtyunitbasismethodstatetimesourcelinkowner, noacceptedonly/directdriveroverlay. Native sourceassignedbaselineadditional state/conversions/exclusivelossowner match preparedPiceaabies sawgrade/barkgate+realreceipttransport coverage. Existing 03111 underbark roadside producer onlyactualmatch, no duplicatecompletedgrowth-harvest-preparation/no beyondgatehaulgap. Samebaseline stage-losscoverage thenrequiredadditional/missingstages ACTUALLY outsideintegratedonce completedstatus/nativeqty/link/timezone/source/owner/coverage beforechainready. | cp_logs; cp_consignment | Separate completed originalsource demand-loss/receipt-haul integration |  |
+| record_freight | freight | Native actualpackedpayload OR same-state vehiclegross minus ONLYvehicle/noncargotare retainswetwood-bark-allcargo supports withoutcomponentduplication. EACHactualrepeatonceTOTALunchanged. kg*km=sum(unique loadleg: packedkg×actualkm×that_record_share), THATrecord completeallusershare INSIDEsum thenpositiveFINALN once unlessalreadynormalized; N0retained, Do not repeat commodity pre-receipt haul here; source-receipthaul/providercoverage once. | cp_freight; cp_consignment | Actualuniquefreight perreference |  |
+| specific_species | direct_species | Actualspecies/particle/medium=measurement OR compatible realserviceactivity×factor native6metadata/coverage. Completecomposition-fatefractioncovering factors notmultipliedagain; requiredcompatiblefraction/gasconversion once actualtemperature-pressure-unit-source. No automaticgrowth/sequestration/decay/CO2/dust/zero from stock-moisture residual. | cp_releases; cp_energy; cp_logs | Actualevidencedspecies perreference |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| identity_native | allroles | Actualspecies/fresh-barkon-sawgrade/lot/gate and allsource-provider-receiver-species identity/support beforefinalexchanges; Countchain not producer m3/merchantidentity. | Actual native records/verification |
+| measurements | alloperands | Every scaleformula-input/dimension/volume/barkratio/percent/stackfactor/water/density/component/stock/sourceassignedbaselineadditionalintegration/terminal/driver/repeatcount/assetlife/freight operand nativeunit-basis-method-state-time-source/calibration/sample/conversion/tempunit. Unknown incompatible state blockscalculation, no sawn/defaulttable substitution. | cp_logs; cp_assets; cp_freight; cp_fates |
+| coverage | allinterfaces | Disclose sourceage/localapplicability/FINALreversal/speciesgrade/state/barkvolume-denominator/waterdensity/stock/receipttransport/baseline-completedintegration/loss/fate/assetlife uncertainty/sensitivity/update. N0retained, pendingintegrationnotchainready, no growth/carboncredit claim. | Native coverage/source/lifetime/completedlinks and rowRange evidence need |
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| electricity | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `electricity` under `cp_energy`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_energy`; actual source-linked native records |
+| facility_water | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `facility_water` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| new_outer_protection | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `new_outer_protection` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| operating_supplies | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `operating_supplies` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| fuel_supply | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `fuel_supply` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| provider_services | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `provider_services` under `cp_providers`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_providers`; actual source-linked native records |
+| shared_assets | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `shared_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
+| freight | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
+| environmental_water | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `environmental_water` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| usable_supply_returns | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `usable_supply_returns` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| discarded_logs | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `discarded_logs` under `cp_logs`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `discarded_logs_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_logs`; actual source-linked native records |
+| other_wastes | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `other_wastes` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| contained_liquid_wastes | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `contained_liquid_wastes` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| water_outfalls | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `water_outfalls` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| direct_species | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `direct_species` under `cp_releases`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_releases`; actual source-linked native records |
+
+
+### Mandatory Inventory Completion Records
+
+These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
+
+#### electricity
+
+Meter operated lighting/handling/businesssupport, no felling/sawing/kilndrying or forestgrowth.
+
+Residual inventory requirement after the independently identified cases `electricity_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual sawlog wholesale facility electricity
+- Flow property / unit: Energy / kWh
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_energy
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_energy`
+
+Range evidence need: Actual meters/intervals and complete allusers including idle/failed/unfinished with provider scope, no kWh per log or forest rotation.
+
+#### facility_water
+
+Actual sanitary/support water, not logwater or default sprinkling/preservation/washing.
+
+Residual inventory requirement after the independently identified cases `facility_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual purchased premises-support water
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual supplysource/purpose/nativevolume and independent fates; purchasedwater not wastevolume/moisture.
+
+#### new_outer_protection
+
+Only real service-added bands/dunnage/labels; inherited supports sourcecommodity, reusable ones full-life.
+
+- Identity requirement: Actual added dispatch supports and labels
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual added-versus-inherited SKU/netquantity/countconversion/stock, no default pallet per log/consignment.
+
+#### operating_supplies
+
+Actual equipment lubricant/cleaners/wipes/absorbents/filters; no merchant debarking/sawchain/preservative recipe.
+
+Residual inventory requirement after the independently identified cases `operating_supplies_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual maintenance and conditional cleanup consumables
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual use/incident/net stock/composition/spentcarrier evidence, not bark/woodmass as consumed input.
+
+#### fuel_supply
+
+Real handlingfuel separate burn/returns/waste/provider coverage, no forestharvest or burninglogs.
+
+Residual inventory requirement after the independently identified cases `fuel_supply_diesel_supply`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual owned handling-fuel stock
+- Flow property / unit: Volume / L
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Native opening/NETreceipts/closing/fates and applicable fuelidentity/densitytemperature/conversions; receipts notburn.
+
+#### provider_services
+
+Performed storage/handling/documentvisual species-grade/scaling-record/condition/businesssupport; no merchant fell-extract-buck-debark-saw-dry.
+
+- Identity requirement: Actual physical spruce-sawlog wholesale support results
+- Flow property / unit: Count / Item(s)
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_providers
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_providers`
+
+Range evidence need: Actual result/nativeunit/method/source/materialenergyassetfreighttreatment scope; actual added work reviewed, samples once.
+
+#### shared_assets
+
+Actual yard/warehouse/racks/handling/scales/ICT/reusable aids across allusers/full manufacture-maintenance-replacement-EOL. Logs not merchantcapital or growingstand.
+
+- Identity requirement: Full-life shared log-yard and handling assets
+- Flow property / unit: Count / Item(s)
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_assets
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_assets`
+
+Range evidence need: Native used-observed-remaining-lifetime driver/source, observed+sourcedremainder/termination uncertainty/update, oneasset OR lifecycleprovider.
+
+#### freight
+
+Cargo includes actual wetwood/bark/allcargo supports. Same-state vehicle gross minus ONLY vehicle/noncargotare; reconcile receipt-haul source coverage once. Pre-receipt source-to-receiving haul belongs to the matched upstream receiving-state commodity boundary outside this service and is not repeated here. Only actual dispatch/service-supply/receiver or other declared service-boundary legs enter this card.
+
+- Identity requirement: Actual packed bark-on-log and service freight
+- Flow property / unit: Mass*distance / kg*km
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_freight
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_freight`
+
+Range evidence need: Unique load-leg actual packedkg/gross-noncargotare/km/EACH-TOTAL/THATrecordshare INSIDEsum, no underbarkm3=tonne or sawn density.
+
+#### environmental_water
+
+Only actual merchant environmental abstraction, no logmoisture/forest evapotranspiration/preservation default.
+
+- Identity requirement: Actual direct yard-water withdrawal
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Actualsource/location/interval/nativevolume/method/boundary, not woodwater as withdrawal.
+
+#### usable_supply_returns
+
+Same-scope standalone unused supply only; consumed-only OMITmatchedoutlet. Internalrecoveryclosing/logwood-bark returns nonexchange stock.
+
+- Identity requirement: Actual matched unused service-supply external returns
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Actual recipient/nativequantity/matchedinput/provenance; no commodityrecovery vs unrelatedsupply/negativecredit.
+
+#### discarded_logs
+
+Actualreceiver wholelog retainingbark/water versus separate wood/bark/support. No merchantdebark/cut assumed; whole/components nonadditive, downgrade/unknownmass not discard.
+
+- Identity requirement: Actual discarded logs or separately collected wood-bark residues
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_logs
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_logs`
+
+Range evidence need: Actualfate/receiver/nativeweight-volume-count correspondence/moisture/bark/sourcegate/treatment; no residualloss=CO2 or recyclingcredit.
+
+#### other_wastes
+
+Actual spentwipes/absorbents/filters/servicepacks mixed wood-bark capturedfragments. Carrier/absorbedliquid/fragments part of receivedmixture, no duplicate or assumed sawdustgeneration.
+
+- Identity requirement: Actual spent supplies and mixed yard-cleanup solids
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Receivedmixture and each componentnativeunit/basis/method/state/time/source/composition/receiver; sweepings not automatically drywood.
+
+#### contained_liquid_wastes
+
+Actualcollected freefluid/wastewater ownidentity/state/volume/receiver, separate wetwood/absorbedmixture/directoutfall, no sprinkling/washing default.
+
+- Identity requirement: Actual contained facility wastewater/free liquid
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Actualcollectedreceivednativevolume/composition/method-state-time-source/treatment, not woodmoisturechange or purchasedwater.
+
+#### water_outfalls
+
+Only actual directwater knownreceivingmedium; containedtransfers Waste, actualspecies separate.
+
+- Identity requirement: Actual direct yard-water environmental outfall
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Location/medium/interval/nativevolume/composition/fate/conversion evidence; rain/damplogs alone not outfallquantity.
+
+#### direct_species
+
+Actualchemical/species/particle/medium measurement or compatible realserviceevent method. No stockgrowth/sequestration/automaticdecay/CO2/dust from massdeficit.
+
+- Identity requirement: Actual identified species releases to documented media
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned physical quantity / N under cp_releases
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_releases`
+
+Range evidence need: Exactspecies/medium/native measurement or actualactivity-factor unit/basis/method/state/time/source/coverage; completefractioncovering factors notmultipliedagain.
+
+## 9. Validation Rules
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| FINAL_actual | accepted_service | Actual purchaseownershipresale/B2Bbuyer/FINALgate-time-source/reversals/uniqueN/all16qualifiers, receipt-logpiece-m3-tonne insufficient. N0failedcancelledquarantinedunfinished retainedno division. |  |
+| actual_log_scope | commodity | Freshbarkon Piceaabies sawgrade/logIDs/preparedreceivinggate, no merchantforestharvest-debark-saw-dry-preserve/use, no sawnmoisturedensity/growth/sequestration/automaticdecay. | metsa-spruce-log-sawn-boundary |
+| native_bark_water | commodity | Solid-stack/under-overbark actualformula-calibration/allnativeinputs/samples/source; r_bark Vbark/Vunder andpercentfirst notmassfraction/tabledefault. Wateronly wetdrysameactualdefinitions percentfirst/LODothervolatileguard; actualmatching wholebarkon/componentdensity-tempunit; fullwetnetmass retainsbarkwater excludesonlyexternal supporttare. | forest-research-sawlog-tables-1987 |
+| source_integration | commodity | Native directactualtrace OR positiveCOMPLETE terminalrecords inclclosingusefulreturnprovenloss eachnative6-link-owner, noacceptedonly/directdriveroverlay. Actualspeciesgrade-state-gate/producerunderbarkroadside match andbeyondgate receipttransportonce; samebaseline stage-losscoverage/exclusivelossowner thenmissingstages-requiredadditional ACTUALCOMPLETEDoutsideintegration nativeqty-status-link-timezone-source-owner-coverage beforechainready, notpending. |  |
+| resources_fates | all | NETsupplies excludecontainertare/gross+matchedreturn OR consumedOMIToutlet; fullalluserasset observed+sourcedremaining/termination/native-driver uncertainty-update oneassetORprovider/N. Freightwetwoodbark-allcargosupports retainedONLYvehicle/noncargotare nativeEACH-TOTAL/repeat/THATshareINSIDEsum beforepositiveFINALNonce, N0retained. Wholelog/separatewoodbark/mixedcleanup/freefluid/directspecies exclusiveactualreceivertreatmentonce, no residual=woodlossCO2zero ordefaultcredit, completefactor fractions notmultipliedagain. |  |
+
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | secondary_dataset; background_dataset afteractualidentity/completenessreview |
+| downstream_use | Physicalsprucesawlog wholesaleadd-on, separately completedpreparedsource/receipthaul/demandlossintegration outsideonce |
+| allowed_use | Actualfreshbarkon Piceaabies sawlogs preparedsource/receivingstate owned-resold FINALB2Bconsignment/nativevolume-bark-water-mass evidence |
+| excluded_use | Otherwoodspeciesgrades/sawnproducts/merchantfell-extract-prepare-debark-saw-dry-preserve/use; standaloneforestgrowth/carboncredit; retail/agency/storageonly |
+| required_metadata | Merchantpurchaseownershipresale/B2Bbuyer/FINALgate-source-reversals/N, speciesloglotgrade/freshbarkon/preparedsource-receivinggate/solidstack-under-overbark/scaleformula-input-calibration/sample/barkratio-denominator/nativewater-density-tempunit/netmass-support/timeperiod, complete source-terminal-baseline-additional COMPLETEDintegrationqty-status-link-timezone-source-owner-coverage/receipthaul and resource-provider-asset-freight-receiver owners |
+| required_quality_disclosure | Identity-support/measurement/localoldsourceapplicability/FINALreversals/volume-bark-waterdensity/stock/sourcegate-receipthaul-baseline-completedintegration/loss-fate/assetlife uncertainty/rowevidenceneeds |
+| update_trigger | Actualspeciesgrade-logstate/barkvolume-scalemethod-waterdensity-gate/merchantprocessing/acceptance/sourceassignment-coverageintegration/receipthaul/providerassetfreightreceiver changes |
+
+
+## 11. Data Sources
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| unsd-cpc3-spruce-log-wholesale | official_guidance | UNSD CPC3 explanatorynotes30June2025,03111/61093. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Classificationonly, selectedfreshsprucesawlog narrowerroughwoodwholesale. |
+| metsa-spruce-log-sawn-boundary | official_guidance | Metsä Fibre Spruce sawn timber manufacturerpage. https://www.metsagroup.com/metsafibre/products-and-services/sawn-timber/spruce-sawn-timber/ | Qualitative Piceaabies/incominglogs-beforedebarking-sawing-drying versus sawnoutput only; no sawnmoisture-density/grade/dimensions transferred to freshlogs. |
+| forest-research-sawlog-tables-1987 | official_guidance | ForestryCommission FieldBook1 TopDiameterSawlogTables,2nded1987/reprinted1998,introductionandbarktableprinted24. https://cdn.forestresearch.gov.uk/1987/03/fcfb001.pdf | Aged qualitative scaling/localvariation/underbark-volume denominator context; no defaulttaper/length/tablebarkpercentage/dimensions or garbledOCRformula. Actualbarkratio measureddefinitions/sample, not volumefraction-as-mass. |

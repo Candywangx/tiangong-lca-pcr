@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-29
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

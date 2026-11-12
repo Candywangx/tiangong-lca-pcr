@@ -1,4 +1,6 @@
 /** Lossless inspector transport. Raw PCR downloads and server-side data stay unchanged. */
+import {decodeDictionaryRecordData,encodeDictionaryRecordData,measureRecordDataPack,MAX_RESTORED_RECORD_DATA_BYTES,MAX_RECORD_DATA_DICTIONARY_DEPTH} from './record-data-dictionary.ts';
+export {measureRecordDataPack,MAX_RESTORED_RECORD_DATA_BYTES} from './record-data-dictionary.ts';
 export type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
 export type RecordData = { manifest: { [key: string]: Json }; structured: { [key: string]: Json } };
 export type RecordDataEntry = readonly [key: string, manifest: RecordData["manifest"], structured: RecordData["structured"]];
@@ -30,12 +32,20 @@ function entries(value: unknown): RecordDataEntry[] {
   });
 }
 export function encodeRecordDataPack(value: readonly RecordDataEntry[]) {
-  return {schemaVersion: 1 as const, records: entries(value)};
+  const records = entries(value), measurement = measureRecordDataPack(records);
+  if (measurement.bytes >= MAX_RESTORED_RECORD_DATA_BYTES) throw new TypeError('PCR record data restored byte limit exceeded.');
+  const legacy = {schemaVersion: 1 as const, records};
+  if (measurement.depth > MAX_RECORD_DATA_DICTIONARY_DEPTH) return legacy;
+  const dictionary = encodeDictionaryRecordData(records), utf8 = new TextEncoder();
+  if (dictionary.dictionary.length > 1_000_000) return legacy;
+  return utf8.encode(JSON.stringify(dictionary)).length < utf8.encode(JSON.stringify(legacy)).length ? dictionary : legacy;
 }
 /** Legacy single-record payloads require no key. Packed payloads always require an exact key. */
 export function decodeRecordData(value: unknown, key?: string): RecordData {
   if (key === undefined) return parseRecordData(value);
-  if (!object(value) || value.schemaVersion !== 1) throw new TypeError("Unsupported PCR record data pack.");
+  if (!object(value)) throw new TypeError("Unsupported PCR record data pack.");
+  if (value.schemaVersion === 2) return parseRecordData(decodeDictionaryRecordData(value,key));
+  if (value.schemaVersion !== 1) throw new TypeError("Unsupported PCR record data pack.");
   const entry = entries(value.records).find(entry => entry[0] === key);
   if (!entry) throw new TypeError("PCR record is absent from its data pack.");
   return {manifest: entry[1], structured: entry[2]};

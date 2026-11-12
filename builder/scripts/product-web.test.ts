@@ -298,3 +298,15 @@ test("alias manifest hashes and required pair bindings cannot be substituted", a
   const corrupted = structuredClone(f.probes); const first = corrupted.staticRouteAliases?.pairs[0]; assert.ok(first); first.target = first.source;
   await assert.rejects(verifyLiveWebsite({ ...f.options, probes: corrupted }), code("PCR_WEB_ALIAS_PROOF_INVALID"));
 });
+
+test('live acceptance requires actual published chapter rewriting when the sealed profile declares it',async t=>{
+ const {createProviderRuntime,PROVIDER_RUNTIME_PATHS,PROVIDER_RUNTIME_FILE}=await import('../../packages/pcr-docs/scripts/provider-runtime.ts');
+ const f=fixture(t),entries=['en','zh'].map(language=>({from:`/${language}/docs/pcr/a/b/c/chapters/old/`,to:`/${language}/docs/pcr/a/b/c/`,anchor:'section'}));
+ for(const file of PROVIDER_RUNTIME_PATHS){const dest=path.join(f.root,file);mkdirSync(path.dirname(dest),{recursive:true});writeFileSync(dest,file.endsWith('.json')?JSON.stringify({schemaVersion:1,entries}):'export {};\n');}
+ const bytes=Buffer.from(JSON.stringify(createProviderRuntime(f.root,identity.sourceCommit)));f.files.set(PROVIDER_RUNTIME_FILE,bytes);
+ const proof={path:'/'+PROVIDER_RUNTIME_FILE,bytes:bytes.length,sha256:'sha256:'+createHash('sha256').update(bytes).digest('hex')};
+ for(const row of entries){const body=Buffer.from('<h2 id="section">Published chapter</h2>');f.files.set(row.to.slice(1)+'index.html',body);f.files.set(row.from.slice(1)+'index.html',body);}
+ const options={...f.options,probes:{...f.probes,providerRuntime:proof}};
+ await assert.rejects(verifyLiveWebsite({...options,fetcher:changed(f,entries[0]!.from,()=>new Response('old chapter missing',{status:404}))}),code('PCR_WEB_STATUS'));
+ const result=await verifyLiveWebsite(options);assert.ok(result.checks.some(check=>check.path.startsWith(entries[0]!.from)));assert.ok(result.checks.some(check=>check.path.startsWith(entries[1]!.from)));
+});

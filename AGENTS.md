@@ -22,15 +22,16 @@ checkPaths:
   - product-release.json
   - builder/**
   - packages/**
+  - middleware.ts
   - skills/**
   - .github/workflows/**
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-29
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
+lastReviewedAt: 2026-11-10
+lastReviewedCommit: 2002efdfc6d10f8dbf1db082c11662c817718c0b
+lastReviewedNote: "PR34: owner-authorized bounded Next tree storage with exact original URL/byte restoration, source-bound provider profile 2 and verified compilation binding. PCR/module identity, mapping, publication, scientific and study qualification contracts remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -91,9 +92,13 @@ Rules:
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
 - If a classification leaf maps to an existing PCR, update the mapping file instead of duplicating the PCR.
 - The 14 CPC 04 PCRs delivered by merged PR #26 retain their original ids and semantic directories from the
-  CPC 3.0 leaf-slug inventory; PR #28 now carries only their repairs, not new methods. Keep narrower product,
+  CPC 3.0 leaf-slug inventory; PR #28 repaired those records without adding new methods. Keep narrower product,
   route, state and gate boundaries in methodology and mapping relations rather than replacement ids.
-  See `docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md`.
+  Current accepted decisions live in `classifications/mappings/` and `docs/adr/`. Historical identity-restoration
+  evidence remains available in the [immutable archive](https://github.com/Candywangx/tiangong-lca-pcr/blob/acd016b01883b64d96a321198d65a889d8e96f97/docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md); it does not establish current readiness or qualification.
+- The 60 CPC 61 methods in PR #31 upgrade their original scaffold ids and semantic directories from the
+  CPC 3.0 leaf-slug inventory. Keep each method's specific scope, reference flow and accepted mapping relation;
+  do not recreate replacement ids for this batch. See `docs/cpc61-original-identity-restoration.md`.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.
@@ -287,6 +292,14 @@ bundles and the shared Builder history verifier; it cannot mutate canonical PCR
 content or promote methodology/translation status. English and Chinese remain
 required; declared optional language artifacts are verified and preserved.
 
+Published chapter aliases use the exact source-owned root `middleware.ts` profile. The sealed
+`generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
+anchors and the importer rechecks actual source bytes before atomic handoff. Provider profile 2
+adds bounded, content-addressed Next tree packs and a verified compilation binding; the source-owned
+handler restores original navigation URLs and bytes. Other navigation files and all source downloads
+retain their physical contracts. Native history normalization
+and provider compilation do not authorize deployment or promote methodology states.
+
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
 not authoring sources. Use `npm run docs:build` for the complete static publication
 gate. Production uses the existing EdgeOne Git project and the `release/production` deployment
@@ -353,3 +366,9 @@ or methodology authority.
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+Material reusable modules follow [the source/package contract](docs/method-module-contract.md).
+Use `module:sync`, `module:check` and `module:export` for their generated projection
+and portable source package; PCR lifecycle/publication commands do not apply.
+Independent document-review records, scientific approval and study qualification
+remain separate, and consumers independently pin eligible Main provenance.

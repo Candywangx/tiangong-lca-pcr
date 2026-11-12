@@ -19,7 +19,7 @@ Excluded: log-to-plywood manufacture, new on-site film application/hot pressing,
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.shuttering-for-concrete-constructional-work-made-out-of-wood |
-| classification_refs | CPC 3.0:31623; narrower (proposed, unaccepted) |
+| classification_refs | CPC 3.0:31623; narrower drawing-specific unframed facing scope; current decisions are governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its acceptance.decision_ref ADRs |
 | covered_products | New unframed birch facing panels fabricated to specific shuttering drawings with all exposed edges/holes resealed |
 | excluded_products | Stock substrate sheets; other wood shuttering routes; complete formwork systems; use services |
 | representative_product | One-piece drawing-specific facing, without default thickness, dimensions, recipe or mass |
@@ -111,7 +111,7 @@ Purchased all-birch, all-veneer PF-bonded board with cured smooth phenolic film 
 
 ###### Water-Based Paint (`edge_paint`)
 
-Whole wet waterborne acrylic edge paint, brush-applied to exposed cuts and holes, compatible with purchased film and cured at ambient conditions. Require supplier TDS/SDS and recipe; no UV cure, solvent-borne varnish or assumed solids/VOC factor. Wider binder examples in this identity do not authorize alkyd substitution or its generic emission claims.
+Whole wet waterborne acrylic edge paint, brush-applied to exposed cuts and holes, compatible with purchased film and cured at ambient conditions. Require supplier TDS/SDS and recipe; no UV cure, solvent-borne varnish or assumed solids/VOC factor. Wider binder examples in this identity do not authorize alkyd substitution or its generic emission claims. Its CPC 35120 placement describes artists' colours and related tints, an unresolved source-classification inconsistency with the broad waterborne-paint definition; it does not verify industrial edge-paint suitability. Retain the specified whole acrylic waterborne paint only with actual application, formulation/state and supplier/provider compatibility evidence; do not rewrite the source classification or infer a certified grade.
 
 - Selected flow: Water-Based Paint `47411f13-cc57-455b-ba23-dafbaeef17db`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / unit group `93a60a57-a4c8-11da-a746-0800200c9a66` / kg

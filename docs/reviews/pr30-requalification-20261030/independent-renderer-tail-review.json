@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "role": "Independent read-only renderer coalescing review",
+  "source_commit": "6db7ac9a4ec47c4deae907ad8f7f2c46d4261ea6",
+  "source_tree": "8899840731dbf73df76fc75505b9f93ef7dacb7a",
+  "source_file_sha256": {
+    "docs/pcr-documentation-site-contract.md": "d542a403f3debefef7d62413bdc8299cacde053eda788c5614a2e65130e0754e",
+    "packages/pcr-docs/scripts/markdown.test.ts": "f577424acea0d0b004af75cd7f6e812d861e1edbf688181f3dc8a55984ad36ab",
+    "packages/pcr-docs/scripts/markdown.ts": "6221db7ddf3c2b54a6467ed43ab94ba868d231634f2162d7c735692015b8641d"
+  },
+  "runtime": "v24.20.0",
+  "actionable_findings_remaining": [],
+  "addressed_findings": [
+    {
+      "issue": "Initial new footnote fixture kept note reference and backreference within the same merged page, leaving cross-page footnote ownership unproven.",
+      "resolution": "Reference moved to first page; test explicitly verifies link to note on merged second page and backlink to first-page reference."
+    }
+  ],
+  "implementation_review": {
+    "mutation_scope": "10 added lines after existing HAST partitioning and before part metadata derivation; only complete final nodes appended to predecessor; no canonical/source/download changes.",
+    "bounds": "Tail must be strictly below existing 0.65*maxHtmlBytes target; complete merged serialized UTF8 nodes must be <=existing3*maxHtmlBytes ceiling. Existing default180000 unchanged. Finite while loop decreases group count each merge.",
+    "semantics": "Predecessor context retained; ordered nodes appended intact; source ownership, anchors, ToC and links derived after packing. H1 remains unique and first-page owned. Atomic oversized units remain unmerged.",
+    "material_behavior_disclosed": "Continuation URLs can disappear; anchors relocate to current owning pages; internal routing regenerated. Page-scoped search record counts/query granularity can change. No old-URL compatibility or same-wire guarantee claimed for new layout.",
+    "product_qualification": "Actual final file count and bilingual search/static/browser/resource gates still required; 19777 projected files is not observed qualification."
+  },
+  "independent_checks": [
+    {
+      "command": "node --test packages/pcr-docs/scripts/markdown.test.ts packages/pcr-docs/scripts/generate.test.ts",
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "method": "Deterministic independent multilingual HAST/source/anchor fidelity exercise",
+      "seed": "0x38150",
+      "source_documents": 45,
+      "split_configurations": 180,
+      "total_parts": 1527,
+      "split_limits": [
+        300,
+        600,
+        1000,
+        1800
+      ],
+      "assertions": [
+        "Flattened HAST node content and order byte-identical to single-part render.",
+        "Complete source inventories and source node IDs identical and in preserved rendered order.",
+        "All local heading/H1/footnote destinations resolve through new owning parts.",
+        "Every rendered source block passes text/table/list/code fidelity checks."
+      ]
+    }
+  ],
+  "limits": [
+    "Review binds exact engineering source6db7 and does not qualify later integration source.",
+    "Generated-sample fidelity and focused tests do not substitute for full corpus old-to-new route/anchor audit. Engineer is preparing that audit separately.",
+    "No fresh full validate/docs build, actual final export file count, full bilingual search measurement, SEO/browser/sealed/provider/hosted qualification performed by this reviewer.",
+    "No preservation of removed continuation URLs or unchanged search query granularity asserted.",
+    "No scientific, translation, publication or deployment approval implied."
+  ]
+}

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { readProductIdentity, readProductVersion, productGit, type ProductIdentity } from '../../builder/scripts/product-identity.ts';
 import { productTreeSha256 } from '../../builder/scripts/product-release.ts';
-import { assertBuildResources } from '../../packages/pcr-docs/scripts/resource-budget.ts';
+import { assertBuildResources, WEB_BUILD_COMMANDS } from '../../packages/pcr-docs/scripts/resource-budget.ts';
 import { isReusableContext, verifyCiPlan, type CiPlan } from './ci-plan.ts';
 import { readCurrentQualificationPlan } from './qualification-plan.ts';
 import { assertCoverageQualificationBinding, qualificationBinding, type CoverageQualificationBinding } from './coverage-qualification.ts';
@@ -23,7 +23,7 @@ export interface WebExportCheckpoint {
   context: Context; build: Record<string, unknown>; coverage: Record<string, unknown> | null;
   tree: ExportTree;
 }
-const commands = ['scripts/generate.ts', 'node_modules/next/dist/bin/next build', 'scripts/static-route-aliases.ts', 'scripts/verify.ts'];
+const commands = WEB_BUILD_COMMANDS;
 const documentationCommand = ['npm', '--prefix', 'packages/pcr-docs', 'run', 'build'];
 const metadataBytes = 32 * 1024 * 1024;
 function object(value: unknown): Record<string, unknown> {

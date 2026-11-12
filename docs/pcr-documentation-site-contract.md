@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-29
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration. Retained fork review: Added the lossless v6 numeric-column transport, bounded decoder, v5 compatibility and same-wire corpus comparison without changing content, ranking or resource budgets. PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
+lastReviewedAt: 2026-11-10
+lastReviewedNote: "PR34: owner-authorized bounded Next tree packing preserves original URLs and bytes, with compiled binding, source-bound provider profile 2 and complete transport verification; preserve fixed physical/search budgets and require fresh full qualification."
+lastReviewedCommit: 2002efdfc6d10f8dbf1db082c11662c817718c0b
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -19,6 +19,7 @@ checkPaths:
   - packages/pcr-core/src/languages.ts
   - packages/pcr-core/src/index.ts
   - edgeone.json
+  - middleware.ts
 related:
   - architecture.md
   - pcr-library-release-policy.md
@@ -109,7 +110,8 @@ before removing any duplicate file from the new owned export; it publishes a
 source-bound `generated/static-route-aliases.json` with each original URL, retained
 target, byte count and SHA-256. Verification requires the complete current route
 inventory and exact target bytes. Missing, malformed, foreign-source or unequal
-pairs fail the build. Other Next navigation payloads remain physical and unchanged.
+pairs fail the build. Next tree payloads use the bounded transport below; all other
+Next navigation payloads remain physical and unchanged.
 
 EdgeOne internal rewrites retain HTTP 200 access to `/__next._full.txt` and every
 nested `/*/__next._full.txt`, serving `/index.txt` and `/:splat/index.txt`
@@ -122,6 +124,44 @@ representatives, checks both original and target URLs with and without queries,
 and requires exact decoded bytes, MIME, revalidation and nosniff behavior. Existing
 HTML, raw-download, search and browser-navigation checks remain required. Static
 configuration alone does not establish actual provider rewrite behavior.
+
+### Bounded Next tree transport
+
+The owner-authorized PR34 storage exception packs only `__next._tree.txt` files.
+It preserves every original URL and byte, without redirecting the request or changing
+HTML, source downloads, page payloads or the full/index alias contract. Preparation
+compares every original before mutation and independently derives complete route
+coverage from physical `index.txt` files. A changed original fails the handoff.
+The strict fewer-than-20,000 physical-file limit remains unchanged.
+
+The first hexadecimal SHA-256 digit of the canonical encoded URL selects one of at
+most 16 packs. Each pack is bounded to 512 rows and 1,000,000 bytes; the manifest is
+bounded to 16,384 bytes and the compilation binding to 4,096 bytes. Content-addressed
+filenames, exact lengths, source identity, body hashes, canonical base64, route
+uniqueness and the complete namespace are verified before acceptance. No undeclared
+pack, missing route or physical tree shadow is eligible for sealing or import.
+
+Provider profile 2 binds the runtime source closure and the final non-null
+`generated/navigation-binding.json`. The provider entry imports that literal JSON
+from the verified owned export at compilation; it never fetches a mutable latest
+binding. Next also compiles this entry before producing its static export, so the
+Next stage may create an owned temporary `null` compilation slot when none exists.
+Static export does not execute this middleware. Cleanup removes only that unchanged
+owned slot; final export, product sealing and provider import reject an unbound
+profile. The final provider compilation uses the verified non-null binding, and
+Next's intermediate middleware bundle is not a deployed artifact. Existing profile
+1 artifacts retain their original verification path.
+
+The shared runtime serves GET and HEAD at the original tree URL, preserves query
+semantics, and returns exact decoded bytes with text/plain, nosniff, revalidation
+and a content hash ETag. Unknown routes and other methods retain normal routing;
+invalid or unavailable authenticated data returns a non-cacheable 503. Each fetch
+has a ten-second deadline and a decoded-byte bound, including compressed responses.
+Each of at most two cached origins shares one manifest request, at most one pending
+request per bucket and two decoded cached packs. The sealed local server executes
+this same source-owned handler and forwards its Response. Product probes bind the
+whole transport plus root/English/Chinese original URL responses; these checks do
+not replace the complete browser suite or establish live provider deployment.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -149,7 +189,7 @@ Module and guide page metadata keeps its existing download fields. This removes
 redundant worker input without changing source bytes, reading routes or downloads.
 
 After a complete export, `node packages/pcr-docs/scripts/search-v5-corpus-audit.ts`
-checks shipped bytes, exact native/record restoration, same-corpus v4/v5/v6 sizes and
+checks shipped bytes, exact native/record restoration, same-corpus v4/v5/v6/v7 sizes and
 ordered query comparisons. An explicit assets-root argument permits the same
 search-only audit after generation, without claiming complete static-export or
 browser qualification. Historical audits do not qualify a new corpus or commit.
@@ -354,8 +394,8 @@ handoff rejects explicit final or stage failures, nonzero exits, unmeasured or
 over-budget stage RSS, and missing or inconsistent stage/total durations; those
 checks retain the exact archive and source/run/attempt-bound log proof. All HTML,
 Next navigation payloads, raw downloads, languages, search and inspector files
-remain intact. Artifact transfer and extraction count against those unchanged
-job limits. A verified
+remain intact. Artifact transfer and extraction count against those job limits,
+increased from the previous 60 minutes. A verified
 routing-only `edgeone.json` is the sole post-verification addition; it is included
 in the transported tree. Final audit files bind that tree and the complete build
 and SEO evidence to the product artifact. The old 18-minute full-build
@@ -530,41 +570,131 @@ readers remain available. The unchanged raw/gzip budgets include the full manife
 Corpus auditing compares v6 with repacked v5 over the exact same logical wires,
 source commit, language and pack membership, including both manifests.
 
-### Bounded native downloads
+Search manifest version 7 uses envelope `schemaVersion: 3` and
+`encoding: "v4-columnar-channels-score-posting-vlq"`. Supported numeric maps
+reference one row of four shared channels: term deltas, score headers, posting
+lengths, and posting values. Grouping each channel across the same physical pack
+improves gzip locality. The first value of each posting list is predicted from
+the previous nonempty list in the same one of nine score slots; subsequent values
+retain their original deltas. Predictors reset for each map. This transport never
+reorders terms, postings, engine exports, logical shards or result records.
 
-Current unpublished `candidate/authored_methodology` records without release
-history may embed their required-language Markdown originals as native downloads
-through 80 KiB per file; manifest downloads retain their separate 16 KiB limit.
-This bounded transport preserves original filenames, bytes and hashes. Larger,
-published, optional-language and release artifacts remain physical downloads.
-Both languages, original content and search coverage remain complete. Increasing
-inline eligibility reduces the independent export file count while increasing
-page payload; it does not reduce total exported storage. The complete export
-still must satisfy fewer than 20,000 files, less than 25 MB per file and the
-existing measured memory/build gates; browser qualification verifies native
-downloads against canonical bytes.
+The decoder authenticates physical bytes and checks unique, complete channel
+ownership before numeric expansion. Shortest-form VLQs, encoded counts, score
+masks, posting-length sums, predictor arithmetic and the shared 20 MB numeric
+expansion budget are checked before logical hashes and engine import. Unsupported
+shapes, large deltas or ineligible expansion retain native columns. Readers for
+versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buckets,
+complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
+including the manifest, remain unchanged.
 
-The internal `.generated/site.json` transport stores each repeated inline
-download URL once in a versioned `downloadTransport` table. Only download `url`
-values use bounded integer references; `parseSiteManifest` restores complete URLs
-before validating the unchanged site DTO. Legacy uncompressed metadata remains
-readable. Duplicate/invalid tables, out-of-range references and conflicting
-transport fields fail closed. This internal deduplication avoids constructing a
-single expanded JSON string beyond the JavaScript runtime limit; it does not
-remove page content, original bytes, downloads or required context. Emitted page
-links remain ordinary native download URLs and are verified against source.
+Search manifest version 8 uses envelope `schemaVersion: 4` and
+`encoding: "v4-columnar-new-reuse-ranked-split-vlq"`. It retains the original
+first-appearance term dictionary and every ordered logical v4 wire. Its five
+numeric channels contain term commands, ranked score headers, posting lengths,
+signed predicted first values and unsigned remaining posting deltas. A map with
+negative remaining deltas, unsupported shapes, oversized integers or insufficient
+shared expansion budget retains its original native numeric columns.
+
+Term command zero introduces the next dictionary ID. A positive command is one
+plus the zigzag delta from the previous reused ID in that map; new terms do not
+change that predictor. Reuse state resets per map, while the next new ID advances
+through every map in original shard/key order, including native fallbacks. Reuse
+cannot name an unintroduced term, native columns cannot skip a new ID, and all
+dictionary entries must be introduced. The restored original term-ID deltas,
+not the command stream, enter the existing logical-wire checks.
+
+The 1,023 legal score headers have a fixed corpus-independent rank: headers whose
+declared length equals the mask's bit length come first, then mask popcount and
+the original numeric header break ties. This bijection preserves trailing empty
+slots. Nonempty postings retain v7's previous-first-value predictor independently
+for each of the nine score slots; first and remaining values occupy separate
+channels without reordering the restored postings. Empty lists consume neither.
+
+V8 retains complete unique channel ownership, canonical bounded VLQs, header and
+posting-count checks, finite predictor arithmetic and the same shared 20 MB numeric
+expansion budget. The budget accounts for the original term/header digit lengths,
+slot vectors, posting arrays and restored first values as well as decoded channels;
+short term commands and small header ranks cannot conceal larger restoration.
+Physical bytes, summed restored-wire bytes, final logical hashes and record counts
+remain independently checked. Readers and canonical writer bytes for v1-7 remain
+compatible; older Workers reject the v8 manifest. A new transport does not alter
+source text, independent logical indexes, engine exports, record fields or ranking.
+
+The generator retains the original sixteen-member greedy layout as a candidate
+and compares v7 and v8 over a bounded set of consecutive pack boundaries near balanced cuts.
+At each cut position it retains at most sixteen paths. Physical dictionary strings
+may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
+gzip is smaller; dictionary values and first-appearance order remain exact. The
+complete manifest and physical files determine the selected gzip cost within the
+unchanged raw budget. Candidates must also retain the existing per-pack physical
+and summed restored-wire byte limits before selection. This does not change
+logical text buckets, engine exports,
+record fields, logical order, ranking, decoder versions or any size/expansion guard.
+
+Corpus auditing accepts only the exact canonical physical pack spelling or its
+exact dictionary-only Unicode-escape variant for v7/v8. It still verifies physical hashes,
+every restored logical wire, native engine exports, complete records, ordered
+query results and the full existing raw/gzip budgets. This compatibility does not
+permit arbitrary JSON rewrites or changes to non-dictionary fields.
+
+`node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
+compares captured physical assets with repacked v8 files over the exact same
+logical wires, source identity, language and pack membership. It retains physical,
+logical, native-export and complete-record hashes and both full manifest costs.
+A baseline may be over budget; that diagnostic does not qualify it for browser
+use. Generation measures every language before failing a search-budget violation,
+retains `search-budget-diagnostics.json` in its unpromoted stage, and preserves the
+previous generated artifact set. Final combined-source generation, complete
+export/browser verification and product resource gates remain mandatory.
+
+### Historical bounded native downloads
+
+Older retained artifacts may contain inline originals under the former
+`candidate/authored_methodology` eligibility policy: no release history, up to
+80 KiB per required-language Markdown file and a separate 16 KiB manifest limit.
+The eligibility encoder and bounded decoder remain compatibility/verification
+helpers. Those thresholds describe retained historical transport, not current
+export eligibility. New generation always stores physical originals under
+`/generated/raw/<sourcePath>` as specified above. Inline eligibility is not a
+current file-capacity control. The unchanged file-count, per-file, memory/build
+and browser gates still apply.
+
+The internal `.generated/site.json` format retains the versioned
+`downloadTransport` table for compatibility with metadata containing repeated
+inline URLs. Only download `url` values use bounded integer references;
+`parseSiteManifest` restores complete URLs before validating the unchanged site
+DTO. Current physical-only exports leave the table's `urls` array empty. Legacy
+uncompressed metadata remains readable. Duplicate/invalid tables, out-of-range
+references and conflicting transport fields fail closed. This compatibility
+preserves original bytes, native filenames, complete page content and required
+context; it does not enable inline emission in current generation.
 
 ### Inspector data transport
 
-The field inspector groups complete generated records into versioned JSON packs,
-using positional entries `[key, manifest, structured]`. Each record carries its
+The field inspector groups complete generated records into versioned JSON packs.
+Version 1 uses positional entries `[key, manifest, structured]`. Each record carries its
 exact transport key; current records and historical releases have distinct keys.
 Packs target at most 1,000,000 bytes and 32 records. A single larger record stays
 whole and must satisfy the unchanged 25 MB file limit. No PCR field, scalar type,
 array position, object-key order or empty value is removed. Generation requires
 each decoded record to serialize exactly as its original generated data; export
 verification repeats that comparison against the shipped pack for every record.
-The reader retains support for older unkeyed single-record payloads, rejects
+Version 2 may dictionary-code repeated strings and object keys when its complete
+UTF-8 serialization is smaller than version 1. Nonbeneficial strings remain
+literals. Explicit number/array/object tags preserve every scalar type, empty
+value and object-key order; deterministic dictionary pruning does not claim a
+globally optimal encoding. The physical target remains 1,000,000 bytes and 32
+records. Before materializing any decoded record, the reader validates the whole
+pack, including distinct dictionary/record/decoded object keys, exact tags and
+references. It charges every restored occurrence, JSON escape, punctuation and
+the version-1 envelope against a strict 25,000,000-byte restored-pack bound.
+Dictionary nesting is bounded at 128; older valid deeper records retain version
+1 transport. The writer measures the restored size before encoding a candidate,
+flushes an existing group before that limit and recomputes the singleton. A
+record that cannot satisfy the existing single-file limit fails closed.
+
+The reader retains support for version 1 and older unkeyed single-record payloads, rejects
 unknown versions, duplicate or missing keys and malformed records, and preserves
 the inspector's visible retry behavior. Browser qualification exercises the actual
 inspector in both languages and for available historical releases.
@@ -575,8 +705,59 @@ intact. Inspector packing itself requires no rewrite; the separate exact Next
 navigation alias profile above preserves every supported navigation URL and byte.
 
 Large documents split preferentially before semantic H2/H3 boundaries; bounded
-continuations retain their chapter context. Chapter URLs use source heading
-identities, with content-derived continuation suffixes. Tables remain whole, and
+continuations retain their chapter context. The existing renderer uses a 180,000-byte
+soft target, prefers chapter boundaries after 65% of that target, and allows up to
+three times that target when retaining complete source units. Indivisible oversized
+units remain whole. These target and ceiling values are unchanged.
+
+A final fragment below the same 65% target may be appended to its predecessor only
+when their complete serialized nodes fit the existing three-times ceiling. Tail
+packing runs before deriving part metadata and preserves the predecessor's start
+context. Every original node remains once and in source order, including tables,
+headings, footnotes and code whitespace; no canonical source or native download is
+changed. All heading anchors, source ownership, ToCs and internal fragment links
+are rebuilt against the resulting parts. An old-to-new part and anchor routing
+audit makes affected documents reviewable.
+
+PCR reading pages additionally coalesce adjacent complete groups when their combined
+serialized UTF-8 HTML fits the same three-times ceiling. This changes the grouping
+policy, not the 180,000-byte target, 540,000-byte ceiling or indivisible-unit handling.
+Other document kinds retain the former partitioning. Node order, content, tables,
+code and footnotes are checked before deriving reading-page identity and links.
+
+Search retains the former post-tail logical parts, including their ids, titles,
+summaries, source-text scope, ordering and URLs. Reading pagination never merges
+these logical search units or changes ranking input. Removed reading URLs resolve
+through exact same-record, same-language middleware aliases, not redirect HTML.
+`compatibility/packed-chapters.json` binds those retained pre-packing routes to
+baseline commit and canonical source hashes; `packed-chapter-anchors.json` separately
+retains all their original anchors. They are not claims of prior publication.
+The root `baselineCommit` retains the origin of the initial retained-route collection and is not advanced when independent new documents are registered. An additive registration preserves every existing document/route object and its order, and carries a separately reviewed receipt binding its actual source commit, canonical source hashes, complete pre-packing logical parts and anchors, and unique reading owners; it does not claim that new documents existed at the root baseline or were previously published.
+Existing published routes are flattened to final owners while their historical
+anchor ledger remains unchanged. All retained and published targets must exist in
+the ordinary document tree. The source-bound provider profile includes the added
+route source; older three-file profiles remain readable. Generation rejects source
+drift until the retained-route evidence is reviewed and updated.
+
+When revised content gives a current reading part a reserved historical source
+URL, its current slug receives a deterministic `-current` suffix. A second
+reserved or duplicated destination fails closed. Complete nodes, anchors and
+logical search parts remain unchanged. Audited retained targets may follow the
+actual same-record, same-language owner only when every historical anchor still
+belongs to that one page. Historical source URLs, default anchors, anchor arrays
+and baselines remain unchanged; no marker-only anchor can substitute for content.
+The original provider source, shadowing and ordinary-document anchor gates still
+apply to the fresh complete export.
+
+The anchor verifier reuses the upstream bounded generated-HTML scanner. Quoted
+attributes, comments, raw-text payloads, inert/foreign descendants and consumed
+declarative shadow templates cannot supply document anchors; unsupported structure
+fails closed. Complete fresh generation, search restoration/comparison, physical
+export counts, native downloads and browser/provider gates qualify this combined
+source. Projected savings are diagnostics, not acceptance evidence.
+
+Chapter URLs use source heading identities, with content-derived continuation
+suffixes. Tables remain whole, and
 ragged GFM tables preserve source cells beyond the header width by adding empty
 header cells. Source spelling, including a literal `undefined` cell, is retained.
 
@@ -692,3 +873,17 @@ options and appends the required 4096 MiB heap setting last. The same rule appli
 to ordinary and relocated builds. A real subprocess test proves both preload
 execution and the effective heap bound; environment diagnostics still log presence
 only. Coverage never substitutes for the actual build time/RSS/provider gates.
+
+## Published chapter compatibility
+
+Reviewed published continuation URLs remain accessible through exact GET/HEAD middleware rewrites. `middleware.ts` and the source-owned chapter mapping preserve original query strings; an existing fragment remains browser-owned. The complete target body is served under the old URL. JavaScript uses supported native history to normalize to the target and preserve an explicit fragment or select the published first anchor. Without JavaScript, explicit source fragments remain usable; fragment-free requests do not claim automatic chapter scrolling. Unknown routes, other methods and RSC assets retain their existing routing.
+
+`generated/provider-runtime.json` seals the exact middleware/import closure and routes to the product source. Export verification requires real target/default anchors, and the separate published-source anchor ledger requires every retained historical content anchor. Anchor checks use a dependency-free scanner for generated HTML below 25,000,000 UTF-8 bytes and at most 1,000 open elements: only first id attributes in the ordinary document tree count, with emitted character references decoded once. Quoted attribute text, comments, raw-text payloads, inert template content and foreign SVG/MathML descendants cannot supply chapter anchors. Unsupported malformed structure, declarative shadow templates or ambiguous character references fail closed; this scanner does not claim general browser error-recovery compatibility. The product archive and probe bind the proof. Provider import compares the actual regular source bytes before handoff and again before the atomic swap; a missing/substituted runtime fails. Historical immutable artifacts without this profile remain readable. Raw TypeScript export remains prohibited. New root middleware belongs to strict TypeScript and measured coverage inventories.
+
+Provider CLI discovery/compilation and sealed-browser simulation are evidence for their respective scopes. They do not assert live production adoption; deployment and live acceptance still require the existing release authority.
+
+When an authorized product release invokes live acceptance for a sealed provider-runtime profile,
+it verifies the served profile digest and bilingual representative old/target responses with and
+without queries, including the actual default chapter anchor. This stays within the existing
+live-request deadline and size bounds. A compile-only or locally emulated result cannot replace
+that future live acceptance.

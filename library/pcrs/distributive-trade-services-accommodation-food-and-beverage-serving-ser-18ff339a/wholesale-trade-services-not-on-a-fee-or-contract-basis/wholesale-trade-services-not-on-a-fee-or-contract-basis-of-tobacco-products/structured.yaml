@@ -1,10 +1,941 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "61028"
-  title: "Wholesale trade services, not on a fee or contract basis, of tobacco products"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-tobacco-products"
+  classification_refs: "CPC3.0:61028; narrower: ambient own-account sealed filtered-cigarette wholesale"
+  covered_products: "Accepted physical wholesale commercial consignments of factory-sealed filtered cigarettes"
+  excluded_products: "Rawleaf/manufacture/other nicotine devices/retail/agency/active conditioning/repacking"
+  representative_product: "Actual commercial accepted consignment with SKU/style,sticks/packs/cartons,net mass/moisture/tare and hierarchy/gate qualifiers"
+  production_route: "Released sealed-pack receipt -> ambient warehouse stock/physical handling and actual aggregation -> business dispatch and buyer acceptance"
+  market_state: "Completed physical trade service; unchanged finished sealed cigarettes are nonexchange merchandise"
+functional_unit:
+  what: "Completed ambient own-account sealed filtered-cigarette wholesale consignment service"
+  how_much: "1 Item(s): one unique accepted commercial consignment,not fixed sticks,packs,kg or currency"
+  how_well: "Actual manufacturer/SKU,sealed presentation,physical condition and agreed traceability/buyer criteria with recorded exceptions"
+  how_long_or_cycle: "Actual receipt,holding,picking,dispatch/return and acceptance periods plus assigned idle/cleanup,cutoffs and full asset life"
+  reference_flow_link: "accepted_service"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The boundary is an additive warehouse/handling/traceability service,not a stand-alone cigarette footprint. UK HMRC records provide a primary example of physical event/aggregation accountability,not a globally mandated legal scheme. Allocation mathematics and stock conventions below are declared methodology,not quantitative HMRC claims."
+      source_ids: []
+    - rule_id: boundary_addon
+      applies_to: "all exchanges"
+      rule: "ALL merchandise manufacture including tobacco,filter,paper and factory primary packaging for saleable and lost cigarettes is outside the service add-on. A compatible released sealed finished-cigarette baseline and quantified original-gate assigned demand/loss,existing coverage and owner must be integrated once outside service before whole-chain completeness. Actual loss handling/receiving treatment remains inside once."
+      source_ids: []
+    - rule_id: boundary_events
+      applies_to: "stock and identifiers"
+      rule: "Use actual SKU physical counts and tracked parent-child aggregation events. Pack/carton/pallet UIDs,facility/operator identities,commercial documents and completed service Count are distinct. Do not force a UID per stick,default pack size,or physical label manufacturing from an inherited identifier."
+      source_ids:
+        - hmrc-selling-storing
+    - rule_id: boundary_status
+      applies_to: "returns and losses"
+      rule: "Actual returned/quarantined/lost/stolen/destroyed states need exclusive quantity and responsibility records. Unknown fate is unresolved,not assumed atmosphere,Waste,burn or recovered product. No inferred dry tobacco loss from gross/stock/moisture deficit."
+      source_ids:
+        - hmrc-selling-storing
+    - rule_id: boundary_operations
+      applies_to: "ambient warehouse"
+      rule: "This route has actual ambient electric handling/storage/IT,not active thermal/humidity preservation,on-site combustion,opening/repacking tobacco or manufacture. Actual additional conditioning,fuel,fluid or reprocessing requires bounded route review and complete added exchanges; it cannot be omitted or represented as zero. Carrier temperature equipment must be declared in provider scope."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual released factory-sealed finished filtered cigarettes with known primary presentation and SKU"
+  starting_condition_role: "Nonexchange merchandise stock/throughflow,not consumed tobacco/filter/paper/primarypack inputs"
+  product_classification_scope: "Narrower ambient physical sealed-cigarette own-account service within61028 tobacco wholesale"
+  recursive_input_rule: "Actual upstream providers need disjoint complete physical gates; never recursively purchase the same consignment or repeat included IT/transport/assets"
+  upstream_dataset_requirement: "Commodity baseline outside service must match released sealed finished cigarettes including tobacco processing/cigarette/filter/paper/primarypack manufacture or assemble missing stages once. Raw cured leaf alone is incomplete. Actual resources/providers/receiving treatment need compatible gates"
+  disclosure: "All qualifiers,actual count/component/moisture/tare/stock and accepted period,loss demand/source-gate conversions/coverage/owner,integration result and complete asset/provider/carrier/receiver scope"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed ambient own-account sealed filtered-cigarette wholesale consignment service"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - manufacturer_released_finished_filtered_cigarettes
+    - actual_manufacturer_SKU_style
+    - sealed_unit_pack_and_primary_presentation
+    - actual_sticks_packs_cartons_and_hierarchy_factors
+    - actual_parent_child_ID_levels_and_events
+    - net_cigarette_tobacco_filter_paper_mass
+    - moisture_basis_and_primary_pack_tare
+    - actual_ambient_conditions_and_periods
+    - actual_receipt_departure_return_acceptance_gates
+    - ownership_resale_business_buyer
+    - condition_and_traceability_acceptance
+    - actual_scope_provider_transport_responsibility
+reference_flows:
+  []
+measurement_rules:
+  - id: service_count
+    applies_to: "accepted_service"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Reference output is 1 Item(s),one commercial service,not cigarette stick,pack,carton,scan or tax quantity."
+  - id: hierarchy_count
+    applies_to: "merchandise"
+    required_property_ref:
+      name: "Count"
+      uuid: ""
+    required_unit: "actual native count"
+    rule: "Use actual SKU-specific sticks/pack,packs/carton and parent-child relationships with factor/source; count each physical stock once at selected level. No assumed universal pack size or stick UID."
+  - id: component_mass
+    applies_to: "merchandise and exits"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Separate whole cigarette mass,tobacco/filter/paper,moisture basis and inherited primary tare; measured native conversion/state/source. A dry tobacco view is not whole finished cigarette or another additive flow."
+  - id: native_units
+    applies_to: "all exchanges"
+    required_property_ref:
+      name: "actual native property"
+      uuid: ""
+    required_unit: "actual native unit"
+    rule: "Preserve material/provider/asset units and actual property support. No margin/tax-to-service,leaf-to-cigarette,or generic Energy substitution."
+process_map:
+  - id: sealed_cigarette_trade
+    name: "Ambient sealed-cigarette warehousing and own-account wholesale"
+    inclusion: "required"
+    inclusion_condition: "Actual own-account ambient physical warehouse service with business acceptance"
+    role: "One receiving/stock/handling/aggregation/dispatch responsibility; batch jobs share continuous-period warehouse/IT infrastructure"
+    quantitative_reference: "accepted_service"
+process_inventory:
+  - id: sealed_cigarette_trade
+    label: "Ambient sealed-cigarette warehousing and own-account wholesale"
+    inputs:
+      product:
+        - row_id: warehouse_power_ac
+          role: "Actual alternating-current electricity at point of use"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Energy / kWh"
+          description: "Only actual alternating-current electricity crossing this node boundary and not already inside a complete provider. The identity leaves provider, voltage, generation mix and delivery-loss allocation unspecified; collect them where required. Its ILCD reference property is named Net calorific value but the verified electricity flow defines an electrical-energy basis of 1 MJ; native kWh uses exactly 3.6 MJ per kWh, never a fuel heating-value factor. Direct-current or another unmatched electricity state stays in the residual requirement. Range evidence need: Need actual meters,periods,device duties and all-consumer physical drivers; identifiers or transaction counts alone are not energy factors."
+          amount:
+            expression: "Attributed measured electricity / N; cp_power."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_water_liquid_tap
+          role: "Actual liquid treated tap-water supply"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Volume / m3"
+          description: "Applicable only when the actual source is treated tap water supplied for the declared use. Preserve actual supplier, quality, temperature/state and provider boundary; do not assume that every water supply is tap water. Ice, bottled/mineral/reclaimed/untreated water and direct environmental withdrawal stay in their actual separate identities. Keep the parent native mass or volume basis. For any final mass-reference conversion, require actual compatible density/state evidence; the catalogue secondary-volume relationship is not a default site density. Range evidence need: Require actual supply,retention,contained effluent and any direct outfall/evaporation evidence; no residual water balance assigned automatically to air."
+          amount:
+            expression: "Measured assigned supply / N; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_preparations_synthetic_detergent
+          role: "Actual independently recorded synthetic detergent supply"
+          name: "Detergent"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1c57d123-df57-49ab-b9d4-957403beb8a5"
+          property_unit: "Mass / kg"
+          description: "Only actual synthetic surfactant detergent identified by product/formulation, supplied state and use records. Measure net supplied material excluding package tare; retain concentrate/dilution-water distinctions and never count whole formulation and components additively. Soap, disinfectants, wipes, filters and other materials remain under their separate actual identities; no cleaning recipe, dose or occurrence is assumed. Range evidence need: Need purchase and use records,active/carrier basis,dilution,density/temperature and unit conversions with sources; safety classification is not released mass."
+          amount:
+            expression: "Assigned actual preparation supply / N; cp_supplies."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supplies
+              source_ids: []
+            ranges: []
+        - row_id: added_outer_material_pe_film
+          role: "Actual separately recorded polyethylene packaging film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Only actual independently supplied polyethylene film used as additional service-owned wrapping or lining, verified by actual polymer/formulation and net film mass. This identity is generic production mix at plant; retain actual supply gate, provider and separately owned delivery burdens. It does not prescribe LDPE/HDPE grade, recycled content, film thickness or dose. PVC/PET/PP, multilayer composites, adhesive labels, filled packs and inherited merchandise packaging remain separate residual identities. Whole supply and components must not be counted twice; no occurrence is assumed. Range evidence need: Require physical SKU/native stock,tare/material composition and measured conversion; no default label per stick or pack,or tax value as material."
+          amount:
+            expression: "Assigned actual added material supply / N; cp_supplies."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supplies
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_service
+          role: "Completed ambient own-account sealed filtered-cigarette wholesale consignment service"
+          name: "Completed ambient own-account sealed filtered-cigarette wholesale consignment service"
+          flow_type: "product"
+          property_unit: "Count / Item(s)"
+          description: "One actual unique ownership-purchase/resale consignment accepted by a business buyer with physical and traceability qualifiers; cigarette stick/pack/carton counts remain separate merchandise quantities. Range evidence need: Need actual completed commercial gate and SKU/count/net mass/moisture/tare/period/acceptance records; no fixed sticks,kg,price,margin or tax per service."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lots
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: discarded_sealed_units_atomic_case
+          role: "Discarded sealed filter-cigarette pack"
+          name: "Discarded sealed filter-cigarette pack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on independently recorded actual Discarded sealed filter-cigarette pack. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under discarded_sealed_units; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately. Range evidence need: Need actual sticks/packs/cartons,net cigarette/tobacco/filter/paper mass,moisture,primary tare,state and original finished-gate loss conversion/owner; no assumed burn,smoking or leaf-equivalent loss."
+          amount:
+            expression: "Assigned measured whole-unit waste / N; cp_lots."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lots
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_cohort
+    applies_to: "all inventory"
+    rule: "Use positive actual unique accepted N and causal physical period/cohort shares. Include failed/cancelled/quarantined/returned-order,standby,cleanup and unfinished cross-period duties; no activity disappears when period N is zero. Tax/excise/margin/currency are not physical denominators."
+    source_ids: []
+  - rule_id: allocation_stock
+    applies_to: "merchandise nonexchange ledger"
+    rule: "Reconcile attributed opening,net receipts,buyer returns,closing,accepted transfers,supplier returns,known discard and other external exits with exclusive states; quarantine and aggregation are internal moves. Map assigned finished-cigarette demand/loss to original gate with measured component/moisture/primary tare conversion,unit/basis/source and owner/already-included coverage. Raw cured leaf alone is not a finished-cigarette baseline."
+    source_ids: []
+  - rule_id: allocation_supply
+    applies_to: "actual supplies and usable_supply_return"
+    rule: "S=attributed opening+true external net receipts-closing including retained recovered supplies. Choose gross supply INPUT S plus separate same-scope matched usable return OUTPUT OR consumed-only INPUT S-return with matching outward exchange omitted. Internal recovery is not new receipt; no numeric S+return input,second deduction or removal of waste/spill upstream burden."
+    source_ids: []
+  - rule_id: allocation_shared
+    applies_to: "power/providers/assets/freight"
+    rule: "Measured compatible-period resource share=cohort physical driver/all-consumer driver. Full-life asset equivalent=compatible cohort driver/complete lifetime driver across all users/periods; include manufacture,maintenance/cleaning,replacements and EOL once. Use observed lifetime or history plus evidenced remainder/termination,driver units,sources,sensitivity/update. A complete provider representation is an alternative to own covered burdens."
+    source_ids: []
+  - rule_id: allocation_outlets
+    applies_to: "actual waste and releases"
+    rule: "Use actual mutually exclusive whole-unit or separated components with receiver/treatment and transport once. A wet stream and its contents/components are alternate composition views,not additive physical exits. No automatic recycling/substitution credit or upstream supply subtraction for waste. Direct identified substances need actual receiving media and supported fate."
+    source_ids: []
+  - rule_id: source_scope_normalization
+    applies_to: "nonexchange commodity and service combination"
+    rule: "Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lots
+      process_id: "sealed_cigarette_trade"
+      flow_role: "accepted consignments and nonexchange cigarette stock"
+      record_type: "event,pack hierarchy,stock and disposition ledger"
+      raw_fields: "consignment_id; lot_id; manufacturer; SKU; cigarette_style; sticks_per_pack; packs_per_carton; aggregate_level; parent_id; child_ids; count_unit; hierarchy_factor; hierarchy_factor_source; facility_id; arrival_time; departure_time; return_flag; acceptance_time; ownership_gate; buyer_gate; opening; gross_receipts; tare; net_receipts; buyer_returns; closing; accepted_quantity; supplier_returns; quarantine_internal; other_exits; lost_status; stolen_status; destroyed_status; actual_fate; gross_mass; net_cigarette_mass; tobacco_mass; filter_mass; paper_mass; primary_pack_tare; moisture_value; moisture_basis; moisture_unit; moisture_method; moisture_source; sample_id; sample_time; supplier_moisture_evidence_date; mass_unit; measurement_state; conversion_factor; conversion_unit; conversion_source; original_gate_dataset_id; original_gate_reference; assigned_source_quantity; assigned_source_unit; source_gate_state; original_gate_loss_quantity; original_gate_loss_unit; original_gate_loss_basis; loss_conversion; loss_conversion_unit; loss_conversion_source; burden_owner; already_included_loss_coverage; separate_pack_fate; integration_result; N; source_assignment_scope_id; source_assignment_scope_kind; source_quantity_basis; source_target_scope_id; source_same_scope_N; source_same_scope_N_unit; source_same_scope_N_basis; source_same_scope_N_method; source_same_scope_N_state; source_same_scope_N_sample_time; source_same_scope_N_source; source_same_scope_acceptance_ids; source_already_per_reference; raw_integration_scope_link; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation"
+      collection_method: "Link actual completed buyer acceptance to physical stock and actual tracked pack/carton/pallet parent-child IDs; reconcile counts and measured components/moisture without forced stick UIDs or default pack factors. Quantify original released finished-cigarette assigned demand/loss outside service.  Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division. Attribute only the individually identified physical case; retain other source-linked actual fates separately. Each native record belongs to exactly one exchange and any whole total is a non-additive audit."
+      unit: "Item(s); sticks; packs; cartons; kg; declared moisture units"
+      frequency: "each actual event and acceptance"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_power
+      process_id: "sealed_cigarette_trade"
+      flow_role: "warehouse electricity"
+      record_type: "meter and device-period responsibility ledger"
+      raw_fields: "meter_id; period_start; period_end; meter_opening; meter_closing; energy_unit; device_scope; idle_cleaning; cohort_driver; cohort_driver_unit; all_consumer_driver; all_consumer_driver_unit; attribution_share; share_source; provider_included_scope; source; uncertainty; N; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero"
+      collection_method: "Measure complete actual electric scope by compatible period and all-consumer physical shares; include idle/cleanup and unfinished attribution. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero."
+      unit: "kWh"
+      frequency: "each measured period"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_water
+      process_id: "sealed_cigarette_trade"
+      flow_role: "supplied water and actual liquid fates"
+      record_type: "water meter and outlet sampling ledger"
+      raw_fields: "source_id; period; supplied_volume; volume_unit; retained_volume; contained_volume; outfall_id; receiver; density; density_unit; temperature; temperature_unit; composition; composition_basis; composition_source; evaporation_evidence; source; fate_basis; fate_source; treatment_scope; transport_scope; attribution_share; all_consumer_driver; driver_unit; N; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero"
+      collection_method: "Meter actual supply and outlets; distinguish contained receiver stream from direct substances,retention and proved evaporation without residual inference. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero."
+      unit: "m3; actual composition units"
+      frequency: "each use and collection"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_supplies
+      process_id: "sealed_cigarette_trade"
+      flow_role: "actual new materials and matched unused outward returns"
+      record_type: "native-unit stock and use ledger"
+      raw_fields: "material_id; SKU; formulation; active_fraction; carrier_fraction; fraction_basis; fraction_source; period; opening; gross_receipts; receipt_tare; net_receipts; internal_issue; internal_recovery; closing_including_recovered; actual_use; matched_unused_external_return; receiver; source_scope_match; stock_representation; native_unit; conversion_factor; conversion_unit; density; density_unit; temperature; temperature_unit; conversion_source; fate; fate_basis; source; attribution_share; all_consumer_driver; driver_unit; N; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero"
+      collection_method: "Record each actual new material in native units and matched return provenance; choose gross supply with separate return or consumed-only matched supply with omitted return outlet. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero."
+      unit: "kg; actual native material units"
+      frequency: "each receipt/use/return/cutoff"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_provider
+      process_id: "sealed_cigarette_trade"
+      flow_role: "actual external physical support jobs"
+      record_type: "contract completion and coverage record"
+      raw_fields: "provider_id; job_id; actual_gate; native_quantity; native_unit; completion_time; energy_coverage; IT_asset_coverage; maintenance_EOL_coverage; transport_empty_coverage; treatment_coverage; included_direct_release; overlap_owner; upstream_dataset; source; cohort_driver; all_consumer_driver; driver_unit; attribution_share; N"
+      collection_method: "Verify actual completed native service and complete resource/asset boundary; separate financial tax/excise/fees from physical quantities and remove overlapping own scope."
+      unit: "Item(s); actual provider units"
+      frequency: "each completed job/period"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_assets
+      process_id: "sealed_cigarette_trade"
+      flow_role: "complete-life shared assets and reusable containers"
+      record_type: "asset genealogy and full-life driver ledger"
+      raw_fields: "asset_id; asset_native_unit; manufacture_scope; maintenance_cleaning; replacements; EOL_scope; burden_owner; provider_overlap; cohort_driver_identity; cohort_driver; cohort_driver_unit; lifetime_driver_identity; lifetime_driver; lifetime_driver_unit; all_user_driver; all_period_scope; observed_history; observed_unit; evidenced_remaining_use; remainder_unit; remainder_source; termination_basis; uncertainty; sensitivity; update_evidence; source; N"
+      collection_method: "Attribute complete lifecycle using compatible all-user lifetime drivers,observed life or history plus evidenced remainder/termination; retain stock/return movement rather than new asset each trip."
+      unit: "Item(s); actual compatible driver units"
+      frequency: "each acquisition/use/replacement/cutoff"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_transport
+      process_id: "sealed_cigarette_trade"
+      flow_role: "actual assigned freight"
+      record_type: "leg/load/distance and responsibility ledger"
+      raw_fields: "leg_id; origin; destination; carrier; period; gross_load; load_tare; net_load; load_unit; distance; distance_unit; load_conversion_factor; load_conversion_unit; load_conversion_source; distance_conversion_factor; distance_conversion_unit; distance_conversion_source; empty_run_coverage; temperature_equipment_coverage; commodity_provider_owner; cohort_driver; all_consumer_driver; driver_unit; attribution_share; share_source; source; N"
+      collection_method: "Use actual load and distance with evidenced conversions/share and complete carrier/empty-run coverage; identify each leg owner once."
+      unit: "kg*km; actual leg native units"
+      frequency: "each actual leg"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_waste
+      process_id: "sealed_cigarette_trade"
+      flow_role: "actual separated solids and receiving treatment"
+      record_type: "incident/separation and receiver transfer ledger"
+      raw_fields: "event_id; lot_id; origin; whole_or_part; material; wet_mass; dry_mass; mass_unit; moisture; moisture_basis; moisture_unit; moisture_method; moisture_source; sample_id; sample_state; sample_time; tobacco_fraction; filter_fraction; paper_fraction; packing_fraction; fraction_basis; fraction_source; contamination; gross; tare; net; actual_fate; receiver; transfer_gate; transport_coverage; treatment_recovery_scope; upstream_loss_link; source; attribution_share; all_consumer_driver; driver_unit; N"
+      collection_method: "Weigh actual mutually exclusive whole/part materials and document receiver/treatment; known disposition is separate from lost/stolen status and actual commodity-loss baseline."
+      unit: "kg; actual component basis"
+      frequency: "each real incident/separation/transfer"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+    - protocol_id: cp_species
+      process_id: "sealed_cigarette_trade"
+      flow_role: "actual direct substances and media"
+      record_type: "measurement or supported activity-factor/fate record"
+      raw_fields: "event_id; source_process; substance; receiving_medium; measured_release; release_unit; activity; activity_unit; factor; factor_unit; factor_basis; factor_source; factor_complete; component_fraction; fraction_basis; fraction_source; fate_fraction; fate_basis; fate_source; measurement_source; uncertainty; attribution_share; all_consumer_driver; driver_unit; N"
+      collection_method: "Establish actual substance and medium before measuring or applying compatible activity/factor/composition/fate evidence; complete species factor cannot be multiplied twice."
+      unit: "kg; actual compatible activity units"
+      frequency: "each actual release/source event"
+      temporal_coverage: "actual assigned periods and cutoffs"
+      site_scope: "actual single-node duties and all shared consumers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Original records,compatible units/bases/conversion sources,complete responsibility and uncertainty"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all inventory"
+      rule: "Attributed physical quantity / positive N once; accepted_service is 1 Item(s)."
+      inputs:
+        - "attributed quantity"
+        - N
+        - "linked protocol"
+      output: "exchange quantity per reference flow"
+      source_ids: []
+    - id: supply_stock
+      applies_to: "supplies and usable_supply_return"
+      rule: "S=attributed opening+true external net receipts-closing including retained recovered supplies. Choose gross supply INPUT S plus separate same-scope matched usable return OUTPUT OR consumed-only INPUT S-return with matching outward exchange omitted. Internal recovery is not new receipt; no numeric S+return input,second deduction or removal of waste/spill upstream burden."
+      inputs:
+        - opening
+        - "external net receipts"
+        - closing
+        - "same-scope matched return"
+        - representation
+        - cp_supplies
+      output: "nonduplicated supply/return quantities"
+      source_ids: []
+    - id: period_asset_share
+      applies_to: "shared resources"
+      rule: "Measured compatible-period resource share=cohort physical driver/all-consumer driver. Full-life asset equivalent=compatible cohort driver/complete lifetime driver across all users/periods; include manufacture,maintenance/cleaning,replacements and EOL once. Use observed lifetime or history plus evidenced remainder/termination,driver units,sources,sensitivity/update. A complete provider representation is an alternative to own covered burdens."
+      inputs:
+        - "measured resource"
+        - "cohort/all-consumer/lifetime drivers and units"
+        - "history/remainder source"
+        - cp_power
+        - cp_assets
+      output: "attributed resource/full asset equivalents"
+      source_ids: []
+    - id: original_finished_gate
+      applies_to: "commodity only outside service"
+      rule: "ALL merchandise manufacture including tobacco,filter,paper and factory primary packaging for saleable and lost cigarettes is outside the service add-on. A compatible released sealed finished-cigarette baseline and quantified original-gate assigned demand/loss,existing coverage and owner must be integrated once outside service before whole-chain completeness. Actual loss handling/receiving treatment remains inside once. Reconcile attributed opening,net receipts,buyer returns,closing,accepted transfers,supplier returns,known discard and other external exits with exclusive states; quarantine and aggregation are internal moves. Map assigned finished-cigarette demand/loss to original gate with measured component/moisture/primary tare conversion,unit/basis/source and owner/already-included coverage. Raw cured leaf alone is not a finished-cigarette baseline."
+      inputs:
+        - "original finished dataset/gate"
+        - "assigned demand"
+        - "loss amount/unit/state/component/moisture/tare conversion/source"
+        - "other exits"
+        - "included coverage/owner"
+        - "integration result"
+        - cp_lots
+      output: "quantified original finished-gate demand/loss burden outside service"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "all exchanges"
+      requirement: "Actual concrete flow,state/gate,property/unit/medium confirmation before final use; each umbrella expands by actual identity."
+      evidence: "Full details and support proof"
+    - id: quality_stock
+      applies_to: "cigarette stock"
+      requirement: "Actual count hierarchy/component/moisture/tare and exclusive exit/fate ledger,source conversions and complete finished gate."
+      evidence: "Original lot/event/weights/disposition/integration records"
+    - id: quality_coverage
+      applies_to: "all responsibilities"
+      requirement: "Complete native physical resources,providers,all-user full-life assets,carriers and receiving treatment once,with uncertainty and updates."
+      evidence: "Meter/scope/driver/lifetime/receiver sources"
+    - id: warehouse_power
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in warehouse_power under cp_power; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_power; actual source-linked native records"
+    - id: cleaning_water
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in cleaning_water under cp_water; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_water; actual source-linked native records"
+    - id: cleaning_preparations
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in cleaning_preparations under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: added_outer_material
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in added_outer_material under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: external_jobs
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in external_jobs under cp_provider; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_provider; actual source-linked native records"
+    - id: shared_assets
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in shared_assets under cp_assets; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_assets; actual source-linked native records"
+    - id: freight
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in freight under cp_transport; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_transport; actual source-linked native records"
+    - id: usable_supply_return
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in usable_supply_return under cp_supplies; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_supplies; actual source-linked native records"
+    - id: discarded_sealed_units
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in discarded_sealed_units under cp_lots; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case discarded_sealed_units_atomic_case covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_lots; actual source-linked native records"
+    - id: separated_solid_waste
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in separated_solid_waste under cp_waste; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_waste; actual source-linked native records"
+    - id: contained_effluent
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in contained_effluent under cp_water; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_water; actual source-linked native records"
+    - id: actual_direct_species
+      applies_to: "sealed_cigarette_trade"
+      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in actual_direct_species under cp_species; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      evidence: "cp_species; actual source-linked native records"
+validation_rules:
+  - rule_id: validate_completion
+    applies_to: "accepted_service"
+    rule: "Require actual own-account commercial B2Bacceptance,all qualifiers and positive unique N; warehouse scan,pack count,payment and excise do not alone complete the reference service."
+    source_ids: []
+  - rule_id: validate_hierarchy
+    applies_to: "stock and traceability"
+    rule: "Reconcile actual tracked parent-child identities and native sticks/pack/carton quantities with measured factors; no duplicated parent plus child merchandise quantities or fictitious stick identifiers. HMRC guidance is a jurisdiction-specific record example,not universal law,issuer,deadline or tax rule."
+    source_ids:
+      - hmrc-selling-storing
+      - hmrc-id-issuer
+  - rule_id: validate_loss
+    applies_to: "commodity linkage"
+    rule: "Require compatible released sealed finished-cigarette production/primarypack baseline with missing stages assembled once outside service,assigned original-gate loss quantity/unit/state/conversion/source and existing coverage owner/integration result. Theft or residual imbalance does not prove physical fate or dry-tobacco emission."
+    source_ids: []
+  - rule_id: validate_resources
+    applies_to: "physical coverage"
+    rule: "Verify native units/support,full asset life/all-user compatible drivers and own/provider/carrier/receiver boundaries once. Actual additional operated conditioning/fuel/fluids triggers scope expansion; no generic Energy substitute,fee-to-Count or blanket zero."
+    source_ids: []
+  - rule_id: validate_fates
+    applies_to: "actual outputs"
+    rule: "Require measured exclusive whole/part waste and actual receiver/treatment; specific direct species/activity/factor/composition/fate sources must be compatible. Nicotine content,odour,missing identifiers and moisture deficits are not release quantities."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after actual quantitative and identity evidence"
+  downstream_use: "Additive physical ambient own-account wholesale service for complete released sealed filtered-cigarette commodity chain"
+  allowed_use: "Actual declared SKU/style,pack hierarchy,net mass/moisture/tare,period/condition and accepted B2Broute"
+  excluded_use: "Standalone whole-cigarette footprint,manufacture,rawleaf,other nicotine devices,smoking,retail/agency,active conditioning/reprocessing or monetary/tax proxy"
+  required_metadata: "All reference qualifiers; actual physical stock hierarchy and periods; source-gate assigned demand/loss conversion/owner/coverage/integration; full provider/carrier/asset/receiver scope"
+  required_quality_disclosure: "Unresolved actual identities/support,quantities,Range evidence and actual physical fates; source jurisdiction limits and lifetime/conversion uncertainty"
+  update_trigger: "Changed SKU/style/pack hierarchy,warehouse operation,provider/asset/transport/treatment,acceptance,loss/fate evidence or source-gate scope"
+data_sources:
+  - id: "unsd-cpc3-wholesale"
+    type: "official_guidance"
+    reference: "UNSD.CPC3.0 explanatory notes,division61; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "61028 includes group250 tobacco products; classification only,not process quantities."
+  - id: "hmrc-selling-storing"
+    type: "official_guidance"
+    reference: "HMRC.Selling and storing tobacco products,last updated1July2022; https://www.gov.uk/guidance/selling-and-storing-tobacco-products"
+    used_for: "UK examples of arrival/departure/return and aggregation identities plus distinct lost/stolen/destroyed records; no global obligation,numeric timing,tax or physical loss factor."
+  - id: "hmrc-id-issuer"
+    type: "official_guidance"
+    reference: "HMRC.Register with the ID issuer if you are in the tobacco product supply chain; https://www.gov.uk/guidance/register-with-the-id-issuer-if-youre-in-the-tobacco-product-supply-chain"
+    used_for: "Distinction of actual operator/facility and product/aggregate identifiers in that jurisdiction; not a mandated global issuer or physical consumable."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:ce06af879cf4796f56ed71516ff62a2ebde1f769c232b3cb5fbbc78f403e3e3f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5015"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5015
+          line: 60
+          column: 1
+        end:
+          offset: 8216
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\nThe boundary is an additive warehouse/handling/traceability service,not a stand-alone cigarette footprint. UK HMRC records provide a primary example of physical event/aggregation accountability,not a globally mandated legal scheme. Allocation mathematics and stock conventions below are declared methodology,not quantitative HMRC claims.\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual released factory-sealed finished filtered cigarettes with known primary presentation and SKU |\n| starting_condition_role | Nonexchange merchandise stock/throughflow,not consumed tobacco/filter/paper/primarypack inputs |\n| product_classification_scope | Narrower ambient physical sealed-cigarette own-account service within61028 tobacco wholesale |\n| recursive_input_rule | Actual upstream providers need disjoint complete physical gates; never recursively purchase the same consignment or repeat included IT/transport/assets |\n| upstream_dataset_requirement | Commodity baseline outside service must match released sealed finished cigarettes including tobacco processing/cigarette/filter/paper/primarypack manufacture or assemble missing stages once. Raw cured leaf alone is incomplete. Actual resources/providers/receiving treatment need compatible gates |\n| disclosure | All qualifiers,actual count/component/moisture/tare/stock and accepted period,loss demand/source-gate conversions/coverage/owner,integration result and complete asset/provider/carrier/receiver scope |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_addon | all exchanges | ALL merchandise manufacture including tobacco,filter,paper and factory primary packaging for saleable and lost cigarettes is outside the service add-on. A compatible released sealed finished-cigarette baseline and quantified original-gate assigned demand/loss,existing coverage and owner must be integrated once outside service before whole-chain completeness. Actual loss handling/receiving treatment remains inside once. |  |\n| boundary_events | stock and identifiers | Use actual SKU physical counts and tracked parent-child aggregation events. Pack/carton/pallet UIDs,facility/operator identities,commercial documents and completed service Count are distinct. Do not force a UID per stick,default pack size,or physical label manufacturing from an inherited identifier. | hmrc-selling-storing |\n| boundary_status | returns and losses | Actual returned/quarantined/lost/stolen/destroyed states need exclusive quantity and responsibility records. Unknown fate is unresolved,not assumed atmosphere,Waste,burn or recovered product. No inferred dry tobacco loss from gross/stock/moisture deficit. | hmrc-selling-storing |\n| boundary_operations | ambient warehouse | This route has actual ambient electric handling/storage/IT,not active thermal/humidity preservation,on-site combustion,opening/repacking tobacco or manufacture. Actual additional conditioning,fuel,fluid or reprocessing requires bounded route review and complete added exchanges; it cannot be omitted or represented as zero. Carrier temperature equipment must be declared in provider scope. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 8
+              column: 1
+            end:
+              offset: 353
+              line: 8
+              column: 62
+          text: "# Ambient own-account wholesale of sealed filtered cigarettes"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5015
+              line: 60
+              column: 1
+            end:
+              offset: 5036
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_16145"
+      family: "allocation"
+      span:
+        start:
+          offset: 16145
+          line: 207
+          column: 1
+        end:
+          offset: 19626
+          line: 223
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_cohort | all inventory | Use positive actual unique accepted N and causal physical period/cohort shares. Include failed/cancelled/quarantined/returned-order,standby,cleanup and unfinished cross-period duties; no activity disappears when period N is zero. Tax/excise/margin/currency are not physical denominators. |  |\n| allocation_stock | merchandise nonexchange ledger | Reconcile attributed opening,net receipts,buyer returns,closing,accepted transfers,supplier returns,known discard and other external exits with exclusive states; quarantine and aggregation are internal moves. Map assigned finished-cigarette demand/loss to original gate with measured component/moisture/primary tare conversion,unit/basis/source and owner/already-included coverage. Raw cured leaf alone is not a finished-cigarette baseline. |  |\n| allocation_supply | actual supplies and usable_supply_return | S=attributed opening+true external net receipts-closing including retained recovered supplies. Choose gross supply INPUT S plus separate same-scope matched usable return OUTPUT OR consumed-only INPUT S-return with matching outward exchange omitted. Internal recovery is not new receipt; no numeric S+return input,second deduction or removal of waste/spill upstream burden. |  |\n| allocation_shared | power/providers/assets/freight | Measured compatible-period resource share=cohort physical driver/all-consumer driver. Full-life asset equivalent=compatible cohort driver/complete lifetime driver across all users/periods; include manufacture,maintenance/cleaning,replacements and EOL once. Use observed lifetime or history plus evidenced remainder/termination,driver units,sources,sensitivity/update. A complete provider representation is an alternative to own covered burdens. |  |\n| allocation_outlets | actual waste and releases | Use actual mutually exclusive whole-unit or separated components with receiver/treatment and transport once. A wet stream and its contents/components are alternate composition views,not additive physical exits. No automatic recycling/substitution credit or upstream supply subtraction for waste. Direct identified substances need actual receiving media and supported fate. |  |\n\n\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| source_scope_normalization | nonexchange commodity and service combination | Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 8
+              column: 1
+            end:
+              offset: 353
+              line: 8
+              column: 62
+          text: "# Ambient own-account wholesale of sealed filtered cigarettes"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 16145
+              line: 207
+              column: 1
+            end:
+              offset: 16185
+              line: 207
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_58115"
+      family: "validation"
+      span:
+        start:
+          offset: 58115
+          line: 476
+          column: 1
+        end:
+          offset: 59811
+          line: 487
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_completion | accepted_service | Require actual own-account commercial B2Bacceptance,all qualifiers and positive unique N; warehouse scan,pack count,payment and excise do not alone complete the reference service. |  |\n| validate_hierarchy | stock and traceability | Reconcile actual tracked parent-child identities and native sticks/pack/carton quantities with measured factors; no duplicated parent plus child merchandise quantities or fictitious stick identifiers. HMRC guidance is a jurisdiction-specific record example,not universal law,issuer,deadline or tax rule. | hmrc-selling-storing; hmrc-id-issuer |\n| validate_loss | commodity linkage | Require compatible released sealed finished-cigarette production/primarypack baseline with missing stages assembled once outside service,assigned original-gate loss quantity/unit/state/conversion/source and existing coverage owner/integration result. Theft or residual imbalance does not prove physical fate or dry-tobacco emission. |  |\n| validate_resources | physical coverage | Verify native units/support,full asset life/all-user compatible drivers and own/provider/carrier/receiver boundaries once. Actual additional operated conditioning/fuel/fluids triggers scope expansion; no generic Energy substitute,fee-to-Count or blanket zero. |  |\n| validate_fates | actual outputs | Require measured exclusive whole/part waste and actual receiver/treatment; specific direct species/activity/factor/composition/fate sources must be compatible. Nicotine content,odour,missing identifiers and moisture deficits are not release quantities. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 292
+              line: 8
+              column: 1
+            end:
+              offset: 353
+              line: 8
+              column: 62
+          text: "# Ambient own-account wholesale of sealed filtered cigarettes"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 58115
+              line: 476
+              column: 1
+            end:
+              offset: 58137
+              line: 476
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5015"
+      source_span:
+        start:
+          offset: 5038
+          line: 62
+          column: 1
+        end:
+          offset: 5375
+          line: 62
+          column: 338
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_addon"
+      identity_kind: "explicit"
+      unit_id: "normative_5015"
+      source_span:
+        start:
+          offset: 6620
+          line: 77
+          column: 1
+        end:
+          offset: 7082
+          line: 77
+          column: 463
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_events"
+      identity_kind: "explicit"
+      unit_id: "normative_5015"
+      source_span:
+        start:
+          offset: 7083
+          line: 78
+          column: 1
+        end:
+          offset: 7452
+          line: 78
+          column: 370
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_status"
+      identity_kind: "explicit"
+      unit_id: "normative_5015"
+      source_span:
+        start:
+          offset: 7453
+          line: 79
+          column: 1
+        end:
+          offset: 7774
+          line: 79
+          column: 322
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_5015"
+      source_span:
+        start:
+          offset: 7775
+          line: 80
+          column: 1
+        end:
+          offset: 8213
+          line: 80
+          column: 439
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_16145"
+      source_span:
+        start:
+          offset: 16258
+          line: 211
+          column: 1
+        end:
+          offset: 16588
+          line: 211
+          column: 331
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_16145"
+      source_span:
+        start:
+          offset: 16589
+          line: 212
+          column: 1
+        end:
+          offset: 17088
+          line: 212
+          column: 500
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_16145"
+      source_span:
+        start:
+          offset: 17089
+          line: 213
+          column: 1
+        end:
+          offset: 17531
+          line: 213
+          column: 443
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_16145"
+      source_span:
+        start:
+          offset: 17532
+          line: 214
+          column: 1
+        end:
+          offset: 18036
+          line: 214
+          column: 505
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_outlets"
+      identity_kind: "explicit"
+      unit_id: "normative_16145"
+      source_span:
+        start:
+          offset: 18037
+          line: 215
+          column: 1
+        end:
+          offset: 18465
+          line: 215
+          column: 429
+    - pointer: "/allocation_rules/5"
+      rule_id: "source_scope_normalization"
+      identity_kind: "explicit"
+      unit_id: "normative_16145"
+      source_span:
+        start:
+          offset: 18540
+          line: 221
+          column: 1
+        end:
+          offset: 19624
+          line: 221
+          column: 1085
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_58115"
+      source_span:
+        start:
+          offset: 58210
+          line: 480
+          column: 1
+        end:
+          offset: 58437
+          line: 480
+          column: 228
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_58115"
+      source_span:
+        start:
+          offset: 58438
+          line: 481
+          column: 1
+        end:
+          offset: 58830
+          line: 481
+          column: 393
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_loss"
+      identity_kind: "explicit"
+      unit_id: "normative_58115"
+      source_span:
+        start:
+          offset: 58831
+          line: 482
+          column: 1
+        end:
+          offset: 59206
+          line: 482
+          column: 376
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_resources"
+      identity_kind: "explicit"
+      unit_id: "normative_58115"
+      source_span:
+        start:
+          offset: 59207
+          line: 483
+          column: 1
+        end:
+          offset: 59514
+          line: 483
+          column: 308
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_fates"
+      identity_kind: "explicit"
+      unit_id: "normative_58115"
+      source_span:
+        start:
+          offset: 59515
+          line: 484
+          column: 1
+        end:
+          offset: 59808
+          line: 484
+          column: 294
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5015"
+      source_span:
+        start:
+          offset: 5015
+          line: 60
+          column: 1
+        end:
+          offset: 5036
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5015"
+      source_span:
+        start:
+          offset: 5403
+          line: 66
+          column: 1
+        end:
+          offset: 6547
+          line: 73
+          column: 216
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_16145"
+      source_span:
+        start:
+          offset: 16145
+          line: 207
+          column: 1
+        end:
+          offset: 16185
+          line: 207
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_58115"
+      source_span:
+        start:
+          offset: 58115
+          line: 476
+          column: 1
+        end:
+          offset: 58137
+          line: 476
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ce06af879cf4796f56ed71516ff62a2ebde1f769c232b3cb5fbbc78f403e3e3f"
+  generated_content_sha256: "sha256:b38afd2a57432aa39cb8e7d33317c9de3f7cbaede98122122952157edd2fc0fc"

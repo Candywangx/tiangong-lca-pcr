@@ -1,0 +1,69 @@
+{
+  "source": "34206f7618a71999e40951d8dc22d2381da3f688",
+  "initial_attempt": "Local supervisor inherited umask 0002 and placed TMPDIR under repository .reports. These were execution-environment choices, not source fixes.",
+  "confirmed_causes": [
+    {
+      "condition": "umask 0002 creates fixture files 0664 instead of the explicit catalog 0644 descriptors",
+      "failures": 6,
+      "control": "environment-umask-control.log"
+    },
+    {
+      "condition": "nested TMPDIR resolves dependencies/compilers from ancestor repository node_modules, defeating missing-dependency fixtures",
+      "failures": 3,
+      "control": "environment-tmpdir-control.log"
+    }
+  ],
+  "corrected_environment": {
+    "umask": "0022",
+    "TMPDIR": "fresh directory outside every repository under system /tmp",
+    "runtime": "Node 24.19.0 / npm 12.2.0"
+  },
+  "focused_rechecks": "20 existing tests passed with corrected environment; this does not qualify the full suite or a later source.",
+  "source_changes_for_environment_fix": [],
+  "logs": [
+    {
+      "file": "environment-umask-control.log",
+      "original_sha256": "c662fb064dc29b997d94552e657a7c41690eb0eb5dde096c4afc70f569c6e867",
+      "public_sha256": "4b26ee00bf6b5af76707fee7bd470c4a41a9073c897e18bfe99cb33bac92ddcb",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "file": "environment-tmpdir-control.log",
+      "original_sha256": "5ee1e39688ea3f9085b63d30e0ad06f7a74e643d9890a0419ecb5f0e79310c98",
+      "public_sha256": "2397aa1148f2d7b4029a04f6ff4813a6561683de461621f65d794c3b93f099ba",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "file": "environment-recheck.log",
+      "original_sha256": "fe596bea0db3c50fd1d46cd2d884bc4950a2468699d54cf14c9da66b277392ed",
+      "public_sha256": "fe596bea0db3c50fd1d46cd2d884bc4950a2468699d54cf14c9da66b277392ed",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "file": "environment-recheck-remaining.log",
+      "original_sha256": "a5a9cb85b5189ad03b4d6a97cc0a1b7f63547d6b53adc2af09db1b2335a1449e",
+      "public_sha256": "a5a9cb85b5189ad03b4d6a97cc0a1b7f63547d6b53adc2af09db1b2335a1449e",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ]
+}

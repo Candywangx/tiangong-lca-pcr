@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-29
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 ---
 
 # Authoring Guide
@@ -256,3 +256,12 @@ not relax that requirement. See [TypeScript engineering](typescript-engineering.
 ## Normative projection version 2
 
 The [semantic projection contract](semantic-projection-contract.md) preserves complete normative sections and ancestor preambles. Keep explicit IDs distinct; anonymous fallbacks are snapshot-local, and duplicate explicit IDs are errors. New sync output uses projection v2. Existing published bytes stay immutable; migration of unpublished projections changes no scientific or translation approval.
+
+## Reusable method authoring
+
+Use [the material module contract](method-module-contract.md) for a common method
+whose scope spans category PCRs. Author the two localized documents and factual
+source bindings, regenerate through `module:sync`, run `module:check`, and obtain
+source, translation and semantic review on exact source hashes before verified
+export. Keep original evidence outside Git unless redistribution is established.
+Do not create a category PCR or apply PCR publication flags to package a reusable method.

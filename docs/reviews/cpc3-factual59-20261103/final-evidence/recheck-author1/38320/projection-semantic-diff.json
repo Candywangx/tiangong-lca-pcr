@@ -1,0 +1,112 @@
+[
+  {
+    "pointer": "/dataset_production/calculation_rules/2/rule",
+    "before": "For manufacture, A_m_i = B_open_i + U_i - B_close_raw_WIP_unassigned_i - T_other_i after real unit conversion/subdivision/exchange causality and true residual allocation. B_close excludes first-released FG. Each inherited vector and real unassigned non-WIP store stays explicit; already stock-corrected U is not corrected again. T_other exists only for a true distinct function/cohort with justified one-time handover; ordinary failures/waste/sale/treatment are retained.",
+    "after": "For manufacture, A_m_i = B_open_i + U_i - B_close_raw_WIP_unassigned_i - T_other_i after real unit conversion/subdivision/exchange causality and true residual allocation. B_close excludes first-released FG. Each inherited vector and real unassigned non-WIP store stays explicit; already stock-corrected U is not corrected again. T_other exists only for a true distinct function/cohort with justified one-time handover; ordinary failures/waste/sale/treatment are retained. Include actual pre-first-release tool-service draws received by this manufacturing cohort in A_m_i; their receiving denominator is Q, even when the same asset also serves later cohorts."
+  },
+  {
+    "pointer": "/dataset_production/calculation_rules/3/rule",
+    "before": "For original cohort Q_H over actual H, A_h_i includes actual fulfilled storage/handling/packaging/asset/treatment/postwork increments and any genuinely assigned unused opening charge, minus only unused/unassigned closing service/charge and a justified one-time real other-function transfer. Never subtract performed service because FG remains held; do not import historical manufacturing vectors as new purchases. Physical gross V is never replaced by A_h_i or an economic share. H is the actual observation window, not another divisor. Already accumulated A_h_i or gross V_i is divided by original Q_H only through the sole quotient, never again by H.",
+    "after": "For original cohort Q_H over actual H, A_h_i includes actual fulfilled storage/handling/packaging/asset/treatment/postwork increments and any genuinely assigned unused opening charge, minus only unused/unassigned closing service/charge and a justified one-time real other-function transfer. Never subtract performed service because FG remains held; do not import historical manufacturing vectors as new purchases. Physical gross V is never replaced by A_h_i or an economic share. H is the actual observation window, not another divisor. Already accumulated A_h_i or gross V_i is divided by original Q_H only through the sole quotient, never again by H. Asset/tool service in this account means only real later original-cohort work; pre-first-release manufacturing draws stay in calc_attribution under A_m_i and Q."
+  },
+  {
+    "pointer": "/dataset_production/collection_protocols/9/collection_method",
+    "before": "Keep full asset/part/fluid physical custody separately from actual fulfilled service and one embodied/maintenance provider vector. No fixed life, arbitrary per-kg machine or service from physical mass alone. Preserve real new/used parts and water influx with full wet closing stock; included parts and independent additions are disjoint. Keep actual failures/unauthorized repair and performed service for held FG; only unused/unassigned service carries. Raw-only.",
+    "after": "Keep full asset/part/fluid physical custody separately from actual fulfilled service and one embodied/maintenance provider vector. No fixed life, arbitrary per-kg machine or service from physical mass alone. Preserve real new/used parts and water influx with full wet closing stock; included parts and independent additions are disjoint. Keep actual failures/unauthorized repair and performed service for held FG; only unused/unassigned service carries. Raw-only. Classify each actual draw by receiving operation/cohort and pre/post-first-release state. Pre-release manufacturing tool service enters A_m_i with Q under calc_attribution; only actual later original-cohort service enters A_h_i with original Q_H under calc_service. Retain one embodied/maintenance provider vector, actual hours/capacity and remaining service; no duplicate provider or new output Q. Keep accounts with different receiving cohorts/denominators separate. Record raw data here; calc_quotient performs the single normalization."
+  },
+  {
+    "pointer": "/dataset_production/collection_protocols/9/raw_fields",
+    "before": "row_id; serial; configuration; full_wet_mass; integral_fluid; opening_installed; new_receipt; used_receipt; actual_repair_added; worn_removed; reusable_out; waste_out; full_closing; included_bridge; water_in; water_out; overlap_other_inout; actual_hours; idle; failure; capacity; utilization; causal_driver; provider_vector; unused_service; cohort; permission; test; disposition",
+    "after": "row_id; serial; configuration; full_wet_mass; integral_fluid; opening_installed; new_receipt; used_receipt; actual_repair_added; worn_removed; reusable_out; waste_out; full_closing; included_bridge; water_in; water_out; overlap_other_inout; actual_hours; idle; failure; capacity; utilization; causal_driver; provider_vector; unused_service; cohort; permission; test; disposition; receiving_operation; receiving_cohort; pre_or_post_first_release; manufacturing_Q; original_Q_H; observed_H"
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/2/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/2/description",
+    "before": "Non-additive fulfilled-service account for this actual wood-cutting saw. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual wood-cutting saw. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/5/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/5/description",
+    "before": "Non-additive fulfilled-service account for this actual wood-thicknessing planer. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual wood-thicknessing planer. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/8/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/8/description",
+    "before": "Non-additive fulfilled-service account for this actual guitar woodworking router. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual guitar woodworking router. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/11/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/11/description",
+    "before": "Non-additive fulfilled-service account for this actual guitar-side bending press. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual guitar-side bending press. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/14/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/14/description",
+    "before": "Non-additive fulfilled-service account for this actual guitar sanding machine. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual guitar sanding machine. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/17/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/17/description",
+    "before": "Non-additive fulfilled-service account for this actual wood-dust extraction unit. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual wood-dust extraction unit. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/20/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/20/description",
+    "before": "Non-additive fulfilled-service account for this actual instrument-coating spray gun. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual instrument-coating spray gun. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/23/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/23/description",
+    "before": "Non-additive fulfilled-service account for this actual air compressor. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual air compressor. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/26/amount/expression",
+    "before": "Use this row’s sole already-calculated x_i; raw collection uses cp_assets. Its numerator is actual original-cohort service A_h_i once.",
+    "after": "Use this row’s sole already-calculated x_i for each actual receiving operation/cohort; collect raw draws through cp_assets. Pre-first-release manufacturing service uses N_i = A_m_i and Q_c = Q; only actual later original-cohort service uses N_i = A_h_i and Q_c = original Q_H. Use the corresponding existing single quotient once; do not pool draws with different receiving cohorts or denominators."
+  },
+  {
+    "pointer": "/process_inventory/3/inputs/product/26/description",
+    "before": "Non-additive fulfilled-service account for this actual guitar-body clamping mould. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Retain performed original-cohort service despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy.",
+    "after": "Non-additive fulfilled-service account for this actual guitar-body clamping mould. Use actual operation, idle/start-stop/cleanup/failure, utilization/capacity and demonstrated exchange-specific driver, with one embodied/maintenance provider vector. Physical asset kg is not service demand. Classify every actual draw by its receiving operation and first-release state: completed pre-release work belongs to manufacture; only real later work belongs to original-cohort service. Retain performed work despite held FG; carry only unused/unassigned service. Actual failed/unauthorized repairs retain all occurred material and energy."
+  }
+]

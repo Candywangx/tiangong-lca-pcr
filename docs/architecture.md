@@ -26,16 +26,21 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-29
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 ---
 
 # PCR 资料库架构
 
-已合并 PR #26 的 14 份 CPC 04 方法学沿用原有 PCR id 与语义目录；PR #28 现仅交付这 14 份的修复，
-不新增方法。恢复身份不扩大产品、路线、状态或交付边界，也不改变 `narrower` 关系。范围和验证记录见
-[两个 PR 的旧 ID 恢复记录](reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)。
+已合并 PR #26 的 14 份 CPC 04 方法学沿用原有 PCR id 与语义目录；PR #28 修复这些记录，
+没有新增方法。恢复身份不扩大产品、路线、状态或交付边界，也不改变 `narrower` 关系。
+当前接受的分类映射及其依据以 `classifications/mappings/` 和 `docs/adr/` 为准；
+[身份恢复的历史记录](https://github.com/Candywangx/tiangong-lca-pcr/blob/acd016b01883b64d96a321198d65a889d8e96f97/docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)保留在固定提交的归档中，
+不代表当前内容的审核、验证或发布状态。
+
+PR #31 的 60 份 CPC 61 方法学在原有 scaffold 的 PCR id 和目录内升级，保留各自的范围、
+参考流及映射关系。范围与身份对照见 [CPC 61 原 ID 升级记录](cpc61-original-identity-restoration.md)。
 
 ## 项目定位
 
@@ -588,3 +593,13 @@ YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解�
 ### Typed consumer dependencies in installed Goal runtimes
 
 Verified Goal runtime overlays include the consumer core TypeScript modules, its compiler/generated dependencies and schemas. Installing a new runtime on an older task baseline must transfer the complete approved dependency graph; a file extension change must not silently omit a module. Canonical PCR content remains outside the runtime overlay and comes from the selected task/integration baseline.
+
+## Material method module packages
+
+Localized material modules use [the source/package contract](method-module-contract.md).
+Canonical English and aligned Chinese preserve complete requirement/context units;
+`source-bindings.json` owns factual source metadata and `review.json` records actual
+review identities and dimensions. The generated projection and portable package
+are distinct from PCR catalog, category identity and publication history. Consumers
+independently pin the delivered artifact and reviewed Main source; package conformance
+is not scientific approval or study qualification.

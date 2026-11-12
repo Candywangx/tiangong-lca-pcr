@@ -275,7 +275,7 @@ export function inventoryMarkdown(source: unknown, fileKey: string) {
 export function renderMarkdown(
   source: unknown,
   fileKey: string,
-  { maxHtmlBytes = 180_000 } = {},
+  { maxHtmlBytes = 180_000, packAdjacent = false } = {},
 ) {
   const { original, tree } = prepareMarkdown(source, fileKey);
   const inventory = new Map(original.nodes.map((node) => [node.id, node]));
@@ -373,8 +373,32 @@ export function renderMarkdown(
     if (node.type === "element") previousHeading = isHeading;
   }
   flush();
+  // The existing 65% chapter target and 3x whole-unit ceiling also bound tail packing.
+  // Merge before deriving identities so every anchor and source link has one current owner.
+  while (groups.length > 1) {
+    const tail = groups[groups.length - 1]!, previous = groups[groups.length - 2]!;
+    if (Buffer.byteLength(html(tail.nodes)) >= maxHtmlBytes * 0.65) break;
+    const combined = [...previous.nodes, ...tail.nodes];
+    if (Buffer.byteLength(html(combined)) > maxHtmlBytes * 3) break;
+    previous.nodes = combined;
+    groups.pop();
+  }
   if (!groups.length) throw new Error(fileKey + ": source body is empty.");
-  const parts = groups.map((group, index) => {
+  // Keep the former page units for search identity/ranking and compatibility evidence.
+  const logicalGroups = groups.map(group => ({ ...group, nodes: [...group.nodes] }));
+  if (packAdjacent) {
+    for (let index = 1; index < groups.length;) {
+      const previous = groups[index - 1]!, next = groups[index]!;
+      const combined = [...previous.nodes, ...next.nodes];
+      if (Buffer.byteLength(html(combined)) <= maxHtmlBytes * 3) {
+        previous.nodes = combined;
+        groups.splice(index, 1);
+      } else index++;
+    }
+  }
+  if (html(logicalGroups.flatMap(group => group.nodes)) !== html(groups.flatMap(group => group.nodes)))
+    throw new Error(fileKey + ": adjacent packing changed the ordered HTML nodes.");
+  const partsFor = (groups: RenderGroup[]) => groups.map((group, index) => {
     const toc: {title:string;url:string;depth:number}[] = [];
     const anchors: string[] = [];
     visitHast({ type:"root", children: group.nodes }, (node) => {
@@ -429,6 +453,8 @@ export function renderMarkdown(
       sourceHeadingId: index === 0 ? sourceHeadingId : undefined,
     };
   });
+  const logicalParts = partsFor(logicalGroups);
+  const parts = partsFor(groups);
   const renderedIds = parts.flatMap((part) => part.sourceNodeIds);
   const missing = [...inventory.keys()].filter(
     (id) => !renderedIds.includes(id),
@@ -449,6 +475,7 @@ export function renderMarkdown(
     anchorAliases,
     sourceHeadingAnchor,
     parts,
+    logicalParts,
   };
 }
 

@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
-lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -205,7 +205,7 @@ V8/capture evidence and the explicit rejection/unobserved-file ledgers.
 
 PR and formal release qualification run one complete instrumented export in the
 `web-build` job, then create one sealed product bundle in the separate
-`documentation` job. Both jobs retain 120-minute limits and are mandatory in both
+`documentation` job. Both jobs use 120-minute limits, increased from 60 minutes, and are mandatory in both
 lanes. A versioned handoff binds the actual checked-out source (including PR merge
 commits), product identity, current run/attempt, CI plan and full-mode qualification
 ID/plan hash to the complete archive/tree and successful build log. The verifier
@@ -498,6 +498,22 @@ browser language information instead. Regional expectations and HTML language
 assertions use the emitted route/code mapping, including optional translations.
 Language-preference failures fail qualification and are retained in the receipt;
 completed matrices preserve their checks and specifically classified prefetch aborts.
+
+Before the guide counterpart check intentionally navigates back to its starting
+page, it waits for current requests observed from before the feature navigation.
+The existing observer crosses two animation frames and retains its existing
+500 ms quiet period and 30-second request-poll bound. A previously fired lifecycle
+`networkidle` alone does not establish that later script work has finished. This
+wait does not classify or discard any failure: the complete original request,
+HTTP, page-error and console evidence still reaches the unchanged fatal-error
+check. Ordinary JavaScript-enabled script failures remain blocking.
+
+A real WebKit regression in the browser suite starts a gated HTTP script after
+counterpart lifecycle idle, verifies that the intentional return waits for its
+completion, and keeps a real HTTP failure fatal. It runs in the consumer shard
+with installed browser runtimes, without a silent skip or an increased timeout.
+This controlled timing-class evidence and diagnostic replays of older sealed
+bytes do not replace fresh complete-source and sealed-product qualification.
 
 Browser request receipts retain engine, viewport, exact URL, method, resource
 kind, navigation flag, observed HTTP status, start/failure timestamps and phases,

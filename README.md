@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-29
-lastReviewedCommit: 17452e57bb9532f98cb3fe09cc86c3f7cad9bc21
-lastReviewedNote: "PCR #158: reviewed paired React/react-dom 19.3.1 on candidate 17452e57, preserving current main mdast 2.2.0 and fast-uri 3.1.9. Corrected only the workspace directory and TypeScript source locators. Canonical content, scientific/translation states, Node/npm, product identity and deployment authority are unchanged. Source and upstream review do not replace fresh full candidate qualification, guarded merge or exact workspace integration."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 ---
 
 # TianGong LCA PCR Library
@@ -130,7 +130,8 @@ release qualification selects full mode, even with an empty product tag. See
 [CI qualification lanes](docs/typescript-engineering.md#ci-qualification-lanes)
 for allowed changes, evidence binding and complete-attempt retry requirements.
 The required `web-build` and `documentation` jobs separate the complete instrumented
-website export from product sealing without increasing either job limit. An exact
+website export from product sealing. These jobs and the full test shards now have
+120-minute job limits, increased from 60 minutes. An exact
 source/run/attempt-bound archive preserves all web bytes and build/SEO evidence;
 both lanes retain the same sealed-product and coverage obligations.
 All first-party implementation, scripts and tests use strict TypeScript/TSX; installed packages and browsers receive compiled JavaScript. The shared SEO checker remains Python. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
@@ -426,3 +427,8 @@ for setup, first publication and retries. Npm release does not approve PCR metho
 TianGong LCA code and authored methodology content are licensed under the
 [MIT License](LICENSE). Bundled dependencies and referenced third-party material
 retain their own licenses and notices.
+
+Material reusable method modules have a separate [source/package contract](docs/method-module-contract.md).
+Run `npm run module:check` for local conformance; export carries full bilingual
+source context and independently review-bound identities. This does not publish
+a PCR or qualify a product study.

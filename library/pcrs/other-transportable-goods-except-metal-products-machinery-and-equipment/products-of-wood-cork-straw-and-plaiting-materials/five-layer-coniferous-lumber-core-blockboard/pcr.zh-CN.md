@@ -16,14 +16,14 @@ translation_status: aligned
 
 排除全单板胶合板、单板条侧立层积芯（laminboard）、未胶拼而用尼龙线束缚的芯条带、MDF/刨花板/空心芯、LVL、胶合木、重组装饰材、竹材、热带/非针叶外层、PF/MUF/pMDI 单板胶、防腐剂、涂层及一体化原木制单板或生锯材干燥。不同芯构或胶接路线须另做适用性判断。不转用针叶锯木或全单板胶合板调查系数。
 
-FAO 支持实木条芯物理边界，UNIDO 支持芯条与单板采用不同胶种。UN CPC 3.0 标题区分全木片 3141 与其他/饰面 3142，但解释的纳入项互相冲突（第 139–140 页）。因此 31421 仅用于针叶外层适用语境，分类代码本身不能确立木条芯与全单板构造的区别。现有配方与证据尚未建立 31422/31423 的共享覆盖。来源：`un-cpc-notes-2025`。
+FAO 支持实木条芯物理边界，UNIDO 支持芯条与单板采用不同胶种。本声明五层构造由一个实木锯条芯及四层针叶木单板组成，面层与背层均为针叶木，实际完整层构纹理轴为 0°/90°/0°/90°/0°。结合 CPC 3.0 完整层级，该构造支持已接受的 31421 较窄映射关系：3141 为仅由木片构成的胶合板，3142 为竹材以外的其他胶合板/饰面板分支；本构造包含超过两层针叶木单板，实际相邻胶接层纹理交叉。引言说明类别边界及非穷尽性解释示例。31411 的解释仍纳入细木工板，与其仅由木片构成的标题不一致；本处保留披露，不声称官方勘误。未取得精确 CPC3–HS2022 对应关系。已接受关系仅覆盖本声明构造，不覆盖全部细木工板或三层板、整个 31421 叶类或 31422/31423。当前已接受映射以 classifications/mappings/cpc-3.0-to-pcr.yaml 及 其 acceptance.decision_ref 字段引用的 ADR 为权威；其不建立科学批准或发布状态。来源：`un-cpc-notes-2025`、`un-cpc-explanatory-notes-xlsx-2025`、`un-cpc-introduction`。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.five-layer-coniferous-lumber-core-blockboard |
-| classification_refs | CPC 3.0 31421；针叶木条芯适用语境 |
+| classification_refs | CPC 3.0 31421；对声明的五层四单板针叶木条芯构造已接受的较窄映射关系；以当前映射及其 acceptance.decision_ref 引用的 ADR 为准 |
 | covered_products | 所声明路线的五层实木针叶木条芯室内板 |
 | excluded_products | 第 1 节所列全单板、颗粒/纤维/空心芯、结构顺纹层积材及其他路线 |
 | representative_product | 实测最终含水率下的未涂饰五层针叶木条芯板，按验收净质量 |
@@ -49,16 +49,16 @@ FAO 支持实木条芯物理边界，UNIDO 支持芯条与单板采用不同胶�
 | 参考单位 | kg |
 | 必需限定信息 | 实木锯条芯；五层；各层树种/等级/尺寸/含水率；面/芯平行、横向层/芯垂直纹理轴；芯条宽度及方向；PVAc 芯胶和 UF 单板胶的配方/固含；压力-温度-时间及组坯等待；胶接/缺陷/甲醛验收；未涂饰室内状态；工厂、期间、供应边界、电力电压及热水净热量基准；排除包装；选用钢带时的供应成分和回收/再加工路线 |
 
-数据包须声明全部限定信息。kg 为生产声明参考，不表示不同树种/厚度板材的面积、刚度、耐久或服务等效。
+数据包须声明全部限定信息。kg 为生产声明参考，不表示不同树种/厚度板材的面积、刚度、耐久或服务等效。 所选木芯胶合板名称、细木工板同义词及面层/横向层/胶拼条芯描述，仅支持广义细木工板实物定位符。其当前来源分类为 CPC 31520 致密木材，注释先称芯材主要为软木木材，随后又称厚硬木条且通常为椴木（Basswood）。这些分类与树种定义不一致须由来源澄清；原生记录并未核实本 PCR 的全针叶木构造。仅有条件保留该定位符：数据集应用前，须核实每一实际层的针叶树种、五层构造及 0°/90°/0°/90°/0° 轴向、真实胶种/状态与验收记录，并独立建立供应方/背景定义相容性。供应方、树种或负荷提供方证据不相容或未知时保持未决；不得从此来源继承硬木芯或致密木材路线。
 
 ## 4. 计量与单位规则
 
 | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| reference_mass | 参考产品 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | B = 同一批次/场址/期间的验收板材净质量合计，单位 kg，排除全部包装；采用 cp_output 采集。各外部交换除以 B 归一化。保留实测最终含水率，不用绝干木质量替代 B。 |
+| reference_mass | 参考产品 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | B = B_c = 完成批次 c 在声明验收门首次合格验收的唯一板材净质量，单位 kg，采用 cp_output；排除包装及旧产出的重复验收。新验收的期末成品无论是否发运均计一次。仅按 normalize_mass 将准备好的可归属交换量归一化。保留实测最终含水率，不用绝干木质量替代 B。 |
 | wood_moisture | 木材实物账 | 质量 | kg | u = (m_wet - m_od) / m_od; m_od = m_wet / (1 + u)。用有代表性的密封样品和烘干称重确定干基含水率，采用 cp_materials；干基 u 与湿基分数分开。来源：usda-wood-handbook-2021。 |
 | adhesive_solids | PVAc/UF 胶账 | 质量 | kg | m_s = m_supplied * s; m_ns = m_supplied * (1 - s)。采用 cp_recipe 分别测定 PVAc 胶与 UF 粉料的 s 和实际 H2O 含量；m_ns 是非固体余量，不自动等于水。树脂、固化剂、填料与添加水分开，报告检测条件及非水挥发物。供应态固体不是守恒的固化树脂质量；不设通用固含量或固化收率。 |
-| utilities | 电力与外购热量 | 能量 | MJ | E_MJ = 3.6 * E_kWh。H_net = sum(m_hotwater * (h_supply - h_return))，m_hotwater 单位 kg，h_supply 和 h_return 单位 MJ/kg，H_net 单位 MJ；若供应商 h 单位为 kJ/kg，该合计须除以 1000。供回水采用实际供应商一致的焓参考基准及净交付边界，各自按实测温度/压力状态取焓，使用 cp_heat 采集。不得将 MJ 热量再乘燃料低/高位热值，不得把蒸汽质量当作有效热量。 |
+| utilities | 电力与外购热量 | 能量 | MJ | E_MJ = 3.6 * E_kWh。按 net_heat 使用独立实测的供回水质量及实际供应商 h 参考、温度/压力状态和供应边界，采用 cp_heat。仅在核实配对质量相等且储存/其他实际流条件有适当证据时，才可用 m_hotwater * (h_supply - h_return)。kg 乘 MJ/kg 得 MJ；kg 乘 kJ/kg 仅除以 1000 一次。已积分观测值不再次积分。储存、损失或其他支路未知时，两流边界焓差不自动等于有效压机热量。不得将 MJ 热量再乘燃料低/高位热值，不得把蒸汽质量当作有效热量。 |
 
 ## 5. 系统边界
 
@@ -68,7 +68,7 @@ FAO 支持实木条芯物理边界，UNIDO 支持芯条与单板采用不同胶�
 | --- | --- |
 | declared_starting_condition | 已接收的干燥针叶锯材、未胶接干单板、干 UF 树脂、PVAc 胶及所列供应输入 |
 | starting_condition_role | 前景加工的外购输入起点 |
-| product_classification_scope | 五层木条芯物理子集；31421 仅为分类语境建议 |
+| product_classification_scope | 声明的五层木条芯子集；按所披露层级解释经审查的 31421 较窄适用提案 |
 | recursive_input_rule | 外购已胶接木条芯板不属本路线；内部返工保留同一实物账，不能产生另一个参考输出 |
 | upstream_dataset_requirement | 供应数据集覆盖林业、锯木/单板制造及干燥、树脂制造、全部进厂运输、电力与热水生成，且输入边界相匹配。前景厂门边界本身不等于摇篮到厂门。 |
 | disclosure | 实际供应起始状态、路线、树种、地区/年份、能源计量、上游排除项与废物去向 |
@@ -99,9 +99,9 @@ FAO 支持实木条芯物理边界，UNIDO 支持芯条与单板采用不同胶�
 
 接收窑干松木/冷杉锯材；开条与剔除缺陷前称净质量、测干基含水率。逐批记录树种及供应方边界。
 
-- 选定流：窑干锯材（针叶材） `50904047-e5b0-4110-990a-53751d250267`
+- 选定流：针叶锯材 `50904047-e5b0-4110-990a-53751d250267`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_materials 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_materials 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -116,7 +116,7 @@ FAO 支持实木条芯物理边界，UNIDO 支持芯条与单板采用不同胶�
 
 - 选定流：面层与背层用干燥未胶接针叶木单板
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_materials 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_materials 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -131,7 +131,7 @@ FAO 支持实木条芯物理边界，UNIDO 支持芯条与单板采用不同胶�
 
 - 选定流：横向层用干燥未胶接针叶木单板
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_materials 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_materials 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -146,7 +146,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：供应态水性聚醋酸乙烯酯（PVAc）木材胶黏剂
 - 流属性/单位：质量 / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_recipe 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_recipe 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -161,7 +161,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：脲醛树脂 `23e41b7b-0991-4cf7-8625-7a30d23bbb27`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_recipe 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_recipe 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -176,7 +176,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：干态氯化铵固化剂
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_recipe 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_recipe 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -191,7 +191,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：未处理针叶木粉填料
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_recipe 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_recipe 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -206,7 +206,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_water 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_water 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -221,7 +221,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：净热值, 低位热值 `93a60a56-a3c8-11da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-11da-a746-0800200c9a66` / MJ
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_energy 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_energy 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -232,11 +232,11 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 ###### 交付至压机回路的外购热水净热量 （`heat`）
 
-采用供应方定义、跨工厂供回水边界的净交付热量。记录质量流量、供回温度、压力、焓值方法和损失。背景定义须与该边界一致；仅有 MJ 属性不能证明相容。本路线不含现场锅炉。
+按 net_heat 和 cp_heat 使用供应方定义的净交付热量。保留声明门的载体水实物诊断、独立实测供回支路、其他实际流、积累及损失。核实供应方对循环/补充水、能源及回水的实际所有权；供应方已含的水/热负荷只计一次。实际存在单独拥有的外部收水/退水时，须记录其真实具名接口及相容身份/供应数据；不得虚构水卡、漏损或抵扣。背景定义须与该边界一致；仅有 MJ 属性不能证明相容。本路线不含现场锅炉。
 
 - 选定流：交付至压机回路的外购热水净热量
 - 流属性/单位：净交付热量; 单位组 未决 / MJ
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_heat 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_heat 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -251,7 +251,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：低密度聚乙烯薄膜（PE-LD） `2cecd3a7-d90e-44b4-aec5-1d9dfb907477`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_pack 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_pack 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -266,7 +266,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：钢打包带 `56fe4f71-b594-4b55-8553-c87f2516737d`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_pack 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_pack 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -281,7 +281,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 ###### 木芯胶合板 （`finished_panel`）
 
-调理、裁边、砂光及包装后在厂门交付的唯一验收板材成品输出。板材未涂饰。净板质量排除全部包装；同产品在制品仅记于内部阶段账。
+调理、裁边、砂光及包装后在厂门交付的唯一验收板材成品输出。板材未涂饰。净板质量排除全部包装；同产品在制品仅记于内部阶段账。 执行第 3 节广义定位符的条件及来源分类/树种澄清要求；真实全针叶木五层产品与供应方/负荷提供方相容性须独立建立。
 
 - 选定流：木芯胶合板 `f7f7ecd7-5389-40e3-8900-6b543b416086`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -302,7 +302,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：木屑废物 `e1a44d20-d968-4d64-bd7c-253a1441ab35`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_waste 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_waste 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -319,7 +319,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：木材边角料 `acc22294-8e77-4784-988f-2499be3c60eb`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_waste 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_waste 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -334,7 +334,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：UF/PVAc 胶接木条芯板裁边废物
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_waste 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_waste 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -349,7 +349,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：含 UF/PVAc 的木条芯板砂光粉尘废物
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_waste 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_waste 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -364,7 +364,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：送场外处理的 UF 胶设备清洗废水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_water 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_water 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -379,7 +379,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：未固化 UF 配胶残料废物
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_waste 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_waste 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -394,7 +394,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：PVAc 边缘胶拼余胶废物
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_waste 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_waste 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -411,7 +411,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：甲醛 `08a91e70-3ddc-11dd-941b-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -426,7 +426,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：甲醇 `fe0acd60-3ddc-11dd-a935-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -441,7 +441,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：颗粒物 (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -456,7 +456,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：颗粒物 (PM2.5 - PM10) `08a91e70-3ddc-11dd-9501-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -471,7 +471,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：颗粒物（> PM10） `fe0acd60-3ddc-11dd-a70a-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -486,7 +486,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：水蒸气 `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -501,7 +501,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：二氧化碳（生物源） `08a91e70-3ddc-11dd-9c15-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -516,7 +516,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 - 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：x_norm = sum(q_lot) / B；采用 cp_emissions 采集实际交换；B 为 cp_output 的验收板材净质量。
+- 数量规则：按共享完成批次协议归属后，仅计算一次 x_norm = A_c / B；采用 cp_emissions 采集原始 q_lot；B = B_c，来自 cp_output。
 - 数值来源模式：`foreground_record`
 - 适用范围：`site_specific`
 - 归一化基准：每 1 kg 参考流
@@ -538,30 +538,30 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_output | blockboard_manufacture | finished_panel | foreground_record | 批号；树种/层构；最终含水率；验收净质量 B；拒收质量；包装皮重 | 调理后经校准称量；核对同批分级/验收及包装记录。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_materials | blockboard_manufacture | core_lumber; face_veneer; cross_veneer | foreground_record | 批号/树种/等级；湿质量；样品湿/绝干质量；各层尺寸；轴向；废料；供应起始状态 | 称进料及阶段用料；密封有代表性的含水率样品，按有记录的方法烘干至恒重并称量，核对库存及阶段转移。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_recipe | blockboard_manufacture | pvac_glue; uf_resin; hardener; wood_flour | foreground_record | 组分身份；投料称量；批号；固含/纯度及检测条件；实测 H2O/非水挥发物；供应商配方；同批次固化前后组成及反应程度；G_H2O；C_H2O；不确定度；胶接面积；湿/干涂胶量；芯条夹紧；组坯等待；压板/胶线温度；压力；保压；胶接试验 | 采用经校准批次秤、供应配方/证明及固含/H2O 抽检；芯条边缘胶与四个单板界面分别记录。通过经验证的匹配批次化学分析，或在所记录固化条件下将有文件支持的供应商反应化学计量用于实测同批次反应程度，量化实际前景 UF 产水/耗水。上游树脂合成与前景固化及蒸发分开；通用反应示意图、固体失重测试或总排气水量均不能单独建立反应程度。缺失项保留未知；不设默认量、不假定完全固化，也不从差额推算收率。记录压制循环及胶接验收。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_water | blockboard_manufacture | water; glue_wastewater | foreground_record | 新鲜/回用水质量；水表体积；密度；废水量；水/固体；COD；甲醛；去向 | 计量新鲜配胶/清洗支路；采集废水外送量及分析结果，核对储罐库存和内部回用。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_energy | blockboard_manufacture | electricity | foreground_record | 回路；kWh/MJ；电压；账单；小时；阶段；共用表分摊 | 按不重叠回路读取校准电表，与供应账单核对总电量。 | MJ | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_heat | blockboard_manufacture | heat | foreground_record | 热水质量；供回温度/压力；焓参考/状态及 h 单位（MJ/kg 或 kJ/kg）；净 MJ；供应损失；背景边界 | 经校准热量表或供回水质量流量/焓积分；保留实际供应商 h 单位/参考/状态，显式将 kJ 换为 MJ，使用前核实供应/背景净交付兼容性。 | MJ | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_pack | blockboard_manufacture | pe_film; steel_strap | foreground_record | 材料；批号；包装质量；回用；废料；包装皮重；钢带供应成分（99% 铁、1% 碳）；机械分解/熔化回收路线 | 分别称各包装材料，将领退料记录与验收板批核对；通过供应证明核实所选钢带的成分/路线；供应不匹配或未知时须保留未决或另核身份。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_waste | blockboard_manufacture | clean_sawdust; clean_offcut; bonded_trim; sanding_dust; glue_residue; pvac_residue | foreground_record | 流；湿/干质量；含水率/固含；树脂含量；捕集/排放区别；库存；销售状态；处理去向 | 各原子流专用容器及秤；废物联单与分析记录；仅扣同期间内部回用，不扣场外处理。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
-| cp_emissions | blockboard_manufacture | formaldehyde; methanol; pm25; pm_between; pm_over10; water_vapour; co2_bio; co2_fossil | foreground_record | 物种/来源；出口；标况流量；浓度；湿度；采样条件；小时；控制设施；无组织；PM 粒径段；检出限；碳来源；进出口空气湿度及流量；冷凝水；留存/外送 H2O；cp_recipe 的同批次 G_H2O/C_H2O；水专属性方法及不确定度 | 控制设施后有代表性的出口/无组织采样并按时间积分；保留物种及不重叠粒径段。用匹配的进出口湿度-流量及冷凝水记录量化净过程水蒸气，再核对包括 cp_recipe 实际 UF 产水/耗水的反应 H2O 账；不得重复计入载体水或反应水。总失重包括非水挥发物，不是 H2O 测定。缺失项/物种记为未知，不强制闭合。证明无氧化须有操作/碳证据。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 同一声明的代表性生产期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_output | blockboard_manufacture | finished_panel | foreground_record | 批号；树种/层构；最终含水率；验收净质量 B；拒收质量；包装皮重；批次 c；唯一首次验收 ID/时间/门；B_c；新验收期末成品；旧验收成品发运/留存/退回；原料/在制品/非在制库存/成品边界位置 | 调理后经校准称量；核对同批分级/验收及包装记录。 将首次验收与 B_c 核对，与发运及已验收成品库存分开。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_materials | blockboard_manufacture | core_lumber; face_veneer; cross_veneer | foreground_record | 批号/树种/等级；湿质量；样品湿/绝干质量；各层尺寸；轴向；废料；供应起始状态；实际实物处理量 V 及原始单位/状态；期初/收料/实用/期末湿库存及干物质/H2O 组分；继承的供应负荷及原批次 | 称进料及阶段用料；密封有代表性的含水率样品，按有记录的方法烘干至恒重并称量，核对库存及阶段转移。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_recipe | blockboard_manufacture | pvac_glue; uf_resin; hardener; wood_flour | foreground_record | 组分身份；投料称量；批号；固含/纯度及检测条件；实测 H2O/非水挥发物；供应商配方；同批次固化前后组成及反应程度；G_H2O；C_H2O；不确定度；胶接面积；湿/干涂胶量；芯条夹紧；组坯等待；压板/胶线温度；压力；保压；胶接试验；期初/收料/实用/期末湿态/组分库存；继承负荷/服务向量及原批次 | 采用经校准批次秤、供应配方/证明及固含/H2O 抽检；芯条边缘胶与四个单板界面分别记录。通过经验证的匹配批次化学分析，或在所记录固化条件下将有文件支持的供应商反应化学计量用于实测同批次反应程度，量化实际前景 UF 产水/耗水。上游树脂合成与前景固化及蒸发分开；通用反应示意图、固体失重测试或总排气水量均不能单独建立反应程度。缺失项保留未知；不设默认量、不假定完全固化，也不从差额推算收率。记录压制循环及胶接验收。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_water | blockboard_manufacture | water; glue_wastewater | foreground_record | 新鲜/回用水质量；水表体积；密度；废水量；水/固体；COD；甲醛；去向；实际具名收水/退水接口；湿态/储罐期初期末库存；供应方已含与单独拥有的水；批次/服务历史 | 计量新鲜配胶/清洗支路；采集废水外送量及分析结果，核对储罐库存和内部回用。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_energy | blockboard_manufacture | electricity | foreground_record | 回路；kWh/MJ；电压；账单；小时；阶段；共用表分摊；实际服务事件/阶段/期间及原批次；继承期初/当期/期末服务向量；共用表实测归属证据 | 按不重叠回路读取校准电表，与供应账单核对总电量。 | MJ | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_heat | blockboard_manufacture | heat | foreground_record | 热水质量；供回温度/压力；焓参考/状态及 h 单位（MJ/kg 或 kJ/kg）；净 MJ；供应损失；背景边界；独立供水质量及回水质量；其他实际流质量/状态；回路期初期末质量及能量储存；校准表计的边界/校准；实际水/能量/回水所有权；原批次及继承/当期/期末服务向量 | 使用相容的校准净热量表，或按 net_heat 独立测量质量流量及状态；保留供应商 h 单位/参考/状态、实际储存/其他流证据及供应方所有权。核对相容供应/背景交付及批次服务历史，不再次积分合计值。 | MJ | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_pack | blockboard_manufacture | pe_film; steel_strap | foreground_record | 材料；批号；包装质量；回用；废料；包装皮重；钢带供应成分（99% 铁、1% 碳）；机械分解/熔化回收路线；实际外部收料/退料及首次使用；期初期末湿态/材料库存；领退料/回用历史；购入/服务向量及原批次 | 分别称各包装材料，将领退料记录与验收板批核对；通过供应证明核实所选钢带的成分/路线；供应不匹配或未知时须保留未决或另核身份。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_waste | blockboard_manufacture | clean_sawdust; clean_offcut; bonded_trim; sanding_dust; glue_residue; pvac_residue | foreground_record | 流；湿/干质量；含水率/固含；树脂含量；捕集/排放区别；库存；销售状态；处理去向 | 各原子流专用容器及秤；废物联单与分析记录；按原批次/期间核对实际内部回用，与实际场外处理分开。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
+| cp_emissions | blockboard_manufacture | formaldehyde; methanol; pm25; pm_between; pm_over10; water_vapour; co2_bio; co2_fossil | foreground_record | 物种/来源；出口；标况流量；浓度；湿度；采样条件；小时；控制设施；无组织；PM 粒径段；检出限；碳来源；进出口空气湿度及流量；冷凝水；留存/外送 H2O；cp_recipe 的同批次 G_H2O/C_H2O；水专属性方法及不确定度 | 控制设施后有代表性的出口/无组织采样并按时间积分；保留物种及不重叠粒径段。用匹配的进出口湿度-流量及冷凝水记录量化净过程水蒸气，再核对包括 cp_recipe 实际 UF 产水/耗水的反应 H2O 账；不得重复计入载体水或反应水。总失重包括非水挥发物，不是 H2O 测定。缺失项/物种记为未知，不强制闭合。证明无氧化须有操作/碳证据。 | kg | 每批；能源连续日志；有代表性的排放检测期 | 声明的完成期间及链接的原库存/服务期间 | 一个声明工厂及匹配路线/批次 | 每 1 kg 参考流 | 校准；原始记录；采样/分析；供应定义；库存/验收核对 |
 
-所有协议均汇总同期间实际外部交换 q_lot，除以 cp_output 的验收板材净质量 B。cp_output 采集并汇总 B 本身；阶段投入/输出记录保持独立且未分配。这是上表各每 1 kg 字段的聚合含义。
+完整共享完成批次协议见下方 normalize_mass 计算规则。
 
 ### 计算规则
 
 | rule_id | 适用对象 | 公式或规则 | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| normalize_mass | 所有外部交换 | x_norm = sum(q_lot) / B; B = sum(验收板材净质量); B > 0 | q_lot; B; cp_output | x_norm |  |
+| normalize_mass | 完成批次归属后的全部非参考清单交换 | x_norm = A_c / B; B = B_c; B > 0。按共享批次协议从原始 q_lot 及有支持的库存/服务历史准备 A_c；q_lot 始终为原始观测，不是 A_c。全部数量表达均为此单次商，不得把 x_norm 再除一次。 所有协议均先做完成批次归属再归一化：B = B_c 在实际声明门将首次合格验收的板材净质量只计一次，包括新验收的期末成品（FG）；旧验收成品、发运、留存、退回或返工不能产生另一个 B。按实际实物边界区分原料库、未验收在制品（WIP）、未归属非在制库存及已验收成品。保留原始 q_lot、实际处理量 V 的原始单位/状态，湿/干/组分库存及阶段实物平衡均不分配。另按各交换保留继承的期初、当期及期末负荷/服务向量，含供应方、原始单位、门、阶段、期间、事件 ID 和原批次；实物闭合本身不能归属负荷。依据有证据的实际用料及服务，以各交换声明的清单单位准备分子 A_c，逐项记录从所保留原始单位的换算：有支持的期初原料/在制历史并入完成批次一次，期末未释放原料/在制/非在制历史保留一次用于实际后续使用；不得从生产扣除新验收期末成品，也不得再次加入旧验收产出。包装收料、领退料、首次使用、湿库存、回用及购入/服务历史同样处理；供应方已含的水/材料/能源只计一次。保留实际失败/零产出、闲置、启停、清理及返工事件，以及原批次以后实际发生的全部服务（包括旧成品服务）；后期服务加入原批次分子，仍对应原 B_c，不产生新产出。留存/退回不能取消已实施服务。仅可依据证据纠正错误、重复或未实施记账。优先细分实测服务，或记录共用表有支持的因果归属，保留核对后的总量；不设默认份额或抵扣。缺失/无法归属的历史保持不确定，包括没有支持批次的零产出历史；不得虚构后期分母。B > 0 时仅按 normalize_mass 计算一次 A_c / B；全部数量表达指同一准备结果，不再除第二次。本操作性批次协议落实一致缩放及完整周期记录，不规定工厂分配系数（jrc-ilcd-detailed-2010，§§7.4.2.5–7.4.2.9）。 | q_lot; A_c; B_c; B; cp_output; stock/service histories | x_norm | jrc-ilcd-detailed-2010 |
 | dry_wood | 木材质量账 | m_od = m_wet / (1 + u); m_water = m_wet - m_od | m_wet; u; cp_materials | m_od; m_water | usda-wood-handbook-2021 |
 | glue_solids | 胶账 | m_s = m_supplied * s; m_ns = m_supplied * (1 - s); m_H2O = m_supplied * w_H2O，w_H2O 为实测或已核实供应商水质量分数，不自动等于 1 - s。记录方法/条件及非水挥发物比例；m_s 为供应态实测固体，不是固化树脂质量。 | m_supplied; s; w_H2O; cp_recipe | m_s; m_ns; m_H2O |  |
 | electricity_units | electricity | E_MJ = 3.6 * E_kWh | E_kWh; cp_energy | E_MJ |  |
-| net_heat | heat | H_net = sum(m_hotwater * (h_supply - h_return))；m_hotwater 单位 kg，两项 h 单位 MJ/kg，H_net 单位 MJ。若供应商 h 单位为 kJ/kg，使用 H_net = sum(m_hotwater * (h_supply - h_return)) / 1000。供回水采用实际供应商一致的焓参考基准及净交付边界，各自按实测温度/压力状态取焓。 | m_hotwater; h_supply; h_return; cp_heat | H_net |  |
+| net_heat | heat | 对相容且独立实测的供回支路，H_pair = sum(m_supply * h_supply) - sum(m_return * h_return)。在声明供应边界核实相关其他实际流及积累后，才确定 H_net，或使用相容的校准净热量表。仅在配对质量相等且储存/其他流条件有适当证据时，才可用 H_net = sum(m_hotwater * (h_supply - h_return))。质量为 kg：h 为 MJ/kg 时得 MJ；h 为 kJ/kg 时仅除以 1000 一次。速率观测按实测区间仅积分一次；已积分质量或热量合计不再次积分。各支路采用同一实际供应商 h 参考，并保留各实测状态。H_pair 不自动等于有效压机热量；储存/损失/其他支路未知或供应水/能源所有权不相容时，净热量关系保持不确定。 | m_supply; m_return; m_hotwater; h_supply; h_return; actual other streams/accumulation; cp_heat | H_net |  |
 | emission_mass | 各排放物种 | m_i = sum(c_i * V_normal * dt) + m_fugitive_i; 显式换算浓度及时间单位 | c_i; V_normal; dt; m_fugitive_i; cp_emissions | m_i |  |
 | pm_fractions | pm25; pm_between; pm_over10 | m_pm_between = m_PM10 - m_PM2.5; m_pm_over10 = m_totalPM - m_PM10; 仅用同基准累计测量；负差值须审查 | m_PM2.5; m_PM10; m_totalPM; cp_emissions | m_pm_between; m_pm_over10 |  |
-| physical_balances | 未调整的过程账 | 对总质量及元素 C/H/O 分别核对：期初库存 + 全部材料边界投入 = 期末库存 + 板材 + 外送残余物 + 材料排放；纳入有证据的大气摄入及包装转移，保留化石/生物碳来源，守恒元素的净化学生成量为零。报告带符号差额及不确定度；不得调整实测量或设虚构闭合容差。 | cp_materials; cp_recipe; cp_water; cp_pack; cp_waste; cp_emissions; cp_output | 总质量/元素 C/H/O 差额 | frihart-wood-joining-2023 |
+| physical_balances | 各实际实物边界的未调整实物账 | 对总质量及元素 C/H/O 分别核对：期初库存 + 全部材料边界投入 = 期末库存 + 板材 + 外送残余物 + 材料排放；纳入有证据的大气摄入及包装转移，保留化石/生物碳来源，守恒元素的净化学生成量为零。报告带符号差额及不确定度；不得调整实测量或设虚构闭合容差。 在加工/首次验收门，板材输出包含已越过该门的新验收期末成品，同一板材不能又算门内期末库存。扩展仓储账包含成品时，按实际发运/转移核算，另行核对验收；不得把制造输出与同一成品期末库存相加。实际具名收料/退料、载体水及包装/湿库存按真实边界各计一次，包括供应方拥有的实物载体，同时不重复环境负荷。未覆盖实际条目仍为具名未决事件；不声称全厂闭合。 | cp_materials; cp_recipe; cp_water; cp_pack; cp_waste; cp_emissions; cp_output | 总质量/元素 C/H/O 差额 | frihart-wood-joining-2023 |
 | reactive_species | H2O 及干物质物种账 | 对各物种 X：期初 X + 外部 X 投入 + G_X = 期末 X + 板材 X + 外送 X + 排放 X + C_X；G_X/C_X 为实际前景生成/消耗量，单位 kg，采用 cp_recipe 实测或由同批次反应程度支持。H2O 账纳入实际 UF 固化反应水、木材水分、胶液载体水、添加水、空气湿度及同边界留存/液态/水蒸气输出。绝干木/胶物种的化学转化及非水挥发损失与 H2O 分开跟踪。元素 C/H/O 再分配不是净元素生成；上游树脂制造产水不是前景生成。报告差额/不确定度，不设默认 G_X/C_X、收率或完全固化假定；缺少反应项使闭合结论不确定。 | cp_materials; cp_recipe; cp_water; cp_waste; cp_emissions; cp_output | 考虑反应的 H2O/干物种差额 | frihart-wood-joining-2023 |
 
 ### 数据质量要求
@@ -570,7 +570,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 | --- | --- | --- | --- |
 | dq_identity | 所有行 | 核实材料/物种/状态/路线/属性/单位/介质；空 UUID 为身份未决，不允许以邻近产品替代。 | 供应规格及核实直读记录 |
 | dq_recipe | 芯胶与单板胶 | 当前供应商定义的整胶配方、实际固含/H2O/纯度及胶接验收；历史文献仅支持路线。通过匹配批次测量，或有支持的化学计量与实测同批次反应程度，核实前景 UF G_H2O/C_H2O 及干物种转化；不推定通用收率。 | unido-panel-adhesives-1977; frihart-wood-joining-2023; 供应/分析记录 |
-| dq_scope | 期间/场址/基准 | 全部原始量匹配期间及验收 B；报告缺失计量/检测、检出限、季节/树种/配置变化与调查排除项。不从另一制造路线强加经验范围。 | 原始记录与边界披露 |
+| dq_scope | 期间/场址/基准 | 跨库存及服务历史保留原记录期间和批次/门/供应方身份；核对 A_c 与 B_c，不要求全部原始收料/服务同期间发生。报告缺失表计/检测、检出限、季节/树种/配置变化及调查排除项。不从其他生产路线强加经验范围。 | 原始记录与边界披露 |
 
 ## 9. 校验规则
 
@@ -578,7 +578,7 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 | --- | --- | --- | --- |
 | v_reference | `finished_panel` | 恰好一个产品输出匹配参考行/UUID；1 kg 板材净输出、全部必需限定及实测含水率均完整。同产品中间转移保留于聚合单元内。 | fao-farm-structures-1986 |
 | v_route | `blockboard_manufacture` | 拒绝不相容芯构、纹理方向、胶路线或一体化燃烧/干燥边界。核实四个单板界面、芯条边缘胶及实际压制顺序、配方/固含和验收记录。分类名称本身不能建立适用性。 | fao-farm-structures-1986; unido-panel-adhesives-1977 |
-| v_measurement | `blockboard_manufacture` | 实际外部量均以同一 B 归一化；保留未分配的总质量/元素 C/H/O 及考虑反应的物种账，与负荷账分开。核实实际 UF H2O 生成/消耗及干物种转化证据；不得把水或供应态干固体作为固化过程中的独立守恒量。缺少反应程度/分析证据为不确定，不是零产水或强制水蒸气差额。核实供应/背景净交付热量基准、h 单位/参考/状态及所需 kJ 到 MJ 换算；未支持关系及未决身份保持不确定。 | usda-wood-handbook-2021; frihart-wood-joining-2023 |
+| v_measurement | `blockboard_manufacture` | 按共享批次协议将各准备好的 A_c 仅除以 B = B_c 一次；核实唯一验收、实际库存/门位置、继承/当期/期末历史及保留的零产出/失败/闲置/返工/后期服务。实物平衡不是负荷归属；无法归属历史保持不确定。保留未分配的总质量/元素 C/H/O 及考虑反应的物种账，与负荷账分开。核实实际 UF H2O 生成/消耗及干物种转化证据；不得把水或供应态干固体作为固化过程中的独立守恒量。缺少反应程度/分析证据为不确定，不是零产水或强制水蒸气差额。核实供应/背景净交付热量基准、h 单位/参考/状态及所需 kJ 到 MJ 换算；未支持关系及未决身份保持不确定。 执行 net_heat 等质量适用条件，或独立支路/相容表计核算，核实其他实际流/积累、不重复积分以及供应水/热所有权，避免重复负荷。 | usda-wood-handbook-2021; frihart-wood-joining-2023; jrc-ilcd-detailed-2010 |
 | v_emissions | `blockboard_manufacture` | 核实逐物种、室外空气介质及互斥 PM 段；不合计累计粒径，不将捕集粉尘算成空气排放。核对净水蒸气与进出口湿度、冷凝水、留存/外送 H2O 及有支持的前景反应水，不重复计量。保留有证据的生物源 CO2；无排放/检测缺口及截断须明确支持。 | frihart-wood-joining-2023 |
 
 ## 10. 发布数据集画像
@@ -602,3 +602,6 @@ PVAc 胶作为一条完整供应态水性木材胶黏剂交换称量，包括载
 | unido-panel-adhesives-1977 | literature | J. Reinhardt，木质板行业合成树脂胶黏剂工业应用与配制，UNIDO ID/WG.248/9，1977-10-10; https://downloads.unido.org/ot/47/90/4790807/00001-10000_07656.pdf; 查阅 2026-10-12 | §2.2 印刷第15页；§3.1 印刷第24–30页：PVAc 芯条胶拼、独立热固单板胶及配方组分；历史路线证据，不作为现代配方/耐久/排放默认值 |
 | usda-wood-handbook-2021 | handbook | USDA 林产品实验室《木材手册——木材作为工程材料》，FPL-GTR-282，2021; https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf; 查阅 2026-10-12 | 第4章干基含水率及第13章烘干测量方法，印刷第4–1及13–2页；不转用树种含水率、密度或窑干能耗默认值 |
 | frihart-wood-joining-2023 | handbook | C. R. Frihart、J. Konnerth、A. Frangi、C. Gottlöber、R. Jockwer 和 F. Pichelin，《木材的连接与重组》（Joining and Reassembling of Wood），Springer Handbook of Wood Science and Technology 第14章，2023；DOI 10.1007/978-3-030-81315-4_14；USDA 托管原文 https://research.fs.usda.gov/download/treesearch/66341.pdf；查阅 2026-10-14 | §14.2.1 氨基类胶黏剂，印刷第720–723页（PDF 第14–17页）、图14.13及固化条件与木材相互作用的化学部分：UF 缩聚/固化及水损失；仅支持定性化学，不采纳供应配方、反应程度或数值产水率 |
+| jrc-ilcd-detailed-2010 | official_guidance | 欧盟委员会 JRC，ILCD 手册《生命周期评价通用指南——详细指导》，2010 年 3 月第一版；https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf；2026-10-30 查阅，保留原文采集于 2026-10-13 | §§7.4.2.4–7.4.2.9 及 7.4.2.11.1，印刷第196–205页：原始消耗/库存数据、完整运行周期、一致缩放及元素/能量质量核对。本处批次记账与有条件热水边界核算为操作性推导，不是引述的工厂协议；不采纳配方、服务份额、库存因子或数值热量默认值 |
+| un-cpc-explanatory-notes-xlsx-2025 | official_guidance | UNSD，CPC 3.0 解释说明工作簿，最后更新于 2025-06-30；https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.xlsx；保留采集日期 2026-10-29 UTC，查阅 2026-10-30 | 完整 3141/31411/3142/31421 及相邻 31422/31423 行和 Notes 页：仅由木片构成与剩余类层级、针叶木外层及超过两层单板；保留 31411 纳入细木工板的来源不一致。支持构造特定的有界较窄提案，不作为官方勘误、HS 对应表、全叶类覆盖或工艺系数 |
+| un-cpc-introduction | official_guidance | UNSD，《中央产品分类》3.0 版引言；https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Introduction.pdf；保留原文采集日期 2026-10-29 UTC，查阅 2026-10-30 | 完整第49–60段，尤其第57–58段：类别边界及非穷尽性解释示例，同时保留基于 HS 的货物解释及疑难分类指导。仅支持所披露解释；不据此推定精确 CPC3–HS2022 对应关系、官方裁定或工厂系数 |

@@ -2,9 +2,6 @@
 const zh: Readonly<Record<string,string>> = {
   "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a": "批发零售、住宿餐饮、运输及公用事业配送服务",
   "wholesale-trade-services-not-on-a-fee-or-contract-basis": "非按收费或合同提供的批发贸易服务",
-  "accommodation-food-and-beverage-services": "住宿、餐饮及饮品服务",
-  "transport-services": "运输服务",
-  "passenger-transport": "旅客运输",
   "chemicals": "化学品",
   "pharmaceutical-ingredients": "药用成分",
   "rubber-and-plastics-products": "橡胶和塑料制品",
@@ -45,6 +42,7 @@ const zh: Readonly<Record<string,string>> = {
   "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products":
     "食品、饮料、烟草、纺织、服装和皮革产品",
   "forestry-and-logging-products": "林业和采伐产品",
+  "furniture-other-transportable-goods-n-e-c": "家具及其他未另分类的可运输货物",
   "general-purpose-machinery": "通用机械",
   "glass-and-glass-products-and-other-non-metallic-products-n-e-c":
     "玻璃及玻璃制品和其他未分类非金属产品",

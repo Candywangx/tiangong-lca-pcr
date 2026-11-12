@@ -1,8 +1,599 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-computers-and-packaged-software
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Wholesale trade services, not on a fee or contract basis, of computers and packaged software
+# Ambient own-account wholesale of new boxed wired USB keyboards
+
+## 1. Scope and Applicability
+
+Factory-finished NEW original-boxed WIRED USB COMPUTER KEYBOARDS,owned/purchased/resold in actual ambient B2B commercial consignments. Actual regional SKU/layout,interface,included cord and full device BOM,parent device/box/carton hierarchy,net complete mass,packing and condition qualify service. Exclude wireless devices/receivers,bundled unrelated equipment,used/refurbished products,retail/fee agency and merchant energization/plug or spill test,setup/downloads,opening/disassembly/repair/repacking/use. Actual additional operations require reviewed complete scope.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-computers-and-packaged-software |
+| classification_refs | CPC3.0:61084,narrower45261newwiredUSBcomputerkeyboard;not47315monitor |
+| covered_products | Completed new original-boxed wired USB computer-keyboard own-account wholesale consignment service |
+| excluded_products | Wireless/used/refurbished/other devices;merchant tests/setup/repair/repack/use;retail/agency |
+| representative_product | Actual regionalSKU/layout/newwiredUSB/includedcord/BOM/netmass/box-carton/condition final B2B consignment |
+| production_route | Finished original-boxed receipt -> ambient stock/order handling -> dispatch -> final business acceptance |
+| market_state | Physical wholesale service add-on;finished device and inherited original pack are nonexchange merchandise stock |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Completed new original-boxed wired USB computer-keyboard own-account wholesale consignment service |
+| How much | 1 Item(s),one unique FINAL accepted commercial consignment,not keyboard/box/carton/kg/currency |
+| How well | Actual regional SKU/layout/wiredUSB/includedcord/completeBOM/netmass/packing/condition accepted buyer gate |
+| How long or cycle | Actual receipt/storage/return/dispatch/acceptance timestamps,timezones/cutoffs and full relevant asset phases |
+| reference_flow_link | `accepted_service` |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Completed new original-boxed wired USB computer-keyboard own-account wholesale consignment service |
+| Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| Reference unit | Item(s) |
+| Required qualifiers | merchant_ownership_resale; business_buyer_final_gate; regional_sku_layout; new_wired_usb_state; included_cord_complete_bom; unique_device_box_carton; net_device_mass_pack_tare; source_lot_condition; period_time_timezone; source_gate_loss_coverage; provider_asset_carrier_scope; receiver_fates |
+
+N uses source ownership/resale and final B2B gate after reversals;receipt is insufficient. Failed/unfinished duties keep physical resources and reporting-period responsibilities;N=0 no division.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| commercial_service | accepted_service | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | Item(s) | Reference is 1 Item(s),one completed commercial consignment;device/carton counts never multiply N. |
+| device_native | nonexchange merchandise | Count; Mass | actual native count; kg | For each unique parent box/carton use actual extent EACH/TOTAL and sourced child count once. Net complete device mass=sum unique packed child(gross-external packing tare);included cord and actual device components remain product,not tare. Reconcile actual device count and component BOM without adding parent+child masses. Optional component mass requires actual matching component fraction/basis and whole composition scope;not all device kg as polymer or copper. |
+| content_basis | actual stock and fates | Mass; mass fraction | kg; actual fraction unit | Source content audits close to retained accepted/returned/closing,retained whole-deviceWaste/partWaste/mixedWaste,actual useful independent exports,independent nonusable/liquid and measured direct species,plus explicit unknown discrepancy. Each native term unit/basis/method/state/time/source/conversion required. Retained contents nonadditive to carriers;only actual separate transfers create outlets. Actual added contaminants/carrier/water not original device loss;no residual emission. Wet/dry water adjustment only as specified in cp_fates with matching definitions and native factors. |
+| concrete_configuration | actual exchanges | actual native property | actual native unit | Verify each actual SKU/provider/asset/receiver/species-medium and native property/unit. Generic electricity Energy cannot use fuel-specific NCV/GCV factors or Count substitution. Whole electronics is not pure polymer or metal. Verified electricity using an ILCD reference property named Net calorific value is allowed on its independently confirmed electrical-energy basis and unit group; the label does not authorize fuel heating-value factors. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Actual new released original-boxed wiredUSB keyboard regionalSKU/layout/includedcord/completeBOM/native mass/packing/condition |
+| starting_condition_role | Complete device and original pack nonexchange merchandise throughflow/stock |
+| product_classification_scope | Narrower45261input peripheral in452/61084;monitors47315 excluded |
+| recursive_input_rule | Use only complete disjoint actual provider/receiver gates,no repeated same wholesale sale or covered asset/resource/carrier |
+| upstream_dataset_requirement | Link the actual finished regional keyboard SKU including complete case,keys,membrane/PCB/cable and other actual BOM,component manufacture/assembly,release and original packing. Raw resin or an unfinished circuit alone is incomplete. Complete source production and original assigned demand including lost fraction stays outside service exchanges;explicit stage/loss baseline coverage and additional uncovered source quantities,units/states/conversions/owner and completed integration once are required before complete-chain use. |
+| disclosure | All qualifiers,actual BOM/native mass/pack/hierarchy/time/conditions;original/assigned/loss/baseline/additional source demand,all-terminal records/owner/conversion/integration;full providers/assets/carriers/receivers and unresolved evidence |
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| service_gate | actual declared trade duties | This is physical own-account ambient wholesale add-on only. Receipt/order/dispatch and actual premises/handling duties are inside;software/use,manufacturer component production,assembly/release/original packing and inherited contents remain outside merchandise stock. |  |
+| finished_source | actual declared trade duties | Link the actual finished regional keyboard SKU including complete case,keys,membrane/PCB/cable and other actual BOM,component manufacture/assembly,release and original packing. Raw resin or an unfinished circuit alone is incomplete. Complete source production and original assigned demand including lost fraction stays outside service exchanges;explicit stage/loss baseline coverage and additional uncovered source quantities,units/states/conversions/owner and completed integration once are required before complete-chain use. |  |
+| actual_intervention | actual declared trade duties | No merchant plug-test,downloads/setup,spill-test,opening/disassembly,repair/refurbishment/repacking,consumer operation or active temperature control is assumed. A real added operation changes the reviewed boundary and needs complete resource/fate coverage. |  |
+| physical_fates | actual declared trade duties | Use actual accepted/returned/closing/useful-other/whole/part/mixed/liquid/direct states with unique links. Rejection,wrong layout,breakage and absent contents do not prove waste or emissions. Whole electronics/BOM/cable/packing/retained liquid views are nonadditive,receiver treatment once,no collection/recycling credit by default. |  |
+| complete_responsibility | actual declared trade duties | Include actual provider/merchant resource duties and shared full-life manufacture/maintenance/cleaning/replacement/EOL,all consumers and periods. Declare native causal attribution and freight-empty/support coverage;complete supplied service replaces covered direct inventory only. |  |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| boxed_wired_keyboard_trade | Original-boxed wired USB keyboard stock and order trade | required | Actual new original-boxed wiredUSBkeyboard merchant-owned ambient resale final B2B gate | Receipt/order/dispatch batches and actual cleanup periods,stock/return and shared infrastructure across periods | `accepted_service` |
+
+No keyboard component manufacturing,assembly or consumer-use node is activated. Link actual duty/event/cohort/source stock and rejected states;unresolved rejects cannot count accepted service. Actual conditional supply/provider/fate/species configurations expand from records,not unknown-as-zero.
+
+### Process: Original-boxed wired USB keyboard stock and order trade (`boxed_wired_keyboard_trade`)
+
+#### Inputs
+
+##### Product flows
+
+###### Actual alternating-current electricity at point of use (`warehouse_power_ac`)
+
+Only actual alternating-current electricity crossing this node boundary and not already inside a complete provider. The identity leaves provider, voltage, generation mix and delivery-loss allocation unspecified; collect them where required. Its ILCD reference property is named Net calorific value but the verified electricity flow defines an electrical-energy basis of 1 MJ; native kWh uses exactly 3.6 MJ per kWh, never a fuel heating-value factor. Direct-current or another unmatched electricity state stays in the residual requirement.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Energy / kWh
+- Amount rule: Assigned actual native physical quantity / N; cp_power.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_power`
+
+Range evidence need: Actual meter/equipment periods and complete physical all-consumer attribution are needed;no keyboard wattage or published product footprint substitutes.
+
+###### Actual liquid treated tap-water supply (`housekeeping_water_liquid_tap`)
+
+Applicable only when the actual source is treated tap water supplied for the declared use. Preserve actual supplier, quality, temperature/state and provider boundary; do not assume that every water supply is tap water. Ice, bottled/mineral/reclaimed/untreated water and direct environmental withdrawal stay in their actual separate identities. Keep the parent native mass or volume basis. For any final mass-reference conversion, require actual compatible density/state evidence; the catalogue secondary-volume relationship is not a default site density.
+
+- Selected flow: Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- Flow property / unit: Volume / m3
+- Amount rule: Assigned actual native physical quantity / N; cp_water.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+
+Range evidence need: Need native supply,retained fluid,free collected liquid and any measured direct-water fates;damage or stock deficit is not water discharge.
+
+###### Actual independently recorded synthetic detergent supply (`housekeeping_materials_synthetic_detergent`)
+
+Only actual synthetic surfactant detergent identified by product/formulation, supplied state and use records. Measure net supplied material excluding package tare; retain concentrate/dilution-water distinctions and never count whole formulation and components additively. Soap, disinfectants, wipes, filters and other materials remain under their separate actual identities; no cleaning recipe, dose or occurrence is assumed.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need native stock amounts,formulation/carrier composition and measurement units,methods,sources;no prescribed detergent or dose.
+
+###### Actual separately recorded polyethylene packaging film (`added_shipping_material_pe_film`)
+
+Only actual independently supplied polyethylene film used as additional service-owned wrapping or lining, verified by actual polymer/formulation and net film mass. This identity is generic production mix at plant; retain actual supply gate, provider and separately owned delivery burdens. It does not prescribe LDPE/HDPE grade, recycled content, film thickness or dose. PVC/PET/PP, multilayer composites, adhesive labels, filled packs and inherited merchandise packaging remain separate residual identities. Whole supply and components must not be counted twice; no occurrence is assumed.
+
+- Selected flow: Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual native count/length/area/mass,material,tare,stock and conversion provenance;included product cable is not packing.
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Completed new original-boxed wired USB computer-keyboard own-account wholesale consignment service (`accepted_service`)
+
+One unique actual commercial consignment of factory-finished NEW original-boxed WIRED USB COMPUTER keyboards,owned,purchased/resold by merchant and finally accepted by a business buyer. Actual regional SKU/layout,included cable and complete BOM,device/box/carton hierarchy,net mass,packing,condition and time gate qualify service;keyboard piece or carton count is not service N.
+
+- Selected flow: Completed new original-boxed wired USB computer-keyboard own-account wholesale consignment service
+- Flow property / unit: Count / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: `fixed_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_keyboards`
+
+Range evidence need: Need ownership/resale,business buyer,post-reversal final acceptance source and actual SKU/layout/USB-cord/BOM/hierarchy/netmass/pack-condition records;no universal mass/keycount/battery.
+
+##### Waste flows
+
+###### Discarded complete boxed wired USB keyboard (`discarded_whole_keyboards_atomic_case`)
+
+Conditional on independently recorded actual Discarded complete boxed wired USB keyboard. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `discarded_whole_keyboards`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+
+- Selected flow: Discarded complete boxed wired USB keyboard
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_keyboards.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_keyboards`
+
+Range evidence need: Need actual native whole/net/tare mass,count,retained BOM and receiver treatment plus original finished-SKU loss conversion,owner and prior coverage.
+
+###### Actual separately collected paper packaging waste (`actual_packing_waste_paper_pack`)
+
+Only actual independently discarded and separately collected paper packaging at this node, with its actual wet/as-collected composition, receiver and treatment/transport responsibility. A contaminated or co-collected mixed stream must use its own verified identity; its material components are non-additive audits. Returnable packaging still in use is not this waste; no composition, quantity, recycling or treatment is assumed.
+
+- Selected flow: Packaging waste, paper `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/mass/tare/residue,receiver/carrier/treatment and whole/mixed exclusions;collection symbol is not a credit.
+
+
+###### Actual separately collected metal packaging waste (`actual_packing_waste_metal_pack`)
+
+Only actual independently discarded and separately collected metal packaging at this node, with its actual wet/as-collected composition, receiver and treatment/transport responsibility. A contaminated or co-collected mixed stream must use its own verified identity; its material components are non-additive audits. Returnable packaging still in use is not this waste; no composition, quantity, recycling or treatment is assumed.
+
+- Selected flow: packaging waste (metal) `cdda6013-c0c5-4c72-990a-f5668fe71069`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/mass/tare/residue,receiver/carrier/treatment and whole/mixed exclusions;collection symbol is not a credit.
+
+
+###### Actual separately collected plastic packaging waste (`actual_packing_waste_plastic_pack`)
+
+Only actual independently discarded, separately collected empty plastic packaging with its actual composition, moisture and receiver. Retained merchandise, contaminated mixed packs, foam inside appliances, disposable wipes and composite packaging do not use this case. Components retained in a whole mixed stream are non-additive audits; retain actual transport/treatment ownership once. No emptying, recycling, occurrence or quantity is assumed.
+
+- Selected flow: packaging waste (plastic) `919351c4-3e25-4092-9934-73ecec021a3b`
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/mass/tare/residue,receiver/carrier/treatment and whole/mixed exclusions;collection symbol is not a credit.
+
+##### Elementary flows
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| final_service_count | actual declared trade duties | Verify unique final owned-resold B2B consignment acceptances after reversals. Keep failed/reversed/unfinished event resources with actual duties/cohorts;N=0 prevents normalization,not a zero burden. No service conversion from device count,price,tax or licence. |  |
+| source_cohort | actual declared trade duties | Use direct evidenced original-gate assignment OR assigned_source=original_gate_quantity*(compatible numerator driver/positive complete source_all_exit_driver). Record every competing terminal driver including closing/unsold/damaged retained,useful-other exits,returns and actual losses,each native unit/basis/method/state/time/source/owner/source link/exclusivity. Numerator and denominator belong to same complete source cohort;accepted-only denominator prohibited. Stage/loss coverage owner prevents repeated source burdens;actual disposal stays service. |  |
+| stock_and_life | actual declared trade duties | Gross supply input S and separate matched unused return output OR consumed S-return input with matched output omitted;no numeric S+return or duplicate credit. Full asset burden uses compatible actual all-user lifetime driver,observed history plus sourced remainder/termination,not accepted-only period. No inherited device content return subtracts unrelated supply. |  |
+| exclusive_physical | actual declared trade duties | Real whole/part/mixed/liquid/useful/direct transfers retain source burden owner and content audit links;actual receiver treatment once. Do not add retained component mass as another outlet or award automatic avoided production. Each actual freight load-leg share is inside its summand,then divide by N once. |  |
+
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| source_scope_normalization | nonexchange commodity and service combination | Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division. |  |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_keyboards | boxed_wired_keyboard_trade | Commercial service and nonexchange device ledger | Actual source/event/native operand ledger | merchant_id;ownership_purchase_resale_evidence;business_buyer_id;acceptance_gate;acceptance_gate_source;final_acceptance_record_id;reversal_record_ids;unfinished_event_ids;supplier_id;manufacturer_id;regional_sku;layout_identity;layout_source;usb_interface;corded_state_evidence;original_box_state;new_release_evidence;source_lot;serial_if_actual;parent_carton_id;individual_box_id;count_extent_EACH_or_TOTAL;count_extent_source;device_id;included_cord_id;included_vs_separate_part_ids;component_bom_records;component_identity;component_composition_method;component_composition_source;component_fraction_basis;component_fraction_unit;component_fraction_source;battery_receiver_presence_evidence;condition_record;condition_source;receipt_timestamp;receipt_timezone;storage_start;storage_end;dispatch_timestamp;acceptance_timestamp;time_source;duration_unit;duration_source;source_gate_dataset_id;source_gate_reference;source_gate_state;baseline_stage_coverage;baseline_loss_coverage;loss_owner;already_included_coverage;source_all_exit_driver_records;terminal_exit_id;terminal_exit_kind;terminal_source_link;driver_owner;driver_exclusivity_key;numerator_record_links;allocation_method;allocation_source;direct_assignment_evidence;source_state_conversion_evidence;completed_integration_result;receiver_id;receiver_decision;treatment_scope;transfer_id;stream_exclusion_ids;carton_count;carton_count_unit;carton_count_basis;carton_count_method;carton_count_state;carton_count_sample_time;carton_count_source;carton_count_conversion_factor;carton_count_conversion_unit;carton_count_conversion_source;repeat_count;repeat_count_unit;repeat_count_basis;repeat_count_method;repeat_count_state;repeat_count_sample_time;repeat_count_source;repeat_count_conversion_factor;repeat_count_conversion_unit;repeat_count_conversion_source;device_count;device_count_unit;device_count_basis;device_count_method;device_count_state;device_count_sample_time;device_count_source;device_count_conversion_factor;device_count_conversion_unit;device_count_conversion_source;boxes_per_carton;boxes_per_carton_unit;boxes_per_carton_basis;boxes_per_carton_method;boxes_per_carton_state;boxes_per_carton_sample_time;boxes_per_carton_source;boxes_per_carton_conversion_factor;boxes_per_carton_conversion_unit;boxes_per_carton_conversion_source;devices_per_box;devices_per_box_unit;devices_per_box_basis;devices_per_box_method;devices_per_box_state;devices_per_box_sample_time;devices_per_box_source;devices_per_box_conversion_factor;devices_per_box_conversion_unit;devices_per_box_conversion_source;complete_net_device_mass;complete_net_device_mass_unit;complete_net_device_mass_basis;complete_net_device_mass_method;complete_net_device_mass_state;complete_net_device_mass_sample_time;complete_net_device_mass_source;complete_net_device_mass_conversion_factor;complete_net_device_mass_conversion_unit;complete_net_device_mass_conversion_source;packed_gross_mass;packed_gross_mass_unit;packed_gross_mass_basis;packed_gross_mass_method;packed_gross_mass_state;packed_gross_mass_sample_time;packed_gross_mass_source;packed_gross_mass_conversion_factor;packed_gross_mass_conversion_unit;packed_gross_mass_conversion_source;external_pack_tare;external_pack_tare_unit;external_pack_tare_basis;external_pack_tare_method;external_pack_tare_state;external_pack_tare_sample_time;external_pack_tare_source;external_pack_tare_conversion_factor;external_pack_tare_conversion_unit;external_pack_tare_conversion_source;component_mass;component_mass_unit;component_mass_basis;component_mass_method;component_mass_state;component_mass_sample_time;component_mass_source;component_mass_conversion_factor;component_mass_conversion_unit;component_mass_conversion_source;cord_mass;cord_mass_unit;cord_mass_basis;cord_mass_method;cord_mass_state;cord_mass_sample_time;cord_mass_source;cord_mass_conversion_factor;cord_mass_conversion_unit;cord_mass_conversion_source;original_gate_quantity;original_gate_quantity_unit;original_gate_quantity_basis;original_gate_quantity_method;original_gate_quantity_state;original_gate_quantity_sample_time;original_gate_quantity_source;original_gate_quantity_conversion_factor;original_gate_quantity_conversion_unit;original_gate_quantity_conversion_source;assigned_source_quantity;assigned_source_quantity_unit;assigned_source_quantity_basis;assigned_source_quantity_method;assigned_source_quantity_state;assigned_source_quantity_sample_time;assigned_source_quantity_source;assigned_source_quantity_conversion_factor;assigned_source_quantity_conversion_unit;assigned_source_quantity_conversion_source;source_loss_quantity;source_loss_quantity_unit;source_loss_quantity_basis;source_loss_quantity_method;source_loss_quantity_state;source_loss_quantity_sample_time;source_loss_quantity_source;source_loss_quantity_conversion_factor;source_loss_quantity_conversion_unit;source_loss_quantity_conversion_source;baseline_covered_source_quantity;baseline_covered_source_quantity_unit;baseline_covered_source_quantity_basis;baseline_covered_source_quantity_method;baseline_covered_source_quantity_state;baseline_covered_source_quantity_sample_time;baseline_covered_source_quantity_source;baseline_covered_source_quantity_conversion_factor;baseline_covered_source_quantity_conversion_unit;baseline_covered_source_quantity_conversion_source;additional_uncovered_source_quantity;additional_uncovered_source_quantity_unit;additional_uncovered_source_quantity_basis;additional_uncovered_source_quantity_method;additional_uncovered_source_quantity_state;additional_uncovered_source_quantity_sample_time;additional_uncovered_source_quantity_source;additional_uncovered_source_quantity_conversion_factor;additional_uncovered_source_quantity_conversion_unit;additional_uncovered_source_quantity_conversion_source;driver_quantity;driver_quantity_unit;driver_quantity_basis;driver_quantity_method;driver_quantity_state;driver_quantity_sample_time;driver_quantity_source;driver_quantity_conversion_factor;driver_quantity_conversion_unit;driver_quantity_conversion_source;numerator_driver;numerator_driver_unit;numerator_driver_basis;numerator_driver_method;numerator_driver_state;numerator_driver_sample_time;numerator_driver_source;numerator_driver_conversion_factor;numerator_driver_conversion_unit;numerator_driver_conversion_source;source_all_exit_driver;source_all_exit_driver_unit;source_all_exit_driver_basis;source_all_exit_driver_method;source_all_exit_driver_state;source_all_exit_driver_sample_time;source_all_exit_driver_source;source_all_exit_driver_conversion_factor;source_all_exit_driver_conversion_unit;source_all_exit_driver_conversion_source;accepted_quantity;accepted_quantity_unit;accepted_quantity_basis;accepted_quantity_method;accepted_quantity_state;accepted_quantity_sample_time;accepted_quantity_source;accepted_quantity_conversion_factor;accepted_quantity_conversion_unit;accepted_quantity_conversion_source;return_quantity;return_quantity_unit;return_quantity_basis;return_quantity_method;return_quantity_state;return_quantity_sample_time;return_quantity_source;return_quantity_conversion_factor;return_quantity_conversion_unit;return_quantity_conversion_source;closing_quantity;closing_quantity_unit;closing_quantity_basis;closing_quantity_method;closing_quantity_state;closing_quantity_sample_time;closing_quantity_source;closing_quantity_conversion_factor;closing_quantity_conversion_unit;closing_quantity_conversion_source;useful_other_exit_quantity;useful_other_exit_quantity_unit;useful_other_exit_quantity_basis;useful_other_exit_quantity_method;useful_other_exit_quantity_state;useful_other_exit_quantity_sample_time;useful_other_exit_quantity_source;useful_other_exit_quantity_conversion_factor;useful_other_exit_quantity_conversion_unit;useful_other_exit_quantity_conversion_source;whole_loss_quantity;whole_loss_quantity_unit;whole_loss_quantity_basis;whole_loss_quantity_method;whole_loss_quantity_state;whole_loss_quantity_sample_time;whole_loss_quantity_source;whole_loss_quantity_conversion_factor;whole_loss_quantity_conversion_unit;whole_loss_quantity_conversion_source;part_loss_quantity;part_loss_quantity_unit;part_loss_quantity_basis;part_loss_quantity_method;part_loss_quantity_state;part_loss_quantity_sample_time;part_loss_quantity_source;part_loss_quantity_conversion_factor;part_loss_quantity_conversion_unit;part_loss_quantity_conversion_source;mixed_loss_quantity;mixed_loss_quantity_unit;mixed_loss_quantity_basis;mixed_loss_quantity_method;mixed_loss_quantity_state;mixed_loss_quantity_sample_time;mixed_loss_quantity_source;mixed_loss_quantity_conversion_factor;mixed_loss_quantity_conversion_unit;mixed_loss_quantity_conversion_source;free_liquid_loss_quantity;free_liquid_loss_quantity_unit;free_liquid_loss_quantity_basis;free_liquid_loss_quantity_method;free_liquid_loss_quantity_state;free_liquid_loss_quantity_sample_time;free_liquid_loss_quantity_source;free_liquid_loss_quantity_conversion_factor;free_liquid_loss_quantity_conversion_unit;free_liquid_loss_quantity_conversion_source;retained_in_whole_waste;retained_in_whole_waste_unit;retained_in_whole_waste_basis;retained_in_whole_waste_method;retained_in_whole_waste_state;retained_in_whole_waste_sample_time;retained_in_whole_waste_source;retained_in_whole_waste_conversion_factor;retained_in_whole_waste_conversion_unit;retained_in_whole_waste_conversion_source;retained_in_part_waste;retained_in_part_waste_unit;retained_in_part_waste_basis;retained_in_part_waste_method;retained_in_part_waste_state;retained_in_part_waste_sample_time;retained_in_part_waste_source;retained_in_part_waste_conversion_factor;retained_in_part_waste_conversion_unit;retained_in_part_waste_conversion_source;retained_in_mixed_waste;retained_in_mixed_waste_unit;retained_in_mixed_waste_basis;retained_in_mixed_waste_method;retained_in_mixed_waste_state;retained_in_mixed_waste_sample_time;retained_in_mixed_waste_source;retained_in_mixed_waste_conversion_factor;retained_in_mixed_waste_conversion_unit;retained_in_mixed_waste_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; source_assignment_scope_id; source_assignment_scope_kind; source_quantity_basis; source_target_scope_id; source_same_scope_N; source_same_scope_N_unit; source_same_scope_N_basis; source_same_scope_N_method; source_same_scope_N_state; source_same_scope_N_sample_time; source_same_scope_N_source; source_same_scope_acceptance_ids; source_already_per_reference; raw_integration_scope_link; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation | Verify actual merchant ownership/purchase/resale,B2B buyer and source final gate after linked reversals. N counts unique FINAL accepted commercial consignments only;receipt/device/box/invoice is insufficient. Canceled/reversed/unfinished events keep actual resource/cohort/period attribution;do not divide if N=0. Record actual SKU/region-layout/new wiredUSB release,included cord and complete component/pack hierarchy/BOM with native quantities/provenance;not assumed from empty specifications. Separate whole net device from packing;actual included cord is product. Source original/assigned/loss/baseline/additional complete finished-gate demand uses direct trace or compatible positive complete all-terminal driver records,with every competing accepted/closing/unsold/damaged-retained/useful-other/return/real-loss quantity/unit/basis/method/state/time/source/owner/source-link/exclusivity. Include all terminal demands,not accepted-only denominator. Native original-state equivalent conversions and coverage/completed integration remain mandatory outside service once.  Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division. Attribute only the individually identified physical case; retain other source-linked actual fates separately. Each native record belongs to exactly one exchange and any whole total is a non-additive audit. | Item(s); actual device/box/carton/mass/component/time units | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_power | boxed_wired_keyboard_trade | Metered and supplied electrical duty | Actual source/event/native operand ledger | meter_id;equipment_id;period_start;period_end;timezone;provider_scope;all_consumers;calibration_source;idle_cleanup_record;coverage_owner;meter_opening;meter_opening_unit;meter_opening_basis;meter_opening_method;meter_opening_state;meter_opening_sample_time;meter_opening_source;meter_opening_conversion_factor;meter_opening_conversion_unit;meter_opening_conversion_source;meter_closing;meter_closing_unit;meter_closing_basis;meter_closing_method;meter_closing_state;meter_closing_sample_time;meter_closing_source;meter_closing_conversion_factor;meter_closing_conversion_unit;meter_closing_conversion_source;electricity;electricity_unit;electricity_basis;electricity_method;electricity_state;electricity_sample_time;electricity_source;electricity_conversion_factor;electricity_conversion_unit;electricity_conversion_source;duration;duration_unit;duration_basis;duration_method;duration_state;duration_sample_time;duration_source;duration_conversion_factor;duration_conversion_unit;duration_conversion_source;power;power_unit;power_basis;power_method;power_state;power_sample_time;power_source;power_conversion_factor;power_conversion_unit;power_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Use meter differences or actual power-duration with native conversion evidence and complete all-consumer physical drivers. Include idle and real cleanup;declare provider covered power/assets to avoid overlap. No device-use or manufacturer footprint factor enters merchant power. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | kWh | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_water | boxed_wired_keyboard_trade | Supplied,retained and free-liquid ledger | Actual source/event/native operand ledger | water_source;water_source_identity;receiver_id;composition;composition_method;composition_source;collection_id;transfer_id;treatment_scope;stream_exclusion_ids;temperature_unit;density_unit;density_source;temperature_source;supplied_volume;supplied_volume_unit;supplied_volume_basis;supplied_volume_method;supplied_volume_state;supplied_volume_sample_time;supplied_volume_source;supplied_volume_conversion_factor;supplied_volume_conversion_unit;supplied_volume_conversion_source;retained_fluid;retained_fluid_unit;retained_fluid_basis;retained_fluid_method;retained_fluid_state;retained_fluid_sample_time;retained_fluid_source;retained_fluid_conversion_factor;retained_fluid_conversion_unit;retained_fluid_conversion_source;free_liquid_volume;free_liquid_volume_unit;free_liquid_volume_basis;free_liquid_volume_method;free_liquid_volume_state;free_liquid_volume_sample_time;free_liquid_volume_source;free_liquid_volume_conversion_factor;free_liquid_volume_conversion_unit;free_liquid_volume_conversion_source;free_liquid_mass;free_liquid_mass_unit;free_liquid_mass_basis;free_liquid_mass_method;free_liquid_mass_state;free_liquid_mass_sample_time;free_liquid_mass_source;free_liquid_mass_conversion_factor;free_liquid_mass_conversion_unit;free_liquid_mass_conversion_source;direct_water;direct_water_unit;direct_water_basis;direct_water_method;direct_water_state;direct_water_sample_time;direct_water_source;direct_water_conversion_factor;direct_water_conversion_unit;direct_water_conversion_source;density;density_basis;density_method;density_state;density_sample_time;density_conversion_factor;density_conversion_unit;density_conversion_source;temperature;temperature_basis;temperature_method;temperature_state;temperature_sample_time;temperature_conversion_factor;temperature_conversion_unit;temperature_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Measure actual supply and distinct retained/free-liquid/direct paths;volume-mass conversion requires compatible composition,density and temperature source/unit. Retained fluid is a nonadditive content audit of whole/mixed waste. Receiver sewer/treatment or independent direct species needs actual gate evidence;residual does not become evaporation. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | m3; actual density/temperature/composition units | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_supplies | boxed_wired_keyboard_trade | Independent consumable stock | Actual source/event/native operand ledger | supply_sku;formulation;carrier_identity;composition_basis;composition_method;composition_source;native_unit;return_id;same_scope_supply_match;stock_convention;receiver_id;temperature_unit;density_unit;conversion_evidence;opening;opening_unit;opening_basis;opening_method;opening_state;opening_sample_time;opening_source;opening_conversion_factor;opening_conversion_unit;opening_conversion_source;receipt_gross;receipt_gross_unit;receipt_gross_basis;receipt_gross_method;receipt_gross_state;receipt_gross_sample_time;receipt_gross_source;receipt_gross_conversion_factor;receipt_gross_conversion_unit;receipt_gross_conversion_source;receipt_container_tare;receipt_container_tare_unit;receipt_container_tare_basis;receipt_container_tare_method;receipt_container_tare_state;receipt_container_tare_sample_time;receipt_container_tare_source;receipt_container_tare_conversion_factor;receipt_container_tare_conversion_unit;receipt_container_tare_conversion_source;net_receipts;net_receipts_unit;net_receipts_basis;net_receipts_method;net_receipts_state;net_receipts_sample_time;net_receipts_source;net_receipts_conversion_factor;net_receipts_conversion_unit;net_receipts_conversion_source;receipts;receipts_unit;receipts_basis;receipts_method;receipts_state;receipts_sample_time;receipts_source;receipts_conversion_factor;receipts_conversion_unit;receipts_conversion_source;closing;closing_unit;closing_basis;closing_method;closing_state;closing_sample_time;closing_source;closing_conversion_factor;closing_conversion_unit;closing_conversion_source;unused_out;unused_out_unit;unused_out_basis;unused_out_method;unused_out_state;unused_out_sample_time;unused_out_source;unused_out_conversion_factor;unused_out_conversion_unit;unused_out_conversion_source;used;used_unit;used_basis;used_method;used_state;used_sample_time;used_source;used_conversion_factor;used_conversion_unit;used_conversion_source;material_fraction;material_fraction_unit;material_fraction_basis;material_fraction_method;material_fraction_state;material_fraction_sample_time;material_fraction_source;material_fraction_conversion_factor;material_fraction_conversion_unit;material_fraction_conversion_source;density;density_basis;density_method;density_state;density_sample_time;density_source;density_conversion_factor;density_conversion_unit;density_conversion_source;temperature;temperature_basis;temperature_method;temperature_state;temperature_sample_time;temperature_source;temperature_conversion_factor;temperature_conversion_unit;temperature_conversion_source;unit_mass;unit_mass_unit;unit_mass_basis;unit_mass_method;unit_mass_state;unit_mass_sample_time;unit_mass_source;unit_mass_conversion_factor;unit_mass_conversion_unit;unit_mass_conversion_source;unit_area;unit_area_unit;unit_area_basis;unit_area_method;unit_area_state;unit_area_sample_time;unit_area_source;unit_area_conversion_factor;unit_area_conversion_unit;unit_area_conversion_source;unit_length;unit_length_unit;unit_length_basis;unit_length_method;unit_length_state;unit_length_sample_time;unit_length_source;unit_length_conversion_factor;unit_length_conversion_unit;unit_length_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Use actual native SKU stock and provenance;S=opening+net_receipts-closing including actual recoveries once; net_receipts is actual supply content excluding receipt container tare,and closing includes retained stock once. Choose gross input S with separate matched usable outward output OR consumed-only S-return input omitting that output. Never numerical S+return or duplicate credit. Match unused return to same-scope standalone supply,not inherited cable/parts or unmatched asset contents;waste-producing consumption and complete upstream supply burden remain. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | kg; actual native supply/fraction/density/temperature units | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_provider | boxed_wired_keyboard_trade | Actual native provider job coverage | Actual source/event/native operand ledger | provider_id;job_id;completion_evidence;scope_start;scope_end;electricity_coverage;asset_life_coverage;transport_empty_coverage;receiver_treatment_coverage;coverage_owner;exclusion_links;native_job_quantity;native_job_quantity_unit;native_job_quantity_basis;native_job_quantity_method;native_job_quantity_state;native_job_quantity_sample_time;native_job_quantity_source;native_job_quantity_conversion_factor;native_job_quantity_conversion_unit;native_job_quantity_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Verify real physical completion,native property/unit and full resource/asset/transport/receiver gates. A complete supplied job replaces covered direct quantities only;partial provision requires actual uncovered rows. Fee/tax/software licence or keyboard count is not a physical job conversion. | Item(s); actual provider native units | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_assets | boxed_wired_keyboard_trade | Complete shared asset service life | Actual source/event/native operand ledger | asset_id;asset_bom_scope;manufacture_coverage;maintenance_cleaning_records;replacement_records;eol_scope;all_users_periods;remaining_use_evidence;termination_evidence;uncertainty;sensitivity;update_source;provider_coverage;full_life_burden;full_life_burden_unit;full_life_burden_basis;full_life_burden_method;full_life_burden_state;full_life_burden_sample_time;full_life_burden_source;full_life_burden_conversion_factor;full_life_burden_conversion_unit;full_life_burden_conversion_source;asset_equivalent;asset_equivalent_unit;asset_equivalent_basis;asset_equivalent_method;asset_equivalent_state;asset_equivalent_sample_time;asset_equivalent_source;asset_equivalent_conversion_factor;asset_equivalent_conversion_unit;asset_equivalent_conversion_source;cohort_used_driver;cohort_used_driver_unit;cohort_used_driver_basis;cohort_used_driver_method;cohort_used_driver_state;cohort_used_driver_sample_time;cohort_used_driver_source;cohort_used_driver_conversion_factor;cohort_used_driver_conversion_unit;cohort_used_driver_conversion_source;all_user_used_driver;all_user_used_driver_unit;all_user_used_driver_basis;all_user_used_driver_method;all_user_used_driver_state;all_user_used_driver_sample_time;all_user_used_driver_source;all_user_used_driver_conversion_factor;all_user_used_driver_conversion_unit;all_user_used_driver_conversion_source;observed_history_driver;observed_history_driver_unit;observed_history_driver_basis;observed_history_driver_method;observed_history_driver_state;observed_history_driver_sample_time;observed_history_driver_source;observed_history_driver_conversion_factor;observed_history_driver_conversion_unit;observed_history_driver_conversion_source;remaining_driver;remaining_driver_unit;remaining_driver_basis;remaining_driver_method;remaining_driver_state;remaining_driver_sample_time;remaining_driver_source;remaining_driver_conversion_factor;remaining_driver_conversion_unit;remaining_driver_conversion_source;complete_lifetime_driver;complete_lifetime_driver_unit;complete_lifetime_driver_basis;complete_lifetime_driver_method;complete_lifetime_driver_state;complete_lifetime_driver_sample_time;complete_lifetime_driver_source;complete_lifetime_driver_conversion_factor;complete_lifetime_driver_conversion_unit;complete_lifetime_driver_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Collect actual asset/native-equivalent units,bases,methods,state/time/source and compatible conversions;include all consuming jobs/users/periods. Full lifetime driver=observed history+sourced compatible remainder,or evidenced terminated total. Attribute full manufacture/maintenance/cleaning/replacement/EOL burden by cohort used driver/complete lifetime driver,not accepted jobs in one month. Retain uncertainty,sensitivity and update evidence;provider overlap and reused supports have one owner. Traded keyboards are not asset manufacture. | Item(s); actual compatible lifetime-driver equivalents | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_freight | boxed_wired_keyboard_trade | Unique actual packed load legs | Actual source/event/native operand ledger | load_id;leg_id;unique_load_leg_key;load_extent_EACH_or_TOTAL;carrier_id;actual_cargo_pack_support;tare_exclusion_evidence;load_source;empty_return_coverage;provider_coverage;repeat_count;repeat_count_unit;repeat_count_basis;repeat_count_method;repeat_count_state;repeat_count_sample_time;repeat_count_source;repeat_count_conversion_factor;repeat_count_conversion_unit;repeat_count_conversion_source;gross_load;gross_load_unit;gross_load_basis;gross_load_method;gross_load_state;gross_load_sample_time;gross_load_source;gross_load_conversion_factor;gross_load_conversion_unit;gross_load_conversion_source;noncargo_tare;noncargo_tare_unit;noncargo_tare_basis;noncargo_tare_method;noncargo_tare_state;noncargo_tare_sample_time;noncargo_tare_source;noncargo_tare_conversion_factor;noncargo_tare_conversion_unit;noncargo_tare_conversion_source;direct_payload;direct_payload_unit;direct_payload_basis;direct_payload_method;direct_payload_state;direct_payload_sample_time;direct_payload_source;direct_payload_conversion_factor;direct_payload_conversion_unit;direct_payload_conversion_source;distance;distance_unit;distance_basis;distance_method;distance_state;distance_sample_time;distance_source;distance_conversion_factor;distance_conversion_unit;distance_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Record independent native gross,noncargo tare,actual payload,distance and sourced repeat count with units,bases,methods,state/time/source/conversions. Keep cargo original/added pack and pallets/support. EACH multiplies its actual sourced repeat count once;TOTAL stays unchanged. Within each unique load+leg summand multiply THAT record physical causal share from compatible cohort/all-user drivers;divide the total by positive N once. Do not sum parent/child cargo or repeat provider-covered trips. | kg*km; actual native load/distance/count units | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_fates | boxed_wired_keyboard_trade | Independent physical fate and content ledger | Actual source/event/native operand ledger | parent_device_id;part_id;material_identity;component_bom_link;component_composition_basis;component_composition_method;component_composition_source;source_gate_link;state_change_conversion_evidence;decision_source;receiver_id;receiver_classification;treatment_scope;carrier_id;transfer_id;content_transfer_link;stream_exclusion_ids;moisture_unit;moisture_basis;moisture_method;moisture_source;sample_id;sample_time;matching_nonwater_definition;moisture_species_method_scope;gross_waste;gross_waste_unit;gross_waste_basis;gross_waste_method;gross_waste_state;gross_waste_sample_time;gross_waste_source;gross_waste_conversion_factor;gross_waste_conversion_unit;gross_waste_conversion_source;tare;tare_unit;tare_basis;tare_method;tare_state;tare_sample_time;tare_source;tare_conversion_factor;tare_conversion_unit;tare_conversion_source;net_material;net_material_unit;net_material_basis;net_material_method;net_material_state;net_material_sample_time;net_material_source;net_material_conversion_factor;net_material_conversion_unit;net_material_conversion_source;component_fraction;component_fraction_unit;component_fraction_basis;component_fraction_method;component_fraction_state;component_fraction_sample_time;component_fraction_source;component_fraction_conversion_factor;component_fraction_conversion_unit;component_fraction_conversion_source;dry_cleanup_carrier;dry_cleanup_carrier_unit;dry_cleanup_carrier_basis;dry_cleanup_carrier_method;dry_cleanup_carrier_state;dry_cleanup_carrier_sample_time;dry_cleanup_carrier_source;dry_cleanup_carrier_conversion_factor;dry_cleanup_carrier_conversion_unit;dry_cleanup_carrier_conversion_source;retained_fluid;retained_fluid_unit;retained_fluid_basis;retained_fluid_method;retained_fluid_state;retained_fluid_sample_time;retained_fluid_source;retained_fluid_conversion_factor;retained_fluid_conversion_unit;retained_fluid_conversion_source;retained_device_material;retained_device_material_unit;retained_device_material_basis;retained_device_material_method;retained_device_material_state;retained_device_material_sample_time;retained_device_material_source;retained_device_material_conversion_factor;retained_device_material_conversion_unit;retained_device_material_conversion_source;retained_pack;retained_pack_unit;retained_pack_basis;retained_pack_method;retained_pack_state;retained_pack_sample_time;retained_pack_source;retained_pack_conversion_factor;retained_pack_conversion_unit;retained_pack_conversion_source;actual_source_material_equivalent;actual_source_material_equivalent_unit;actual_source_material_equivalent_basis;actual_source_material_equivalent_method;actual_source_material_equivalent_state;actual_source_material_equivalent_sample_time;actual_source_material_equivalent_source;actual_source_material_equivalent_conversion_factor;actual_source_material_equivalent_conversion_unit;actual_source_material_equivalent_conversion_source;actual_non_source_added_material;actual_non_source_added_material_unit;actual_non_source_added_material_basis;actual_non_source_added_material_method;actual_non_source_added_material_state;actual_non_source_added_material_sample_time;actual_non_source_added_material_source;actual_non_source_added_material_conversion_factor;actual_non_source_added_material_conversion_unit;actual_non_source_added_material_conversion_source;water_mass;water_mass_unit;water_mass_basis;water_mass_method;water_mass_state;water_mass_sample_time;water_mass_source;water_mass_conversion_factor;water_mass_conversion_unit;water_mass_conversion_source;wet_basis_water_fraction;wet_basis_water_fraction_unit;wet_basis_water_fraction_basis;wet_basis_water_fraction_method;wet_basis_water_fraction_state;wet_basis_water_fraction_sample_time;wet_basis_water_fraction_source;wet_basis_water_fraction_conversion_factor;wet_basis_water_fraction_conversion_unit;wet_basis_water_fraction_conversion_source;dry_basis_water_ratio;dry_basis_water_ratio_unit;dry_basis_water_ratio_basis;dry_basis_water_ratio_method;dry_basis_water_ratio_state;dry_basis_water_ratio_sample_time;dry_basis_water_ratio_source;dry_basis_water_ratio_conversion_factor;dry_basis_water_ratio_conversion_unit;dry_basis_water_ratio_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | Use actual receiver decisions and source-matched whole/part/packing/independent contained/mixed/free-liquid/direct records. Each native component/carrier/fluid/material quantity has its own unit,basis,method,state,sampletime/source and compatible conversion. Component mass/fraction/BOM views are nonadditive to their whole carrier. Retained contents in whole-device,part or mixed Waste are explicit audit fates,not separate material outlets. Only independently exported useful/nonusable material is a separate exchange;do not assume dismantling or pure-metal/plastic recovery. Original-device equivalents require actual state/composition/contamination conversion,not wet or mixed kg as whole source device mass. If water adjustment actually needed,w_wet=water/asreceived and w_dry=water/matching nonwater;dry=asreceived*(1-w_wet),w_wet=w_dry/(1+w_dry) only same actual definitions/sample after native percentage conversion. LOD is not automatically water. Unknown discrepancy blocks closure,not inferred emission. Receiver treatment once,no automatic credit. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero. | kg; actual native component/fraction/state units | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+| cp_species | boxed_wired_keyboard_trade | Supported species and medium releases | Actual source/event/native operand ledger | species_identity;receiving_medium;particle_size_basis;factor_complete;composition_basis;composition_method;composition_source;fate_basis;fate_source;measurement_source;factor_source;coverage_owner;contained_receiver_exclusion;species_mass;species_mass_unit;species_mass_basis;species_mass_method;species_mass_state;species_mass_sample_time;species_mass_source;species_mass_conversion_factor;species_mass_conversion_unit;species_mass_conversion_source;activity;activity_unit;activity_basis;activity_method;activity_state;activity_sample_time;activity_source;activity_conversion_factor;activity_conversion_unit;activity_conversion_source;factor;factor_unit;factor_basis;factor_method;factor_state;factor_sample_time;factor_conversion_factor;factor_conversion_unit;factor_conversion_source;component_fraction;component_fraction_unit;component_fraction_basis;component_fraction_method;component_fraction_state;component_fraction_sample_time;component_fraction_source;component_fraction_conversion_factor;component_fraction_conversion_unit;component_fraction_conversion_source;fate_fraction;fate_fraction_unit;fate_fraction_basis;fate_fraction_method;fate_fraction_state;fate_fraction_sample_time;fate_fraction_source;fate_fraction_conversion_factor;fate_fraction_conversion_unit;fate_fraction_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | Require actual named species/medium measurement or compatible activity-factor chemistry,with native quantity/unit/basis/method/state/time/source and factor coverage. Do not infer emissions from composition,device defects,missing mass,age or warehouse dust names. If complete species factor covers composition or fate fraction,do not multiply that covered fraction again. Retained/receiver-treated material is not direct merchant release. | kg; actual compatible activity/fraction units | Each real event and matched measurement period | Complete duty/source/cohort cutoffs and relevant life phases | Actual merchant duties and every shared consumer | per reference flow | Each native quantity/unit/basis/method/state/sampletime/source,calibration/conversion/uncertainty and coverage owner |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| normalize | all exchanges | Inventory per reference = assigned actual physical quantity / N,where N is positive unique FINAL source-verified owned-resold B2B commercial acceptances after reversals. At N=0 retain actual duties and report no normalized value. | actual native quantities; final acceptance and reversal records | native quantity per 1 Item(s) service |  |
+| device_mass_hierarchy | nonexchange merchandise | For each unique parent box/carton use actual extent EACH/TOTAL and sourced child count once. Net complete device mass=sum unique packed child(gross-external packing tare);included cord and actual device components remain product,not tare. Reconcile actual device count and component BOM without adding parent+child masses. Optional component mass requires actual matching component fraction/basis and whole composition scope;not all device kg as polymer or copper. | cp_keyboards; independent native gross/tare/count/component evidence | unique native complete-device and component audit |  |
+| original_gate_assignment | commodity outside service | Direct trace OR assigned_source=original_gate_quantity*numerator_driver/positive complete source_all_exit_driver. Native source_all_exit_driver_records enumerate compatible exclusive accepted,closing/unsold/damaged-retained,useful-other,return and actual loss demands,each quantity/unit/basis/method/state/time/source/owner/original-source link and numerator membership. No terminal demand omitted or accepted-only denominator. Original/assigned/loss/baseline-covered/additional amounts have compatible original finished-SKU state conversions and stage/loss coverage owner. Integrate additional uncovered commodity demand outside service once before complete chain;retain actual service handling/treatment once. | cp_keyboards; original gate and all-terminal records; coverage/conversion evidence | completed external source-demand/loss integration |  |
+| physical_content_closure | actual stock and fates | Source content audits close to retained accepted/returned/closing,retained whole-deviceWaste/partWaste/mixedWaste,actual useful independent exports,independent nonusable/liquid and measured direct species,plus explicit unknown discrepancy. Each native term unit/basis/method/state/time/source/conversion required. Retained contents nonadditive to carriers;only actual separate transfers create outlets. Actual added contaminants/carrier/water not original device loss;no residual emission. Wet/dry water adjustment only as specified in cp_fates with matching definitions and native factors. | cp_keyboards; cp_fates; cp_water; cp_species; linked source/carrier records | exclusive source and physical fate closure |  |
+| supply_and_lifetime | independent supplies and assets | Supply S=opening+net_receipts-closing with actual recoveries once;net_receipts excludes receipt-container tare and closing includes retained stock once;choose gross S input with matched unused output OR consumed S-return input OMIT matching output. Full asset attribution=complete manufacture/maintenance/cleaning/replacement/EOL burden*compatible cohort_used_driver/complete_lifetime_driver. Lifetime=observed history+sourced remaining driver or evidenced termination;all users/periods retained. Each native driver has unit/basis/method/state/time/source/equivalence;positive denominator,uncertainty/sensitivity/update required. | cp_supplies; cp_assets; native stock and complete life histories | assigned actual consumable and full-life asset burdens |  |
+| freight_sum | packed_freight | Freight=sum over unique load+leg[(converted actual direct payload OR converted gross-noncargo tare,retaining cargo pack/support)*(actual repeat count only if EACH; TOTAL unchanged)*converted actual distance*THAT record causal share]/positive N. Independent gross/tare/payload/count/distance/share native units,bases,methods,state/time/sources and conversions required. Parent/child cargo exclusive;share inside each summand,N once,provider/empty duties once. | cp_freight; unique native load-leg and physical driver records | actual kg*km per 1 Item(s) service |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| actual_identity | all actual exchanges | Exact concrete identities/gates/native property/unit and actual source configurations required before final data use;marketing and rankings do not verify UUIDs. | Full identity/support detail and native foreground source records |
+| hierarchy_content | stock and fates | Regional SKU/layout/includedcord/completeBOM and unique parent-child native netmass/tare/state evidence;whole electronics and retained contents nonadditive,no assumed ingredient fractions or pure-metal recovery. | Actual model/BOM/pack/weigh/composition and receiver records |
+| complete_chain | declared service and linked source chain | Complete source demand/loss baseline/additional integration outsideonce,actual handling/treatment and full provider/resource/all-user life/native freight insideonce,with uncertainty/update and unresolved gaps. | All-terminal native source/coverage/owner/conversion/integration,meters/life/carrier/receiver evidence |
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| warehouse_power | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `warehouse_power` under `cp_power`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_power`; actual source-linked native records |
+| housekeeping_water | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `housekeeping_water` under `cp_water`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_water`; actual source-linked native records |
+| housekeeping_materials | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `housekeeping_materials` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| added_shipping_material | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `added_shipping_material` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| external_physical_jobs | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `external_physical_jobs` under `cp_provider`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_provider`; actual source-linked native records |
+| shared_full_life_assets | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `shared_full_life_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
+| packed_freight | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `packed_freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
+| matched_unused_supply_out | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `matched_unused_supply_out` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
+| useful_separated_material | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `useful_separated_material` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| discarded_whole_keyboards | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `discarded_whole_keyboards` under `cp_keyboards`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `discarded_whole_keyboards_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_keyboards`; actual source-linked native records |
+| nonusable_separated_parts | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `nonusable_separated_parts` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| actual_packing_waste | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_packing_waste` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| spent_housekeeping_solids | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `spent_housekeeping_solids` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
+| actual_free_liquid | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_free_liquid` under `cp_water`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_water`; actual source-linked native records |
+| actual_direct_species | boxed_wired_keyboard_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_direct_species` under `cp_species`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_species`; actual source-linked native records |
+
+
+### Mandatory Inventory Completion Records
+
+These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
+
+#### warehouse_power
+
+Include attributable lighting,handling and stock-record equipment,idle and actual housekeeping. Traded USB keyboards are merchandise,not powered warehouse ICT assets;manufacturer plug-and-play text does not prescribe merchant energization or tests.
+
+Residual inventory requirement after the independently identified cases `warehouse_power_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual warehouse and order electricity
+- Flow property / unit: Energy / kWh
+- Amount rule: Assigned actual native physical quantity / N; cp_power.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_power`
+
+Range evidence need: Actual meter/equipment periods and complete physical all-consumer attribution are needed;no keyboard wattage or published product footprint substitutes.
+
+#### housekeeping_water
+
+Only actual premises/handling-equipment housekeeping water;no keyboard wash,spill demonstration or cleaning preparation is assumed. Distinguish supplied water from actual environmental abstraction.
+
+Residual inventory requirement after the independently identified cases `housekeeping_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual supplied premises-cleaning water
+- Flow property / unit: Volume / m3
+- Amount rule: Assigned actual native physical quantity / N; cp_water.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+
+Range evidence need: Need native supply,retained fluid,free collected liquid and any measured direct-water fates;damage or stock deficit is not water discharge.
+
+#### housekeeping_materials
+
+Expand actual supplied cleaning SKU,wipes,absorbents or filters only when used. Internal device polymers,electronics and cable insulation remain inherited merchandise constituents.
+
+Residual inventory requirement after the independently identified cases `housekeeping_materials_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual premises cleaning preparations and carriers
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need native stock amounts,formulation/carrier composition and measurement units,methods,sources;no prescribed detergent or dose.
+
+#### added_shipping_material
+
+Only physically new dispatch film,straps,labels or cushioning. Original individual boxes,cable ties,inserts and included documents stay in supplier-gate merchandise coverage;reusable supports follow complete-life assets.
+
+Residual inventory requirement after the independently identified cases `added_shipping_material_pe_film`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual additional outer shipping materials
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need actual native count/length/area/mass,material,tare,stock and conversion provenance;included product cable is not packing.
+
+#### external_physical_jobs
+
+Represent real completed native provider jobs with complete scope. Weight,time or freight based contracts use their actual native exchange. Price,software licence and keyboard-unit count do not measure physical handling jobs.
+
+- Identity requirement: Actual external physical handling services
+- Flow property / unit: Count / Item(s)
+- Amount rule: Assigned actual native physical quantity / N; cp_provider.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_provider`
+
+Range evidence need: Need native completed quantity and evidence of electricity,full-life equipment,transport-empty and treatment coverage/owner;avoid overlap with merchant rows.
+
+#### shared_full_life_assets
+
+Actual warehouse,racks,lifting/record devices and reusable containers/pallets include manufacture,maintenance,cleaning,replacements and end of life across all users/periods. Purchased-for-resale keyboards are not warehouse computer assets.
+
+- Identity requirement: Full-life shared store,handling and record assets
+- Flow property / unit: Count / Item(s)
+- Amount rule: Assigned actual native physical quantity / N; cp_assets.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_assets`
+
+Range evidence need: Need compatible native equivalents and cohort/all-user/observed-history/remaining/lifetime driver evidence,uncertainty and updates;warranty is not service life.
+
+#### packed_freight
+
+Payload retains complete devices,actual included cords/parts,original/additional packaging and cargo support. Only evidenced vehicle/noncargo tare is deducted;bare polymer mass,case dimensions or device count alone is not payload.
+
+- Identity requirement: Actual packed keyboard,supply and waste freight
+- Flow property / unit: Mass * distance / kg*km
+- Amount rule: Assigned actual native physical quantity / N; cp_freight.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_freight`
+
+Range evidence need: Need unique load/leg,EACH or TOTAL extent,sourced repeat count,independent gross/tare/direct-payload/distance native provenance;each record share is inside sum/N once.
+
+#### matched_unused_supply_out
+
+Only real same-scope unused cleaning/added-pack supply outputs under gross-input accounting. Excludes useful intact keyboard returns,which remain merchandise stock. Consumed-only input omits this matched output;no automatic avoided-production credit.
+
+- Identity requirement: Actual matched unused independent supply outward transfer
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_supplies.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Need same-SKU supply/return provenance,stock choice,quantity/unit/source and real receiver;no subtraction of unrelated inherited device parts.
+
+#### useful_separated_material
+
+Only actual independently separated material with evidenced useful receiver/status. Intact usable devices and their retained parts follow accepted/returned/closing merchandise. No routine dismantling,copper recovery or reuse is presumed.
+
+- Identity requirement: Actual independently exported useful incident material
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual part/composition/net mass/condition/source equivalent and transfer exclusions;whole electronics kg is not pure plastic or metal.
+
+#### discarded_whole_keyboards
+
+Only actual nonusable whole-device exit and receiver decision. Include actual retained cable,electronics,keys,membrane/case and packing where transferred together;content audits are not extra part exchanges. Damage,wrong layout or missing label alone does not prove whole discard or hazardous waste.
+
+- Identity requirement: Actual discarded whole keyboards with declared retained contents
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_keyboards.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_keyboards`
+
+Range evidence need: Need actual native whole/net/tare mass,count,retained BOM and receiver treatment plus original finished-SKU loss conversion,owner and prior coverage.
+
+#### nonusable_separated_parts
+
+Actual independent broken parts/cable/contained material only,not content retained in whole or mixed waste. Actual receiver classification and recovery/disposal treatment are required once;no universal metals/plastics split or recycling yield.
+
+- Identity requirement: Actual separately transferred nonusable parts or contained material
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual native mass/part/BOM/fate/source quantity and water-contaminant state conversions,transfer links and receiver;unknown balance not species.
+
+#### actual_packing_waste
+
+Only physically independent original/additional packing exits. Separate included product cord/parts from box/ties/inserts;packing retained in whole or mixed streams is nonadditive content.
+
+Residual inventory requirement after the independently identified cases `actual_packing_waste_paper_pack`; `actual_packing_waste_metal_pack`; `actual_packing_waste_plastic_pack`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
+
+- Identity requirement: Actual independently discarded packing
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need actual material/native count/mass/tare/residue,receiver/carrier/treatment and whole/mixed exclusions;collection symbol is not a credit.
+
+#### spent_housekeeping_solids
+
+Only real housekeeping residues,including actual retained fluid/device fragments/packing if present. Carrier and retained contents audit one gross physical outlet;exclude duplicated independently exported parts,packing and liquid.
+
+- Identity requirement: Actual spent wipes,absorbents,filters and mixed cleanup solids
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_fates.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Need independent carrier/retained-fluid/retained-material native quantities,bases,methods,state/sampletime/source,gross-tare closure and real receiver treatment.
+
+#### actual_free_liquid
+
+Only real collected free liquid from declared premises duty or actual incident,with composition and receiver. Do not classify liquid retained in wipes/whole devices as another outlet,or prescribe a keyboard wash.
+
+- Identity requirement: Actual independently collected free liquid
+- Flow property / unit: Volume / m3
+- Amount rule: Assigned actual native physical quantity / N; cp_water.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+
+Range evidence need: Need measured volume/density/temperature units and sources,composition,state/fate and collection/treatment links;spill-resistant marketing gives no liquid amount.
+
+#### actual_direct_species
+
+Expand only real measured or supported chemistry/activity-factor releases. Device/component missing mass,dust label,damaged cable or return is not presumed VOC,metal,plastic particle or smoke release. Contained waste receiver emissions belong to actual treatment coverage once.
+
+- Identity requirement: Actual named directly released species and receiving medium
+- Flow property / unit: Mass / kg
+- Amount rule: Assigned actual native physical quantity / N; cp_species.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_species`
+
+Range evidence need: Need exact species/medium/particle-size basis and native activity/factor/composition/fate units,methods,time/source;complete-factor covered fractions are not multiplied again.
+
+## 9. Validation Rules
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| reference_gate | actual declared trade duties | Check actual merchant ownership/resale,B2B buyer,post-reversal final acceptance and unique N;no goods piece/box/kg/value proxy. N=0 no normalization and incomplete/failed resources remain. |  |
+| finished_model | actual declared trade duties | Actual regional layout/wiredUSB/included cord/complete BOM/netmass/hierarchy/new boxed condition and source release evidence required. Empty specification panels and contradictory wireless/battery snippets supply no missing quantities;marketing carbon/spill/life/warranty claims are not service factors. |  |
+| source_fates | actual declared trade duties | Complete finished-gate original/assigned/loss/baseline/additional source quantities and complete all-terminal compatible positive records/owner/conversion/integration outsideonce;actual service treatment insideonce. Whole/components/pack/retained fluid nonadditive;unknown is not emitted/discarded/recycled by assumption. |  |
+| coverage_native | actual declared trade duties | Verify complete provider/carrier/resource/full-life all-user duties and native units/bases/method/state/time/source/conversions,stock convention and EACH/TOTAL freight share-inside-sum/N once. Actual quantities, compatible native units/state/basis/method/time/source, verified concrete identities and applicable acceptance/coverage evidence remain mandatory; unknown is not zero. A missing generic numerical Range alone is disclosed and does not block an otherwise evidenced actual package; never invent bounds. A claimed source-backed interval needs a traceable source and compatible basis; only an empirical plausibility guardrail additionally needs independent comparable reference evidence, not the same batch maximum validating itself. Preserve applicable actual source-specific acceptance intervals and uncertainty requirements. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | secondary_dataset; background_dataset after verified actual identity/quantity review |
+| downstream_use | Physical ambient new original-boxed wiredUSBkeyboard ownaccount wholesale add-on in a complete actual finished-device chain |
+| allowed_use | Actual regionalSKU/layout/newwiredUSB/includedcord/BOM/native mass/packing/condition/period/final business gate |
+| excluded_use | Standalone keyboard footprint;wireless/used/refurbished/unrelated bundle;merchant testing/setup/repair/repack/use;retail/agency;piece/box/kg/value as service |
+| required_metadata | All qualifiers;actual complete BOM/hierarchy/netmass/tare/source stock/condition/fates;original/assigned/loss/baseline/additional native source quantities/all-terminal records/conversion/owner/coverage/completed integration;full duties |
+| required_quality_disclosure | Actual identity/support/Range gaps,SKU/layout/BOM/composition/state/stock/source/receiver/lifetime uncertainty |
+| update_trigger | Changed regionalSKU/layout/cord/BOM/pack/condition/fates/source gate/operation/provider/asset/carrier/receiver/acceptance or loss coverage |
+
+## 11. Data Sources
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| unsd-computer-trade | official_guidance | UNSD CPC3.0 explanatory notes printed30761084groups452/478 and45261 inputperipherals: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Supports narrower computer-keyboard service classification,not47315monitor;classification supplies no BOM,exchange or conversion. |
+| logitech-wired-keyboard-context | handbook | Logitech Canada,K120 USB keyboard,currentproduct bodyDescription/Keyfeatures: https://www.logitech.com/en-ca/shop/p/k120-usb-standard-computer.920-002851 | Qualitative wiredUSB/fullsize/integratednumberpad/tiltleg and originalbox source questions only. Specs/InBox fields unfilled;not full BOM/layout/netmass proof. No default keycount,component fractions,battery/receiver,footprint,life/warranty/spilltest or merchant energization/setup/use. PCR native stock/source/full-life/freight formulas are declared foreground methods,not quantitative values attributed to this webpage. |

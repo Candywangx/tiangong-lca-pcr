@@ -34,7 +34,8 @@ test("the sealed provider importer still loads without installed package depende
     "builder/scripts/product-identity.ts", "builder/scripts/product-web.ts", "builder/scripts/npm-release.ts",
     "builder/lib/lifecycle-policy.ts", "builder/lib/lifecycle-vocab.ts",
     "packages/pcr-core/src/languages.ts", "packages/pcr-core/src/types.ts", "packages/pcr-core/src/vocabulary.ts", "packages/pcr-core/schemas/controlled-vocabulary.schema.json",
-    "packages/pcr-docs/scripts/build-storage.ts", "packages/pcr-docs/scripts/static-route-aliases.ts",
+    "packages/pcr-docs/scripts/build-storage.ts", "packages/pcr-docs/scripts/static-route-aliases.ts", "packages/pcr-docs/scripts/provider-runtime.ts",
+    "packages/pcr-docs/lib/navigation-trees.ts", "packages/pcr-docs/scripts/navigation-tree-export.ts",
   ]) {
     mkdirSync(path.dirname(path.join(temp, relative)), { recursive: true });
     cpSync(path.join(root, relative), path.join(temp, relative));

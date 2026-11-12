@@ -21,7 +21,7 @@ The representative inventory covers electrically heated platens and electric dri
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.densified-wood |
-| classification_refs | CPC 3.0: 31520; narrower; proposed scope only, no accepted mapping |
+| classification_refs | CPC 3.0: 31520; narrower; current mapping decisions are governed by classifications/mappings/cpc-3.0-to-pcr.yaml and its acceptance.decision_ref ADRs |
 | covered_products | Resin-free unglued heat-stabilized compressed solid-wood tool-handle blanks; yellow birch representative |
 | excluded_products | Compreg; ordinary plywood/blockboard; glued compressed veneer; MDF; particleboard; naturally dense uncompressed wood; heat-modified-only wood; coated or chemically treated products |
 | representative_product | Uncoated yellow-birch tool-handle blank, net accepted conditioned mass at factory gate |
@@ -213,7 +213,7 @@ Captured sawing/sanding dust sent to external waste treatment, measured separate
 
 ###### Untreated yellow-birch planing shavings for waste treatment (`planing_shavings`)
 
-Conditional planing; separately weigh actual loose yellow-birch shavings with their pre/post-compression origin, moisture and absence of added glue, resin or coating. They are not automatically sawing dust, engineered board feedstock, wood chips or pellet fuel. The broad Wood waste identity requires actual manufacturing-origin compatibility and receiving treatment. Its primary-production wording and CPC39282 agglomeration classification conflict with this non-agglomerated residue state and remain source clarification debt; the coherent wood-waste names/comment do not establish pelletizing or briquetting.
+Conditional planing; separately weigh actual loose yellow-birch shavings with their pre/post-compression origin, moisture and absence of added glue, resin or coating. They are not automatically sawing dust, engineered board feedstock, wood chips or pellet fuel. The broad Wood waste identity represents collected non-agglomerated wood waste on a mass basis, with composition and fate specified by the generating process. Verify actual manufacturing origin, pre/post-press state, moisture, contamination and receiving/provider compatibility before linkage. This identity does not establish pelletizing or briquetting, clean-biomass-fuel status, harmlessness, recycling eligibility, combustion treatment or an avoided-product credit.
 
 - Selected flow: Wood waste `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -229,7 +229,7 @@ Conditional planing; separately weigh actual loose yellow-birch shavings with th
 
 ###### Rejected densified yellow-birch solid blanks for waste treatment (`rejected_solid`)
 
-Weigh unrecoverable rejected blanks and solid trim separately from dust and shavings. Record actual heat-compression history, recovery failure/defect, moisture, no added resin/glue/coating and receiving treatment. Continuous solid-wood compression is not agglomeration of wood particles; the broad Wood waste record's CPC39282 agglomeration field and primary-production wording require clarification against this actual non-agglomerated manufacturing residue, without borrowing a disposal background. Internal rework is retained inside the unit and counted once; it is not simultaneously a waste export.
+Weigh unrecoverable rejected blanks and solid trim separately from dust and shavings. Record actual heat-compression history, recovery failure/defect, moisture, no added resin/glue/coating and receiving treatment. Continuous solid-wood compression is not agglomeration of wood particles. The broad Wood waste identity covers collected non-agglomerated waste, with composition and fate specified by the generating process; verify the actual rejected material, contamination and receiving/provider compatibility without borrowing a disposal background or assuming recycling eligibility or an avoided-product credit. Internal rework is retained inside the unit and counted once; it is not simultaneously a waste export.
 
 - Selected flow: Wood waste `2ef9d37a-2fbf-42f6-8ccf-5d6677d5cfd8`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg

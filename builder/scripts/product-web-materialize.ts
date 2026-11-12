@@ -1,3 +1,4 @@
+import {verifyProviderRuntimeExport,verifyProviderRuntimeSource} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import fs from "node:fs";
 import path from "node:path";
 import { createHash, randomBytes } from "node:crypto";
@@ -204,13 +205,15 @@ export async function materializeProductWeb({
     if (files !== manifest.web.files || bytes !== manifest.web.uncompressedBytes || tree.treeSha256 !== manifest.web.treeSha256)
       throw new Error("Product web archive differs from its sealed tree.");
     await verifyTree(out, manifest);
+    const providerRuntime = verifyProviderRuntimeExport(out, identity.sourceCommit);
+    verifyProviderRuntimeSource(root, providerRuntime, identity.sourceCommit);
     sameIdentity(identity, readIdentity(root));
     assertDeadline();
     const published = publish({
       app: path.join(root, "packages/pcr-docs"), scratchApp,
       token: randomBytes(12).toString("hex"),
       providerRoot: isMemoryBacked(constraint) || env[PREBUILT_ASSETS_ENV] === "1" ? root : null,
-      beforeSwap() { assertDeadline(); sameIdentity(identity, readIdentity(root)); assertDeadline(); },
+      beforeSwap() { assertDeadline(); sameIdentity(identity, readIdentity(root)); verifyProviderRuntimeSource(root, providerRuntime, identity.sourceCommit); assertDeadline(); },
     });
     const result = { identity, web: { filename: manifest.web.filename, bytes: manifest.web.bytes,
       files, uncompressedBytes: bytes, treeSha256: tree.treeSha256 }, published };
