@@ -517,6 +517,15 @@ with installed browser runtimes, without a silent skip or an increased timeout.
 This controlled timing-class evidence and diagnostic replays of older sealed
 bytes do not replace fresh complete-source and sealed-product qualification.
 
+The denied-storage language probe also waits for current requests after opening
+its selector and before replacing the English document. The observer is attached
+before neutral entry, so it includes late work caused by language negotiation or
+newly visible links. It retains the same quiet period and timeout and does not
+suppress access-control errors. Controlled Chromium, Firefox and WebKit HTTP
+regressions hold a selector-started fetch through the old click timing and verify
+completion before navigation; a genuine HTTP failure remains fatal. This probe remains distinct
+from full sealed-product qualification.
+
 Browser request receipts retain engine, viewport, exact URL, method, resource
 kind, navigation flag, observed HTTP status, start/failure timestamps and phases,
 actual page URL, and an allowlist of routing/prefetch headers. Cookies and

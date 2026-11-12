@@ -366,8 +366,8 @@ function currentNetworkIdle(page:Page):()=>Promise<void> {
   while(active.size>0||Date.now()-lastActivity<500){assert.ok(Date.now()<deadline,'Current browser requests did not settle');await new Promise<void>(resolve=>setTimeout(resolve,50));}
  };
 }
-async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{width:number;height:number},documentPath:string,languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
- const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
+export async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{width:number;height:number},documentPath:string,languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
+ const {checks}=evidence;
  for(const scenario of browserLanguageScenarios(languageCodes)){
   const context=await browser.newContext({viewport,locale:scenario.languages[0]??languageCodes.en!});
   try {
@@ -408,6 +408,11 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
   await selectLanguage('English');assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),'en');
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');checks.push('manual English selection persists for next neutral entry');
  }finally{await context.close();}
+ await checkBlockedStorageLanguage(browser,origin,viewport,languageCodes,evidence);
+}
+/** Observe the complete denied-storage scenario, including work started by the selector. */
+export async function checkBlockedStorageLanguage(browser:Browser,origin:string,viewport:{width:number;height:number},languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
+ const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
  const blocked=await browser.newContext({viewport,locale:'en-US'});
  try {
   await blocked.addInitScript(()=>{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>{throw new Error('Storage blocked for qualification');}});});
@@ -417,6 +422,9 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');
   await settleLanguage(page,languageCodes.en!);
   trace.setPhase('blocked-storage-select');await openLanguageSelector(page);
+  // Opening the selector can expose links and start prefetch work after lifecycle
+  // idle. Finish that work before intentionally replacing the English document.
+  await waitForCurrentRequests();
   await page.getByRole('button',{name:'中文',exact:true}).last().click();await page.waitForURL(origin+'/zh/');await settleLanguage(page,languageCodes.zh!);await waitForCurrentRequests();trace.setPhase('blocked-storage-reload');await page.reload({waitUntil:'networkidle'});
   for(const request of failedRequests)if(isCancelledSitePrefetch(request,prefetchUrls))ignoredPrefetchAborts.push(request.url);
   assert.equal(new URL(page.url()).pathname,'/zh/');assert.deepEqual(errors,[]);assert.deepEqual(failedRequests.filter(request=>!isCancelledSitePrefetch(request,prefetchUrls)),[]);checks.push('blocked storage permits fallback, manual Chinese and localized reload');
