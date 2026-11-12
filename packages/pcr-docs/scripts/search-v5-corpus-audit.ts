@@ -36,7 +36,7 @@ for (const language of ['en-US', 'zh-CN']) {
   const manifestBytes = fs.readFileSync(path.join(exportRoot,'generated/search',language,'manifest.json'));
   const manifest: unknown = JSON.parse(manifestBytes.toString('utf8'));
   assert.ok(isUnknownRecord(manifest));
-  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8);
+  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8||manifest.schemaVersion===9);
   let baselineV5: {rawBytes:number;gzipBytes:number}|undefined, baselineV6: {rawBytes:number;gzipBytes:number}|undefined, baselineV7: {rawBytes:number;gzipBytes:number}|undefined;
   const dictionary = manifest.termDictionary === undefined ? undefined : readSearchTermDictionary(manifest.termDictionary);
   const physical = new Map<string, PhysicalPack>();
@@ -54,7 +54,7 @@ for (const language of ['en-US', 'zh-CN']) {
       dictionaryTerms += data.dictionary.length;
       const canonicalPack = packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,parsed.schemaVersion);
       const physicalPack = bytes.toString('utf8');
-      assert.ok(physicalPack === canonicalPack || (parsed.schemaVersion === 7 || parsed.schemaVersion === 8) && physicalPack === escapeSearchDictionary(canonicalPack),
+      assert.ok(physicalPack === canonicalPack || (parsed.schemaVersion === 7 || parsed.schemaVersion === 8 || parsed.schemaVersion === 9) && physicalPack === escapeSearchDictionary(canonicalPack),
         'Physical search bytes must equal the canonical encoding or its exact dictionary-only escape variant');
       const baseline=Buffer.from(packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,5));
       const oldFile={...file,bytes:baseline.length,gzipBytes:gzipSync(baseline,{level:9}).length,sha256:"sha256:"+hash(baseline)};

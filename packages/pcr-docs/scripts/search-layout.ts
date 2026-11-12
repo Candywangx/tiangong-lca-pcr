@@ -1,10 +1,11 @@
+import {SearchChannelCapacityError} from '../lib/search-arithmetic.ts';
 /** Node-only physical layout selection; logical search wires and browser readers are unchanged. */
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {isUnknownRecord} from '../../pcr-core/src/types.ts';
-import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchPhysicalFile} from '../lib/search-pack.ts';
+import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchPhysicalFile} from '../lib/search-pack.ts';
 interface Transport {payload:string;bytes:number;gzipBytes:number;sha256:string}
-export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
+export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
 const hash=(text:string)=>'sha256:'+createHash('sha256').update(text).digest('hex');
 const gzip=(text:string)=>gzipSync(text,{level:9}).length;
 const transport=(payload:string):Transport=>({payload,bytes:Buffer.byteLength(payload),gzipBytes:gzip(payload),sha256:hash(payload)});
@@ -18,7 +19,7 @@ export function escapeSearchDictionary(payload:string):string{
   return payload.slice(0,at)+'"dictionary":'+escaped+payload.slice(at+key.length);
 }
 /** Keep a bounded beam near balanced cuts plus the complete original greedy layout. */
-function planVersion(wires:readonly string[],sourceCommit:string,language:string,version:7|8):SearchLayout|undefined{
+function planVersion(wires:readonly string[],sourceCommit:string,language:string,version:7|8|9):SearchLayout|undefined{
   if(!/^[a-f0-9]{40}$/.test(sourceCommit))throw Error('Invalid search source commit');
   const identities=wires.map(wire=>{
     const value:unknown=JSON.parse(wire);
@@ -40,7 +41,7 @@ function planVersion(wires:readonly string[],sourceCommit:string,language:string
       const descriptor:SearchPhysicalFile={url:`/generated/search/${encodeURIComponent(language)}/pack-${String(index).padStart(3,'0')}.json`,bytes:packed.bytes,gzipBytes:packed.gzipBytes,sha256:packed.sha256,firstLogicalShard:start,logicalShardCount:end-start,records:logicalShards.reduce((sum,v)=>sum+v.records,0),logicalShards};
       start=end;return {payload:packed.payload,descriptor};
     });
-    const manifest:SearchManifestV7|SearchManifestV8={schemaVersion:version,sourceCommit,language,logicalShardCount:wires.length,files:files.map(f=>f.descriptor)},manifestText=JSON.stringify(manifest);
+    const manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9={schemaVersion:version,sourceCommit,language,logicalShardCount:wires.length,files:files.map(f=>f.descriptor)},manifestText=JSON.stringify(manifest);
     return {manifest,manifestText,files,rawBytes:Buffer.byteLength(manifestText)+files.reduce((n,f)=>n+f.descriptor.bytes,0),gzipBytes:gzip(manifestText)+files.reduce((n,f)=>n+f.descriptor.gzipBytes,0)};
   }
   const count=Math.ceil(wires.length/SEARCH_PACK_MEMBERS),greedy=Array.from({length:count},(_,i)=>Math.min((i+1)*SEARCH_PACK_MEMBERS,wires.length));
@@ -63,9 +64,9 @@ function planVersion(wires:readonly string[],sourceCommit:string,language:string
   bounded.sort((a,b)=>Number(a.rawBytes>SEARCH_RAW_LIMIT)-Number(b.rawBytes>SEARCH_RAW_LIMIT)||a.gzipBytes-b.gzipBytes||a.rawBytes-b.rawBytes||(a.manifestText<b.manifestText?-1:a.manifestText>b.manifestText?1:0));
   return bounded[0];
 }
-/** Compare complete v7/v8 manifests; an eligible original v7 layout remains available. */
+/** Compare complete v7/v8/v9 manifests; an eligible original v7 layout remains available. */
 export function planSearchPacks(wires:readonly string[],sourceCommit:string,language:string):SearchLayout{
-  const candidates=([7,8] as const).map(version=>planVersion(wires,sourceCommit,language,version)).filter((candidate):candidate is SearchLayout=>candidate!==undefined);
+  const candidates=([7,8,9] as const).map(version=>{try{return planVersion(wires,sourceCommit,language,version);}catch(error){if(version===9&&error instanceof SearchChannelCapacityError)return undefined;throw error;}}).filter((candidate):candidate is SearchLayout=>candidate!==undefined);
   if(!candidates.length)throw Error('No search layout satisfies the physical and restored-wire limits');
   candidates.sort((a,b)=>Number(a.rawBytes>SEARCH_RAW_LIMIT)-Number(b.rawBytes>SEARCH_RAW_LIMIT)||a.gzipBytes-b.gzipBytes||a.rawBytes-b.rawBytes||(a.manifestText<b.manifestText?-1:a.manifestText>b.manifestText?1:0));
   return candidates[0]!;

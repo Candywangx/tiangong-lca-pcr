@@ -1,12 +1,30 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { parseHTML } from "linkedom";
+import {unknownField} from '../../pcr-core/src/types.ts';
 import {
   renderMarkdown,
   finalizePart,
   verifyRenderedBlocks,
   inventoryMarkdown,
 } from "./markdown.ts";
+
+test('advisory YAML is inventoried and rendered as complete escaped source with real offsets',()=>{
+ const file='library/modules/activities/fixture.yaml';
+ const raw='schema_version: 0\nid: module.activity.fixture\nkind: activity\nstatus: candidate\ntitle: Fixture support\npurpose: Keep evidence explicit\n# <script>alert(1)</script> ``` 中文\nunknown_future_field: [one, two]\n';
+ const inventory=inventoryMarkdown(raw,file);assert.equal(inventory.nodes.length,1);
+ assert.deepEqual([inventory.nodes[0]!.sourceStart,inventory.nodes[0]!.sourceEnd,inventory.nodes[0]!.sourceLine],[0,raw.length,1]);
+ assert.equal(inventory.nodes[0]!.code,raw);
+ const rendered=renderMarkdown(raw,file);assert.equal(rendered.parts.length,1);assert.equal(unknownField(rendered.frontmatter,'status'),'candidate');
+ const part=rendered.parts[0]!,html=finalizePart(part,{hrefForAnchor:id=>id});
+ const document=parseHTML('<html><body>'+html+'</body></html>').document;
+ assert.equal(document.querySelector('script'),null);assert.equal(document.querySelector('pre code')?.textContent,raw+'\n');
+ verifyRenderedBlocks(document,inventory.nodes,part.sourceNodeIds);
+ document.querySelector('code')!.textContent=raw.replace('unknown_future_field','changed_field')+'\n';
+ assert.throws(()=>verifyRenderedBlocks(document,inventory.nodes,part.sourceNodeIds),/differs|whitespace/);
+ assert.throws(()=>renderMarkdown(raw.replace('module.activity.fixture','module.activity.other'),file),/identity/);
+ assert.throws(()=>renderMarkdown(raw.replace('status: candidate','status: active'),file),/identity/);
+});
 const source = `---
 language: en-US
 ---

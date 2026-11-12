@@ -772,21 +772,34 @@ export function readPcrDocumentBundle({ root, pcrId, context = null }: ReadPcrOp
   };
 }
 
-/** Complete referenced legacy module source; scaffold status remains explicit. */
+/** Complete referenced legacy or advisory module source; no methodology approval is inferred. */
 export function readPcrModuleDocumentBundle({ root, group, moduleId }: { root: string; group: string; moduleId: string }) {
-  for (const value of [group, moduleId]) if (typeof value !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(value)) throw new Error("Invalid PCR module identity.");
-  const relativePath = `library/modules/${group}/${moduleId}.md`;
+  const advisory = typeof moduleId === 'string' ? /^module\.(activity|system-condition)\.([a-z0-9]+(?:-[a-z0-9]+)*)$/u.exec(moduleId) : null;
+  const expectedGroup = advisory?.[1] === 'activity' ? 'activities' : 'system_conditions';
+  if (advisory ? group !== expectedGroup : [group,moduleId].some(value=>typeof value !== 'string'||!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(value))) throw new Error("Invalid PCR module identity.");
+  const relativePath = advisory
+    ? `library/modules/${advisory[1] === 'activity' ? 'activities' : 'system-conditions'}/${advisory[2]}.yaml`
+    : `library/modules/${group}/${moduleId}.md`;
   const filePath = path.join(root, relativePath);
   const read = () => pcrSource(root)?.readFile(relativePath) ?? readControlledRepositoryFileBytes({ root, filePath, relativePath, label: "PCR module" });
   const bytes = read();
   const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  if (advisory) {
+    const descriptor=parsedRecord(text,'Advisory module');
+    if(descriptor.schema_version!==0||descriptor.id!==moduleId||descriptor.kind!==(advisory[1]==='activity'?'activity':'system_condition')
+      ||descriptor.status!=='candidate'||typeof descriptor.title!=='string'||!descriptor.title.trim()
+      ||typeof descriptor.purpose!=='string'||!descriptor.purpose.trim()||(descriptor.language!==undefined&&descriptor.language!=='en-US'))
+      throw new Error(`Advisory module identity or candidate metadata mismatch: ${relativePath}`);
+    if(!bytes.equals(read()))throw new Error(`Module changed during read: ${relativePath}`);
+    return {format:'advisory-yaml' as const,frontmatter:descriptor,language:'en-US',artifact:{path:relativePath,bytes:Buffer.from(bytes),text,sha256:exactByteSha256(bytes)}};
+  }
   const envelope = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/u.exec(text);
   if (!envelope) throw new Error(`Module requires frontmatter: ${relativePath}`);
   const frontmatter = parsedRecord(envelope[1] ?? "", "Module frontmatter");
   if (frontmatter.id !== `module.${group}.${moduleId}` || frontmatter.module_type !== group) throw new Error(`Module identity mismatch: ${relativePath}`);
   if (!text.slice(envelope[0].length).trim()) throw new Error(`Module body is empty: ${relativePath}`);
   if (!bytes.equals(read())) throw new Error(`Module changed during read: ${relativePath}`);
-  return { frontmatter, language: frontmatter.language ?? "en-US", artifact: { path: relativePath, bytes: Buffer.from(bytes), text, sha256: exactByteSha256(bytes) } };
+  return { format:'legacy-markdown' as const,frontmatter, language: frontmatter.language ?? "en-US", artifact: { path: relativePath, bytes: Buffer.from(bytes), text, sha256: exactByteSha256(bytes) } };
 }
 
 export function buildGuidance({ root, pcrId, context = null }: ReadPcrOptions): CompleteGuidance {

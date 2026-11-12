@@ -21,6 +21,8 @@ export type PageStrings = {
   classificationSummary: string;
   moduleTitle: string;
   moduleNote: string;
+  advisoryModuleTitle: string;
+  advisoryModuleNote: string;
   moduleDownloads: string;
   moduleDownloadsNote: string;
 };
@@ -53,7 +55,9 @@ const zh: PageStrings = {
   moduleNote:
     '该模块目前是脚手架占位，内容尚未迁移为正式模块目录。它不构成可用方法学，也不会被搜索引擎收录。',
   moduleDownloads: '模块源文件',
-  moduleDownloadsNote: '下载该模块的原始 Markdown 文件，与仓库内容逐字节一致。',
+  advisoryModuleTitle: '编写辅助模块（候选）',
+  advisoryModuleNote: '该模块用于组织编写问题和采集要求，不代表已批准的方法学。页面完整展示原始 YAML，并提供原文件下载；不收录到搜索索引。',
+  moduleDownloadsNote: '下载该模块的原始源文件，与仓库内容逐字节一致。',
 };
 
 const en: PageStrings = {
@@ -84,8 +88,10 @@ const en: PageStrings = {
   moduleNote:
     'This module is still a scaffold placeholder; its content has not been migrated into a module directory. It is not usable methodology and is kept out of search indexes.',
   moduleDownloads: 'Module source files',
+  advisoryModuleTitle: 'Authoring support module (candidate)',
+  advisoryModuleNote: 'This module organizes authoring questions and collection requirements; it is not approved methodology. The complete original YAML is displayed and available for download, and is kept out of search indexes.',
   moduleDownloadsNote:
-    'Download this module’s original Markdown file; it is byte-identical to the repository content.',
+    'Download this module’s original source file; it is byte-identical to the repository content.',
 };
 
 export function pageStrings(locale: string): PageStrings {

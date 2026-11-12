@@ -20,7 +20,7 @@ export function compileDocsBrowserAssets({root=repositoryRoot,outputRoot}:{root?
   const compiled=spawnSync(process.execPath,[compiler,"-p",path.join(root,"tsconfig.docs-worker.json"),"--outDir",temporary],{cwd:root,encoding:"utf8",maxBuffer:8*1024*1024});
   if(compiled.error||compiled.status!==0)throw new Error("Browser TypeScript compilation failed: "+(compiled.error?.message??compiled.stdout+compiled.stderr));
   const outputs=new Map<string,Buffer>();
-  for(const name of ["search-worker.js", "search-terms.js", "search-wire.js", "search-pack.js"]){const source=path.join(temporary,name);const stat=lstatSync(source);if(!stat.isFile()||stat.isSymbolicLink())throw new Error("Compiled browser asset is not a regular file: "+name);outputs.set(name,readFileSync(source));}
+  for(const name of ["search-worker.js", "search-terms.js", "search-wire.js", "search-pack.js", "search-arithmetic.js"]){const source=path.join(temporary,name);const stat=lstatSync(source);if(!stat.isFile()||stat.isSymbolicLink())throw new Error("Compiled browser asset is not a regular file: "+name);outputs.set(name,readFileSync(source));}
   mkdirSync(outputRoot,{recursive:true});
   const files:string[]=[];
   for(const [name,bytes] of outputs){
