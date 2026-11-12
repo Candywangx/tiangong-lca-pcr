@@ -4,9 +4,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { CHAPTER_ALIASES, PUBLISHED_CHAPTER_ALIASES, readingTarget, aliasesForTarget, compatibilityDestination, rewriteChapterRequest } from '../lib/chapter-compatibility.ts';
-import {renderMarkdown,sha256} from './markdown.ts';
+import {renderMarkdown} from './markdown.ts';
 import {canonicalReadingParts} from './reading-routes.ts';
-import {providerRuntimeSourceRoot} from './provider-runtime.ts';
+import {providerRuntimeSourceRoot,createProviderRuntime} from './provider-runtime.ts';
+import {readPcrCatalogPage} from '../../pcr-core/src/index.ts';
 
 test('published chapter routes restore exact query and fragment in both languages', () => {
   assert.equal(PUBLISHED_CHAPTER_ALIASES.length,342);assert.equal(CHAPTER_ALIASES.length,527);
@@ -63,16 +64,21 @@ test('logical search hits preserve identity/ranking data while client navigation
 
 test('all CPC 54 source chapters retain their actual reading owners after adjacent packing',()=>{
  const root=providerRuntimeSourceRoot(import.meta.url);
- const receipt=JSON.parse(fs.readFileSync(path.join(root,'docs/reviews/cpc54-pr35-reading-routes/current-content.json'),'utf8')) as {
-  documents:{sourcePath:string;sourceSha256:string}[];
- };
- assert.equal(receipt.documents.length,126);
- assert.equal(new Set(receipt.documents.map(row=>path.dirname(row.sourcePath))).size,63);
+ const {items:records,totalCount}=readPcrCatalogPage({root,scope:'material',pathPrefix:'constructions-and-construction-services/construction-services',limit:100});
+ assert.equal(totalCount,63);
+ assert.equal(records.length,63);
+ assert.equal(new Set(records.map(record=>record.id)).size,63);
+ // Source-owned route registries still enforce exact current Markdown hashes.
+ assert(createProviderRuntime(root,'0'.repeat(40)));
+ const sourcePaths=records.flatMap(record=>{
+  return ['en-US','zh-CN'].map(language=>record.path+'/pcr.'+language+'.md');
+ });
+ assert.equal(sourcePaths.length,126);
  const aliases=new Map(CHAPTER_ALIASES.map(row=>[row.from,row]));
  let retained=0,affected=0;
- for(const {sourcePath,sourceSha256} of receipt.documents){
+ for(const sourcePath of sourcePaths){
   assert.match(sourcePath,/^library\/pcrs\/constructions-and-construction-services\/construction-services\/[a-z0-9-]+\/pcr\.(en-US|zh-CN)\.md$/);
-  const source=fs.readFileSync(path.join(root,sourcePath));assert.equal(sha256(source),sourceSha256);
+  const source=fs.readFileSync(path.join(root,sourcePath));
   const locale=sourcePath.endsWith('en-US.md')?'en':'zh';
   const base='/'+locale+'/docs/pcr/'+sourcePath.split('/').slice(2,-1).join('/')+'/';
   const chapter=(slug:string)=>base+'chapters/'+encodeURIComponent(slug)+'/';
