@@ -34,7 +34,7 @@ for(const scenario of ["source","raw-total","gzip-total","physical-bytes","missi
  }finally{fs.rmSync(f.out,{recursive:true,force:true});}
 });
 
-for(const format of ["files-v5","files-v6","files-v7","files-v8","shards"] as const)test("corpus audit authenticates "+format+" exports and rejects corrupt bytes",()=>{
+for(const format of ["files-v5","files-v6","files-v7","files-v8","files-v9","shards"] as const)test("corpus audit authenticates "+format+" exports and rejects corrupt bytes",()=>{
  const root=fs.mkdtempSync(path.join(tmpdir(),"pcr-search-audit-"));
  try{
   const output=path.join(root,"packages/pcr-docs/out"),sourceCommit="a".repeat(40);
@@ -45,7 +45,7 @@ for(const format of ["files-v5","files-v6","files-v7","files-v8","shards"] as co
    fs.mkdirSync(directory,{recursive:true});
    let payload:string,manifest:unknown;
    if(format!=="shards"){
-    const version=format==="files-v8"?8:format==="files-v7"?7:format==="files-v6"?6:5;
+    const version=format==="files-v9"?9:format==="files-v8"?8:format==="files-v7"?7:format==="files-v6"?6:5;
     const wire=JSON.stringify({...encodeSearchEntries(native,4),records});
     payload=packSearchShards([wire],sourceCommit,language,0,version);
     if(version===8){const data=JSON.parse(payload) as {numericColumns:unknown[][]};assert.equal(data.numericColumns.length,5);assert.ok(data.numericColumns[0]!.length>0);}

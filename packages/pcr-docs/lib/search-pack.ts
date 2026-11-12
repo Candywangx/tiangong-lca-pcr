@@ -1,3 +1,4 @@
+import {encodeSearchChannel, decodeSearchChannel, SearchChannelCapacityError} from "./search-arithmetic.ts";
 /** Lossless physical transport for existing, independently queried v4 logical indexes. */
 export const SEARCH_PACK_MEMBERS = 16;
 export const SEARCH_RAW_LIMIT = 20_000_000;
@@ -5,6 +6,7 @@ export const SEARCH_GZIP_LIMIT = 4_000_000;
 const encoding = "v4-columnar-term-dictionary-delta";
 const numericEncoding = "v4-columnar-term-dictionary-vlq";
 const channelEncoding = "v4-columnar-channels-score-posting-vlq";
+const arithmeticEncoding = "v4-columnar-arithmetic-channels";
 const compactEncoding = "v4-columnar-new-reuse-ranked-split-vlq";
 const digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 const integerLimit = 0x3fffffff;
@@ -20,11 +22,12 @@ export interface SearchManifestV5 { schemaVersion: 5; sourceCommit: string; lang
 export interface SearchManifestV6 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 6 }
 export interface SearchManifestV7 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 7 }
 export interface SearchManifestV8 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 8 }
-export type SearchManifest = SearchManifestV5 | SearchManifestV6 | SearchManifestV7 | SearchManifestV8;
+export interface SearchManifestV9 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 9 }
+export type SearchManifest = SearchManifestV5 | SearchManifestV6 | SearchManifestV7 | SearchManifestV8 | SearchManifestV9;
 export type SearchDigest = (bytes: Uint8Array) => string | Promise<string>;
 export function searchUtf8(text: string): Uint8Array { return utf8.encode(text); }
 export function readSearchManifest(value: unknown, language: string): SearchManifest {
- if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6 && value.schemaVersion !== 7 && value.schemaVersion !== 8) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
+ if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6 && value.schemaVersion !== 7 && value.schemaVersion !== 8 && value.schemaVersion !== 9) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
  let next = 0, raw = 0, gzip = 0;
  const urls = new Set<string>();
  for (const file of value.files) {
@@ -272,7 +275,14 @@ function columnMaps(shard: unknown): { shard: Record<string, unknown>; entries: 
  return { shard, entries: shard.entries, keys };
 }
 /** Copies through JSON so neither transport compression nor restoration mutates its input. */
-export function packSearchShards(wires: readonly string[], sourceCommit: string, language: string, firstLogicalShard: number, version: 5 | 6 | 7 | 8 = 5): string {
+export function packSearchShards(wires: readonly string[], sourceCommit: string, language: string, firstLogicalShard: number, version: 5 | 6 | 7 | 8 | 9 = 5): string {
+ if (version === 9) {
+  const packed: unknown = JSON.parse(packSearchShards(wires, sourceCommit, language, firstLogicalShard, 8));
+  if (!object(packed) || !Array.isArray(packed.numericColumns)) return fail();
+  const columns = packed.numericColumns as string[][];
+  if (columns.reduce((size, column) => size + column.length + column.reduce((n, text) => n + text.length, 0), 0) > SEARCH_RAW_LIMIT) throw new SearchChannelCapacityError();
+  return JSON.stringify({...packed, schemaVersion: 5, encoding: arithmeticEncoding, numericColumns: columns.map(encodeSearchChannel)});
+ }
  if (!wires.length || wires.length > SEARCH_PACK_MEMBERS || !commit(sourceCommit) || !natural(firstLogicalShard) || (version !== 5 && version !== 6 && version !== 7 && version !== 8)) return fail();
  const dictionary: string[] = [], ids = new Map<string, number>(), numericBudget = {remaining: SEARCH_RAW_LIMIT};
  const channels: string[][] = Array.from({length: version === 8 ? 5 : 4}, () => []);
@@ -302,18 +312,10 @@ export function packSearchShards(wires: readonly string[], sourceCommit: string,
  });
  return JSON.stringify({ schemaVersion: version === 8 ? 4 : version === 7 ? 3 : version === 6 ? 2 : 1, encoding: version === 8 ? compactEncoding : version === 7 ? channelEncoding : version === 6 ? numericEncoding : encoding, sourceCommit, language, firstLogicalShard, dictionary, shards, ...(version === 7 || version === 8 ? {numericColumns: channels} : {}) });
 }
-/** Validates actual physical bytes and each restored logical wire before a caller imports indexes. */
-export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhysicalFile, bytes: Uint8Array, digest: SearchDigest): Promise<Record<string, unknown>[]> {
- if (bytes.byteLength !== file.bytes || bytes.byteLength > SEARCH_RAW_LIMIT || await digest(bytes) !== file.sha256) return fail();
- let value: unknown;
- try { value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); } catch { return fail(); }
- if (!object(value) || value.schemaVersion !== (manifest.schemaVersion === 8 ? 4 : manifest.schemaVersion === 7 ? 3 : manifest.schemaVersion === 6 ? 2 : 1) || value.encoding !== (manifest.schemaVersion === 8 ? compactEncoding : manifest.schemaVersion === 7 ? channelEncoding : manifest.schemaVersion === 6 ? numericEncoding : encoding) || value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language || value.firstLogicalShard !== file.firstLogicalShard || !Array.isArray(value.dictionary) || value.dictionary.length > 1_000_000 || !value.dictionary.every((term: unknown): term is string => typeof term === "string") || new Set(value.dictionary).size !== value.dictionary.length || !Array.isArray(value.shards) || value.shards.length !== file.logicalShardCount || value.shards.length > SEARCH_PACK_MEMBERS) return fail();
- const channels: unknown = value.numericColumns;
- if (manifest.schemaVersion === 7 || manifest.schemaVersion === 8 ? !Array.isArray(channels) || channels.length !== (manifest.schemaVersion === 8 ? 5 : 4) || !channels.every(column => Array.isArray(column) && column.every(text => typeof text === "string")) || !channels.every(column => column.length === channels[0]!.length) : Object.hasOwn(value, "numericColumns")) return fail();
+function verifyChannelOwnership(shards: unknown[], count: number): void {
  const usedChannels = new Set<number>();
- if ((manifest.schemaVersion === 7 || manifest.schemaVersion === 8) && Array.isArray(channels)) {
   // Validate complete ownership before numeric expansion or any logical digest/import.
-  for (const packed of value.shards) {
+  for (const packed of shards) {
    if (!object(packed) || !object(packed.entries) || !Array.isArray(packed.columnarMaps ?? [])) return fail();
    const keys = (packed.columnarMaps ?? []) as unknown[];
    if (new Set(keys).size !== keys.length) return fail();
@@ -323,13 +325,34 @@ export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhy
     if (!Array.isArray(columns)) return fail();
     if (columns.length === 1) {
      const id: unknown = columns[0];
-     if (!natural(id) || id >= channels[0]!.length || usedChannels.has(id)) return fail();
+     if (!natural(id) || id >= count || usedChannels.has(id)) return fail();
      usedChannels.add(id);
     }
    }
   }
-  if (usedChannels.size !== channels[0]!.length) return fail();
+  if (usedChannels.size !== count) return fail();
+}
+/** Validates actual physical bytes and each restored logical wire before a caller imports indexes. */
+export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhysicalFile, bytes: Uint8Array, digest: SearchDigest): Promise<Record<string, unknown>[]> {
+ if (bytes.byteLength !== file.bytes || bytes.byteLength > SEARCH_RAW_LIMIT || await digest(bytes) !== file.sha256) return fail();
+ let value: unknown;
+ try { value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); } catch { return fail(); }
+ if (!object(value) || value.schemaVersion !== (manifest.schemaVersion === 9 ? 5 : manifest.schemaVersion === 8 ? 4 : manifest.schemaVersion === 7 ? 3 : manifest.schemaVersion === 6 ? 2 : 1) || value.encoding !== (manifest.schemaVersion === 9 ? arithmeticEncoding : manifest.schemaVersion === 8 ? compactEncoding : manifest.schemaVersion === 7 ? channelEncoding : manifest.schemaVersion === 6 ? numericEncoding : encoding) || value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language || value.firstLogicalShard !== file.firstLogicalShard || !Array.isArray(value.dictionary) || value.dictionary.length > 1_000_000 || !value.dictionary.every((term: unknown): term is string => typeof term === "string") || new Set(value.dictionary).size !== value.dictionary.length || !Array.isArray(value.shards) || value.shards.length !== file.logicalShardCount || value.shards.length > SEARCH_PACK_MEMBERS) return fail();
+ const version = manifest.schemaVersion === 9 ? 8 : manifest.schemaVersion;
+ if (manifest.schemaVersion === 9) {
+  if (!Array.isArray(value.numericColumns) || value.numericColumns.length !== 5) return fail();
+  const counts = value.numericColumns.map(column => {
+   if (!object(column) || !Array.isArray(column.lengths)) return fail();
+   return column.lengths.length;
+  });
+  if (!counts.every(count => count === counts[0])) return fail();
+  verifyChannelOwnership(value.shards, counts[0]!);
+  const budget = {remaining: SEARCH_RAW_LIMIT};
+  value.numericColumns = value.numericColumns.map(column => decodeSearchChannel(column, budget));
  }
+ const channels: unknown = value.numericColumns;
+ if (version === 7 || version === 8 ? !Array.isArray(channels) || channels.length !== (version === 8 ? 5 : 4) || !channels.every(column => Array.isArray(column) && column.every(text => typeof text === "string")) || !channels.every(column => column.length === channels[0]!.length) : Object.hasOwn(value, "numericColumns")) return fail();
+ if ((version === 7 || version === 8) && Array.isArray(channels)) verifyChannelOwnership(value.shards, channels[0]!.length);
  const dictionary: string[] = value.dictionary;
  const termBytes = dictionary.map(term => utf8.encode(JSON.stringify(term)).byteLength);
  const restored: Record<string, unknown>[] = [];
@@ -338,7 +361,7 @@ export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhy
  for (const [offset, packed] of value.shards.entries()) {
   const identity = file.logicalShards[offset];
   if (!identity) return fail();
-  if (manifest.schemaVersion === 8 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
+  if (version === 8 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
    for (const key of packed.columnarMaps) {
     if (typeof key !== 'string' || !Object.hasOwn(packed.entries, key)) return fail();
     const columns: unknown = packed.entries[key];
@@ -353,7 +376,7 @@ export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhy
     }
    }
   }
-  if (manifest.schemaVersion === 7 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
+  if (version === 7 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
    for (const key of packed.columnarMaps) {
     if (typeof key !== "string" || !Object.hasOwn(packed.entries, key)) return fail();
     const columns: unknown = packed.entries[key];
@@ -365,7 +388,7 @@ export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhy
     }
    }
   }
-  if (manifest.schemaVersion === 6 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
+  if (version === 6 && object(packed) && object(packed.entries) && Array.isArray(packed.columnarMaps)) {
    for (const key of packed.columnarMaps) {
     if (typeof key !== "string" || !Object.hasOwn(packed.entries, key)) return fail();
     const columns: unknown = packed.entries[key];
@@ -398,6 +421,6 @@ export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhy
   if (wire.byteLength !== identity.wireBytes || await digest(wire) !== identity.wireSha256) return fail();
   restored.push(shard);
  }
- if (manifest.schemaVersion === 8 && termsState.next !== dictionary.length) return fail();
+ if (version === 8 && termsState.next !== dictionary.length) return fail();
  return restored;
 }

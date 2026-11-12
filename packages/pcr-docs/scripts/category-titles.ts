@@ -14,6 +14,7 @@ const zh: Readonly<Record<string,string>> = {
   "coal-and-peat": "煤和泥炭",
   "community-social-and-personal-services": "社区、社会和个人服务",
   constructions: "建筑物和工程结构",
+  "construction-services": "施工服务",
   "constructions-and-construction-services": "建筑工程和施工服务",
   "creative-original-assets": "创作原作资产",
   "crude-petroleum-and-natural-gas": "原油和天然气",
