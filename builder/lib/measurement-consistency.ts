@@ -314,7 +314,7 @@ function conversionInputs(rule: CalculationRule, massProtocolId: string | undefi
 }
 
 function outputAmount(expression: unknown): Reference | null {
-  const match = clean(expression).match(/^(M|\d+(?:\.\d+)?)\s+([A-Za-z][A-Za-z0-9]*|千克|公斤|件)$/u);
+  const match = clean(expression).match(/^(M|\d+(?:\.\d+)?)\s+(Item\(s\)|[A-Za-z][A-Za-z0-9]*|千克|公斤|件)$/u);
   return match && quantity(match[1]) ? { amount: quantity(match[1]), unit: unit(match[2]) } : null;
 }
 
