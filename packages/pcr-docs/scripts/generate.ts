@@ -792,19 +792,20 @@ async function generate() {
       alternates: guideAlternates,
     });
   }
-  const modules = new Map(
+  const modules = new Set(
     manifest.records.flatMap((r) =>
       Object.entries(r.modules).flatMap(([group, ids]) =>
-        ids.map((id) => [group+'/'+id,{group,moduleId:id}] as const),
+        ids.map((id) => "library/modules/" + group + "/" + id + ".md"),
       ),
     ),
   );
-  for (const [,reference] of [...modules].sort(([a],[b])=>a<b?-1:a>b?1:0)) {
+  for (const relative of [...modules].sort()) {
+    const segments = relative.slice("library/modules/".length, -3).split("/");
     const bundle = readPcrModuleDocumentBundle({
         root,
-        ...reference,
+        group: segments[0]!,
+        moduleId: segments[1]!,
       }),
-      relative=bundle.artifact.path,
       bytes = bundle.artifact.bytes,
       raw = download(relative, bytes),
       text = bundle.artifact.text,
@@ -812,7 +813,7 @@ async function generate() {
     const rawLanguage=unknownField(fm,"language"),language = typeof rawLanguage === "string" ? rawLanguage : "en-US",
       slugs = [
         "modules",
-        ...relative.slice("library/modules/".length).replace(/\.(md|yaml)$/u,'').split("/"),
+        ...relative.slice("library/modules/".length, -3).split("/"),
       ];
     sourceRoutes.set(relative, urlFor(language, slugs));
     renderDocument({
@@ -821,8 +822,8 @@ async function generate() {
       slugs,
       extra: {
         kind: "module",
-        moduleId: bundle.format==='advisory-yaml' ? reference.moduleId : typeof unknownField(fm,"module_id")==="string" ? unknownField(fm,"module_id") as string : path.basename(relative, ".md"),
-        indexable: bundle.format!=='advisory-yaml' && unknownField(fm,"status") !== "scaffold" && unknownField(fm,"status") !== undefined,
+        moduleId: typeof unknownField(fm,"module_id")==="string" ? unknownField(fm,"module_id") as string : path.basename(relative, ".md"),
+        indexable: unknownField(fm,"status") !== "scaffold" && unknownField(fm,"status") !== undefined,
       },
       downloads: [raw],
     });

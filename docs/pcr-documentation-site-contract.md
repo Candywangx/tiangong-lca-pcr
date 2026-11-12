@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-11-12
-lastReviewedNote: "PR35: exact candidate advisory YAML module reads, complete raw-source code-block inventory and downloads, explicit support-only state and unchanged legacy/material-module boundaries. Preserve PR34 route, provider and resource contracts."
-lastReviewedCommit: 05b1b5804d3b6b2ab83d2bd2cce41b5a2d06a256
+lastReviewedNote: "PR35: retain chapter compatibility and lossless search v9; remove candidate advisory YAML module support and references at owner request. Existing module contracts and resource limits remain unchanged."
+lastReviewedCommit: 05fb4462baeac303521fc6f7d38bd7cd080d9059
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -46,19 +46,6 @@ Canonical Markdown is parsed as ordinary CommonMark with GFM support. Content is
 pre-rendered as semantic HTML; it is never evaluated as user-authored JSX or ESM.
 The Fumadocs content source contains small page metadata and artifact references,
 not one client-side object holding the entire library.
-
-Referenced schema-0 candidate authoring descriptors remain a separate source form:
-`activities` / `module.activity.<slug>` resolves to `library/modules/activities/<slug>.yaml`,
-and `system_conditions` / `module.system-condition.<slug>` resolves to
-`library/modules/system-conditions/<slug>.yaml`. Core verifies the exact ID, kind,
-candidate state, text encoding and controlled source path. The site displays the
-complete YAML as one escaped code block whose source offsets cover the actual YAML
-bytes decoded as text, with an exact-byte original download. Generation and export
-verification independently inventory that same raw source; no synthetic Markdown
-is substituted for the canonical file. These English authoring aids are explicitly
-labelled candidate support, excluded from search, and never presented as reviewed
-method modules or fabricated Chinese translations. Legacy Markdown module routes
-and the separate material reusable-module contract retain their existing behavior.
 
 The generator selects methodology records through the core catalog. It does not
 glob arbitrary `pcr.*.md` files: fixtures, authoring journals and internal plans

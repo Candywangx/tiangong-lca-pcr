@@ -56,36 +56,9 @@ and runtime routes. Run it with the pinned Node runtime:
 node --test packages/pcr-docs/scripts/chapter-compatibility.test.ts
 ```
 
-## Additional module integration repair
-
-After all 1,727 PCR documents passed generation, the next stage rejected an
-advisory module's full ID as if it were a legacy Markdown module slug. The 63 PCRs
-reference 12 schema-0 YAML authoring descriptors in addition to eight legacy
-Markdown modules. `module-readback.json` records the unchanged 12 descriptor
-identities and source hashes and their complete rendered-source checks.
-
-Core now resolves the two explicit advisory namespaces against their controlled
-YAML paths and rejects mismatched IDs, kinds, candidate states and unsafe reads.
-The exporter retains the exact YAML download and inventories the complete source
-as one escaped code block with offsets into the actual source text. Export
-verification repeats that inventory against the original YAML. The site labels
-these English candidate authoring aids explicitly, excludes them from search,
-and does not invent translated sources or elevate them to reviewed methodology.
-Legacy Markdown module routing and material reusable-module semantics are unchanged.
-
-Module reader, raw-source rendering and actual generator fixtures cover both
-advisory namespaces, exact downloads, complete source verification and negative
-identity/path/state cases. No canonical PCR or descriptor source was rewritten.
-
-This receipt is a single-agent source/rendering review. Its in-memory HTML checks
-are not a complete Next static export or a sealed-product qualification. Fresh
-`npm run docs:build` and repository validation remain separate checks; their
-actual results belong in the PR, without promoting methodology or translation
-approval or hiding the previously disclosed baseline test failure.
-
 ## Complete search capacity repair
 
-After the route and module fixes, complete generation measured the existing
+After the route fixes, complete generation measured the existing
 search assets at 4,150,475 bytes gzip in English and 4,228,173 in Chinese, including
 each manifest, above the unchanged 4,000,000-byte per-language limit.
 `search-transport.json` compares those exact captured assets with a lossless v9
@@ -110,8 +83,7 @@ search totals were 3,884,260 gzip bytes (English) and 3,983,119 (Chinese), inclu
 each manifest. The captured corpus audit separately compared 720 English and
 620 Chinese queries with matching ordered results.
 
-The complete documentation test suite plus affected module-reader checks and
-product tests passed: 34 test files, 597 tests, no failures or skips. The product
+The historical targeted suite passed: 34 test files, 597 tests, no failures or skips. The product
 tests were rerun after correcting the local npm launcher; that temporary launcher
 is not a repository change. Runtime, migration, all 11 strict TypeScript projects
 and full library lint passed (0 lint errors, 53,766 retained warnings).
@@ -128,7 +100,7 @@ full-corpus qualification and browser qualification remain distinct gates.
 
 These checks ran on the listed modified working tree above parent `d7947e1d7`,
 not on a claimed clean release or on the later commit that adds this receipt.
-The 252 canonical CPC 54 files, original module sources, published ledgers and
+The 252 canonical CPC 54 files, published ledgers and
 all mapping objects are unchanged by this repair. No merge or deployment is
 performed by this validation.
 

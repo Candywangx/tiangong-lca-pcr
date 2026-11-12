@@ -4,7 +4,6 @@ import {verifySearchAssets} from "./search-assets.ts";
 import {decodeRecordData} from "../lib/record-data.ts";
 import {decodeSearchEntries} from "../lib/search-wire.ts";
 import {Index} from "flexsearch";
-import {parseHTML} from "linkedom";
 import {searchTerms} from "../lib/search-terms.ts";
 import {parseSiteManifest} from "../lib/site-contracts.ts";
 import {isUnknownRecord} from "../../pcr-core/src/types.ts";
@@ -388,13 +387,11 @@ test("metadata summaries describe the page they belong to, and report title-only
     }
     const candidateManifest = path.join(fixture.pcrDir, "manifest.yaml");
     const candidate = checkedManifest(fs.readFileSync(candidateManifest, "utf8"));
-    candidate.modules = { core: ["reference-flow"],activities:['module.activity.assembly-integration-node'],system_conditions:['module.system-condition.multi-period-attribution'] };
+    candidate.modules = { core: ["reference-flow"] };
     fs.writeFileSync(candidateManifest, renderYaml(candidate));
     const modulePath = "library/modules/core/reference-flow.md";
     fs.mkdirSync(path.dirname(path.join(root, modulePath)), { recursive: true });
     fs.copyFileSync(new URL("../../../library/modules/core/reference-flow.md", import.meta.url), path.join(root, modulePath));
-    const advisoryPaths=['library/modules/activities/assembly-integration-node.yaml','library/modules/system-conditions/multi-period-attribution.yaml'];
-    for(const relative of advisoryPaths){fs.mkdirSync(path.dirname(path.join(root,relative)),{recursive:true});fs.copyFileSync(new URL('../../../'+relative,import.meta.url),path.join(root,relative));}
     syncStructured({root, pcr: fixture.libraryPath});
     lifecycle({
       root,
@@ -494,16 +491,8 @@ test("metadata summaries describe the page they belong to, and report title-only
     const pages = site.pages.filter((page) => page.kind === "pcr");
     assert.ok(pages.every(page => !Object.hasOwn(page, "downloads")), "PCR page metadata does not duplicate native download URLs");
     assert.equal(site.records[0]!.downloads.length, 4, "complete PCR sources remain on the record");
-    const modulePage = site.pages.find(page => page.kind === "module" && page.sourcePath === modulePath);
+    const modulePage = site.pages.find(page => page.kind === "module");
     assert.ok(modulePage?.downloads?.some(download => download.name === "reference-flow.md"), "non-PCR module pages retain their download links");
-    for(const relative of advisoryPaths){
-      const page=site.pages.find(p=>p.kind==='module'&&p.sourcePath===relative);assert.ok(page);assert.equal(page.indexable,false);assert.equal(page.language,'en-US');
-      const original=fs.readFileSync(path.join(root,relative));assert.deepEqual(fs.readFileSync(path.join(output,'public/generated/raw',relative)),original);
-      assert.ok(page.downloads?.some(d=>d.sha256===hash(original)));
-      const html=fs.readFileSync(path.join(output,'.generated',page.htmlPath!),'utf8');
-      assert.equal(parseHTML('<html><body>'+html+'</body></html>').document.querySelector('pre code')?.textContent,original.toString('utf8')+'\n');
-      assert.ok(parseGenerationReport(fs.readFileSync(path.join(output,'.generated/report.json'),'utf8')).documents.some(d=>d.sourcePath===relative),'YAML source participates in complete export verification');
-    }
     assert.ok(site.pages.filter(page => page.kind === "guide").every(page => Array.isArray(page.downloads)), "guide metadata retains its existing shape");
     const record = pages.find((page) => page.language === "en-US" && page.part?.index === 0);
     const chineseRecord = pages.find((page) => page.language === "zh-CN" && page.part?.index === 0);

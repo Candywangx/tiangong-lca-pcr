@@ -266,25 +266,9 @@ function prepareMarkdown(source: unknown, fileKey: string) {
   };
 }
 
-/** Advisory YAML is one exact source code block, not a fabricated Markdown methodology. */
-function advisoryModule(source:unknown,fileKey:string) {
- const match=/^library\/modules\/(activities|system-conditions)\/([a-z0-9]+(?:-[a-z0-9]+)*)\.yaml$/u.exec(fileKey);
- if(!match)return undefined;
- if(typeof source!=='string')throw new Error('Advisory module source must be text.');
- const descriptor=parseYaml(source),activity=match[1]==='activities';
- if(!isUnknownRecord(descriptor)||descriptor.schema_version!==0||descriptor.id!==`module.${activity?'activity':'system-condition'}.${match[2]}`
-  ||descriptor.kind!==(activity?'activity':'system_condition')||descriptor.status!=='candidate'||typeof descriptor.title!=='string'||!descriptor.title.trim())
-  throw new Error('Invalid advisory module source identity.');
- const id='s-'+sha256(fileKey+':0').slice(7,27);
- const block:SourceBlock={id,type:'code',isFootnote:false,text:normalizeText(source),code:source,sourceStart:0,sourceEnd:source.length,sourceLine:1,links:[],tables:[],lists:[]};
- const part:RenderPart={slug:'source',title:descriptor.title,label:descriptor.title,context:[],toc:[],anchors:[],sourceNodeIds:[id],sourceHeadingId:undefined,
-  nodes:[{type:'element',tagName:'pre',properties:{dataSourceNode:id},children:[{type:'element',tagName:'code',properties:{className:['language-yaml']},children:[{type:'text',value:source+'\n'}]}]}]};
- return {original:{frontmatter:descriptor,nodes:[block],body:source},part};
-}
-
 /** Independently inventory original source blocks before any rendering/splitting. */
 export function inventoryMarkdown(source: unknown, fileKey: string) {
-  return advisoryModule(source,fileKey)?.original ?? prepareMarkdown(source, fileKey).original;
+  return prepareMarkdown(source, fileKey).original;
 }
 
 /** Render once, then partition the HAST. Definitions/footnotes retain their global identities. */
@@ -293,8 +277,6 @@ export function renderMarkdown(
   fileKey: string,
   { maxHtmlBytes = 180_000, packAdjacent = false } = {},
 ) {
-  const advisory=advisoryModule(source,fileKey);
-  if(advisory)return {title:advisory.part.title,frontmatter:advisory.original.frontmatter,inventory:advisory.original.nodes,anchorAliases:{} as Record<string,string>,sourceHeadingAnchor:undefined,parts:[advisory.part],logicalParts:[advisory.part]};
   const { original, tree } = prepareMarkdown(source, fileKey);
   const inventory = new Map(original.nodes.map((node) => [node.id, node]));
   const slugger = new GithubSlugger();

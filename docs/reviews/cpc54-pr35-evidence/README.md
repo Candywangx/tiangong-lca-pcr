@@ -32,8 +32,10 @@ The previous read-only review ran all 63 target checks on these identical bytes:
 These are retained results, not a new full-library validation or scientific review.
 
 The [index](index.json) inventories restored historical review files at the exact
-repository-relative paths cited by the ADRs. Their original bytes and hashes are
-preserved. Historical `reviewed` fields, inventory counts, UUID judgments and test
+repository-relative paths cited by the ADRs. Original source hashes are preserved. At owner request, advisory-module
+selection/checklist/review material has been removed from the retained excerpts.
+The index identifies each transformation and its current packaged hash; those
+excerpts are no longer byte-identical to their original historical sources. Historical `reviewed` fields, inventory counts, UUID judgments and test
 totals describe their original authoring rounds; they must not override the
 current readback or manifests. Historical mistakes and recovery records are
 preserved as evidence, not reapplied.
@@ -92,3 +94,12 @@ refinement requirements, so their physical coverage has not been discarded.
 All records retain candidate/authored_methodology and Chinese aligned status.
 Target checks and this repair do not establish scientific approval or a fresh
 platform verification.
+
+## Current dependency removal
+
+The 12 candidate advisory definitions and all active references to them in the
+63 CPC 54 manifests have been removed at owner request. PCR bilingual methods,
+flow cards, calculations and structured methodology remain authoritative.
+Historical canonical hashes above describe their named source versions, not
+the current dependency-free manifests. See `module-removal-20261112.json` for
+the current manifest hashes and actual validation coverage.

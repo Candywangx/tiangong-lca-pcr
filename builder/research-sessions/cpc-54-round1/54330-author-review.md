@@ -1,6 +1,8 @@
+> Historical excerpt: advisory-module selection and review material removed at owner request; remaining results are historical.
+
 # Independent author review — CPC 54330
 
-Completed 2026-10-12. Canonical target: `library/pcrs/constructions-and-construction-services/construction-services/mechanical-soil-excavation-services`. No old PCR content was read/copied. Official templates, current route context and selected module obligations were used. All English sections and 13 semantic cards existed before candidate lookup; main reviewer owns the reference's entire search allowance.
+Completed 2026-10-12. Canonical target: `library/pcrs/constructions-and-construction-services/construction-services/mechanical-soil-excavation-services`. No old PCR content was read/copied. All English sections and 13 semantic cards existed before candidate lookup; main reviewer owns the reference's entire search allowance.
 
 ## Scope decision and source review
 
@@ -9,31 +11,6 @@ The contracted output is accepted excavation service measured by 1 m3 original-p
 Independently browsed authoritative sources: FHWA FP-24 sections 109, 158 and 204; FHWA CFLHD Earthwork Representation (cover April 2025, pages 2–7); EPA AP-42 13.2.3; EPA Nonroad Engines and Air Pollution EPA420-F-94-003 (1994). The UNSD historical explanatory-note page was opened but did not expose useful note text through the browser extraction; it was not misrepresented as CPC3.0 quantitative evidence or added to PCR Data Sources. CPC3.0 classification identity is from the retained repository source.
 
 FHWA supports original-position measurement/acceptance and dust-water responsibilities; its broader roadwork pay-item package is not silently adopted. CFLHD supports site/geotechnical rather than universal shrink/swell treatment. EPA identifies dust drivers and exhaust categories, not universal factors or an invented NO/NO2 split. No non-default quantitative consumption factor was obtained: 12 non-reference ranges remain broad author `reasoned_estimate` screening aids with no fake source id. Reference 1..1 range is the declared normalization identity calculated from the same accepted-volume record, not an observed batch size.
-
-## Preselected module obligation closure
-
-The initial author manifest used incorrect singular group keys; sync discarded those module selections. The author corrected only this target to `activities` and `system_conditions`, then regenerated and verified four selected references persist in manifest/projection and repeated sync is byte-identical. No shared generator was changed.
-
-| Module | Obligation | Authored response and manual conclusion |
-| --- | --- | --- |
-| resource-removal | source/capture context | §5 starting condition and boundary_material specify characterized native uncontaminated soil at surveyed cleared accessible site; satisfied. |
-| resource-removal | removed output state/handover | §6 reusable/waste loose-soil cards and cp_soil define custodian, destination, moisture/state and transfer id; satisfied. |
-| resource-removal | residuals versus intended outputs | §6/§9 distinguish accepted service, reuse soil, waste soil, retained stock and dust; satisfied. |
-| resource-removal | independent adjacent boundary | boundary_service excludes subsequent fill, treatment and foundation responsibilities; satisfied. |
-| batch/continuous | production mode | §6 explicitly discrete job lot indexed by site, geometry and shift; satisfied. |
-| batch/continuous | runs, cleaning, changeover | §6 prose and all eight cp records retain lot/shift/events including cleaning and maintenance; satisfied. |
-| batch/continuous | attribution/yield | allocation_subdivide and normalize_lot use actual event attribution and accepted volume; no assumed yield; satisfied. |
-| batch/continuous | shared-run duplication | allocation_mobilization, boundary_shared and validate_shared require all consumers/periods and unique event owner; satisfied. |
-| rework/reject | rejected state | §6 failed geometry/levels and unauthorized overbreak explicitly distinguished; satisfied. |
-| rework/reject | routing | Correction stays in excavate; failed reuse soil changes to waste using same transfer id; satisfied. |
-| rework/reject | graph and exits | Single real excavate node owns correction loop and both soil destination exits; satisfied. |
-| rework/reject | accepted output exclusion | allocation_rework and validate_mode_rework retain fuel/hours but exclude duplicate acceptance and unauthorized overbreak; satisfied. |
-| shared infrastructure | shared assets/services | boundary_shared and plant_use/mobilization/water cards name machinery, water and journeys; satisfied. |
-| shared infrastructure | consumers and periods | cp_plant/cp_energy/cp_mobilization and boundary_shared require this node and every other consuming job/node and service period; satisfied. |
-| shared infrastructure | PCR attribution decision | allocation_subdivide prioritizes subdivision; residual physical machine-hour/load/water drivers documented; mobilization uses service-period hours; satisfied. |
-| shared infrastructure | duplication | all event shares reconcile; supplier fuel/transport/maintenance coverage checked against separate cards; satisfied. |
-
-The advisory checklist inferred one applicable, two unresolved and 22 not-applicable modules from projection heuristics. This does not supersede the pre-generation four-module route plan. Manual review confirms the four obligations above. Advisory multi-output uncertainty is addressed by allocation_soil: excavation retains burdens and gives no automatic credit; independently marketed soil requires separate case review. Advisory multi-period uncertainty is addressed by service-period event allocation and upstream plant coverage; this PCR does not invent asset lifetimes or silently amortize manufacture twice.
 
 ## Binding audit
 
