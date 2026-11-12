@@ -98,7 +98,7 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
       <PcrPage page={doc}>
         {alternates}
         {breadcrumb}
-        {doc.kind === 'module' ? <ModuleScaffold locale={lang} /> : null}
+        {doc.kind === 'module' ? <ModuleScaffold locale={lang} advisory={doc.sourcePath?.endsWith('.yaml') === true} /> : null}
         {doc.kind === 'guide' ? (
           <>
             <CopyAgentPrompt locale={lang} />
