@@ -26,7 +26,7 @@ At the user's direction on 2026-11-12, PR #31 delivers only 60 CPC 61 methods, e
 id and semantic directory from the retained CPC 3.0 leaf-slug inventory. It contains no CPC 63 or CPC 64 PCR changes.
 Those locally authored methods were preserved separately before narrowing this delivery.
 
-The current target baseline is `63c9e20d906e09b4f27b088b58c129a83e479e0d` from `Candywangx/main`. All 60 destination
+The current target baseline is `85283aa758b1f0342ede1fdaee6dc312e71cd8dc` from `Candywangx/main`. All 60 destination
 records are unpublished `scaffold / empty_scaffold` records on that baseline. The final changes upgrade their
 existing four-file directories, without introducing replacement PCR ids or new PCR directories.
 
@@ -36,7 +36,7 @@ All methods remain `candidate / authored_methodology`; scientific review remains
 historical id does not broaden a method's applicability or convert a narrower/proxy mapping to exact.
 
 The 60 CPC 61 mapping edges preserve their previous relations and acceptance evidence, now pointing to the original
-ids. All 1,513 existing upstream edges remain unchanged. The individual ADRs identify the current original-id target;
+ids. All 1,576 existing upstream edges remain unchanged. The individual ADRs identify the current original-id target;
 earlier ids, paths, hashes and review claims are explicitly retained as historical evidence, not fresh verification.
 Aliases, catalog and coverage are rebuilt by the official commands. The two additional Chinese category labels
 support browsing the original CPC 61 directory hierarchy.

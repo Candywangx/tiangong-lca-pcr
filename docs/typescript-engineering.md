@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-11-04
-lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
-lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
+lastReviewedAt: 2026-11-12
+lastReviewedCommit: 0c58ee2b471029f16059f9ddc99b4d5901b43b33
+lastReviewedNote: "PR35: denied-storage language qualification waits for selector-started requests before document replacement; preserve fatal errors, fixed timing bounds and fresh sealed-product qualification."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -514,6 +514,15 @@ completion, and keeps a real HTTP failure fatal. It runs in the consumer shard
 with installed browser runtimes, without a silent skip or an increased timeout.
 This controlled timing-class evidence and diagnostic replays of older sealed
 bytes do not replace fresh complete-source and sealed-product qualification.
+
+The denied-storage language probe also waits for current requests after opening
+its selector and before replacing the English document. The observer is attached
+before neutral entry, so it includes late work caused by language negotiation or
+newly visible links. It retains the same quiet period and timeout and does not
+suppress access-control errors. Controlled Chromium, Firefox and WebKit HTTP
+regressions hold a selector-started fetch through the old click timing and verify
+completion before navigation; a genuine HTTP failure remains fatal. This probe remains distinct
+from full sealed-product qualification.
 
 Browser request receipts retain engine, viewport, exact URL, method, resource
 kind, navigation flag, observed HTTP status, start/failure timestamps and phases,

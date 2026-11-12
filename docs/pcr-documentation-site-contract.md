@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-10
-lastReviewedNote: "PR34: owner-authorized bounded Next tree packing preserves original URLs and bytes, with compiled binding, source-bound provider profile 2 and complete transport verification; preserve fixed physical/search budgets and require fresh full qualification."
-lastReviewedCommit: 2002efdfc6d10f8dbf1db082c11662c817718c0b
+lastReviewedAt: 2026-11-12
+lastReviewedNote: "PR35: retain chapter compatibility and lossless search v9; remove candidate advisory YAML module support and references at owner request. Existing module contracts and resource limits remain unchanged."
+lastReviewedCommit: 05fb4462baeac303521fc6f7d38bd7cd080d9059
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -621,8 +621,31 @@ remain independently checked. Readers and canonical writer bytes for v1-7 remain
 compatible; older Workers reject the v8 manifest. A new transport does not alter
 source text, independent logical indexes, engine exports, record fields or ranking.
 
+Search manifest version 9 uses envelope `schemaVersion: 5` and
+`encoding: "v4-columnar-arithmetic-channels"`. It preserves the complete v8
+term dictionary, shards and five ordered numeric channels. Only the ASCII VLQ
+channel strings are transported with an adaptive binary arithmetic code; original
+string lengths, valid bit count and canonical base64 bytes are explicit. Each
+six-bit alphabet symbol uses the preceding symbol and current binary prefix as
+context; the initial predecessor is 64 at each original string boundary. Counts
+start at one and rescale by rounded-up halving at a combined count of 256.
+The 32-bit interval uses exact integer-valued arithmetic and canonical final bits.
+
+Before arithmetic expansion, the reader verifies complete, unique map-to-channel
+ownership and equal channel counts. All five channels share a separate 20 MB
+restored-ASCII/count budget, charged before allocation. Noncanonical base64,
+padding, termination, truncated streams and unbounded lengths are rejected;
+re-encoding checks the canonical bitstream. Restored strings then pass every
+existing v8 VLQ, predictor, numeric-expansion, dictionary, logical-wire hash and
+record-count check. The original numeric expansion budget is not replaced or
+increased. The emitted Worker includes the compiled arithmetic module explicitly;
+older Workers fail closed on v9. No original record, token, posting, score slot,
+logical shard order, query cutoff or ranking is changed. V1–8 readers and V5–8
+writer behavior remain available. An unavailable arithmetic candidate cannot
+suppress an eligible earlier transport.
+
 The generator retains the original sixteen-member greedy layout as a candidate
-and compares v7 and v8 over a bounded set of consecutive pack boundaries near balanced cuts.
+and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.
 At each cut position it retains at most sixteen paths. Physical dictionary strings
 may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
 gzip is smaller; dictionary values and first-appearance order remain exact. The
@@ -633,7 +656,7 @@ logical text buckets, engine exports,
 record fields, logical order, ranking, decoder versions or any size/expansion guard.
 
 Corpus auditing accepts only the exact canonical physical pack spelling or its
-exact dictionary-only Unicode-escape variant for v7/v8. It still verifies physical hashes,
+exact dictionary-only Unicode-escape variant for v7/v8/v9. It still verifies physical hashes,
 every restored logical wire, native engine exports, complete records, ordered
 query results and the full existing raw/gzip budgets. This compatibility does not
 permit arbitrary JSON rewrites or changes to non-dictionary fields.
