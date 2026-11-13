@@ -193,6 +193,24 @@ process_inventory:
               collection_protocol_id: cp_materials
               source_ids: []
             ranges: []
+        - row_id: added_shipping_materials_paperboard_carton
+          role: "Paperboard carton supplied for additional shipping protection"
+          name: "Paperboard carton supplied for additional shipping protection"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an independently evidenced actual paperboard carton supplied for additional shipping protection in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision added_shipping_materials; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Use only when the added package is established as a paperboard carton. Record construction, net paperboard-carton mass and provider gate. A plastic crate, wood box or composite carton with a materially different identity needs a separate card; inherited packaging and returnable assets are excluded. No fibre grade, recycled share or mass-per-carton is assumed. Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol cp_materials. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use."
+          amount:
+            expression: "Actual exclusively assigned kg for added_shipping_materials_paperboard_carton / accepted N once; preserve an already-per-reference quantity without dividing again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
       waste:
         []
       elementary:
@@ -217,13 +235,53 @@ process_inventory:
               collection_protocol_id: cp_kits
               source_ids: []
             ranges: []
+        - row_id: unused_supply_return_detergent_return
+          role: "Unused synthetic detergent returned to supplier"
+          name: "Detergent"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1c57d123-df57-49ab-b9d4-957403beb8a5"
+          property_unit: "Mass / kg"
+          description: "Only an independently evidenced actual unused synthetic detergent returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision unused_supply_return; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input actual_cleaning_supplies_synthetic_detergent in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit. Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol cp_materials. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use."
+          amount:
+            expression: "Actual exclusively assigned kg for unused_supply_return_detergent_return / accepted N once; preserve an already-per-reference quantity without dividing again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: unused_supply_return_pe_film_return
+          role: "Unused polyethylene film returned to supplier"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Only an independently evidenced actual unused polyethylene film returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision unused_supply_return; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input added_shipping_materials_pe_film in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit. Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol cp_materials. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use."
+          amount:
+            expression: "Actual exclusively assigned kg for unused_supply_return_pe_film_return / accepted N once; preserve an already-per-reference quantity without dividing again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
       waste:
         - row_id: discarded_whole_kits_atomic_case
           role: "Discarded complete flatpack wooden bedside-storage kit"
           name: "Discarded complete flatpack wooden bedside-storage kit"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Conditional on independently recorded actual Discarded complete flatpack wooden bedside-storage kit. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under discarded_whole_kits; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately. Range evidence need: Need exact included packages/components,net product/pack/tare,moisture where relevant,actual disposition and compatible original finished-kit loss owner/conversion. No default all-wood or wholekit loss from missing hardware."
+          description: "Conditional on independently recorded actual Discarded complete flatpack wooden bedside-storage kit. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain identity evidence decisions under discarded_whole_kits; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately. Range evidence need: Need exact included packages/components,net product/pack/tare,moisture where relevant,actual disposition and compatible original finished-kit loss owner/conversion. No default all-wood or wholekit loss from missing hardware."
           amount:
             expression: "Assigned measured whole-kit waste / N; cp_kits."
             value_mode: "foreground_record"
@@ -286,6 +344,24 @@ process_inventory:
           description: "Only actual independently discarded, separately collected empty plastic packaging with its actual composition, moisture and receiver. Retained merchandise, contaminated mixed packs, foam inside appliances, disposable wipes and composite packaging do not use this case. Components retained in a whole mixed stream are non-additive audits; retain actual transport/treatment ownership once. No emptying, recycling, occurrence or quantity is assumed. Range evidence need: Need material/native mass/tare/contamination and real receiving recovery/treatment,excluding packaging already in whole-kit waste; collection alone does not earn recycling credit."
           amount:
             expression: "Assigned measured separated package waste / N; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: separated_furniture_parts_wooden_panel
+          role: "Discarded wooden bedside-storage panel with retained finish"
+          name: "Discarded wooden bedside-storage panel with retained finish"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only an independently evidenced actual discarded wooden bedside-storage panel with retained finish in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision separated_furniture_parts; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner. Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol cp_waste. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use."
+          amount:
+            expression: "Actual exclusively assigned kg for separated_furniture_parts_wooden_panel / accepted N once; preserve an already-per-reference quantity without dividing again."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -528,59 +604,59 @@ dataset_production:
       evidence: "Original gate/conversion/coverage/integration and meter/lifetime/receiver evidence"
     - id: handling_electricity
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in handling_electricity under cp_power; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Which supply point, AC/DC state, voltage and supplier dataset cover the meter record? Reconcile the listed AC row with any evidenced other supply; do not use the AC UUID for a different carrier. Meter actual electric lifting,picking,lighting and warehouse records equipment,including assigned idle/cleanup. Do not infer assembly-tool or active climate loads from a flatpack label. Range evidence need: Require actual period/device meter coverage and physical cohort/all-user drivers,not a manufacturer kit weight converted to energy. Measurement evidence: protocol cp_power; original record basis Energy / kWh. The original amount constraint “Attributed actual electricity / N; cp_power.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: handling_electricity_ac. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_power; actual source-linked native records"
     - id: housekeeping_water
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in housekeeping_water under cp_water; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Does the supplier record establish treated tap water, or a different named water quality/source? Identify the supply state and gate; do not replace a non-tap-water supply with the tap-water card. Only evidenced warehouse/equipment cleaning; no furniture washing,humidifying,steam or consumer wipe-clean instruction is prescribed. Actual environmental abstraction needs its distinct native source. Range evidence need: Need source,use and physical outlet/retention evidence. Board moisture or package dampness is not a measured water supply,effluent or evaporation amount. Measurement evidence: protocol cp_water; original record basis Volume / m3. The original amount constraint “Assigned measured water / N; cp_water.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: housekeeping_water_liquid_tap. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_water; actual source-linked native records"
     - id: actual_cleaning_supplies
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in actual_cleaning_supplies under cp_materials; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the purchased SKU, formulation/SDS, supplied concentration, physical state, purpose and stock/issue records for the named cleaning or maintenance duty in this record. Identify the actual non-detergent material individually; do not prescribe a chemical, filter substrate or dose from this PCR. Specify actual premises-cleaning formulations,wipes,absorbents and filters only when used,with native supply units and material/composition basis. No furniture polish,glue,wall fixings or repair material is introduced by default. Range evidence need: Need supply/use/returns,formulation/active/carrier or dry-material basis and conversion/density/temperature sources; do not add mixture and its components twice. Measurement evidence: protocol cp_materials; original record basis Mass / kg. The original amount constraint “Assigned actual native cleaning supply / N; cp_materials.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: actual_cleaning_supplies_synthetic_detergent. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_materials; actual source-linked native records"
     - id: added_shipping_materials
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in added_shipping_materials under cp_materials; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the package bill/specification, material or laminate identity and actual added-versus-inherited ownership. Determine each missing sleeve, seal, label, strap or support identity from that record; an integral composite is not several additive material exchanges. Only actual new outerwrap,edge guards,labels or shipping cases for this service. Factory cartons,padding,instructions,hardware bags and any included fixing kit inherit commodity production outside this service; a rescan is not repacking. Range evidence need: Need actual Count/Area/Length/Mass stock and material/tare/conversion sources; no replacement carton or protection mass per cabinet without evidence. Measurement evidence: protocol cp_materials; original record basis Mass / kg. The original amount constraint “Assigned actual new outer material / N; cp_materials.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: added_shipping_materials_pe_film; added_shipping_materials_paperboard_carton. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_materials; actual source-linked native records"
     - id: outsourced_jobs
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in outsourced_jobs under cp_provider; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the provider contract/completed-result record for each named duty in this record, with native billed physical unit and included resources. Identify the individual service result; inspection, cleaning and handling are different services, and price/hours cannot be relabelled as Item(s). A Count job requires a real contractual physical completion gate and complete resource/asset scope. Actual native mass/hour/area-time/freight providers require their corresponding concrete exchange,not invoice-to-Count conversion. Range evidence need: Need quantity/unit/completion records and complete included electricity,assets,carrier/treatment scope and overlap owner; an order is not automatically a provider job. Measurement evidence: protocol cp_provider; original record basis Count / Item(s). The original amount constraint “Assigned actual completed jobs / N; cp_provider.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_provider; actual source-linked native records"
     - id: shared_life_assets
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in shared_life_assets under cp_assets; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "For each explicitly named asset in this record, obtain the asset register identifier, configuration and matching complete-lifecycle dataset. The missing decision is the individual asset/service identity and lifetime all-user denominator; a warehouse, forklift and pallet cannot share one Count exchange or inherit a default life. Actual buildings,racks,lifting/IT equipment,pallets and reusable crates need manufacture,maintenance/cleaning,replacements and EOL across all users and periods. Retained/returned containers are stock movements,not freshly made assets per trip. Range evidence need: Require compatible cohort/lifetime drivers and units,observed history plus evidenced remainder/termination sources,uncertainty,sensitivity/update. A fully covered provider alternative cannot be added to the same own asset. Measurement evidence: protocol cp_assets; original record basis Count / Item(s). The original amount constraint “Attributed complete asset equivalents / N; cp_assets.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_assets; actual source-linked native records"
     - id: assigned_freight
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in assigned_freight under cp_transport; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "For each actual inbound, outbound, return and waste leg, obtain mode/vehicle, temperature service, origin/destination, actual load and distance plus provider coverage. The missing mode/configuration prevents selection of one freight identity; never collapse unlike modes into one kg*km flow. Record actual leg/load/route and all-consumer shares where allocated. Disclose empty-operation and carrier-owned conditioning plus exclusive commodity/service transport responsibility. Range evidence need: Need gross/tare/net load,actual distance and compatible factors/units/sources; do not assume assembled dimensions equal packed cargo or every child package is another complete kit. Measurement evidence: protocol cp_transport; original record basis Mass * distance / kg*km. The original amount constraint “Assigned actual freight / N; cp_transport.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_transport; actual source-linked native records"
     - id: unused_supply_return
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in unused_supply_return under cp_materials; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Match the external return ticket to exactly one input SKU, state and native unit, and identify the receiver. Under consumed-only input accounting omit its matched return exchange; merchandise returns and closing inventory are separate audit records. Only same-scope unused supplied materials at actual external transfer gate. Supplier/buyer furniture returns,remaining kit components,retained materials and reusable crates are different stock responsibilities; no automatic substitution credit. Range evidence need: Require native provenance/state/receiver: gross supply INPUT S and separate matched return OUTPUT OR consumed-only INPUT S-return omitting matched return exchange; never numerical S+return or unrelated negative input. Measurement evidence: protocol cp_materials; original record basis Mass / kg. The original amount constraint “Assigned measured matched outward supply / N; cp_materials.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: unused_supply_return_detergent_return; unused_supply_return_pe_film_return. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_materials; actual source-linked native records"
     - id: discarded_whole_kits
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in discarded_whole_kits under cp_kits; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case discarded_whole_kits_atomic_case covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only when the actual identified whole kit/package collection is discarded to a documented receiver. A lost fitting,one damaged child package,quarantine or buyer return does not establish all-part waste. Whole-kit mass must exclude those same parts separately counted elsewhere. Range evidence need: Need exact included packages/components,net product/pack/tare,moisture where relevant,actual disposition and compatible original finished-kit loss owner/conversion. No default all-wood or wholekit loss from missing hardware. Measurement evidence: protocol cp_kits; original record basis Mass / kg. The original amount constraint “Assigned measured whole-kit waste / N; cp_kits.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: discarded_whole_kits_atomic_case. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_kits; actual source-linked native records"
     - id: separated_furniture_parts
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in separated_furniture_parts under cp_waste; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Expand only real nonusable board,wood,coated/laminated parts,metal/plastic hardware or collected debris with actual state/material/receiver. No routine sawing,sanding,repair or disassembly is prescribed; useful remaining parts are not automatically waste. Range evidence need: Need actual component wet/dry/material fractions and bonded layers,origin/loss link,receiver/treatment and whole-part exclusions. Composite board is not dry solid wood nor evidence of chemical release. Measurement evidence: protocol cp_waste; original record basis Mass / kg. The original amount constraint “Assigned measured actual component waste / N; cp_waste.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: separated_furniture_parts_wooden_panel. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_waste; actual source-linked native records"
     - id: actual_pack_waste
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in actual_pack_waste under cp_waste; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only packaging actually removed and transferred at this boundary. Inherited packing production remains commodity upstream; actual removal/transport/treatment occurs once inside service. Normal wholesale does not automatically discard each factory package. Range evidence need: Need material/native mass/tare/contamination and real receiving recovery/treatment,excluding packaging already in whole-kit waste; collection alone does not earn recycling credit. Measurement evidence: protocol cp_waste; original record basis Mass / kg. The original amount constraint “Assigned measured separated package waste / N; cp_waste.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: actual_pack_waste_paper_pack; actual_pack_waste_metal_pack; actual_pack_waste_plastic_pack. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_waste; actual source-linked native records"
     - id: spent_housekeeping_solids
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in spent_housekeeping_solids under cp_waste; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Actual supplied cleaning materials and retained contamination only where used and collected. Retained fluid,debris and packaging fractions describe this stream,not additive duplicate liquid/part/pack outputs. Receiver/transport/treatment is recorded once. Range evidence need: Need native supply link,dry material/retained-fluid quantity/unit/basis/source,whole stream gross/tare/net and explicit other-stream exclusion. No universal wipes or filter-change quantity. Measurement evidence: protocol cp_waste; original record basis Mass / kg. The original amount constraint “Assigned measured collected spent solid / N; cp_waste.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_waste; actual source-linked native records"
     - id: contained_cleanup_water
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in contained_cleanup_water under cp_water; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only real collected housekeeping liquid with actual contamination and receiving treatment scope; not furniture-washing effluent by assumption. Wet solid and its contained-fluid view must be exclusive physical outlets. Range evidence need: Need actual volume/density/temperature units,composition basis,stream exclusions and receiver/treatment/transport; no moisture or package mass deficit becomes liquid waste. Measurement evidence: protocol cp_water; original record basis Volume / m3. The original amount constraint “Assigned measured contained cleanup liquid / N; cp_water.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_water; actual source-linked native records"
     - id: actual_direct_substances
       applies_to: "bedside_kit_trade"
-      requirement: "Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in actual_direct_substances under cp_species; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below."
+      requirement: "Identify each measured release at its source/event, chemical or particle-size identity, origin and receiving compartment using the emission/sampling record. Unknown species, unresolved particle fraction or unknown medium must remain a specific evidence gap; neither total chemical use nor stock loss supplies that identity. Identify actual measured or supported direct sources and media. Board resin/coating content,odour,damage or mass/moisture imbalance does not establish formaldehyde,VOC,dust,evaporation or any other release amount. Range evidence need: Need actual measurement or compatible activity/factor/composition/fate values,units,bases,sources and uncertainty. Complete species-specific factors cannot be multiplied again by component/fate fractions. Measurement evidence: protocol cp_species; original record basis Mass / kg. The original amount constraint “Assigned supported actual substance release / N; cp_species.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity."
       evidence: "cp_species; actual source-linked native records"
 validation_rules:
   - rule_id: validate_reference
@@ -605,6 +681,10 @@ validation_rules:
     applies_to: "actual outputs"
     rule: "Require actual mutually exclusive whole/part/material/retained-fluid records and receiver treatment. Stock deficit,odour,product resin content and dampness are not measured waste,formaldehyde,VOC,dust or evaporation. Verify actual species/activity/factor/composition/fate units,bases and sources."
     source_ids: []
+  - rule_id: validate_concrete_identity_decisions
+    applies_to: "all inventory rows"
+    rule: "Resolve each actual identity evidence decision to a physically specific card and native quantity or evidenced non-applicability. Evidence-checkpoint IDs are not exchanges. Missing occurrence, species, state, receiver or provider configuration blocks final data completion; no assumed zero. Whole streams and components, gross inputs and matched returns must remain mutually exclusive where required."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "secondary_dataset; background_dataset after actual identity and quantitative review"
   downstream_use: "Ambient physical own-account wholesale add-on for complete released flatpack bedside-kit commodity chain"
@@ -624,7 +704,7 @@ data_sources:
     used_for: "Actual example of complete product parent,multiple component packages and mixed materials; qualitative identity questions only. Dated cached snapshot generated2026-04-07,not a verified current storefront; SG and independently repeated JP access redirected to the product catalogue. No copied package counts/weights/dimensions or user assembly,fixing,care operation defaults."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:561cd357ed3982d9d908ae3c5bd8f782c6436804e907fedcdeea430317f4c1a7"
+  source_sha256: "sha256:2bc36323c567efb1b2726b4705739448ea893c1a132646e8942c91fbe084fe23"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5430"
@@ -675,16 +755,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_20428"
+    - unit_id: "normative_27229"
       family: "allocation"
       span:
         start:
-          offset: 20428
-          line: 257
+          offset: 27229
+          line: 321
           column: 1
         end:
-          offset: 24114
-          line: 273
+          offset: 30915
+          line: 337
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_consignment | all inventory | Use positive unique actual buyer-accepted N with evidenced cohort/period physical drivers; assign canceled/failed/incomplete/quarantined/returned,idle/cleanup and unfinished-period duties. No current completed sale does not erase resource responsibilities. Margin/currency are not service quantities. |  |\n| allocation_goods | nonexchange commodity stock | Reconcile attributed opening,net receipts,buyer returns,closing,accepted transfers,supplier returns,other exits,actual whole/part discard and retained usable parts without double counting parent and children. Internal quarantine/incomplete movements are not external exits. Quantify original finished-kit demand/loss and state conversion by actual package/component material/mass/tare evidence,owner/existing loss coverage and actual integration result outside service. Raw wood/board alone omits finished parts,coatings,hardware and packaging. |  |\n| allocation_supplies | supplies and unused_supply_return | S=assigned opening+true external net receipts-closing including retained recovered supplies. Choose gross supply INPUT S with separate same-scope matched unused external OUTPUT OR consumed-only INPUT S-return omitting that same outward exchange. Internal recovery is not receipt; no numerical S+return input,double deduction,unrelated negative input or removal of waste/spill upstream burden. |  |\n| allocation_fullscope | shared resources/assets/providers | Compatible-period resource attribution uses cohort physical driver/all-user driver on complete actual scope. Asset equivalent uses compatible cohort driver/complete lifetime driver across all users/periods with full manufacture,maintenance/cleaning,replacements and EOL. Evidence observed life or history plus sourced remaining use/termination,units,uncertainty,sensitivity/update. Complete external provider is an alternative to covered own resources/assets,not another additive burden. |  |\n| allocation_outlets | actual waste and releases | Whole kit or actual separated components/packing/cleanup streams must be exclusive. Retained fluid and mixed-material fractions are composition views,not another physical outlet. Actual receiver,transport/treatment once with no automatic recovery/substitution credit or waste deducted from supply. Only actual identified substances with receiving medium and supported fate are elementary flows. |  |\n\n\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| source_scope_normalization | nonexchange commodity and service combination | Keep original external commodity stock, source assignment/loss and missing-stage/additional upstream integration quantities in their evidenced RAW actual scope. Identify whether each amount is one actual consignment, a target service cohort, or ALREADY per reference,with source/target scope IDs and quantity basis. The physical source-cohort all-exit denominator assigns RAW quantity to that target scope; it is not automatically the target accepted-service N. Only when combining that same target-scope commodity amount with the 1 Item(s) service derive amount per reference = RAW assigned amount / positive unique accepted source_same_scope_N,with acceptance IDs/time/reversal evidence. A proved single-case scope has source_same_scope_N=1; an already-per-reference amount is not divided again. Preserve raw integration quantities and source links; do not shrink actual upstream remediation or divide the whole source cohort by an unrelated N. N0 responsibility remains disclosed without division. |  |\n\n"
       headings:
@@ -703,12 +783,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 20428
-              line: 257
+              offset: 27229
+              line: 321
               column: 1
             end:
-              offset: 20468
-              line: 257
+              offset: 27269
+              line: 321
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -723,18 +803,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_72527"
+    - unit_id: "normative_73636"
       family: "validation"
       span:
         start:
-          offset: 72527
-          line: 568
+          offset: 73636
+          line: 394
           column: 1
         end:
-          offset: 74319
-          line: 579
+          offset: 75894
+          line: 405
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | accepted_service | Actual title purchase/resale,B2B acceptance,all qualifiers and positive unique N required. Neither finished-kit Count,child-package Count nor hardware piece Count binds the service reference. |  |\n| validate_configuration | kit stock | Require manufacturer configuration,required versus separately sold parts,actual parent/child links,package/component quantities and mass/tare/material state; no universal package number or missing-part-to-wholekit loss factor. | ikea-platsa-kit-public |\n| validate_chain | commodity outside addon | Original baseline must match actual released finished packaged unassembled kit and include relevant board/wood processing,finish/lamination,part/hardware manufacture,preparation/completeness and original packaging once,assembling missing stages outside service. Assigned original-gate demand/state/loss quantity/unit/basis/conversion/source,exclusive exits,owner/already-covered loss and actual integration result must close. |  |\n| validate_scope | all service duties | Actual native units/support and full resource/provider/carrier/full-life asset/receiver coverage are mandatory. No user assembly/wall fix/care process or product operating lifetime becomes merchant data. Extra actual treatment/repair/conditioning needs reviewed expansion. | ikea-platsa-kit-public |\n| validate_physical_fates | actual outputs | Require actual mutually exclusive whole/part/material/retained-fluid records and receiver treatment. Stock deficit,odour,product resin content and dampness are not measured waste,formaldehyde,VOC,dust or evaporation. Verify actual species/activity/factor/composition/fate units,bases and sources. |  |\n\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | accepted_service | Actual title purchase/resale,B2B acceptance,all qualifiers and positive unique N required. Neither finished-kit Count,child-package Count nor hardware piece Count binds the service reference. |  |\n| validate_configuration | kit stock | Require manufacturer configuration,required versus separately sold parts,actual parent/child links,package/component quantities and mass/tare/material state; no universal package number or missing-part-to-wholekit loss factor. | ikea-platsa-kit-public |\n| validate_chain | commodity outside addon | Original baseline must match actual released finished packaged unassembled kit and include relevant board/wood processing,finish/lamination,part/hardware manufacture,preparation/completeness and original packaging once,assembling missing stages outside service. Assigned original-gate demand/state/loss quantity/unit/basis/conversion/source,exclusive exits,owner/already-covered loss and actual integration result must close. |  |\n| validate_scope | all service duties | Actual native units/support and full resource/provider/carrier/full-life asset/receiver coverage are mandatory. No user assembly/wall fix/care process or product operating lifetime becomes merchant data. Extra actual treatment/repair/conditioning needs reviewed expansion. | ikea-platsa-kit-public |\n| validate_physical_fates | actual outputs | Require actual mutually exclusive whole/part/material/retained-fluid records and receiver treatment. Stock deficit,odour,product resin content and dampness are not measured waste,formaldehyde,VOC,dust or evaporation. Verify actual species/activity/factor/composition/fate units,bases and sources. |  |\n| validate_concrete_identity_decisions | all inventory rows | Resolve each actual identity evidence decision to a physically specific card and native quantity or evidenced non-applicability. Evidence-checkpoint IDs are not exchanges. Missing occurrence, species, state, receiver or provider configuration blocks final data completion; no assumed zero. Whole streams and components, gross inputs and matched returns must remain mutually exclusive where required. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -751,12 +831,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 72527
-              line: 568
+              offset: 73636
+              line: 394
               column: 1
             end:
-              offset: 72549
-              line: 568
+              offset: 73658
+              line: 394
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -840,146 +920,159 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_consignment"
       identity_kind: "explicit"
-      unit_id: "normative_20428"
+      unit_id: "normative_27229"
       source_span:
         start:
-          offset: 20541
-          line: 261
+          offset: 27342
+          line: 325
           column: 1
         end:
-          offset: 20889
-          line: 261
+          offset: 27690
+          line: 325
           column: 349
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_goods"
       identity_kind: "explicit"
-      unit_id: "normative_20428"
+      unit_id: "normative_27229"
       source_span:
         start:
-          offset: 20890
-          line: 262
+          offset: 27691
+          line: 326
           column: 1
         end:
-          offset: 21490
-          line: 262
+          offset: 28291
+          line: 326
           column: 601
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_supplies"
       identity_kind: "explicit"
-      unit_id: "normative_20428"
+      unit_id: "normative_27229"
       source_span:
         start:
-          offset: 21491
-          line: 263
+          offset: 28292
+          line: 327
           column: 1
         end:
-          offset: 21948
-          line: 263
+          offset: 28749
+          line: 327
           column: 458
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_fullscope"
       identity_kind: "explicit"
-      unit_id: "normative_20428"
+      unit_id: "normative_27229"
       source_span:
         start:
-          offset: 21949
-          line: 264
+          offset: 28750
+          line: 328
           column: 1
         end:
-          offset: 22502
-          line: 264
+          offset: 29303
+          line: 328
           column: 554
     - pointer: "/allocation_rules/4"
       rule_id: "allocation_outlets"
       identity_kind: "explicit"
-      unit_id: "normative_20428"
+      unit_id: "normative_27229"
       source_span:
         start:
-          offset: 22503
-          line: 265
+          offset: 29304
+          line: 329
           column: 1
         end:
-          offset: 22953
-          line: 265
+          offset: 29754
+          line: 329
           column: 451
     - pointer: "/allocation_rules/5"
       rule_id: "source_scope_normalization"
       identity_kind: "explicit"
-      unit_id: "normative_20428"
+      unit_id: "normative_27229"
       source_span:
         start:
-          offset: 23028
-          line: 271
+          offset: 29829
+          line: 335
           column: 1
         end:
-          offset: 24112
-          line: 271
+          offset: 30913
+          line: 335
           column: 1085
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_72527"
+      unit_id: "normative_73636"
       source_span:
         start:
-          offset: 72622
-          line: 572
+          offset: 73731
+          line: 398
           column: 1
         end:
-          offset: 72860
-          line: 572
+          offset: 73969
+          line: 398
           column: 239
     - pointer: "/validation_rules/1"
       rule_id: "validate_configuration"
       identity_kind: "explicit"
-      unit_id: "normative_72527"
+      unit_id: "normative_73636"
       source_span:
         start:
-          offset: 72861
-          line: 573
+          offset: 73970
+          line: 399
           column: 1
         end:
-          offset: 73153
-          line: 573
+          offset: 74262
+          line: 399
           column: 293
     - pointer: "/validation_rules/2"
       rule_id: "validate_chain"
       identity_kind: "explicit"
-      unit_id: "normative_72527"
+      unit_id: "normative_73636"
       source_span:
         start:
-          offset: 73154
-          line: 574
+          offset: 74263
+          line: 400
           column: 1
         end:
-          offset: 73629
-          line: 574
+          offset: 74738
+          line: 400
           column: 476
     - pointer: "/validation_rules/3"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_72527"
+      unit_id: "normative_73636"
       source_span:
         start:
-          offset: 73630
-          line: 575
+          offset: 74739
+          line: 401
           column: 1
         end:
-          offset: 73969
-          line: 575
+          offset: 75078
+          line: 401
           column: 340
     - pointer: "/validation_rules/4"
       rule_id: "validate_physical_fates"
       identity_kind: "explicit"
-      unit_id: "normative_72527"
+      unit_id: "normative_73636"
       source_span:
         start:
-          offset: 73970
-          line: 576
+          offset: 75079
+          line: 402
           column: 1
         end:
-          offset: 74316
-          line: 576
+          offset: 75425
+          line: 402
           column: 347
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_concrete_identity_decisions"
+      identity_kind: "explicit"
+      unit_id: "normative_73636"
+      source_span:
+        start:
+          offset: 75426
+          line: 403
+          column: 1
+        end:
+          offset: 75892
+          line: 403
+          column: 467
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
@@ -1007,27 +1100,27 @@ normative_context:
           column: 254
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_20428"
+      unit_id: "normative_27229"
       source_span:
         start:
-          offset: 20428
-          line: 257
+          offset: 27229
+          line: 321
           column: 1
         end:
-          offset: 20468
-          line: 257
+          offset: 27269
+          line: 321
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_72527"
+      unit_id: "normative_73636"
       source_span:
         start:
-          offset: 72527
-          line: 568
+          offset: 73636
+          line: 394
           column: 1
         end:
-          offset: 72549
-          line: 568
+          offset: 73658
+          line: 394
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1036,5 +1129,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:561cd357ed3982d9d908ae3c5bd8f782c6436804e907fedcdeea430317f4c1a7"
-  generated_content_sha256: "sha256:c1cf0b8fbb6fb7878e92677f6bbffc60fccda11aa2458d7cf6ca361028c0fdb0"
+    sha256: "sha256:2bc36323c567efb1b2726b4705739448ea893c1a132646e8942c91fbe084fe23"
+  generated_content_sha256: "sha256:33fc6de6e86a0811d49c89bc7213e1e8285037b0ab1ce538c31e5af61c41ee1a"

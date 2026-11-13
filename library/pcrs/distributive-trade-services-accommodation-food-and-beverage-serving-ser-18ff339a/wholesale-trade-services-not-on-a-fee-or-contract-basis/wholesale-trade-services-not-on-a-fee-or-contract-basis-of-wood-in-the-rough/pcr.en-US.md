@@ -180,11 +180,27 @@ One real unique FINAL B2B consignment of freshlyharvested bark-on Piceaabies saw
 
 Range evidence need: Purchaseownershipresale/B2Bbuyer/FINALgate-source/reversals, species-lot-log IDs/grade/solid-stack/bark/water/scaling/nativeqty/time/source proof. No sawn moisture/density defaults.
 
+###### Unused synthetic detergent returned to supplier (`usable_supply_returns_detergent_return`)
+
+Only an independently evidenced actual unused synthetic detergent returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `usable_supply_returns`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input `operating_supplies_synthetic_detergent` in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `usable_supply_returns_detergent_return` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_supplies`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
 ##### Waste flows
 
 ###### Discarded complete fresh bark-on Norway-spruce sawlog (`discarded_logs_atomic_case`)
 
-Conditional on independently recorded actual Discarded complete fresh bark-on Norway-spruce sawlog. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `discarded_logs`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+Conditional on independently recorded actual Discarded complete fresh bark-on Norway-spruce sawlog. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain identity evidence decisions under `discarded_logs`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
 
 - Selected flow: Discarded complete fresh bark-on Norway-spruce sawlog
 - Flow property / unit: Mass / kg
@@ -197,6 +213,22 @@ Conditional on independently recorded actual Discarded complete fresh bark-on No
 - Collection protocol: `cp_logs`
 
 Range evidence need: Actualfate/receiver/nativeweight-volume-count correspondence/moisture/bark/sourcegate/treatment; no residualloss=CO2 or recyclingcredit.
+
+###### Collected detached Norway-spruce bark (`discarded_logs_spruce_bark`)
+
+Only an independently evidenced actual collected detached norway-spruce bark in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `discarded_logs`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner.
+
+- Selected flow: Collected detached Norway-spruce bark
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `discarded_logs_spruce_bark` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_logs`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_logs`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
 
 ##### Elementary flows
 
@@ -250,274 +282,22 @@ Range evidence need: Actualfate/receiver/nativeweight-volume-count correspondenc
 
 | requirement_id | applies_to | requirement | evidence |
 | --- | --- | --- | --- |
-| electricity | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `electricity` under `cp_energy`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_energy`; actual source-linked native records |
-| facility_water | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `facility_water` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| new_outer_protection | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `new_outer_protection` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| operating_supplies | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `operating_supplies` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| fuel_supply | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `fuel_supply` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| provider_services | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `provider_services` under `cp_providers`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_providers`; actual source-linked native records |
-| shared_assets | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `shared_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
-| freight | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
-| environmental_water | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `environmental_water` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| usable_supply_returns | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `usable_supply_returns` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| discarded_logs | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `discarded_logs` under `cp_logs`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `discarded_logs_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_logs`; actual source-linked native records |
-| other_wastes | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `other_wastes` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| contained_liquid_wastes | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `contained_liquid_wastes` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| water_outfalls | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `water_outfalls` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| direct_species | spruce_sawlog_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `direct_species` under `cp_releases`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_releases`; actual source-linked native records |
+| electricity | spruce_sawlog_wholesale | Which supply point, AC/DC state, voltage and supplier dataset cover the meter record? Reconcile the listed AC row with any evidenced other supply; do not use the AC UUID for a different carrier. Meter operated lighting/handling/businesssupport, no felling/sawing/kilndrying or forestgrowth. Range evidence need: Actual meters/intervals and complete allusers including idle/failed/unfinished with provider scope, no kWh per log or forest rotation. Measurement evidence: protocol `cp_energy`; original record basis Energy / kWh. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_energy” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `electricity_ac`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_energy`; actual source-linked native records |
+| facility_water | spruce_sawlog_wholesale | Does the supplier record establish treated tap water, or a different named water quality/source? Identify the supply state and gate; do not replace a non-tap-water supply with the tap-water card. Actual sanitary/support water, not logwater or default sprinkling/preservation/washing. Range evidence need: Actual supplysource/purpose/nativevolume and independent fates; purchasedwater not wastevolume/moisture. Measurement evidence: protocol `cp_supplies`; original record basis Volume / m3. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `facility_water_liquid_tap`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| new_outer_protection | spruce_sawlog_wholesale | Obtain the package bill/specification, material or laminate identity and actual added-versus-inherited ownership. Determine each missing sleeve, seal, label, strap or support identity from that record; an integral composite is not several additive material exchanges. Only real service-added bands/dunnage/labels; inherited supports sourcecommodity, reusable ones full-life. Range evidence need: Actual added-versus-inherited SKU/netquantity/countconversion/stock, no default pallet per log/consignment. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| operating_supplies | spruce_sawlog_wholesale | Obtain the purchased SKU, formulation/SDS, supplied concentration, physical state, purpose and stock/issue records for the named cleaning or maintenance duty in this record. Identify the actual non-detergent material individually; do not prescribe a chemical, filter substrate or dose from this PCR. Actual equipment lubricant/cleaners/wipes/absorbents/filters; no merchant debarking/sawchain/preservative recipe. Range evidence need: Actual use/incident/net stock/composition/spentcarrier evidence, not bark/woodmass as consumed input. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `operating_supplies_synthetic_detergent`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| fuel_supply | spruce_sawlog_wholesale | Which purchased fuel grade/formulation and supply gate are on the stock record? Identify any fuel other than the named diesel case and its native unit; obtain actual density before a volume-to-mass conversion. Real handlingfuel separate burn/returns/waste/provider coverage, no forestharvest or burninglogs. Range evidence need: Native opening/NETreceipts/closing/fates and applicable fuelidentity/densitytemperature/conversions; receipts notburn. Measurement evidence: protocol `cp_supplies`; original record basis Volume / L. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `fuel_supply_diesel_supply`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| provider_services | spruce_sawlog_wholesale | Obtain the provider contract/completed-result record for each named duty in this record, with native billed physical unit and included resources. Identify the individual service result; inspection, cleaning and handling are different services, and price/hours cannot be relabelled as Item(s). Performed storage/handling/documentvisual species-grade/scaling-record/condition/businesssupport; no merchant fell-extract-buck-debark-saw-dry. Range evidence need: Actual result/nativeunit/method/source/materialenergyassetfreighttreatment scope; actual added work reviewed, samples once. Measurement evidence: protocol `cp_providers`; original record basis Count / Item(s). The original amount constraint “Actual exclusively assigned physical quantity / N under cp_providers” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_providers`; actual source-linked native records |
+| shared_assets | spruce_sawlog_wholesale | For each explicitly named asset in this record, obtain the asset register identifier, configuration and matching complete-lifecycle dataset. The missing decision is the individual asset/service identity and lifetime all-user denominator; a warehouse, forklift and pallet cannot share one Count exchange or inherit a default life. Actual yard/warehouse/racks/handling/scales/ICT/reusable aids across allusers/full manufacture-maintenance-replacement-EOL. Logs not merchantcapital or growingstand. Range evidence need: Native used-observed-remaining-lifetime driver/source, observed+sourcedremainder/termination uncertainty/update, oneasset OR lifecycleprovider. Measurement evidence: protocol `cp_assets`; original record basis Count / Item(s). The original amount constraint “Actual exclusively assigned physical quantity / N under cp_assets” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_assets`; actual source-linked native records |
+| freight | spruce_sawlog_wholesale | For each actual inbound, outbound, return and waste leg, obtain mode/vehicle, temperature service, origin/destination, actual load and distance plus provider coverage. The missing mode/configuration prevents selection of one freight identity; never collapse unlike modes into one kg*km flow. Cargo includes actual wetwood/bark/allcargo supports. Same-state vehicle gross minus ONLY vehicle/noncargotare; reconcile receipt-haul source coverage once. Pre-receipt source-to-receiving haul belongs to the matched upstream receiving-state commodity boundary outside this service and is not repeated here. Only actual dispatch/service-supply/receiver or other declared service-boundary legs enter this evidence checkpoint. Range evidence need: Unique load-leg actual packedkg/gross-noncargotare/km/EACH-TOTAL/THATrecordshare INSIDEsum, no underbarkm3=tonne or sawn density. Measurement evidence: protocol `cp_freight`; original record basis Mass*distance / kg*km. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_freight” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_freight`; actual source-linked native records |
+| environmental_water | spruce_sawlog_wholesale | Identify the actual abstraction point, water body/aquifer, location and measured source volume from intake permits/meter records. Surface water and groundwater require distinct source identities; no direct withdrawal is established by purchased water use. Only actual merchant environmental abstraction, no logmoisture/forest evapotranspiration/preservation default. Range evidence need: Actualsource/location/interval/nativevolume/method/boundary, not woodwater as withdrawal. Measurement evidence: protocol `cp_fates`; original record basis Volume / m3. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| usable_supply_returns | spruce_sawlog_wholesale | Match the external return ticket to exactly one input SKU, state and native unit, and identify the receiver. Under consumed-only input accounting omit its matched return exchange; merchandise returns and closing inventory are separate audit records. Same-scope standalone unused supply only; consumed-only OMITmatchedoutlet. Internalrecoveryclosing/logwood-bark returns nonexchange stock. Range evidence need: Actual recipient/nativequantity/matchedinput/provenance; no commodityrecovery vs unrelatedsupply/negativecredit. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `usable_supply_returns_detergent_return`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| discarded_logs | spruce_sawlog_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Actualreceiver wholelog retainingbark/water versus separate wood/bark/support. No merchantdebark/cut assumed; whole/components nonadditive, downgrade/unknownmass not discard. Range evidence need: Actualfate/receiver/nativeweight-volume-count correspondence/moisture/bark/sourcegate/treatment; no residualloss=CO2 or recyclingcredit. Measurement evidence: protocol `cp_logs`; original record basis Mass / kg. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_logs” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `discarded_logs_atomic_case`; `discarded_logs_spruce_bark`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_logs`; actual source-linked native records |
+| other_wastes | spruce_sawlog_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Actual spentwipes/absorbents/filters/servicepacks mixed wood-bark capturedfragments. Carrier/absorbedliquid/fragments part of receivedmixture, no duplicate or assumed sawdustgeneration. Range evidence need: Receivedmixture and each componentnativeunit/basis/method/state/time/source/composition/receiver; sweepings not automatically drywood. Measurement evidence: protocol `cp_fates`; original record basis Mass / kg. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| contained_liquid_wastes | spruce_sawlog_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Actualcollected freefluid/wastewater ownidentity/state/volume/receiver, separate wetwood/absorbedmixture/directoutfall, no sprinkling/washing default. Range evidence need: Actualcollectedreceivednativevolume/composition/method-state-time-source/treatment, not woodmoisturechange or purchasedwater. Measurement evidence: protocol `cp_fates`; original record basis Volume / m3. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| water_outfalls | spruce_sawlog_wholesale | Identify the direct outfall and receiving water/soil compartment, measured water amount and independently analysed pollutant species. A sewer transfer to treatment is not this outfall; the missing receiving compartment prevents a concrete elementary-flow selection. Only actual directwater knownreceivingmedium; containedtransfers Waste, actualspecies separate. Range evidence need: Location/medium/interval/nativevolume/composition/fate/conversion evidence; rain/damplogs alone not outfallquantity. Measurement evidence: protocol `cp_fates`; original record basis Volume / m3. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| direct_species | spruce_sawlog_wholesale | Identify each measured release at its source/event, chemical or particle-size identity, origin and receiving compartment using the emission/sampling record. Unknown species, unresolved particle fraction or unknown medium must remain a specific evidence gap; neither total chemical use nor stock loss supplies that identity. Actualchemical/species/particle/medium measurement or compatible realserviceevent method. No stockgrowth/sequestration/automaticdecay/CO2/dust from massdeficit. Range evidence need: Exactspecies/medium/native measurement or actualactivity-factor unit/basis/method/state/time/source/coverage; completefractioncovering factors notmultipliedagain. Measurement evidence: protocol `cp_releases`; original record basis Mass / kg. The original amount constraint “Actual exclusively assigned physical quantity / N under cp_releases” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_releases`; actual source-linked native records |
 
-
-### Mandatory Inventory Completion Records
-
-These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
-
-#### electricity
-
-Meter operated lighting/handling/businesssupport, no felling/sawing/kilndrying or forestgrowth.
-
-Residual inventory requirement after the independently identified cases `electricity_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual sawlog wholesale facility electricity
-- Flow property / unit: Energy / kWh
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_energy
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
-
-Range evidence need: Actual meters/intervals and complete allusers including idle/failed/unfinished with provider scope, no kWh per log or forest rotation.
-
-#### facility_water
-
-Actual sanitary/support water, not logwater or default sprinkling/preservation/washing.
-
-Residual inventory requirement after the independently identified cases `facility_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual purchased premises-support water
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Actual supplysource/purpose/nativevolume and independent fates; purchasedwater not wastevolume/moisture.
-
-#### new_outer_protection
-
-Only real service-added bands/dunnage/labels; inherited supports sourcecommodity, reusable ones full-life.
-
-- Identity requirement: Actual added dispatch supports and labels
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Actual added-versus-inherited SKU/netquantity/countconversion/stock, no default pallet per log/consignment.
-
-#### operating_supplies
-
-Actual equipment lubricant/cleaners/wipes/absorbents/filters; no merchant debarking/sawchain/preservative recipe.
-
-Residual inventory requirement after the independently identified cases `operating_supplies_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual maintenance and conditional cleanup consumables
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Actual use/incident/net stock/composition/spentcarrier evidence, not bark/woodmass as consumed input.
-
-#### fuel_supply
-
-Real handlingfuel separate burn/returns/waste/provider coverage, no forestharvest or burninglogs.
-
-Residual inventory requirement after the independently identified cases `fuel_supply_diesel_supply`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual owned handling-fuel stock
-- Flow property / unit: Volume / L
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Native opening/NETreceipts/closing/fates and applicable fuelidentity/densitytemperature/conversions; receipts notburn.
-
-#### provider_services
-
-Performed storage/handling/documentvisual species-grade/scaling-record/condition/businesssupport; no merchant fell-extract-buck-debark-saw-dry.
-
-- Identity requirement: Actual physical spruce-sawlog wholesale support results
-- Flow property / unit: Count / Item(s)
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_providers
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_providers`
-
-Range evidence need: Actual result/nativeunit/method/source/materialenergyassetfreighttreatment scope; actual added work reviewed, samples once.
-
-#### shared_assets
-
-Actual yard/warehouse/racks/handling/scales/ICT/reusable aids across allusers/full manufacture-maintenance-replacement-EOL. Logs not merchantcapital or growingstand.
-
-- Identity requirement: Full-life shared log-yard and handling assets
-- Flow property / unit: Count / Item(s)
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_assets
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
-
-Range evidence need: Native used-observed-remaining-lifetime driver/source, observed+sourcedremainder/termination uncertainty/update, oneasset OR lifecycleprovider.
-
-#### freight
-
-Cargo includes actual wetwood/bark/allcargo supports. Same-state vehicle gross minus ONLY vehicle/noncargotare; reconcile receipt-haul source coverage once. Pre-receipt source-to-receiving haul belongs to the matched upstream receiving-state commodity boundary outside this service and is not repeated here. Only actual dispatch/service-supply/receiver or other declared service-boundary legs enter this card.
-
-- Identity requirement: Actual packed bark-on-log and service freight
-- Flow property / unit: Mass*distance / kg*km
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_freight
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_freight`
-
-Range evidence need: Unique load-leg actual packedkg/gross-noncargotare/km/EACH-TOTAL/THATrecordshare INSIDEsum, no underbarkm3=tonne or sawn density.
-
-#### environmental_water
-
-Only actual merchant environmental abstraction, no logmoisture/forest evapotranspiration/preservation default.
-
-- Identity requirement: Actual direct yard-water withdrawal
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Actualsource/location/interval/nativevolume/method/boundary, not woodwater as withdrawal.
-
-#### usable_supply_returns
-
-Same-scope standalone unused supply only; consumed-only OMITmatchedoutlet. Internalrecoveryclosing/logwood-bark returns nonexchange stock.
-
-- Identity requirement: Actual matched unused service-supply external returns
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Actual recipient/nativequantity/matchedinput/provenance; no commodityrecovery vs unrelatedsupply/negativecredit.
-
-#### discarded_logs
-
-Actualreceiver wholelog retainingbark/water versus separate wood/bark/support. No merchantdebark/cut assumed; whole/components nonadditive, downgrade/unknownmass not discard.
-
-- Identity requirement: Actual discarded logs or separately collected wood-bark residues
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_logs
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_logs`
-
-Range evidence need: Actualfate/receiver/nativeweight-volume-count correspondence/moisture/bark/sourcegate/treatment; no residualloss=CO2 or recyclingcredit.
-
-#### other_wastes
-
-Actual spentwipes/absorbents/filters/servicepacks mixed wood-bark capturedfragments. Carrier/absorbedliquid/fragments part of receivedmixture, no duplicate or assumed sawdustgeneration.
-
-- Identity requirement: Actual spent supplies and mixed yard-cleanup solids
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Receivedmixture and each componentnativeunit/basis/method/state/time/source/composition/receiver; sweepings not automatically drywood.
-
-#### contained_liquid_wastes
-
-Actualcollected freefluid/wastewater ownidentity/state/volume/receiver, separate wetwood/absorbedmixture/directoutfall, no sprinkling/washing default.
-
-- Identity requirement: Actual contained facility wastewater/free liquid
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Actualcollectedreceivednativevolume/composition/method-state-time-source/treatment, not woodmoisturechange or purchasedwater.
-
-#### water_outfalls
-
-Only actual directwater knownreceivingmedium; containedtransfers Waste, actualspecies separate.
-
-- Identity requirement: Actual direct yard-water environmental outfall
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Location/medium/interval/nativevolume/composition/fate/conversion evidence; rain/damplogs alone not outfallquantity.
-
-#### direct_species
-
-Actualchemical/species/particle/medium measurement or compatible realserviceevent method. No stockgrowth/sequestration/automaticdecay/CO2/dust from massdeficit.
-
-- Identity requirement: Actual identified species releases to documented media
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively assigned physical quantity / N under cp_releases
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_releases`
-
-Range evidence need: Exactspecies/medium/native measurement or actualactivity-factor unit/basis/method/state/time/source/coverage; completefractioncovering factors notmultipliedagain.
 
 ## 9. Validation Rules
 
@@ -528,7 +308,7 @@ Range evidence need: Exactspecies/medium/native measurement or actualactivity-fa
 | native_bark_water | commodity | Solid-stack/under-overbark actualformula-calibration/allnativeinputs/samples/source; r_bark Vbark/Vunder andpercentfirst notmassfraction/tabledefault. Wateronly wetdrysameactualdefinitions percentfirst/LODothervolatileguard; actualmatching wholebarkon/componentdensity-tempunit; fullwetnetmass retainsbarkwater excludesonlyexternal supporttare. | forest-research-sawlog-tables-1987 |
 | source_integration | commodity | Native directactualtrace OR positiveCOMPLETE terminalrecords inclclosingusefulreturnprovenloss eachnative6-link-owner, noacceptedonly/directdriveroverlay. Actualspeciesgrade-state-gate/producerunderbarkroadside match andbeyondgate receipttransportonce; samebaseline stage-losscoverage/exclusivelossowner thenmissingstages-requiredadditional ACTUALCOMPLETEDoutsideintegration nativeqty-status-link-timezone-source-owner-coverage beforechainready, notpending. |  |
 | resources_fates | all | NETsupplies excludecontainertare/gross+matchedreturn OR consumedOMIToutlet; fullalluserasset observed+sourcedremaining/termination/native-driver uncertainty-update oneassetORprovider/N. Freightwetwoodbark-allcargosupports retainedONLYvehicle/noncargotare nativeEACH-TOTAL/repeat/THATshareINSIDEsum beforepositiveFINALNonce, N0retained. Wholelog/separatewoodbark/mixedcleanup/freefluid/directspecies exclusiveactualreceivertreatmentonce, no residual=woodlossCO2zero ordefaultcredit, completefactor fractions notmultipliedagain. |  |
-
+| validate_concrete_identity_decisions | all inventory rows | Resolve each actual identity evidence decision to a physically specific card and native quantity or evidenced non-applicability. Evidence-checkpoint IDs are not exchanges. Missing occurrence, species, state, receiver or provider configuration blocks final data completion; no assumed zero. Whole streams and components, gross inputs and matched returns must remain mutually exclusive where required. |  |
 
 ## 10. Published Dataset Profile
 

@@ -184,11 +184,43 @@ One actual unique commercial ownership-purchase/resale consignment accepted by a
 
 Range evidence need: Need actual design/size/piece/source-lot identity,net native grams,actual alloy/fineness assay basis/source,pack tare and condition/period/gates; no fixed carat,purity,price or gold-equivalent per service.
 
+###### Unused synthetic detergent returned to supplier (`unused_supply_return_detergent_return`)
+
+Only an independently evidenced actual unused synthetic detergent returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `unused_supply_return`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input `actual_service_materials_synthetic_detergent` in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `unused_supply_return_detergent_return` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_materials`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_materials`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
+###### Unused polyethylene film returned to supplier (`unused_supply_return_pe_film_return`)
+
+Only an independently evidenced actual unused polyethylene film returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `unused_supply_return`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input `added_shipping_materials_pe_film` in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit.
+
+- Selected flow: Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `unused_supply_return_pe_film_return` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_materials`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_materials`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
 ##### Waste flows
 
 ###### Discarded complete plain gold-alloy finger ring (`discarded_whole_rings_atomic_case`)
 
-Conditional on independently recorded actual Discarded complete plain gold-alloy finger ring. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `discarded_whole_rings`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+Conditional on independently recorded actual Discarded complete plain gold-alloy finger ring. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain identity evidence decisions under `discarded_whole_rings`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
 
 - Selected flow: Discarded complete plain gold-alloy finger ring
 - Flow property / unit: Mass / g
@@ -252,6 +284,38 @@ Only actual independently discarded, separately collected empty plastic packagin
 
 Range evidence need: Need material/tare/contamination and actual native conversion,source/receiver/transport/treatment with whole/mixed-stream exclusions; no recycling marking or precious-product price as recovery credit.
 
+###### Collected plain gold-alloy ring fragment (`actual_nonusable_alloy_material_gold_alloy_fragment`)
+
+Only an independently evidenced actual collected plain gold-alloy ring fragment in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `actual_nonusable_alloy_material`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner.
+
+- Selected flow: Collected plain gold-alloy ring fragment
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `actual_nonusable_alloy_material_gold_alloy_fragment` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_material_fates`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_material_fates`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
+###### Collected aqueous premises-cleaning wastewater sent to treatment (`contained_cleanup_liquid_aqueous_cleaning`)
+
+Only an independently evidenced actual collected aqueous premises-cleaning wastewater sent to treatment in this process is covered. Record its own physical state, net m3, event/source and handover gate. Other states or receivers require their own identity decision `contained_cleanup_liquid`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner. This is the aqueous premises-cleaning stream, with its actual dissolved/suspended load and measured received volume. Exclude separately collected undiluted merchandise, organic fluid, condensate or sanitary wastewater. If these actually mix before one transfer, identify that real mixture separately; do not sum constituent volumes or label it pure cleaning water. No quantity is inferred from supplied water.
+
+- Selected flow: Collected aqueous premises-cleaning wastewater sent to treatment
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned m3 for `contained_cleanup_liquid_aqueous_cleaning` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_water`
+
+Range evidence need: Require event-linked native m3, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_water`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -309,276 +373,22 @@ Range evidence need: Need material/tare/contamination and actual native conversi
 
 | requirement_id | applies_to | requirement | evidence |
 | --- | --- | --- | --- |
-| warehouse_electricity | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `warehouse_electricity` under `cp_power`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_power`; actual source-linked native records |
-| housekeeping_water | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `housekeeping_water` under `cp_water`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_water`; actual source-linked native records |
-| actual_service_materials | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_service_materials` under `cp_materials`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_materials`; actual source-linked native records |
-| added_shipping_materials | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `added_shipping_materials` under `cp_materials`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_materials`; actual source-linked native records |
-| external_physical_jobs | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `external_physical_jobs` under `cp_provider`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_provider`; actual source-linked native records |
-| full_life_assets | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `full_life_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
-| packed_freight | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `packed_freight` under `cp_transport`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_transport`; actual source-linked native records |
-| unused_supply_return | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `unused_supply_return` under `cp_materials`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_materials`; actual source-linked native records |
-| actual_usable_alloy_transfer | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_usable_alloy_transfer` under `cp_material_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_material_fates`; actual source-linked native records |
-| discarded_whole_rings | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `discarded_whole_rings` under `cp_rings`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `discarded_whole_rings_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_rings`; actual source-linked native records |
-| actual_nonusable_alloy_material | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_nonusable_alloy_material` under `cp_material_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_material_fates`; actual source-linked native records |
-| actual_pack_waste | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_pack_waste` under `cp_material_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_material_fates`; actual source-linked native records |
-| spent_housekeeping_solids | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `spent_housekeeping_solids` under `cp_material_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_material_fates`; actual source-linked native records |
-| contained_cleanup_liquid | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `contained_cleanup_liquid` under `cp_water`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_water`; actual source-linked native records |
-| actual_direct_substances | plain_gold_ring_trade | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `actual_direct_substances` under `cp_species`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_species`; actual source-linked native records |
+| warehouse_electricity | plain_gold_ring_trade | Which supply point, AC/DC state, voltage and supplier dataset cover the meter record? Reconcile the listed AC row with any evidenced other supply; do not use the AC UUID for a different carrier. Actual lighting,picking,records and assigned handling/standby/cleanup equipment only. Do not infer furnace,polisher,ultrasonic cleaner or analytical-instrument energy from a gold or assay record. Range evidence need: Need complete device/provider period metering and causal all-user shares; ring value,fineness or nominal gold mass is not a warehouse-energy factor. Measurement evidence: protocol `cp_power`; original record basis Energy / kWh. The original amount constraint “Attributed measured actual electricity / N; cp_power.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `warehouse_electricity_ac`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_power`; actual source-linked native records |
+| housekeeping_water | plain_gold_ring_trade | Does the supplier record establish treated tap water, or a different named water quality/source? Identify the supply state and gate; do not replace a non-tap-water supply with the tap-water card. Only actual premises/equipment housekeeping,not ring washing,chemical cleaning,plating,assay digestion or refining. Record any actual environmental water source separately. Range evidence need: Require source/use and actual collected/retained/direct paths; jewelry-care recommendations do not quantify water,effluent or evaporation. Measurement evidence: protocol `cp_water`; original record basis Volume / m3. The original amount constraint “Assigned actual supplied volume / N; cp_water.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `housekeeping_water_liquid_tap`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_water`; actual source-linked native records |
+| actual_service_materials | plain_gold_ring_trade | Obtain the purchased SKU, formulation/SDS, supplied concentration, physical state, purpose and stock/issue records for the named cleaning or maintenance duty in this record. Identify the actual non-detergent material individually; do not prescribe a chemical, filter substrate or dose from this PCR. Only actual native housekeeping preparations,wipes,absorbents or filters used here. No polishing paste,acid,flux,alloy metal,detergent for rings or ultrasonic bath is prescribed. Factory surface finish and existing assay certificate remain inherited product/records. Range evidence need: Need actual SKU/formulation/dry material/active-carrier basis,stock/use/returns and compatible density/temp/conversion sources; contents are not second additive supplies. Measurement evidence: protocol `cp_materials`; original record basis Mass / kg. The original amount constraint “Attributed actual native supply / N; cp_materials.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `actual_service_materials_synthetic_detergent`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_materials`; actual source-linked native records |
+| added_shipping_materials | plain_gold_ring_trade | Obtain the package bill/specification, material or laminate identity and actual added-versus-inherited ownership. Determine each missing sleeve, seal, label, strap or support identity from that record; an integral composite is not several additive material exchanges. Only actual new outer cases,pouches,dividers,wraps or labels supplied by this service. Inherited individual boxes,linings,tags or certificates and factory ring finish belong to original commodity scope; consumer care does not mandate replacement. Range evidence need: Require actual native Count/Area/Length/Mass,material/tare and stock/conversion source; no standard pouch mass,anti-tarnish chemical or individual box per piece without evidence. Measurement evidence: protocol `cp_materials`; original record basis Mass / kg. The original amount constraint “Assigned actual newly added material / N; cp_materials.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `added_shipping_materials_pe_film`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_materials`; actual source-linked native records |
+| external_physical_jobs | plain_gold_ring_trade | Obtain the provider contract/completed-result record for each named duty in this record, with native billed physical unit and included resources. Identify the individual service result; inspection, cleaning and handling are different services, and price/hours cannot be relabelled as Item(s). Only actual completed contractual native physical jobs with complete resource/asset boundary. Actual mass/hour/area-time/freight providers use their own native exchange. Reviewing an inherited assay is not a new merchant assay operation; any actual testing/cleaning/refining needs separately reviewed scope. Range evidence need: Need completion/unit and full electricity/assets/carrier/receiver scope with overlap owner; purchase fee,metal value or assay price is not Count quantity. Measurement evidence: protocol `cp_provider`; original record basis Count / Item(s). The original amount constraint “Assigned actual completed native jobs / N; cp_provider.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_provider`; actual source-linked native records |
+| full_life_assets | plain_gold_ring_trade | For each explicitly named asset in this record, obtain the asset register identifier, configuration and matching complete-lifecycle dataset. The missing decision is the individual asset/service identity and lifetime all-user denominator; a warehouse, forklift and pallet cannot share one Count exchange or inherit a default life. Actual building,racks/storage supports,handling/records equipment and reusable containers need manufacture,maintenance/cleaning,replacements and EOL across all users/periods. Merchandise rings and their consumer life are not service assets. Range evidence need: Require compatible cohort/lifetime driver identity/units,observed life or history plus sourced remainder/termination,uncertainty/sensitivity/update; reusable-box returns do not manufacture new boxes each trip. Measurement evidence: protocol `cp_assets`; original record basis Count / Item(s). The original amount constraint “Attributed complete asset equivalents / N; cp_assets.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_assets`; actual source-linked native records |
+| packed_freight | plain_gold_ring_trade | For each actual inbound, outbound, return and waste leg, obtain mode/vehicle, temperature service, origin/destination, actual load and distance plus provider coverage. The missing mode/configuration prevents selection of one freight identity; never collapse unlike modes into one kg*km flow. Use real packed shipment/leg and exclusive commodity/service carrier scope,including empty operation where covered. Native grams for rings do not justify excluding cargo boxes,pouches or other actually shipped materials from packed payload. Range evidence need: Need actual cargo/gross-noncargo tare role,distance,load/distance factors/units/sources and causal share/all-user drivers; fine-gold-equivalent or sales value is not packed freight mass. Measurement evidence: protocol `cp_transport`; original record basis Mass * distance / kg*km. The original amount constraint “Assigned actual packed load-distance / N; cp_transport.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_transport`; actual source-linked native records |
+| unused_supply_return | plain_gold_ring_trade | Match the external return ticket to exactly one input SKU, state and native unit, and identify the receiver. Under consumed-only input accounting omit its matched return exchange; merchandise returns and closing inventory are separate audit records. Only actual unused independent supplies with same-scope provenance at external receiver. Returned/unsold rings,inherited boxes,retained supplies and reusable assets follow their own commodity/stock scope,no automatic supply credit. Range evidence need: Need native quantity/state/matching: gross INPUT S plus separate usable OUTPUT OR consumed-only INPUT S-return omitting matched output. Never numeric S+return,double deduction or subtraction of inherited metal transfers from unrelated supplies. Measurement evidence: protocol `cp_materials`; original record basis Mass / kg. The original amount constraint “Assigned measured same-scope unused outward / N; cp_materials.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `unused_supply_return_detergent_return`; `unused_supply_return_pe_film_return`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_materials`; actual source-linked native records |
+| actual_usable_alloy_transfer | plain_gold_ring_trade | Obtain the independent handover record, actual material/composite state, quality acceptance and recipient for the specifically described recovered outlet in this record. Determine Product-versus-Waste from that real handover; do not presume a recovered-product identity or substitution credit. Conditional actual separately collected alloy fragment/material with proved usable state and accepted external receiver,not automatic merchant refining/recovery. Normal usable rings remain merchandise stock/returns. Actual inherited-metal source manufacture stays in commodity accounting once,no substitution credit or operating metal-input deduction. Range evidence need: Need actual alloy-metal gram basis,contamination/fineness source if applied,source-piece/receiver/ownership gate and nonoverlap with whole/fragment waste. Precious content/value alone does not establish usable export or avoided mining. Measurement evidence: protocol `cp_material_fates`; original record basis Mass / g. The original amount constraint “Assigned measured actual usable alloy grams / N; cp_material_fates.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_material_fates`; actual source-linked native records |
+| discarded_whole_rings | plain_gold_ring_trade | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only actual documented waste decision and receiver; scratches,incorrect size,unsold/returned stock or missing item alone is not disposal or released gold. Whole-ring metal and included material are content audits,not added again as separated fragments. Range evidence need: Need actual piece/lot identity,native gram net mass,pack versus product scope,alloy/assay/state and original finished-ring sourcegate loss/coverage owner. No assumed whole-ring burden per missing gram or automatic recycling credit. Measurement evidence: protocol `cp_rings`; original record basis Mass / g. The original amount constraint “Assigned measured actual discarded-ring grams / N; cp_rings.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `discarded_whole_rings_atomic_case`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_rings`; actual source-linked native records |
+| actual_nonusable_alloy_material | plain_gold_ring_trade | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only actual collected broken material or incident residue classed nonusable at real receiving treatment. No routine polishing dust,swarf,assay residue,acid sludge or refining loss is presumed. Alloy retained in a whole ring or absorbed/mixed cleanup stream is not another physical outlet. Range evidence need: Require material/state,actual metal versus contamination/native gram basis and representative assay if fine-gold view is used,receiver/transport/treatment and whole/absorbed exclusions. Lost item or unexplained inventory mass is not waste. Measurement evidence: protocol `cp_material_fates`; original record basis Mass / g. The original amount constraint “Assigned measured actual nonusable material grams / N; cp_material_fates.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `actual_nonusable_alloy_material_gold_alloy_fragment`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_material_fates`; actual source-linked native records |
+| actual_pack_waste | plain_gold_ring_trade | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only packing actually removed and transferred to real receiver,with original manufacturing burden outside service. Retained ring boxes/certificates or transport assets are not automatically discarded; integral product features are not package tare. Range evidence need: Need material/tare/contamination and actual native conversion,source/receiver/transport/treatment with whole/mixed-stream exclusions; no recycling marking or precious-product price as recovery credit. Measurement evidence: protocol `cp_material_fates`; original record basis Mass / kg. The original amount constraint “Assigned measured actual removed packing / N; cp_material_fates.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `actual_pack_waste_paper_pack`; `actual_pack_waste_metal_pack`; `actual_pack_waste_plastic_pack`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_material_fates`; actual source-linked native records |
+| spent_housekeeping_solids | plain_gold_ring_trade | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only actual used and collected service-cleaning solids and their retained liquid/metal/packing/chemical contents. Retained alloy in this stream is a linked nonadditive content audit,not independent whole/fragment metal Waste or Product transfer. No jewelry polishing/cleaning operation is implied. Range evidence need: Need actual native supply link,dry material/retained fluid and alloy content gram quantities/unit/state/source,whole gross/tare/net,exclusion links and actual receiver treatment; no assumed wipe adsorption or polishing yield. Measurement evidence: protocol `cp_material_fates`; original record basis Mass / kg. The original amount constraint “Assigned measured actual spent solids / N; cp_material_fates.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_material_fates`; actual source-linked native records |
+| contained_cleanup_liquid | plain_gold_ring_trade | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only actual collected housekeeping liquid with actual contamination and receiver. It is not a merchant jewelry-cleaning/refining bath by assumption. Liquid/metal already retained in whole/mixed solid waste is not this additional physical outlet. Range evidence need: Need actual source,volume/density/temperature units,composition/state/source and stream exclusions/receiver/transport/treatment. Alloy/gold content does not mean direct dissolved-metal release or default treatment credit. Measurement evidence: protocol `cp_water`; original record basis Volume / m3. The original amount constraint “Assigned measured actual collected liquid / N; cp_water.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `contained_cleanup_liquid_aqueous_cleaning`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_water`; actual source-linked native records |
+| actual_direct_substances | plain_gold_ring_trade | Identify each measured release at its source/event, chemical or particle-size identity, origin and receiving compartment using the emission/sampling record. Unknown species, unresolved particle fraction or unknown medium must remain a specific evidence gap; neither total chemical use nor stock loss supplies that identity. Only actual measured or supported direct event/substance/medium. Alloy fineness,scratch/discoloration,missing jewelry or stock discrepancy is not gold/copper/dust/VOC/water release. Actual waste-receiver emissions stay within linked receiver treatment once,not merchant direct duplicates. Range evidence need: Need compatible actual activity/factor/composition/fate or measurement values,units,bases,sources and uncertainty; complete species factors do not multiply composition/fate again. Measurement evidence: protocol `cp_species`; original record basis Mass / kg. The original amount constraint “Assigned supported actual substance quantity / N; cp_species.” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_species`; actual source-linked native records |
 
-
-### Mandatory Inventory Completion Records
-
-These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
-
-#### warehouse_electricity
-
-Actual lighting,picking,records and assigned handling/standby/cleanup equipment only. Do not infer furnace,polisher,ultrasonic cleaner or analytical-instrument energy from a gold or assay record.
-
-Residual inventory requirement after the independently identified cases `warehouse_electricity_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual electricity for ring warehouse and order duties
-- Flow property / unit: Energy / kWh
-- Amount rule: Attributed measured actual electricity / N; cp_power.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_power`
-
-Range evidence need: Need complete device/provider period metering and causal all-user shares; ring value,fineness or nominal gold mass is not a warehouse-energy factor.
-
-#### housekeeping_water
-
-Only actual premises/equipment housekeeping,not ring washing,chemical cleaning,plating,assay digestion or refining. Record any actual environmental water source separately.
-
-Residual inventory requirement after the independently identified cases `housekeeping_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual supplied premises-housekeeping water
-- Flow property / unit: Volume / m3
-- Amount rule: Assigned actual supplied volume / N; cp_water.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_water`
-
-Range evidence need: Require source/use and actual collected/retained/direct paths; jewelry-care recommendations do not quantify water,effluent or evaporation.
-
-#### actual_service_materials
-
-Only actual native housekeeping preparations,wipes,absorbents or filters used here. No polishing paste,acid,flux,alloy metal,detergent for rings or ultrasonic bath is prescribed. Factory surface finish and existing assay certificate remain inherited product/records.
-
-Residual inventory requirement after the independently identified cases `actual_service_materials_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual premises-cleaning preparations and consumables
-- Flow property / unit: Mass / kg
-- Amount rule: Attributed actual native supply / N; cp_materials.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_materials`
-
-Range evidence need: Need actual SKU/formulation/dry material/active-carrier basis,stock/use/returns and compatible density/temp/conversion sources; contents are not second additive supplies.
-
-#### added_shipping_materials
-
-Only actual new outer cases,pouches,dividers,wraps or labels supplied by this service. Inherited individual boxes,linings,tags or certificates and factory ring finish belong to original commodity scope; consumer care does not mandate replacement.
-
-Residual inventory requirement after the independently identified cases `added_shipping_materials_pe_film`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual added order-protection materials
-- Flow property / unit: Mass / kg
-- Amount rule: Assigned actual newly added material / N; cp_materials.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_materials`
-
-Range evidence need: Require actual native Count/Area/Length/Mass,material/tare and stock/conversion source; no standard pouch mass,anti-tarnish chemical or individual box per piece without evidence.
-
-#### external_physical_jobs
-
-Only actual completed contractual native physical jobs with complete resource/asset boundary. Actual mass/hour/area-time/freight providers use their own native exchange. Reviewing an inherited assay is not a new merchant assay operation; any actual testing/cleaning/refining needs separately reviewed scope.
-
-- Identity requirement: Actual completed counted external ring-handling jobs
-- Flow property / unit: Count / Item(s)
-- Amount rule: Assigned actual completed native jobs / N; cp_provider.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_provider`
-
-Range evidence need: Need completion/unit and full electricity/assets/carrier/receiver scope with overlap owner; purchase fee,metal value or assay price is not Count quantity.
-
-#### full_life_assets
-
-Actual building,racks/storage supports,handling/records equipment and reusable containers need manufacture,maintenance/cleaning,replacements and EOL across all users/periods. Merchandise rings and their consumer life are not service assets.
-
-- Identity requirement: Complete-life shared storage,handling and reusable transport-asset equivalents
-- Flow property / unit: Count / Item(s)
-- Amount rule: Attributed complete asset equivalents / N; cp_assets.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
-
-Range evidence need: Require compatible cohort/lifetime driver identity/units,observed life or history plus sourced remainder/termination,uncertainty/sensitivity/update; reusable-box returns do not manufacture new boxes each trip.
-
-#### packed_freight
-
-Use real packed shipment/leg and exclusive commodity/service carrier scope,including empty operation where covered. Native grams for rings do not justify excluding cargo boxes,pouches or other actually shipped materials from packed payload.
-
-- Identity requirement: Actual assigned freight of rings,supplies and waste
-- Flow property / unit: Mass * distance / kg*km
-- Amount rule: Assigned actual packed load-distance / N; cp_transport.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_transport`
-
-Range evidence need: Need actual cargo/gross-noncargo tare role,distance,load/distance factors/units/sources and causal share/all-user drivers; fine-gold-equivalent or sales value is not packed freight mass.
-
-#### unused_supply_return
-
-Only actual unused independent supplies with same-scope provenance at external receiver. Returned/unsold rings,inherited boxes,retained supplies and reusable assets follow their own commodity/stock scope,no automatic supply credit.
-
-- Identity requirement: Actual matched unused independent service-material returns
-- Flow property / unit: Mass / kg
-- Amount rule: Assigned measured same-scope unused outward / N; cp_materials.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_materials`
-
-Range evidence need: Need native quantity/state/matching: gross INPUT S plus separate usable OUTPUT OR consumed-only INPUT S-return omitting matched output. Never numeric S+return,double deduction or subtraction of inherited metal transfers from unrelated supplies.
-
-#### actual_usable_alloy_transfer
-
-Conditional actual separately collected alloy fragment/material with proved usable state and accepted external receiver,not automatic merchant refining/recovery. Normal usable rings remain merchandise stock/returns. Actual inherited-metal source manufacture stays in commodity accounting once,no substitution credit or operating metal-input deduction.
-
-- Identity requirement: Actual usable separated inherited alloy material transferred externally
-- Flow property / unit: Mass / g
-- Amount rule: Assigned measured actual usable alloy grams / N; cp_material_fates.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_material_fates`
-
-Range evidence need: Need actual alloy-metal gram basis,contamination/fineness source if applied,source-piece/receiver/ownership gate and nonoverlap with whole/fragment waste. Precious content/value alone does not establish usable export or avoided mining.
-
-#### discarded_whole_rings
-
-Only actual documented waste decision and receiver; scratches,incorrect size,unsold/returned stock or missing item alone is not disposal or released gold. Whole-ring metal and included material are content audits,not added again as separated fragments.
-
-- Identity requirement: Actual discarded complete alloy rings at waste gate
-- Flow property / unit: Mass / g
-- Amount rule: Assigned measured actual discarded-ring grams / N; cp_rings.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_rings`
-
-Range evidence need: Need actual piece/lot identity,native gram net mass,pack versus product scope,alloy/assay/state and original finished-ring sourcegate loss/coverage owner. No assumed whole-ring burden per missing gram or automatic recycling credit.
-
-#### actual_nonusable_alloy_material
-
-Only actual collected broken material or incident residue classed nonusable at real receiving treatment. No routine polishing dust,swarf,assay residue,acid sludge or refining loss is presumed. Alloy retained in a whole ring or absorbed/mixed cleanup stream is not another physical outlet.
-
-- Identity requirement: Actual nonusable separated ring alloy/material at receiver gate
-- Flow property / unit: Mass / g
-- Amount rule: Assigned measured actual nonusable material grams / N; cp_material_fates.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_material_fates`
-
-Range evidence need: Require material/state,actual metal versus contamination/native gram basis and representative assay if fine-gold view is used,receiver/transport/treatment and whole/absorbed exclusions. Lost item or unexplained inventory mass is not waste.
-
-#### actual_pack_waste
-
-Only packing actually removed and transferred to real receiver,with original manufacturing burden outside service. Retained ring boxes/certificates or transport assets are not automatically discarded; integral product features are not package tare.
-
-Residual inventory requirement after the independently identified cases `actual_pack_waste_paper_pack`; `actual_pack_waste_metal_pack`; `actual_pack_waste_plastic_pack`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual separated inherited or added package waste
-- Flow property / unit: Mass / kg
-- Amount rule: Assigned measured actual removed packing / N; cp_material_fates.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_material_fates`
-
-Range evidence need: Need material/tare/contamination and actual native conversion,source/receiver/transport/treatment with whole/mixed-stream exclusions; no recycling marking or precious-product price as recovery credit.
-
-#### spent_housekeeping_solids
-
-Only actual used and collected service-cleaning solids and their retained liquid/metal/packing/chemical contents. Retained alloy in this stream is a linked nonadditive content audit,not independent whole/fragment metal Waste or Product transfer. No jewelry polishing/cleaning operation is implied.
-
-- Identity requirement: Actual spent wipes,absorbents,filters and mixed housekeeping solids
-- Flow property / unit: Mass / kg
-- Amount rule: Assigned measured actual spent solids / N; cp_material_fates.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_material_fates`
-
-Range evidence need: Need actual native supply link,dry material/retained fluid and alloy content gram quantities/unit/state/source,whole gross/tare/net,exclusion links and actual receiver treatment; no assumed wipe adsorption or polishing yield.
-
-#### contained_cleanup_liquid
-
-Only actual collected housekeeping liquid with actual contamination and receiver. It is not a merchant jewelry-cleaning/refining bath by assumption. Liquid/metal already retained in whole/mixed solid waste is not this additional physical outlet.
-
-- Identity requirement: Actual collected premises-cleaning liquid at treatment gate
-- Flow property / unit: Volume / m3
-- Amount rule: Assigned measured actual collected liquid / N; cp_water.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_water`
-
-Range evidence need: Need actual source,volume/density/temperature units,composition/state/source and stream exclusions/receiver/transport/treatment. Alloy/gold content does not mean direct dissolved-metal release or default treatment credit.
-
-#### actual_direct_substances
-
-Only actual measured or supported direct event/substance/medium. Alloy fineness,scratch/discoloration,missing jewelry or stock discrepancy is not gold/copper/dust/VOC/water release. Actual waste-receiver emissions stay within linked receiver treatment once,not merchant direct duplicates.
-
-- Identity requirement: Actual identified direct service substances and receiving media
-- Flow property / unit: Mass / kg
-- Amount rule: Assigned supported actual substance quantity / N; cp_species.
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_species`
-
-Range evidence need: Need compatible actual activity/factor/composition/fate or measurement values,units,bases,sources and uncertainty; complete species factors do not multiply composition/fate again.
 
 ## 9. Validation Rules
 
@@ -589,7 +399,7 @@ Range evidence need: Need compatible actual activity/factor/composition/fate or 
 | validate_ordinary | actual operations | No consumer gem/silver/pearl-care,detergent/ultrasonic/polishing/inspection schedule or lifespan becomes merchant operation or default. Real assay/refining/cleaning/resizing/other transformation needs reviewed separate complete scope. | gia-jewelry-care |
 | validate_chain | commodity outside service | Complete actual factory-finished ring source must include actual alloy-metal production and manufacture/finish/pack as supplied or missing stages once outside service,not raw gold alone. Originalgate native quantity/unit/state/source,direct-or-allocated demand/loss/conversions/exits/coverage owner/integration must match source-piece alloy basis. Allocated denominator requires complete compatible source-cohort terminal records including closing/useful exits/returns/loss,never accepted-only or price default. |  |
 | validate_fates_scope | all physical duties | Actual useful Product/Waste decisions and receivers,whole/fragment/retained-alloy/fluid exclusions and direct species evidence required. Missing item,scratch,discoloration,assay content or stock discrepancy is not automatically metal waste/release. Native identities/support,conversions/all-user full-life resources/providers/carrier/receiver coverage must be complete once. |  |
-
+| validate_concrete_identity_decisions | all inventory rows | Resolve each actual identity evidence decision to a physically specific card and native quantity or evidenced non-applicability. Evidence-checkpoint IDs are not exchanges. Missing occurrence, species, state, receiver or provider configuration blocks final data completion; no assumed zero. Whole streams and components, gross inputs and matched returns must remain mutually exclusive where required. |  |
 
 ## 10. Published Dataset Profile
 

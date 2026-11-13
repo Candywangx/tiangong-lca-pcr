@@ -173,6 +173,22 @@ Only actual independently identified diesel within this operating-fuel requireme
 
 Range evidence need: Require native opening/net receipts/closing and disjoint actual fates, density and temperature units/conversion sources when needed; purchases do not automatically equal combustion.
 
+###### Paperboard carton supplied for additional shipping protection (`new_outer_protection_paperboard_carton`)
+
+Only an independently evidenced actual paperboard carton supplied for additional shipping protection in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `new_outer_protection`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Use only when the added package is established as a paperboard carton. Record construction, net paperboard-carton mass and provider gate. A plastic crate, wood box or composite carton with a materially different identity needs a separate card; inherited packaging and returnable assets are excluded. No fibre grade, recycled share or mass-per-carton is assumed.
+
+- Selected flow: Paperboard carton supplied for additional shipping protection
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `new_outer_protection_paperboard_carton` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_supplies`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
 ##### Waste flows
 
 ##### Elementary flows
@@ -197,11 +213,43 @@ One actual owned/resold B2B accepted consignment of manufacturer-complete non-el
 
 Range evidence need: Require actual commercial/ownership acceptance, set SKU/lot/parts genealogy and completeness, wood/paint/lacquer evidence, net/tare/moisture/condition/age-label source/time. No consignment=set, fixed forty parts, package weight=net, universal age or conformity guarantee.
 
+###### Unused synthetic detergent returned to supplier (`usable_supply_returns_detergent_return`)
+
+Only an independently evidenced actual unused synthetic detergent returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `usable_supply_returns`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input `operating_supplies_synthetic_detergent` in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `usable_supply_returns_detergent_return` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_supplies`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
+###### Unused polyethylene film returned to supplier (`usable_supply_returns_pe_film_return`)
+
+Only an independently evidenced actual unused polyethylene film returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `usable_supply_returns`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input `new_outer_protection_pe_film` in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit.
+
+- Selected flow: Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `usable_supply_returns_pe_film_return` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_supplies`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_supplies`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
 ##### Waste flows
 
 ###### Discarded complete boxed painted wooden construction-toy set (`discarded_toy_sets_atomic_case`)
 
-Conditional on independently recorded actual Discarded complete boxed painted wooden construction-toy set. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `discarded_toy_sets`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+Conditional on independently recorded actual Discarded complete boxed painted wooden construction-toy set. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain identity evidence decisions under `discarded_toy_sets`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
 
 - Selected flow: Discarded complete boxed painted wooden construction-toy set
 - Flow property / unit: Mass / kg
@@ -214,6 +262,54 @@ Conditional on independently recorded actual Discarded complete boxed painted wo
 - Collection protocol: `cp_toysets`
 
 Range evidence need: Require actual disposition, set-to-part genealogy, native amount/state/net-tare and receiver/treatment coverage with exclusive original-gate correspondence; an incomplete box or weight deficit is not discarded mass.
+
+###### Discarded painted wooden construction-toy block (`discarded_toy_sets_wooden_toy_block`)
+
+Only an independently evidenced actual discarded painted wooden construction-toy block in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `discarded_toy_sets`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner.
+
+- Selected flow: Discarded painted wooden construction-toy block
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `discarded_toy_sets_wooden_toy_block` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_toysets`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_toysets`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
+###### Discarded premises-cleaning wipe with retained contamination (`other_wastes_spent_wipe`)
+
+Only an independently evidenced actual discarded premises-cleaning wipe with retained contamination in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `other_wastes`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner. Identify the actual wipe substrate and retained contamination at the receiver. A filter, loose absorbent or independently collected liquid is not this wipe. The spent whole mass includes retained contamination once; dry supplied wipe mass is only a component audit.
+
+- Selected flow: Discarded premises-cleaning wipe with retained contamination
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `other_wastes_spent_wipe` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_fates`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
+###### Collected aqueous premises-cleaning wastewater sent to treatment (`contained_wastewater_aqueous_cleaning`)
+
+Only an independently evidenced actual collected aqueous premises-cleaning wastewater sent to treatment in this process is covered. Record its own physical state, net m3, event/source and handover gate. Other states or receivers require their own identity decision `contained_wastewater`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner. This is the aqueous premises-cleaning stream, with its actual dissolved/suspended load and measured received volume. Exclude separately collected undiluted merchandise, organic fluid, condensate or sanitary wastewater. If these actually mix before one transfer, identify that real mixture separately; do not sum constituent volumes or label it pure cleaning water. No quantity is inferred from supplied water.
+
+- Selected flow: Collected aqueous premises-cleaning wastewater sent to treatment
+- Flow property / unit: Volume / m3
+- Amount rule: Actual exclusively assigned m3 for `contained_wastewater_aqueous_cleaning` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_fates`
+
+Range evidence need: Require event-linked native m3, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_fates`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
 
 ##### Elementary flows
 
@@ -315,278 +411,22 @@ Range evidence need: Require actual species/medium measurement or compatible act
 
 | requirement_id | applies_to | requirement | evidence |
 | --- | --- | --- | --- |
-| electricity | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `electricity` under `cp_energy`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_energy`; actual source-linked native records |
-| facility_water | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `facility_water` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| new_outer_protection | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `new_outer_protection` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| operating_supplies | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `operating_supplies` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| fuel_supply | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `fuel_supply` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| provider_services | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `provider_services` under `cp_providers`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_providers`; actual source-linked native records |
-| shared_assets | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `shared_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
-| freight | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
-| environmental_water | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `environmental_water` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| usable_supply_returns | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `usable_supply_returns` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| discarded_toy_sets | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `discarded_toy_sets` under `cp_toysets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `discarded_toy_sets_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_toysets`; actual source-linked native records |
-| other_wastes | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `other_wastes` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| contained_wastewater | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `contained_wastewater` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| water_outfalls | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `water_outfalls` under `cp_fates`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_fates`; actual source-linked native records |
-| direct_species | toy_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `direct_species` under `cp_releases`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_releases`; actual source-linked native records |
+| electricity | toy_wholesale | Which supply point, AC/DC state, voltage and supplier dataset cover the meter record? Reconcile the listed AC row with any evidenced other supply; do not use the AC UUID for a different carrier. Meter actual warehouse lighting, handling and business-support consumption. No manufacture, assembly, painting, curing or powered toy demonstration is included. Range evidence need: Require actual meter intervals, connected consumers and complete event/period attribution including idle/failed work; no kWh per block/set inferred from manufacturer finish. Measurement evidence: protocol `cp_energy`; original record basis Energy / kWh. The original amount constraint “Actual exclusively attributed physical amount / N from cp_energy” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `electricity_ac`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_energy`; actual source-linked native records |
+| facility_water | toy_wholesale | Does the supplier record establish treated tap water, or a different named water quality/source? Identify the supply state and gate; do not replace a non-tap-water supply with the tap-water card. Include actual hygiene/support supply, separate from wood moisture and manufacturer paint/lacquer water. No merchant washing of blocks is assumed. Range evidence need: Require source/purpose, native volume meter and supply coverage plus actual fates; product moisture and purchased quantity do not establish wastewater. Measurement evidence: protocol `cp_supplies`; original record basis Volume / m3. The original amount constraint “Actual exclusively attributed physical amount / N from cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `facility_water_liquid_tap`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| new_outer_protection | toy_wholesale | Obtain the package bill/specification, material or laminate identity and actual added-versus-inherited ownership. Determine each missing sleeve, seal, label, strap or support identity from that record; an integral composite is not several additive material exchanges. Only real service-added outer cartons, film, straps and labels are supplies. The original retail set box, internal trays and factory finish remain inherited commodity. Reusable crates/pallets use lifetime attribution. Range evidence need: Require added-versus-inherited pack levels, actual SKU/mass or evidenced count/area conversion and unique stock/event links; no full new pack/pallet per consignment default. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual exclusively attributed physical amount / N from cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `new_outer_protection_pe_film`; `new_outer_protection_paperboard_carton`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| operating_supplies | toy_wholesale | Obtain the purchased SKU, formulation/SDS, supplied concentration, physical state, purpose and stock/issue records for the named cleaning or maintenance duty in this record. Identify the actual non-detergent material individually; do not prescribe a chemical, filter substrate or dose from this PCR. Expand actual equipment lubricants, cleaners, wipes, absorbents, filters and office supplies by native SKU/composition. Manufacturer acrylic paint/clear lacquer is not current service paint/solvent, and no repainting or block cleaning is prescribed. Range evidence need: Require actual purpose, net receipt/stock/return, formulation and spent carrier/absorbed contents evidence; paint present on blocks neither measures new service supply nor release. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual exclusively attributed physical amount / N from cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `operating_supplies_synthetic_detergent`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| fuel_supply | toy_wholesale | Which purchased fuel grade/formulation and supply gate are on the stock record? Identify any fuel other than the named diesel case and its native unit; obtain actual density before a volume-to-mass conversion. Track real grade and stock separately from actual burn, usable return and waste; reconcile hired handling and freight coverage before adding supply. Range evidence need: Require native opening/net receipts/closing and disjoint actual fates, density and temperature units/conversion sources when needed; purchases do not automatically equal combustion. Measurement evidence: protocol `cp_supplies`; original record basis Volume / L. The original amount constraint “Actual exclusively attributed physical amount / N from cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `fuel_supply_diesel_supply`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| provider_services | toy_wholesale | Obtain the provider contract/completed-result record for each named duty in this record, with native billed physical unit and included resources. Identify the individual service result; inspection, cleaning and handling are different services, and price/hours cannot be relabelled as Item(s). Use performed storage, handling, document/visual completeness checks, maintenance or business support in its actual native physical unit. Supplier safety labels or certificates alone are not a performed merchant test; play, assembly and destructive product testing are outside this route. Range evidence need: Require performed result and included energy/material/assets/freight/receiver treatment; any actual representative condition measurement needs method/sample disposition without hiding excluded product tests. Measurement evidence: protocol `cp_providers`; original record basis Count / Item(s). The original amount constraint “Actual exclusively attributed physical amount / N from cp_providers” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_providers`; actual source-linked native records |
+| shared_assets | toy_wholesale | For each explicitly named asset in this record, obtain the asset register identifier, configuration and matching complete-lifecycle dataset. The missing decision is the individual asset/service identity and lifetime all-user denominator; a warehouse, forklift and pallet cannot share one Count exchange or inherit a default life. Include actual building/racks/lifts/meters/ICT and reusable containers/pallets for all consumers/periods through full manufacture, maintenance, replacement and end-of-life. The traded toy set is merchandise, not warehouse equipment. Range evidence need: Require compatible used/lifetime driver units, observed history plus evidenced remaining life/termination, full phase coverage and uncertainty/sensitivity/update; no standard service life or repeated full asset per trip. Measurement evidence: protocol `cp_assets`; original record basis Count / Item(s). The original amount constraint “Actual exclusively attributed physical amount / N from cp_assets” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_assets`; actual source-linked native records |
+| freight | toy_wholesale | For each actual inbound, outbound, return and waste leg, obtain mode/vehicle, temperature service, origin/destination, actual load and distance plus provider coverage. The missing mode/configuration prevents selection of one freight identity; never collapse unlike modes into one kg*km flow. Use actual packed cargo including original and added cargo packaging, retained wood moisture and factory finish; vehicle/noncargo tare alone is subtracted from same-state gross. Avoid delivered/provider overlap. Range evidence need: Require unique load/leg IDs, EACH versus TOTAL basis, measured payload or gross/noncargo tare, native quantity-distance factors and complete all-user shares; no nominal part/set mass. Measurement evidence: protocol `cp_freight`; original record basis Mass*distance / kg*km. The original amount constraint “Actual exclusively attributed physical amount / N from cp_freight” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_freight`; actual source-linked native records |
+| environmental_water | toy_wholesale | Identify the actual abstraction point, water body/aquifer, location and measured source volume from intake permits/meter records. Surface water and groundwater require distinct source identities; no direct withdrawal is established by purchased water use. Only actual merchant-operated withdrawal crosses this boundary; inherited block/box moisture and ambient uptake do not establish extraction. Range evidence need: Require withdrawal source/location/meter interval/native conversion and non-overlap with purchased water; no wood-moisture-to-water-supply proxy. Measurement evidence: protocol `cp_fates`; original record basis Volume / m3. The original amount constraint “Actual exclusively attributed physical amount / N from cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| usable_supply_returns | toy_wholesale | Match the external return ticket to exactly one input SKU, state and native unit, and identify the receiver. Under consumed-only input accounting omit its matched return exchange; merchandise returns and closing inventory are separate audit records. Only actual same-scope standalone supply SKU/state returns belong here. Consumed-only input accounting OMITs the matched return exchange. Internal loops/recovered retained stock stay closing; merchandise sets/parts/finish/box returns are stock audit. Range evidence need: Require recipient/native quantity and matched input provenance; no netting inherited factory coat or toy parts against unrelated current supplies, negative inputs or automatic credits. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual exclusively attributed physical amount / N from cp_supplies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `usable_supply_returns_detergent_return`; `usable_supply_returns_pe_film_return`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| discarded_toy_sets | toy_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Use actual separately evidenced receiver state/quantity for discarded sets, individual parts, fragments or mixed original packs. Whole set, component wood/moisture/coating and pack views are non-additive. Missing one block does not establish whole-set discard or upstream loss. Range evidence need: Require actual disposition, set-to-part genealogy, native amount/state/net-tare and receiver/treatment coverage with exclusive original-gate correspondence; an incomplete box or weight deficit is not discarded mass. Measurement evidence: protocol `cp_toysets`; original record basis Mass / kg. The original amount constraint “Actual exclusively attributed physical amount / N from cp_toysets” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `discarded_toy_sets_atomic_case`; `discarded_toy_sets_wooden_toy_block`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_toysets`; actual source-linked native records |
+| other_wastes | toy_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Record actual spent wipes, absorbents, filters and service-added packs; measured carrier plus absorbed liquid and collected wood/coat fragments form one mixed receiver stream. No manufacturing dust or repainting residue is invented. Range evidence need: Require receiver mixed mass and each carrier/absorbed-liquid/fragment native unit/basis/source and fate; component audits do not add again to the whole mixed waste or commodity discard. Measurement evidence: protocol `cp_fates`; original record basis Mass / kg. The original amount constraint “Actual exclusively attributed physical amount / N from cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `other_wastes_spent_wipe`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| contained_wastewater | toy_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Measure actual free liquid transferred to treatment from performed facility work, separate from retained toy moisture/coat and liquid held in cleanup solids. No block washing/paint shop effluent is assumed. Range evidence need: Require actual collected/received native volume/composition/event/source and receiver/treatment scope; supplied water and wet wipe mass are not wastewater-volume estimates. Measurement evidence: protocol `cp_fates`; original record basis Volume / m3. The original amount constraint “Actual exclusively attributed physical amount / N from cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `contained_wastewater_aqueous_cleaning`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| water_outfalls | toy_wholesale | Identify the direct outfall and receiving water/soil compartment, measured water amount and independently analysed pollutant species. A sewer transfer to treatment is not this outfall; the missing receiving compartment prevents a concrete elementary-flow selection. Only measured actual environmental discharge is an outfall; contained transfer is Waste. Moisture exchange in wood/box remains product-state audit unless an actual relevant release is established. Range evidence need: Require actual receiving location/medium/interval/volume and composition/fate evidence with native factors; damp packaging or cleanup does not prove discharge. Measurement evidence: protocol `cp_fates`; original record basis Volume / m3. The original amount constraint “Actual exclusively attributed physical amount / N from cp_fates” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_fates`; actual source-linked native records |
+| direct_species | toy_wholesale | Identify each measured release at its source/event, chemical or particle-size identity, origin and receiving compartment using the emission/sampling record. Unknown species, unresolved particle fraction or unknown medium must remain a specific evidence gap; neither total chemical use nor stock loss supplies that identity. Expand only actual chemical/species/particle-size and receiving-medium evidence from real combustion, maintenance or incidents. Wood carbon, acrylic paint/clear lacquer content, odour, aging, missing part or stock deficit does not quantify CO2, VOC or dust. Range evidence need: Require actual species/medium measurement or compatible activity/factor with native units, composition, temperature and fate basis/source applied once; no universal finish-emission factor. Measurement evidence: protocol `cp_releases`; original record basis Mass / kg. The original amount constraint “Actual exclusively attributed physical amount / N from cp_releases” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `direct_species_co2_fossil_air`; `direct_species_methane_fossil_air`; `direct_species_nitrous_oxide_air`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_releases`; actual source-linked native records |
 
-
-### Mandatory Inventory Completion Records
-
-These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
-
-#### electricity
-
-Meter actual warehouse lighting, handling and business-support consumption. No manufacture, assembly, painting, curing or powered toy demonstration is included.
-
-Residual inventory requirement after the independently identified cases `electricity_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual toy-wholesale facility electricity
-- Flow property / unit: Energy / kWh
-- Amount rule: Actual exclusively attributed physical amount / N from cp_energy
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_energy`
-
-Range evidence need: Require actual meter intervals, connected consumers and complete event/period attribution including idle/failed work; no kWh per block/set inferred from manufacturer finish.
-
-#### facility_water
-
-Include actual hygiene/support supply, separate from wood moisture and manufacturer paint/lacquer water. No merchant washing of blocks is assumed.
-
-Residual inventory requirement after the independently identified cases `facility_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual purchased facility water
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively attributed physical amount / N from cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Require source/purpose, native volume meter and supply coverage plus actual fates; product moisture and purchased quantity do not establish wastewater.
-
-#### new_outer_protection
-
-Only real service-added outer cartons, film, straps and labels are supplies. The original retail set box, internal trays and factory finish remain inherited commodity. Reusable crates/pallets use lifetime attribution.
-
-Residual inventory requirement after the independently identified cases `new_outer_protection_pe_film`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual added dispatch protection and labels
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively attributed physical amount / N from cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Require added-versus-inherited pack levels, actual SKU/mass or evidenced count/area conversion and unique stock/event links; no full new pack/pallet per consignment default.
-
-#### operating_supplies
-
-Expand actual equipment lubricants, cleaners, wipes, absorbents, filters and office supplies by native SKU/composition. Manufacturer acrylic paint/clear lacquer is not current service paint/solvent, and no repainting or block cleaning is prescribed.
-
-Residual inventory requirement after the independently identified cases `operating_supplies_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual maintenance and conditional cleanup consumables
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively attributed physical amount / N from cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Require actual purpose, net receipt/stock/return, formulation and spent carrier/absorbed contents evidence; paint present on blocks neither measures new service supply nor release.
-
-#### fuel_supply
-
-Track real grade and stock separately from actual burn, usable return and waste; reconcile hired handling and freight coverage before adding supply.
-
-Residual inventory requirement after the independently identified cases `fuel_supply_diesel_supply`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual owned handling fuel
-- Flow property / unit: Volume / L
-- Amount rule: Actual exclusively attributed physical amount / N from cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Require native opening/net receipts/closing and disjoint actual fates, density and temperature units/conversion sources when needed; purchases do not automatically equal combustion.
-
-#### provider_services
-
-Use performed storage, handling, document/visual completeness checks, maintenance or business support in its actual native physical unit. Supplier safety labels or certificates alone are not a performed merchant test; play, assembly and destructive product testing are outside this route.
-
-- Identity requirement: Actual wholesale support-service results
-- Flow property / unit: Count / Item(s)
-- Amount rule: Actual exclusively attributed physical amount / N from cp_providers
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_providers`
-
-Range evidence need: Require performed result and included energy/material/assets/freight/receiver treatment; any actual representative condition measurement needs method/sample disposition without hiding excluded product tests.
-
-#### shared_assets
-
-Include actual building/racks/lifts/meters/ICT and reusable containers/pallets for all consumers/periods through full manufacture, maintenance, replacement and end-of-life. The traded toy set is merchandise, not warehouse equipment.
-
-- Identity requirement: Complete-life shared warehouse and handling assets
-- Flow property / unit: Count / Item(s)
-- Amount rule: Actual exclusively attributed physical amount / N from cp_assets
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
-
-Range evidence need: Require compatible used/lifetime driver units, observed history plus evidenced remaining life/termination, full phase coverage and uncertainty/sensitivity/update; no standard service life or repeated full asset per trip.
-
-#### freight
-
-Use actual packed cargo including original and added cargo packaging, retained wood moisture and factory finish; vehicle/noncargo tare alone is subtracted from same-state gross. Avoid delivered/provider overlap.
-
-- Identity requirement: Actual packed toy-set and operating freight
-- Flow property / unit: Mass*distance / kg*km
-- Amount rule: Actual exclusively attributed physical amount / N from cp_freight
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_freight`
-
-Range evidence need: Require unique load/leg IDs, EACH versus TOTAL basis, measured payload or gross/noncargo tare, native quantity-distance factors and complete all-user shares; no nominal part/set mass.
-
-#### environmental_water
-
-Only actual merchant-operated withdrawal crosses this boundary; inherited block/box moisture and ambient uptake do not establish extraction.
-
-- Identity requirement: Actual direct source-specific water abstraction
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively attributed physical amount / N from cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Require withdrawal source/location/meter interval/native conversion and non-overlap with purchased water; no wood-moisture-to-water-supply proxy.
-
-#### usable_supply_returns
-
-Only actual same-scope standalone supply SKU/state returns belong here. Consumed-only input accounting OMITs the matched return exchange. Internal loops/recovered retained stock stay closing; merchandise sets/parts/finish/box returns are stock audit.
-
-- Identity requirement: Actual matched unused service-supply external returns
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively attributed physical amount / N from cp_supplies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Require recipient/native quantity and matched input provenance; no netting inherited factory coat or toy parts against unrelated current supplies, negative inputs or automatic credits.
-
-#### discarded_toy_sets
-
-Use actual separately evidenced receiver state/quantity for discarded sets, individual parts, fragments or mixed original packs. Whole set, component wood/moisture/coating and pack views are non-additive. Missing one block does not establish whole-set discard or upstream loss.
-
-- Identity requirement: Actual discarded toy sets, parts, fragments or original packs
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively attributed physical amount / N from cp_toysets
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_toysets`
-
-Range evidence need: Require actual disposition, set-to-part genealogy, native amount/state/net-tare and receiver/treatment coverage with exclusive original-gate correspondence; an incomplete box or weight deficit is not discarded mass.
-
-#### other_wastes
-
-Record actual spent wipes, absorbents, filters and service-added packs; measured carrier plus absorbed liquid and collected wood/coat fragments form one mixed receiver stream. No manufacturing dust or repainting residue is invented.
-
-- Identity requirement: Actual spent consumables and mixed cleanup solids
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively attributed physical amount / N from cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Require receiver mixed mass and each carrier/absorbed-liquid/fragment native unit/basis/source and fate; component audits do not add again to the whole mixed waste or commodity discard.
-
-#### contained_wastewater
-
-Measure actual free liquid transferred to treatment from performed facility work, separate from retained toy moisture/coat and liquid held in cleanup solids. No block washing/paint shop effluent is assumed.
-
-- Identity requirement: Actual contained facility wastewater
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively attributed physical amount / N from cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Require actual collected/received native volume/composition/event/source and receiver/treatment scope; supplied water and wet wipe mass are not wastewater-volume estimates.
-
-#### water_outfalls
-
-Only measured actual environmental discharge is an outfall; contained transfer is Waste. Moisture exchange in wood/box remains product-state audit unless an actual relevant release is established.
-
-- Identity requirement: Actual direct environmental service-water outfall
-- Flow property / unit: Volume / m3
-- Amount rule: Actual exclusively attributed physical amount / N from cp_fates
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_fates`
-
-Range evidence need: Require actual receiving location/medium/interval/volume and composition/fate evidence with native factors; damp packaging or cleanup does not prove discharge.
-
-#### direct_species
-
-Expand only actual chemical/species/particle-size and receiving-medium evidence from real combustion, maintenance or incidents. Wood carbon, acrylic paint/clear lacquer content, odour, aging, missing part or stock deficit does not quantify CO2, VOC or dust.
-
-Residual inventory requirement after the independently identified cases `direct_species_co2_fossil_air`; `direct_species_methane_fossil_air`; `direct_species_nitrous_oxide_air`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual identified species and receiving-medium releases
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusively attributed physical amount / N from cp_releases
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_releases`
-
-Range evidence need: Require actual species/medium measurement or compatible activity/factor with native units, composition, temperature and fate basis/source applied once; no universal finish-emission factor.
 
 ## 9. Validation Rules
 
@@ -598,7 +438,7 @@ Range evidence need: Require actual species/medium measurement or compatible act
 | complete_exclusive_source | commodity interface | Verify complete finished-gate stages and original-unit/state/source demand with direct trace OR positive complete competing all-exit drivers, each quantity/unit/basis/source/link/owner incl closing/useful-other/return/proven loss, no accepted-only or direct+driver overlay. Unknown is no zero; baseline identical stage/loss coverage and required additional demand link outside once. |  |
 | full_asset_all_users | all resources | Require actual all consumer/period driver records, full asset manufacture/maintenance/replacement/EOL, observed+sourced remaining/termination compatible units and uncertainty/sensitivity/update; no duplicate asset/provider or N. No-acceptance resources retain attribution. |  |
 | stock_fates_freight | all physical inventory | Verify net-receipt/closing/recovery/matched-return provenance and gross+return OR consumed-only OMIT return, nonnegative unrelated scopes. Mixed/whole/component/free-liquid/species views non-additive with receiver treatment once. Freight retains original/new cargo packs/moisture/finish, subtracts only vehicle/noncargo tare, uses unique EACH/TOTAL loads, explicit native factors/full shares/N once. |  |
-
+| validate_concrete_identity_decisions | all inventory rows | Resolve each actual identity evidence decision to a physically specific card and native quantity or evidenced non-applicability. Evidence-checkpoint IDs are not exchanges. Missing occurrence, species, state, receiver or provider configuration blocks final data completion; no assumed zero. Whole streams and components, gross inputs and matched returns must remain mutually exclusive where required. |  |
 
 ## 10. Published Dataset Profile
 

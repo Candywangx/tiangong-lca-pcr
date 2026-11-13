@@ -167,11 +167,27 @@ One actual commercially accepted consignment at the final industrial/business bu
 
 Range evidence need: Real merchant/buyer/gate/source/reversal IDs, actual SKU/lot/wash-grade/any-supplier-drying/bag and net sand state, sample-water and analysis/particle-class definitions plus period records establish eligible N; no default bags/tonnes per consignment.
 
+###### Unused synthetic detergent returned to supplier (`unused_supply_return_detergent_return`)
+
+Only an independently evidenced actual unused synthetic detergent returned to supplier in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `unused_supply_return`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Match the unused material exactly to input `service_consumables_synthetic_detergent` in formulation, supplied state and native mass. It is an external usable return, not waste, closing stock or internal circulation. Include this output only with the gross-supply convention; omit the matched return output entirely when the input has already been netted by that return. No automatic avoided-production credit.
+
+- Selected flow: Detergent `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `unused_supply_return_detergent_return` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_outlets`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
 ##### Waste flows
 
 ###### Discarded original bag containing washed graded natural quartz sand (`whole_bag_waste_atomic_case`)
 
-Conditional on independently recorded actual Discarded original bag containing washed graded natural quartz sand. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `whole_bag_waste`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+Conditional on independently recorded actual Discarded original bag containing washed graded natural quartz sand. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain identity evidence decisions under `whole_bag_waste`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
 
 - Selected flow: Discarded original bag containing washed graded natural quartz sand
 - Flow property / unit: Mass / kg
@@ -187,7 +203,7 @@ Range evidence need: Actual discard decision, parent lot/bag, whole net/gross/ta
 
 ###### Discarded loose washed graded natural quartz sand (`separate_sand_waste_atomic_case`)
 
-Conditional on independently recorded actual Discarded loose washed graded natural quartz sand. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain mandatory completion records under `separate_sand_waste`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
+Conditional on independently recorded actual Discarded loose washed graded natural quartz sand. This card covers only that named physical state, with its own actual net quantity, retained contents and receiver gate. Other parts, fragments, free liquids, separate packing or cleanup carriers remain identity evidence decisions under `separate_sand_waste`; do not shift the boundary, infer an event, use a stock deficit as discard, or count a retained component as another outlet. A genuinely co-collected mixture requires its own exact identity. Use the original native-unit amount protocol only for this exclusively identified case; reconcile every other actual fate separately.
 
 - Selected flow: Discarded loose washed graded natural quartz sand
 - Flow property / unit: Mass / kg
@@ -251,6 +267,22 @@ Only actual independently discarded, separately collected empty plastic packagin
 
 Range evidence need: Actual pack composition/tare/residue native quantities, original-versus-added coverage and receiver required; no label mass as net sand or assumed clean recycling credit.
 
+###### Collected washed natural-quartz-sand fines, contained solid (`separate_sand_waste_quartz_sand_fines`)
+
+Only an independently evidenced actual collected washed natural-quartz-sand fines, contained solid in this process is covered. Record its own physical state, net kg, event/source and handover gate. Other states or receivers require their own identity decision `separate_sand_waste`; this card is not a substitute for them. Do not infer occurrence or zero from missing records. Activate only for an actual independently collected transfer to a waste receiver, not for a component retained in a whole article, pack or mixed collected stream. Keep retained constituents as non-additive composition records. No opening, cutting, dismantling, deliberate drying, recovery yield or treatment route is prescribed. Treatment/transport coverage has one owner.
+
+- Selected flow: Collected washed natural-quartz-sand fines, contained solid
+- Flow property / unit: Mass / kg
+- Amount rule: Actual exclusively assigned kg for `separate_sand_waste_quartz_sand_fines` / accepted N once; preserve an already-per-reference quantity without dividing again.
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `collected_record`
+- Collection protocol: `cp_outlets`
+
+Range evidence need: Require event-linked native kg, state/composition, receiver or provider gate, allocation records and exclusion links to all whole/component or matched-input records; use protocol `cp_outlets`. No numeric default or conversion factor is supplied. A different native unit requires evidenced conversion before use.
+
 ##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
@@ -306,274 +338,22 @@ Range evidence need: Actual pack composition/tare/residue native quantities, ori
 
 | requirement_id | applies_to | requirement | evidence |
 | --- | --- | --- | --- |
-| electricity | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `electricity` under `cp_utilities`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_utilities`; actual source-linked native records |
-| site_water | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `site_water` under `cp_utilities`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_utilities`; actual source-linked native records |
-| service_consumables | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `service_consumables` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| added_protection | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `added_protection` under `cp_supplies`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_supplies`; actual source-linked native records |
-| provider_package | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `provider_package` under `cp_provider`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_provider`; actual source-linked native records |
-| service_assets | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `service_assets` under `cp_assets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_assets`; actual source-linked native records |
-| freight | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual inputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `freight` under `cp_freight`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_freight`; actual source-linked native records |
-| unused_supply_return | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `unused_supply_return` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
-| usable_service_material_export | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/product material, service, asset-lifecycle duty, waste stream or substance/source/medium in `usable_service_material_export` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
-| whole_bag_waste | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `whole_bag_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `whole_bag_waste_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
-| separate_sand_waste | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `separate_sand_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. The named case `separate_sand_waste_atomic_case` covers only its exclusive physical state; other actual fates remain mandatory. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
-| pack_waste | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `pack_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
-| mixed_capture_waste | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `mixed_capture_waste` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
-| free_contained_fluid | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/waste material, service, asset-lifecycle duty, waste stream or substance/source/medium in `free_contained_fluid` under `cp_outlets`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_outlets`; actual source-linked native records |
-| direct_species_release | original_bagged_quartz_sand_wholesale | Mandatory completion record, not a synthetic inventory exchange. Identify every actual outputs/elementary material, service, asset-lifecycle duty, waste stream or substance/source/medium in `direct_species_release` under `cp_environment`; expand each physically/chemically specific actual case into its own row, concrete identity, native amount and coverage owner before final dataset use. Missing occurrence/identity/amount is unresolved and blocks completion, never zero or an omission. Preserve all original scope, evidence, range, stock/fate, conversion and provider/receiver duties in the complete capture definition below. | `cp_environment`; actual source-linked native records |
+| electricity | original_bagged_quartz_sand_wholesale | Which supply point, AC/DC state, voltage and supplier dataset cover the meter record? Reconcile the listed AC row with any evidenced other supply; do not use the AC UUID for a different carrier. Actual delivered electricity for this merchant site, lighting, handling and ventilation only when operated. Supplier extraction/wash/grade/drying and customer use are outside this service; no processing-energy factor from sand identity. Range evidence need: Actual interval kWh, meter/provider boundary, all-consumer native share and final N are needed to establish a site-specific distribution; no universal kWh/bag or quartz processing benchmark. Measurement evidence: protocol `cp_utilities`; original record basis Energy / kWh. The original amount constraint “Actual compatible metered electricity*documented_share/N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `electricity_ac`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_utilities`; actual source-linked native records |
+| site_water | original_bagged_quartz_sand_wholesale | Does the supplier record establish treated tap water, or a different named water quality/source? Identify the supply state and gate; do not replace a non-tap-water supply with the tap-water card. Only actual utility water for site cleaning/incident response within declared operations; no prescribed wetting, sand wash, moisture adjustment or water retained in traded bags as service consumption. Range evidence need: Metered net water quantity, volume or actual density/temperature-compatible mass conversion, cleaning events and shares are needed; no supplier washing water or default m3/tonne. Measurement evidence: protocol `cp_utilities`; original record basis Volume / m3. The original amount constraint “Actual water supply*documented_share/N after sourced native conversion” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `site_water_liquid_tap`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_utilities`; actual source-linked native records |
+| service_consumables | original_bagged_quartz_sand_wholesale | Obtain the purchased SKU, formulation/SDS, supplied concentration, physical state, purpose and stock/issue records for the named cleaning or maintenance duty in this record. Identify the actual non-detergent material individually; do not prescribe a chemical, filter substrate or dose from this PCR. Conditional native material umbrella: identify every actual cleaning/capture material and compatible net supply stock. Do not prescribe wetting chemicals, respirator replacement or new filters per bag from supplier SDS recommendations. Range evidence need: Actual SKU/composition, NET receipts/opening/closing/recovery, unused returns, EACH/TOTAL and density/per-piece conversions are needed separately for each actual material; no uniform absorbent or filter rate. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual NET S*documented_share/N, or consumed-only matching return convention” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `service_consumables_synthetic_detergent`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| added_protection | original_bagged_quartz_sand_wholesale | Obtain the package bill/specification, material or laminate identity and actual added-versus-inherited ownership. Determine each missing sleeve, seal, label, strap or support identity from that record; an integral composite is not several additive material exchanges. Only actual outer protective packaging/straps used by the merchant, retaining supplier original closed bags. Original supplier bags/fill remain commodity upstream, and deliberate rebagging requires route review. Range evidence need: Actual added-material identity/mass/count, source event and original-vs-added membership plus unused-return stock records are needed; no automatic pallet film or replacement bag quantity. Measurement evidence: protocol `cp_supplies`; original record basis Mass / kg. The original amount constraint “Actual added protection NET supply*documented_share/N using matched return convention” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_supplies`; actual source-linked native records |
+| provider_package | original_bagged_quartz_sand_wholesale | Obtain the provider contract/completed-result record for each named duty in this record, with native billed physical unit and included resources. Identify the individual service result; inspection, cleaning and handling are different services, and price/hours cannot be relabelled as Item(s). Actual contracted receipt/hold/handling or site cleanup package with physical boundaries and disjoint supplies/utilities/assets/freight/treatment. A contractor performing excluded sand processing does not turn it into ordinary holding. Range evidence need: Actual provider package, unit and physical-equivalence source/coverage and all-consumer share are needed; no currency-margin equivalence or generic mineral-treatment package. Measurement evidence: protocol `cp_provider`; original record basis Count / Item(s). The original amount constraint “sum(actual_native_package_quantity*physical_equivalence*documented_share)/N where equivalence applies” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_provider`; actual source-linked native records |
+| service_assets | original_bagged_quartz_sand_wholesale | For each explicitly named asset in this record, obtain the asset register identifier, configuration and matching complete-lifecycle dataset. The missing decision is the individual asset/service identity and lifetime all-user denominator; a warehouse, forklift and pallet cannot share one Count exchange or inherit a default life. Actual facility/handler/operated ventilation/support assets, with full lifecycle and all users. Traded natural sand and original disposable bag are merchandise, not current service assets. Range evidence need: Actual complete asset manufacture/maintenance/replacement/retirement/EOL inventory, all-user observed plus sourced remaining life drivers, uncertainty and update evidence required; no new pallet per bag or assumed asset years. Measurement evidence: protocol `cp_assets`; original record basis Count / Item(s). The original amount constraint “sum(full_life_asset_event*job_driver/lifetime_all_user_driver)/N with native equivalence” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_assets`; actual source-linked native records |
+| freight | original_bagged_quartz_sand_wholesale | For each actual inbound, outbound, return and waste leg, obtain mode/vehicle, temperature service, origin/destination, actual load and distance plus provider coverage. The missing mode/configuration prevents selection of one freight identity; never collapse unlike modes into one kg*km flow. Actual cargo includes wet-state sand, every carried original/added bag/pack and support once. EACH vs TOTAL and noncargo carrier tare are explicit; only actual reviewed freight covered, receiver/provider duplicates excluded. Range evidence need: Actual packed cargo native net/gross/tare/count, leg distances/conversions and each load-leg causal share/empty-return coverage required; grain density, nominal bag label and dry quartz amount not automatic payload. Measurement evidence: protocol `cp_freight`; original record basis Mass*Length / t*km. The original amount constraint “sum_unique_load_leg(actual_transport_work*documented_service_share)/N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_freight`; actual source-linked native records |
+| unused_supply_return | original_bagged_quartz_sand_wholesale | Match the external return ticket to exactly one input SKU, state and native unit, and identify the receiver. Under consumed-only input accounting omit its matched return exchange; merchandise returns and closing inventory are separate audit records. Only actual compatible standalone service-supply unused return paired with gross input; consumed-only supply omits this exchange. Useful original sand returns stay nonexchange commodity, closing stock not export. Range evidence need: Actual material/return link, net native amount, receiver and same-scope supply-stock provenance required; no return inferred from remaining stock or original sand/pack burden credit. Measurement evidence: protocol `cp_outlets`; original record basis Mass / kg. The original amount constraint “Actual matched unused outward native material quantity/N under gross-input convention” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `unused_supply_return_detergent_return`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_outlets`; actual source-linked native records |
+| usable_service_material_export | original_bagged_quartz_sand_wholesale | Obtain the independent handover record, actual material/composite state, quality acceptance and recipient for the specifically described recovered outlet in this record. Determine Product-versus-Waste from that real handover; do not presume a recovered-product identity or substitution credit. Conditional actual usable service-material export separate from unused return and waste. Real receiver and retained-component state required; no automatic recycling credit or original sand resale as second service output. Range evidence need: Evidence of actual export, material quality/composition and native compatible mass/receiver required; not retained closing, presumed recovered silica or avoided virgin material. Measurement evidence: protocol `cp_outlets`; original record basis Mass / kg. The original amount constraint “Actual exclusive usable service-material transfer quantity/N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_outlets`; actual source-linked native records |
+| whole_bag_waste | original_bagged_quartz_sand_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only real discard/receiver evidence makes a rejected or compromised whole bag waste. Includes retained sand, water and original packaging in its measured scope; do not additionally output their component masses. Range evidence need: Actual discard decision, parent lot/bag, whole net/gross/tare and retained-component coverage, receiver transport/treatment needed; no standard reject percentage or automatic wet-bag discard. Measurement evidence: protocol `cp_outlets`; original record basis Mass / kg. The original amount constraint “Actual compatible discarded whole-bag transfer quantity/N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `whole_bag_waste_atomic_case`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_outlets`; actual source-linked native records |
+| separate_sand_waste | original_bagged_quartz_sand_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Actual loose sand/fines exiting to a waste receiver only, excluding retained whole-bag sand and mixed capture. Does not prescribe bag opening, screening or material regeneration, and is not direct airborne dust. Range evidence need: Actual incident/parent lot, native wet/dry/sample component amount and receiver classification/treatment required; product particle-size fraction or stock deficit is not discarded amount or respirable release. Measurement evidence: protocol `cp_outlets`; original record basis Mass / kg. The original amount constraint “Actual exclusive loose discarded sand/fines quantity/N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `separate_sand_waste_atomic_case`; `separate_sand_waste_quartz_sand_fines`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_outlets`; actual source-linked native records |
+| pack_waste | original_bagged_quartz_sand_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Actual pack already separated by the real event, with residual sand/water content and receiving route stated. Exclude whole-bag/capture membership, no universal bag opening or clean polymer identity. Range evidence need: Actual pack composition/tare/residue native quantities, original-versus-added coverage and receiver required; no label mass as net sand or assumed clean recycling credit. Measurement evidence: protocol `cp_outlets`; original record basis Mass / kg. The original amount constraint “Actual separate pack with evidenced residues quantity/N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: `pack_waste_paper_pack`; `pack_waste_metal_pack`; `pack_waste_plastic_pack`. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_outlets`; actual source-linked native records |
+| mixed_capture_waste | original_bagged_quartz_sand_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Conditional actual spent cleanup/filter stream, including retained sand/water/fluid in measured whole-stream amount. Exclude separately transferred free fluid/whole bags/loose sand and direct emitted species. Range evidence need: Actual material input/event linkage, whole and retained-component native bases/source/sampletime and receiver treatment required; no SDS dust proportion or dry mass residual as captured waste. Measurement evidence: protocol `cp_outlets`; original record basis Mass / kg. The original amount constraint “Actual exclusive spent mixed-capture transfer quantity/N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_outlets`; actual source-linked native records |
+| free_contained_fluid | original_bagged_quartz_sand_wholesale | Obtain the independent transfer ticket for the actual outlet described in this record, including parent item/SKU, physical state, retained composition, receiver and treatment scope. Match it to one listed physical case; an unmatched part, fluid or contaminated mixture needs its own named identity, not this record ID as a waste flow. Only real separately collected liquid containing actual sand/components transferred to receiver. Not water retained in merchandise or absorbents, utility input, or direct environmental outfall; receiver treatment owned once. Range evidence need: Actual collection/receiver event, whole liquid mass or compatible density/temperature-volume conversion and solids/water scope required; no default wastewater per sand tonne. Measurement evidence: protocol `cp_outlets`; original record basis Mass / kg. The original amount constraint “Actual exclusive free contained liquid native quantity/N after compatible conversion” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_outlets`; actual source-linked native records |
+| direct_species_release | original_bagged_quartz_sand_wholesale | Identify each measured release at its source/event, chemical or particle-size identity, origin and receiving compartment using the emission/sampling record. Unknown species, unresolved particle fraction or unknown medium must remain a specific evidence gap; neither total chemical use nor stock loss supplies that identity. Conditional species/medium umbrella only on actual release evidence. Quartz phase/product fines/normalized oxide/odour/stock gap or captured dust is not automatic elemental Si, respirable quartz, water discharge or zero emission. Range evidence need: Actual species/particle definition, receiving medium, native measurement or applicable factor/activity/composition/fate scope and capture exclusion required; no ingredient/SDS/XRF fraction as emission factor. Measurement evidence: protocol `cp_environment`; original record basis Mass / kg. The original amount constraint “Actual measured species OR compatible activity*applicable_species_factor with necessary composition/fate only, then /N” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. This evidence record is not an exchange and cannot produce a category-total quantity. | `cp_environment`; actual source-linked native records |
 
-
-### Mandatory Inventory Completion Records
-
-These are mandatory collection and expansion definitions, not exchanges and not zero placeholders. Existing references to an umbrella or residual row ID refer to these completion requirements. Every actual case must become one atomic exchange with its own evidence before the foreground dataset can be finalized. Conditional cases in section6 do not imply occurrence. Retain separately supplied materials, complete-life assets, disjoint provider/transport results, actual waste receiver streams and every actual elementary species/medium; do not silently drop them because no generic UUID is assigned. Reconcile disjoint actual cases to native totals and keep component views non-additive.
-
-#### electricity
-
-Actual delivered electricity for this merchant site, lighting, handling and ventilation only when operated. Supplier extraction/wash/grade/drying and customer use are outside this service; no processing-energy factor from sand identity.
-
-Residual inventory requirement after the independently identified cases `electricity_ac`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Electricity for actual sand-warehouse and electric handling operations
-- Flow property / unit: Energy / kWh
-- Amount rule: Actual compatible metered electricity*documented_share/N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_utilities`
-
-Range evidence need: Actual interval kWh, meter/provider boundary, all-consumer native share and final N are needed to establish a site-specific distribution; no universal kWh/bag or quartz processing benchmark.
-
-#### site_water
-
-Only actual utility water for site cleaning/incident response within declared operations; no prescribed wetting, sand wash, moisture adjustment or water retained in traded bags as service consumption.
-
-Residual inventory requirement after the independently identified cases `site_water_liquid_tap`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual site hygiene water supplied as service utility
-- Flow property / unit: Volume / m3
-- Amount rule: Actual water supply*documented_share/N after sourced native conversion
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_utilities`
-
-Range evidence need: Metered net water quantity, volume or actual density/temperature-compatible mass conversion, cleaning events and shares are needed; no supplier washing water or default m3/tonne.
-
-#### service_consumables
-
-Conditional native material umbrella: identify every actual cleaning/capture material and compatible net supply stock. Do not prescribe wetting chemicals, respirator replacement or new filters per bag from supplier SDS recommendations.
-
-Residual inventory requirement after the independently identified cases `service_consumables_synthetic_detergent`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual hygiene, wipe, absorbent and filter materials
-- Flow property / unit: Mass / kg
-- Amount rule: Actual NET S*documented_share/N, or consumed-only matching return convention
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Actual SKU/composition, NET receipts/opening/closing/recovery, unused returns, EACH/TOTAL and density/per-piece conversions are needed separately for each actual material; no uniform absorbent or filter rate.
-
-#### added_protection
-
-Only actual outer protective packaging/straps used by the merchant, retaining supplier original closed bags. Original supplier bags/fill remain commodity upstream, and deliberate rebagging requires route review.
-
-- Identity requirement: Actually added outer protection without opening original sand bags
-- Flow property / unit: Mass / kg
-- Amount rule: Actual added protection NET supply*documented_share/N using matched return convention
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_supplies`
-
-Range evidence need: Actual added-material identity/mass/count, source event and original-vs-added membership plus unused-return stock records are needed; no automatic pallet film or replacement bag quantity.
-
-#### provider_package
-
-Actual contracted receipt/hold/handling or site cleanup package with physical boundaries and disjoint supplies/utilities/assets/freight/treatment. A contractor performing excluded sand processing does not turn it into ordinary holding.
-
-- Identity requirement: Actual physically defined merchant warehouse-provider service
-- Flow property / unit: Count / Item(s)
-- Amount rule: sum(actual_native_package_quantity*physical_equivalence*documented_share)/N where equivalence applies
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_provider`
-
-Range evidence need: Actual provider package, unit and physical-equivalence source/coverage and all-consumer share are needed; no currency-margin equivalence or generic mineral-treatment package.
-
-#### service_assets
-
-Actual facility/handler/operated ventilation/support assets, with full lifecycle and all users. Traded natural sand and original disposable bag are merchandise, not current service assets.
-
-- Identity requirement: Allocated complete-life warehouse, handler and reusable support assets
-- Flow property / unit: Count / Item(s)
-- Amount rule: sum(full_life_asset_event*job_driver/lifetime_all_user_driver)/N with native equivalence
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_assets`
-
-Range evidence need: Actual complete asset manufacture/maintenance/replacement/retirement/EOL inventory, all-user observed plus sourced remaining life drivers, uncertainty and update evidence required; no new pallet per bag or assumed asset years.
-
-#### freight
-
-Actual cargo includes wet-state sand, every carried original/added bag/pack and support once. EACH vs TOTAL and noncargo carrier tare are explicit; only actual reviewed freight covered, receiver/provider duplicates excluded.
-
-- Identity requirement: Actual unique load-leg freight of packed as-received sand and service transfers
-- Flow property / unit: Mass*Length / t*km
-- Amount rule: sum_unique_load_leg(actual_transport_work*documented_service_share)/N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_freight`
-
-Range evidence need: Actual packed cargo native net/gross/tare/count, leg distances/conversions and each load-leg causal share/empty-return coverage required; grain density, nominal bag label and dry quartz amount not automatic payload.
-
-#### unused_supply_return
-
-Only actual compatible standalone service-supply unused return paired with gross input; consumed-only supply omits this exchange. Useful original sand returns stay nonexchange commodity, closing stock not export.
-
-- Identity requirement: Actual matched unused service-supply material returned outward
-- Flow property / unit: Mass / kg
-- Amount rule: Actual matched unused outward native material quantity/N under gross-input convention
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_outlets`
-
-Range evidence need: Actual material/return link, net native amount, receiver and same-scope supply-stock provenance required; no return inferred from remaining stock or original sand/pack burden credit.
-
-#### usable_service_material_export
-
-Conditional actual usable service-material export separate from unused return and waste. Real receiver and retained-component state required; no automatic recycling credit or original sand resale as second service output.
-
-- Identity requirement: Actual usable service or added-pack material exported
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusive usable service-material transfer quantity/N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_outlets`
-
-Range evidence need: Evidence of actual export, material quality/composition and native compatible mass/receiver required; not retained closing, presumed recovered silica or avoided virgin material.
-
-#### whole_bag_waste
-
-Only real discard/receiver evidence makes a rejected or compromised whole bag waste. Includes retained sand, water and original packaging in its measured scope; do not additionally output their component masses.
-
-- Identity requirement: Actual discarded whole original sand bags with retained contents
-- Flow property / unit: Mass / kg
-- Amount rule: Actual compatible discarded whole-bag transfer quantity/N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_outlets`
-
-Range evidence need: Actual discard decision, parent lot/bag, whole net/gross/tare and retained-component coverage, receiver transport/treatment needed; no standard reject percentage or automatic wet-bag discard.
-
-#### separate_sand_waste
-
-Actual loose sand/fines exiting to a waste receiver only, excluding retained whole-bag sand and mixed capture. Does not prescribe bag opening, screening or material regeneration, and is not direct airborne dust.
-
-- Identity requirement: Actual separately collected discarded loose sand or fines
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusive loose discarded sand/fines quantity/N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_outlets`
-
-Range evidence need: Actual incident/parent lot, native wet/dry/sample component amount and receiver classification/treatment required; product particle-size fraction or stock deficit is not discarded amount or respirable release.
-
-#### pack_waste
-
-Actual pack already separated by the real event, with residual sand/water content and receiving route stated. Exclude whole-bag/capture membership, no universal bag opening or clean polymer identity.
-
-Residual inventory requirement after the independently identified cases `pack_waste_paper_pack`; `pack_waste_metal_pack`; `pack_waste_plastic_pack`. Exclude actual quantities assigned to those cases from this unresolved completion requirement; a parent total is only a non-additive reconciliation audit. Retain every other actual material/state/source/medium and its own verified identity, native quantity and provider/receiver duty. Do not assume that a conditional case occurs, is absent or has zero quantity when records are missing.
-
-- Identity requirement: Actual separate discarded bags, straps or external packaging
-- Flow property / unit: Mass / kg
-- Amount rule: Actual separate pack with evidenced residues quantity/N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_outlets`
-
-Range evidence need: Actual pack composition/tare/residue native quantities, original-versus-added coverage and receiver required; no label mass as net sand or assumed clean recycling credit.
-
-#### mixed_capture_waste
-
-Conditional actual spent cleanup/filter stream, including retained sand/water/fluid in measured whole-stream amount. Exclude separately transferred free fluid/whole bags/loose sand and direct emitted species.
-
-- Identity requirement: Actual spent mixed capture, wipes, absorbents and filter solids
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusive spent mixed-capture transfer quantity/N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_outlets`
-
-Range evidence need: Actual material input/event linkage, whole and retained-component native bases/source/sampletime and receiver treatment required; no SDS dust proportion or dry mass residual as captured waste.
-
-#### free_contained_fluid
-
-Only real separately collected liquid containing actual sand/components transferred to receiver. Not water retained in merchandise or absorbents, utility input, or direct environmental outfall; receiver treatment owned once.
-
-- Identity requirement: Actual free contained cleanup liquid transferred to receiver
-- Flow property / unit: Mass / kg
-- Amount rule: Actual exclusive free contained liquid native quantity/N after compatible conversion
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_outlets`
-
-Range evidence need: Actual collection/receiver event, whole liquid mass or compatible density/temperature-volume conversion and solids/water scope required; no default wastewater per sand tonne.
-
-#### direct_species_release
-
-Conditional species/medium umbrella only on actual release evidence. Quartz phase/product fines/normalized oxide/odour/stock gap or captured dust is not automatic elemental Si, respirable quartz, water discharge or zero emission.
-
-- Identity requirement: Actual directly released identified species and particle class to actual medium
-- Flow property / unit: Mass / kg
-- Amount rule: Actual measured species OR compatible activity*applicable_species_factor with necessary composition/fate only, then /N
-- Value mode: `foreground_record`
-- Specificity: `site_specific`
-- Normalization basis: per reference flow
-- Basis kind: `reference_flow`
-- Evidence kind: `collected_record`
-- Collection protocol: `cp_environment`
-
-Range evidence need: Actual species/particle definition, receiving medium, native measurement or applicable factor/activity/composition/fate scope and capture exclusion required; no ingredient/SDS/XRF fraction as emission factor.
 
 ## 9. Validation Rules
 
@@ -584,7 +364,7 @@ Range evidence need: Actual species/particle definition, receiving medium, nativ
 | source_integration | Full actual original gate and assigned demand/loss with direct OR complete positive all-terminal native drivers incl final closing/useful other/returns/proven loss. Internal same-original carry not new demand/N/two terminal exits. Missing actual stages/additional demand already integrated outside once with completed link/time/source/owner/native coverage before complete-chain use  Record assignment_scope_ids, quantity_basis (raw_target_cohort or per_reference), same_target_scope_N and source for each linked original-gate demand or loss quantity. Actual external stock/stage/loss integration uses its raw physical amount once. ONLY for combination with 1 Item(s) service, derive q_per_reference=q_raw_of_that_same_scope/positive same_target_scope_N; already per-reference quantities are not divided again, single-case raw scope has N=1, N=0 has no normalized value. |
 | service_owners | NET supply gross+paired unused OUTPUT OR consumed OMIT matching output, full all-user observed+sourced remaining asset life, per-record unique freight share inside SUM/N once; provider/carrier/receiver coverage disjoint |
 | fates_and_gaps | Actual whole/loose/pack/capture/liquid/components/species exclusive receiver/medium and treatment once; unknown not zero, no default loss/recycling credit.  Actual quantities with compatible native units, basis and traceable sources plus verified concrete identities/support are required before the final data package. A generic numerical Range is not independently mandatory. Any specification or externally sourced interval actually claimed or used needs traceable compatible evidence and basis; an empirical guardrail additionally needs independent comparable observations. Preserve actual acceptance criteria, required sample uncertainty and disclosed gaps without inventing values; absence of a generic range alone does not reject an otherwise evidenced package. Candidate status is not publication readiness |
-
+| validate_concrete_identity_decisions | all inventory rows | Resolve each actual identity evidence decision to a physically specific card and native quantity or evidenced non-applicability. Evidence-checkpoint IDs are not exchanges. Missing occurrence, species, state, receiver or provider configuration blocks final data completion; no assumed zero. Whole streams and components, gross inputs and matched returns must remain mutually exclusive where required. |  |
 
 ## 10. Published Dataset Profile
 
