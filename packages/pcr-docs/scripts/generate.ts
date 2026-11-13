@@ -50,7 +50,8 @@ import {
 } from "./markdown.ts";
 import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.ts";
 import { searchTerms } from "../lib/search-terms.ts";
-import { packSearchShards, unpackSearchFile, readSearchManifest, SEARCH_PACK_MEMBERS, type SearchPhysicalFile } from "../lib/search-pack.ts";
+import { unpackSearchFile, readSearchManifest } from "../lib/search-pack.ts";
+import { planSearchPacks } from "./search-layout.ts";
 import { encodeSearchEntries, SEARCH_SCORE_SLOTS } from "../lib/search-wire.ts";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
@@ -985,26 +986,7 @@ async function generate() {
     docs.forEach((doc, i) => {
       doc.record.id = String(i);
     });
-    const shards: SearchPhysicalFile[] = [];
-    let logicalShardCount = 0;
-    let pending: string[] = [];
-    async function flushPack() {
-      if (!pending.length) return;
-      const firstLogicalShard = logicalShardCount - pending.length;
-      const payload = packSearchShards(pending, commit, language, firstLogicalShard, 7);
-      const url = `/generated/search/${language}/pack-${String(shards.length).padStart(3, "0")}.json`;
-      const logicalShards = pending.map(wire => {
-        const data: unknown = JSON.parse(wire);
-        if (!isUnknownRecord(data) || !Array.isArray(data.records)) throw new Error("Invalid search records");
-        return {wireBytes: Buffer.byteLength(wire), wireSha256: sha256(wire), records: data.records.length};
-      });
-      const descriptor: SearchPhysicalFile = {url, bytes: Buffer.byteLength(payload), gzipBytes: gzipSync(payload, {level: 9}).length, sha256: sha256(payload), firstLogicalShard, logicalShardCount: pending.length, records: logicalShards.reduce((sum, item) => sum + item.records, 0), logicalShards};
-      const restored = await unpackSearchFile({schemaVersion: 7, sourceCommit: commit, language, logicalShardCount, files: [descriptor]}, descriptor, Buffer.from(payload), sha256);
-      if (restored.some((data, index) => JSON.stringify(data) !== pending[index])) throw new Error("Search transport does not restore exact logical bytes");
-      write("public" + url.slice("/generated".length), payload);
-      shards.push(descriptor);
-      pending = [];
-    }
+    const logicalWires: string[] = [];
     let bucket: SearchDocument[] = [],
       bytes = 0;
     async function flush() {
@@ -1024,9 +1006,7 @@ async function generate() {
       });
       if (Buffer.byteLength(payload) > 20_000_000)
         throw new Error("Search shard exceeds 20MB: " + language);
-      pending.push(payload);
-      logicalShardCount++;
-      if (pending.length === SEARCH_PACK_MEMBERS) await flushPack();
+      logicalWires.push(payload);
       bucket = [];
       bytes = 0;
     }
@@ -1036,12 +1016,21 @@ async function generate() {
       bucket.push(doc); bytes += size;
     }
     await flush();
-    await flushPack();
-    const searchManifest = JSON.stringify({schemaVersion: 7, sourceCommit: commit, language, logicalShardCount, files: shards});
+    const layout = planSearchPacks(logicalWires, commit, language);
+    const shards = layout.manifest.files, logicalShardCount = logicalWires.length;
+    for (const {descriptor, payload} of layout.files) {
+      const expected = logicalWires.slice(descriptor.firstLogicalShard, descriptor.firstLogicalShard + descriptor.logicalShardCount);
+      const restored = await unpackSearchFile(layout.manifest, descriptor, Buffer.from(payload), sha256);
+      if (restored.length !== expected.length || restored.some((data, index) => JSON.stringify(data) !== expected[index]))
+        throw new Error("Search transport does not restore exact logical bytes");
+      write("public" + descriptor.url.slice("/generated".length), payload);
+    }
+    const searchManifest = layout.manifestText;
     write("public/search/" + language + "/manifest.json", searchManifest);
     const manifestAsset = {url: `/generated/search/${language}/manifest.json`, bytes: Buffer.byteLength(searchManifest), gzipBytes: gzipSync(searchManifest, {level: 9}).length, records: 0, sha256: sha256(searchManifest)};
     const rawBytes = shards.reduce((sum, shard) => sum + shard.bytes, manifestAsset.bytes);
     const gzipBytes = shards.reduce((sum, shard) => sum + shard.gzipBytes, manifestAsset.gzipBytes);
+    if (rawBytes !== layout.rawBytes || gzipBytes !== layout.gzipBytes) throw new Error("Search layout accounting mismatch");
     console.log(JSON.stringify({event: "search-index-size", language, rawBytes, gzipBytes, shards: logicalShardCount, physicalFiles: shards.length, records: docs.length}));
     if (rawBytes > 20_000_000 || gzipBytes > 4_000_000)
       searchBudgetFailures.push("Search exceeds the per-language browser budget: " + language + " (raw " + rawBytes + "/20000000; gzip " + gzipBytes + "/4000000)");

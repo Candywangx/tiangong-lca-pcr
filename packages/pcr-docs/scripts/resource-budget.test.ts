@@ -28,8 +28,10 @@ test("failed build diagnostics do not replace the previous successful metrics or
     fs.mkdirSync(path.join(app, "scripts"), { recursive: true });
     fs.mkdirSync(path.join(temporary, "packages/pcr-core/src"), { recursive: true });
     fs.writeFileSync(path.join(temporary, "package.json"), '{"type":"module"}');
-    for (const file of ["build.ts", "build-storage.ts", "resource-budget.ts"])
+    for (const file of ["build.ts", "build-storage.ts", "resource-budget.ts", "navigation-compilation.ts"])
       fs.copyFileSync(new URL(file, import.meta.url), path.join(app, "scripts", file));
+    fs.mkdirSync(path.join(app, "lib"));
+    fs.copyFileSync(new URL("../lib/navigation-trees.ts", import.meta.url), path.join(app, "lib/navigation-trees.ts"));
     fs.copyFileSync(new URL("../../pcr-core/src/types.ts", import.meta.url), path.join(temporary, "packages/pcr-core/src/types.ts"));
     fs.writeFileSync(path.join(app, "scripts/generate.ts"), "process.exit(17);\n");
     fs.mkdirSync(path.join(app, ".generated"));

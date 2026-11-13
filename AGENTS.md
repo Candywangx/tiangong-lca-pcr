@@ -286,7 +286,10 @@ required; declared optional language artifacts are verified and preserved.
 
 Published chapter aliases use the exact source-owned root `middleware.ts` profile. The sealed
 `generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
-anchors and the importer rechecks actual source bytes before atomic handoff. Native history normalization
+anchors and the importer rechecks actual source bytes before atomic handoff. Provider profile 2
+adds bounded, content-addressed Next tree packs and a verified compilation binding; the source-owned
+handler restores original navigation URLs and bytes. Other navigation files and all source downloads
+retain their physical contracts. Native history normalization
 and provider compilation do not authorize deployment or promote methodology states.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,

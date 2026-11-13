@@ -11,8 +11,8 @@ import type {SearchResult} from "../../lib/types.ts";
 const output=process.argv[2],scenario=process.argv[3];assert.ok(output&&scenario);
 const language=scenario==="chinese"?"zh-CN":"en-US";
 const root=`/generated/search/${language}/`,sourceCommit="a".repeat(40);
-const requestedVersion=Number(process.argv[4]??6);assert.ok(requestedVersion===5||requestedVersion===6||requestedVersion===7);
-const version:5|6|7=requestedVersion;
+const requestedVersion=Number(process.argv[4]??6);assert.ok(requestedVersion===5||requestedVersion===6||requestedVersion===7||requestedVersion===8||requestedVersion===9);
+const version:5|6|7|8|9=requestedVersion;
 const digest=(bytes:Uint8Array)=>"sha256:"+createHash("sha256").update(bytes).digest("hex");
 const responses=new Map<string,string>(),requests:string[]=[],imported:[string,string][]=[];
 type Reply={id?:number;results?:SearchResult[];error?:string};
@@ -36,8 +36,9 @@ async function wire(records:SearchResult[]):Promise<string>{
 async function install(groups:SearchResult[][]){
  nativeEntries.length=0;const wires=await Promise.all(groups.map(wire));
  const payload=packSearchShards(wires,sourceCommit,language,0,version),bytes=searchUtf8(payload);
- if(version===7&&scenario==="channels"){
-  const packed:unknown=JSON.parse(payload);assert.ok(packed&&typeof packed==="object"&&"numericColumns"in packed&&Array.isArray(packed.numericColumns)&&Array.isArray(packed.numericColumns[0])&&packed.numericColumns[0].length>0,"real FlexSearch cutoff corpus must exercise v7 channels");
+ if((version===7||version===8)&&scenario==="channels"){
+  const packed:unknown=JSON.parse(payload);assert.ok(packed&&typeof packed==="object"&&"numericColumns"in packed&&Array.isArray(packed.numericColumns)&&Array.isArray(packed.numericColumns[0])&&packed.numericColumns[0].length>0,"real FlexSearch cutoff corpus must exercise numeric channels");
+  assert.equal(packed.numericColumns.length,version===8?5:4);
  }
  const file:SearchPhysicalFile={url:root+"pack-000.json",bytes:bytes.length,gzipBytes:gzipSync(bytes,{level:9}).length,sha256:digest(bytes),firstLogicalShard:0,logicalShardCount:wires.length,records:groups.reduce((sum,records)=>sum+records.length,0),logicalShards:wires.map((wire,i)=>({wireBytes:searchUtf8(wire).length,wireSha256:digest(searchUtf8(wire)),records:groups[i]!.length}))};
  const manifest:SearchManifest={schemaVersion:version,sourceCommit,language,logicalShardCount:wires.length,files:[file]};responses.set(file.url,payload);responses.set(root+"manifest.json",JSON.stringify(manifest));return{payload,manifest};
