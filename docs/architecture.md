@@ -37,6 +37,9 @@ lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package bound
 不新增方法。恢复身份不扩大产品、路线、状态或交付边界，也不改变 `narrower` 关系。范围和验证记录见
 [两个 PR 的旧 ID 恢复记录](reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)。
 
+本批 60 份 CPC 61 方法学在原有 scaffold 的 PCR id 和目录内升级，保留各自的范围、
+参考流及映射关系。
+
 ## 项目定位
 
 本仓库是 TianGong LCA 的 PCR 方法学资料库。它负责存储 canonical PCR 内容，

@@ -1,5 +1,7 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
+  "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a": "批发零售、住宿餐饮、运输及公用事业配送服务",
+  "wholesale-trade-services-not-on-a-fee-or-contract-basis": "非按收费或合同提供的批发贸易服务",
   "rubber-and-plastics-products": "橡胶和塑料制品",
   "pharmaceutical-ingredients": "药用成分",
   "chemicals": "化学品",
