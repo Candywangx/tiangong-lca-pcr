@@ -1,3 +1,4 @@
+import {decodeBrotliSearchPack} from "./search-brotli.ts";
 import {createProviderRuntime} from './provider-runtime.ts';
 import {serializeSiteMetadata} from "../lib/site-wire.ts";
 import {isUnknownRecord,unknownField,errorMessage} from "../../pcr-core/src/types.ts";
@@ -1034,7 +1035,7 @@ async function generate() {
     const shards = layout.manifest.files, logicalShardCount = logicalWires.length;
     for (const {descriptor, payload} of layout.files) {
       const expected = logicalWires.slice(descriptor.firstLogicalShard, descriptor.firstLogicalShard + descriptor.logicalShardCount);
-      const restored = await unpackSearchFile(layout.manifest, descriptor, Buffer.from(payload), sha256);
+      const restored = await unpackSearchFile(layout.manifest, descriptor, Buffer.from(payload), sha256, decodeBrotliSearchPack);
       if (restored.length !== expected.length || restored.some((data, index) => JSON.stringify(data) !== expected[index]))
         throw new Error("Search transport does not restore exact logical bytes");
       write("public" + descriptor.url.slice("/generated".length), payload);

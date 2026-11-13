@@ -1,11 +1,12 @@
+import {encodeBrotliSearchPack} from './search-brotli.ts';
 import {SearchChannelCapacityError} from '../lib/search-arithmetic.ts';
 /** Node-only physical layout selection; logical search wires and browser readers are unchanged. */
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {isUnknownRecord} from '../../pcr-core/src/types.ts';
-import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchPhysicalFile} from '../lib/search-pack.ts';
+import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchManifestV10,type SearchPhysicalFile} from '../lib/search-pack.ts';
 interface Transport {payload:string;bytes:number;gzipBytes:number;sha256:string}
-export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
+export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9|SearchManifestV10;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
 const hash=(text:string)=>'sha256:'+createHash('sha256').update(text).digest('hex');
 const gzip=(text:string)=>gzipSync(text,{level:9}).length;
 const transport=(payload:string):Transport=>({payload,bytes:Buffer.byteLength(payload),gzipBytes:gzip(payload),sha256:hash(payload)});
@@ -69,5 +70,13 @@ export function planSearchPacks(wires:readonly string[],sourceCommit:string,lang
   const candidates=([7,8,9] as const).map(version=>{try{return planVersion(wires,sourceCommit,language,version);}catch(error){if(version===9&&error instanceof SearchChannelCapacityError)return undefined;throw error;}}).filter((candidate):candidate is SearchLayout=>candidate!==undefined);
   if(!candidates.length)throw Error('No search layout satisfies the physical and restored-wire limits');
   candidates.sort((a,b)=>Number(a.rawBytes>SEARCH_RAW_LIMIT)-Number(b.rawBytes>SEARCH_RAW_LIMIT)||a.gzipBytes-b.gzipBytes||a.rawBytes-b.rawBytes||(a.manifestText<b.manifestText?-1:a.manifestText>b.manifestText?1:0));
-  return candidates[0]!;
+  const original=candidates[0]!;
+  // Compress only the chosen original layout: no change to buckets, ownership or logical bytes.
+  const files=original.files.map(file=>{
+    const packed=transport(encodeBrotliSearchPack(file.payload,original.manifest.schemaVersion as 7|8|9));
+    return {payload:packed.payload,descriptor:{...file.descriptor,bytes:packed.bytes,gzipBytes:packed.gzipBytes,sha256:packed.sha256}};
+  });
+  const manifest:SearchManifestV10={...original.manifest,schemaVersion:10,files:files.map(file=>file.descriptor)},manifestText=JSON.stringify(manifest);
+  const candidate:SearchLayout={manifest,manifestText,files,rawBytes:Buffer.byteLength(manifestText)+files.reduce((n,f)=>n+f.descriptor.bytes,0),gzipBytes:gzip(manifestText)+files.reduce((n,f)=>n+f.descriptor.gzipBytes,0)};
+  return candidate.rawBytes<=SEARCH_RAW_LIMIT&&candidate.gzipBytes<original.gzipBytes?candidate:original;
 }

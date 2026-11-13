@@ -39,6 +39,9 @@ lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package bound
 [身份恢复的历史记录](https://github.com/Candywangx/tiangong-lca-pcr/blob/acd016b01883b64d96a321198d65a889d8e96f97/docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md)保留在固定提交的归档中，
 不代表当前内容的审核、验证或发布状态。
 
+PR #31 的 60 份 CPC 61 方法学在原有 scaffold 的 PCR id 和目录内升级，保留各自的范围、
+参考流及映射关系。范围与身份对照见 [CPC 61 原 ID 升级记录](cpc61-original-identity-restoration.md)。
+
 ## 项目定位
 
 本仓库是 TianGong LCA 的 PCR 方法学资料库。它负责存储 canonical PCR 内容，

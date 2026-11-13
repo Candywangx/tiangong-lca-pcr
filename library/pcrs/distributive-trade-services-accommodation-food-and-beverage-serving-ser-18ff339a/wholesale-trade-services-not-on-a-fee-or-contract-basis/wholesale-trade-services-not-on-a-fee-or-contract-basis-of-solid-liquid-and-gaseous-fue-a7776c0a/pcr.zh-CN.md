@@ -1,8 +1,384 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-solid-liquid-and-gaseous-fue-a7776c0a
 language: zh-CN
-status: scaffold
+status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 待补充
+# 原袋已选洗分级无烟煤的常温自营批发服务
+
+## 1. 范围与适用性
+
+真实供应已选洗分级无烟煤原闭袋，常温企业商业货批中拥有买入转售。真实煤阶等级粒级批煤水分析状态收到净煤袋皮包装状态时间最终买方门槛限定服务。排煤饼焦炭其他煤阶散开路线精制柴油木颗粒商户筛洗干重包主动气候燃烧发电使用零售收费代理。真实额外作业需单独完整范围审查。
+
+## 2. 产品类别识别
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-solid-liquid-and-gaseous-fue-a7776c0a |
+| classification_refs | CPC3.0:61091；较窄11011已制备原袋无烟煤，不333柴油39281木颗粒 |
+| covered_products | 已完成原闭袋已选洗分级无烟煤自营批发货批服务 |
+| excluded_products | 其他燃料散开商户处理燃烧使用零售代理 |
+| representative_product | 真实煤阶等级粒级闭袋批原生收到煤水袋皮质量基准最终企业货批 |
+| production_route | 供应已制备闭袋接收 -> 常温库存订单搬运 -> 发出 -> 最终企业验收 |
+| market_state | 物理批发附加，已制备煤水原袋非交换商品库存 |
+
+
+## 3. 参考流
+
+| 字段 | 值 |
+| --- | --- |
+| What | 已完成原闭袋已选洗分级无烟煤自营批发货批服务 |
+| How much | 1 Item(s)，一个唯一最终验收商业货批，非袋千克煤能价格 |
+| How well | 真实煤阶等级粒级选洗闭袋批净煤水皮重质量基准状态最终买方门槛 |
+| How long or cycle | 真实接收存储退回发出验收来源时间戳时区截止全部资产阶段 |
+| reference_flow_link | `accepted_service` |
+
+| 字段 | 值 |
+| --- | --- |
+| reference_amount | 1 |
+| reference_product_flow | 已完成原闭袋已选洗分级无烟煤自营批发货批服务 |
+| reference_flow_property | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| reference_unit_group | 数量单位 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| reference_unit | Item(s) |
+| required_qualifiers | merchant_ownership_resale; final_business_buyer_gate; anthracite_rank_grade_size; supplier_clean_wash_size_state; original_closed_bag_lot; asreceived_coal_netmass_bagtare; water_sample_definition; ash_analysis_calorific_bases; period_timezone_condition; source_gate_coverage_integration; provider_asset_freight_scope; receiver_fates |
+
+N需真实商户拥有转售企业买方冲销后最终门槛，仅收货不足。未完失败资源保期间集合，N=0不除。
+
+## 4. 计量与单位规则
+
+| rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+| --- | --- | --- | --- | --- |
+| commercial_count | accepted_service | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | Item(s) | 参考1 Item(s)为一个完成商业服务，袋煤质量能量不乘N。 |
+| coal_mass | 非交换商品 | Count; Mass | 真实原生数量; kg | 收到净煤质量=唯一真实包装煤(毛-袋外包装载体皮重)之和，有据原生EACH数一次TOTAL不变。核真实袋父数不加父子视图。袋标重非实测真实批净量，收到煤含真实水矿物含灰材料非纯碳。 |
+| water_quality | 真实煤去向 | Mass; mass fraction; Energy | kg; 真实原生比例热值单位 | 匹配真实同样本定义时先原生百分比转比。w_wet=水/asreceived、w_dry=水/匹配干非水量；dry_nonwater=asreceived*(1-w_wet)，仅匹配样本状态定义w_wet=w_dry/(1+w_dry)。LOD可含其他挥发物非自动水。仅水变不证明干煤损失。分收到干干燥无灰灰挥发NCV/GCV计量定义，各基准换算需真实兼容同样本水灰数据独立原生因子来源，不假煤阶值。元素碳非工业分析固定碳，不替换不默认碳转CO2。热值限定商品非服务耗燃料。 |
+| actual_configuration | 真实交换 | 真实原生属性 | 真实原生单位 | 核各真实品号服务资产接收物种介质门槛原生属性单位。通用电Energy不以燃料特定NCV/GCV换算系数Count替代。煤组成热值不核实服务身份。 经核实的电力流可按独立确认的电能基准及单位组使用ILCD名为净热值的参考属性；该属性名称不授权套用燃料热值系数。 |
+
+
+## 5. 系统边界
+
+### 边界概化
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | 真实供应已选洗分级无烟煤原闭袋批煤阶粒级收到水质量包装状态 |
+| starting_condition_role | 已制备煤水原袋非交换库存流经量 |
+| product_classification_scope | 110/61091中11011无烟煤，坐标仅110120172311312331337，不精制柴油333木颗粒39281 |
+| recursive_input_rule | 完整真实互斥服务接收门槛，不递归同批发销售重复资源资产承运 |
+| upstream_dataset_requirement | 链接完整真实矿采选洗分级无烟煤实际有供应干燥放行原包装。仅未制备矿混物不完整。原归属需求损失含基线覆盖额外未覆盖量需真实状态换算阶段损失责任。完整链使用前缺真实阶段额外需求须真实服务外集成一次，具已完成状态链接时间时区来源责任原生量结果，仅待办链接不足。真实服务损失搬运接收处理内一次。 |
+| disclosure | 全部限定原生煤阶粒级煤水皮分析库存去向，原归属损失基线额外全部终态来源量换算覆盖责任及真实完成缺阶段需求集成，完整职责 |
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| physical_service | 真实声明贸易职责 | 常温自营批发为物理服务附加，交易已制备煤水原袋为非交换库存流经量非服务耗用燃料水材料。真实接收订单发出场地职责在内，用户燃烧供应选洗在外。 |  |
+| finished_gate | 真实声明贸易职责 | 链接完整真实矿采选洗分级无烟煤实际有供应干燥放行原包装。仅未制备矿混物不完整。原归属需求损失含基线覆盖额外未覆盖量需真实状态换算阶段损失责任。完整链使用前缺真实阶段额外需求须真实服务外集成一次，具已完成状态链接时间时区来源责任原生量结果，仅待办链接不足。真实服务损失搬运接收处理内一次。 |  |
+| excluded_operations | 真实声明贸易职责 | 不假商户筛洗干重包主动气候调节燃烧发电使用。煤饼焦炭木颗粒精制柴油散开煤零售收费代理排此较窄原闭袋路线。真实新增作业需单独完整审查。 |  |
+| state_fates | 真实声明贸易职责 | 水灰挥发分析基准真实袋状态限定煤状态。水LOD变非干煤损失具名释放自动废弃。真实整袋散有用细粒容纳混合包装自由水直接物种路径互斥，持留内容非叠加真实接收处理一次不自动抵扣。 |  |
+| resources | 真实声明贸易职责 | 含真实完整服务商户资源共享资产制造维护清洁更换终结全部用户期间。声明物理因果原生归属承运空驶载体覆盖责任，完整供应服务仅替换已覆盖直接职责。 |  |
+
+
+## 6. 过程清单结构
+
+### 过程图
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| original_bagged_anthracite_trade | 原闭袋已选洗分级无烟煤库存贸易 | required | 真实原闭袋已制备无烟煤拥有转售最终企业贸易 | 接收订单发出批真实清洁期间库存退回跨期共享设施 | `accepted_service` |
+
+此处不激活采矿洗干装袋燃烧节点。链接各真实职责事件集合期间库存拒收状态到有用持留真实接收路径。未决拒收不计验收输出。条件真实材料服务物种配置据证据展开，不未知作零。
+
+### 过程：原闭袋已选洗分级无烟煤库存贸易 (`original_bagged_anthracite_trade`)
+
+#### 输入
+
+##### 产品流
+
+###### 实际使用点交流电 (`warehouse_power_ac`)
+
+仅适用于实际跨越本节点边界、且未由完整供应商数据覆盖的交流电。该身份未特指供应方、电压、发电组合或交付线损归属，仍须按要求采集。经核实的电力流以1 MJ电能为基准，其ILCD属性名称为净热值；原生kWh按精确的3.6 MJ/kWh换算，不能套用燃料热值系数。直流电或其他不匹配电力状态保留在余项要求中。
+
+- 选定流：交流电 `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- 流属性/单位：Energy / kWh
+- 数量规则：归属真实原生物理量 / N；cp_power。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_power`
+
+范围证据需求：需真实计量设备期间物理全部消费者驱动，不热值转服务电。
+
+###### 实际液态处理自来水供给 (`housekeeping_water_liquid_tap`)
+
+仅在实际来源确为处理后的自来水且用于所声明用途时适用。保留实际供应方、水质、温度状态和供应边界，不假定所有供水都是自来水。冰、瓶装矿泉水、再生水、未经处理的水及环境直接取水保留各自实际身份。沿用原卡原生质量或体积基准；最终换算为质量参考量时须有实际相容密度和状态证据，不能把目录中的次要体积关系作为默认现场密度。
+
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 流属性/单位：Volume / m3
+- 数量规则：归属真实原生物理量 / N；cp_water。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_water`
+
+范围证据需求：需供应持留自由收集直接水证据来源身份，未知库存水变非废水。
+
+###### 实际独立记录的合成洗涤剂投入 (`housekeeping_materials_synthetic_detergent`)
+
+仅适用于产品配方、供应状态及用途记录确认的实际合成表面活性洗涤剂。记录扣除包装皮重的材料净量，区分浓缩液与稀释水，整体配方与组分不得相加重复计入。肥皂、消毒剂、抹布、滤材等仍按各自实际身份记录，不预设清洁配方、剂量或发生。
+
+- 选定流：洗涤剂 `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- 流属性/单位：Mass / kg
+- 数量规则：归属真实原生物理量 / N；cp_supplies。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_supplies`
+
+范围证据需求：需真实原生品号配方载体库存量来源，不默认清洁化学剂量。
+
+##### 废物流
+
+##### 基本流
+
+#### 输出
+
+##### 产品流
+
+###### 已完成原闭袋已选洗分级无烟煤自营批发货批服务 (`accepted_service`)
+
+一个唯一最终商业货批，供应已选洗分级无烟煤具原闭袋，由商户拥有买入转售企业买方验收。真实煤阶等级粒级袋批状态收到净煤质量水灰分析基准包装皮重时间门槛限定服务，袋千克燃料值非N。
+
+- 选定流：已完成原闭袋已选洗分级无烟煤自营批发货批服务
+- 流属性/单位：Count / Item(s)
+- 数量规则：1 Item(s)
+- 数值来源模式：`fixed_value`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_coal`
+
+范围证据需求：需来源所有权转售买方最终门槛冲销真实已制备煤阶粒级闭袋原生煤水皮重记录，不袋重水灰热值默认。
+
+###### 退回供应方的未使用合成洗涤剂 (`unused_supply_return_detergent_return`)
+
+仅覆盖本过程有独立实际证据的“退回供应方的未使用合成洗涤剂”。记录自身物态、净量 kg、事件来源及交接门。其他状态或接收方需在`unused_supply_return`下独立确定身份，本卡不能替代；记录缺失不证明发生或为零。 将未使用材料的配方、供应状态和原生质量严格匹配到投入`housekeeping_materials_synthetic_detergent`。本卡为可用对外退料，不是废物、期末库存或内部循环。仅在总量供应口径下列此输出；投入已扣除该退料时必须省略对应退料输出，不自动抵扣避免生产。
+
+- 选定流：洗涤剂 `1c57d123-df57-49ab-b9d4-957403beb8a5`
+- 流属性/单位：Mass / kg
+- 数量规则：`unused_supply_return_detergent_return`实际独占归属的 kg / 验收 N，仅归一化一次；已按参考流给出的数量不得再次除以 N。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_supplies`
+
+范围证据要求：需事件关联的原生 kg、状态组成、接收或供应门、归属记录及整件组分或对应投入的排他关联，使用协议`cp_supplies`。不提供默认数值或换算因子；其他原生单位须有换算证据后使用。
+
+##### 废物流
+
+###### 废弃装有制备无烟煤的原袋整件 (`whole_bag_waste_atomic_case`)
+
+仅在实际独立记录确认“废弃装有制备无烟煤的原袋整件”时适用。本卡只覆盖该命名实物状态及自身实际净量、保留组成和接收门。其他部件、碎片、游离液、独立包装及清理载体仍属于`whole_bag_waste`中的身份核实事项；不得移动边界、预设事件、将库存差当废弃，或把仍保留在整体流内的组分另算出口。实际混收流须匹配自身准确身份。原有原生单位数量协议只用于本独占具体情形，其他实际去向分别协调。
+
+- 选定流：废弃装有制备无烟煤的原袋整件
+- 流属性/单位：Mass / kg
+- 数量规则：归属真实原生物理量 / N；cp_coal。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_coal`
+
+范围证据需求：需真实毛净皮收集状态接收处理原门槛煤损量状态换算既有覆盖。
+
+###### 实际单独收集的纸类包装废物 (`packing_waste_paper_pack`)
+
+仅适用于本节点实际独立废弃、单独收集的纸类包装，保留实际湿态或收集状态、组成、接收方及处理运输责任。污染或混收形成的混合流须使用其自身经核实的身份，材料组分仅作不可相加审计。仍在用的周转包装不是本废物，不预设组成、数量、回收或处理。
+
+- 选定流：包装废弃物，纸类 `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
+- 流属性/单位：Mass / kg
+- 数量规则：归属真实原生物理量 / N；cp_fates。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_fates`
+
+范围证据需求：需材料原生数质量皮重持留煤水接收承运处理排除链接，不收集抵扣。
+
+
+###### 实际单独收集的金属包装废物 (`packing_waste_metal_pack`)
+
+仅适用于本节点实际独立废弃、单独收集的金属包装，保留实际湿态或收集状态、组成、接收方及处理运输责任。污染或混收形成的混合流须使用其自身经核实的身份，材料组分仅作不可相加审计。仍在用的周转包装不是本废物，不预设组成、数量、回收或处理。
+
+- 选定流：金属包装废物 `cdda6013-c0c5-4c72-990a-f5668fe71069`
+- 流属性/单位：Mass / kg
+- 数量规则：归属真实原生物理量 / N；cp_fates。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_fates`
+
+范围证据需求：需材料原生数质量皮重持留煤水接收承运处理排除链接，不收集抵扣。
+
+
+###### 实际单独收集的塑料包装废物 (`packing_waste_plastic_pack`)
+
+仅适用于实际独立废弃、单独收集的空塑料包装，保留实际组成、含水状态及接收方。含残留商品的混合包装、污染混合流、设备内保温泡沫、一次性抹布及复合包装不使用本分支；整体混合流中的组分仅作不可相加审计，运输处理责任计入一次。不预设排空、回收、发生或数量。
+
+- 选定流：塑料包装废物 `919351c4-3e25-4092-9934-73ecec021a3b`
+- 流属性/单位：Mass / kg
+- 数量规则：归属真实原生物理量 / N；cp_fates。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_fates`
+
+范围证据需求：需材料原生数质量皮重持留煤水接收承运处理排除链接，不收集抵扣。
+
+###### 废弃散装处理无烟煤，不含袋 (`nonusable_coal_material_loose_anthracite`)
+
+仅覆盖本过程有独立实际证据的“废弃散装处理无烟煤，不含袋”。记录自身物态、净量 kg、事件来源及交接门。其他状态或接收方需在`nonusable_coal_material`下独立确定身份，本卡不能替代；记录缺失不证明发生或为零。 仅在实际独立收集并转移至废物接收方时启用，不得用于仍保留在整件、包装或收集混合物中的组分。保留组成只作不可相加记录。不预设开包、切割、拆解、主动干燥、回收率或处理路线，处理及运输责任只归属一次。
+
+- 选定流：废弃散装处理无烟煤，不含袋
+- 流属性/单位：Mass / kg
+- 数量规则：`nonusable_coal_material_loose_anthracite`实际独占归属的 kg / 验收 N，仅归一化一次；已按参考流给出的数量不得再次除以 N。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_fates`
+
+范围证据要求：需事件关联的原生 kg、状态组成、接收或供应门、归属记录及整件组分或对应投入的排他关联，使用协议`cp_fates`。不提供默认数值或换算因子；其他原生单位须有换算证据后使用。
+
+###### 废弃场所清洁擦拭物，保留实际污染物 (`spent_housekeeping_solids_spent_wipe`)
+
+仅覆盖本过程有独立实际证据的“废弃场所清洁擦拭物，保留实际污染物”。记录自身物态、净量 kg、事件来源及交接门。其他状态或接收方需在`spent_housekeeping_solids`下独立确定身份，本卡不能替代；记录缺失不证明发生或为零。 仅在实际独立收集并转移至废物接收方时启用，不得用于仍保留在整件、包装或收集混合物中的组分。保留组成只作不可相加记录。不预设开包、切割、拆解、主动干燥、回收率或处理路线，处理及运输责任只归属一次。 按接收状态确定实际擦拭物基材及保留污染物。滤芯、散装吸附材料或独立收集液体不是本擦拭物流。废弃整体质量含保留污染物一次，干擦拭物供应质量只作组分审计。
+
+- 选定流：废弃场所清洁擦拭物，保留实际污染物
+- 流属性/单位：Mass / kg
+- 数量规则：`spent_housekeeping_solids_spent_wipe`实际独占归属的 kg / 验收 N，仅归一化一次；已按参考流给出的数量不得再次除以 N。
+- 数值来源模式：`foreground_record`
+- 适用范围：`site_specific`
+- 归一化基准：每参考流
+- 基准类型：`reference_flow`
+- 证据类型：`collected_record`
+- 采集协议：`cp_fates`
+
+范围证据要求：需事件关联的原生 kg、状态组成、接收或供应门、归属记录及整件组分或对应投入的排他关联，使用协议`cp_fates`。不提供默认数值或换算因子；其他原生单位须有换算证据后使用。
+
+##### 基本流
+
+## 7. 分配与联产品处理
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| final_N | 真实声明贸易职责 | 来源核实所有权转售买方冲销后最终验收。唯一最终商业N排未决拒收，失败取消未完资源保真实集合期间职责，N=0不除。不袋千克煤能价格转服务。 |  |
+| source_allterminal | 真实声明贸易职责 | 用直接来源追溯或original_gate_quantity*numerator_driver/正数完整source_all_exit_driver。同兼容完整来源集合分子分母，各验收期末未售损坏持留有用其他退回真实整散混液损失驱动记录具原生单位基准方法状态时间来源责任原链接互斥分子成员。非仅验收分母。阶段损失基线覆盖责任真实完成缺阶段额外需求外部集成一次防重复上游。 上期期末以同原生量状态来源门槛负担责任结转本期期初，按prior_period_closing_link/current_period_opening_link链接；不作新购入、重复上游需求或新增FINAL N。同一链接结转为一次跨期转移，不在同来源集合计两个终态需求。 |  |
+| supplies_life | 真实声明贸易职责 | 用品S=opening+net_receipts-closing，NET材料排容器皮重持留期末回收一次。采用总输入S单列匹配未用外退输出，或耗用S-return输入省该输出，不数值S+退回双抵无关继承内容扣减。全资产负担用兼容集合驱动/完整全部用户寿命驱动实测有据剩余终止不确定性更新。 |  |
+| exclusive_physical | 真实声明贸易职责 | 真实材料水包装载体视图保原来源接收责任，持留内容不额外物理出口。真实接收处理一次不收集即避免生产。各唯一货载路段真实因果比例在自身求和项内N一次。 |  |
+
+
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| source_scope_normalization | 非交换商品与服务组合 | 原始外部商品库存、来源归属损失及缺阶段新增上游集成量均保留有证据的实际原始作用域。逐量识别一个实际货批、目标服务集合或已经每参考流，并记录来源目标作用域编号与数量口径。来源集合全部出口分母仅把原始量归属该目标范围，不自动等于目标验收服务N。仅与1 Item(s)服务组合时，以同目标范围原始归属量除正数唯一验收source_same_scope_N，记录验收编号时间冲销证据，取得每参考量。有证单货批source_same_scope_N=1，已每参考量不再除。保留实际原始集成量来源链接，不缩小真实上游补阶段量，不用无关N除整个来源集合；N0责任披露不除。 |  |
+
+## 8. 前景数据采集、计算与质量规则
+
+### 数据采集协议
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_coal | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | merchant_id;ownership_purchase_resale_evidence;business_buyer_id;acceptance_gate;acceptance_gate_source;final_acceptance_record_id;reversal_record_ids;unfinished_event_ids;supplier_id;source_lot;rank_grade_identity;rank_grade_source;clean_wash_size_evidence;actual_supplier_drying_evidence;size_definition;size_analysis_source;original_closed_bag_state;bag_id;parent_package_id;count_extent_EACH_or_TOTAL;count_extent_source;condition_source;receipt_timestamp;storage_start;storage_end;dispatch_timestamp;acceptance_timestamp;timestamp_timezone;time_source;sample_id;sample_time;sample_state;moisture_definition;moisture_method;moisture_source;water_species_method_scope;matching_nonwater_definition;ash_definition;ash_analysis_source;ash_sample_link;volatile_definition;volatile_source;elemental_carbon_definition;elemental_analysis_source;proximate_fixed_carbon_definition;proximate_analysis_source;calorific_kind_NCV_or_GCV;calorific_basis;calorific_source;calorific_sample_link;source_gate_dataset_id;source_gate_reference;source_gate_state;baseline_stage_coverage;baseline_loss_coverage;missing_actual_stage_records;loss_owner;already_included_coverage;source_all_exit_driver_records;prior_period_closing_link;current_period_opening_link;terminal_exit_id;terminal_exit_kind;terminal_source_link;driver_owner;driver_exclusivity_key;numerator_record_links;direct_assignment_evidence;allocation_method;allocation_source;source_state_conversion_evidence;integration_status;integration_link;integration_timestamp;integration_timezone;integration_source;integration_owner;completed_integration_result;receiver_id;receiver_decision;treatment_scope;transfer_id;stream_exclusion_ids;opening_carried_quantity;opening_carried_quantity_unit;opening_carried_quantity_basis;opening_carried_quantity_method;opening_carried_quantity_state;opening_carried_quantity_sample_time;opening_carried_quantity_source;opening_carried_quantity_conversion_factor;opening_carried_quantity_conversion_unit;opening_carried_quantity_conversion_source;bag_count;bag_count_unit;bag_count_basis;bag_count_method;bag_count_state;bag_count_sample_time;bag_count_source;bag_count_conversion_factor;bag_count_conversion_unit;bag_count_conversion_source;bags_per_parent;bags_per_parent_unit;bags_per_parent_basis;bags_per_parent_method;bags_per_parent_state;bags_per_parent_sample_time;bags_per_parent_source;bags_per_parent_conversion_factor;bags_per_parent_conversion_unit;bags_per_parent_conversion_source;repeat_count;repeat_count_unit;repeat_count_basis;repeat_count_method;repeat_count_state;repeat_count_sample_time;repeat_count_source;repeat_count_conversion_factor;repeat_count_conversion_unit;repeat_count_conversion_source;packed_gross_mass;packed_gross_mass_unit;packed_gross_mass_basis;packed_gross_mass_method;packed_gross_mass_state;packed_gross_mass_sample_time;packed_gross_mass_source;packed_gross_mass_conversion_factor;packed_gross_mass_conversion_unit;packed_gross_mass_conversion_source;bag_pack_tare;bag_pack_tare_unit;bag_pack_tare_basis;bag_pack_tare_method;bag_pack_tare_state;bag_pack_tare_sample_time;bag_pack_tare_source;bag_pack_tare_conversion_factor;bag_pack_tare_conversion_unit;bag_pack_tare_conversion_source;net_asreceived_coal_mass;net_asreceived_coal_mass_unit;net_asreceived_coal_mass_basis;net_asreceived_coal_mass_method;net_asreceived_coal_mass_state;net_asreceived_coal_mass_sample_time;net_asreceived_coal_mass_source;net_asreceived_coal_mass_conversion_factor;net_asreceived_coal_mass_conversion_unit;net_asreceived_coal_mass_conversion_source;water_mass;water_mass_unit;water_mass_basis;water_mass_method;water_mass_state;water_mass_sample_time;water_mass_source;water_mass_conversion_factor;water_mass_conversion_unit;water_mass_conversion_source;wet_basis_water_fraction;wet_basis_water_fraction_unit;wet_basis_water_fraction_basis;wet_basis_water_fraction_method;wet_basis_water_fraction_state;wet_basis_water_fraction_sample_time;wet_basis_water_fraction_source;wet_basis_water_fraction_conversion_factor;wet_basis_water_fraction_conversion_unit;wet_basis_water_fraction_conversion_source;dry_basis_water_ratio;dry_basis_water_ratio_unit;dry_basis_water_ratio_basis;dry_basis_water_ratio_method;dry_basis_water_ratio_state;dry_basis_water_ratio_sample_time;dry_basis_water_ratio_source;dry_basis_water_ratio_conversion_factor;dry_basis_water_ratio_conversion_unit;dry_basis_water_ratio_conversion_source;dry_nonwater_mass;dry_nonwater_mass_unit;dry_nonwater_mass_basis;dry_nonwater_mass_method;dry_nonwater_mass_state;dry_nonwater_mass_sample_time;dry_nonwater_mass_source;dry_nonwater_mass_conversion_factor;dry_nonwater_mass_conversion_unit;dry_nonwater_mass_conversion_source;ash_mass;ash_mass_unit;ash_mass_basis;ash_mass_method;ash_mass_state;ash_mass_sample_time;ash_mass_source;ash_mass_conversion_factor;ash_mass_conversion_unit;ash_mass_conversion_source;ash_fraction;ash_fraction_unit;ash_fraction_basis;ash_fraction_method;ash_fraction_state;ash_fraction_sample_time;ash_fraction_source;ash_fraction_conversion_factor;ash_fraction_conversion_unit;ash_fraction_conversion_source;volatile_fraction;volatile_fraction_unit;volatile_fraction_basis;volatile_fraction_method;volatile_fraction_state;volatile_fraction_sample_time;volatile_fraction_source;volatile_fraction_conversion_factor;volatile_fraction_conversion_unit;volatile_fraction_conversion_source;elemental_carbon_fraction;elemental_carbon_fraction_unit;elemental_carbon_fraction_basis;elemental_carbon_fraction_method;elemental_carbon_fraction_state;elemental_carbon_fraction_sample_time;elemental_carbon_fraction_source;elemental_carbon_fraction_conversion_factor;elemental_carbon_fraction_conversion_unit;elemental_carbon_fraction_conversion_source;proximate_fixed_carbon_fraction;proximate_fixed_carbon_fraction_unit;proximate_fixed_carbon_fraction_basis;proximate_fixed_carbon_fraction_method;proximate_fixed_carbon_fraction_state;proximate_fixed_carbon_fraction_sample_time;proximate_fixed_carbon_fraction_source;proximate_fixed_carbon_fraction_conversion_factor;proximate_fixed_carbon_fraction_conversion_unit;proximate_fixed_carbon_fraction_conversion_source;calorific_value;calorific_value_unit;calorific_value_basis;calorific_value_method;calorific_value_state;calorific_value_sample_time;calorific_value_source;calorific_value_conversion_factor;calorific_value_conversion_unit;calorific_value_conversion_source;original_gate_quantity;original_gate_quantity_unit;original_gate_quantity_basis;original_gate_quantity_method;original_gate_quantity_state;original_gate_quantity_sample_time;original_gate_quantity_source;original_gate_quantity_conversion_factor;original_gate_quantity_conversion_unit;original_gate_quantity_conversion_source;assigned_source_quantity;assigned_source_quantity_unit;assigned_source_quantity_basis;assigned_source_quantity_method;assigned_source_quantity_state;assigned_source_quantity_sample_time;assigned_source_quantity_source;assigned_source_quantity_conversion_factor;assigned_source_quantity_conversion_unit;assigned_source_quantity_conversion_source;source_loss_quantity;source_loss_quantity_unit;source_loss_quantity_basis;source_loss_quantity_method;source_loss_quantity_state;source_loss_quantity_sample_time;source_loss_quantity_source;source_loss_quantity_conversion_factor;source_loss_quantity_conversion_unit;source_loss_quantity_conversion_source;baseline_covered_source_quantity;baseline_covered_source_quantity_unit;baseline_covered_source_quantity_basis;baseline_covered_source_quantity_method;baseline_covered_source_quantity_state;baseline_covered_source_quantity_sample_time;baseline_covered_source_quantity_source;baseline_covered_source_quantity_conversion_factor;baseline_covered_source_quantity_conversion_unit;baseline_covered_source_quantity_conversion_source;additional_uncovered_source_quantity;additional_uncovered_source_quantity_unit;additional_uncovered_source_quantity_basis;additional_uncovered_source_quantity_method;additional_uncovered_source_quantity_state;additional_uncovered_source_quantity_sample_time;additional_uncovered_source_quantity_source;additional_uncovered_source_quantity_conversion_factor;additional_uncovered_source_quantity_conversion_unit;additional_uncovered_source_quantity_conversion_source;missing_stage_quantity;missing_stage_quantity_unit;missing_stage_quantity_basis;missing_stage_quantity_method;missing_stage_quantity_state;missing_stage_quantity_sample_time;missing_stage_quantity_source;missing_stage_quantity_conversion_factor;missing_stage_quantity_conversion_unit;missing_stage_quantity_conversion_source;integrated_source_quantity;integrated_source_quantity_unit;integrated_source_quantity_basis;integrated_source_quantity_method;integrated_source_quantity_state;integrated_source_quantity_sample_time;integrated_source_quantity_source;integrated_source_quantity_conversion_factor;integrated_source_quantity_conversion_unit;integrated_source_quantity_conversion_source;numerator_driver;numerator_driver_unit;numerator_driver_basis;numerator_driver_method;numerator_driver_state;numerator_driver_sample_time;numerator_driver_source;numerator_driver_conversion_factor;numerator_driver_conversion_unit;numerator_driver_conversion_source;source_all_exit_driver;source_all_exit_driver_unit;source_all_exit_driver_basis;source_all_exit_driver_method;source_all_exit_driver_state;source_all_exit_driver_sample_time;source_all_exit_driver_source;source_all_exit_driver_conversion_factor;source_all_exit_driver_conversion_unit;source_all_exit_driver_conversion_source;driver_quantity;driver_quantity_unit;driver_quantity_basis;driver_quantity_method;driver_quantity_state;driver_quantity_sample_time;driver_quantity_source;driver_quantity_conversion_factor;driver_quantity_conversion_unit;driver_quantity_conversion_source;accepted_quantity;accepted_quantity_unit;accepted_quantity_basis;accepted_quantity_method;accepted_quantity_state;accepted_quantity_sample_time;accepted_quantity_source;accepted_quantity_conversion_factor;accepted_quantity_conversion_unit;accepted_quantity_conversion_source;return_quantity;return_quantity_unit;return_quantity_basis;return_quantity_method;return_quantity_state;return_quantity_sample_time;return_quantity_source;return_quantity_conversion_factor;return_quantity_conversion_unit;return_quantity_conversion_source;closing_quantity;closing_quantity_unit;closing_quantity_basis;closing_quantity_method;closing_quantity_state;closing_quantity_sample_time;closing_quantity_source;closing_quantity_conversion_factor;closing_quantity_conversion_unit;closing_quantity_conversion_source;useful_other_exit_quantity;useful_other_exit_quantity_unit;useful_other_exit_quantity_basis;useful_other_exit_quantity_method;useful_other_exit_quantity_state;useful_other_exit_quantity_sample_time;useful_other_exit_quantity_source;useful_other_exit_quantity_conversion_factor;useful_other_exit_quantity_conversion_unit;useful_other_exit_quantity_conversion_source;whole_loss_quantity;whole_loss_quantity_unit;whole_loss_quantity_basis;whole_loss_quantity_method;whole_loss_quantity_state;whole_loss_quantity_sample_time;whole_loss_quantity_source;whole_loss_quantity_conversion_factor;whole_loss_quantity_conversion_unit;whole_loss_quantity_conversion_source;loose_loss_quantity;loose_loss_quantity_unit;loose_loss_quantity_basis;loose_loss_quantity_method;loose_loss_quantity_state;loose_loss_quantity_sample_time;loose_loss_quantity_source;loose_loss_quantity_conversion_factor;loose_loss_quantity_conversion_unit;loose_loss_quantity_conversion_source;mixed_loss_quantity;mixed_loss_quantity_unit;mixed_loss_quantity_basis;mixed_loss_quantity_method;mixed_loss_quantity_state;mixed_loss_quantity_sample_time;mixed_loss_quantity_source;mixed_loss_quantity_conversion_factor;mixed_loss_quantity_conversion_unit;mixed_loss_quantity_conversion_source;liquid_loss_quantity;liquid_loss_quantity_unit;liquid_loss_quantity_basis;liquid_loss_quantity_method;liquid_loss_quantity_state;liquid_loss_quantity_sample_time;liquid_loss_quantity_source;liquid_loss_quantity_conversion_factor;liquid_loss_quantity_conversion_unit;liquid_loss_quantity_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; source_assignment_scope_id; source_assignment_scope_kind; source_quantity_basis; source_target_scope_id; source_same_scope_N; source_same_scope_N_unit; source_same_scope_N_basis; source_same_scope_N_method; source_same_scope_N_state; source_same_scope_N_sample_time; source_same_scope_N_source; source_same_scope_acceptance_ids; source_already_per_reference; raw_integration_scope_link; flow_row_id; actual_identity_case; actual_substance_or_material; actual_state_and_gate; case_activation_evidence; quantity_exclusion_links; whole_total_reconciliation | 核实商户拥有买入转售企业买方冲销链接后唯一最终验收；N为商业货批Count非收货袋千克燃料能量。失败未完取消冲销职责保物理资源期间集合；N=0不除。采真实已制备无烟煤阶等级粒级原闭袋批收到净煤与包装皮重及代表同样本质量基准。不规定商户检测洗干装袋。链接完整真实矿采选洗分级实际有供应干燥放行原包装来源。直接归属或正数完整兼容全部终态驱动含验收期末未售损坏持留有用其他退回真实整散混液损失，各原生元数据责任原链接互斥分子成员。原归属损失基线覆盖额外量缺真实阶段须有据换算原门槛状态覆盖责任。完整链使用前真实缺阶段额外需求须服务外集成一次且COMPLETED状态链接时间时区来源责任原生集成量结果，不仅待办。真实服务损失搬运处理内一次。 上期期末以同原生量状态来源门槛负担责任结转本期期初，按prior_period_closing_link/current_period_opening_link链接；不作新购入、重复上游需求或新增FINAL N。同一链接结转为一次跨期转移，不在同来源集合计两个终态需求。  原始外部商品库存、来源归属损失及缺阶段新增上游集成量均保留有证据的实际原始作用域。逐量识别一个实际货批、目标服务集合或已经每参考流，并记录来源目标作用域编号与数量口径。来源集合全部出口分母仅把原始量归属该目标范围，不自动等于目标验收服务N。仅与1 Item(s)服务组合时，以同目标范围原始归属量除正数唯一验收source_same_scope_N，记录验收编号时间冲销证据，取得每参考量。有证单货批source_same_scope_N=1，已每参考量不再除。保留实际原始集成量来源链接，不缩小真实上游补阶段量，不用无关N除整个来源集合；N0责任披露不除。 只归属独立确认的实物情形，其他实际去向按来源分别保留；每个原生记录只属于一个交换，任何总量仅作不可相加审计。 | Item(s); 真实袋煤水分析时间单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_power | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | meter_id;equipment_id;period_start;period_end;timezone;all_consumers;calibration_source;provider_coverage;coverage_owner;meter_opening;meter_opening_unit;meter_opening_basis;meter_opening_method;meter_opening_state;meter_opening_sample_time;meter_opening_source;meter_opening_conversion_factor;meter_opening_conversion_unit;meter_opening_conversion_source;meter_closing;meter_closing_unit;meter_closing_basis;meter_closing_method;meter_closing_state;meter_closing_sample_time;meter_closing_source;meter_closing_conversion_factor;meter_closing_conversion_unit;meter_closing_conversion_source;electricity;electricity_unit;electricity_basis;electricity_method;electricity_state;electricity_sample_time;electricity_source;electricity_conversion_factor;electricity_conversion_unit;electricity_conversion_source;power;power_unit;power_basis;power_method;power_state;power_sample_time;power_source;power_conversion_factor;power_conversion_unit;power_conversion_source;duration;duration_unit;duration_basis;duration_method;duration_state;duration_sample_time;duration_source;duration_conversion_factor;duration_conversion_unit;duration_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | 用真实表差有据功率时长原生换算全部消费者物理驱动，含待机清洁。真实完整服务供电仅替换已覆盖直接职责。燃料商品能量不进本计量账。 按flow_row_id与actual_identity_case划分实际原生记录，仅有证据的分支适用。具体分支与余项在节点内数量互斥，每个实物出入只归属一次，并与相容同范围不可相加总量协调。发生或数量未知仍待采集，不能填零。 | kWh | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_water | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | water_source_identity;composition;composition_method;composition_source;receiver_id;collection_id;transfer_id;treatment_scope;stream_exclusion_ids;supplied_volume;supplied_volume_unit;supplied_volume_basis;supplied_volume_method;supplied_volume_state;supplied_volume_sample_time;supplied_volume_source;supplied_volume_conversion_factor;supplied_volume_conversion_unit;supplied_volume_conversion_source;retained_fluid;retained_fluid_unit;retained_fluid_basis;retained_fluid_method;retained_fluid_state;retained_fluid_sample_time;retained_fluid_source;retained_fluid_conversion_factor;retained_fluid_conversion_unit;retained_fluid_conversion_source;free_liquid_volume;free_liquid_volume_unit;free_liquid_volume_basis;free_liquid_volume_method;free_liquid_volume_state;free_liquid_volume_sample_time;free_liquid_volume_source;free_liquid_volume_conversion_factor;free_liquid_volume_conversion_unit;free_liquid_volume_conversion_source;free_liquid_mass;free_liquid_mass_unit;free_liquid_mass_basis;free_liquid_mass_method;free_liquid_mass_state;free_liquid_mass_sample_time;free_liquid_mass_source;free_liquid_mass_conversion_factor;free_liquid_mass_conversion_unit;free_liquid_mass_conversion_source;direct_water;direct_water_unit;direct_water_basis;direct_water_method;direct_water_state;direct_water_sample_time;direct_water_source;direct_water_conversion_factor;direct_water_conversion_unit;direct_water_conversion_source;density;density_unit;density_basis;density_method;density_state;density_sample_time;density_source;density_conversion_factor;density_conversion_unit;density_conversion_source;temperature;temperature_unit;temperature_basis;temperature_method;temperature_state;temperature_sample_time;temperature_source;temperature_conversion_factor;temperature_conversion_unit;temperature_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | 计真实供水及分别持留自由收集直接路径，各原生量基准状态来源。体积质量换算需匹配组成密度温度单位来源。继承煤水非新增服务供应，持留液为非叠加载体内容。需真实接收直接水证据，不余差蒸发。 按flow_row_id与actual_identity_case划分实际原生记录，仅有证据的分支适用。具体分支与余项在节点内数量互斥，每个实物出入只归属一次，并与相容同范围不可相加总量协调。发生或数量未知仍待采集，不能填零。 | m3; 真实密度温度组成单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_supplies | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | supply_sku;formulation;carrier_identity;composition_basis;composition_method;composition_source;stock_convention;same_scope_supply_match;return_id;receiver_id;opening;opening_unit;opening_basis;opening_method;opening_state;opening_sample_time;opening_source;opening_conversion_factor;opening_conversion_unit;opening_conversion_source;receipt_gross;receipt_gross_unit;receipt_gross_basis;receipt_gross_method;receipt_gross_state;receipt_gross_sample_time;receipt_gross_source;receipt_gross_conversion_factor;receipt_gross_conversion_unit;receipt_gross_conversion_source;receipt_container_tare;receipt_container_tare_unit;receipt_container_tare_basis;receipt_container_tare_method;receipt_container_tare_state;receipt_container_tare_sample_time;receipt_container_tare_source;receipt_container_tare_conversion_factor;receipt_container_tare_conversion_unit;receipt_container_tare_conversion_source;net_receipts;net_receipts_unit;net_receipts_basis;net_receipts_method;net_receipts_state;net_receipts_sample_time;net_receipts_source;net_receipts_conversion_factor;net_receipts_conversion_unit;net_receipts_conversion_source;closing;closing_unit;closing_basis;closing_method;closing_state;closing_sample_time;closing_source;closing_conversion_factor;closing_conversion_unit;closing_conversion_source;unused_out;unused_out_unit;unused_out_basis;unused_out_method;unused_out_state;unused_out_sample_time;unused_out_source;unused_out_conversion_factor;unused_out_conversion_unit;unused_out_conversion_source;used;used_unit;used_basis;used_method;used_state;used_sample_time;used_source;used_conversion_factor;used_conversion_unit;used_conversion_source;density;density_unit;density_basis;density_method;density_state;density_sample_time;density_source;density_conversion_factor;density_conversion_unit;density_conversion_source;temperature;temperature_unit;temperature_basis;temperature_method;temperature_state;temperature_sample_time;temperature_source;temperature_conversion_factor;temperature_conversion_unit;temperature_conversion_source;unit_mass;unit_mass_unit;unit_mass_basis;unit_mass_method;unit_mass_state;unit_mass_sample_time;unit_mass_source;unit_mass_conversion_factor;unit_mass_conversion_unit;unit_mass_conversion_source;unit_length;unit_length_unit;unit_length_basis;unit_length_method;unit_length_state;unit_length_sample_time;unit_length_source;unit_length_conversion_factor;unit_length_conversion_unit;unit_length_conversion_source;unit_area;unit_area_unit;unit_area_basis;unit_area_method;unit_area_state;unit_area_sample_time;unit_area_source;unit_area_conversion_factor;unit_area_conversion_unit;unit_area_conversion_source;component_fraction;component_fraction_unit;component_fraction_basis;component_fraction_method;component_fraction_state;component_fraction_sample_time;component_fraction_source;component_fraction_conversion_factor;component_fraction_conversion_unit;component_fraction_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | S=opening+net_receipts-closing，真实回收持留期末一次。NET接收为排容器皮重的材料内容。采用总输入S单列同范围匹配未用外退输出，或耗用S-return输入省输出，不数值S+退回双抵。仅匹配独立用品扣减，不继承煤袋水资产内容。产废耗用保完整供应生产负担。 按flow_row_id与actual_identity_case划分实际原生记录，仅有证据的分支适用。具体分支与余项在节点内数量互斥，每个实物出入只归属一次，并与相容同范围不可相加总量协调。发生或数量未知仍待采集，不能填零。 | kg; 真实原生用品比例密度温度单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_provider | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | provider_id;job_id;completion_evidence;scope_start;scope_end;electricity_coverage;asset_life_coverage;transport_empty_coverage;receiver_treatment_coverage;coverage_owner;exclusion_links;native_job_quantity;native_job_quantity_unit;native_job_quantity_basis;native_job_quantity_method;native_job_quantity_state;native_job_quantity_sample_time;native_job_quantity_source;native_job_quantity_conversion_factor;native_job_quantity_conversion_unit;native_job_quantity_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | 确认真实完成物理作业原生属性单位全部资源资产寿命承运空驶接收门槛。完整供应服务仅替换已覆盖直接职责，未覆盖保真实行。不货币袋供热能换算。 | Item(s); 真实服务方原生单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_assets | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | asset_id;asset_bom_scope;manufacture_coverage;maintenance_cleaning_records;replacement_records;eol_scope;all_users_periods;remaining_use_evidence;termination_evidence;uncertainty;sensitivity;update_source;provider_coverage;full_life_burden;full_life_burden_unit;full_life_burden_basis;full_life_burden_method;full_life_burden_state;full_life_burden_sample_time;full_life_burden_source;full_life_burden_conversion_factor;full_life_burden_conversion_unit;full_life_burden_conversion_source;asset_equivalent;asset_equivalent_unit;asset_equivalent_basis;asset_equivalent_method;asset_equivalent_state;asset_equivalent_sample_time;asset_equivalent_source;asset_equivalent_conversion_factor;asset_equivalent_conversion_unit;asset_equivalent_conversion_source;cohort_used_driver;cohort_used_driver_unit;cohort_used_driver_basis;cohort_used_driver_method;cohort_used_driver_state;cohort_used_driver_sample_time;cohort_used_driver_source;cohort_used_driver_conversion_factor;cohort_used_driver_conversion_unit;cohort_used_driver_conversion_source;all_user_used_driver;all_user_used_driver_unit;all_user_used_driver_basis;all_user_used_driver_method;all_user_used_driver_state;all_user_used_driver_sample_time;all_user_used_driver_source;all_user_used_driver_conversion_factor;all_user_used_driver_conversion_unit;all_user_used_driver_conversion_source;observed_history_driver;observed_history_driver_unit;observed_history_driver_basis;observed_history_driver_method;observed_history_driver_state;observed_history_driver_sample_time;observed_history_driver_source;observed_history_driver_conversion_factor;observed_history_driver_conversion_unit;observed_history_driver_conversion_source;remaining_driver;remaining_driver_unit;remaining_driver_basis;remaining_driver_method;remaining_driver_state;remaining_driver_sample_time;remaining_driver_source;remaining_driver_conversion_factor;remaining_driver_conversion_unit;remaining_driver_conversion_source;complete_lifetime_driver;complete_lifetime_driver_unit;complete_lifetime_driver_basis;complete_lifetime_driver_method;complete_lifetime_driver_state;complete_lifetime_driver_sample_time;complete_lifetime_driver_source;complete_lifetime_driver_conversion_factor;complete_lifetime_driver_conversion_unit;complete_lifetime_driver_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | 采真实原生资产作业当量兼容使用全部用户实测历史剩余寿命驱动，各自身单位基准方法状态时间来源换算。完整寿命分母=实测历史+有据兼容剩余或有据终止，全部用户期间。归完整制造维护清洁更换终结具不确定性敏感性更新，非仅验收期间。服务已覆盖设备周转载体一个负担责任，交易煤非资产。 | Item(s); 真实兼容驱动当量单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_freight | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | load_id;leg_id;unique_load_leg_key;load_extent_EACH_or_TOTAL;carrier_id;actual_cargo_pack_support;tare_exclusion_evidence;empty_return_coverage;provider_coverage;repeat_count;repeat_count_unit;repeat_count_basis;repeat_count_method;repeat_count_state;repeat_count_sample_time;repeat_count_source;repeat_count_conversion_factor;repeat_count_conversion_unit;repeat_count_conversion_source;gross_load;gross_load_unit;gross_load_basis;gross_load_method;gross_load_state;gross_load_sample_time;gross_load_source;gross_load_conversion_factor;gross_load_conversion_unit;gross_load_conversion_source;noncargo_tare;noncargo_tare_unit;noncargo_tare_basis;noncargo_tare_method;noncargo_tare_state;noncargo_tare_sample_time;noncargo_tare_source;noncargo_tare_conversion_factor;noncargo_tare_conversion_unit;noncargo_tare_conversion_source;direct_payload;direct_payload_unit;direct_payload_basis;direct_payload_method;direct_payload_state;direct_payload_sample_time;direct_payload_source;direct_payload_conversion_factor;direct_payload_conversion_unit;direct_payload_conversion_source;distance;distance_unit;distance_basis;distance_method;distance_state;distance_sample_time;distance_source;distance_conversion_factor;distance_conversion_unit;distance_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | 记独立原生毛非货物皮直接载荷距离有据次数及单位基准方法状态时间来源换算。保承运煤水袋包装货物载体。EACH次数一次TOTAL不变，各唯一货载路段该物理比例由兼容集合全部用户驱动得且各求和项内，总和除正N一次。服务空程覆盖互斥，干煤碳能量不可替真实载荷。 | kg*km; 真实原生质量距离次数单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_fates | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | parent_bag_id;material_identity;source_lot_link;composition_basis;composition_method;composition_source;source_gate_link;state_change_conversion_evidence;receiver_id;receiver_classification;decision_source;treatment_scope;carrier_id;transfer_id;content_transfer_link;stream_exclusion_ids;sample_id;sample_time;sample_state;moisture_definition;moisture_method;moisture_source;water_species_method_scope;matching_nonwater_definition;gross_waste;gross_waste_unit;gross_waste_basis;gross_waste_method;gross_waste_state;gross_waste_sample_time;gross_waste_source;gross_waste_conversion_factor;gross_waste_conversion_unit;gross_waste_conversion_source;tare;tare_unit;tare_basis;tare_method;tare_state;tare_sample_time;tare_source;tare_conversion_factor;tare_conversion_unit;tare_conversion_source;net_material;net_material_unit;net_material_basis;net_material_method;net_material_state;net_material_sample_time;net_material_source;net_material_conversion_factor;net_material_conversion_unit;net_material_conversion_source;coal_fraction;coal_fraction_unit;coal_fraction_basis;coal_fraction_method;coal_fraction_state;coal_fraction_sample_time;coal_fraction_source;coal_fraction_conversion_factor;coal_fraction_conversion_unit;coal_fraction_conversion_source;dry_cleanup_carrier;dry_cleanup_carrier_unit;dry_cleanup_carrier_basis;dry_cleanup_carrier_method;dry_cleanup_carrier_state;dry_cleanup_carrier_sample_time;dry_cleanup_carrier_source;dry_cleanup_carrier_conversion_factor;dry_cleanup_carrier_conversion_unit;dry_cleanup_carrier_conversion_source;retained_fluid;retained_fluid_unit;retained_fluid_basis;retained_fluid_method;retained_fluid_state;retained_fluid_sample_time;retained_fluid_source;retained_fluid_conversion_factor;retained_fluid_conversion_unit;retained_fluid_conversion_source;retained_coal;retained_coal_unit;retained_coal_basis;retained_coal_method;retained_coal_state;retained_coal_sample_time;retained_coal_source;retained_coal_conversion_factor;retained_coal_conversion_unit;retained_coal_conversion_source;retained_pack;retained_pack_unit;retained_pack_basis;retained_pack_method;retained_pack_state;retained_pack_sample_time;retained_pack_source;retained_pack_conversion_factor;retained_pack_conversion_unit;retained_pack_conversion_source;actual_source_coal_equivalent;actual_source_coal_equivalent_unit;actual_source_coal_equivalent_basis;actual_source_coal_equivalent_method;actual_source_coal_equivalent_state;actual_source_coal_equivalent_sample_time;actual_source_coal_equivalent_source;actual_source_coal_equivalent_conversion_factor;actual_source_coal_equivalent_conversion_unit;actual_source_coal_equivalent_conversion_source;actual_non_source_added_material;actual_non_source_added_material_unit;actual_non_source_added_material_basis;actual_non_source_added_material_method;actual_non_source_added_material_state;actual_non_source_added_material_sample_time;actual_non_source_added_material_source;actual_non_source_added_material_conversion_factor;actual_non_source_added_material_conversion_unit;actual_non_source_added_material_conversion_source;water_mass;water_mass_unit;water_mass_basis;water_mass_method;water_mass_state;water_mass_sample_time;water_mass_source;water_mass_conversion_factor;water_mass_conversion_unit;water_mass_conversion_source;wet_basis_water_fraction;wet_basis_water_fraction_unit;wet_basis_water_fraction_basis;wet_basis_water_fraction_method;wet_basis_water_fraction_state;wet_basis_water_fraction_sample_time;wet_basis_water_fraction_source;wet_basis_water_fraction_conversion_factor;wet_basis_water_fraction_conversion_unit;wet_basis_water_fraction_conversion_source;dry_basis_water_ratio;dry_basis_water_ratio_unit;dry_basis_water_ratio_basis;dry_basis_water_ratio_method;dry_basis_water_ratio_state;dry_basis_water_ratio_sample_time;dry_basis_water_ratio_source;dry_basis_water_ratio_conversion_factor;dry_basis_water_ratio_conversion_unit;dry_basis_water_ratio_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero | 各真实整袋散有用不可用混合包装自由液直接转移需真实接收决策原生量单位基准方法状态采样时间来源换算。整混Waste持留煤水包装为审计内容非额外出口。原已制备煤当量需匹配原收集水灰污染状态，不湿残留千克作干煤损失。用真实同样本水定义换算，LOD非自动水。未知差留未知非排放处置。真实接收处理一次不自动回收抵扣假燃烧。 按flow_row_id与actual_identity_case划分实际原生记录，仅有证据的分支适用。具体分支与余项在节点内数量互斥，每个实物出入只归属一次，并与相容同范围不可相加总量协调。发生或数量未知仍待采集，不能填零。 | kg; 真实原生煤水混合单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+| cp_species | original_bagged_anthracite_trade | 真实职责库存质量去向账 | 来源链接原生物理记录 | species_identity;receiving_medium;particle_size_basis;measurement_source;factor_source;factor_complete;composition_basis;composition_method;composition_source;fate_basis;fate_source;coverage_owner;contained_receiver_exclusion;species_mass;species_mass_unit;species_mass_basis;species_mass_method;species_mass_state;species_mass_sample_time;species_mass_source;species_mass_conversion_factor;species_mass_conversion_unit;species_mass_conversion_source;activity;activity_unit;activity_basis;activity_method;activity_state;activity_sample_time;activity_source;activity_conversion_factor;activity_conversion_unit;activity_conversion_source;factor;factor_unit;factor_basis;factor_method;factor_state;factor_sample_time;factor_conversion_factor;factor_conversion_unit;factor_conversion_source;component_fraction;component_fraction_unit;component_fraction_basis;component_fraction_method;component_fraction_state;component_fraction_sample_time;component_fraction_source;component_fraction_conversion_factor;component_fraction_conversion_unit;component_fraction_conversion_source;fate_fraction;fate_fraction_unit;fate_fraction_basis;fate_fraction_method;fate_fraction_state;fate_fraction_sample_time;fate_fraction_source;fate_fraction_conversion_factor;fate_fraction_conversion_unit;fate_fraction_conversion_source;cohort_driver;cohort_driver_unit;cohort_driver_basis;cohort_driver_method;cohort_driver_state;cohort_driver_sample_time;cohort_driver_source;cohort_driver_conversion_factor;cohort_driver_conversion_unit;cohort_driver_conversion_source;all_user_driver;all_user_driver_unit;all_user_driver_basis;all_user_driver_method;all_user_driver_state;all_user_driver_sample_time;all_user_driver_source;all_user_driver_conversion_factor;all_user_driver_conversion_unit;all_user_driver_conversion_source;attribution_share;attribution_share_unit;attribution_share_basis;attribution_share_method;attribution_share_state;attribution_share_sample_time;attribution_share_source;attribution_share_conversion_factor;attribution_share_conversion_unit;attribution_share_conversion_source | 需确切真实物种介质粒径计量兼容有据活动因子化学，各操作数原生元数据覆盖。捕集尘为容纳载体材料。完整因子已覆盖组成去向比例不再乘该比例。煤营销碳固定碳水LOD差非零排放具名释放，不默认燃烧。 | kg; 真实兼容活动比例单位 | 各真实事件匹配样本期间 | 完整来源职责集合截止寿命阶段 | 真实商户职责全部共享消费者 | 每参考流 | 各原生量单位基准方法状态采样时间来源换算校准不确定性覆盖 |
+
+### 计算规则
+
+| rule_id | 适用对象 | formula_or_rule | inputs | output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| normalize | 全部交换 | 每参考清单=归属真实原生物理量/正N，即来源核实冲销后唯一最终拥有转售企业验收。N=0保真实职责集合期间且无归一值，非零负担。 | 原生量最终门槛冲销记录 | 每1 Item(s)服务原生量 |  |
+| bag_netmass | 非交换商品 | 收到净煤质量=唯一真实包装煤(毛-袋外包装载体皮重)之和，有据原生EACH数一次TOTAL不变。核真实袋父数不加父子视图。袋标重非实测真实批净量，收到煤含真实水矿物含灰材料非纯碳。 | cp_coal;原生数毛皮记录 | 唯一真实煤水对包装审计 |  |
+| water_analysis_basis | 真实煤去向 | 匹配真实同样本定义时先原生百分比转比。w_wet=水/asreceived、w_dry=水/匹配干非水量；dry_nonwater=asreceived*(1-w_wet)，仅匹配样本状态定义w_wet=w_dry/(1+w_dry)。LOD可含其他挥发物非自动水。仅水变不证明干煤损失。分收到干干燥无灰灰挥发NCV/GCV计量定义，各基准换算需真实兼容同样本水灰数据独立原生因子来源，不假煤阶值。元素碳非工业分析固定碳，不替换不默认碳转CO2。热值限定商品非服务耗燃料。 | cp_coal;cp_fates;同样本水灰分析基准证据 | 兼容原生煤质量状态审计 |  |
+| source_demand | 服务外商品 | 直接追溯或assigned_source=original_gate_quantity*numerator_driver/正数完整source_all_exit_driver。记各兼容互斥终态驱动含期末未售损坏持留有用其他退回真实整散混液损失，各原生元数据责任原链接分子成员。非仅验收分母。原归属损失基线额外需求按真实水灰污染证据换匹配成品来源状态。真实缺阶段额外需求服务外集成一次，完整链完成前需COMPLETED状态链接时间时区来源责任原生集成量结果；真实服务搬运处理内一次。 上期期末以同原生量状态来源门槛负担责任结转本期期初，按prior_period_closing_link/current_period_opening_link链接；不作新购入、重复上游需求或新增FINAL N。同一链接结转为一次跨期转移，不在同来源集合计两个终态需求。 | cp_coal;真实完整来源覆盖换算集成记录 | 完成外部来源需求损失阶段集成 |  |
+| physical_closure | 真实库存去向 | 审计来源煤水包装至持留验收退回期末整袋Waste混合Waste包装Waste独立有用不可用自由液直接物种明确未知。各原生量单位基准方法状态时间来源换算必需，持留内容对载体非叠加。捕集细粒不默认空气，水灰污染状态变非原干煤损失。未知阻闭合非推排放处置。 | cp_coal;cp_fates;cp_water;cp_species;链接载体 | 互斥来源内容接收闭合 |  |
+| supplies_assets | 独立用品资产 | S=opening+net_receipts-closing，NET材料排接收容器皮重真实持留期末回收一次。总S输入并单独记录匹配未用输出，或耗用S-return输入省输出。资产归属=full_life_burden*兼容cohort_used_driver/complete_lifetime_driver；完整寿命=observed_history_driver+有据remaining_driver或有据全部用户期间终止。各原生负担当量驱动有单位基准方法状态时间来源换算正兼容分母不确定性敏感性更新。 | cp_supplies;cp_assets;原生库存全寿命记录 | 归属物理用品完整寿命资产 |  |
+| freight_sum | packed_freight | 货运=唯一货载路段求和[(换算真实直接载荷或换算毛-非货物皮重，保货物煤水袋包装载体)*(仅EACH真实有据次数TOTAL不变)*换算真实距离*该记录物理因果比例]/正N。各独立原生操作数具单位基准方法状态时间来源换算。比例每求和项内N一次父子服务空程覆盖互斥，干煤热值非载荷替代。 | cp_freight;唯一原生货载路段驱动证据 | 每1 Item(s)服务真实kg*km |  |
+
+### 数据质量要求
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| concrete_identity | 全部真实交换 | 最终数据使用前核确切原生身份属性单位服务材料物种介质门槛，不煤阶燃料属性替代。 | 真实完整流支持详情前景记录 |
+| water_analysis | 煤库存去向 | 真实代表同样本水定义灰挥发热值元素对固定碳原生基准方法来源时间状态包装皮重，LOD水变非干煤损物种。 | 供应实验样本称袋接收证据，不规定商户检测 |
+| completed_chain | 链接来源服务 | 真实完整矿选洗分级实际有供应干燥放行包装来源需求损失阶段覆盖，缺阶段额外完成集成外一次，完整真实服务职责内一次。未知待集成不得称完整链。 | 原生全部终态状态换算责任覆盖完成状态链接时间来源原生量结果计量寿命承运接收 |
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| warehouse_power | original_bagged_anthracite_trade | 电表记录对应哪个供电点、交直流状态、电压和供应方数据集？核对已列交流电卡与其他有证据的供电，不得将交流电 UUID 用于其他能源。 真实商户设备待机清洁用电。交易煤为商品非本服务燃煤，不推供应选煤用户供热职责。 范围证据需求：需真实计量设备期间物理全部消费者驱动，不热值转服务电。 计量证据：协议`cp_power`；原记录口径 Energy / kWh。原数量约束“归属真实原生物理量 / N；cp_power。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`warehouse_power_ac`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_power`; 实际来源关联原生记录 |
+| housekeeping_water | original_bagged_anthracite_trade | 供应记录是否证明为处理自来水，还是其他明确水质或水源？核实供水状态及交接门，不得用自来水卡替代其他水。 仅真实库房设备职责。煤中持留供应洗水为继承商品内容非第二商户水输入。不规定商户洗煤抑尘。 范围证据需求：需供应持留自由收集直接水证据来源身份，未知库存水变非废水。 计量证据：协议`cp_water`；原记录口径 Volume / m3。原数量约束“归属真实原生物理量 / N；cp_water。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`housekeeping_water_liquid_tap`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_water`; 实际来源关联原生记录 |
+| housekeeping_materials | original_bagged_anthracite_trade | 取得下述清洁或维护职责实际采购品号、配方或安全数据表、供应浓度、物态、用途及库存领用记录。逐项核实洗涤剂以外的实际材料；不得由本 PCR 预设药剂、滤材或剂量。 仅服务真实所用清洁剂擦拭吸附过滤材料。煤粉原袋材料非新增清洁制剂输入。 范围证据需求：需真实原生品号配方载体库存量来源，不默认清洁化学剂量。 计量证据：协议`cp_supplies`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_supplies。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`housekeeping_materials_synthetic_detergent`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_supplies`; 实际来源关联原生记录 |
+| additional_shipping_material | original_bagged_anthracite_trade | 取得包装物料单或规格、材料或复合层身份及新增与继承包装的责任。按该记录逐项确定尚缺的套袋、封口、标签、捆扎带或支撑件身份；一体复合包装不得拆成可相加的材料交换。 仅真实新增膜带标签保护。原闭袋继承供应包装生产留商品范围，商户周转载体按全寿命资产。不假开袋重包。 范围证据需求：需原生数量面积长度质量材料皮重库存换算，煤净质量排袋皮。 计量证据：协议`cp_supplies`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_supplies。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 本记录不是交换，不能生成类目合计数量。 | `cp_supplies`; 实际来源关联原生记录 |
+| external_physical_jobs | original_bagged_anthracite_trade | 取得本记录中明列各职责的供应商合同或完成结果记录、原生计量物理单位及包含资源。确定各项服务结果身份；检验、清洁、装卸为不同服务，价格或小时不得改称件数。 真实服务装载搬运任务且范围完整。采煤洗煤干燥装袋燃烧废物处理合同不藏不明搬运Count。 范围证据需求：需物理完成量单位资源资产承运接收覆盖，不价格袋数燃料能量。 计量证据：协议`cp_provider`；原记录口径 Count / Item(s)。原数量约束“归属真实原生物理量 / N；cp_provider。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 本记录不是交换，不能生成类目合计数量。 | `cp_provider`; 实际来源关联原生记录 |
+| shared_full_life_assets | original_bagged_anthracite_trade | 对本记录中明列的每种资产取得资产编号、配置及匹配的完整生命周期数据集。待补的是各资产或服务身份及全寿命全部使用者分母；仓库、叉车、托盘不能共用一条计数交换，也不能套用默认寿命。 真实设施搬运记录设备周转载体全部用户期间含制造维护清洁更换终结。煤为商品非资产过程耗用燃料。 范围证据需求：需兼容原生当量使用全部用户实测剩余寿命驱动证据，不目录寿命默认。 计量证据：协议`cp_assets`；原记录口径 Count / Item(s)。原数量约束“归属真实原生物理量 / N；cp_assets。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 本记录不是交换，不能生成类目合计数量。 | `cp_assets`; 实际来源关联原生记录 |
+| packed_freight | original_bagged_anthracite_trade | 对实际入库、出库、退运及废物运输段取得运输方式或车辆、温控服务、起终点、实际载荷和距离及供应方覆盖。方式或配置未明确前不能选择运输流；不同运输方式不得合成一条 kg*km 流。 载荷含真实承运煤水袋外包装货物托盘载体。仅扣真实车辆非货物皮重，干煤碳能量基准非实际货物质量。 范围证据需求：需原生唯一货载路段EACH/TOTAL次数毛皮载荷距离记录，该记录比例求和内N一次。 计量证据：协议`cp_freight`；原记录口径 Mass * distance / kg*km。原数量约束“归属真实原生物理量 / N；cp_freight。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 本记录不是交换，不能生成类目合计数量。 | `cp_freight`; 实际来源关联原生记录 |
+| unused_supply_return | original_bagged_anthracite_trade | 将对外退料凭据匹配到唯一投入品号、状态、原生单位及接收方。采用净消耗投入时省略对应退料交换；商品退货及期末库存另作审计记录。 仅总输入法真实同范围未用清洁新增包装用品。完整有用袋煤退回留库存。仅耗用输入省匹配输出，不自动抵扣。 范围证据需求：需同品号来源原生量单位接收库存选择，不继承煤水退回扣运行用品。 计量证据：协议`cp_supplies`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_supplies。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`unused_supply_return_detergent_return`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_supplies`; 实际来源关联原生记录 |
+| useful_loose_coal | original_bagged_anthracite_trade | 取得下述具体回收出口的独立交接记录、实际材料或复合状态、质量验收及接收方。按真实交接判定产品或废物，不预设回收产品身份或替代抵扣。 仅真实有用独立收集事故材料具接收证据。整有用袋留商品，袋混合载体持留细粒为非叠加内容。不规定商户筛分转售率。 范围证据需求：需真实煤阶组成净质量水状态来源当量接收排除记录，不灰碳纯煤假设。 计量证据：协议`cp_fates`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_fates。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 本记录不是交换，不能生成类目合计数量。 | `cp_fates`; 实际来源关联原生记录 |
+| whole_bag_waste | original_bagged_anthracite_trade | 取得下述实际出口的独立转移凭据，含来源整件或品号、物态、保留组成、接收方及处理范围。匹配到一张已列实物卡；尚未匹配的部件、液体或污染混合物需自身明确身份，不能把本记录 ID 当废物流。 仅有据不可用整袋出口。声明一个物理流持留煤水袋包装，水变破袋质量未知不自动整弃。 范围证据需求：需真实毛净皮收集状态接收处理原门槛煤损量状态换算既有覆盖。 计量证据：协议`cp_coal`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_coal。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`whole_bag_waste_atomic_case`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_coal`; 实际来源关联原生记录 |
+| nonusable_coal_material | original_bagged_anthracite_trade | 取得下述实际出口的独立转移凭据，含来源整件或品号、物态、保留组成、接收方及处理范围。匹配到一张已列实物卡；尚未匹配的部件、液体或污染混合物需自身明确身份，不能把本记录 ID 当废物流。 仅真实独立转移煤细粒泥状其他容纳事故材料。排整袋混合自由水持留内容，真实接收分类处理一次不假燃烧回收。 范围证据需求：需真实原生组成水污染状态来源换算接收，湿残留千克非干煤损失。 计量证据：协议`cp_fates`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_fates。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`nonusable_coal_material_loose_anthracite`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_fates`; 实际来源关联原生记录 |
+| packing_waste | original_bagged_anthracite_trade | 取得下述实际出口的独立转移凭据，含来源整件或品号、物态、保留组成、接收方及处理范围。匹配到一张已列实物卡；尚未匹配的部件、液体或污染混合物需自身明确身份，不能把本记录 ID 当废物流。 仅真实物理独立包装出口。袋上持留煤水为内容审计，整袋混合废物持留包装非另出口。 范围证据需求：需材料原生数质量皮重持留煤水接收承运处理排除链接，不收集抵扣。 计量证据：协议`cp_fates`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_fates。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`packing_waste_paper_pack`; `packing_waste_metal_pack`; `packing_waste_plastic_pack`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_fates`; 实际来源关联原生记录 |
+| spent_housekeeping_solids | original_bagged_anthracite_trade | 取得下述实际出口的独立转移凭据，含来源整件或品号、物态、保留组成、接收方及处理范围。匹配到一张已列实物卡；尚未匹配的部件、液体或污染混合物需自身明确身份，不能把本记录 ID 当废物流。 真实擦拭吸附过滤捕集清洁混合物具持留煤细粒水包装。干载体持留内容描述一个毛物理流，不再加独立出口。 范围证据需求：需各载体煤液包装原生量单位基准方法状态采样时间来源毛皮闭合接收。 计量证据：协议`cp_fates`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_fates。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 已明确的流卡：`spent_housekeeping_solids_spent_wipe`。其他实际状态须先解决上述具体证据问题，不得套用这些身份。 本记录不是交换，不能生成类目合计数量。 | `cp_fates`; 实际来源关联原生记录 |
+| free_water_waste | original_bagged_anthracite_trade | 取得下述实际出口的独立转移凭据，含来源整件或品号、物态、保留组成、接收方及处理范围。匹配到一张已列实物卡；尚未匹配的部件、液体或污染混合物需自身明确身份，不能把本记录 ID 当废物流。 仅真实自由收集水液具组成接收。袋煤水分湿载体持留液非额外液输出，未知水余额非蒸发。 范围证据需求：需真实体积密度温度原生单位来源组成接收排除，不供应洗水因子。 计量证据：协议`cp_water`；原记录口径 Volume / m3。原数量约束“归属真实原生物理量 / N；cp_water。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 本记录不是交换，不能生成类目合计数量。 | `cp_water`; 实际来源关联原生记录 |
+| direct_species | original_bagged_anthracite_trade | 按排放或采样记录确定各实测排放的来源事件、化学物或粒径身份、来源属性及接收介质。物种、粒径或介质不明须保留具体证据缺口；化学品总用量或库存损失不能提供这些身份。 仅计量有据兼容物种颗粒介质释放。捕集煤尘为容纳材料非自动空气，水LOD煤差不识别水蒸气碳燃烧物。低烟宣传不证明零排放。 范围证据需求：需确切物种粒径介质原生活动因子组成去向基准来源覆盖，不假碳转CO2燃烧。 计量证据：协议`cp_species`；原记录口径 Mass / kg。原数量约束“归属真实原生物理量 / N；cp_species。”仅逐一适用于身份及单位匹配的独立流，不生成类目合计交换，也不将原记录单位套用于不同物料或服务。已按参考流给出的数量不得再次归一化。 本记录不是交换，不能生成类目合计数量。 | `cp_species`; 实际来源关联原生记录 |
+
+
+## 9. 验证规则
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| final_service | 真实声明贸易职责 | 核拥有转售企业最终门槛冲销唯一N，非收货袋千克能货币。失败未完职责保留N0不除。 |  |
+| actual_coal | 真实声明贸易职责 | 需真实煤阶等级粒级原闭袋批选洗状态收到净煤对皮重同样本原生水灰挥发元素工业分析热值基准。不默认袋重水灰筛级CNS/NCVGCV制造营销排放主张。 |  |
+| complete_linked_chain | 真实声明贸易职责 | 真实来源阶段损失基线覆盖额外需求具原生原状态换算互斥责任。真实缺阶段额外量最终完整链使用前须真实服务外集成一次，具完成状态链接时间时区来源责任原生量结果非待办。整混持留内容独立材料液物种路径非叠加真实接收处理一次。 |  |
+| native_resources | 真实声明贸易职责 | 查全部真实服务资源承运全寿命全部用户职责操作数原生来源NET用品库存选择各记录EACH/TOTAL比例求和内N一次。真实数量、兼容原生单位状态基准方法时间来源、核实具体身份及适用验收覆盖证据仍强制，未知不作零。缺少通用数值范围单独披露，不因此阻止其他证据完整的实际数据包，不编造界限。主张来源支持区间需可追溯来源与兼容基准；只有经验合理性界限才另需独立可比参考证据，不用同批最大值自证。保留适用实际来源特定验收区间与不确定性要求。 |  |
+| validate_concrete_identity_decisions | all inventory rows | 将每项实际身份核实事项落实到实物明确的流卡和原生数量，或提供不适用证据。证据检查点 ID 不是交换。发生、物种、状态、接收方或服务配置缺失时阻断最终数据完成，不默认零。按规定保持整体与组分、总量投入与对应退料的排他关系。 |  |
+
+## 10. 发布数据集画像
+
+| 字段 | 值 |
+| --- | --- |
+| dataset_role | 核实真实身份数量后可作secondary_dataset; background_dataset |
+| downstream_use | 真实完成原门槛来源链内物理原闭袋已制备无烟煤批发附加 |
+| allowed_use | 真实煤阶等级粒级选洗原闭袋批净煤水皮质量基准状态期间最终企业门槛 |
+| excluded_use | 独立煤足迹其他燃料散开商户处理燃烧发电使用零售代理袋千克能价值代服务或待完成完整链 |
+| required_metadata | 全部限定原生样本水灰分析热值库存去向包装，原归属损失基线额外原生来源量全部终态记录换算覆盖责任真实缺阶段需求完成集成，完整资源服务资产承运接收 |
+| required_quality_disclosure | 未决具体身份支持范围煤阶粒级水分析状态来源接收寿命不确定性未完成集成状态 |
+| update_trigger | 来源选洗煤阶粒级袋水分析库存状态去向真实作业服务资产承运接收验收来源覆盖集成变化 |
+
+
+## 11. 数据源
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| unsd-fuel-trade | official_guidance | UNSD CPC3.0 explanatory notes printed308-30961091groups110120172311312331337;11011anthracite: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 仅较窄无烟煤贸易分类，排精制柴油333木颗粒39281，不供煤配方服务换算。 |
+| blaschak-prepared-bagged-coal | handbook | Blaschak,ResidentialUses,Convenientsection: https://www.blaschakanthracite.com/residential-uses/ | 仅定性供应清洗分级后装袋来源门槛问题。不通用袋重水灰粒级CNS热值。几乎无烟排放环保营销明确拒作零科学LCA因子。不燃烧健康法律推断。原生质量水分析来源库存全寿命货运方法为独立声明前景协议，非该页定量因子。 |

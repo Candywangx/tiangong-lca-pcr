@@ -10,7 +10,12 @@ const output=fs.mkdtempSync(path.join(tmpdir(),"pcr-emitted-search-"));
 compileDocsBrowserAssets({outputRoot:output});
 fs.copyFileSync(fileURLToPath(import.meta.resolve("flexsearch")),path.join(output,"search-engine.mjs"));
 after(()=>fs.rmSync(output,{recursive:true,force:true}));
-for(const version of [5,6,7,8,9])for(const scenario of ["chinese","cutoff","channels","duplicates","late-retry","late-import-retry","lazy","identity","legacy-1","legacy-2","legacy-3","legacy-4","legacy-5","mixed-format"])test("emitted Worker v"+version+": "+scenario,()=>{
+for(const version of [5,6,7,8,9,10])for(const scenario of ["chinese","cutoff","channels","duplicates","late-retry","late-import-retry","lazy","identity","legacy-1","legacy-2","legacy-3","legacy-4","legacy-5","mixed-format"])test("emitted Worker v"+version+": "+scenario,()=>{
  const result=spawnSync(process.execPath,[fileURLToPath(new URL("./fixtures/search-pack-worker.ts",import.meta.url)),output,scenario,String(version)],{encoding:"utf8",timeout:30_000});
+ assert.equal(result.status,0,result.stdout+result.stderr);assert.equal(result.signal,null);
+});
+
+for(const scenario of ["decoder-retry","brotli-overflow","brotli-truncated","brotli-trailing"])test("emitted Worker v10: "+scenario,()=>{
+ const result=spawnSync(process.execPath,[fileURLToPath(new URL("./fixtures/search-pack-worker.ts",import.meta.url)),output,scenario,"10"],{encoding:"utf8",timeout:30_000});
  assert.equal(result.status,0,result.stdout+result.stderr);assert.equal(result.signal,null);
 });

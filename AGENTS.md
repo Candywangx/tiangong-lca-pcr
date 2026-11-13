@@ -96,6 +96,9 @@ Rules:
   route, state and gate boundaries in methodology and mapping relations rather than replacement ids.
   Current accepted decisions live in `classifications/mappings/` and `docs/adr/`. Historical identity-restoration
   evidence remains available in the [immutable archive](https://github.com/Candywangx/tiangong-lca-pcr/blob/acd016b01883b64d96a321198d65a889d8e96f97/docs/reviews/cpc04-pr26-pr28-original-ids-20261022/README.md); it does not establish current readiness or qualification.
+- The 60 CPC 61 methods in PR #31 upgrade their original scaffold ids and semantic directories from the
+  CPC 3.0 leaf-slug inventory. Keep each method's specific scope, reference flow and accepted mapping relation;
+  do not recreate replacement ids for this batch. See `docs/cpc61-original-identity-restoration.md`.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.
