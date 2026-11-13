@@ -17,7 +17,7 @@ For actual original factory-sealed sterile-barrier single-use UNFILLED three-pie
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.wholesale-trade-services-not-on-a-fee-or-contract-basis.wholesale-trade-services-not-on-a-fee-or-contract-basis-of-medical-and-orthopaedic-goods |
 | classification_refs | CPC3.0:61074;narrower48150originalsterile unfilled withoutneedle threepiecePPsyringes |
-| covered_products | Completed physical commercial wholesale consignment of unchanged originalsealedsterilebarrier devices |
+| covered_products | A completed physical commercial wholesale consignment of unchanged devices in their original sealed sterile barriers. |
 | excluded_products | Needled/filled/bulk-nonsterile/other devices;merchantsterilize-aerate/open/repack/fill/clinicaltest-use,retail/agency |
 | representative_product | Actual model/lot/BOM/unfilled-no-needle/barrier-expiry/count-netmass-pack condition final B2B accepted consignment |
 | production_route | Released complete originalsterilebarrier device intake -> ambient stock/order handling -> dispatch -> final business acceptance |
@@ -60,7 +60,7 @@ Source ownership/resale and business buyer final acceptance after linked reversa
 
 | Field | Value |
 | --- | --- |
-| declared_starting_condition | Complete originalsealedsterilebarrier factoryreleased unfilled noneedle singleuse threepiecePP model/lot/BOM and actual pack/expiry state |
+| declared_starting_condition | Complete, factory-released, unfilled, single-use, three-piece PP syringes supplied without needles and in their original sealed sterile barriers, with actual model, lot, BOM, packaging and expiry state documented. |
 | starting_condition_role | Nonexchange merchandise device/complete BOM/original primary and outer pack stock/throughflow |
 | product_classification_scope | Narrower48150device state inside481/61074medicalgoods,not all medical/orthopaedic products |
 | recursive_input_rule | Complete disjoint provider/receiver gates only,no recursive same-wholesale service or repeated resources/assets/carrier |

@@ -322,7 +322,7 @@ allocation_rules:
     source_ids: []
   - rule_id: allocation_rule_6
     applies_to: "foreground_burden_allocation"
-    rule: "Gross-with-outlets is permitted only when all actual same-native-unit usable-return exchanges are explicitly represented. For mass-measured cleaning chemicals returned unused without a represented Mass return exchange, use consumed-only supply and keep the matched outward transfer in the audit; never silently substitute the Count return card. Actual additional return exchange expansion is required before adopting a gross view."
+    rule: "Gross-with-outlets is permitted only when every actual same-native-unit unused supply return has an explicit, matching concrete exchange. The defined return usable_returns_detergent_return uses Mass / kg and matches the formulation, supplied state and native mass of cleaning_chemicals_synthetic_detergent. For another actual returned supply without a matching concrete exchange, use consumed-only input and retain the matched outward transfer in the audit until its identity and native-unit exchange are resolved. Actual countable sampling/transfer consumables require their own specific identities and count evidence; do not represent them as detergent or convert their counts to detergent mass. Do not infer a missing return quantity as zero."
     source_ids: []
 dataset_production:
   collection_protocols:
@@ -343,7 +343,7 @@ dataset_production:
       flow_role: "current cleaning chemicals and discrete sampling consumables/returns"
       record_type: "supply_stock_record"
       raw_fields: "site_id; operator_id; contract_id; cohort_id; source_lot_id; consignment_id; tank_id; event_id; period_id; reference_gate_id; accepted_consignment_ids; N; sku; material_identity; composition; composition_basis; composition_source; material_state; native_property; native_unit; opening; gross_receipts; tare_receipts; net_receipts; closing; recovered_closing; usable_outward_return; return_receiver; return_transfer_id; used; waste; uncontained_loss; chosen_return_view; conversion_factor; conversion_unit; conversion_source; piece_mass; piece_mass_unit; piece_mass_source; density; density_unit; density_source; temperature; temperature_unit; uncertainty; flow_row_id; actual_identity_case; actual_substance_or_material; actual_origin_and_medium; actual_state_and_gate; case_activation_evidence; typed_or_residual_quantity; quantity_exclusion_links; whole_total_reconciliation; unresolved_occurrence_not_zero"
-      collection_method: "Use actual formulation/SKU native stock and receipt/return records. S=opening+net_receipts-closing; choose S/N gross-with-outlets with matched return ledger, or (S-usable_outward_return)/N consumed-only without a second return deduction. Recovered closing is already closing; nonreturned wastes/losses retain supply burdens. Expand actual other-native exchanges before final dataset. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero."
+      collection_method: "Use actual formulation/SKU native stock and receipt/return records. S=opening+net_receipts-closing; choose S/N gross input with a separate matched unused-return output, OR (S-usable_outward_return)/N consumed-only input with that matched output omitted. For cleaning_chemicals_synthetic_detergent and usable_returns_detergent_return, all matched stock, receipt and return quantities use net kg of the same detergent formulation and supplied state, excluding packaging tare. Recovered closing is already closing; nonreturned wastes/losses retain supply burdens. Actual discrete sampling/transfer consumables retain their own specific identity and native count evidence and require matching concrete exchanges before using a gross-input/return-output representation. Partition actual native records by flow_row_id and actual_identity_case; only evidenced cases activate. Typed and residual actual quantities are exclusive across the node, each physical outlet/input is assigned once and reconciles with a compatible same-scope non-additive total. Keep unknown occurrence/quantity unresolved, not zero."
       unit: "actual SKU native unit; kg or Item(s) where appropriate"
       frequency: "each supply, use, return and stocktake event"
       temporal_coverage: "All selected operation and linked stock periods"
@@ -447,8 +447,8 @@ dataset_production:
       output: "Non-exchange stock audit and compatible commodity-loss adjustment evidence"
       source_ids: []
     - id: supply_native
-      applies_to: "cleaning_chemicals; sampling_consumables; usable_returns; cleaning_chemicals_synthetic_detergent"
-      rule: "net_receipts=gross_receipts-tare_receipts; S=opening+net_receipts-closing; gross_input=S/N OR consumed_input=(S-usable_outward_return)/N, one chosen convention. Count return ledger only pairs actual unused countable items; chemical/outlet other-native quantities expand separately."
+      applies_to: "cleaning_chemicals; sampling_consumables; usable_returns; cleaning_chemicals_synthetic_detergent; usable_returns_detergent_return"
+      rule: "net_receipts=gross_receipts-tare_receipts; S=opening+net_receipts-closing; choose gross_input=S/N OR consumed_input=(S-usable_outward_return)/N. Under gross input, record the matched unused-return output; under consumed-only input, omit that output. For the detergent input and usable_returns_detergent_return, every operand is net kg of the same formulation, supplied state and stock scope; do not substitute Item(s). Actual discrete consumables use separate identity-compatible count records and concrete exchanges, not the detergent card. Use positive accepted N and normalize raw assigned quantities once; do not divide an already-per-reference quantity again."
       inputs:
         - cp_supplies
         - N
@@ -487,8 +487,8 @@ dataset_production:
       output: "Actual kg*km per reference flow and separately covered actual empty service"
       source_ids: []
     - id: physical_outlets
-      applies_to: "latex_residues; other_wastes; wastewater; usable_returns; latex_residues_atomic_case"
-      rule: "For latex_residues use residue_wet_quantity/N; for other_wastes or wastewater use net_quantity/N in their actual native unit; for usable_returns use usable_outward_return/N. Every outlet has its distinct material/state/receiver; analytical DRC/TSC/species views are characterization, not added outlets. Pair receiving treatment once without avoided-product credit."
+      applies_to: "latex_residues; other_wastes; wastewater; usable_returns; latex_residues_atomic_case; usable_returns_detergent_return"
+      rule: "For latex_residues use residue_wet_quantity/N; for other_wastes or wastewater use net_quantity/N in the actual native unit of each independently identified outlet. For usable_returns_detergent_return, use matched unused detergent net kg/N ONLY under the gross-input convention; omit that matched output under consumed-only input accounting. Use positive accepted N and do not divide already-per-reference quantities again. Every outlet has its own material, state and receiver; analytical DRC/TSC/species views characterize existing outlets and are not added physical outlets. Pair receiving treatment once where applicable, without avoided-production credit."
       inputs:
         - cp_latex
         - cp_outlets
@@ -555,7 +555,7 @@ dataset_production:
       evidence: "cp_freight; actual source-linked native records"
     - id: usable_returns
       applies_to: "latex_wholesale"
-      requirement: "Match the external return ticket to exactly one input SKU, state and native unit, and identify the receiver. Under consumed-only input accounting omit its matched return exchange; merchandise returns and closing inventory are separate audit records. Only actual unused discrete sampling/transfer consumables returned across the boundary to a named receiver, matched to input SKU and count basis. Carried or recovered closing stock is not an outward return. Supplier/customer latex returns belong to merchandise audit, not this consumable return. Range evidence need: Require matching SKU/state/Count and signed outward transfer plus selected gross-with-outlets or consumed-only stock convention; no artificial negative supply or second avoided-product credit. Measurement evidence: protocol cp_supplies; original record basis Count / Item(s). The original amount constraint “Actual attributable unused counted consumable returns per reference flow” applies separately only to identity/unit-compatible individual rows; it creates no category-total exchange and does not assign the original unit to a different material or service. Do not normalize an already-per-reference quantity again. Defined flow cards: usable_returns_detergent_return. Other actual states require the specific evidence decision above before any identity is assigned. This evidence record is not an exchange and cannot produce a category-total quantity."
+      requirement: "For usable_returns_detergent_return, obtain the actual external return ticket for unused synthetic detergent and match it to input cleaning_chemicals_synthetic_detergent by formulation/SKU, supplied state, stock scope and native Mass / kg basis. Record actual net detergent mass excluding packaging tare, measurement/conversion evidence, event, source, receiver and transfer gate. Require signed outward transfer evidence and the chosen gross-input or consumed-only convention. Include this output only with gross input S/N; with consumed-only (S-usable_outward_return)/N, omit the matched output. Closing stock, internal recovery, spent/contaminated detergent and supplier/customer latex returns are not this usable return. Actual discrete sampling/transfer consumables require their own concrete identities, matched input and count evidence before any corresponding exchange is used; neither their counts nor an unresolved quantity may be substituted for detergent kg. Measurement evidence: protocol cp_supplies; Mass / kg. Normalize the actual assigned unused detergent net mass by positive accepted N once; preserve an already-per-reference quantity. Defined flow cards: usable_returns_detergent_return. Other actual states require a specific evidence decision before identity assignment. Do not infer occurrence or zero from missing records, create a category-total exchange, net unrelated supplies or add an avoided-production credit. This requirement is an evidence checkpoint, not another exchange."
       evidence: "cp_supplies; actual source-linked native records"
     - id: latex_residues
       applies_to: "latex_wholesale"
@@ -637,7 +637,7 @@ data_sources:
     used_for: "Primary producer concentration, preservation and maturation/final adjustment precede tested dispatch. Distinguishes upstream material manufacture from subsequent merchant receipt/holding; numeric process examples not reused."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:1577b0883eeea9c40dda53911376897c0d178f36a7d4a9221a9c3b4f4f23c764"
+  source_sha256: "sha256:b98c069b963ac5062f5e65eac6f0fc6a893bf3b9d394e5fb4f634fc071f34724"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6389"
@@ -696,10 +696,10 @@ normative_context:
           line: 254
           column: 1
         end:
-          offset: 26958
+          offset: 27277
           line: 267
           column: 1
-      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `commodity_loss_interface` | latex merchandise | Record actual loss/outlet wet mass/state and matched DRC/TSC rather than infer a loss from stock residue. The separate original-gate commodity system owns its once-only measured upstream adjustment with quantity/unit/basis/source and existing-loss-coverage check. Dry-rubber and whole-latex basis must match that dataset; 1 wet kg is not 1 dry kg. All commodity manufacturing remains outside this service.  Record assignment_scope_ids, quantity_basis (raw_target_cohort or per_reference), same_target_scope_N and source for each linked original-gate demand or loss quantity. Actual external stock/stage/loss integration uses its raw physical amount once. ONLY for combination with 1 Item(s) service, derive q_per_reference=q_raw_of_that_same_scope/positive same_target_scope_N; already per-reference quantities are not divided again, single-case raw scope has N=1, N=0 has no normalized value. |  |\n| `actual_cohort` | all service resources | Use measured physical causal drivers across all actual contracts/lots/periods, not default equal shares or margin allocation. Retain resources for rejected/repeated events. Unfinished consignments keep actual open-cohort period resources until acceptance or final reject fate; never create N or disappear. |  |\n| `shared_lifecycle` | shared_assets | asset_equivalent=(job_driver/life_driver)/N with a matching full lifecycle covering manufacture, maintenance, actual replacements, retirement and end-of-life. life_driver covers all consumers and periods using observed life/history or evidenced remainder with sources/uncertainty/sensitivity/update. No simultaneous per-driver service or duplicated manufacturer/carrier asset burden. |  |\n| `supply_return_convention` | supplies and usable_returns | S=opening+net_receipts-closing; choose gross supply input S/N and separately record its actual matched unused outward-return output, OR consumed-only supply input (S-usable_outward_return)/N and omit that return exchange with no further deduction. Recovered closing is already closing. Nonreturned waste/loss supply burden remains; latex commercial returns stay in merchandise ledger, not avoided-production credits. |  |\n| `fluid_fates` | latex/residue/wastewater and species | Pair internal transfers and separate usable returns/recovered closing, distinct contained fluid/residue wastes and actual environmental releases. Total spill is a nonadditive audit of those disjoint fates. Wet liquid, DRC dry-rubber/TSC characterization and species views are never added as duplicate physical outflows; no automatic credit for commercial recovery. |  |\n\nGross-with-outlets is permitted only when all actual same-native-unit usable-return exchanges are explicitly represented. For mass-measured cleaning chemicals returned unused without a represented Mass return exchange, use consumed-only supply and keep the matched outward transfer in the audit; never silently substitute the Count return card. Actual additional return exchange expansion is required before adopting a gross view.\n\n\n"
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `commodity_loss_interface` | latex merchandise | Record actual loss/outlet wet mass/state and matched DRC/TSC rather than infer a loss from stock residue. The separate original-gate commodity system owns its once-only measured upstream adjustment with quantity/unit/basis/source and existing-loss-coverage check. Dry-rubber and whole-latex basis must match that dataset; 1 wet kg is not 1 dry kg. All commodity manufacturing remains outside this service.  Record assignment_scope_ids, quantity_basis (raw_target_cohort or per_reference), same_target_scope_N and source for each linked original-gate demand or loss quantity. Actual external stock/stage/loss integration uses its raw physical amount once. ONLY for combination with 1 Item(s) service, derive q_per_reference=q_raw_of_that_same_scope/positive same_target_scope_N; already per-reference quantities are not divided again, single-case raw scope has N=1, N=0 has no normalized value. |  |\n| `actual_cohort` | all service resources | Use measured physical causal drivers across all actual contracts/lots/periods, not default equal shares or margin allocation. Retain resources for rejected/repeated events. Unfinished consignments keep actual open-cohort period resources until acceptance or final reject fate; never create N or disappear. |  |\n| `shared_lifecycle` | shared_assets | asset_equivalent=(job_driver/life_driver)/N with a matching full lifecycle covering manufacture, maintenance, actual replacements, retirement and end-of-life. life_driver covers all consumers and periods using observed life/history or evidenced remainder with sources/uncertainty/sensitivity/update. No simultaneous per-driver service or duplicated manufacturer/carrier asset burden. |  |\n| `supply_return_convention` | supplies and usable_returns | S=opening+net_receipts-closing; choose gross supply input S/N and separately record its actual matched unused outward-return output, OR consumed-only supply input (S-usable_outward_return)/N and omit that return exchange with no further deduction. Recovered closing is already closing. Nonreturned waste/loss supply burden remains; latex commercial returns stay in merchandise ledger, not avoided-production credits. |  |\n| `fluid_fates` | latex/residue/wastewater and species | Pair internal transfers and separate usable returns/recovered closing, distinct contained fluid/residue wastes and actual environmental releases. Total spill is a nonadditive audit of those disjoint fates. Wet liquid, DRC dry-rubber/TSC characterization and species views are never added as duplicate physical outflows; no automatic credit for commercial recovery. |  |\n\nGross-with-outlets is permitted only when every actual same-native-unit unused supply return has an explicit, matching concrete exchange. The defined return `usable_returns_detergent_return` uses Mass / kg and matches the formulation, supplied state and native mass of `cleaning_chemicals_synthetic_detergent`. For another actual returned supply without a matching concrete exchange, use consumed-only input and retain the matched outward transfer in the audit until its identity and native-unit exchange are resolved. Actual countable sampling/transfer consumables require their own specific identities and count evidence; do not represent them as detergent or convert their counts to detergent mass. Do not infer a missing return quantity as zero.\n\n\n"
       headings:
         - kind: "heading"
           span:
@@ -736,15 +736,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_68341"
+    - unit_id: "normative_69879"
       family: "validation"
       span:
         start:
-          offset: 68341
+          offset: 69879
           line: 323
           column: 1
         end:
-          offset: 71707
+          offset: 73245
           line: 336
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `service_reference_check` | accepted_service | N>0 unique final accepted IDs with actual net whole latex, separate DRC/TSC/preservation/sampling/grade/period/buyer-gate qualifiers; 1 Item(s) is not a load, dry tonne, standard concentration or monetary unit. |  |\n| `quality_boundary` | all route | Verify supplier final release before merchant operation and no hidden preservative addition, deliberate maturation, concentration, dilution, compounding or vulcanization. Actual transformed route even outsourced must be separately reviewed. |  |\n| `stock_and_assay` | all merchandise and residue fates | Check whole-liquid vs dry rubber/TSC/volatile/species bases, sample/settling coverage, assay applicability, heels/recovered closing/internal transfers, actual commercial return/reject/waste decisions and unknown discrepancy investigation. No purewater/ammonia/airrelease inference from residual or SDS. |  |\n| `upstream_loss_once` | service and commodity system | Every actual irrecoverable merchandise-loss quantity has compatible original commodity gate, measured basis/source and sole owner with existing-loss-coverage check; its upstream adjustment occurs once outside service before complete chain readiness. No 1wetkg=1drykg or default zero losses.  Record assignment_scope_ids, quantity_basis (raw_target_cohort or per_reference), same_target_scope_N and source for each linked original-gate demand or loss quantity. Actual external stock/stage/loss integration uses its raw physical amount once. ONLY for combination with 1 Item(s) service, derive q_per_reference=q_raw_of_that_same_scope/positive same_target_scope_N; already per-reference quantities are not divided again, single-case raw scope has N=1, N=0 has no normalized value. |  |\n| `resources_scope` | providers/assets/periods | Verify actual causal all-consumer drivers, provider native completion/unit and full scope, complete asset life/remaining evidence/replacement/end-of-life, meter/cleaning/idle freight/empty/reject coverage and unfinished-resource carry. No double normalization or repeated supply returns. |  |\n| `fluid_species_treatment` | residues; wastewater; direct_species; direct_species_ammonia_air | Actual contained spill/residue, rinsewater, recovered merchandise and species/medium releases have disjoint stream/fate owners and once-only treatment. Verify compatible composition/factor/fate with real phase basis; no additive dryrubber/species characterization of same fluid or duplicate provider-included release. |  |\n| `languages_projection` | all rules/cards/protocols | Raw bilingual reference fields/card names/IDs/units/evidence/collection raw operands/source URLs and ordered rules align with canonical projection. Concrete identity and final quantitative evidence require separate verification. |  |\n| validate_concrete_identity_decisions | all inventory rows | Resolve each actual identity evidence decision to a physically specific card and native quantity or evidenced non-applicability. Evidence-checkpoint IDs are not exchanges. Missing occurrence, species, state, receiver or provider configuration blocks final data completion; no assumed zero. Whole streams and components, gross inputs and matched returns must remain mutually exclusive where required. |  |\n\n"
@@ -764,11 +764,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 68341
+              offset: 69879
               line: 323
               column: 1
             end:
-              offset: 68363
+              offset: 69901
               line: 323
               column: 23
           text: "## 9. Validation Rules"
@@ -925,111 +925,111 @@ normative_context:
           line: 264
           column: 1
         end:
-          offset: 26955
+          offset: 27274
           line: 264
-          column: 431
+          column: 750
     - pointer: "/validation_rules/0"
       rule_id: "service_reference_check"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 68436
+          offset: 69974
           line: 327
           column: 1
         end:
-          offset: 68700
+          offset: 70238
           line: 327
           column: 265
     - pointer: "/validation_rules/1"
       rule_id: "quality_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 68701
+          offset: 70239
           line: 328
           column: 1
         end:
-          offset: 68981
+          offset: 70519
           line: 328
           column: 281
     - pointer: "/validation_rules/2"
       rule_id: "stock_and_assay"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 68982
+          offset: 70520
           line: 329
           column: 1
         end:
-          offset: 69347
+          offset: 70885
           line: 329
           column: 366
     - pointer: "/validation_rules/3"
       rule_id: "upstream_loss_once"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 69348
+          offset: 70886
           line: 330
           column: 1
         end:
-          offset: 70187
+          offset: 71725
           line: 330
           column: 840
     - pointer: "/validation_rules/4"
       rule_id: "resources_scope"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 70188
+          offset: 71726
           line: 331
           column: 1
         end:
-          offset: 70529
+          offset: 72067
           line: 331
           column: 342
     - pointer: "/validation_rules/5"
       rule_id: "fluid_species_treatment"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 70530
+          offset: 72068
           line: 332
           column: 1
         end:
-          offset: 70949
+          offset: 72487
           line: 332
           column: 420
     - pointer: "/validation_rules/6"
       rule_id: "languages_projection"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 70950
+          offset: 72488
           line: 333
           column: 1
         end:
-          offset: 71238
+          offset: 72776
           line: 333
           column: 289
     - pointer: "/validation_rules/7"
       rule_id: "validate_concrete_identity_decisions"
       identity_kind: "explicit"
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 71239
+          offset: 72777
           line: 334
           column: 1
         end:
-          offset: 71705
+          offset: 73243
           line: 334
           column: 467
   diagnostics:
@@ -1071,14 +1071,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_68341"
+      unit_id: "normative_69879"
       source_span:
         start:
-          offset: 68341
+          offset: 69879
           line: 323
           column: 1
         end:
-          offset: 68363
+          offset: 69901
           line: 323
           column: 23
 projection_metadata:
@@ -1088,5 +1088,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:1577b0883eeea9c40dda53911376897c0d178f36a7d4a9221a9c3b4f4f23c764"
-  generated_content_sha256: "sha256:0ebaa4e8221e0a46ae18630622f7e456d8ff01b4f175b1b9219bb35afb79f974"
+    sha256: "sha256:b98c069b963ac5062f5e65eac6f0fc6a893bf3b9d394e5fb4f634fc071f34724"
+  generated_content_sha256: "sha256:c5ca9a4c1c99111e7056b5e55722a260814e6b444dc3e5b122acac89bd9beb82"

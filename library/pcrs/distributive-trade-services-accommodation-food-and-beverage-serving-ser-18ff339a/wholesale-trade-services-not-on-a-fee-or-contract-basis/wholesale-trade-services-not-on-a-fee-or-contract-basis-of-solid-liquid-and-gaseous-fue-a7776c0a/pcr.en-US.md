@@ -83,7 +83,7 @@ N requires actual merchant ownership/resale,business buyer and final gate after 
 
 | process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
 | --- | --- | --- | --- | --- | --- |
-| original_bagged_anthracite_trade | Original-closed-bag prepared anthracite stock trade | required | Actual originalclosedbagpreparedanthracite owned-resold finalB2Btrade | Receipt/order/dispatch batches,real housekeeping periods,stock/returns and shared infrastructure across periods | `accepted_service` |
+| original_bagged_anthracite_trade | Original-closed-bag prepared anthracite stock trade | required | Actual ownership, purchase and resale of prepared anthracite in its original closed bags, through final B2B acceptance. | Receipt/order/dispatch batches,real housekeeping periods,stock/returns and shared infrastructure across periods | `accepted_service` |
 
 No mining/washing/drying/bagging/burning node is activated here. Link each actual duty/event/cohort/period/stock and reject state to useful retained or actual receiver routes. Unresolved rejects cannot count accepted output. Conditional actual material/provider/species configurations expand from evidence,not unknown-as-zero.
 
@@ -368,10 +368,10 @@ Range evidence need: Require event-linked native kg, state/composition, receiver
 | Field | Value |
 | --- | --- |
 | dataset_role | secondary_dataset; background_dataset after verified actual identities/quantities |
-| downstream_use | Physical originalclosedbagpreparedanthracite wholesale add-on in actually completed originalgate source chain |
+| downstream_use | A physical wholesale service add-on for prepared anthracite in its original closed bags, within an actually completed original-gate source chain. |
 | allowed_use | Actual rank-grade-size/cleanwashsize/originalclosedbaglot/netcoal-water-tare/qualitybases/condition/period/finalbusiness gate |
 | excluded_use | Standalonecoal footprint;otherfuels/bulkopen/merchantprocessing/burning/generation/use/retailagency;bag/kg/energy/value serviceproxy or pendingcompletechain |
-| required_metadata | All qualifiers;native samplewater/ash/analysis/calorific/stock/fates/pack;original/assigned/loss/baseline/additional native source quantities/allterminal records/conversion/coverageowner and completedactualmissingstage/demand integration;full resources/providers/assets/carriers/receivers |
+| required_metadata | Retain all qualifiers; native sample water, ash, analysis, calorific-value, stock, fate and packaging records; original, assigned, loss, baseline and additional source quantities in their native units; all terminal records, conversions and coverage owners; actually completed integration of missing stages and required demand; and complete resource, provider, asset, carrier and receiver scopes. |
 | required_quality_disclosure | Unresolved concrete identities/support/Range,rank-size-water/analysis-state/source/receiver/lifetime uncertainty and incompleteintegration status |
 | update_trigger | Changed sourceprep/rank-size-bag/moisture-analysis/stock-condition/fates/actualoperations/providers/assets/carriers/receivers/acceptance or sourcecoverage/integration |
 

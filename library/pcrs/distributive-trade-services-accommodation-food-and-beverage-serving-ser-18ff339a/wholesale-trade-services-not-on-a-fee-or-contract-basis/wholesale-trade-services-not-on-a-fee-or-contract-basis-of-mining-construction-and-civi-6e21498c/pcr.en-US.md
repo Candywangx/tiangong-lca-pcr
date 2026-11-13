@@ -19,7 +19,7 @@ Actual NEW factory-finished STEEL EXCAVATOR DIGGING BUCKET ATTACHMENTS,plain NON
 | classification_refs | CPC3.0:61087;narrower44461excavating-machinery steelbucket part within444 |
 | covered_products | Completed new steel nonhydraulic excavator digging-bucket own-account wholesale consignment service |
 | excluded_products | Entire/hydraulic/used/powered equipment;rental/excavation/use;merchant mount/test/repair/refinish/clean/grease/disassemble;retail/agency |
-| representative_product | Actual NEWsteelplainnonhydraulicbucket completeSKU/shippingmembers/finish/BOM/netmass/pack/condition finalB2Bconsignment |
+| representative_product | A final B2B consignment of actual new plain steel nonhydraulic excavator buckets, with complete SKU, shipped members, finish, BOM, net mass, packaging and condition documented. |
 | production_route | Finished supplier-bucket receipt -> ambient stock/order handling -> dispatch -> final business acceptance |
 | market_state | Physical wholesale add-on;complete bucket/actual inherited finish and pack are nonexchange merchandise |
 
@@ -399,7 +399,7 @@ Range evidence need: Require event-linked native kg, state/composition, receiver
 | Field | Value |
 | --- | --- |
 | dataset_role | secondary_dataset; background_dataset following actual identity/quantity verification |
-| downstream_use | Physical ambient newsteelnonhydraulicexcavatorbucket ownaccounttrade add-on within complete actual finished-SKUchain |
+| downstream_use | A physical own-account wholesale service add-on for new steel nonhydraulic excavator buckets at ambient conditions, within the complete actual finished-SKU chain. |
 | allowed_use | Actual originalsupplierSKU/shippingBOM/members/finish/netmass/pack/condition/period and finalbuyer gate |
 | excluded_use | Standalonebucket footprint;wholeexcavator/hydraulic/used/powered/rental/digging/use;merchant mount/test/repair/clean/grease/refinish;retail/agency;capacity/count/value serviceproxy |
 | required_metadata | All qualifiers;actual complete shippingmembers/BOM/finish/netmass/stock/pack/condition/fates;source original/assigned/loss/baseline/additional native quantities/allterminal records/conversion/coverage-owner/completedintegration;full provider/resource/life/carrier/receiver duties |
