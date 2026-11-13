@@ -1,9 +1,10 @@
 import {errorMessage} from "../../pcr-core/src/types.ts";
-import { measureProcessTree, assertBuildResources, runMeasuredBuildStage, BuildStageFailure, type BuildStageMetrics } from "./resource-budget.ts";
+import { measureProcessTree, assertBuildResources, runMeasuredBuildStage, WEB_BUILD_STAGE_ARGS, BuildStageFailure, type BuildStageMetrics } from "./resource-budget.ts";
 import { relocationRequested, runRelocatedBuild, buildNodeOptions } from "./build-storage.ts";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs";
+import {withNavigationCompilationBinding} from './navigation-compilation.ts';
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = path.resolve(app, "../..");
 const started = Date.now();
@@ -27,19 +28,15 @@ const stages: BuildStageMetrics[] = [];
  * wherever this runs; relocation only moves where that is.
  */
 async function runPipeline({ cwd, env }: {cwd:string;env:NodeJS.ProcessEnv}) {
-  for (const args of [
-    ["scripts/generate.ts"],
-    ["node_modules/next/dist/bin/next", "build"],
-    ["scripts/static-route-aliases.ts"],
-    ["scripts/verify.ts"],
-  ]) {
-    await runMeasuredBuildStage({
-      args, cwd, env, sample: sampleMemory,
+  for (const args of WEB_BUILD_STAGE_ARGS) {
+    const run=()=>runMeasuredBuildStage({
+      args: [...args], cwd, env, sample: sampleMemory,
       report(stage) {
         stages.push(stage);
         console.log(JSON.stringify({ event: "build-stage", ...stage }));
       },
     });
+    if(args[0]==='node_modules/next/dist/bin/next')await withNavigationCompilationBinding(cwd,run);else await run();
   }
 }
 let relocation: ReturnType<typeof relocationRequested> | undefined;

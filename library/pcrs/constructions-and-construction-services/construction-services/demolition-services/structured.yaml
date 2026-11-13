@@ -1,10 +1,1134 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "54310"
-  title: "Demolition services"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.constructions-and-construction-services.construction-services.demolition-services"
+  classification_refs: "cpc:3.0:54310; narrower than Demolition services"
+  covered_products: "Completed manual dismantling and cleared-area handover for the specified nonloadbearing partition"
+  excluded_products: "Whole-building or structural demolition; mechanical collapse; hazardous abatement; wall construction; independent recovery processing"
+  representative_product: "One square metre of net brick-partition elevation removed and accepted after clearance"
+  production_route: "Approved ready-to-work interface; controlled hand-tool removal; contained transfer of debris; segregation by actual receiving route; cleanup; inspection and corrective work; signed handover"
+  market_state: "Site-delivered completed demolition service with documented material custody at the declared collection gate"
+functional_unit:
+  what: "Accepted removal of the declared interior partition"
+  how_much: "1 m2 of net wall elevation measured once"
+  how_well: "Entire declared thickness removed; retained structure stable; collection area cleared; unresolved inspection defects excluded from accepted area"
+  how_long_or_cycle: "One documented job through corrective-work closure and signed handover; no building-use lifetime"
+  reference_flow_link: "accepted_demolition"
+system_boundary:
+  rules:
+    - rule_id: scope_eligibility
+      applies_to: "foreground_system_boundary"
+      rule: "This PCR covers controlled hand-tool dismantling and clearance of a surveyed bare interior partition made of fired-clay bricks and cementitious mortar. The supplied function is completed removal, not the manufacture of replacement wall materials. The actual approved sequence, access, exclusion zone, floor loading, service isolation and hazard clearance govern each job. Structural or loadbearing walls, machine-led collapse, hazardous-material abatement, decorative finish stripping, replacement construction and off-site waste treatment are outside this category. Stop work when the survey or observed condition contradicts this scope; do not blend an incompatible job into the reference output."
+      source_ids: []
+    - rule_id: ready_interface
+      applies_to: "demolition"
+      rule: "Require actual competent survey, method and isolation evidence before hand-tool work; use HSE planning guidance and OSHA masonry stability/loading principles as technical context, with applicable local requirements independently declared. No generic top-down instruction substitutes for the approved job sequence."
+      source_ids:
+        - hse-demolition
+        - osha-masonry-removal
+    - rule_id: removal_gate
+      applies_to: "demolition"
+      rule: "The independent removal responsibility ends at stable retained structure, cleared accepted area and separately documented outgoing materials at the on-site collection gate. Screening and segregation here serve this gate; off-site crushing or recovery is not an embedded production node."
+      source_ids: []
+    - rule_id: stock_ledger
+      applies_to: "demolition"
+      rule: "Record the existing wall geometry/materials in a custody ledger. Reconcile removed mass, remaining stock, outgoing products/wastes and actual characterized releases; do not invent an exchange buying the existing wall or label it waste before the actual removal decision."
+      source_ids: []
+    - rule_id: resources
+      applies_to: "demolition"
+      rule: "Include attributable hand-tool/access/visit service, dust-control water/extraction power, consumed protection and cleanup materials, contained debris transfer, cleanup and corrective work when used. A bounded provider service owns its stated capital coverage; separately disclose any exclusion and never invent a tool lifetime."
+      source_ids: []
+    - rule_id: sharing
+      applies_to: "demolition"
+      rule: "Maintain shared asset/service ids with this demolition node and all other consuming jobs or reporting periods. Record service coverage, period totals, job use and attribution driver; meter local use first and allocate only a residual actually shared burden."
+      source_ids: []
+    - rule_id: exit_owner
+      applies_to: "demolition"
+      rule: "Record solid waste, wastewater and air releases at their actual distinct gates. Downstream transport/treatment is excluded from this on-site service inventory but its responsible dataset owner and transfer evidence are mandatory; no avoided virgin production or recovery credit is automatic."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Existing customer-owned bare brick/mortar partition surveyed as nonloadbearing, isolated and hazard-cleared; method and access approved"
+  starting_condition_role: "Physical stock and custody interface, not a new purchased brick input and not automatically an incoming waste exchange"
+  product_classification_scope: "The narrow completed partition-demolition service within cpc:3.0:54310"
+  recursive_input_rule: "Subcontracted demolition of the same wall is an alternative service owner: partition responsibilities and quantities explicitly, with no parent-plus-subcontract double counting."
+  upstream_dataset_requirement: "Link supplied consumables, water, electricity and bounded resource services to compatible upstream datasets. Historical wall manufacture/use is excluded at this removal interface and must be represented by its original owner when a whole-building model needs it."
+  disclosure: "Declare stock ownership, prior survey/abatement boundary, job period, outgoing collection gate, tool/access/visit service coverage, capital exclusions, waste transport/treatment owner and any unmeasured inventory."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted net-area non-loadbearing brick partition demolition service"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-19da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-18da-a746-0800200c9a66"
+  reference_unit: "m2"
+  required_qualifiers:
+    - "Location and reporting dates"
+    - "wall geometry and thickness"
+    - "brick and mortar identity"
+    - "bare-surface condition"
+    - "nonloadbearing survey"
+    - "isolation and hazard clearance"
+    - "approved hand-tool sequence"
+    - "access and floor limits"
+    - "actual dust control"
+    - "accepted net removal area"
+    - "material destinations"
+    - "collection gate"
+    - "transport/treatment burden owner"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_area
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Area"
+      uuid: "93a60a56-a3c8-19da-a746-0800200c9a66"
+    required_unit: "m2"
+    rule: "Measure removed elevation polygons in one wall plane, subtract unremoved openings and retained areas, and count neither the opposite face nor thickness as extra area. Record thickness independently. cp_area reconciles survey and signed completion; partial or rejected area is not accepted area."
+  - id: material_mass
+    applies_to: "removed material and waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use tare-corrected measurements or traceable receiving weights with moisture/contamination basis. Area or volume cannot become mass through an assumed wall density."
+  - id: native_energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Keep metered or supplier energy in its native recorded unit; retain conversion evidence before changing units. Electricity property/support and supply identity must be verified for concrete exchanges."
+process_map:
+  - id: demolition
+    name: "Manual partition removal and clearance"
+    inclusion: "required"
+    inclusion_condition: "Applies only after the declared ready-to-work interface is proven"
+    role: "Independent removal; owns stock custody, debris clearance, local correction loop and outgoing collection gate"
+    quantitative_reference: "1 m2 accepted net removal area"
+process_inventory:
+  - id: demolition
+    label: "Manual partition removal and clearance"
+    inputs:
+      product:
+        - row_id: dust_cleanup_water
+          role: "Supplied dust-control or cleanup water"
+          name: "Supplied dust-control or cleanup water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only actual supplied water, with source and use; abstraction from nature would require a separate verified elementary input. Range evidence need: obtain job water measurements, control method and repeated-job dispersion; no universal wetting rate is supported."
+          amount:
+            expression: "Measured attributable water delivered for dust control and cleanup; a documented nonuse is distinct from missing data"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: site_electricity
+          role: "Electricity for actual extraction and charging"
+          name: "Electricity for actual extraction and charging"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include extraction and any attributable tool or service charging actually used; manual demolition does not imply zero electricity. Range evidence need: collect meter or verified provider energy records, operating duration and equipment state; no nameplate-to-consumption default."
+          amount:
+            expression: "Metered or provider-recorded electricity attributable to this job, excluding energy already covered by a resource service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources
+              source_ids: []
+            ranges: []
+        - row_id: consumed_supplies_collection_bag
+          role: "Separately supplied collection bag"
+          name: "Separately supplied collection bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified separately supplied collection bag at its actual state and supply or receiving gate. Actual bag SKU supplied and consumed outside other provider/package coverage. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources
+              source_ids: []
+            ranges: []
+        - row_id: consumed_supplies_protection_sheet
+          role: "Separately supplied protective sheeting"
+          name: "Separately supplied protective sheeting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified separately supplied protective sheeting at its actual state and supply or receiving gate. Actual protective sheet SKU supplied and consumed outside other coverage. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources
+              source_ids: []
+            ranges: []
+        - row_id: consumed_supplies_filter
+          role: "Separately supplied replacement filter"
+          name: "Separately supplied replacement filter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified separately supplied replacement filter at its actual state and supply or receiving gate. Actual replacement filter supplied/consumed; exclude reusable equipment and service-included filters. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources
+              source_ids: []
+            ranges: []
+        - row_id: bounded_resource_service_access_provision
+          role: "Complete provider access-equipment provision referenced to hours"
+          name: "Complete provider access-equipment provision referenced to hours"
+          flow_type: "product"
+          property_unit: "Duration / h"
+          description: "Record only this independently identified complete provider access-equipment provision referenced to hours at its actual state and supply or receiving gate. Only actual complete single access-provision service with matching h reference and documented provider asset/maintenance/energy coverage; no conversion from price or event. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently record actual accepted provision hours for this provider/configuration, all consumers and included resources; normalize once by accepted demolition area."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources
+              source_ids: []
+            ranges: []
+        - row_id: bounded_resource_service_container_provision
+          role: "Complete provider collection-container provision referenced to hours"
+          name: "Complete provider collection-container provision referenced to hours"
+          flow_type: "product"
+          property_unit: "Duration / h"
+          description: "Record only this independently identified complete provider collection-container provision referenced to hours at its actual state and supply or receiving gate. Only actual complete single container-provision service with matching h reference and disclosed provider life coverage; waste treatment/transport are excluded unless expressly covered and not duplicated. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently record actual provision start/end and accepted service hours for the identified container/provider; retain actual consumer attribution and normalize once by accepted demolition area."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_demolition
+          role: "Accepted net-area non-loadbearing brick partition demolition service"
+          name: "Accepted net-area non-loadbearing brick partition demolition service"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "The real reference output is completed removal and accepted clearance, including closed corrective work. Range decision: 1 m2 defines the normalization reference and is not a yield, recovery fraction or performance interval; retain actual accepted-area measurement uncertainty."
+          amount:
+            expression: "1 m2"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_area
+              source_ids: []
+            ranges: []
+        - row_id: reusable_removed_material_fired_clay_brick
+          role: "Removed fired-clay brick accepted for direct reuse at on-site handover"
+          name: "Removed fired-clay brick accepted for direct reuse at on-site handover"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified removed fired-clay brick accepted for direct reuse at on-site handover at its actual state and supply or receiving gate. Only actual receiver acceptance of usable removed fired-clay bricks at on-site collection/handover, with no unmodelled downstream recovery processing; appearance alone is insufficient. Independently weigh accepted lots; no displacement credit. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_exits
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: masonry_waste
+          role: "Removed fired-clay brick and cementitious-mortar waste"
+          name: "Removed fired-clay brick and cementitious-mortar waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual mixed masonry waste at the collection gate; split different regulated classes and contaminated lots from their evidence. Range evidence need: receiving weights and measured wall stock/remaining quantities establish job mass closure; do not use density, area or assumed recovery as a mass factor."
+          amount:
+            expression: "Measured outgoing masonry waste, separately from accepted reusable product, retained stock and captured or emitted particulate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_exits
+              source_ids: []
+            ranges: []
+        - row_id: supplies_waste_spent_bag
+          role: "Spent collection bag waste at its receiving gate"
+          name: "Spent collection bag waste at its receiving gate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified spent collection bag waste at its receiving gate at its actual state and supply or receiving gate. Actual spent bag independently dispatched; include its retained contents in whole-composite quantity where that is the dispatch state. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_exits
+              source_ids: []
+            ranges: []
+        - row_id: supplies_waste_spent_sheet
+          role: "Spent protective-sheet waste at its receiving gate"
+          name: "Spent protective-sheet waste at its receiving gate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified spent protective-sheet waste at its receiving gate at its actual state and supply or receiving gate. Actual spent sheeting independently dispatched. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_exits
+              source_ids: []
+            ranges: []
+        - row_id: supplies_waste_spent_filter
+          role: "Spent filter waste including retained captured material"
+          name: "Spent filter waste including retained captured material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified spent filter waste including retained captured material at its actual state and supply or receiving gate. Actual complete spent filter/carrier independently dispatched; no extra exit for dust already in it. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_exits
+              source_ids: []
+            ranges: []
+        - row_id: supplies_waste_loose_captured_residue
+          role: "Separately dispatched captured dry residue waste"
+          name: "Separately dispatched captured dry residue waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only this independently identified separately dispatched captured dry residue waste at its actual state and supply or receiving gate. Actual loose collected dry residue physically separate from bags/filters/other composite dispatches; never a duplicate constituent quantity. Preserve actual SKU/formulation or dispatched composite, ownership, receiver/provider and every original/rework event. Evidence for nonoccurrence is required; missing identity, quantity or condition remains a completion gap. No amount or occurrence is inferred from the other child flows. Complete supplied products and contaminated carriers include their contained parts/material once. Range evidence need: Establish independent, matching-identity quantity evidence and uncertainty for this actual exchange. A family total or former family interval is not a child quantity, allocation share or automatically valid child QA range."
+          amount:
+            expression: "Independently weigh the actual SKU/stream net mass after tare for this child; retain its own issue, return, stock and fate records; normalize the attributable numerator once by the original accepted-output denominator."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_exits
+              source_ids: []
+            ranges: []
+        - row_id: cleanup_wastewater
+          role: "Actual collected cleanup wastewater"
+          name: "Actual collected cleanup wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional collected waste-liquid exit; identify solids, destination and treatment owner. Direct discharges need separately characterized elementary exchanges rather than relabelling this waste. Range evidence need: measured water/solids balance and collection records; no assumption that supplied water all becomes wastewater or evaporates."
+          amount:
+            expression: "Measured collected wastewater mass on declared solids/moisture basis, separately from dry residues"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: service_owner
+    applies_to: "accepted_demolition"
+    rule: "Assign removal and corrective-work burdens to the accepted demolition service. Unresolved defects remain in the same local work loop; do not create another accepted output for repeated work or erase failed-attempt resources."
+    source_ids: []
+  - rule_id: material_exits
+    applies_to: "removed materials"
+    rule: "Declare ownership and legal/product status of each outgoing lot. Retain demolition burdens with the demolition service under this service-boundary model; report reusable material separately without avoided-production credit. A later system requiring co-product allocation must declare a reviewed boundary/method and cannot silently overwrite this rule."
+    source_ids: []
+  - rule_id: shared_resources
+    applies_to: "bounded_resource_service_access_provision; bounded_resource_service_container_provision; site_electricity"
+    rule: "Identify each shared provider service, all consuming jobs/nodes and relevant service periods. Prefer direct activity records; allocate only the measured residual service total by recorded causal driver, preserving totals across consumers. State driver, coverage and uncertainty; do not allocate a service charge and its included electricity/capital twice."
+    source_ids: []
+  - rule_id: returns
+    applies_to: "consumed_supplies_collection_bag; consumed_supplies_protection_sheet; consumed_supplies_filter; supplies_waste_spent_bag; supplies_waste_spent_sheet; supplies_waste_spent_filter; supplies_waste_loose_captured_residue"
+    rule: "Usable packaging, containers and unused supplies return under actual stock/custody records or remain closing stock. Record issued, consumed, returned and retained quantities once; the return is not simultaneously waste and cannot receive a second net subtraction. Spent contaminated items follow their actual waste route."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_area
+      process_id: "demolition"
+      flow_role: "accepted removal area and initial stock"
+      record_type: "survey and signed handover"
+      raw_fields: "job_id; wall_id; geometry; openings; retained_area; thickness; brick_mortar_identity; survey_release; method_id; isolation_clearance; hazard_clearance; accepted_area; rework_events; handover_date"
+      collection_method: "Measure polygons in one declared elevation plane; deduct openings and retained portions, match physically removed thickness and signed accepted area. Record dimensions, instrument tolerance and corrective-work closure. Attribute all job quantities to the same accepted net area before recording per reference flow."
+      unit: "m2"
+      frequency: "Each wall and final handover"
+      temporal_coverage: "Complete job including corrective visits"
+      site_scope: "The declared wall and collection area"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Survey/dimension record; approved method; signed inspection; tolerance and area reconciliation"
+    - protocol_id: cp_resources
+      process_id: "demolition"
+      flow_role: "electricity supplies and bounded resource services"
+      record_type: "meters issue/return records and provider logs"
+      raw_fields: "job_id; resource_id; material_identity; provider; service_coverage; period_id; other_consumers; issued; consumed; returned; closing_stock; meter_readings; native_unit; direct_use; shared_total; driver_total; job_driver; concrete_exchange_id; physical_event_id; actual_identity_id; actual_state; receiver_or_provider_gate; native_quantity; unique_property; measurement_method_id; uncertainty"
+      collection_method: "Use meter differences or verified supplier amounts; trace issue/consume/return/stock by material. For shared services enumerate every consumer and period, subtract directly attributed quantities from the shared pool, and distribute residual by documented causal use driver. Divide attributable job amount by cp_area accepted net area to record per reference flow. Record each actual child/refined exchange independently by identity, physical event, state, gate and period. Retain all original obligations even where a corresponding exchange identity is not yet known. Do not allocate a family total or copy its numerical Range to children, count a carrier and its contained material twice, or turn missing occurrence/quantity/native reference into zero. Each concrete exchange has one property and one unit; other CP readings are auxiliary and require evidenced conversion. Missing required refinement blocks dataset completion."
+      unit: "kg; kWh; h or verified native service unit; h"
+      frequency: "Every resource event and service period close"
+      temporal_coverage: "Whole job and all contributing shared-service periods"
+      site_scope: "Declared site; actual provider service boundary"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrated meters/scales; provider coverage; full consumer ledger; sum of assigned burdens equals pool; no overlap with included service energy"
+    - protocol_id: cp_water
+      process_id: "demolition"
+      flow_role: "supplied water and collected wastewater"
+      record_type: "water meter supply and collection records"
+      raw_fields: "job_id; source; supplied_mass; collected_wastewater_mass; suspended_solids; remaining_water; moisture_basis; meter_unit; conversion_evidence; receiver; transfer_id"
+      collection_method: "Measure supplied water and collected waste liquid independently; retain native readings and validated conversion only where needed. Reconcile water retained with debris, discharged, evaporated or remaining without assuming a split. Divide attributable quantities by accepted net area."
+      unit: "kg"
+      frequency: "Each supply/collection event"
+      temporal_coverage: "Full job including final cleanup"
+      site_scope: "Workfront through actual collection gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Meter calibration; collection weights; moisture/solids basis; unexplained water balance and sampling uncertainty"
+    - protocol_id: cp_exits
+      process_id: "demolition"
+      flow_role: "removed masonry reuse waste and spent supplies"
+      record_type: "custody transfer and weighing"
+      raw_fields: "job_id; lot_id; transfer_id; material; status; tare; gross_mass; moisture; contamination; receiver; acceptance; retained_stock; transport_owner; treatment_owner; usable_return; concrete_exchange_id; physical_event_id; actual_identity_id; actual_state; receiver_or_provider_gate; native_quantity; native_unit; unique_property; measurement_method_id; uncertainty"
+      collection_method: "Weigh or use traceable receiving weights, classify each lot once and retain acceptance/destination evidence. Link rejected reuse lots back to demolition stock then actual waste/retention route; prevent product/waste double classification. Divide actual outgoing mass by accepted net area. Record each actual child/refined exchange independently by identity, physical event, state, gate and period. Retain all original obligations even where a corresponding exchange identity is not yet known. Do not allocate a family total or copy its numerical Range to children, count a carrier and its contained material twice, or turn missing occurrence/quantity/native reference into zero. Each concrete exchange has one property and one unit; other CP readings are auxiliary and require evidenced conversion. Missing required refinement blocks dataset completion."
+      unit: "kg"
+      frequency: "Each outgoing lot and closing stock count"
+      temporal_coverage: "From first removal to final collection-gate reconciliation"
+      site_scope: "Declared on-site collection gate and documented receiver"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Scale traceability; unique transfer ids; accepted product quality; waste classification; closing stock and mass reconciliation"
+    - protocol_id: cp_emissions
+      process_id: "demolition"
+      flow_role: "characterized air releases"
+      record_type: "measurement or validated estimation dossier"
+      raw_fields: "job_id; substance; particle_class; air_compartment; sampling_duration; control_state; emitted_mass; estimation_method; captured_mass; uncertainty; missing_coverage; concrete_exchange_id; physical_event_id; actual_identity_id; actual_state; receiver_or_provider_gate; native_quantity; native_unit; unique_property; measurement_method_id"
+      collection_method: "Use representative emission measurements or a validated job-specific total-release method with actual control state. Preserve species/particle basis and medium; do not convert worker exposure concentration to total release without a defensible mass calculation. Exclude measured captured waste and normalize attributed emitted mass by accepted net area. Record each actual child/refined exchange independently by identity, physical event, state, gate and period. Retain all original obligations even where a corresponding exchange identity is not yet known. Do not allocate a family total or copy its numerical Range to children, count a carrier and its contained material twice, or turn missing occurrence/quantity/native reference into zero. Each concrete exchange has one property and one unit; other CP readings are auxiliary and require evidenced conversion. Missing required refinement blocks dataset completion."
+      unit: "kg"
+      frequency: "Each representative operation/control state and full-job estimate"
+      temporal_coverage: "Removal and cleanup including corrective work"
+      site_scope: "Actual workfront receiving air compartment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Method validation; monitoring coverage; measurement uncertainty; explicit uncovered species/stages"
+  calculation_rules:
+    - id: area_normalization
+      applies_to: "all inventory rows"
+      rule: "Record attributable job exchange quantity per reference flow by dividing by the measured accepted net removal area in m2. Sum disjoint accepted wall polygons once; record uncertainty and reject a zero or unresolved denominator. No area-to-mass conversion is implied."
+      inputs:
+        - cp_area
+        - "node-specific quantity protocol"
+      output: "Exchange quantity per reference flow"
+      source_ids: []
+    - id: shared_attribution
+      applies_to: "bounded_resource_service_access_provision; bounded_resource_service_container_provision; site_electricity"
+      rule: "Use direct job measurement first. Distribute only the residual shared pool by the documented job causal-use share of all consumers in that period; reconcile allocated totals to that residual. Apply area_normalization after attribution."
+      inputs:
+        - cp_resources
+        - cp_area
+      output: "Attributable resource quantity per reference flow"
+      source_ids: []
+    - id: custody_closure
+      applies_to: "reusable_removed_material_fired_clay_brick; masonry_waste; supplies_waste_spent_bag; supplies_waste_spent_sheet; supplies_waste_spent_filter; supplies_waste_loose_captured_residue; cleanup_wastewater; actual exchanges required by refine_characterized_air_release"
+      rule: "Compare removed stock and added supplies/water with accepted reusable exits, waste exits, actual emissions and remaining stock on compatible mass/moisture bases. Keep uncertain or unmeasured terms visible; do not infer missing air release as a balance residual or force an artificial zero."
+      inputs:
+        - cp_area
+        - cp_resources
+        - cp_water
+        - cp_exits
+        - cp_emissions
+      output: "Material/water closure and unexplained difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_scope
+      applies_to: "demolition"
+      requirement: "Prove nonloadbearing bare brick/mortar wall, isolation, hazard clearance and approved hand-tool method; stop on contradictory conditions."
+      evidence: "Survey; engineering/method approval; local release record"
+    - id: dq_quantity
+      applies_to: "all inventory rows"
+      requirement: "Use the same accepted area denominator; disclose instrument error, stock carryover, moisture and incomplete measurements. Record nonuse separately from missing quantities."
+      evidence: "cp_area and all linked protocols"
+    - id: dq_time
+      applies_to: "all inventory rows"
+      requirement: "Cover actual work and corrective visits with dated resource, transfer and completion events; disclose gaps instead of replacing them with zero."
+      evidence: "Complete job/event ledger"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Resolve each actual exchange to a compatible concrete flow, property and unit with detail evidence. Conditional umbrella cards require actual foreground identities; support gaps remain explicit."
+      evidence: "Identity dossier and actual material/provider/medium records"
+    - id: dq_ranges
+      applies_to: "all inventory rows"
+      requirement: "Replace missing Range evidence with observed job distributions or defensible technology-specific evidence when available. Retain the stated evidence need until resolved; no universal water, energy, dust, density or recovery coefficient is prescribed."
+      evidence: "Per-card evidence needs; measurements with uncertainty"
+    - id: dq_gate
+      applies_to: "accepted_demolition; material exits"
+      requirement: "Keep inspection failure/rework and undecided material lots out of accepted service/product quantities. Close correction or disclose incomplete output."
+      evidence: "Signed handover and custody acceptance records"
+    - id: refine_consumed_supplies
+      applies_to: "consumed_supplies_collection_bag; consumed_supplies_protection_sheet; consumed_supplies_filter"
+      requirement: "Preserve this actual collection and closure scope as a mandatory dataset-production requirement: Conditional umbrella for actual bags, protective sheeting, filters and cleanup substances consumed. Split by identified material/formulation in a concrete dataset. Range evidence need: document issued, returned, remaining and consumed quantities for each actual supply; no generic consumable coefficient. Independently establish every actual identity, state, real provider/receiver and exactly one exchange property/unit before constructing its flow card. Each actual exchange requires its own recorded quantity and applicable method, uncertainty and custody/fate coverage. Auxiliary CP units do not authorize extra exchange views. Actual occurrence unknown is not zero; never invent a material/species/provider list or split a parent total. Quantitative screening evidence must fit each actual exchange; a former family interval cannot be copied or divided into child ranges. Further actual identities not fully specified by the conditional children require mandatory refinement and prevent dataset completion; this requirement is not itself a flow exchange. Actual cleanup formulations and any other unlisted consumables require an actual SKU/formulation/unit roster before a further flow card; do not invent solvents or disinfectants."
+      evidence: "cp_resources; actual independent records and identity/unit evidence"
+    - id: refine_bounded_resource_service
+      applies_to: "bounded_resource_service_access_provision; bounded_resource_service_container_provision"
+      requirement: "Preserve this actual collection and closure scope as a mandatory dataset-production requirement: Conditional umbrella for actually used provider services: hand tools, access equipment, containers and mobilization where applicable. Preserve provider native units and split concrete services; hours only describe timed use. Range evidence need: obtain actual service coverage, use logs, periods, shared consumers and driver evidence; no invented equipment lifetime. Independently establish every actual identity, state, real provider/receiver and exactly one exchange property/unit before constructing its flow card. Each actual exchange requires its own recorded quantity and applicable method, uncertainty and custody/fate coverage. Auxiliary CP units do not authorize extra exchange views. Actual occurrence unknown is not zero; never invent a material/species/provider list or split a parent total. Quantitative screening evidence must fit each actual exchange; a former family interval cannot be copied or divided into child ranges. Further actual identities not fully specified by the conditional children require mandatory refinement and prevent dataset completion; this requirement is not itself a flow exchange. Actual hand-tool functions, mobilization provider/mode/native reference, and any other service not truly the stated h-referenced complete function require concrete separate identity/property/unit refinement. Complete real bundles may remain one only with exact coverage."
+      evidence: "cp_resources; actual independent records and identity/unit evidence"
+    - id: refine_reusable_removed_material
+      applies_to: "reusable_removed_material_fired_clay_brick"
+      requirement: "Preserve this actual collection and closure scope as a mandatory dataset-production requirement: Conditional umbrella only for material accepted as a reusable product at the documented on-site collection/handover gate; later receiver acceptance supports product status and does not include transport or treatment without unmodelled recovery processing. Identify material, condition, custody and acceptance; intact appearance alone is insufficient. Range evidence need: weigh actual accepted lots and retain receiver quality evidence; no default reuse fraction or displacement credit. Independently establish every actual identity, state, real provider/receiver and exactly one exchange property/unit before constructing its flow card. Each actual exchange requires its own recorded quantity and applicable method, uncertainty and custody/fate coverage. Auxiliary CP units do not authorize extra exchange views. Actual occurrence unknown is not zero; never invent a material/species/provider list or split a parent total. Quantitative screening evidence must fit each actual exchange; a former family interval cannot be copied or divided into child ranges. Further actual identities not fully specified by the conditional children require mandatory refinement and prevent dataset completion; this requirement is not itself a flow exchange. Any other actual reusable removed product, state or recipient requires independent actual identity/native unit/quality/custody acceptance. No assumed recovery fraction or credit; transport/treatment beyond gate not silently included."
+      evidence: "cp_exits; actual independent records and identity/unit evidence"
+    - id: refine_supplies_waste
+      applies_to: "supplies_waste_spent_bag; supplies_waste_spent_sheet; supplies_waste_spent_filter; supplies_waste_loose_captured_residue"
+      requirement: "Preserve this actual collection and closure scope as a mandatory dataset-production requirement: Conditional umbrella for spent bags, sheeting, filters and captured dust at their waste gates. Usable containers/parts return to provider stock under custody records instead of this waste card. Range evidence need: weigh each identified stream, distinguish collected dust from uncollected air releases, and document stock carryover. Independently establish every actual identity, state, real provider/receiver and exactly one exchange property/unit before constructing its flow card. Each actual exchange requires its own recorded quantity and applicable method, uncertainty and custody/fate coverage. Auxiliary CP units do not authorize extra exchange views. Actual occurrence unknown is not zero; never invent a material/species/provider list or split a parent total. Quantitative screening evidence must fit each actual exchange; a former family interval cannot be copied or divided into child ranges. Further actual identities not fully specified by the conditional children require mandatory refinement and prevent dataset completion; this requirement is not itself a flow exchange. Other waste identities/hazard states and actual receiver splits require measured dispatch roster; do not add one generic residual exchange."
+      evidence: "cp_exits; actual independent records and identity/unit evidence"
+    - id: refine_characterized_air_release
+      applies_to: "actual independently refined exchanges"
+      requirement: "Preserve this actual collection and closure scope as a mandatory dataset-production requirement: Conditional umbrella for actual reported species or particle-size classes and receiving air compartment; no generic dust UUID or guessed silica content. Range evidence need: obtain representative measurements or validated job-specific release estimates with control effectiveness and uncertainty. Exposure concentrations alone are not total emitted mass; no measured value is not zero. Independently establish every actual identity, state, real provider/receiver and exactly one exchange property/unit before constructing its flow card. Each actual exchange requires its own recorded quantity and applicable method, uncertainty and custody/fate coverage. Auxiliary CP units do not authorize extra exchange views. Actual occurrence unknown is not zero; never invent a material/species/provider list or split a parent total. Quantitative screening evidence must fit each actual exchange; a former family interval cannot be copied or divided into child ranges. Further actual identities not fully specified by the conditional children require mandatory refinement and prevent dataset completion; this requirement is not itself a flow exchange. Actual measured or validated-estimate substance or disjoint particle-size fractions to actual receiving air compartments; captured waste excluded."
+      evidence: "cp_emissions; actual independent records and identity/unit evidence"
+    - id: atomic_exchange_identity_unit
+      applies_to: "all inventory rows"
+      requirement: "Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. Any pooled denominator must retain the original accepted configuration strata, state/gate and causal attribution; do not divide unlike circuits, routes, products or jobs as if they were equivalent."
+      evidence: "actual identity, unit, custody and independent quantity evidence"
+    - id: asset_final_normalization_once
+      applies_to: "all inventory rows"
+      requirement: "An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions."
+      evidence: "actual identity, unit, custody and independent quantity evidence"
+validation_rules:
+  - rule_id: scope_release
+    applies_to: "demolition"
+    rule: "Verify scope and actual approved sequence/limits against ready-to-work evidence. A structural, hazardous or unresolved wall cannot pass this category gate."
+    source_ids:
+      - hse-demolition
+      - osha-masonry-removal
+  - rule_id: area_once
+    applies_to: "accepted_demolition"
+    rule: "Require 1 m2 reference with verified Area support; reconcile net accepted elevation, openings, thickness, no second wall face and all corrective work. Missing/zero accepted area blocks normalization."
+    source_ids: []
+  - rule_id: rework_gate
+    applies_to: "demolition"
+    rule: "Reconcile initial work, failed inspection, repeat cleanup/removal and final acceptance in one node. Exclude unresolved/rejected area; retain failed-attempt burdens."
+    source_ids: []
+  - rule_id: exit_closure
+    applies_to: "material exits"
+    rule: "Verify unique material/transfer ids, product acceptance versus waste status, retained stock and characterized air/water split. Missing receiving status cannot become reusable product or recovery credit."
+    source_ids: []
+  - rule_id: shared_conservation
+    applies_to: "bounded_resource_service_access_provision; bounded_resource_service_container_provision; site_electricity"
+    rule: "Verify actual shared consumers/periods, causal driver evidence, coverage and conservation of residual pool; reject overlap with energy/capital already inside a provider service."
+    source_ids: []
+  - rule_id: identity_coverage
+    applies_to: "all inventory rows"
+    rule: "Require verified concrete identity and property/unit before final dataset exchanges. Report unresolved umbrella/UUID/support identities and Range evidence gaps as coverage limits even when structural checks pass."
+    source_ids: []
+  - rule_id: atomization_consumed_supplies_complete
+    applies_to: "consumed_supplies_collection_bag; consumed_supplies_protection_sheet; consumed_supplies_filter"
+    rule: "Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying refine_consumed_supplies with actual records; unresolved required expansion blocks the dataset."
+    source_ids: []
+  - rule_id: atomization_bounded_resource_service_complete
+    applies_to: "bounded_resource_service_access_provision; bounded_resource_service_container_provision"
+    rule: "Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying refine_bounded_resource_service with actual records; unresolved required expansion blocks the dataset."
+    source_ids: []
+  - rule_id: atomization_reusable_removed_material_complete
+    applies_to: "reusable_removed_material_fired_clay_brick"
+    rule: "Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying refine_reusable_removed_material with actual records; unresolved required expansion blocks the dataset."
+    source_ids: []
+  - rule_id: atomization_supplies_waste_complete
+    applies_to: "supplies_waste_spent_bag; supplies_waste_spent_sheet; supplies_waste_spent_filter; supplies_waste_loose_captured_residue"
+    rule: "Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying refine_supplies_waste with actual records; unresolved required expansion blocks the dataset."
+    source_ids: []
+  - rule_id: atomization_characterized_air_release_complete
+    applies_to: "actual independently refined exchanges"
+    rule: "Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying refine_characterized_air_release with actual records; unresolved required expansion blocks the dataset."
+    source_ids: []
+  - rule_id: validate_atomic_exchange_unit_and_normalization
+    applies_to: "all inventory rows"
+    rule: "Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Site-specific foreground data package for completed manual nonloadbearing brick-partition demolition"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Building renovation or demolition models matching the declared wall, method, site and collection gate; downstream process and lifecyclemodel projections"
+  excluded_use: "Structural demolition; hazardous abatement; new wall production; machinery collapse; universal demolition benchmark; automatic recycling or avoided-production credit"
+  required_metadata: "Wall dimensions/thickness/materials; once-only net area; survey/method releases; actual hand tools/control system; reporting dates; providers and shared consumers; stock and waste ownership; collection and treatment gates"
+  required_quality_disclosure: "Area/mass uncertainty; incomplete air/water coverage; identity and Energy/Duration support gaps; unresolved Range evidence; local correction burdens; upstream wall and capital-service exclusions"
+  update_trigger: "Changed wall composition or thickness; method/control/access change; new supplier/service coverage; survey/hazard change; altered material destination; revised measurement or accepted gate"
+data_sources:
+  - id: "hse-demolition"
+    type: "official_guidance"
+    reference: "https://www.hse.gov.uk/construction/safetytopics/demolition.htm"
+    used_for: "Planning context for competent survey/method, structure/services/hazards and sequence-dependent stability/debris controls; not a universal national legal prescription"
+  - id: "osha-masonry-removal"
+    type: "standard"
+    reference: "OSHA 29 CFR 1926.854, Removal of walls, masonry sections, and chimneys; https://www.osha.gov/laws-regs/regulations/standardnumber/1926/1926.854"
+    used_for: "Technical context for masonry floor-load and remaining-wall stability constraints; apply actual local requirements and approved job limits"
+  - id: "un-cpc3-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 explanatory notes, 30 June 2025, PDF p. 288; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Demolition services classification scope; no inventory factors"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:27a5390630299a77c4de47462fe9b192286a2051cd3d03954365b80836024508"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4194"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4194
+          line: 56
+          column: 1
+        end:
+          offset: 8286
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Existing customer-owned bare brick/mortar partition surveyed as nonloadbearing, isolated and hazard-cleared; method and access approved |\n| starting_condition_role | Physical stock and custody interface, not a new purchased brick input and not automatically an incoming waste exchange |\n| product_classification_scope | The narrow completed partition-demolition service within cpc:3.0:54310 |\n| recursive_input_rule | Subcontracted demolition of the same wall is an alternative service owner: partition responsibilities and quantities explicitly, with no parent-plus-subcontract double counting. |\n| upstream_dataset_requirement | Link supplied consumables, water, electricity and bounded resource services to compatible upstream datasets. Historical wall manufacture/use is excluded at this removal interface and must be represented by its original owner when a whole-building model needs it. |\n| disclosure | Declare stock ownership, prior survey/abatement boundary, job period, outgoing collection gate, tool/access/visit service coverage, capital exclusions, waste transport/treatment owner and any unmeasured inventory. |\n\n### Boundary Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `scope_eligibility` | foreground_system_boundary | This PCR covers controlled hand-tool dismantling and clearance of a surveyed bare interior partition made of fired-clay bricks and cementitious mortar. The supplied function is completed removal, not the manufacture of replacement wall materials. The actual approved sequence, access, exclusion zone, floor loading, service isolation and hazard clearance govern each job. Structural or loadbearing walls, machine-led collapse, hazardous-material abatement, decorative finish stripping, replacement construction and off-site waste treatment are outside this category. Stop work when the survey or observed condition contradicts this scope; do not blend an incompatible job into the reference output. |  |\n| `ready_interface` | demolition | Require actual competent survey, method and isolation evidence before hand-tool work; use HSE planning guidance and OSHA masonry stability/loading principles as technical context, with applicable local requirements independently declared. No generic top-down instruction substitutes for the approved job sequence. | hse-demolition; osha-masonry-removal |\n| `removal_gate` | demolition | The independent removal responsibility ends at stable retained structure, cleared accepted area and separately documented outgoing materials at the on-site collection gate. Screening and segregation here serve this gate; off-site crushing or recovery is not an embedded production node. |  |\n| `stock_ledger` | demolition | Record the existing wall geometry/materials in a custody ledger. Reconcile removed mass, remaining stock, outgoing products/wastes and actual characterized releases; do not invent an exchange buying the existing wall or label it waste before the actual removal decision. |  |\n| `resources` | demolition | Include attributable hand-tool/access/visit service, dust-control water/extraction power, consumed protection and cleanup materials, contained debris transfer, cleanup and corrective work when used. A bounded provider service owns its stated capital coverage; separately disclose any exclusion and never invent a tool lifetime. |  |\n| `sharing` | demolition | Maintain shared asset/service ids with this demolition node and all other consuming jobs or reporting periods. Record service coverage, period totals, job use and attribution driver; meter local use first and allocate only a residual actually shared burden. |  |\n| `exit_owner` | demolition | Record solid waste, wastewater and air releases at their actual distinct gates. Downstream transport/treatment is excluded from this on-site service inventory but its responsible dataset owner and transfer evidence are mandatory; no avoided virgin production or recovery credit is automatic. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 161
+              line: 8
+              column: 1
+            end:
+              offset: 232
+              line: 8
+              column: 72
+          text: "# Manual non-loadbearing fired-clay brick partition demolition services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4194
+              line: 56
+              column: 1
+            end:
+              offset: 4215
+              line: 56
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28863"
+      family: "allocation"
+      span:
+        start:
+          offset: 28863
+          line: 350
+          column: 1
+        end:
+          offset: 30719
+          line: 360
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `service_owner` | accepted_demolition | Assign removal and corrective-work burdens to the accepted demolition service. Unresolved defects remain in the same local work loop; do not create another accepted output for repeated work or erase failed-attempt resources. |  |\n| `material_exits` | removed materials | Declare ownership and legal/product status of each outgoing lot. Retain demolition burdens with the demolition service under this service-boundary model; report reusable material separately without avoided-production credit. A later system requiring co-product allocation must declare a reviewed boundary/method and cannot silently overwrite this rule. |  |\n| `shared_resources` | `bounded_resource_service_access_provision`; `bounded_resource_service_container_provision`; site_electricity | Identify each shared provider service, all consuming jobs/nodes and relevant service periods. Prefer direct activity records; allocate only the measured residual service total by recorded causal driver, preserving totals across consumers. State driver, coverage and uncertainty; do not allocate a service charge and its included electricity/capital twice. |  |\n| `returns` | `consumed_supplies_collection_bag`; `consumed_supplies_protection_sheet`; `consumed_supplies_filter`; `supplies_waste_spent_bag`; `supplies_waste_spent_sheet`; `supplies_waste_spent_filter`; `supplies_waste_loose_captured_residue` | Usable packaging, containers and unused supplies return under actual stock/custody records or remain closing stock. Record issued, consumed, returned and retained quantities once; the return is not simultaneously waste and cannot receive a second net subtraction. Spent contaminated items follow their actual waste route. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 161
+              line: 8
+              column: 1
+            end:
+              offset: 232
+              line: 8
+              column: 72
+          text: "# Manual non-loadbearing fired-clay brick partition demolition services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28863
+              line: 350
+              column: 1
+            end:
+              offset: 28903
+              line: 350
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50953"
+      family: "validation"
+      span:
+        start:
+          offset: 50953
+          line: 399
+          column: 1
+        end:
+          offset: 57638
+          line: 417
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `scope_release` | demolition | Verify scope and actual approved sequence/limits against ready-to-work evidence. A structural, hazardous or unresolved wall cannot pass this category gate. | hse-demolition; osha-masonry-removal |\n| `area_once` | accepted_demolition | Require 1 m2 reference with verified Area support; reconcile net accepted elevation, openings, thickness, no second wall face and all corrective work. Missing/zero accepted area blocks normalization. |  |\n| `rework_gate` | demolition | Reconcile initial work, failed inspection, repeat cleanup/removal and final acceptance in one node. Exclude unresolved/rejected area; retain failed-attempt burdens. |  |\n| `exit_closure` | material exits | Verify unique material/transfer ids, product acceptance versus waste status, retained stock and characterized air/water split. Missing receiving status cannot become reusable product or recovery credit. |  |\n| `shared_conservation` | `bounded_resource_service_access_provision`; `bounded_resource_service_container_provision`; site_electricity | Verify actual shared consumers/periods, causal driver evidence, coverage and conservation of residual pool; reject overlap with energy/capital already inside a provider service. |  |\n| `identity_coverage` | all inventory rows | Require verified concrete identity and property/unit before final dataset exchanges. Report unresolved umbrella/UUID/support identities and Range evidence gaps as coverage limits even when structural checks pass. |  |\n| `atomization_consumed_supplies_complete` | `consumed_supplies_collection_bag`; `consumed_supplies_protection_sheet`; `consumed_supplies_filter` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_consumed_supplies` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_bounded_resource_service_complete` | `bounded_resource_service_access_provision`; `bounded_resource_service_container_provision` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_bounded_resource_service` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_reusable_removed_material_complete` | `reusable_removed_material_fired_clay_brick` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_reusable_removed_material` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_supplies_waste_complete` | `supplies_waste_spent_bag`; `supplies_waste_spent_sheet`; `supplies_waste_spent_filter`; `supplies_waste_loose_captured_residue` | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_supplies_waste` with actual records; unresolved required expansion blocks the dataset. |  |\n| `atomization_characterized_air_release_complete` | actual independently refined exchanges | Require independent actual quantity, identity/state/gate and one property/unit for each applicable exchange in this scope; preserve full original protocol, normalization, stock, returns, waste/releases and shared-resource ownership. Reject completion on an unknown required child, unsupported native reference or missing quantity; evidenced nonoccurrence is separate from missing data. No family-total allocation, copied family Range or duplicate carrier/constituent/bundled-part exchange. Completion requires satisfying `refine_characterized_air_release` with actual records; unresolved required expansion blocks the dataset. |  |\n| `validate_atomic_exchange_unit_and_normalization` | all inventory rows | Each concrete flow card identifies exactly one actual independently supplied product/SKU/formulation, complete assembly, complete single-function or genuine complete bounded provider service, actual waste composite/state/receiver, or substance/size/receiving medium, with exactly one property and unit. Different actual identities require independent quantities and records, not a summed family exchange. A complete product/carrier includes its contents once. Same unchanged SKU/state usable supply/return pairs and matched physical internal send/receive pairs use the same selected property/unit; kg and count or MJ and kWh auxiliaries are nonadditive measurements, never duplicate exchanges. Missing identity/occurrence/quantity/native reference is a gap, not zero. An asset-equivalent formula already ending in division by N, D or A is the final quantity per reference flow. Its complete-life fraction and accepted-output normalization constitute the same normalization operation as the general normalization rule; never divide it by that denominator again. Apply the complete-life upstream burden exactly once. Actual complete provider event counts remain event quantities, not owned-asset fractions. |  |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 161
+              line: 8
+              column: 1
+            end:
+              offset: 232
+              line: 8
+              column: 72
+          text: "# Manual non-loadbearing fired-clay brick partition demolition services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50953
+              line: 399
+              column: 1
+            end:
+              offset: 50975
+              line: 399
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "scope_eligibility"
+      identity_kind: "explicit"
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 5526
+          line: 73
+          column: 1
+        end:
+          offset: 6282
+          line: 73
+          column: 757
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "ready_interface"
+      identity_kind: "explicit"
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 6283
+          line: 74
+          column: 1
+        end:
+          offset: 6672
+          line: 74
+          column: 390
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "removal_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 6673
+          line: 75
+          column: 1
+        end:
+          offset: 6996
+          line: 75
+          column: 324
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "stock_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 6997
+          line: 76
+          column: 1
+        end:
+          offset: 7304
+          line: 76
+          column: 308
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "resources"
+      identity_kind: "explicit"
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 7305
+          line: 77
+          column: 1
+        end:
+          offset: 7666
+          line: 77
+          column: 362
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "sharing"
+      identity_kind: "explicit"
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 7667
+          line: 78
+          column: 1
+        end:
+          offset: 7956
+          line: 78
+          column: 290
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "exit_owner"
+      identity_kind: "explicit"
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 7957
+          line: 79
+          column: 1
+        end:
+          offset: 8283
+          line: 79
+          column: 327
+    - pointer: "/allocation_rules/0"
+      rule_id: "service_owner"
+      identity_kind: "explicit"
+      unit_id: "normative_28863"
+      source_span:
+        start:
+          offset: 28976
+          line: 354
+          column: 1
+        end:
+          offset: 29247
+          line: 354
+          column: 272
+    - pointer: "/allocation_rules/1"
+      rule_id: "material_exits"
+      identity_kind: "explicit"
+      unit_id: "normative_28863"
+      source_span:
+        start:
+          offset: 29248
+          line: 355
+          column: 1
+        end:
+          offset: 29646
+          line: 355
+          column: 399
+    - pointer: "/allocation_rules/2"
+      rule_id: "shared_resources"
+      identity_kind: "explicit"
+      unit_id: "normative_28863"
+      source_span:
+        start:
+          offset: 29647
+          line: 356
+          column: 1
+        end:
+          offset: 30142
+          line: 356
+          column: 496
+    - pointer: "/allocation_rules/3"
+      rule_id: "returns"
+      identity_kind: "explicit"
+      unit_id: "normative_28863"
+      source_span:
+        start:
+          offset: 30143
+          line: 357
+          column: 1
+        end:
+          offset: 30716
+          line: 357
+          column: 574
+    - pointer: "/validation_rules/0"
+      rule_id: "scope_release"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 51048
+          line: 403
+          column: 1
+        end:
+          offset: 51277
+          line: 403
+          column: 230
+    - pointer: "/validation_rules/1"
+      rule_id: "area_once"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 51278
+          line: 404
+          column: 1
+        end:
+          offset: 51520
+          line: 404
+          column: 243
+    - pointer: "/validation_rules/2"
+      rule_id: "rework_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 51521
+          line: 405
+          column: 1
+        end:
+          offset: 51721
+          line: 405
+          column: 201
+    - pointer: "/validation_rules/3"
+      rule_id: "exit_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 51722
+          line: 406
+          column: 1
+        end:
+          offset: 51965
+          line: 406
+          column: 244
+    - pointer: "/validation_rules/4"
+      rule_id: "shared_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 51966
+          line: 407
+          column: 1
+        end:
+          offset: 52286
+          line: 407
+          column: 321
+    - pointer: "/validation_rules/5"
+      rule_id: "identity_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 52287
+          line: 408
+          column: 1
+        end:
+          offset: 52549
+          line: 408
+          column: 263
+    - pointer: "/validation_rules/6"
+      rule_id: "atomization_consumed_supplies_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 52550
+          line: 409
+          column: 1
+        end:
+          offset: 53321
+          line: 409
+          column: 772
+    - pointer: "/validation_rules/7"
+      rule_id: "atomization_bounded_resource_service_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 53322
+          line: 410
+          column: 1
+        end:
+          offset: 54098
+          line: 410
+          column: 777
+    - pointer: "/validation_rules/8"
+      rule_id: "atomization_reusable_removed_material_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 54099
+          line: 411
+          column: 1
+        end:
+          offset: 54830
+          line: 411
+          column: 732
+    - pointer: "/validation_rules/9"
+      rule_id: "atomization_supplies_waste_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 54831
+          line: 412
+          column: 1
+        end:
+          offset: 55624
+          line: 412
+          column: 794
+    - pointer: "/validation_rules/10"
+      rule_id: "atomization_characterized_air_release_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 55625
+          line: 413
+          column: 1
+        end:
+          offset: 56350
+          line: 413
+          column: 726
+    - pointer: "/validation_rules/11"
+      rule_id: "validate_atomic_exchange_unit_and_normalization"
+      identity_kind: "explicit"
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 56351
+          line: 414
+          column: 1
+        end:
+          offset: 57635
+          line: 414
+          column: 1285
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 4194
+          line: 56
+          column: 1
+        end:
+          offset: 4215
+          line: 56
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4194"
+      source_span:
+        start:
+          offset: 4243
+          line: 60
+          column: 1
+        end:
+          offset: 5433
+          line: 67
+          column: 231
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28863"
+      source_span:
+        start:
+          offset: 28863
+          line: 350
+          column: 1
+        end:
+          offset: 28903
+          line: 350
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50953"
+      source_span:
+        start:
+          offset: 50953
+          line: 399
+          column: 1
+        end:
+          offset: 50975
+          line: 399
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:27a5390630299a77c4de47462fe9b192286a2051cd3d03954365b80836024508"
+  generated_content_sha256: "sha256:290784f9d12f85941ea8929b6c6fbae6e7cbb9400219d2dfb1d8c0a264541025"

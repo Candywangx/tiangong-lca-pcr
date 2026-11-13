@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: 6883ac60fba9106de1532c153241fb0076423a07
-lastReviewedNote: "PCR #148: reviewed provider-capacity repair after the immutable 0.4.8 export failed actual destination staging. Product 0.4.9 preserves canonical content, classification, reader compatibility, methodology and translation states, dependency resolutions and runtime pins. New builds store original downloads physically, bind exact Next navigation aliases and enforce destination allocation plus the existing reserve; native/browser and live alias acceptance remain mandatory. Existing ownership, routing, scientific approval and full qualification requirements are unchanged. Focused integrity tests and bounded browser diagnostics are evidence only for their scope; complete new-source qualification, independent review, provider admission, stable publication and exact workspace integration remain required."
+lastReviewedAt: 2026-11-02
+lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -89,6 +89,23 @@ of unchanged failed artifacts.
 These counts describe the upstream batch. A fork retaining additional records
 reads its current inventory from the catalog and classification coverage; the
 upstream batch counts do not replace those source-derived totals.
+
+## Product 0.4.10 preparation
+
+Product 0.4.10 prepares the reviewed dependency updates on Main: fast-uri 3.1.9,
+paired site React/react-dom 19.3.1 and mdast-util-to-markdown 2.2.0, together with
+Node-type monitoring and corrected documentation source locators. At preparation
+on 2026-10-30, GitHub stable/latest, both npm latest channels and the verified
+production website remain at 0.4.9. Version metadata alone does not establish
+0.4.10 publication; the immutable tag still requires fresh full qualification,
+coordinated npm/web acceptance and exact workspace integration under PCR #159.
+
+The source authority and three package mirrors advance together. The site lockfile
+changes only its two root version fields; dependency resolutions are preserved.
+Canonical PCR/classification bytes, methodology and translation states, reader
+compatibility minimum 0.4.1, Node 24.19.0/npm 12.2.0 construction pins and provider
+Node 24.18.0 remain unchanged. Existing immutable release assets and receipts stay
+intact. Publish only the tag's sealed bundle through the existing unified workflow.
 
 ## Build and transport
 
@@ -298,7 +315,7 @@ verified bytes in a source/run/attempt/qualification-bound archive. A separate
 SEO checker and seals the two npm packages and the identical web archive. Build,
 handoff and SEO audit evidence accompanies the immutable product artifact; it
 does not replace its existing release manifest or checksum contract. Both jobs
-retain their 120-minute limits and are required in both qualification lanes.
+use 120-minute limits, increased from 60 minutes, and are required in both qualification lanes.
 The public product artifact output and publication guards remain unchanged. The publish job downloads
 the exact Actions artifact ID produced by that qualification and rechecks source
 identity after environment admission. Product publication is globally serialized.

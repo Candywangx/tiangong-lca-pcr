@@ -1,0 +1,299 @@
+{
+  "code": "31914",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "9ccf46e91b0412aa05f73a87af45490c367993eb429ebec78877758a32080b9b",
+    "pcr.en-US.md": "6f48df89deb3e67aef0beefabdaa6bb3da97cbcab52b5682f7acf61c5d6f20fb",
+    "pcr.zh-CN.md": "385abe1c1470e80d42ecbd7eee67f081a66868d39d52b0682950b37fea75e663",
+    "structured.yaml": "d6c1d00a5ecbb5135eaf330f10b04404d2fa9b3d087db3d728465c4795b014bf"
+  },
+  "author_commit": "d1a178c7f78485ff3723cbe72fc7f34535d9fa5e",
+  "complete_inputs_and_derivations": [
+    {
+      "id": "accepted-unsent-fg",
+      "inputs_dry_kg": {
+        "opening_inside_gate": 0,
+        "external_receipt": 100,
+        "first_acceptance": 90,
+        "net_dispatch_new": 40,
+        "closing_accepted_fg_new_outside_gate": 50,
+        "pre_gate_waste": 10,
+        "closing_inside_gate": 0
+      },
+      "derivations": [
+        {
+          "check": "production_gate",
+          "formula": "0 + 100 = 0 + 90 + 10 = 100; closing accepted FG50 is outside production gate",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "acceptance_bridge",
+          "formula": "D=90 = net dispatch40 + FG50 + Other0",
+          "lhs": 90,
+          "rhs": 90,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site",
+          "formula": "0 + 100 = dispatch40 + FG50 + waste10",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "old_rule_counterexample": {
+        "formula": "100 != closing FG50 + first acceptance90 + waste10",
+        "old_rhs": 150,
+        "duplicate": 50
+      }
+    },
+    {
+      "id": "post-acceptance-loss",
+      "inputs_dry_kg": {
+        "opening_inside_gate": 0,
+        "external_receipt": 110,
+        "first_acceptance": 100,
+        "net_dispatch_new": 60,
+        "closing_accepted_fg_new": 30,
+        "pre_gate_waste": 10,
+        "post_gate_loss": 10,
+        "closing_inside_gate": 0,
+        "attributable_burden_units": 100
+      },
+      "derivations": [
+        {
+          "check": "production_gate",
+          "formula": "110 = first-exit100 + pre-gate waste10; post-gate loss is outside this gate",
+          "lhs": 110,
+          "rhs": 110,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "acceptance_bridge",
+          "formula": "D=100 = dispatch60 + FG30 + post-acceptance loss10",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site",
+          "formula": "110 = dispatch60 + FG30 + pre-gate waste10 + post-gate loss10",
+          "lhs": 110,
+          "rhs": 110,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "normalization": {
+        "correct": "100 burden units / locked D100 = 1 unit/kg",
+        "old_shortcut": "100 / (60+30) = 1.1111111111111112 units/kg",
+        "D_not_reset": 100
+      }
+    },
+    {
+      "id": "old-fg-new-and-old-rework-linked-return",
+      "inputs_dry_kg": {
+        "opening_inside_gate": 0,
+        "opening_accepted_fg_old_outside_gate": 20,
+        "original_old_D0": 20,
+        "external_new_wood_receipt": 100,
+        "new_unique_first_acceptance": 80,
+        "pre_gate_new_waste": 20,
+        "new_rework_reentry": 20,
+        "new_repeat_gate_exit": 10,
+        "new_rework_waste": 2,
+        "closing_new_rework_wip_inside_gate": 8,
+        "new_gross_dispatch": 45,
+        "linked_new_return_to_fg": 5,
+        "new_net_dispatch": 40,
+        "closing_new_accepted_fg_outside_gate": 30,
+        "old_rework_reentry": 10,
+        "old_repeat_gate_exit": 8,
+        "old_rework_waste": 2,
+        "old_net_dispatch": 5,
+        "closing_old_accepted_fg_outside_gate": 13
+      },
+      "derivations": [
+        {
+          "check": "new_rework_physical_split",
+          "formula": "actual new reentry20 = repeat exit10 + waste2 + closing WIP8",
+          "lhs": 20,
+          "rhs": 20,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "old_rework_physical_split",
+          "formula": "actual old reentry10 = repeat exit8 + waste2",
+          "lhs": 10,
+          "rhs": 10,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "new_net_dispatch",
+          "formula": "new gross dispatch45 - linked return5 = net40; return5 is included once in final FG30",
+          "lhs": 40,
+          "rhs": 40,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "new_event_bridge",
+          "formula": "D_new80 = Dispatch_new40 + FG_new30 + Other_new(loss2+closing WIP8); repeat exit10 adds no D",
+          "lhs": 80,
+          "rhs": 80,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "old_remaining_stock_bridge",
+          "formula": "opening old FG20 = old dispatch5 + closing old FG13 + old rework loss2; no new D",
+          "lhs": 20,
+          "rhs": 20,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "production_gate",
+          "formula": "0 opening + fresh100 + new reentry20 + old reentry10 = closing WIP8 + gross body exits98 + dry waste24 = 130; closing FG43 excluded",
+          "lhs": 130,
+          "rhs": 130,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site_net",
+          "formula": "old opening FG20 + receipt100 = net dispatch45 + FG43 + WIP8 + waste24 = 120; all internal gate transfers cancel",
+          "lhs": 120,
+          "rhs": 120,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "whole_site_gross",
+          "formula": "opening20 + receipt100 + actual external return5 = gross dispatch50 + FG43 + WIP8 + waste24 = 125",
+          "lhs": 125,
+          "rhs": 125,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "event_ledger": {
+        "D_new": 80,
+        "repeat_crossings_total": 18,
+        "repeat_crossings_add_to_D": 0,
+        "opening_fg_add_to_D": 0,
+        "gross_body_exits": 98,
+        "first_acceptance_is_not_external_dispatch": true
+      },
+      "illustrative_energy_MJ": {
+        "new_primary_attributable": 80,
+        "new_incremental_rework": 8,
+        "new_incremental_packing": 4,
+        "new_normalized": "(80+8+4)/80 = 1.15 MJ/kg",
+        "old_incremental_rework": 6,
+        "old_incremental_storage": 2,
+        "old_service_correction": "(6+2)/original D0(20) = 0.4 MJ/kg old cohort",
+        "old_original_inherited_vector_example": 40,
+        "old_original_vector_readded": 0,
+        "old_8_MJ_shifted_to_new_D": 0
+      },
+      "no_double_count": "New closing WIP8 appears in Other_new on the event basis and in inside-gate stock on the physical basis, but is never also FG. These are separate reconciliations, never summed into one balance."
+    }
+  ],
+  "case_payload_sha256": "343e9d0b14dffb552a82cdb53ede9192342d6881ee747518155a6ee0d513e030",
+  "additional_basis_and_negative_cases": {
+    "quantity_basis": "All scenario mass inputs are oven-dry kg as requested. To exercise the canonical wet-kg D arithmetic without a moisture conversion, these fixtures explicitly set u=0 for all stocks and crossings, so dry and acceptance kg coincide. This is a test fixture, not an asserted factory moisture. Actual studies must measure each state and convert event destinations to their locked acceptance basis."
+  },
+  "independently_recomputed_checks": [
+    {
+      "case": "new_FG_production_gate",
+      "lhs": 100,
+      "rhs": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "new_FG_whole_site",
+      "lhs": 100,
+      "rhs": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_invalid_rhs",
+      "lhs": 150,
+      "rhs": 150,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "loss_event",
+      "lhs": 100,
+      "rhs": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "loss_whole_site",
+      "lhs": 110,
+      "rhs": 110,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "rework_production_gate",
+      "lhs": 130,
+      "rhs": 130,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "rework_whole_site_net",
+      "lhs": 120,
+      "rhs": 120,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "rework_whole_site_gross",
+      "lhs": 125,
+      "rhs": 125,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "new_event",
+      "lhs": 80,
+      "rhs": 80,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "new_burden",
+      "lhs": 1.15,
+      "rhs": 1.15,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_service",
+      "lhs": 0.4,
+      "rhs": 0.4,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}

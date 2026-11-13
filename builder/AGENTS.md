@@ -171,3 +171,7 @@ An authored PCR is not acceptable unless:
 - quantitative ranges, factors, boundary rules, and allocation rules cite non-default evidence when they constrain modelling choices
 - bilingual Markdown files describe the same rule
 - `structured.yaml` reflects the canonical Markdown after sync
+
+Material reusable-module work follows `../docs/method-module-contract.md`. Use the
+module sync/check/export commands; preserve complete EN/ZH applicability/context
+units and actual reviewer identity. Do not use PCR lifecycle commands for a module.

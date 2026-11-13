@@ -1,0 +1,76 @@
+diff --git a/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/manifest.yaml b/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/manifest.yaml
+index 77677ee2e..4f45ae4ef 100644
+--- a/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/manifest.yaml
++++ b/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/manifest.yaml
+@@ -75,6 +75,9 @@ review_metadata:
+     status: "pending actual untreated receiving-interface confirmation"
+     condition: "Conditional whole-liquid Mass locator only if source-owner/provider and actual receiving evidence establish the intended untreated handover. Native Secondary/Tertiary Treatment label alone proves neither pre-treatment generation nor already-treated effluent; actual composition, density, acceptance and compatible provider remain required."
+   local_diagnostic_review: "fd_bulk_output 0.90–1.00 kg bulk/kg total formulation inputs is a provisional reasoned-estimate raw-batch diagnostic outside typed inventory ranges, not a process-output denominator or a plant default. Other diagnostic input denominators remain explicit prose; all other valid inventory ranges are retained."
++  solids_basis_review:
++    status: "pending actual measurement-method and formulation-basis evidence"
++    condition: "For solids/NV-dependent quantitative use obtain the actual declared measurement method, test state and conditions, and compatible supplier/formulation reference. Keep whole wet mass, NV fraction, carrier water and retained volatile liquid separate; retained water, ethanol or other volatile carrier is not NV solids. Disclose operational residue/interference uncertainty; unknown or unmatched basis blocks dependent quantitative completion without assumed cure, yield or carrier removal."
+   provisional_estimates:
+     - "formulation_composition_guardrails"
+     - "process_energy_guardrails"
+diff --git a/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.en-US.md b/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.en-US.md
+index 48d8673f9..0eb1b8670 100644
+--- a/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.en-US.md
++++ b/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.en-US.md
+@@ -55,7 +55,7 @@ The reference binding is conditional on the complete-object identity and actual-
+ | rule_id | Applies to | Required property | Required unit | Rule |
+ | --- | --- | --- | --- | --- |
+ | mu_reference_mass | Reference product output | Mass | kg | Normalize the packaged saleable product to 1 kg net coating, excluding packaging mass. |
+-| mu_material_inputs | Formulation ingredients, cleaning agents, packaging, wastes, and wastewater | Mass | kg | Record wet mass as received; additionally record dry matter, solids, or concentration when required to interpret the material. |
++| mu_material_inputs | Formulation ingredients, cleaning agents, packaging, wastes, and wastewater | Mass | kg | Record wet mass as received; additionally record dry matter, solids, or concentration when required to interpret the material. Where solids/nonvolatile (NV) content is used, declare the actual measurement method, test state and conditions, and compatibility with the supplied formulation and supplier reference. Keep whole wet mass, NV fraction, carrier water and retained volatile liquid in separate accounts; retained water, ethanol or other volatile carrier is not NV solids. An operational residue reading requires its retained-carrier/interference uncertainty to be disclosed; it does not establish an assumed cure or yield. |
+ | mu_liquid_volume | Metered water, solvent, or liquid ingredients when mass is not directly measured | Volume and density | m3 and kg/m3 | Convert volume to mass using a batch- and temperature-representative measured density; retain the raw volume and density. |
+ | mu_electricity | Purchased or generated electricity | Energy | kWh | Record meter or allocated electricity and identify voltage level and supply dataset. |
+ | mu_thermal_energy | Fuel or supplied heat used by a thermal cooking route | Net calorific value or energy | MJ | Report fuel mass or volume and net calorific value, or directly metered supplied heat; do not substitute electricity without disclosure. |
+@@ -763,7 +763,7 @@ The collection and calculation rules are governed by the complete actual-configu
+ 
+ | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| cp_batch_materials | formulation_dispersion | formulation ingredients | batch issue and return record | material ID, lot, gross issue, return, density, solids | ERP issue and calibrated scale; volume conversion only with measured density; raw cohort aggregation: sum net issues by material and product family | kg | each batch | representative reporting year | reporting plant | per 1 kg reference flow | purchase ledger, batch sheet, scale calibration |
++| cp_batch_materials | formulation_dispersion | formulation ingredients | batch issue and return record | material ID, lot, gross issue, return, density, solids; actual solids/NV definition and measurement method; test state and conditions; supplier/formulation reference compatibility; separate carrier-water and retained-volatile-liquid contents; operational residue/interference uncertainty | ERP issue and calibrated scale; volume conversion only with measured density; obtain actual compatible solids/NV method and condition evidence, keeping the whole wet issue, NV fraction, water and retained volatile carrier separate rather than assuming carrier removal or curing; raw cohort aggregation: sum net issues by material and product family | kg | each batch | representative reporting year | reporting plant | per 1 kg reference flow | purchase ledger, batch sheet, scale calibration; actual method/test-state records, supplier/formulation compatibility and residue/interference uncertainty evidence |
+ | cp_formulation_energy | formulation_dispersion | electricity | meter and equipment log | meter start, meter end, runtime, load, product family | submeter; otherwise reconciled site meter with causal allocation; raw cohort aggregation: sum direct readings; allocate documented shared remainder | kWh | batch or monthly | representative reporting year | reporting plant | per 1 kg reference flow | meter calibration, energy reconciliation |
+ | cp_batch_outputs | formulation_dispersion | bulk output and residue | batch yield record | released mass, retained sample, rework, residue, stock change | calibrated scale and batch reconciliation; raw cohort aggregation: mass-weighted aggregate by product family | kg | each batch | representative reporting year | reporting plant | per 1 kg reference flow | release record, waste record, mass balance |
+ | cp_process_emissions | formulation_dispersion | VOC and particulate release | monitoring and material balance | solvent charged, solvent retained, recovery, waste, capture, control, measured concentration, gas flow ; actual dry mass H, species/size, f_loss/G evidence, hood/duct/device topology, matched bypass/inlet/outlet PM and gas flow, C, D, recovered-solids wet/dry masses and destination | compliant monitoring or documented mass balance; raw cohort aggregation: sum pollutant mass after control; keep routes separate ; for modelled PM establish pre-capture G, capture-to-inlet C and captured-stream removal D, retain uncaptured and treated-outlet branches on matched species/size/period, and retain measured total-release alternatives; do not apply efficiencies again to already controlled amounts | kg | campaign and reporting period | representative reporting year | reporting plant and emission point | per 1 kg reference flow | monitoring report, control log, balance reconciliation ; capture-network diagram, paired-stream measurements, dry-basis/generation evidence, recovered-solids and destination/provider ledgers |
+@@ -792,7 +792,7 @@ The collection and calculation rules are governed by the complete actual-configu
+ | dq_technology | Foreground route | Data shall represent the declared water-borne, solvent-borne, powder, one-component, multi-component, or thermal route and its actual control technology. | process description, formulation family, equipment and control records |
+ | dq_time | Foreground data | Use a representative continuous twelve-month period where available; explain shutdowns, campaigns, abnormal batches, and extrapolation. | dated batch, meter, purchase, waste, and production records |
+ | dq_geography | All datasets | Identify plant country or region and use representative electricity, fuel, transport, water, and waste-treatment datasets. | dataset metadata and supplier or utility records |
+-| dq_completeness | Material and emission inventory | Reconcile mass and energy, list omissions and cut-offs, and retain hazardous or environmentally significant constituents and releases. | balance checks, omission register, monitoring reports |
++| dq_completeness | Material and emission inventory | Reconcile mass and energy, list omissions and cut-offs, and retain hazardous or environmentally significant constituents and releases. Before completing any solids/NV-dependent quantitative conversion, require the actual declared method/test state/conditions and compatible supplier/formulation basis; keep whole wet mass and retained water/ethanol/other volatile-carrier contents separate from NV solids. Retain operational residue/interference uncertainty explicitly; an unknown or unmatched basis blocks the dependent quantitative completion and cannot be replaced by assumed cure, yield or carrier removal. | balance checks, omission register, monitoring reports; actual solids/NV method and condition evidence, supplier/formulation compatibility, retained-carrier/interference uncertainty and pending-basis register |
+ | dq_source_priority | Secondary data | Prefer official standards, PCRs, regulations, official datasets and institutional reports, then peer-reviewed literature, then industry documents; label reasoned estimates as provisional. | source register and estimate flags |
+ | dq_uncertainty | Estimates and allocation | Quantify or qualitatively assess uncertainty for provisional estimates, secondary substitutions, allocation, and service conversion. | sensitivity results and data-quality notes |
+ 
+diff --git a/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.zh-CN.md b/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.zh-CN.md
+index 2997fa482..6a889f485 100644
+--- a/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.zh-CN.md
++++ b/library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.zh-CN.md
+@@ -55,7 +55,7 @@ sync_with: pcr.en-US.md
+ | rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+ | --- | --- | --- | --- | --- |
+ | mu_reference_mass | 参考产品输出 | Mass | kg | 将可销售包装产品归一化为 1 kg 净涂层，不包括包装质量。 |
+-| mu_material_inputs | 配方原料、清洗剂、包装、废物和废水 | Mass | kg | 记录接收状态的湿质量；当解释物料需要时，另行记录干物质、固含量或浓度。 |
++| mu_material_inputs | 配方原料、清洗剂、包装、废物和废水 | Mass | kg | 记录接收状态的湿质量；当解释物料需要时，另行记录干物质、固含量或浓度。使用固含量/不挥发分（NV）时，声明实际测定方法、试样状态及试验条件，并核实与供货配方和供应方参考基准相容。整份湿质量、NV 分数、载水和保留的挥发性液体分别建账；保留的水、乙醇或其他挥发性载体不属于 NV 固体。操作性残留物读数须披露载体残留/干扰的不确定性，不能据此假定固化或收率。 |
+ | mu_liquid_volume | 未直接测量质量的水、溶剂或液体原料 | Volume and density | m3 and kg/m3 | 使用对批次和温度有代表性的实测密度把体积换算为质量，并保留原始体积和密度。 |
+ | mu_electricity | 外购或自发电力 | Energy | kWh | 记录计量或分配电量，并识别电压等级和供电数据集。 |
+ | mu_thermal_energy | 热熬制路线使用的燃料或外供热 | Net calorific value or energy | MJ | 报告燃料质量或体积和净热值，或直接计量的供热；不得在未披露时以电力替代。 |
+@@ -763,7 +763,7 @@ sync_with: pcr.en-US.md
+ 
+ | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| cp_batch_materials | formulation_dispersion | 配方原料 | 批次领退料记录 | 物料 ID、批号、总领用、退料、密度、固含量 | ERP 领料和校准秤；仅以实测密度换算体积；原始群组汇总：按物料和产品系列汇总净领用 | kg | 每批 | 代表性报告年度 | 报告工厂 | 每 1 kg 参考流 | 采购台账、批次单、秤校准 |
++| cp_batch_materials | formulation_dispersion | 配方原料 | 批次领退料记录 | 物料 ID、批号、总领用、退料、密度、固含量；实际固含量/NV 定义及测定方法；试样状态和试验条件；供应方/配方参考基准相容性；分别记录的载水及保留挥发性液体含量；操作性残留物/干扰不确定性 | ERP 领料和校准秤；仅以实测密度换算体积；取得实际相容的固含量/NV 方法及条件证据，分别保留整份湿态领用量、NV 分数、水和保留挥发性载体，不假定载体已去除或已固化；原始群组汇总：按物料和产品系列汇总净领用 | kg | 每批 | 代表性报告年度 | 报告工厂 | 每 1 kg 参考流 | 采购台账、批次单、秤校准；实际方法/试样状态记录、供应方/配方相容性及残留物/干扰不确定性证据 |
+ | cp_formulation_energy | formulation_dispersion | 电力 | 电表和设备日志 | 电表起止、运行时间、负荷、产品系列 | 分表；否则以因果驱动分配经核对的全厂电量；原始群组汇总：汇总直接读数并分配有记录的共享余量 | kWh | 每批或每月 | 代表性报告年度 | 报告工厂 | 每 1 kg 参考流 | 电表校准、能源核对 |
+ | cp_batch_outputs | formulation_dispersion | 散装输出和残渣 | 批次收率记录 | 放行质量、留样、返工、残渣、库存变化 | 校准秤和批次核对；原始群组汇总：按产品系列质量加权汇总 | kg | 每批 | 代表性报告年度 | 报告工厂 | 每 1 kg 参考流 | 放行记录、废物记录、质量平衡 |
+ | cp_process_emissions | formulation_dispersion | VOC 和颗粒物释放 | 监测和物料平衡 | 溶剂投入、产品保留、回收、废物、捕集、治理、实测浓度、气量；实际干基处理量 H、物种/粒径、f_loss/G 证据、罩口/风管/装置拓扑、匹配的旁路/入口/出口颗粒物与气量、C、D、收集固体的湿/干质量和去向 | 合规监测或有记录的质量平衡；原始群组汇总：汇总控制后污染物质量并保持路线分离；模型估算的 PM 明确捕集前 G、进入装置的 C 及已捕集支流的 D，保留未捕集与治理后出口并匹配物种/粒径/期间，保留实测总排放替代；已治理后的量不再重复乘效率 | kg | 监测活动和报告期 | 代表性报告年度 | 报告工厂和排放口 | 每 1 kg 参考流 | 监测报告、治理日志、平衡核对；捕集网络图、支流配对测量、干基/产尘证据、收集固体及去向/供应过程台账 |
+@@ -792,7 +792,7 @@ sync_with: pcr.en-US.md
+ | dq_technology | 前景路线 | 数据必须代表声明的水性、溶剂型、粉末型、单组分、多组分或热路线及实际治理技术。 | 过程描述、配方系列、设备和治理记录 |
+ | dq_time | 前景数据 | 可获得时采用具有代表性的连续十二个月；解释停工、活动生产、异常批次和外推。 | 有日期的批次、计量、采购、废物和生产记录 |
+ | dq_geography | 所有数据集 | 识别工厂国家或地区，并使用有代表性的电力、燃料、运输、水和废物处理数据集。 | 数据集元数据和供应商或公用工程记录 |
+-| dq_completeness | 物料与排放清单 | 核对物料和能源，列明遗漏与截断，并保留危险或环境重要的组分和排放。 | 平衡检查、遗漏登记、监测报告 |
++| dq_completeness | 物料与排放清单 | 核对物料和能源，列明遗漏与截断，并保留危险或环境重要的组分和排放。完成任何依赖固含量/NV 的定量换算前，须取得实际声明的方法/试样状态/试验条件及相容的供应方/配方基准；整份湿质量及保留的水/乙醇/其他挥发性载体含量须与 NV 固体分别保留。操作性残留物/干扰不确定性必须明示；基准未知或不匹配时，不得完成依赖该基准的定量结果，不能以假定固化、收率或载体去除替代。 | 平衡检查、遗漏登记、监测报告；实际固含量/NV 方法及条件证据、供应方/配方相容性、载体残留/干扰不确定性和待定基准登记 |
+ | dq_source_priority | 次级数据 | 优先采用官方标准、PCR、法规、官方数据集和机构报告，其次是同行评审文献和行业文件；把推理估计标记为临时。 | 来源登记和估计标记 |
+ | dq_uncertainty | 估计与分配 | 对临时估计、次级数据替代、分配和服务换算进行定量或定性不确定性评价。 | 敏感性结果和数据质量说明 |
+ 

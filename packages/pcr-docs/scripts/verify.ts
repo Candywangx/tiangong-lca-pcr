@@ -1,3 +1,4 @@
+import {createProviderRuntime,verifyProviderRuntimeExport,verifyPublishedChapterAnchors} from './provider-runtime.ts';
 import {verifyStaticRouteAliases} from "./static-route-aliases.ts";
 import {verifySearchAssets} from "./search-assets.ts";
 import {parseSiteManifest} from "../lib/site-contracts.ts";
@@ -35,6 +36,8 @@ const manifest = parseSiteManifest(
 if (report.sourceCommit !== manifest.sourceCommit) throw new Error("Search report source identity mismatch");
 await verifySearchAssets(out, manifest.sourceCommit, report.search);
 verifyStaticRouteAliases(out, manifest.sourceCommit);
+const providerRuntime = verifyProviderRuntimeExport(out, manifest.sourceCommit, createProviderRuntime(root, manifest.sourceCommit));
+verifyPublishedChapterAnchors(root, out, providerRuntime);
 verifyHostingContract(
   JSON.parse(fs.readFileSync(path.join(root, "edgeone.json"), "utf8")),
   report.downloads,

@@ -159,9 +159,9 @@ This is a separate uf glue exchange at the flooring-unit boundary; collect it un
 
 ###### glue hardener (`glue_hardener`)
 
-This is a separate glue hardener exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions.
+This is a separate ammonium-chloride glue hardener exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions. The candidate chemical name, CAS and crystalline-salt description are coherent, but its absorption-tower/chemical-treatment interface does not establish the actual delivered solid catalyst supply. Keep this concrete Mass/kg row and protocol with its UUID unresolved until positive supplier/interface correspondence or another compatible identity is verified; do not infer a replacement, actual dose or verified provider.
 
-- Selected flow: Ammonium Chloride `0d0e3c27-1f93-4dc1-80d0-392a3226cd4f`
+- Selected flow: Ammonium Chloride
 - Flow property / unit: Mass / kg
 - Amount rule: Only when ammonium chloride is separately dosed: weigh pure salt, record concentration/purity and mixing losses; embedded catalyst in purchased adhesive is not a duplicate input. Absent dosing requires evidence of absence.
 - Value mode: Foreground record (`foreground_record`)
@@ -279,7 +279,7 @@ This is a separate filler exchange at the flooring-unit boundary; collect it und
 
 ###### alumina (`alumina`)
 
-This is a separate alumina exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions.
+This is a separate alumina exchange at the flooring-unit boundary; collect it under the stated route and measurement conditions. The native Al2O3 Product/Mass locator is classified as CPC 41432, expressly excluding artificial corundum; chemistry alone does not establish the actual coating particle grade, form, production route or supplier compatibility. This UUID cannot cover an actual artificial-corundum addition, including fused corundum if present. Such actual material requires a separately verified physical flow before binding, not renaming it generic alumina. Preserve the measured whole separate addition and avoid double counting alumina already embodied in purchased topcoat.
 
 - Selected flow: Aluminum oxide (alumina) `62905e17-33e8-4e73-a606-fdafc6e48aea`
 - Flow property / unit: Mass / kg

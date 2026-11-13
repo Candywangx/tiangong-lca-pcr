@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.machined-solid-coniferous-structural-members |
-| classification_refs | CPC 3.0 31625 为候选分类语境；建筑柱覆盖范围须独立审查 |
+| classification_refs | CPC 3.0 31625；较窄的工厂节点加工单件非工程木梁柱范围；当前决定以classifications/mappings/cpc-3.0-to-pcr.yaml及其acceptance.decision_ref ADR为准；独立方法学审查仍待完成 |
 | covered_products | 采购窑干锯材制成的未组装单根针叶实体结构梁柱；必须有构件专用卯、榫、缺口或连接孔及加工后结构验收 |
 | excluded_products | 没有节点加工的普通粗锯或直刨分等材；仅连续成型的型材；围栏柱、圆杆及轨枕；阔叶材；工程木、指接、胶合、防腐或涂覆产品；组装框架及安装 |
 | representative_product | 构件工厂门口验收合格的干燥未处理、未组装节点加工针叶实体结构构件 |
@@ -97,7 +97,7 @@ content_maturity: authored_methodology
 
 必需的单根窑干针叶材毛坯，未经防腐处理及胶合。记录供方边界、实际树种、含水率、尺寸及等级；上游锯切和干燥负荷只继承一次。
 
-- 选定流：窑干锯材（针叶材） `50904047-e5b0-4110-990a-53751d250267`
+- 选定流：针叶锯材 `50904047-e5b0-4110-990a-53751d250267`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：本交换单位的同批期未分配总量除以验收净实体 m3 量 Q；每 1 m3 参考流。保留原始阶段总量及库存变化，实物量不乘负荷分配份额。
 - 数值来源模式：`calculated_value`
@@ -371,7 +371,7 @@ PP 打包带剪余及拆除来料打包带为废物时纳入；纯聚合物废�
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `cp_reference` | `component_machining` | 参考几何及等级 | acceptance_record | 构件编号；图纸版本；树种；分等标准版本及方法；批次；净截面及长度；榫、孔、卯、缺口几何；实测含水率梯度；验收净湿质量；净体积；不合格品；不确定度 | 按实际图纸使用校准尺寸或三维计量并扣除不重叠空洞；校准净称重；含水率取样或电测以烘干法核对；有依据的合资格加工后验收; 验收批期 Q 为各构件实际净实体体积之和，保留编号、含水率及几何；每 1 m3 参考流 | m3; kg | 每构件或批次及每次图纸变化 | 同一有记录验收生产批期 | 本构件工厂及明确追溯的供方交接 | 每 1 m3 参考流 | 图纸；等级追溯；校准；验收及不合格构件记录 |
-| `cp_material` | `component_machining` | 毛坯及润滑油 | material_record | 收发及库存量；供方边界；树种；湿及全干质量；含水率和密度；尺寸及等级；润滑油产品及SDS；维护使用；库存变化；石油基润滑油牌号/配方及发热量限定兼容性；新油投入/未用退货；在用油库存；泄漏/排油 | 校准接收和发料称重及库存记录；实际树种状态取样；供方证书和SDS；维护日志; 同批期未分配净消耗除以 Q；每 1 m3 参考流 | kg | 每次接收或批次，按批期核对 | 同一有记录验收生产批期 | 本构件工厂及明确追溯的供方交接 | 每 1 m3 参考流 | 称重及库存核对；树种、等级和含水率证据 |
+| `cp_material` | `component_machining` | 毛坯及润滑油 | material_record | 收发及库存量；供方边界；树种；湿及全干质量；含水率和密度；尺寸及等级；润滑油产品及SDS；维护使用；库存变化；石油基润滑油牌号/配方及发热量限定兼容性；新油投入/未用退货；在用油库存；泄漏/排油；期初期末原料、未验收在制品及其他过程存料；单独标识的已计入验收输出成品构件库存；参考/验收边界、计入状态及交付状态；原始物料、制造及服务历史 | 校准接收和发料称重及库存记录；实际树种状态取样；供方证书和SDS；维护日志；按 wood_dry_balance 在各库存时点区分过程存料与已计入验收输出的成品构件; 同批期未分配净消耗除以 Q；每 1 m3 参考流 | kg | 每次接收或批次，按批期核对 | 同一有记录验收生产批期 | 本构件工厂及明确追溯的供方交接 | 每 1 m3 参考流 | 称重及库存核对；树种、等级和含水率证据 |
 | `cp_energy` | `component_machining` | machining_electricity | meter_record | 起止 kWh；阶段或设备回路；运行及待机时间；抽尘风机；电动搬运；共用电表拆分；电压及混合；校准 | 校准回路或阶段电表；没有分表时使用有记录的时间功率归属并保留不确定度，不重复风机与总表负荷; 可归属未分配批期 kWh×3.6 后除以 Q；每 1 m3 参考流 | kWh; MJ | 连续或批次读数 | 同一有记录验收生产批期 | 本构件工厂及明确追溯的供方交接 | 每 1 m3 参考流 | 电表图；校准；负载及待机归属记录 |
 | `cp_packaging` | `component_machining` | pp_strap; pe_film; wood_spacer | packaging_record | 各物料及规格；领用；退回；剪余；回用垫条周期；随货质量；库存；聚合物、树种及处理状态 | 分别称量成品包装组件；发票件数只能用实测单件质量换算；核对随货、回用、废弃和库存数量，不作为结构构件质量; 同批期各独立包装净消耗除以 Q；每 1 m3 参考流 | kg | 每次交付或批次 | 同一有记录验收生产批期 | 本构件工厂及明确追溯的供方交接 | 每 1 m3 参考流 | 物料清单；称重；聚合物树种及SDS；回用记录 |
 | `cp_residue` | `component_machining` | 余料及废物输出 | residue_record | 各行编号；产生阶段；湿质量和含水率；干质量及碳；销售或废物状态；返工及库存变化；去向；污染；凭据 | 按独立料仓或合同校准净称重；有代表性的含水率及组成取样；库存核对和销售或废物凭据；同物料不重复去向; 实际未分配批期各独立外送总量除以 Q；每 1 m3 参考流 | kg | 每料仓或交付及批期平衡 | 同一有记录验收生产批期 | 本构件工厂及明确追溯的供方交接 | 每 1 m3 参考流 | 地磅或秤；取样；去向；合同；库存平衡 |
@@ -384,7 +384,7 @@ PP 打包带剪余及拆除来料打包带为废物时纳入；纯聚合物废�
 | `normalize_volume` | 所有清单行 | a_i=T_i/Q；Q 为验收实际净实体体积，单位 m3；T_i 为同批期未分配交换总量，使用核实单位；a_i 为每 1 m3 参考流的交换。成品木材体积总量等于 Q，故归一化输出为 1 m3。 | T_i; Q; cp_reference; 对应行采集协议 | a_i | `usda-wood-handbook-2021` |
 | `net_geometry` | finished_member | V_member=V_actual_outer_solid-V_removed_nonoverlap；保留实际榫体，重叠孔和切除仅扣一次。Q=sum(V_accepted_member)；按交付含水率测几何，不用名义图纸体积。 | 实测构件及节点几何; cp_reference | Q | `usda-wood-handbook-2021` |
 | `electricity_conversion` | machining_electricity | T_MJ=3.6×T_kWh；a_electricity=T_MJ/Q；核对分表总量、待机及共用负载，不重复。 | T_kWh; Q; cp_energy; cp_reference | a_electricity |  |
-| `wood_dry_balance` | sawn_stock; finished_member; sawdust_sale; shavings_sale; offcut_waste; dust_waste; pm25; pmcoarse; pmover10 | 各实测状态 D=m_wet/(1+u)。期初干木材加接收等于验收干输出、销售、废弃及排出木材和期末干木材加已记录其他损失。按实测不确定度评估残差。水及碳账使用各自实测水分或碳比例。木质包装另平衡；无组成证据不假定 PM 全是木材。 | cp_material; cp_reference; cp_residue; cp_air | 干物质、水及碳平衡残差 | `usda-wood-handbook-2021` |
+| `wood_dry_balance` | sawn_stock; finished_member; sawdust_sale; shavings_sale; offcut_waste; dust_waste; pm25; pmcoarse; pmover10 | 各实测状态 D=m_wet/(1+u)。在声明的参考/验收边界，期初过程干木材加接收等于验收干输出、销售、废弃及排出木材和期末过程干木材加已记录其他损失。期初期末过程库存包含各自时点的原料、未验收在制品及其他尚未计入验收输出的过程存料。在各库存时点，这些存料与已计入验收输出的成品构件互斥，包括已计入但仍留厂的构件。若另列全厂流转/交付平衡，须声明其边界，使用实际交付/转移及期初期末成品库存，不再加入验收过程输出。此干质量核对独立于净体积参考及负荷分配。按实测不确定度评估残差。水及碳账使用各自实测水分或碳比例。木质包装另平衡；无组成证据不假定 PM 全是木材。 | cp_material; cp_reference; cp_residue; cp_air | 干物质、水及碳平衡残差 | `usda-wood-handbook-2021` |
 | `particle_partition` | pm25; pmcoarse; pmover10 | T_pm25=T_PM2.5；T_pmcoarse=T_PM10-T_PM2.5；T_pmover10=T_PMtotal-T_PM10，仅在累积测量可比且差值非负时使用；a_i=T_i/Q。不再加嵌套 PM10 或总量。 | 匹配的实测 PM 总量; Q; cp_air; cp_reference | a_pm25; a_pmcoarse; a_pmover10 | `epa-sawmill-pte-2014` |
 
 ### 数据质量要求
@@ -392,7 +392,7 @@ PP 打包带剪余及拆除来料打包带为废物时纳入；纯聚合物废�
 | requirement_id | 适用对象 | 要求 | 证据 |
 | --- | --- | --- | --- |
 | `quality_structural` | 成品构件 | 各图纸和加工记录须关联毛坯分等批次；确认切后剩余截面、节疤、裂纹及验收。毛坯强度等级本身不建立钻孔缺口节点能力；使用实际适用工程及分等依据并保留限制。不设通用等级、最小尺寸或设计荷载。 | 等级、图纸和验收档案 |
-| `quality_cohort` | 全部行 | 分子与验收体积分母使用相同范围批期，计入不合格品、返工及待机负载。不得无可追溯加权和披露而混合树种、等级用途、节点几何或水分状态。 | 批期及电表账 |
+| `quality_cohort` | 全部行 | 分子与验收体积分母使用相同范围批期，计入不合格品、返工及待机负载。分别保留可追溯的原料、未验收在制品、其他过程存料及已计入验收输出的成品构件状态，以及各自原始物料、制造及服务历史和相关负荷。每个验收构件即使仍留厂也只计入 Q 一次；将已计入验收输出的成品排除于过程期末库存，不从验收 Q 中扣除它们、不重定义交换分子，也不抹除其历史。不得无可追溯加权和披露而混合树种、等级用途、节点几何或水分状态。 | 批期及电表账 |
 | `quality_provider` | 含 UUID 行 | 身份不是完成的供方数据集。比较每个背景的路线、组成、参考数量、边界、地理时间和分配碳基准；未知兼容性保持未决，诚实报告完整性。 | 供方约定及记录比较 |
 
 ## 9. 校验规则

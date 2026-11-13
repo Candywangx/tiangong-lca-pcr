@@ -14,9 +14,9 @@ whenToUpdate:
 checkPaths:
   - .github/dependabot.yml
   - docs/dependency-maintenance.md
-lastReviewedAt: 2026-10-17
-lastReviewedCommit: 9147e85fa6610ede77b92dcb75caee33859c31db
-lastReviewedNote: "PCR #128: reviewed the generated root-lock route and positive/negative controls; exact root-lock guidance existence does not establish compatibility. Manifest/site-lock/source/workflow review, full qualification, runtime and product/publication authority, and canonical methodology remain unchanged."
+lastReviewedAt: 2026-10-26
+lastReviewedCommit: 42ec3ae0b97a8cbf3a482cf1411d1765ccd5734a
+lastReviewedNote: "PCR #152: reviewed the exact @types/node >=25.0.0 ceiling in both existing npm updater entries and the Node 24 LTS revisit condition. Dependency/runtime pins, graph ownership, canonical authoring and full qualification/publication boundaries are unchanged; static checks do not claim hosted activation."
 ---
 
 # Dependency maintenance
@@ -38,6 +38,13 @@ Asia/Shanghai, with a seven-day version cooldown and open version-PR limits of
 one for root/core, one for the site and one for Actions. This bounds the two
 independent npm graphs to two package proposals while each requires full CI. Security triage and
 security settings are separate from these version-update traffic budgets.
+
+Both npm updater entries ignore only `@types/node` versions `>=25.0.0`,
+keeping 24.x updates available within the Node 24 LTS compatibility baseline.
+This ceiling preserves the existing root/core and independent site graph ownership.
+Revisit it only with explicit approval of a major Node runtime/types baseline
+change and its compatibility qualification; unrelated package and Actions majors
+remain eligible. The ceiling does not change any installed dependency or runtime.
 
 ## Qualification and runtime pins
 

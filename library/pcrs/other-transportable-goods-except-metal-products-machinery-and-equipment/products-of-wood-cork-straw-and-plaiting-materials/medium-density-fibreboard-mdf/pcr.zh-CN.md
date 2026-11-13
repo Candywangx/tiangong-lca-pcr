@@ -339,7 +339,7 @@ translation_status: aligned
 
 仅在直接燃烧干燥时适用；测定交付条件已声明的气体体积和燃料组成，本行不含锅炉及氧化器燃料。 保留身份，但与背景m3的数量兼容性待审。记录供应方/背景参考量A、参考温度T、绝对压力P、干/湿组成与压缩因子Z，以及同基准表计条件和组分。核对真实交付/损耗门点，仅以实测/声明条件换算；Volume/m3属性不证明Nm3或标准条件。供应方或背景体积定义未知时链接未完成。
 
-- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：天然气，气态 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
 - 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
@@ -354,7 +354,7 @@ translation_status: aligned
 
 仅在使用燃料燃烧排放治理氧化器时适用；独立计量并绑定末端烟道测试，包括进口有机物的破坏。 保留身份，但与背景m3的数量兼容性待审。记录供应方/背景参考量A、参考温度T、绝对压力P、干/湿组成与压缩因子Z，以及同基准表计条件和组分。核对真实交付/损耗门点，仅以实测/声明条件换算；Volume/m3属性不证明Nm3或标准条件。供应方或背景体积定义未知时链接未完成。
 
-- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：天然气，气态 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
 - 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
@@ -1167,15 +1167,15 @@ translation_status: aligned
 
 将辅助天然气与干燥器及氧化器燃料分别计量。 保留身份，但与背景m3的数量兼容性待审。记录供应方/背景参考量A、参考温度T、绝对压力P、干/湿组成与压缩因子Z，以及同基准表计条件和组分。核对真实交付/损耗门点，仅以实测/声明条件换算；Volume/m3属性不证明Nm3或标准条件。供应方或背景体积定义未知时链接未完成。
 
-- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：天然气，气态 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
-- 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_energy_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉树皮燃料（`boiler_bark`）
@@ -1214,13 +1214,13 @@ translation_status: aligned
 
 - 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：净热值, 低位热值 `93a60a56-a3c8-11da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-11da-a746-0800200c9a66` / MJ
-- 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_energy_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_energy`
+- 采集协议：`cp_energy_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉补水（`boiler_water`）
@@ -1229,13 +1229,13 @@ translation_status: aligned
 
 - 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_water采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_water_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_water`
+- 采集协议：`cp_water_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 接收回流凝结水（`boiler_condensate`）
@@ -1244,13 +1244,13 @@ translation_status: aligned
 
 - 选定流：MDF间接加热回流蒸汽凝结水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_thermal采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_thermal_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_thermal`
+- 采集协议：`cp_thermal_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ##### 废物流
@@ -1267,13 +1267,13 @@ translation_status: aligned
 
 - 选定流：交付MDF蒸煮器的工艺蒸汽
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_thermal采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_thermal_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_thermal`
+- 采集协议：`cp_thermal_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 交付间接工艺热（`boiler_heat`）
@@ -1282,13 +1282,13 @@ translation_status: aligned
 
 - 选定流：交付MDF制造的间接工艺热
 - 流属性/单位：交付热计量基准未决；MJ；流属性及单位组UUID未决 / MJ
-- 数量规则：按cp_thermal采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_thermal_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_thermal`
+- 采集协议：`cp_thermal_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ##### 废物流
@@ -1299,13 +1299,13 @@ translation_status: aligned
 
 - 选定流：木料锅炉底灰
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_residues采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_residues_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_residues`
+- 采集协议：`cp_residues_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 木料锅炉捕集飞灰（`boiler_fly_ash`）
@@ -1314,13 +1314,13 @@ translation_status: aligned
 
 - 选定流：木料锅炉捕集飞灰
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_residues采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_residues_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_residues`
+- 采集协议：`cp_residues_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 送处理的木料锅炉排污水（`boiler_blowdown`）
@@ -1329,13 +1329,13 @@ translation_status: aligned
 
 - 选定流：送处理的木料锅炉排污水
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_residues采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_residues_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_residues`
+- 采集协议：`cp_residues_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ##### 基本流
@@ -1361,13 +1361,13 @@ translation_status: aligned
 
 - 选定流：二氧化碳（生物源） `08a91e70-3ddc-11dd-9c15-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：二氧化碳（化石源）（`boiler_co2fossil`）
@@ -1376,13 +1376,13 @@ translation_status: aligned
 
 - 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：一氧化碳（生物源）（`boiler_cobio`）
@@ -1391,13 +1391,13 @@ translation_status: aligned
 
 - 选定流：一氧化碳（生物源） `8a313a02-e251-11e6-bf01-fe55135034f3`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：一氧化碳（化石源）（`boiler_cofossil`）
@@ -1406,13 +1406,13 @@ translation_status: aligned
 
 - 选定流：一氧化碳（化石源） `08a91e70-3ddc-11dd-924e-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：甲烷 (生物源)（`boiler_ch4bio`）
@@ -1421,13 +1421,13 @@ translation_status: aligned
 
 - 选定流：甲烷 (生物源) `fe0acd60-3ddc-11dd-a8e8-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：甲烷 (化石源)（`boiler_ch4fossil`）
@@ -1436,13 +1436,13 @@ translation_status: aligned
 
 - 选定流：甲烷 (化石源) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：一氧化二氮（`boiler_n2o`）
@@ -1451,13 +1451,13 @@ translation_status: aligned
 
 - 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：氮氧化物（`boiler_nox`）
@@ -1466,13 +1466,13 @@ translation_status: aligned
 
 - 选定流：氮氧化物 `f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：二氧化硫（`boiler_so2`）
@@ -1481,13 +1481,13 @@ translation_status: aligned
 
 - 选定流：二氧化硫 `fe0acd60-3ddc-11dd-ac48-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：颗粒物 (PM2.5)（`boiler_pm25`）
@@ -1496,13 +1496,13 @@ translation_status: aligned
 
 - 选定流：颗粒物 (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：颗粒物 (PM2.5 - PM10)（`boiler_pmcoarse`）
@@ -1511,13 +1511,13 @@ translation_status: aligned
 
 - 选定流：颗粒物 (PM2.5 - PM10) `08a91e70-3ddc-11dd-9501-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ###### 锅炉空气排放：颗粒物（> PM10）（`boiler_pmover10`）
@@ -1526,13 +1526,13 @@ translation_status: aligned
 
 - 选定流：颗粒物（> PM10） `fe0acd60-3ddc-11dd-a70a-0050c2490048`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
-- 数量规则：按cp_air采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
+- 数量规则：按cp_air_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
 - 适用范围：场址特定 (`site_specific`)
 - 归一化基准：每 1 kg 参考流
 - 基准类型：过程输出 (`process_output`)
 - 证据类型：由采集计算 (`calculated_from_collection`)
-- 采集协议：`cp_air`
+- 采集协议：`cp_air_utilities`
 - 来源：`epa-wood-boiler-2022`; `corrim-mdf-2024`
 
 ## 7. 分配与共产品处理
@@ -1580,7 +1580,7 @@ translation_status: aligned
 | `pm_partition` | all particulate outputs | 相同烟道/测试覆盖且粒径累计相容时：PM2.5行=累计PM2.5；PM2.5–10行=累计PM10-累计PM2.5；>PM10行=总PM-累计PM10。检验非负性；可凝结与可过滤口径不同或分级不足时不可硬拆，保留未决。 | same-basis total PM; cumulative PM10; cumulative PM2.5; cp_air; cp_air_utilities | nonoverlapping particulate masses | `epa-mdf-2002`; `epa-wood-boiler-2022` |
 | `physical_reconciliation` | mdf-line; utilities | 对各阶段及公用能源，总质量和各实际元素采用期初库存+输入=期末库存+输出，包括C/H/O/N/S及有关无机元素。纳入实测燃烧/通风空气、氧/氮、真实燃料/配方组成、产品、残余物、全部气体物种、凝结水及库存。分子H2O及木材/树脂材料组分账则采用期初+输入+有证据的生成=期末+输出+有证据的消耗。化学项按真实配方、固化/燃烧条件及实测反应程度确定；UF/MUF产水、pMDI耗水/产CO2和燃烧/治理转化不是默认产率。交付与固化固体分开，排除上游合成，保留等量内部链接及生物源/化石源碳。未知组成/反应程度保留不确定性；声明残差及测量不确定性，不强制闭合或默认完全固化/燃烧。 | stage flows; stocks; actual elemental/species composition; reaction extents; cp_furnish; cp_recipe; cp_water; cp_thermal; cp_air; cp_fuel; cp_energy; cp_vapour; cp_water_utilities; cp_thermal_utilities; cp_air_utilities; cp_energy_utilities; cp_vapour_utilities | whole-mass/elemental conservation and reaction-aware species ledgers | `corrim-mdf-2024`; `epa-wood-boiler-2022`; `usda-wood-joining-2023`; `doe-condensing-economizer-2012` |
 | `vapour_source_reconciliation` | dryer_water-vapour, press_water-vapour, boiler_water-vapour | 采用emission_mass，以同步且状态相符的H2O浓度、湿烟气量及运行时间确定实际排出气态H2O。以实测原料/配方水、燃料水分、入口空气湿度/数量、蒸汽/凝结水、治理水、库存及实际固化/燃烧程度支持的来源生成/消耗核对。实测H2O总量已含化学反应水；来源分解仅为组分账，不增列排放。环境湿度透过量如需扣除，须有实测进出口覆盖及声明的核算约定，并保留总量。捕集烟气凝结水按真实去向记录，公用蒸汽/回流质量另列。共同烟道只计一次且有依据归属。未知来源份额或反应程度保留不确定性，不设为零或虚构产率补平。 | wet-stack H2O/flow/time; source records and reaction extents; cp_vapour; cp_recipe; cp_water; cp_fuel; cp_air; cp_thermal; cp_output; cp_vapour_utilities; cp_water_utilities; cp_air_utilities; cp_thermal_utilities; cp_energy; cp_energy_utilities | actual emitted H2O and supported source ledger | `usda-wood-joining-2023`; `doe-condensing-economizer-2012`; `epa-stack-moisture-method4`; `epa-wood-boiler-2022` |
-| `nox_compatibility` | dryer_nox, handling_nox, boiler_nox | 核对监测、LCI和所选LCIA映射对NOx的质量定义及NO/NO2覆盖。只有三者同基准才按cp_air生成总参数数量；不假定NO2等效或NO/NO2比例，排除N2O，不叠加分种；未证实则数量未决。 | monitoring mass definition; flow mass definition; LCIA mapping; cp_air; cp_air_utilities | compatible NOx quantity or explicit pending result | `epa-mdf-2002`; `epa-wood-boiler-2022` |
+| `nox_compatibility` | dryer_nox, handling_nox, boiler_nox | 核对监测、LCI和所选LCIA映射对NOx的质量定义及NO/NO2覆盖。只有三者同基准，才按实际排放源所属协议生成总参数数量：mdf_line干燥/搬运源采用cp_air，utilities/锅炉源采用cp_air_utilities；不假定NO2等效或NO/NO2比例，排除N2O，不叠加分种；未证实则数量未决。 | monitoring mass definition; flow mass definition; LCIA mapping; cp_air; cp_air_utilities | compatible NOx quantity or explicit pending result | `epa-mdf-2002`; `epa-wood-boiler-2022` |
 | complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求

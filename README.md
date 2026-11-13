@@ -26,16 +26,16 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-24
-lastReviewedCommit: a0c0cae8ed52a9e3e688d773fcc48159d9441845
-lastReviewedNote: "PCR #148: reviewed the provider-capacity repair and the separate no-JavaScript preload classification after an authenticated Chromium CSP-shaped failure. Only intentional disabled scripting with an exact declared regular export asset and absent page CSP may qualify; raw request evidence, native byte/name/hash checks and normal browser errors remain. Canonical data, dependency/runtime pins and all resource/time gates are unchanged. Bounded positive and genuine-failure fixtures are distinct from required fresh full source, sealed/browser, provider, publication and workspace qualification."
+lastReviewedAt: 2026-11-04
+lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
+lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
 ---
 
 # TianGong LCA PCR Library
 
 This repository stores TianGong LCA product category rules and data production methodology assets.
 
-Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The workspace's retained local directory is `tiangong-lca-pcr`; repository renaming does not change PCR identifiers, package names, or release history.
+Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The integration workspace's physical checkout directory is `pcr`; its retained submodule metadata name is `tiangong-lca-pcr`. Repository renaming does not change PCR identifiers, package names, or release history.
 
 PCR records are canonical methodology documents. Classification systems such as CPC, HS, ISIC, and NAICS are entry points that map to canonical PCR records; they do not own the PCR directory structure.
 
@@ -130,7 +130,8 @@ release qualification selects full mode, even with an empty product tag. See
 [CI qualification lanes](docs/typescript-engineering.md#ci-qualification-lanes)
 for allowed changes, evidence binding and complete-attempt retry requirements.
 The required `web-build` and `documentation` jobs separate the complete instrumented
-website export from product sealing without increasing either job limit. An exact
+website export from product sealing. These jobs and the full test shards now have
+120-minute job limits, increased from 60 minutes. An exact
 source/run/attempt-bound archive preserves all web bytes and build/SEO evidence;
 both lanes retain the same sealed-product and coverage obligations.
 All first-party implementation, scripts and tests use strict TypeScript/TSX; installed packages and browsers receive compiled JavaScript. The shared SEO checker remains Python. Read [TypeScript and test engineering](docs/typescript-engineering.md) for current
@@ -426,3 +427,8 @@ for setup, first publication and retries. Npm release does not approve PCR metho
 TianGong LCA code and authored methodology content are licensed under the
 [MIT License](LICENSE). Bundled dependencies and referenced third-party material
 retain their own licenses and notices.
+
+Material reusable method modules have a separate [source/package contract](docs/method-module-contract.md).
+Run `npm run module:check` for local conformance; export carries full bilingual
+source context and independently review-bound identities. This does not publish
+a PCR or qualify a product study.

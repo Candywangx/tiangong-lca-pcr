@@ -1,3 +1,6 @@
+import {createProviderMiddleware} from '../../middleware.ts';
+import {NAVIGATION_BINDING_FILE} from '../../packages/pcr-docs/lib/navigation-trees.ts';
+import {verifyProviderRuntimeExport,verifyProviderRuntimeSource,providerRuntimeSourceRoot,type ProviderRuntime} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {constants, closeSync, existsSync, fstatSync, lstatSync, mkdirSync, openSync, readFileSync, readdirSync, realpathSync, writeFileSync} from 'node:fs';
@@ -80,11 +83,20 @@ export function verifySiteExportAliases(root:string):ReturnType<typeof verifySta
 }
 export async function withSiteExportServer<T>(root:string,callback:(origin:string)=>Promise<T>):Promise<T> {
  const canonical=realpathSync(root),aliases=new Map(verifySiteExportAliases(canonical)?.pairs.map(pair=>[pair.source,pair])??[]);
- const server=createServer((request,response)=>{try{
+ const providerIdentity=readIdentityJson(canonical,'generated/version.json');assert.ok(object(providerIdentity)&&typeof providerIdentity.sourceCommit==='string');
+ const providerRuntime=verifyProviderRuntimeExport(canonical,providerIdentity.sourceCommit);
+ if(providerRuntime)verifyProviderRuntimeSource(providerRuntimeSourceRoot(import.meta.url),providerRuntime,providerIdentity.sourceCommit);
+ const providerMiddleware=createProviderMiddleware(providerRuntime?.schemaVersion===2?readIdentityJson(canonical,NAVIGATION_BINDING_FILE):undefined);
+ const server=createServer(async(request,response)=>{try{
   const raw=(request.url??'/').split('?')[0]!;const decoded=decodeURIComponent(raw);
   if(!decoded.startsWith('/')||decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(segment=>segment==='.'||segment==='..')||/%(?:2f|5c)/iu.test(raw)){response.writeHead(403);response.end('Forbidden');return;}
+  let providerPath:string|undefined,passed=false;
+  if(providerRuntime){const address=server.address();assert.ok(address&&typeof address==='object');const headers=new Headers();for(const [name,value] of Object.entries(request.headers))if(value!==undefined)headers.set(name,Array.isArray(value)?value.join(','):value);
+   const handled=await providerMiddleware({request:new Request(new URL(request.url??'/',`http://127.0.0.1:${address.port}`),{method:request.method??'GET',headers}),rewrite(target){providerPath=new URL(target).pathname;return new Response();},next(){passed=true;return new Response();}});
+   if(!passed&&providerPath===undefined){response.writeHead(handled.status,Object.fromEntries(handled.headers));response.end(request.method==='HEAD'?undefined:Buffer.from(await handled.arrayBuffer()));return;}
+  }
   const alias=aliases.get(raw);
-  let relative=(alias?decodeURIComponent(alias.target):decoded).slice(1);if(relative===''||decoded.endsWith('/'))relative+='index.html';else if(existsSync(path.join(canonical,relative))&&lstatSync(path.join(canonical,relative)).isDirectory())relative+='/index.html';
+  let relative=(providerPath?decodeURIComponent(providerPath):alias?decodeURIComponent(alias.target):decoded).slice(1);if(relative===''||(providerPath??decoded).endsWith('/'))relative+='index.html';else if(existsSync(path.join(canonical,relative))&&lstatSync(path.join(canonical,relative)).isDirectory())relative+='/index.html';
   const bytes=readRegular(canonical,relative);if(alias&&(bytes.length!==alias.bytes||hash(bytes)!==alias.sha256))failure('SITE_EXPORT_ALIASES','Alias target changed.');response.writeHead(200,{'content-type':mime[path.extname(relative)]??'application/octet-stream','cache-control':'no-store','content-length':bytes.length});response.end(request.method==='HEAD'?undefined:bytes);
  }catch(error){response.writeHead(error instanceof SiteBrowserError?403:404);response.end('Not found');}});
  await new Promise<void>((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
@@ -215,6 +227,12 @@ function observeSiteRequests(page:Page,context:{engine:SiteBrowserEngine;viewpor
  return {setPhase(value:string){phase=value;},stop(){page.off('request',started);page.off('response',response);page.off('requestfailed',failed);}};
 }
 interface BrowserEvidence {engine:string;engineVersion:string;viewport:string;route:SiteRoute;assertions:string[];errors:string[];ignoredPrefetchAborts:string[];requestFailures:CancelledRequest[];prefetchUrls:string[];screenshot:string;screenshots?:string[];diagnosticError?:string;search?:{query:string;hits:number;workerUrls:string[]};failure?:string}
+/** Apply the unchanged fatal-error policy to the complete observed case evidence. */
+export function assertSiteBrowserErrors(evidence:BrowserEvidence,consoleErrors:readonly {text:string;url:string}[]):void {
+ for(const request of evidence.requestFailures){if(isCancelledSitePrefetch(request,evidence.prefetchUrls))evidence.ignoredPrefetchAborts.push(request.url);else evidence.errors.push(`requestfailed: ${request.reason}: ${request.method} ${request.url}`);}
+ for(const error of consoleErrors){if(!(error.text.includes('net::ERR_ABORTED')&&evidence.ignoredPrefetchAborts.includes(error.url)))evidence.errors.push('console: '+error.text+' '+error.url);}
+ assert.deepEqual(evidence.errors,[],'Browser reported errors');
+}
 interface LanguagePreferenceEvidence {engine:SiteBrowserEngine;viewport:string;checks:string[];ignoredPrefetchAborts:string[];requestFailures:CancelledRequest[];prefetchUrls:string[]}
 function message(error:unknown){return error instanceof Error?error.message:String(error);}
 async function captureSiteEvidence(page:Page,report:string,file:string):Promise<string[]> {
@@ -282,7 +300,8 @@ async function openLanguageSelector(page:Page):Promise<void> {
  await page.waitForFunction(()=>Array.from(document.querySelectorAll<HTMLElement>('[data-pcr-language-trigger]')).some(button=>button.getBoundingClientRect().width>0));
  assert.ok(await clickVisible(),'Language selector must be visible');
 }
-async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evidence:BrowserEvidence,setPhase:(phase:string)=>void):Promise<void> {
+export async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evidence:BrowserEvidence,setPhase:(phase:string)=>void):Promise<void> {
+ const waitForCurrentRequests=currentNetworkIdle(page);
  const counterpart=gettingStartedGuide(route.locale==='zh'?'en':'zh');
  setPhase('guide-counterpart-entry');await page.goto(origin+route.path+'?from=getting-started',{waitUntil:'networkidle'});
  setPhase('guide-counterpart-select');await openLanguageSelector(page);
@@ -297,6 +316,7 @@ async function checkGuideCounterpart(page:Page,origin:string,route:SiteRoute,evi
  await page.getByRole('button',{name:counterpart.locale==='zh'?'复制 Agent 提示词':'Copy Agent prompt',exact:true}).waitFor({state:'visible'});
  assert.ok((await page.locator('#getting-started-content pre code').first().textContent())?.includes(counterpart.rawUrl));
  evidence.assertions.push('language selector loads HTTP 200 HTML document for authored guide counterpart and preserves query');
+ await waitForCurrentRequests();
  setPhase('guide-counterpart-return');await page.goto(origin+route.path,{waitUntil:'networkidle'});
 }
 async function settleLanguage(page:Page,language:string):Promise<void> {
@@ -334,7 +354,7 @@ export function browserLanguageScenarios(languageCodes:Readonly<Record<string,st
   return {...scenario,expected:route==='zh'?'/':`/${route}/`,htmlLanguage:language};
  });
 }
-/** SPA navigation can retain Playwright's old networkidle lifecycle. Observe current requests. */
+/** Lifecycle idle can precede later resource work. Observe current requests before leaving. */
 function currentNetworkIdle(page:Page):()=>Promise<void> {
  const active=new Set<Request>();let lastActivity=Date.now();
  page.on('request',request=>{active.add(request);lastActivity=Date.now();});
@@ -346,8 +366,8 @@ function currentNetworkIdle(page:Page):()=>Promise<void> {
   while(active.size>0||Date.now()-lastActivity<500){assert.ok(Date.now()<deadline,'Current browser requests did not settle');await new Promise<void>(resolve=>setTimeout(resolve,50));}
  };
 }
-async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{width:number;height:number},documentPath:string,languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
- const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
+export async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{width:number;height:number},documentPath:string,languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
+ const {checks}=evidence;
  for(const scenario of browserLanguageScenarios(languageCodes)){
   const context=await browser.newContext({viewport,locale:scenario.languages[0]??languageCodes.en!});
   try {
@@ -388,6 +408,11 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
   await selectLanguage('English');assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),'en');
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');checks.push('manual English selection persists for next neutral entry');
  }finally{await context.close();}
+ await checkBlockedStorageLanguage(browser,origin,viewport,languageCodes,evidence);
+}
+/** Observe the complete denied-storage scenario, including work started by the selector. */
+export async function checkBlockedStorageLanguage(browser:Browser,origin:string,viewport:{width:number;height:number},languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
+ const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
  const blocked=await browser.newContext({viewport,locale:'en-US'});
  try {
   await blocked.addInitScript(()=>{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>{throw new Error('Storage blocked for qualification');}});});
@@ -397,29 +422,66 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');
   await settleLanguage(page,languageCodes.en!);
   trace.setPhase('blocked-storage-select');await openLanguageSelector(page);
+  // Opening the selector can expose links and start prefetch work after lifecycle
+  // idle. Finish that work before intentionally replacing the English document.
+  await waitForCurrentRequests();
   await page.getByRole('button',{name:'中文',exact:true}).last().click();await page.waitForURL(origin+'/zh/');await settleLanguage(page,languageCodes.zh!);await waitForCurrentRequests();trace.setPhase('blocked-storage-reload');await page.reload({waitUntil:'networkidle'});
   for(const request of failedRequests)if(isCancelledSitePrefetch(request,prefetchUrls))ignoredPrefetchAborts.push(request.url);
   assert.equal(new URL(page.url()).pathname,'/zh/');assert.deepEqual(errors,[]);assert.deepEqual(failedRequests.filter(request=>!isCancelledSitePrefetch(request,prefetchUrls)),[]);checks.push('blocked storage permits fallback, manual Chinese and localized reload');
   }finally{trace.stop();}
  }finally{await blocked.close();}
 }
+interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
+export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserEngine,origin:string,proof:ProviderRuntime,report:string):Promise<ChapterCompatibilityEvidence[]>{
+ const results:ChapterCompatibilityEvidence[]=[];
+ for(const language of ['en','zh']){
+  const row=proof.routes.find(route=>route.from.startsWith('/'+language+'/'));assert.ok(row,'Published compatibility requires both languages');
+  for(const fragment of ['', '#'+encodeURIComponent(row.anchor)]){
+   const context=await browser.newContext({viewport:{width:1440,height:1000},locale:language==='zh'?'zh-CN':'en-US'}),page=await context.newPage();const settled=currentNetworkIdle(page);
+   const evidence:BrowserEvidence={engine,engineVersion:browser.version(),viewport:'desktop',route:{kind:'pcr',locale:language==='zh'?'zh':'en',path:row.from},assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${engine}-chapter-${language}-${fragment?'fragment':'default'}.png`};
+   const consoleErrors:{text:string;url:string}[]=[],documents:string[]=[];const trace=observeSiteRequests(page,{engine,viewport:'desktop'},evidence.requestFailures,evidence.prefetchUrls);
+   page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});page.on('response',response=>{if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});page.on('request',request=>{if(request.isNavigationRequest()&&request.resourceType()==='document'&&request.frame()===page.mainFrame())documents.push(request.url());});
+   const query:string='?compat=%E7%AB%A0%E8%8A%82&repeat=a+b&repeat=%2F&empty=';const expected:string=origin+row.to+query+(fragment||'#'+encodeURIComponent(row.anchor));
+   try{
+    trace.setPhase('published-chapter-entry');const response=await page.goto(origin+row.from+query+fragment,{waitUntil:'networkidle'});assert.equal(response?.status(),200);await page.waitForURL(expected);await settled();
+    assert.equal(documents.length,1,'Normalizing a rewritten chapter must not load another document');assert.equal(await page.locator('html').getAttribute('lang'),language==='zh'?'zh-CN':'en-US');assert.equal(new URL(page.url()).search,query);
+    await page.waitForFunction(anchor=>{const element=document.getElementById(anchor);if(!element)return false;const box=element.getBoundingClientRect();return box.bottom>0&&box.top<innerHeight;},row.anchor);
+    evidence.assertions.push('exact query and fragment/default location','one document request','published chapter anchor visible');await settled();
+    trace.setPhase('published-chapter-reload');await page.reload({waitUntil:'networkidle'});assert.equal(page.url(),expected);await settled();
+    trace.setPhase('published-chapter-navigation');const catalog='/'+language+'/docs/pcr/';await page.locator('a[href="'+catalog+'"]').filter({visible:true}).first().click();await page.waitForURL(origin+catalog);await settled();
+    trace.setPhase('published-chapter-back');await page.goBack({waitUntil:'networkidle'});await page.waitForURL(expected);await settled();trace.setPhase('published-chapter-forward');await page.goForward({waitUntil:'networkidle'});await page.waitForURL(origin+catalog);await settled();
+    evidence.assertions.push('reload and actual catalog navigation','back and forward retain canonical path/query/fragment');assertSiteBrowserErrors(evidence,consoleErrors);await page.screenshot({path:path.join(report,evidence.screenshot)});
+    results.push({javascriptEnabled:true,engine,language,oldPath:row.from,target:row.to,fragment,checks:evidence.assertions,documentRequests:documents,screenshot:evidence.screenshot});
+   }catch(error){writeFileSync(path.join(report,evidence.screenshot+'.json'),JSON.stringify({source:proof.sourceCommit,evidence,consoleErrors,documentRequests:documents,error:message(error)},null,2)+'\n');try{await page.screenshot({path:path.join(report,evidence.screenshot)});}catch{}throw error;}finally{trace.stop();await context.close();}
+  }
+  const native=await browser.newContext({javaScriptEnabled:false,locale:language==='zh'?'zh-CN':'en-US'});
+  try{const page=await native.newPage(),response=await page.goto(origin+row.from+'?native=1#'+encodeURIComponent(row.anchor));assert.equal(response?.status(),200);assert.equal(new URL(page.url()).pathname,row.from);assert.equal(new URL(page.url()).search,'?native=1');assert.ok(await page.evaluate(anchor=>!!document.getElementById(anchor),row.anchor),'Native rewritten content retains the published anchor');const screenshot=`${engine}-chapter-${language}-native.png`;await page.screenshot({path:path.join(report,screenshot)});results.push({javascriptEnabled:false,engine,language,oldPath:row.from,target:row.to,fragment:'#'+encodeURIComponent(row.anchor),checks:['JavaScript disabled: rewritten HTML and published explicit fragment available','query and original document URL retained; no fragment-free automatic scroll claimed'],documentRequests:[response!.url()],screenshot});}finally{await native.close();}
+ }
+ return results;
+}
+
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.64.1')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.64.1.');
  const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
+ const chapterCompatibility:ChapterCompatibilityEvidence[]=[];
+ const publishedChapterHttp:{from:string;to:string;sha256:string}[]=[];
  const languagePreferences:LanguagePreferenceEvidence[]=[];let nativeSamples:NativeDownload[]=[],inlineSamples:InlineDownload[]=[];
  const nativeDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[];
  const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
  try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
+  const boundSource=exported.source.sourceCommit;assert.ok(typeof boundSource==='string');const boundProvider=verifyProviderRuntimeExport(exported.root,boundSource);
+  if(boundProvider)for(const route of boundProvider.routes){const response=await fetch(origin+route.from+'?compat=a+b&compat=%2F');assert.equal(response.status,200);const body=Buffer.from(await response.arrayBuffer()),expected=readRegular(exported.root,decodeURIComponent(route.to.slice(1))+'index.html');assert.ok(body.equals(expected),'Rewritten published document differs from target: '+route.from);publishedChapterHttp.push({from:route.from,to:route.to,sha256:hash(body)});}
   for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
-   try {for(const selected of [...nativeSamples,...inlineSamples.filter(item=>!nativeSamples.some(native=>native.name===item.name&&native.url===item.url&&native.route===item.route)).map(item=>({...item,transport:'inline' as const}))]){const evidence={engine:name,...await checkNativeDownload(browser,name,origin,selected,exported.root)};if(nativeSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route))nativeDownloads.push(evidence);if(inlineSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route)){inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}}
+   try {const chapterSource=exported.source.sourceCommit;assert.ok(typeof chapterSource==='string');const chapterProof=verifyProviderRuntimeExport(exported.root,chapterSource);if(chapterProof)chapterCompatibility.push(...await checkPublishedChapters(browser,name,origin,chapterProof,report));
+    for(const selected of [...nativeSamples,...inlineSamples.filter(item=>!nativeSamples.some(native=>native.name===item.name&&native.url===item.url&&native.route===item.route)).map(item=>({...item,transport:'inline' as const}))]){const evidence={engine:name,...await checkNativeDownload(browser,name,origin,selected,exported.root)};if(nativeSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route))nativeDownloads.push(evidence);if(inlineSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route)){inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}}
     for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
     try {for(const route of exported.routes){const page=await context.newPage();const evidence:BrowserEvidence={engine:name,engineVersion:browser.version(),viewport,route,assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${name}-${viewport}-${route.locale}-${route.kind}.png`};results.push(evidence);
      const consoleErrors:{text:string;url:string}[]=[],{requestFailures:failedRequests,prefetchUrls}=evidence;
      const trace=observeSiteRequests(page,{engine:name,viewport},failedRequests,prefetchUrls);
      page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});
      page.on('response',response=>{if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});
-     try {await checkPage(page,origin,route,viewport,evidence,exported);evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);if(route.kind==='home'){trace.setPhase('home-guide-navigation');const guide=gettingStartedGuide(route.locale==='default'?'zh':route.locale);await page.locator('.pcr-hero-actions a[href="'+guide.url+'"]').click();await page.locator('#getting-started-content').waitFor();assert.equal(new URL(page.url()).pathname,guide.url);evidence.assertions.push('home entry navigates to corresponding documentation language');}if(route.kind==='guide')await checkGuideCounterpart(page,origin,route,evidence,trace.setPhase);if(route.kind==='pcr'||route.kind==='guide'){trace.setPhase('search');await checkSearch(page,route,evidence);}trace.setPhase('request-error-check');for(const request of failedRequests){if(isCancelledSitePrefetch(request,prefetchUrls))evidence.ignoredPrefetchAborts.push(request.url);else evidence.errors.push(`requestfailed: ${request.reason}: ${request.method} ${request.url}`);}for(const error of consoleErrors){if(!(error.text.includes('net::ERR_ABORTED')&&evidence.ignoredPrefetchAborts.includes(error.url)))evidence.errors.push('console: '+error.text+' '+error.url);}assert.deepEqual(evidence.errors,[],'Browser reported errors');}
+     try {await checkPage(page,origin,route,viewport,evidence,exported);evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);if(route.kind==='home'){trace.setPhase('home-guide-navigation');const guide=gettingStartedGuide(route.locale==='default'?'zh':route.locale);await page.locator('.pcr-hero-actions a[href="'+guide.url+'"]').click();await page.locator('#getting-started-content').waitFor();assert.equal(new URL(page.url()).pathname,guide.url);evidence.assertions.push('home entry navigates to corresponding documentation language');}if(route.kind==='guide')await checkGuideCounterpart(page,origin,route,evidence,trace.setPhase);if(route.kind==='pcr'||route.kind==='guide'){trace.setPhase('search');await checkSearch(page,route,evidence);}trace.setPhase('request-error-check');assertSiteBrowserErrors(evidence,consoleErrors);}
      catch(error){evidence.failure=message(error);try{writeFileSync(path.join(report,evidence.screenshot+'.html'),await page.content());}catch(diagnostic){evidence.diagnosticError=message(diagnostic);}}
      finally {try{if(!existsSync(path.join(report,evidence.screenshot)))evidence.screenshots=await captureSiteEvidence(page,report,evidence.screenshot);}catch(diagnostic){evidence.diagnosticError=message(diagnostic);if(!evidence.failure)throw diagnostic;}finally{trace.stop();await page.close();}}
     }}finally{await context.close();}
@@ -429,7 +491,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
     await checkLanguagePreferences(browser,origin,size,documentPath,languageCodes,evidence);
    }}finally{await browser.close();}
   }
- });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;assert.equal(nativeDownloads.length,9,'Three engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
+ });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;if(publishedChapterHttp.length)assert.equal(chapterCompatibility.length,18,'All engines must check bilingual chapter fragments/defaults and native access');assert.equal(nativeDownloads.length,9,'Three engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
  }catch(error){receipt.status='failed';receipt.failure=message(error);throw error;}finally{receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'report.json'),JSON.stringify(receipt,null,2)+'\n');}
 }
 export async function siteBrowserMain(args:readonly string[]){const options=parseSiteBrowserArguments(args);if(options==='help'){process.stdout.write('Usage: node scripts/engineering/site-browser.ts --root <existing export> --report <new evidence directory>\n');return;}const receipt=await qualifySiteBrowser(options);process.stdout.write(JSON.stringify({status:receipt.status,sourceCommit:receipt.source.sourceCommit,report:path.join(options.report,'report.json'),cases:receipt.results.length})+'\n');}
