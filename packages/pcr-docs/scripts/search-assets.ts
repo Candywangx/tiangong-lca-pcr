@@ -1,3 +1,4 @@
+import {decodeBrotliSearchPack} from "./search-brotli.ts";
 import fs from "node:fs";
 import path from "node:path";
 import {gzipSync} from "node:zlib";
@@ -20,7 +21,7 @@ export async function verifySearchAssets(out:string, sourceCommit:string, report
   for(const file of manifest.files){
    const bytes=fs.readFileSync(path.join(out,file.url));
    if(gzipSync(bytes,{level:9}).length!==file.gzipBytes)throw new Error("Search physical gzip identity mismatch");
-   const shards=await unpackSearchFile(manifest,file,bytes,sha256);
+   const shards=await unpackSearchFile(manifest,file,bytes,sha256,decodeBrotliSearchPack);
    for(const shard of shards){
     if(!Array.isArray(shard.records)||!shard.records.every(value=>isUnknownRecord(value)&&typeof value.id==="string"&&value.type==="page"&&typeof value.url==="string"&&typeof value.content==="string"&&typeof value.description==="string"&&(value.breadcrumbs===undefined||Array.isArray(value.breadcrumbs)&&value.breadcrumbs.every((item:unknown)=>typeof item==="string"))))throw new Error("Invalid search records");
     const entries=decodeSearchEntries(shard.entries,shard.sparseMaps,4,shard.scoreMasks,shard.postingDeltas,shard.columnarMaps,shard.joinedTerms,undefined,shard.dictionaryTerms);

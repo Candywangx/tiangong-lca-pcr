@@ -1,3 +1,4 @@
+import {decodeBrotliSearchPack,encodeBrotliSearchPack} from "./search-brotli.ts";
 // Run after docs:build; an explicit generated-assets root also permits search-only auditing.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -36,7 +37,7 @@ for (const language of ['en-US', 'zh-CN']) {
   const manifestBytes = fs.readFileSync(path.join(exportRoot,'generated/search',language,'manifest.json'));
   const manifest: unknown = JSON.parse(manifestBytes.toString('utf8'));
   assert.ok(isUnknownRecord(manifest));
-  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8||manifest.schemaVersion===9);
+  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8||manifest.schemaVersion===9||manifest.schemaVersion===10);
   let baselineV5: {rawBytes:number;gzipBytes:number}|undefined, baselineV6: {rawBytes:number;gzipBytes:number}|undefined, baselineV7: {rawBytes:number;gzipBytes:number}|undefined;
   const dictionary = manifest.termDictionary === undefined ? undefined : readSearchTermDictionary(manifest.termDictionary);
   const physical = new Map<string, PhysicalPack>();
@@ -48,14 +49,20 @@ for (const language of ['en-US', 'zh-CN']) {
     const baselineFiles=[], baselineFiles6=[], baselineFiles7=[];let baselineRaw=0,baselineGzip=0,baselineRaw6=0,baselineGzip6=0,baselineRaw7=0,baselineGzip7=0;
     for (const file of parsed.files) {
       const bytes = fs.readFileSync(path.join(exportRoot, file.url));
-      const members = await unpackSearchFile(parsed, file, bytes, bytes => 'sha256:' + hash(bytes));
-      const data: unknown = JSON.parse(bytes.toString('utf8'));
-      assert.ok(isUnknownRecord(data) && Array.isArray(data.dictionary));
-      dictionaryTerms += data.dictionary.length;
-      const canonicalPack = packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,parsed.schemaVersion);
-      const physicalPack = bytes.toString('utf8');
-      assert.ok(physicalPack === canonicalPack || (parsed.schemaVersion === 7 || parsed.schemaVersion === 8 || parsed.schemaVersion === 9) && physicalPack === escapeSearchDictionary(canonicalPack),
-        'Physical search bytes must equal the canonical encoding or its exact dictionary-only escape variant');
+      const members = await unpackSearchFile(parsed, file, bytes, bytes => 'sha256:' + hash(bytes),decodeBrotliSearchPack);
+      let physicalPack=bytes.toString('utf8');
+      const envelope:unknown=JSON.parse(physicalPack);
+      let innerVersion=parsed.schemaVersion;
+      if(innerVersion===10){
+        assert.ok(isUnknownRecord(envelope)&&(envelope.innerVersion===7||envelope.innerVersion===8||envelope.innerVersion===9)&&typeof envelope.data==='string'&&typeof envelope.innerBytes==='number');
+        physicalPack=Buffer.from(decodeBrotliSearchPack(Buffer.from(envelope.data,'base64'),envelope.innerBytes)).toString('utf8');
+        innerVersion=envelope.innerVersion;
+        assert.equal(bytes.toString('utf8'),encodeBrotliSearchPack(physicalPack,innerVersion));
+      }
+      const data:unknown=JSON.parse(physicalPack);
+      assert.ok(isUnknownRecord(data)&&Array.isArray(data.dictionary));dictionaryTerms+=data.dictionary.length;
+      const canonicalPack=packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,innerVersion);
+      assert.ok(physicalPack===canonicalPack||(innerVersion===7||innerVersion===8||innerVersion===9)&&physicalPack===escapeSearchDictionary(canonicalPack),'Physical search bytes must restore the canonical encoding or its exact dictionary-only escape variant');
       const baseline=Buffer.from(packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,5));
       const oldFile={...file,bytes:baseline.length,gzipBytes:gzipSync(baseline,{level:9}).length,sha256:"sha256:"+hash(baseline)};
       assert.deepEqual(await unpackSearchFile({...parsed,schemaVersion:5},oldFile,baseline,bytes=>"sha256:"+hash(bytes)),members);

@@ -1,3 +1,5 @@
+import {readFileSync} from "node:fs";
+import {encodeBrotliSearchPack,decodeBrotliSearchPack} from "../search-brotli.ts";
 import assert from "node:assert/strict";
 import path from "node:path";
 import {pathToFileURL} from "node:url";
@@ -11,16 +13,18 @@ import type {SearchResult} from "../../lib/types.ts";
 const output=process.argv[2],scenario=process.argv[3];assert.ok(output&&scenario);
 const language=scenario==="chinese"?"zh-CN":"en-US";
 const root=`/generated/search/${language}/`,sourceCommit="a".repeat(40);
-const requestedVersion=Number(process.argv[4]??6);assert.ok(requestedVersion===5||requestedVersion===6||requestedVersion===7||requestedVersion===8||requestedVersion===9);
-const version:5|6|7|8|9=requestedVersion;
+const requestedVersion=Number(process.argv[4]??6);assert.ok(requestedVersion===5||requestedVersion===6||requestedVersion===7||requestedVersion===8||requestedVersion===9||requestedVersion===10);
+const version:5|6|7|8|9|10=requestedVersion;
+const makePack=(wires:string[])=>{const packed=packSearchShards(wires,sourceCommit,language,0,version===10?9:version);return version===10?encodeBrotliSearchPack(packed,9):packed;};
 const digest=(bytes:Uint8Array)=>"sha256:"+createHash("sha256").update(bytes).digest("hex");
+let decoderFailures=scenario==="decoder-retry"?1:0;
 const responses=new Map<string,string>(),requests:string[]=[],imported:[string,string][]=[];
 type Reply={id?:number;results?:SearchResult[];error?:string};
 const replies:Reply[]=[];
 const scope:{onmessage?:(event:MessageEvent<unknown>)=>Promise<void>;postMessage:(reply:Reply)=>void}={postMessage:reply=>{replies.push(reply);}};
 Reflect.set(globalThis,"self",scope);
 let release:(()=>void)|undefined,gate:Promise<void>|undefined;
-Reflect.set(globalThis,"fetch",async(url:string)=>{requests.push(url);if(gate&&url.endsWith("manifest.json"))await gate;const body=responses.get(url);return new Response(body??"",{status:body===undefined?404:200});});
+Reflect.set(globalThis,"fetch",async(input:string|URL)=>{const url=String(input);if(url.endsWith("brotli_dec_wasm_bg.wasm")){if(decoderFailures-->0)return new Response("",{status:503});return new Response(readFileSync(new URL(url)));}requests.push(url);if(gate&&url.endsWith("manifest.json"))await gate;const body=responses.get(url);return new Response(body??"",{status:body===undefined?404:200});});
 const engine:unknown=await import(pathToFileURL(path.join(output,"search-engine.mjs")).href);
 assert.ok(engine&&typeof engine==="object"&&"Index"in engine&&typeof engine.Index==="function");
 const prototype=engine.Index.prototype as {import:(key:string,payload:string)=>void},original=prototype.import;
@@ -35,7 +39,7 @@ async function wire(records:SearchResult[]):Promise<string>{
 }
 async function install(groups:SearchResult[][]){
  nativeEntries.length=0;const wires=await Promise.all(groups.map(wire));
- const payload=packSearchShards(wires,sourceCommit,language,0,version),bytes=searchUtf8(payload);
+ const payload=makePack(wires),bytes=searchUtf8(payload);
  if((version===7||version===8)&&scenario==="channels"){
   const packed:unknown=JSON.parse(payload);assert.ok(packed&&typeof packed==="object"&&"numericColumns"in packed&&Array.isArray(packed.numericColumns)&&Array.isArray(packed.numericColumns[0])&&packed.numericColumns[0].length>0,"real FlexSearch cutoff corpus must exercise numeric channels");
   assert.equal(packed.numericColumns.length,version===8?5:4);
@@ -64,16 +68,28 @@ assert.equal(requests.length,0);
 let sequence=0;
 async function query():Promise<Reply>{assert.ok(scope.onmessage);await scope.onmessage(new MessageEvent("message",{data:{id:++sequence,query:language==="zh-CN"?"仓储":"wheat",language}}));return replies.at(-1)!;}
 function valid(reply:Reply){assert.equal(reply.error,undefined);assert.ok(reply.results);return reply.results;}
-if(scenario==="chinese"){const result=valid(await query());assert.equal(result.length,2);assert.equal(result.find(record=>record.url==="/运输/仓储")!.description,"完整中文边界😀");assert.deepEqual(imported,nativeEntries);}
+if(scenario==="decoder-retry"){
+ const failed=await query();assert.ok(failed.error);assert.equal(failed.results,undefined);assert.equal(imported.length,0);assert.equal(valid(await query()).length,2);
+}else if(scenario.startsWith("brotli-")){
+ const manifest=JSON.parse(responses.get(root+"manifest.json")!) as SearchManifest,originalManifest=JSON.stringify(manifest),payload=responses.get(root+"pack-000.json")!;
+ const envelope=JSON.parse(payload) as {data:string;innerBytes:number};
+ if(scenario==="brotli-overflow")envelope.innerBytes=1;
+ if(scenario==="brotli-truncated")envelope.data=envelope.data.slice(0,-4);
+ if(scenario==="brotli-trailing")envelope.data=Buffer.concat([Buffer.from(envelope.data,"base64"),Buffer.from([0])]).toString("base64");
+ const changed=JSON.stringify(envelope),file=manifest.files[0]!;file.bytes=searchUtf8(changed).length;file.sha256=digest(searchUtf8(changed));file.gzipBytes=gzipSync(changed,{level:9}).length;
+ responses.set(root+"manifest.json",JSON.stringify(manifest));responses.set(root+"pack-000.json",changed);
+ const failed=await query();assert.ok(failed.error);assert.equal(failed.results,undefined);assert.equal(imported.length,0);
+ responses.set(root+"manifest.json",originalManifest);responses.set(root+"pack-000.json",payload);assert.equal(valid(await query()).length,2);
+}else if(scenario==="chinese"){const result=valid(await query());assert.equal(result.length,2);assert.equal(result.find(record=>record.url==="/运输/仓储")!.description,"完整中文边界😀");assert.deepEqual(imported,nativeEntries);}
 else if(scenario==="cutoff"||scenario==="channels"){const result=valid(await query());assert.equal(result.length,30);assert.equal(result[0]!.url,"/exact");assert.deepEqual(imported,nativeEntries);}
 else if(scenario==="duplicates"){const result=valid(await query());assert.equal(result.length,3);assert.equal(result.find(record=>record.url==="/same")!.description,"first full record");assert.ok(result.some(record=>record.url==="/first"));assert.ok(result.some(record=>record.url==="/second"));assert.deepEqual(imported,nativeEntries);}
 else if(scenario==="late-retry"||scenario==="late-import-retry"||scenario==="identity"){
  const manifest=JSON.parse(responses.get(root+"manifest.json")!) as SearchManifest;const originalManifest=JSON.stringify(manifest),payload=responses.get(root+"pack-000.json")!;
  if(scenario==="late-retry")manifest.files[0]!.logicalShards[1]!.wireSha256="sha256:"+"0".repeat(64);
  else if(scenario==="late-import-retry"){
-  const restored=await unpackSearchFile(manifest,manifest.files[0]!,searchUtf8(payload),digest);
+  const restored=await unpackSearchFile(manifest,manifest.files[0]!,searchUtf8(payload),digest,decodeBrotliSearchPack);
   const late=restored[1]!;late.entries={"1.map":[null]};late.sparseMaps=[];delete late.columnarMaps;
-  const wires=restored.map(value=>JSON.stringify(value)),changed=packSearchShards(wires,sourceCommit,language,0,version),file=manifest.files[0]!;
+  const wires=restored.map(value=>JSON.stringify(value)),changed=makePack(wires),file=manifest.files[0]!;
   file.bytes=searchUtf8(changed).length;file.sha256=digest(searchUtf8(changed));file.gzipBytes=gzipSync(changed,{level:9}).length;
   file.logicalShards=wires.map((wire,i)=>({wireBytes:searchUtf8(wire).length,wireSha256:digest(searchUtf8(wire)),records:(restored[i]!.records as unknown[]).length}));responses.set(root+"pack-000.json",changed);
  }else responses.set(root+"pack-000.json",payload+" ");

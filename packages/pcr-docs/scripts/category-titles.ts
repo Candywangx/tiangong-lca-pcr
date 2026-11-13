@@ -1,5 +1,7 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
+  "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a": "批发零售、住宿餐饮、运输及公用事业配送服务",
+  "wholesale-trade-services-not-on-a-fee-or-contract-basis": "非按收费或合同提供的批发贸易服务",
   "chemicals": "化学品",
   "pharmaceutical-ingredients": "药用成分",
   "rubber-and-plastics-products": "橡胶和塑料制品",
@@ -22,8 +24,6 @@ const zh: Readonly<Record<string,string>> = {
   "design-assets": "设计资产",
   "digital-content": "数字内容",
   "digital-original-assets": "数字原作资产",
-  "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a":
-    "批发零售、住宿、餐饮、运输及电力、燃气和水配送服务",
   "geological-information-assets": "地质信息资产",
   "metal-ores": "金属矿石",
   "natural-water": "天然水",

@@ -1,3 +1,4 @@
+import {decodeBrotliSearchPack} from "./search-brotli.ts";
 import {readSearchManifest,unpackSearchFile} from "../lib/search-pack.ts";
 import {parseGenerationReport} from "./generation-report.ts";
 import {verifySearchAssets} from "./search-assets.ts";
@@ -228,12 +229,12 @@ test("real generator preserves multilingual released snapshots and excludes open
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const search: unknown = JSON.parse(fs.readFileSync(path.join(output, "public/generated/search", language, "manifest.json"), "utf8"));
       assert.ok(isUnknownRecord(search));
-      assert.ok(search.schemaVersion===7||search.schemaVersion===8||search.schemaVersion===9, "physical packs preserve independent v4 logical indexes");
+      assert.ok(search.schemaVersion===7||search.schemaVersion===8||search.schemaVersion===9||search.schemaVersion===10, "physical packs preserve independent v4 logical indexes");
       assert.equal(search.language, language);
       const packed=readSearchManifest(search,language);
       assert.ok(packed.files.length > 0);
       for(const file of packed.files){
-       const members=await unpackSearchFile(packed,file,fs.readFileSync(path.join(output,"public",file.url)),hash);
+       const members=await unpackSearchFile(packed,file,fs.readFileSync(path.join(output,"public",file.url)),hash,decodeBrotliSearchPack);
        for(const data of members){
         const index = new Index({tokenize: "strict", encode: (value: unknown) => searchTerms(value, language)});
         for (const [key, payload] of Object.entries(decodeSearchEntries(data.entries, data.sparseMaps, 4, data.scoreMasks, data.postingDeltas, data.columnarMaps))) index.import(key, JSON.stringify(payload));
