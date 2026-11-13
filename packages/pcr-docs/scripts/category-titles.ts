@@ -72,6 +72,7 @@ const zh: Readonly<Record<string,string>> = {
     "广播、电视和通信设备",
   "research-and-development-services": "研发服务",
   "special-purpose-machinery": "专用机械",
+  "supporting-transport-services": "运输支持服务",
   "telecommunications-broadcasting-and-information-supply-services":
     "电信、广播和信息提供服务",
   "textile-articles-other-than-apparel": "服装以外的纺织制品",

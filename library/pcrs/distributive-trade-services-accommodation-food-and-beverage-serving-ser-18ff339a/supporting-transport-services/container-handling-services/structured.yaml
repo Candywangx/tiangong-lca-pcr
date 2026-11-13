@@ -1,10 +1,947 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67110"
-  title: "Container handling services"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.container-handling-services"
+  classification_refs: "CPC 3.0 67110; exact"
+  covered_products: "Containerized cargo terminal handling across transport modes; each dataset fixes box configuration, loaded state and conditioning requirement"
+  excluded_products: "Line-haul; non-containerized cargo; storage service outside the cycle; container/goods production"
+  representative_product: "One loaded 20-foot dry-container transfer from inbound road chassis through the terminal yard to an outbound rail wagon"
+  production_route: "Accept custody → actual lifts and internal positioning → verify and complete outbound handover"
+  market_state: "Completed terminal handling service, with identifiable container custody and activity records"
+functional_unit:
+  what: "Transfer one identified container of a specified type, length, loaded state and conditioning requirement across a declared terminal handling cycle"
+  how_much: "One completed container cycle; record actual gross mass and every internal move"
+  how_well: "Meet the actual contracted custody, safety, damage and delivery requirements, with recorded completion; no invented performance grade"
+  how_long_or_cycle: "From acceptance at the declared start interface to completed handover at the declared end interface, including retries, intermediate dwell and rehandles within that stage"
+  reference_flow_link: "accepted_cycle"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual lifting, internal tractor moves, retries, standby, relevant yard lighting/control and attributable maintenance through the recorded end-interface handover. Select the real equipment route rather than assuming that every terminal uses diesel cranes."
+      source_ids:
+        - epa-che
+    - rule_id: boundary_custody
+      applies_to: "foreground_system_boundary"
+      rule: "Carry the identities and actual gross mass of goods/container through the activity ledger; do not import their full manufacture into a handling service or create duplicate goods outputs. Separate external haulage and contracted storage."
+      source_ids:
+        - un-cpc-container
+    - rule_id: boundary_assets
+      applies_to: "foreground_system_boundary"
+      rule: "Screen equipment manufacture, yard pavement construction/renewal and terminal support; add one specific exchange for each other actual asset or utility. Disclose upstream exclusions; absent evidence is not a zero burden."
+      source_ids: []
+    - rule_id: boundary_releases
+      applies_to: "foreground_system_boundary"
+      rule: "Screen each actual fuel, pollutant species, oil leak, maintenance waste and washwater; keep emissions to air, waste sent to treatment and upstream electricity emissions separate. A NOx total requires a reviewed species treatment and cannot populate both NO and NO2 rows."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Container is accepted at the defined start interface (vessel, vehicle or identified stack position) with existing goods, container and installed terminal; upstream resources and assets are not assumed burden-free"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "The specified container handling cycle only; no automatic extension to freight transport or storage"
+  recursive_input_rule: "Subcontracted handling within the same cycle enters once as its defined service share with upstream inventory; remove the overlapping owned energy/equipment operations"
+  upstream_dataset_requirement: "Geographically and technically matched utilities, fuels, maintenance, specific equipment manufacturing, pavement construction and treatment inventories"
+  disclosure: "Exact custody endpoints and dwell cutoff; all operators/sites/periods; lifts, fuels, utilities, assets, waste and emission screen; upstream gaps and explicit exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed handling cycle of one specified freight container"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "terminal and period"
+    - "container ID"
+    - "exact type and length"
+    - "empty/loaded state"
+    - "refrigeration requirement and temperature/connection duration if applicable"
+    - "actual cargo/gross mass"
+    - "stage type"
+    - "start/end interfaces and modes where present"
+    - "exact handover locations/times"
+    - "completed cycle count"
+    - "lift/rehandle count"
+    - "internal distance"
+    - "intermediate dwell"
+    - "equipment route/powertrain"
+    - "electricity region/voltage"
+    - "actual contracted acceptance"
+    - "operator/provider split"
+    - "storage cutoff"
+    - "asset scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: cycle_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count completed matched start/end handovers using cp_activity; internal moves and retries within that same contracted stage do not increase output."
+  - id: activity_separation
+    applies_to: "accepted_cycle"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Keep cycle count distinct from lifts and TEU; gross cargo/container mass and distance are qualifiers, not normalization denominators."
+  - id: fuel_identity
+    applies_to: "diesel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "If receipts are in litres, use traceable batch density at the recorded temperature; retain original quantity and conversion evidence."
+process_map:
+  - id: handling
+    name: "Operate and support the defined container handover cycle"
+    inclusion: "required"
+    inclusion_condition: "Actual terminal route with each card condition applied"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: handling
+    label: "Operate and support the defined container handover cycle"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Electricity, alternating current, terminal user supply"
+          name: "Electricity, alternating current, terminal user supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual cranes, terminal vehicles, lighting and control equipment; exclude separately metered reefer supply from this row; state region, voltage and supply mix. Include attributable standby and charging losses."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: reefer_electricity
+          role: "Electricity supplied to a connected reefer container"
+          name: "Electricity, alternating current, reefer-container user supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on an actually connected temperature-controlled container during the defined handling cycle. Meter this electricity separately from handling equipment and record connection time, setpoint, ambient conditions and grid supply. Exclude the same supply from electricity, providers and separately modelled storage; no energy-per-hour default."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel, unblended"
+          name: "Diesel fuel, unblended"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on equipment actually burning unblended diesel. Fuel blends or other fuels require their own atomic row and verified composition; do not reuse this row."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Mineral hydraulic oil"
+          name: "Mineral hydraulic oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual replacement or replenishment during attributable maintenance; reconcile delivered oil, stock change, recovered oil and leaks."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual equipment cleaning and service support; meter supply and separate cargo cleaning outside this service."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: crane_share
+          role: "Configured container gantry crane"
+          name: "Configured container gantry crane"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on this owned equipment type. Attribute its manufacturing inventory from recorded service utilization and supported whole-life denominator; other equipment types need distinct rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: tractor_share
+          role: "Configured container terminal tractor"
+          name: "Configured container terminal tractor"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual owned tractor use inside the terminal; identify model and manufacturing boundary, excluding external road haulage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: pavement_share
+          role: "Container terminal asphalt pavement section"
+          name: "Container terminal asphalt pavement section"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Conditional on use of an identified asphalt yard section. Attribute construction and actual renewal once using area, supported life and service use; do not mix the whole port infrastructure into this flow."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_cycle
+          role: "Completed handling cycle of one specified freight container"
+          name: "Completed handling cycle of one specified freight container"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "One declared stage fixes one box type, length, loaded state and refrigeration requirement. It begins at the recorded start-interface acceptance and ends at the recorded end-interface handover within one terminal; internal moves and failed attempts within that stage belong to its inventory."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_activity
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: used_oil
+          role: "Used mineral hydraulic oil"
+          name: "Used mineral hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on segregated oil actually removed; weigh and identify recipient and treatment. The oil input and waste output are distinct exchanges."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: wire_rope
+          role: "Discarded steel crane wire rope"
+          name: "Discarded steel crane wire rope"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual rope replacement; weigh this steel stream separately from other maintenance wastes; no automatic recycling credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: oily_washwater
+          role: "Oily equipment washwater"
+          name: "Oily equipment washwater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual collected oily washwater; measure volume and relevant composition and identify treatment. Do not classify transfer to sewer as a direct river release."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual onsite fossil fuel combustion; obtain measured release or calculate from verified fuel-specific carbon data and oxidation basis. Supplier electricity emissions remain upstream."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_monoxide
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual release; require species-resolved measured or equipment-specific supported evidence. An aggregate NOx record cannot be silently treated as NO."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual release; record NO2 separately from NO and verify any conversion basis rather than copying a combined NOx quantity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: carbon_monoxide
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual combustion release; use pollutant-specific supported observations, operating load and exhaust-control configuration."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_meter
+    applies_to: "foreground_burden_allocation"
+    rule: "Submeter the specific route first. Where shared, allocate reconciled actual energy/support totals using measured equipment load-time and documented cycle activity; retain standby and failed attempts. Split unlike routes before division by accepted cycles; neither TEU nor revenue alone proves equal work."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Maintain a persistent asset ledger. Attribute equipment and the identified pavement section by supported lifetime service utilization and actual cycle use; observed-period accounting distributes only the already attributed period share. Cumulative allocated manufacturing/construction shares across all cycles and periods must not exceed one. Do not reset at each reporting year; unknown lifetime or denominator remains explicit review."
+    source_ids: []
+  - rule_id: allocate_overlap
+    applies_to: "foreground_burden_allocation"
+    rule: "A service provider inventory replaces its covered operating/asset burdens once. Reconcile port support, paid storage and other services before allocation; service price and custody goods are not co-products. Segregated maintenance waste receives no automatic avoided-production credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_activity
+      process_id: "handling"
+      flow_role: "accepted_cycle"
+      record_type: "Custody activity ledger"
+      raw_fields: "container ID; type; loaded state; gross mass; endpoints/times; modes; lifts; rehandles; internal distance; dwell; acceptance"
+      collection_method: "Match start/end records for the same box and completed declared stage; retain unsuccessful operations in its inventory"
+      unit: "Item(s)"
+      frequency: "each cycle"
+      temporal_coverage: "full cycle including retry and intermediate dwell"
+      site_scope: "all included terminal operators"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "custody receipts; terminal operating system events; accepted totals reconciliation"
+    - protocol_id: cp_energy
+      process_id: "handling"
+      flow_role: "electricity; reefer_electricity"
+      record_type: "Meter and equipment log"
+      raw_fields: "meter; interval; kWh; voltage; grid; equipment hours; standby; charging loss; shared support; reefer connection times and temperature; separate reefer meter; allocations"
+      collection_method: "Submeter or reconcile interval meters with measured load-time; do not use rated power without actual duty evidence"
+      unit: "kWh"
+      frequency: "each meter interval/cycle"
+      temporal_coverage: "full cycle plus attributable standby/support"
+      site_scope: "included terminal and subcontractors"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated meters; activity logs; supplier boundary reconciliation"
+    - protocol_id: cp_fuel
+      process_id: "handling"
+      flow_role: "diesel"
+      record_type: "Fuel balance"
+      raw_fields: "fuel grade; receipts; stock; measured kg; actual litres/density/temperature; equipment; route share"
+      collection_method: "Reconcile issues and stock changes; preserve measured fuel identity and any density conversion"
+      unit: "kg"
+      frequency: "each issue and reporting interval"
+      temporal_coverage: "full attributable operation"
+      site_scope: "actual fuel-burning equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "fuel invoices; tank readings; density records; consumption reconciliation"
+    - protocol_id: cp_material
+      process_id: "handling"
+      flow_role: "hydraulic_oil"
+      record_type: "Maintenance material balance"
+      raw_fields: "grade; issued/returned oil kg; stock; maintenance event; asset; recovered oil; leak"
+      collection_method: "Weigh or use traceable actual product density; assign actual maintenance to supported service use"
+      unit: "kg"
+      frequency: "each maintenance event"
+      temporal_coverage: "maintenance supporting the declared service period"
+      site_scope: "included terminal assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "maintenance and stock ledger; supplier specifications"
+    - protocol_id: cp_water
+      process_id: "handling"
+      flow_role: "water"
+      record_type: "Water meter"
+      raw_fields: "meter; m3; cleaning event; support allocation; wastewater destination"
+      collection_method: "Meter attributable supply, separating cargo cleaning outside scope"
+      unit: "m3"
+      frequency: "each cleaning/meter interval"
+      temporal_coverage: "all actual cleaning/support"
+      site_scope: "included terminal"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter records; cleaning log; water balance"
+    - protocol_id: cp_assets
+      process_id: "handling"
+      flow_role: "crane_share; tractor_share; pavement_share"
+      record_type: "Persistent asset utilization ledger"
+      raw_fields: "asset ID/type/configuration; manufacturing or construction inventory; item count or pavement area m2; actual service utilization; supported lifetime service denominator; prior cumulative share; period share; renewal events"
+      collection_method: "Link real equipment/section to its upstream inventory and use ledger. Assign only the actual cycle fraction; conserve cumulative shares across periods; no default lifespan or asset mass"
+      unit: "Item(s); m2"
+      frequency: "each cycle allocation and asset update"
+      temporal_coverage: "full supported asset life with declared observation period"
+      site_scope: "actual owned crane/tractor and identified asphalt yard section"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "asset records; construction plans; operating logs; denominator support; sensitivity; cumulative fraction reconciliation"
+    - protocol_id: cp_waste
+      process_id: "handling"
+      flow_role: "used_oil; wire_rope; oily_washwater"
+      record_type: "Segregated waste ledger"
+      raw_fields: "individual stream; measured kg or m3; composition; maintenance event; recipient; treatment; attributable share"
+      collection_method: "Weigh each solid/oil stream and meter washwater separately; reconcile actual treatment and overlap"
+      unit: "kg; m3"
+      frequency: "each waste transfer"
+      temporal_coverage: "full attributable maintenance/cleaning"
+      site_scope: "actual terminal and treatment handover"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weigh tickets; transfer notes; waste composition; treatment inventory"
+    - protocol_id: cp_release
+      process_id: "handling"
+      flow_role: "fossil_co2; nitrogen_monoxide; nitrogen_dioxide; carbon_monoxide"
+      record_type: "Species-specific release record"
+      raw_fields: "pollutant species; kg; air compartment; fossil origin; equipment/load; sampling; actual fuel; supported factor and basis if calculated"
+      collection_method: "Use actual species measurements or reviewed fuel/equipment-specific calculation evidence; maintain NO and NO2 distinction and uncertainty; no default emission factor"
+      unit: "kg"
+      frequency: "each monitored operation or representative supported interval"
+      temporal_coverage: "all actual onsite emitting operations"
+      site_scope: "included terminal equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "measurement reports; documented factors; fuel/load reconciliation; uncertainty"
+  calculation_rules:
+    - id: cycle_attribution
+      applies_to: "all inventory rows"
+      rule: "Assign directly measured cycle exchanges first; for a homogeneous declared route divide reconciled attributable period totals by actual completed cycle count. Failed operations remain in numerator. Reference output is exactly 1 Item(s)."
+      inputs:
+        - cp_activity
+        - "actual attributable totals"
+      output: "exchange amount per reference flow"
+      source_ids: []
+    - id: asset_attribution
+      applies_to: "crane_share; tractor_share; pavement_share"
+      rule: "Multiply the specific upstream asset inventory by the supported cycle fraction of whole-life service. Reconcile prior and current fractions; do not allocate a whole asset in every observation period."
+      inputs:
+        - cp_assets
+        - "supported lifetime denominator"
+        - "cycle use"
+      output: "asset amount per reference flow"
+      source_ids: []
+    - id: pollutant_accounting
+      applies_to: "fossil_co2; nitrogen_monoxide; nitrogen_dioxide; carbon_monoxide"
+      rule: "Calculate each species only from its verified equipment/fuel/activity basis when direct measurement is absent; record actual factor, units and uncertainty in the dataset. Do not copy NOx to individual species or upstream electricity CO2 to onsite release."
+      inputs:
+        - cp_release
+        - cp_fuel
+        - "reviewed species evidence"
+      output: "individual release amount per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_cycle
+      applies_to: "accepted_cycle"
+      requirement: "Demonstrate matched stage handovers and all reference qualifiers; when loading and unloading are separate stages, prevent counting their sum again as an additional full transfer. Distinguish boxes, TEU, lifts and cycles; report incomparable routes separately."
+      evidence: "cp_activity"
+    - id: quality_coverage
+      applies_to: "all inventory rows"
+      requirement: "Reconcile complete fuel/energy/material/waste activity and operator boundaries, conditional absence and actual upstream datasets; unresolved evidence is disclosed, never zero."
+      evidence: "cp_energy; cp_fuel; cp_material; cp_water; cp_waste; cp_release"
+    - id: quality_assets
+      applies_to: "crane_share; tractor_share; pavement_share"
+      requirement: "Verify supported life/service denominator and conserved cumulative share. Unknown denominator prevents a complete lifecycle claim; report sensitivity and future reconciliation."
+      evidence: "cp_assets"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify each semantic flow, property, unit group and compartment against direct identity evidence before adopting a UUID; keep unsupported identities separate from verified records."
+      evidence: "actual identity evidence"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one unique accepted_cycle product output equal to 1 Item(s) and matched start/end handovers of one declared handling stage for a container with the declared type, length, loaded state and conditioning requirement. Reject TEU, lifts, tonnes, tkm and goods outputs as substitute reference counts."
+    source_ids:
+      - un-cpc-container
+  - rule_id: validate_boundary
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check all operations between declared handovers and asset/support coverage. Reject double-counted external transport, storage, subcontracted operations, goods burdens and provider-covered resources."
+    source_ids: []
+  - rule_id: validate_atomic
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one specific exchange per row and explicit conditional applicability. Keep individual fuel grades, waste streams and pollutant species separate; unresolved UUIDs do not permit collection labels."
+    source_ids: []
+  - rule_id: validate_data
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile measurements, original units, conserved asset shares and emission species. Flag missing identities, factors, upstream inventories and lifetime denominators; do not claim publication readiness or complete lifecycle coverage from this methodology draft."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "container_handling_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "The defined container handling component of a traced logistics chain with compatible configuration and custody endpoints"
+  excluded_use: "Complete freight transport/storage footprint; unqualified transfer to other box configurations; unqualified cross-terminal comparison; goods/container manufacture; automatic TEU-to-cycle conversion"
+  required_metadata: "All reference qualifiers; route and period; actual resource and asset scope; provider split; upstream dataset versions; allocation and source applicability"
+  required_quality_disclosure: "Identity/measurement gaps; onsite versus upstream emissions; asset denominator uncertainty; omitted operations; unsupported factors and comparison limitations"
+  update_trigger: "Changed container configuration, endpoints, route, equipment/powertrain, supply mix, storage scope, allocation or asset lifetime evidence"
+data_sources:
+  - id: "un-cpc-container"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 code 67110 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67110"
+    used_for: "Containerized cargo/terminal handling across modes; classification only, no factors or default service denominator"
+  - id: "epa-che"
+    type: "official_guidance"
+    reference: "US EPA, Cargo Handling Equipment Best Practices to Improve Air Quality, CHE at Ports section, web snapshot 2026-10-23. https://www.epa.gov/ports-initiative/cargo-handling-equipment-che-best-practices-improve-air-quality"
+    used_for: "Screen container-handling equipment and diesel/electric route differences; US port examples do not establish a universal fleet, factor or full LCA boundary"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b357fb61d551092dd70c4556e7b4d88a4d58b7bae9ba4a66a263a929e724ad41"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5875"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5875
+          line: 57
+          column: 1
+        end:
+          offset: 8130
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Container is accepted at the defined start interface (vessel, vehicle or identified stack position) with existing goods, container and installed terminal; upstream resources and assets are not assumed burden-free |\n| starting_condition_role | foreground_start |\n| product_classification_scope | The specified container handling cycle only; no automatic extension to freight transport or storage |\n| recursive_input_rule | Subcontracted handling within the same cycle enters once as its defined service share with upstream inventory; remove the overlapping owned energy/equipment operations |\n| upstream_dataset_requirement | Geographically and technically matched utilities, fuels, maintenance, specific equipment manufacturing, pavement construction and treatment inventories |\n| disclosure | Exact custody endpoints and dwell cutoff; all operators/sites/periods; lifts, fuels, utilities, assets, waste and emission screen; upstream gaps and explicit exclusions |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_operations | Include actual lifting, internal tractor moves, retries, standby, relevant yard lighting/control and attributable maintenance through the recorded end-interface handover. Select the real equipment route rather than assuming that every terminal uses diesel cranes. | epa-che |\n| boundary_custody | Carry the identities and actual gross mass of goods/container through the activity ledger; do not import their full manufacture into a handling service or create duplicate goods outputs. Separate external haulage and contracted storage. | un-cpc-container |\n| boundary_assets | Screen equipment manufacture, yard pavement construction/renewal and terminal support; add one specific exchange for each other actual asset or utility. Disclose upstream exclusions; absent evidence is not a zero burden. |  |\n| boundary_releases | Screen each actual fuel, pollutant species, oil leak, maintenance waste and washwater; keep emissions to air, waste sent to treatment and upstream electricity emissions separate. A NOx total requires a reviewed species treatment and cannot populate both NO and NO2 rows. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 218
+              line: 8
+              column: 1
+            end:
+              offset: 247
+              line: 8
+              column: 30
+          text: "# Container handling services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5875
+              line: 57
+              column: 1
+            end:
+              offset: 5896
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_19601"
+      family: "allocation"
+      span:
+        start:
+          offset: 19601
+          line: 341
+          column: 1
+        end:
+          offset: 20799
+          line: 349
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_meter | Submeter the specific route first. Where shared, allocate reconciled actual energy/support totals using measured equipment load-time and documented cycle activity; retain standby and failed attempts. Split unlike routes before division by accepted cycles; neither TEU nor revenue alone proves equal work. |  |\n| allocate_assets | Maintain a persistent asset ledger. Attribute equipment and the identified pavement section by supported lifetime service utilization and actual cycle use; observed-period accounting distributes only the already attributed period share. Cumulative allocated manufacturing/construction shares across all cycles and periods must not exceed one. Do not reset at each reporting year; unknown lifetime or denominator remains explicit review. |  |\n| allocate_overlap | A service provider inventory replaces its covered operating/asset burdens once. Reconcile port support, paid storage and other services before allocation; service price and custody goods are not co-products. Segregated maintenance waste receives no automatic avoided-production credit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 218
+              line: 8
+              column: 1
+            end:
+              offset: 247
+              line: 8
+              column: 30
+          text: "# Container handling services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 19601
+              line: 341
+              column: 1
+            end:
+              offset: 19641
+              line: 341
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28053"
+      family: "validation"
+      span:
+        start:
+          offset: 28053
+          line: 381
+          column: 1
+        end:
+          offset: 29216
+          line: 390
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_reference | Require one unique accepted_cycle product output equal to 1 Item(s) and matched start/end handovers of one declared handling stage for a container with the declared type, length, loaded state and conditioning requirement. Reject TEU, lifts, tonnes, tkm and goods outputs as substitute reference counts. | un-cpc-container |\n| validate_boundary | Check all operations between declared handovers and asset/support coverage. Reject double-counted external transport, storage, subcontracted operations, goods burdens and provider-covered resources. |  |\n| validate_atomic | Require one specific exchange per row and explicit conditional applicability. Keep individual fuel grades, waste streams and pollutant species separate; unresolved UUIDs do not permit collection labels. |  |\n| validate_data | Reconcile measurements, original units, conserved asset shares and emission species. Flag missing identities, factors, upstream inventories and lifetime denominators; do not claim publication readiness or complete lifecycle coverage from this methodology draft. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 218
+              line: 8
+              column: 1
+            end:
+              offset: 247
+              line: 8
+              column: 30
+          text: "# Container handling services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28053
+              line: 381
+              column: 1
+            end:
+              offset: 28075
+              line: 381
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 7006
+          line: 72
+          column: 1
+        end:
+          offset: 7305
+          line: 72
+          column: 300
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_custody"
+      identity_kind: "explicit"
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 7306
+          line: 73
+          column: 1
+        end:
+          offset: 7584
+          line: 73
+          column: 279
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 7585
+          line: 74
+          column: 1
+        end:
+          offset: 7830
+          line: 74
+          column: 246
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_releases"
+      identity_kind: "explicit"
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 7831
+          line: 75
+          column: 1
+        end:
+          offset: 8128
+          line: 75
+          column: 298
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_meter"
+      identity_kind: "explicit"
+      unit_id: "normative_19601"
+      source_span:
+        start:
+          offset: 19695
+          line: 345
+          column: 1
+        end:
+          offset: 20023
+          line: 345
+          column: 329
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_19601"
+      source_span:
+        start:
+          offset: 20024
+          line: 346
+          column: 1
+        end:
+          offset: 20485
+          line: 346
+          column: 462
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_overlap"
+      identity_kind: "explicit"
+      unit_id: "normative_19601"
+      source_span:
+        start:
+          offset: 20486
+          line: 347
+          column: 1
+        end:
+          offset: 20797
+          line: 347
+          column: 312
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_28053"
+      source_span:
+        start:
+          offset: 28129
+          line: 385
+          column: 1
+        end:
+          offset: 28475
+          line: 385
+          column: 347
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_28053"
+      source_span:
+        start:
+          offset: 28476
+          line: 386
+          column: 1
+        end:
+          offset: 28701
+          line: 386
+          column: 226
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_28053"
+      source_span:
+        start:
+          offset: 28702
+          line: 387
+          column: 1
+        end:
+          offset: 28929
+          line: 387
+          column: 228
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_data"
+      identity_kind: "explicit"
+      unit_id: "normative_28053"
+      source_span:
+        start:
+          offset: 28930
+          line: 388
+          column: 1
+        end:
+          offset: 29214
+          line: 388
+          column: 285
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 5875
+          line: 57
+          column: 1
+        end:
+          offset: 5896
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5875"
+      source_span:
+        start:
+          offset: 5924
+          line: 61
+          column: 1
+        end:
+          offset: 6952
+          line: 68
+          column: 186
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_19601"
+      source_span:
+        start:
+          offset: 19601
+          line: 341
+          column: 1
+        end:
+          offset: 19641
+          line: 341
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28053"
+      source_span:
+        start:
+          offset: 28053
+          line: 381
+          column: 1
+        end:
+          offset: 28075
+          line: 381
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b357fb61d551092dd70c4556e7b4d88a4d58b7bae9ba4a66a263a929e724ad41"
+  generated_content_sha256: "sha256:82de8bd70df82e5897aaef47cc371b8f23fd6b6dda00933f63678a664dcba489"

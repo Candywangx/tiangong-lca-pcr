@@ -1,10 +1,1273 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67511"
-  title: "Port and waterway operation services (excl. cargo handling), on coastal and transoceanic waters"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.port-and-waterway-operation-services-excl-cargo-handling-on-coastal-and-transoceanic-waters"
+  classification_refs: "CPC 3.0 67511; exact"
+  covered_products: "Specified coastal/oceanic port, passenger-facility, navigation-structure and navigation-aid operation blocks"
+  excluded_products: "Cargo handling; warehousing; pilot/tug berthing; inland-waterway service; customer voyage and unrelated development"
+  representative_product: "One completed declared marine berth-use block with vessel size, berth length and actual occupied duration"
+  production_route: "Define service gates/extent → operate actual port/waterway facility → include attributable maintenance and support → verify completion/availability"
+  market_state: "Completed measured facility service with declared quality/availability and ownership boundary; fee or ship arrival alone is not an extent"
+functional_unit:
+  what: "Provide the specified coastal/oceanic port or waterway facility function"
+  how_much: "One completed block with exact service-family physical extent from section 1"
+  how_well: "Actual vessel/access, water-level, passage or aid-availability specification met and evidenced; no universal service-grade assumption"
+  how_long_or_cycle: "Exact actual start/end and duration or lock/lift operating cycle; standby/retry and support attribution disclosed"
+  reference_flow_link: "port_block"
+system_boundary:
+  rules:
+    - rule_id: boundary_port
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual facility power, hydraulic operations, lighting, navigation aids, passenger support, drainage, standby and attributable cleaning/maintenance. Select actual routes; a buoy does not inherit a whole passenger terminal."
+      source_ids:
+        - un-cpc-coastal-port
+    - rule_id: boundary_vessel
+      applies_to: "foreground_system_boundary"
+      rule: "Separate customer vessel engines, cargo equipment, rail/road and port-owned maintenance/light vessels by actual activity and ownership. EPA source-sector guidance supports separating sources; it does not assign all harbor emissions to a port service. Meter shore supply and water/fuel delivery separately from port overhead."
+      source_ids:
+        - epa-port-sources
+    - rule_id: boundary_electricity
+      applies_to: "foreground_system_boundary"
+      rule: "Electricity input cards cover only actual external supply at the declared foreground boundary, with current form, voltage and delivery losses specified. For onsite generation represented within port_operation, keep generated electricity, conversion and storage transfers in an internal ledger; include actual fuel, direct emissions, generating/conversion/storage assets, maintenance and wastes once. If generation is represented by a separate foreground subprocess, link its measured electricity output internally once and retain those burdens in that subprocess; do not also add a complete external-electricity dataset for the same energy. Check whether complete facility/aid or supplier inventories already include solar modules, batteries, converters or generators before adding separate component cards; add only actual uncovered components. Solar generation is not assumed burden-free."
+      source_ids: []
+    - rule_id: boundary_dredging
+      applies_to: "foreground_system_boundary"
+      rule: "Distinguish initial capital works and actual navigation maintenance. Characterize each dredged stream and actual transport, containment, treatment/reuse/placement destination before modelling its fate. EPA testing guidance supports characterization and route scrutiny, not assumed clean status or universal legal approval."
+      source_ids:
+        - epa-sediment
+    - rule_id: boundary_releases
+      applies_to: "foreground_system_boundary"
+      rule: "Screen actual dredging disturbance, contaminant mobilization, oil leaks, air emissions and water returns. Transferred sediment/waste is not automatically an elementary emission; sediment total contaminant content is not released mass. Habitat/seabed changes, turbidity and underwater noise require explicit site evidence and an appropriate impact method; chemical-flow cards alone cannot establish complete ecological coverage."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Existing coastal/oceanic facility and customer vessel/passengers at the declared interface; actual port assets/utility upstream burdens are retained"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Declared coastal/transoceanic port/waterway operation function excluding handling/storage/pilotage/tug berthing"
+  recursive_input_rule: "Same-function subcontracted support enters once with exact extent and supplier coverage; remove overlapping port-owned operations/assets"
+  upstream_dataset_requirement: "Actual energy/materials, marine facility/aid construction, maintenance/dredging, sediment transport/treatment/placement and waste inventories"
+  disclosure: "Actual function/extent, owners/providers, customer vessel and shore-energy split, capital/maintenance dredging, sediment status/destination, hydraulic balance and missing evidence"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Specified completed coastal port/waterway service block"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "one service family and block definition"
+    - "exact physical extent and actual completed population"
+    - "coastal/transoceanic location"
+    - "facility/aid/channel ID and coverage"
+    - "actual interfaces/timestamps/duration"
+    - "vessel/passenger dimensions and population when applicable"
+    - "berth length/time or lock/lift head/cycle or navigation-aid availability"
+    - "actual water source/return"
+    - "asset ownership"
+    - "operator/ship/provider split"
+    - "cargo/storage/pilot/tug exclusions"
+    - "shore energy and commodity-delivery boundary"
+    - "maintenance dredging area/volume/mass/contamination/destination"
+    - "asset life and allocation"
+    - "actual quality/availability limits"
+    - "geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: block_extent
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Use cp_activity to count completed homogeneous service blocks with actual physical extent; components and whole calls cannot both count as independent full service."
+  - id: sediment_basis
+    applies_to: "dredging; dredged_sand; copper_silt"
+    required_property_ref:
+      name: "Volume; Mass"
+      uuid: ""
+    required_unit: "m3; kg"
+    rule: "Keep in-situ/bulk volume, wet mass, dry mass and water content separate. Convert only using actual measured sediment density/moisture for the same material and location."
+  - id: lock_water
+    applies_to: "sea_abstraction; river_abstraction; water_sea"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Measure actual abstraction, recirculation and return by source/receiving compartment; gross lock throughput and vessel displacement are not consumptive freshwater use."
+process_map:
+  - id: port_operation
+    name: "Operate the specified coastal port/waterway service"
+    inclusion: "required"
+    inclusion_condition: "One declared function/extent and actual row conditions"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: port_operation
+    label: "Operate the specified coastal port/waterway service"
+    inputs:
+      product:
+        - row_id: terminal_power
+          role: "Marine terminal operational electricity"
+          name: "Electricity, alternating current, marine-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on externally supplied alternating-current electricity crossing the declared foreground boundary for actual berth/terminal lighting, controls, passenger facilities, pumps and operator support. Record the delivery meter, supply voltage and supplier coverage. Separate customer shore supply, excluded cargo-handling equipment and internally generated electricity; equipment consumption alone is not an external input."
+          amount:
+            expression: "Attributable measured external AC supply at the declared delivery interface per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: lock_power
+          role: "Navigation lock and lift electricity"
+          name: "Electricity, alternating current, marine-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on externally supplied alternating-current electricity crossing the declared foreground boundary for actual lock gates, navigation weirs/sluices, boat lifts or water-recovery pumps. Record the delivery interface and voltage, measure specific cycles/head/duty and avoid overlap with terminal_power. Internally generated electricity is reconciled in the electrical ledger, not added as purchased supply."
+          amount:
+            expression: "Attributable measured external AC supply at the declared delivery interface per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: aid_power
+          role: "Marine navigation-aid electricity"
+          name: "Electricity, alternating current, marine-facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional only on externally supplied alternating-current electricity crossing the declared foreground boundary for actual lighthouse, buoy or light-vessel operation. Record equipment model, AC/DC configuration, delivery voltage/meter, duty and coverage interval. External DC delivery uses aid_dc_power; onsite solar/generator electricity and battery discharge remain internal flows. Record actual conversion/storage losses at their measured boundary without duplicating them."
+          amount:
+            expression: "Attributable measured external AC supply at the declared delivery interface per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ito-aid-power
+            ranges: []
+        - row_id: aid_dc_power
+          role: "Marine navigation-aid external direct-current electricity"
+          name: "Electricity, direct current, marine-navigation-aid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional only on externally supplied direct-current electricity crossing the declared foreground boundary at the identified navigation-aid delivery interface. Record equipment model, source, DC voltage, delivery meter, duty and actual conversion/storage boundary. This row excludes onsite photovoltaic generation, internal AC-to-DC conversion and battery discharge; retain their actual assets, maintenance and losses once under boundary_electricity. Different delivery voltages or incompatible supplier scopes require separate specific exchanges."
+          amount:
+            expression: "Attributable measured external DC supply at the declared delivery interface per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ito-aid-power
+            ranges: []
+        - row_id: diesel
+          role: "Port-owned operation diesel"
+          name: "Diesel fuel, unblended"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual port-owned generator, light-vessel or maintenance craft using this fuel. Customer ship fuel is outside this row; different marine grades/blends require specific separate rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Terminal cleaning water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual cleaning/sanitary support; exclude water delivered as a commodity to vessels and distinguish natural lock water from purchased tap water."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: cleaner
+          role: "Sodium carbonate cleaner"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual use of this named chemical; every other cleaner/coating constituent or formulated product needs its own specific identity and quantity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Navigation gate hydraulic oil"
+          name: "Mineral hydraulic oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual gate/lift hydraulic maintenance; reconcile issues, stock, recovered oil and measured leaks. Other hydraulic fluids require separate rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: lubricant
+          role: "Port mechanical lubricating oil"
+          name: "Mineral lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual port/aid machinery lubrication; exclude lubrication already included in a subcontracted maintenance inventory."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: dredging
+          role: "Mechanical bucket maintenance dredging"
+          name: "Mechanical bucket maintenance dredging service"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on this actual outsourced excavation route only. Specify excavation-only coverage and measured in-situ volume; add actual sediment transport, placement and treatment separately. A supplier covering those stages replaces their overlapping rows. Other dredging methods require a different specific service."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_dredging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dredging
+              source_ids: []
+            ranges: []
+        - row_id: quay_share
+          role: "Marine quay construction share"
+          name: "Configured marine quay structure"
+          flow_type: "product"
+          property_unit: "Length / m"
+          description: "Conditional on actual quay/wharf/pier use; fix construction type, exact geometry and length and supported vessel-size/occupancy utilization; do not assume one metre is equal across structures."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: terminal_share
+          role: "Passenger terminal construction share"
+          name: "Configured marine passenger terminal building"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Conditional on actual passenger-facility service; identify floor and shared-area allocation, excluding unrelated retail or cargo facilities."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: lock_share
+          role: "Navigation lock construction share"
+          name: "Configured marine-navigation lock"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual lockage; specify chamber, gate, head, hydraulic configuration and whole-life supported service cycles."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: lift_share
+          role: "Boat-lift manufacture share"
+          name: "Configured coastal boat lift"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual boat-lift service; identify rated/actual lifted vessel extent, mechanism and supported service-life utilization."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: weir_share
+          role: "Navigation weir construction share"
+          name: "Configured coastal-navigation weir"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual navigation-water-level regulation; separate flood-control, irrigation, ecological and power functions using explicit supported shares."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: sluice_share
+          role: "Navigation sluice construction share"
+          name: "Configured coastal-navigation sluice"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual navigation sluice use; specify opening/cycle/water-level service, not an assumed full port asset per passage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: lighthouse_share
+          role: "Lighthouse construction share"
+          name: "Configured marine lighthouse"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual coastal navigation aid; define structure, light duty, coverage area, required availability interval and supported lifetime service."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: buoy_share
+          role: "Navigation buoy manufacture share"
+          name: "Configured marine navigation buoy"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual buoy/channel marker; specify material, mooring, power and actual maintenance/replacement scope."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: lightship_share
+          role: "Light-vessel construction share"
+          name: "Configured navigation light vessel"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual lightship service; identify hull/equipment inventory and actual availability/operation denominator, excluding customer vessel manufacture."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: sea_abstraction
+          role: "Seawater withdrawn for navigation lock operation"
+          name: "Water, seawater, withdrawn from sea"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual seawater intake for declared lock/weir operation; measure by hydraulic cycle or calibrated flow, with salinity/source and reuse distinguished from freshwater."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_lockwater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lockwater
+              source_ids: []
+            ranges: []
+        - row_id: river_abstraction
+          role: "River freshwater withdrawn for navigation operation"
+          name: "Water, freshwater, withdrawn from river"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual river freshwater used by coastal navigation structures; record source, head and reuse. Do not substitute total vessel displacement for water withdrawal."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_lockwater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lockwater
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: port_block
+          role: "Specified completed coastal port/waterway service block"
+          name: "Specified completed coastal port/waterway service block"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "One block fixes exactly one function and actual physical extent from the service-definition table; berth call, terminal visit, lockage and navigation-aid availability are not count-equivalent."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_activity
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: used_hydraulic
+          role: "Used gate hydraulic oil"
+          name: "Used mineral hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual segregated hydraulic oil removed for treatment; weigh and identify destination. Lubricating-oil waste is another specific stream if present."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: washwater
+          role: "Contaminated marine-facility washwater"
+          name: "Contaminated marine-facility washwater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual collected washwater; record composition, volume and treatment destination. Direct marine discharge needs separate substance-specific release evidence rather than a wastewater-treatment assumption."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: dredged_sand
+          role: "Non-hazardous dredged marine sand transfer"
+          name: "Dredged marine sand, characterized non-hazardous"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual tested sand transferred to a specific placement/reuse/treatment route; record wet/dry mass, water content and composition. Do not infer non-hazardous status from appearance. Different sediment streams require separate rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_dredging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dredging
+              source_ids: []
+            ranges: []
+        - row_id: copper_silt
+          role: "Copper-contaminated dredged silt transfer"
+          name: "Dredged marine silt contaminated with copper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on an actual separately characterized copper-contaminated silt stream. Retain tests and actual treatment/containment route; total copper in transferred sediment is not a dissolved marine release. Other contaminants/streams require their own specific characterization."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_dredging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dredging
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: water_sea
+          role: "Navigation-operation water returned to sea"
+          name: "Water, returned to sea"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual return to the sea; measure destination/volume/salinity, separating recirculation, leakage, losses and returns to other compartments. Gross lock throughput does not equal consumptive freshwater use."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_lockwater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lockwater
+              source_ids: []
+            ranges: []
+        - row_id: fossil_co2
+          role: "Port-owned fossil carbon dioxide release"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual port-owned fossil combustion; measure or use verified fuel-carbon/oxidation evidence. Separate customer vessel exhaust, provider emissions already included and upstream grid emissions."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: copper_sea
+          role: "Copper released to marine water"
+          name: "Copper, to seawater"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actually established copper release from disturbance/leaching; require measured or validated fate evidence and marine receiving compartment. Sediment total content and moved waste mass alone do not establish released copper."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_function
+    applies_to: "foreground_burden_allocation"
+    rule: "Subdivide berth, terminal, hydraulic and aid functions before attribution. Use actual berth length-time/vessel dimensions, passenger-facility use, lock head/cycle/water activity or aid coverage/availability as causal drivers; retain failed cycles and standby. Unlike functions/counts are not pooled by fees or ship calls."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Maintain persistent quay/terminal/lock/lift/weir/sluice/aid asset ledgers with supported whole-life service denominators. Allocate only actual navigation shares of multipurpose structures; no whole dam or whole aid fleet per vessel. Observed-period accounting distributes only the attributed period share; lifetime fractions across all users/periods cannot exceed one or reset annually. Unknown life/denominator requires review and sensitivity."
+    source_ids: []
+  - rule_id: allocate_dredging
+    applies_to: "foreground_burden_allocation"
+    rule: "Attribute actual maintenance campaign by the supported channel/berth service population and interval benefited, with actual volume/material/destination. Initial capital dredging belongs to construction and cannot be repeated each maintenance period. Multipurpose dredging and reusable sediment require traced shares and actual routes; no automatic avoided-disposal or virgin-material credit."
+    source_ids: []
+  - rule_id: allocate_scope
+    applies_to: "foreground_burden_allocation"
+    rule: "A supplier inventory replaces covered operations/assets once. Customer fuel, shore electricity sold as energy, cargo/passengers and navigation fees are not co-products of this support count. Split handling/storage/pilot/tug services and other water-management uses with transparent boundary reconciliation."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_activity
+      process_id: "port_operation"
+      flow_role: "port_block"
+      record_type: "Completed function and extent ledger"
+      raw_fields: "family; facility/aid/channel; vessel/passenger population; dimensions/draft; berth length/time; lock/lift head/cycle; weir/sluice regulation; aid coverage/duty/availability; actual start/end; acceptance; exclusions"
+      collection_method: "Match actual facility logs and interfaces to one defined block from section 1. Count homogeneous completed blocks only; retain actual extent, incomplete/retry activity and component/whole-block relationships."
+      unit: "Item(s)"
+      frequency: "each block or actual availability interval"
+      temporal_coverage: "full declared service and assigned support"
+      site_scope: "all actual owners/operators/providers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "berth/lock/aid logs; timing; coverage; acceptance; population reconciliation"
+    - protocol_id: cp_energy
+      process_id: "port_operation"
+      flow_role: "terminal_power; lock_power; aid_power; aid_dc_power"
+      record_type: "External supply and internal electricity balance ledger"
+      raw_fields: "meter/interface ID; source/supplier; equipment model; AC/DC form and voltage; external delivered kWh; onsite generator/PV output; terminal/lock/aid end-use kWh; cycles/head/duty and standby; conversion/charging/discharging losses; opening/closing stored energy; customer/cargo/export kWh; supplier/asset coverage; stored-energy source and charge-period IDs; attributed upstream supply inventory"
+      collection_method: "Meter external delivery separately from onsite generation and end uses. Reconcile all terms at documented consistent interfaces and periods under electricity_balance; distinguish AC and DC and retain actual conversion/storage losses without recounting metered losses. Use equipment load/cycle evidence to check meters, not to turn internal generation into purchased supply. Separate customer shore supply, cargo equipment and supplier-covered energy; do not estimate lock energy from ship count alone."
+      unit: "kWh"
+      frequency: "each operation/meter interval"
+      temporal_coverage: "all included operation and standby"
+      site_scope: "actual marine facilities/aid sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated meters; delivery/single-line diagram; equipment and voltage records; duty/cycle logs; storage and loss balance; supplier coverage reconciliation"
+    - protocol_id: cp_fuel
+      process_id: "port_operation"
+      flow_role: "diesel"
+      record_type: "Port-owned fuel balance"
+      raw_fields: "craft/generator ID; fuel grade; actual kg; receipts/stocks; duty; density/temperature if converted; customer bunker delivery"
+      collection_method: "Measure actual port-owned operation fuel and reconcile stocks; distinguish light-vessel/maintenance craft from customer vessels and excluded tug/pilot tasks. Supplier-covered fuel is not repeated."
+      unit: "kg"
+      frequency: "each actual use and stock period"
+      temporal_coverage: "full attributable operation"
+      site_scope: "identified operator equipment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "fuel logs; stock balance; actual vessel/equipment duty"
+    - protocol_id: cp_material
+      process_id: "port_operation"
+      flow_role: "water; cleaner; hydraulic_oil; lubricant"
+      record_type: "Specific material balance"
+      raw_fields: "individual substance; kg/m3; grade/composition; issue/return; stock; cleaning/maintenance event; actual leaks; water delivered to ship"
+      collection_method: "Meter/weigh each specific exchange and reconcile stocks/returns. Keep ship commodity supply and natural hydraulic water separate from facility consumption."
+      unit: "kg; m3"
+      frequency: "each actual event/stock period"
+      temporal_coverage: "all attributable maintenance and cleaning"
+      site_scope: "actual port/aid assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "material records; calibrated weighing/meters; maintenance balance"
+    - protocol_id: cp_assets
+      process_id: "port_operation"
+      flow_role: "quay_share; terminal_share; lock_share; lift_share; weir_share; sluice_share; lighthouse_share; buoy_share; lightship_share"
+      record_type: "Persistent marine asset ledger"
+      raw_fields: "actual asset ID/type/geometry; m/m2/items; construction/manufacture; initial capital dredging; supported whole-life utilization; actual navigation/other-purpose share; cumulative prior fraction; period fraction; renewals; included generation/storage/conversion components and replacement scope"
+      collection_method: "Match real assets to upstream inventories and supported whole-life service denominators. Keep initial and maintenance boundaries distinct, allocate only actual navigation service share and conserve cumulative fractions across all periods/users. Unknown life/denominator remains under review. Identify whether complete assets already include PV modules, batteries, converters or generators; add actual uncovered components separately with supported life/use shares, without duplicating included manufacture or replacements."
+      unit: "m; m2; Item(s)"
+      frequency: "each allocation and asset/maintenance update"
+      temporal_coverage: "supported whole life and declared observation interval"
+      site_scope: "identified marine facilities/aid assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "engineering/asset records; actual utilization; supported life; multipurpose/cumulative reconciliation"
+    - protocol_id: cp_dredging
+      process_id: "port_operation"
+      flow_role: "dredging; dredged_sand; copper_silt"
+      record_type: "Dredging and sediment fate ledger"
+      raw_fields: "campaign; capital/maintenance; source area; in-situ volume; measured wet/dry mass/moisture/density; grain size; specific contaminant tests; supplier coverage; actual transport/distance; treatment/placement/reuse site; material destination; benefited service population/period"
+      collection_method: "Use actual surveys/weighing and representative sediment characterization with provenance. Trace every material stream to actual transport and destination, retain treatment/placement records and avoid supplier overlap. Sediment tests do not establish release fraction or ecological approval by themselves."
+      unit: "m3; kg"
+      frequency: "each campaign/material transfer"
+      temporal_coverage: "actual campaign and supported benefited service interval"
+      site_scope: "source channel/berth and all actual destinations"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "surveys; test reports; transport/placement tickets; wet/dry balance; supplier inventory"
+    - protocol_id: cp_lockwater
+      process_id: "port_operation"
+      flow_role: "sea_abstraction; river_abstraction; water_sea"
+      record_type: "Source-resolved hydraulic balance"
+      raw_fields: "source/receiving compartment; salinity; head; chamber/ship displacement; actual gate/pump cycle; measured intake/return; recirculation; actual freshwater loss"
+      collection_method: "Measure actual flows or use validated hydraulic geometry/cycle balances with actual head and losses. Keep seawater, freshwater, recirculation and receiving destinations distinct; do not infer consumption from gross throughput."
+      unit: "m3"
+      frequency: "each hydraulic cycle and monitoring interval"
+      temporal_coverage: "all represented navigation-water operation"
+      site_scope: "actual coastal structure and water sources"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated flow records; geometry/head; source/return balance"
+    - protocol_id: cp_waste
+      process_id: "port_operation"
+      flow_role: "used_hydraulic; washwater"
+      record_type: "Specific maintenance waste ledger"
+      raw_fields: "stream; kg/m3; composition; event; recipient; actual treatment; leak distinction"
+      collection_method: "Weigh/meter each collected stream and trace actual treatment. Environmental oil/chemical leakage requires its own substance and receiving-compartment evidence."
+      unit: "kg; m3"
+      frequency: "each transfer/discharge period"
+      temporal_coverage: "all actual attributable maintenance"
+      site_scope: "facility and treatment gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "waste tickets; composition; treatment and material balance"
+    - protocol_id: cp_release
+      process_id: "port_operation"
+      flow_role: "fossil_co2; copper_sea"
+      record_type: "Species/compartment release ledger"
+      raw_fields: "actual pollutant species; kg; air/seawater compartment; fuel consumed; carbon/oxidation; sediment mobilization/leaching measurements; fate model; provider/customer boundary; uncertainty"
+      collection_method: "Use actual emissions measurements or a reviewed source-specific method. For marine contaminants distinguish total content, particulate transport, dissolved release and actual bioavailability assumptions. Do not assume all transferred copper is emitted; screen other actual species and ecological mechanisms separately."
+      unit: "kg"
+      frequency: "each actual source/event and representative monitoring"
+      temporal_coverage: "full represented emitting operation"
+      site_scope: "actual operator/source and receiving compartment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "measurements; validated scope/fate; fuel and material reconciliation; uncertainty"
+  calculation_rules:
+    - id: block_attribution
+      applies_to: "all inventory rows"
+      rule: "Assign measured operation/support to one homogeneous function/extent, then divide by actual completed blocks with standby/retries included in attributed totals. Reference output is exactly 1 Item(s)."
+      inputs:
+        - cp_activity
+        - "attributable measured totals"
+      output: "exchange amount per reference flow"
+      source_ids: []
+    - id: electricity_balance
+      applies_to: "terminal_power; lock_power; aid_power; aid_dc_power; diesel"
+      rule: "For the same declared interval and metering boundary, reconcile external electrical deliveries + onsite generation output = included end-use electricity + customer/excluded/export deliveries + conversion/distribution/storage losses + closing stored energy - opening stored energy. Loss terms contain only losses not already included in another measured term. Retain signed storage change, meter uncertainty and unexplained differences; do not invent loss factors. Allocate actual external supply and generation burdens to the supported service share, then normalize once through block_attribution. Generated electricity and storage discharge are internal transfers, not extra external inputs. Carry documented energy-source identity and upstream burdens of opening and closing stored electricity through the same service/period allocation; do not discard opening-stock burdens or assign all closing-stock burdens to the current service."
+      inputs:
+        - cp_energy
+        - cp_fuel
+        - cp_assets
+        - cp_activity
+      output: "Reconciled external exchanges and internal energy ledger"
+      source_ids: []
+    - id: maintenance_attribution
+      applies_to: "dredging; dredged_sand; copper_silt"
+      rule: "Allocate actual campaign quantities to the documented channel/berth service interval/population benefited. Preserve material identity, actual volume/dry-wet mass conversion and destination; do not repeat initial capital work each period."
+      inputs:
+        - cp_dredging
+        - cp_activity
+      output: "actual campaign amount per reference flow"
+      source_ids: []
+    - id: asset_attribution
+      applies_to: "quay_share; terminal_share; lock_share; lift_share; weir_share; sluice_share; lighthouse_share; buoy_share; lightship_share"
+      rule: "Apply the supported block fraction to actual upstream construction/manufacture and conserve cumulative navigation/other-purpose shares; period observations distribute only the already attributed period share."
+      inputs:
+        - cp_assets
+        - cp_activity
+      output: "asset amount per reference flow"
+      source_ids: []
+    - id: source_fate
+      applies_to: "fossil_co2; copper_sea"
+      rule: "Use actual fuel-carbon/oxidation or measured/validated marine-release evidence for the specific source. Sediment contaminant content is an input to fate analysis, not an automatic elementary emission."
+      inputs:
+        - cp_release
+        - cp_fuel
+        - cp_dredging
+      output: "specific release per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_extent
+      applies_to: "port_block"
+      requirement: "Require one exact function, geography, extent, duration/cycle and completed population; unlike berth/passenger/lock/aid blocks cannot be pooled by count."
+      evidence: "cp_activity"
+    - id: quality_electricity
+      applies_to: "terminal_power; lock_power; aid_power; aid_dc_power; diesel"
+      requirement: "Require actual external delivery interface, AC/DC form, voltage and source, reconciled internal generation/storage and explicit supplier/whole-asset component coverage. Unknown conversion losses or generation assets are evidence gaps, not zero burdens."
+      evidence: "cp_energy; cp_fuel; cp_assets"
+    - id: quality_sediment
+      applies_to: "dredging; dredged_sand; copper_silt"
+      requirement: "Characterize actual sediment by source, grain size, contamination, wet/dry basis and destination. Uncharacterized sediment is not assumed clean, reusable or automatically harmless."
+      evidence: "cp_dredging; epa-sediment"
+    - id: quality_lifecycle
+      applies_to: "all asset rows"
+      requirement: "Support life/service denominators, navigation-only shares, initial/maintenance distinction and conserved allocation; missing life/upstream evidence prevents complete lifecycle claims."
+      evidence: "cp_assets; cp_dredging"
+    - id: quality_ecology
+      applies_to: "all inventory rows"
+      requirement: "Disclose chemical/species, hydraulic, seabed/habitat/turbidity/noise evidence gaps and actual impact-method coverage; a chemical inventory is not complete ecological assessment."
+      evidence: "cp_release; cp_lockwater; site evidence"
+validation_rules:
+  - rule_id: validate_block
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique port_block output equal to 1 Item(s) with one physically defined function and actual extent; reject generic port-call or fee equivalence across service families."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify coastal/transoceanic function, customer/provider/owner interface and exclusions for cargo, storage, pilotage/tug berthing and inland-waterway services."
+    source_ids:
+      - un-cpc-coastal-port
+  - rule_id: validate_sediment
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile dredging campaign volumes/masses, tests, transport and actual destinations once; reject assumed clean material, omitted placement/treatment and conversion of total contaminant content directly to release."
+    source_ids:
+      - epa-sediment
+  - rule_id: validate_sources_assets
+    applies_to: "foreground_dataset_conformance"
+    rule: "Separate port-owned fuel, customer vessel exhaust, shore-energy delivery and upstream grid/provider emissions. Check hydraulic sources/returns, atomic flows, life denominators and cumulative shares at most one; retain identity/evidence/ecological coverage gaps explicitly."
+    source_ids: []
+  - rule_id: validate_electricity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require AC and DC exchanges to match actual external delivery, and reconcile generation, storage, losses and end uses under electricity_balance. Reject internal generation or battery discharge recorded as an additional purchased-electricity input, repeated supplier/generation fuel or emissions, and repeated whole-asset/component burdens. Keep unsupported identity, loss or asset evidence explicit."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "coastal_port_waterway_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Specified coastal/oceanic facility-service component with compatible function, extent, ship/passenger and maintenance scope"
+  excluded_use: "Complete voyage/port ecosystem footprint, cargo/storage/pilot/tug footprint, inland service or unqualified count-based comparison"
+  required_metadata: "one service family and block definition; exact physical extent and actual completed population; coastal/transoceanic location; facility/aid/channel ID and coverage; actual interfaces/timestamps/duration; vessel/passenger dimensions and population when applicable; berth length/time or lock/lift head/cycle or navigation-aid availability; actual water source/return; asset ownership; operator/ship/provider split; cargo/storage/pilot/tug exclusions; shore energy and commodity-delivery boundary; maintenance dredging area/volume/mass/contamination/destination; asset life and allocation; actual quality/availability limits; geography and period"
+  required_quality_disclosure: "Identity/measurement gaps; vessel/provider split; sediment characterization/fate limits; hydraulic and ecological coverage; asset life and upstream omissions"
+  update_trigger: "Changed function/extent, vessel limits, navigation structure/aid, source/return waters, dredging/placement route, energy, provider ownership or asset-life evidence"
+data_sources:
+  - id: "un-cpc-coastal-port"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 67511 explanatory note; consistent with draft PDF pp374–375. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67511"
+    used_for: "Coastal/oceanic port, locks/lifts/weirs/sluices and aid scope; explicit handling/storage/pilot/tug exclusions; no factors"
+  - id: "epa-port-sources"
+    type: "official_guidance"
+    reference: "US EPA Port Emissions Inventory Guidance overview, current page read 2026-10-23. https://www.epa.gov/state-and-local-transportation/port-emissions-inventory-guidance"
+    used_for: "Port/vessel/mobile-source separation and inventory scoping only; no default engine, fuel, MOVES assumption or factor adopted"
+  - id: "epa-sediment"
+    type: "official_guidance"
+    reference: "US EPA Dredged Material Testing and Evaluation, current web page read 2026-10-23. https://www.epa.gov/marine-protection-permitting/dredged-material-testing-and-evaluation-permitting-under-marine"
+    used_for: "Sediment contamination characterization and destination-specific evaluation rationale; US permitting context is not global approval or an emission/reuse factor"
+  - id: "ito-aid-power"
+    type: "literature"
+    reference: "ITO Navaids, IML 85 AL LED Three mile LED beacon, manufacturer technical specifications, read 2026-10-26. https://www.itonavaids.com/products/aton/marine-lanterns/three-mile-led-beacon/iml-85-al-led"
+    used_for: "Example showing that navigation aids have distinct DC and optional AC configurations; supports recording the actual interface. No catalogue voltage, power, lifetime, equipment mass or loss factor is adopted as a PCR default. Electricity boundary and allocation rules are authored requirements, not manufacturer LCA rules."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:43d3834c3fa6a2cdf9dc2097249aa51dc2a825f29ac726d45da1044c57a06311"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6715"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6715
+          line: 65
+          column: 1
+        end:
+          offset: 10141
+          line: 86
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Existing coastal/oceanic facility and customer vessel/passengers at the declared interface; actual port assets/utility upstream burdens are retained |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Declared coastal/transoceanic port/waterway operation function excluding handling/storage/pilotage/tug berthing |\n| recursive_input_rule | Same-function subcontracted support enters once with exact extent and supplier coverage; remove overlapping port-owned operations/assets |\n| upstream_dataset_requirement | Actual energy/materials, marine facility/aid construction, maintenance/dredging, sediment transport/treatment/placement and waste inventories |\n| disclosure | Actual function/extent, owners/providers, customer vessel and shore-energy split, capital/maintenance dredging, sediment status/destination, hydraulic balance and missing evidence |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_port | Include actual facility power, hydraulic operations, lighting, navigation aids, passenger support, drainage, standby and attributable cleaning/maintenance. Select actual routes; a buoy does not inherit a whole passenger terminal. | un-cpc-coastal-port |\n| boundary_vessel | Separate customer vessel engines, cargo equipment, rail/road and port-owned maintenance/light vessels by actual activity and ownership. EPA source-sector guidance supports separating sources; it does not assign all harbor emissions to a port service. Meter shore supply and water/fuel delivery separately from port overhead. | epa-port-sources |\n| boundary_electricity | Electricity input cards cover only actual external supply at the declared foreground boundary, with current form, voltage and delivery losses specified. For onsite generation represented within port_operation, keep generated electricity, conversion and storage transfers in an internal ledger; include actual fuel, direct emissions, generating/conversion/storage assets, maintenance and wastes once. If generation is represented by a separate foreground subprocess, link its measured electricity output internally once and retain those burdens in that subprocess; do not also add a complete external-electricity dataset for the same energy. Check whether complete facility/aid or supplier inventories already include solar modules, batteries, converters or generators before adding separate component cards; add only actual uncovered components. Solar generation is not assumed burden-free. |  |\n| boundary_dredging | Distinguish initial capital works and actual navigation maintenance. Characterize each dredged stream and actual transport, containment, treatment/reuse/placement destination before modelling its fate. EPA testing guidance supports characterization and route scrutiny, not assumed clean status or universal legal approval. | epa-sediment |\n| boundary_releases | Screen actual dredging disturbance, contaminant mobilization, oil leaks, air emissions and water returns. Transferred sediment/waste is not automatically an elementary emission; sediment total contaminant content is not released mass. Habitat/seabed changes, turbidity and underwater noise require explicit site evidence and an appropriate impact method; chemical-flow cards alone cannot establish complete ecological coverage. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 282
+              line: 8
+              column: 1
+            end:
+              offset: 371
+              line: 8
+              column: 90
+          text: "# Coastal and transoceanic port and waterway operation services, excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6715
+              line: 65
+              column: 1
+            end:
+              offset: 6736
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_31496"
+      family: "allocation"
+      span:
+        start:
+          offset: 31496
+          line: 547
+          column: 1
+        end:
+          offset: 33160
+          line: 556
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_function | Subdivide berth, terminal, hydraulic and aid functions before attribution. Use actual berth length-time/vessel dimensions, passenger-facility use, lock head/cycle/water activity or aid coverage/availability as causal drivers; retain failed cycles and standby. Unlike functions/counts are not pooled by fees or ship calls. |  |\n| allocate_assets | Maintain persistent quay/terminal/lock/lift/weir/sluice/aid asset ledgers with supported whole-life service denominators. Allocate only actual navigation shares of multipurpose structures; no whole dam or whole aid fleet per vessel. Observed-period accounting distributes only the attributed period share; lifetime fractions across all users/periods cannot exceed one or reset annually. Unknown life/denominator requires review and sensitivity. |  |\n| allocate_dredging | Attribute actual maintenance campaign by the supported channel/berth service population and interval benefited, with actual volume/material/destination. Initial capital dredging belongs to construction and cannot be repeated each maintenance period. Multipurpose dredging and reusable sediment require traced shares and actual routes; no automatic avoided-disposal or virgin-material credit. |  |\n| allocate_scope | A supplier inventory replaces covered operations/assets once. Customer fuel, shore electricity sold as energy, cargo/passengers and navigation fees are not co-products of this support count. Split handling/storage/pilot/tug services and other water-management uses with transparent boundary reconciliation. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 282
+              line: 8
+              column: 1
+            end:
+              offset: 371
+              line: 8
+              column: 90
+          text: "# Coastal and transoceanic port and waterway operation services, excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 31496
+              line: 547
+              column: 1
+            end:
+              offset: 31536
+              line: 547
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_45338"
+      family: "validation"
+      span:
+        start:
+          offset: 45338
+          line: 592
+          column: 1
+        end:
+          offset: 46808
+          line: 602
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_block | Require unique port_block output equal to 1 Item(s) with one physically defined function and actual extent; reject generic port-call or fee equivalence across service families. |  |\n| validate_scope | Verify coastal/transoceanic function, customer/provider/owner interface and exclusions for cargo, storage, pilotage/tug berthing and inland-waterway services. | un-cpc-coastal-port |\n| validate_sediment | Reconcile dredging campaign volumes/masses, tests, transport and actual destinations once; reject assumed clean material, omitted placement/treatment and conversion of total contaminant content directly to release. | epa-sediment |\n| validate_sources_assets | Separate port-owned fuel, customer vessel exhaust, shore-energy delivery and upstream grid/provider emissions. Check hydraulic sources/returns, atomic flows, life denominators and cumulative shares at most one; retain identity/evidence/ecological coverage gaps explicitly. |  |\n| validate_electricity | Require AC and DC exchanges to match actual external delivery, and reconcile generation, storage, losses and end uses under electricity_balance. Reject internal generation or battery discharge recorded as an additional purchased-electricity input, repeated supplier/generation fuel or emissions, and repeated whole-asset/component burdens. Keep unsupported identity, loss or asset evidence explicit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 282
+              line: 8
+              column: 1
+            end:
+              offset: 371
+              line: 8
+              column: 90
+          text: "# Coastal and transoceanic port and waterway operation services, excluding cargo handling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 45338
+              line: 592
+              column: 1
+            end:
+              offset: 45360
+              line: 592
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_port"
+      identity_kind: "explicit"
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 7764
+          line: 80
+          column: 1
+        end:
+          offset: 8035
+          line: 80
+          column: 272
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_vessel"
+      identity_kind: "explicit"
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 8036
+          line: 81
+          column: 1
+        end:
+          offset: 8401
+          line: 81
+          column: 366
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_electricity"
+      identity_kind: "explicit"
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 8402
+          line: 82
+          column: 1
+        end:
+          offset: 9322
+          line: 82
+          column: 921
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_dredging"
+      identity_kind: "explicit"
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 9323
+          line: 83
+          column: 1
+        end:
+          offset: 9684
+          line: 83
+          column: 362
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_releases"
+      identity_kind: "explicit"
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 9685
+          line: 84
+          column: 1
+        end:
+          offset: 10139
+          line: 84
+          column: 455
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_function"
+      identity_kind: "explicit"
+      unit_id: "normative_31496"
+      source_span:
+        start:
+          offset: 31590
+          line: 551
+          column: 1
+        end:
+          offset: 31938
+          line: 551
+          column: 349
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_31496"
+      source_span:
+        start:
+          offset: 31939
+          line: 552
+          column: 1
+        end:
+          offset: 32408
+          line: 552
+          column: 470
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_dredging"
+      identity_kind: "explicit"
+      unit_id: "normative_31496"
+      source_span:
+        start:
+          offset: 32409
+          line: 553
+          column: 1
+        end:
+          offset: 32827
+          line: 553
+          column: 419
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_31496"
+      source_span:
+        start:
+          offset: 32828
+          line: 554
+          column: 1
+        end:
+          offset: 33158
+          line: 554
+          column: 331
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_block"
+      identity_kind: "explicit"
+      unit_id: "normative_45338"
+      source_span:
+        start:
+          offset: 45414
+          line: 596
+          column: 1
+        end:
+          offset: 45614
+          line: 596
+          column: 201
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_45338"
+      source_span:
+        start:
+          offset: 45615
+          line: 597
+          column: 1
+        end:
+          offset: 45816
+          line: 597
+          column: 202
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_sediment"
+      identity_kind: "explicit"
+      unit_id: "normative_45338"
+      source_span:
+        start:
+          offset: 45817
+          line: 598
+          column: 1
+        end:
+          offset: 46070
+          line: 598
+          column: 254
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_sources_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_45338"
+      source_span:
+        start:
+          offset: 46071
+          line: 599
+          column: 1
+        end:
+          offset: 46376
+          line: 599
+          column: 306
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_electricity"
+      identity_kind: "explicit"
+      unit_id: "normative_45338"
+      source_span:
+        start:
+          offset: 46377
+          line: 600
+          column: 1
+        end:
+          offset: 46806
+          line: 600
+          column: 430
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 6715
+          line: 65
+          column: 1
+        end:
+          offset: 6736
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6715"
+      source_span:
+        start:
+          offset: 6764
+          line: 69
+          column: 1
+        end:
+          offset: 7710
+          line: 76
+          column: 197
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_31496"
+      source_span:
+        start:
+          offset: 31496
+          line: 547
+          column: 1
+        end:
+          offset: 31536
+          line: 547
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_45338"
+      source_span:
+        start:
+          offset: 45338
+          line: 592
+          column: 1
+        end:
+          offset: 45360
+          line: 592
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:43d3834c3fa6a2cdf9dc2097249aa51dc2a825f29ac726d45da1044c57a06311"
+  generated_content_sha256: "sha256:8fdd6fc4981bed7c98c67f8546c36941ffca2ac132bd21b5b613a8762ac2ddcc"

@@ -1,10 +1,1105 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67522"
-  title: "Pilotage and berthing services in inland waters"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.pilotage-and-berthing-services-in-inland-waters"
+  classification_refs: "CPC 3.0 67522; exact"
+  covered_products: "Qualified inland pilotage, actual pilot transfer and tug docking/undocking tasks or their exactly defined package"
+  excluded_products: "Transport tow/push; non-tug shore towing; coastal pilotage; salvage; cargo/storage/port operations; customer voyage"
+  representative_product: "One completed specified inland undocking assist with actual aided vessel, tugs, water conditions, berth and connection/release times"
+  production_route: "Plan/dispatch → actual transfer and positioning → pilot conduct or tug connection/assist → actual release/landing → allocated return/reposition and support"
+  market_state: "Completed accepted task with actual operational records, not a tug-hour, tonnage or invoice without scope"
+functional_unit:
+  what: "Complete the specified inland pilotage or tug-berthing function for the identified aided vessel"
+  how_much: "One completed task with fixed variant, craft population and physical route/manoeuvre extent"
+  how_well: "Actual agreed task endpoints, navigational/berthing conditions and completion specification met and recorded; local limits are actual evidence, not invented defaults"
+  how_long_or_cycle: "Actual dispatch/transfer/service/release and allocated return/standby phases with timestamps; no universal task duration"
+  reference_flow_link: "pilotage_task"
+system_boundary:
+  rules:
+    - rule_id: boundary_task
+      applies_to: "foreground_system_boundary"
+      rule: "Include actual preparation/dispatch, pilot transfer/boarding/landing, tug positioning/connection/assist/release, actual wait/retry and allocated return/reposition, base support and task-related maintenance. Do not invent a pilot boat for shore boarding or a tug for pilot-only service."
+      source_ids:
+        - un-cpc-inland-pilotage
+    - rule_id: boundary_interfaces
+      applies_to: "foreground_system_boundary"
+      rule: "Retain actual agreed passage/task plan, pilot/master/tug communication, aided-vessel particulars and handover endpoints as task-definition evidence. UK MCA guidance informs record/interface structure; local inland water levels, currents, shallow reaches and bridge/lock clearance limits come from actual local records and are not imported numerical defaults."
+      source_ids:
+        - mca-task-interfaces
+    - rule_id: boundary_energy
+      applies_to: "foreground_system_boundary"
+      rule: "Separate service-craft fuel/charging/auxiliaries from customer ship propulsion and port facilities. Actual shore connection can replace an auxiliary-engine activity, but grid and charging burdens remain; do not claim zero lifecycle emissions from zero onboard combustion. EPA harbor-craft guidance is route evidence, not an inland fleet/factor default."
+      source_ids:
+        - epa-harbor-craft
+    - rule_id: boundary_receiver
+      applies_to: "foreground_system_boundary"
+      rule: "Screen actual cooling-water return, bilge/sewage reception, oil leaks, antifouling constituents, wake/propeller disturbance and underwater noise. Assign actual river/lake/brackish receiver and species; collected wastewater is not assumed direct river discharge. Chemical rows do not establish complete local ecological coverage."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified inland assisted vessel and accepted pilotage/berthing task with existing service craft and base; customer propulsion is separately owned activity"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Inland pilot conduct/transfer and tug berthing only, excluding transport towing and coastal tasks"
+  recursive_input_rule: "Subcontracted pilot/tug component enters once with actual task scope and provider inventory; remove overlapping owned craft/fuel/assets"
+  upstream_dataset_requirement: "Actual fuels/electricity, service-craft/line/fender manufacture, base share, maintenance, crew transfer and real waste-reception/treatment inventories"
+  disclosure: "Task variant/interfaces, all service phases, actual inland conditions, crew/craft identities, customer propulsion/provider scope, water receiver, asset denominator and data gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed specified inland pilotage or tug-berthing task"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "pilot_only/tug_berthing_only/combined_package"
+    - "exact completed task and component gates"
+    - "inland river/lake/port and actual water classification"
+    - "route/start/end/berth"
+    - "aided vessel length/beam/draft/displacement/load/propulsion status"
+    - "actual water level/current/direction"
+    - "weather/visibility"
+    - "under-keel and bridge/lock clearance observations and local operating limits"
+    - "actual transit/assist/idle/standby/reposition/return distances and times"
+    - "pilot transfer route"
+    - "tug/pilot-boat IDs and power/engine/bollard-pull configuration"
+    - "actual engine duty and number of craft"
+    - "lines/fenders"
+    - "customer propulsion boundary"
+    - "supply/shore power"
+    - "operator/provider split"
+    - "actual completion/quality and safety record"
+    - "asset life and maintenance scope"
+    - "location and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: task_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count accepted tasks through cp_activity with fixed variant/extent; retries and package components do not increase whole-task count."
+  - id: fuel_mass
+    applies_to: "diesel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure task fuel by craft/engine/duty. Litres require traceable actual grade density/temperature; no fixed fuel per tug power or river distance."
+  - id: water_receiver
+    applies_to: "river_water; river_return"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use actual abstraction/return volume and receiving compartment. Inland classification is not permission to copy seawater flows or assume every local receiver is identical."
+process_map:
+  - id: inland_task
+    name: "Complete the defined inland pilotage/berthing task"
+    inclusion: "required"
+    inclusion_condition: "One actual service variant; individual row conditions apply"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: inland_task
+    label: "Complete the defined inland pilotage/berthing task"
+    inputs:
+      product:
+        - row_id: diesel
+          role: "Diesel fuel, unblended"
+          name: "Diesel fuel, unblended"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual tug/pilot-boat or operator equipment consumption of this grade. Measure actual main/auxiliary engine use; other fuel grades/blends require their own specific rows. Assisted-vessel propulsion is not this fuel."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: craft_power
+          role: "Electricity, shore supply to service craft"
+          name: "Electricity, shore supply to service craft"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual electric/hybrid charging or at-dock auxiliary supply to the tug/pilot boat. Meter charging/auxiliary use and losses separately from customer ship energy; retain regional supply and actual avoided overlap with fuel."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: base_power
+          role: "Electricity, inland pilotage shore-base supply"
+          name: "Electricity, inland pilotage shore-base supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter actual task planning, communications, dispatch, lighting and service-base support; allocate measured shared loads and standby, excluding unrelated port functions."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: engine_oil
+          role: "Mineral engine lubricating oil"
+          name: "Mineral engine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual engine lubrication; collect grade and issued/returned/retired oil and attribute actual maintenance by supported engine activity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Mineral hydraulic oil"
+          name: "Mineral hydraulic oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual steering/winch hydraulic use and maintenance; distinguish this fluid from engine oil and record actual recovery/leaks."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: towline
+          role: "Braided polypropylene towing rope"
+          name: "Braided polypropylene towing rope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual rope material; identify grade, diameter, measured mass and real replacement/utilization fraction. Steel-wire or other polymer ropes require separate rows, not a combined cable category."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: fender
+          role: "Vulcanized rubber tug fender"
+          name: "Vulcanized rubber tug fender"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual fender use; identify design and manufacturing inventory, attribute supported use/replacement share and avoid repeat inclusion in the tug construction inventory."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual crew/base sanitation or service-craft cleaning; measure and distinguish water supplied to the assisted ship as a commodity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: pilot_road_transfer
+          role: "Pilot transfer by petrol passenger car"
+          name: "Pilot transfer by petrol passenger car"
+          flow_type: "product"
+          property_unit: "Passenger transport / person*km"
+          description: "Conditional on actual task-related road transfer; record route, actual distance, occupancy and allocated passenger-distance. Boat transfer uses the pilot-boat operations instead; do not duplicate a provider-covered journey."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_transfer."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transfer
+              source_ids: []
+            ranges: []
+        - row_id: tug_share
+          role: "Configured inland berthing tugboat"
+          name: "Configured inland berthing tugboat"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual tug berthing; fix hull, propulsion, engine, power/bollard-pull and manufacturing scope, using supported whole-life activity and task use. Do not use the customer ship inventory."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: pilot_boat_share
+          role: "Configured inland pilot-transfer boat"
+          name: "Configured inland pilot-transfer boat"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Conditional on actual launch use; identify vessel/configuration and supported manufacture/renewal denominator. A shore-boarded pilot does not require an invented launch."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: base_share
+          role: "Configured inland pilotage shore-base building"
+          name: "Configured inland pilotage shore-base building"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Conditional on actual base building use; assign identified floor/shared area and supported service-life fraction, excluding whole-port assets not used by this task."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_water
+          role: "Water, freshwater, withdrawn from river"
+          name: "Water, freshwater, withdrawn from river"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual river-water intake for an open cooling circuit; record source, measured volume, recirculation and temperature. Another receiver/source needs a distinct matching flow."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_cooling."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: pilotage_task
+          role: "Completed specified inland pilotage or tug-berthing task"
+          name: "Completed specified inland pilotage or tug-berthing task"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "One task fixes pilot-only, tug-berthing-only or the exact combined package, vessel/environment and actual start/end interfaces; components are not independent whole-package outputs."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_activity
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: used_engine_oil
+          role: "Used mineral engine oil"
+          name: "Used mineral engine oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual segregated engine-oil removal; weigh and identify shore reception/treatment. Hydraulic waste oil requires its own stream if not genuinely collected as the same specified waste."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: bilge_water
+          role: "Oily service-craft bilge water"
+          name: "Oily service-craft bilge water"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual collected oily bilge water; measure volume/oil composition and actual shore reception/treatment. It is not a presumed direct discharge to the river."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: sewage
+          role: "Service-craft sanitary sewage"
+          name: "Service-craft sanitary sewage"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual crew wastewater; record measured or reconciled volume and real reception/onboard treatment scope. Actual environmental release needs separate species/receiver evidence."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: worn_rope
+          role: "Discarded polypropylene towing rope"
+          name: "Discarded polypropylene towing rope"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual retired polypropylene rope; weigh this stream separately and identify treatment/reuse; no automatic recycling credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: river_return
+          role: "Water, returned to river"
+          name: "Water, returned to river"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual cooling-water return to the river; measure volume/temperature and actual chemical quality. Gross circulation is not freshwater consumption; thermal effects need separate site-method evidence."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_cooling."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling
+              source_ids: []
+            ranges: []
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual service-craft/operator combustion release. Use actual fuel carbon/oxidation or measured release, keeping supplier electricity and customer propulsion separate."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: carbon_monoxide
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual service-craft/operator combustion release. Use species-specific actual engine/duty evidence; an aggregate combustion-emission mass is not CO."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_monoxide
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual service-craft/operator combustion release. Require measured or supported NO speciation; a NOx total is not automatically NO."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual service-craft/operator combustion release. Record NO2 independently from NO; preserve equivalent-mass and species conversion evidence rather than duplicating a NOx total."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+        - row_id: sulfur_dioxide
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual service-craft/operator combustion release. Use actual fuel-sulfur and oxidation/control evidence or measurement; no marine-fuel sulfur assumption for an inland craft."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_release."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_task
+    applies_to: "foreground_burden_allocation"
+    rule: "Subdivide pilot, tug and package scopes and unlike vessel/environment tasks first. Assign actual craft/engine fuel and charging by measured duty/time; distribute multi-job launch trips, return/reposition and standby by documented causal dispatch use and reconcile all jobs. Do not multiply a full fleet/day or full return voyage into every task."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Maintain persistent tug, pilot-boat, fender, rope and base ledgers with supported whole-life activity/cycle denominators. Attribute only the actual task fraction and actual renewal share; cumulative manufacturing fractions across all jobs/periods must not exceed one or reset annually. Observed-period allocation distributes only the already attributed period share. Unknown lifespan/denominator requires review and sensitivity; no invented vessel mass."
+    source_ids: []
+  - rule_id: allocate_provider
+    applies_to: "foreground_burden_allocation"
+    rule: "A contracted pilot/tug/transfer inventory replaces its covered fuel, equipment and waste once. Avoid fender/rope renewal already covered by the craft inventory. Customer propulsion, cargo, fees and successful vessel movement are not additional co-products; actual waste recycling receives no automatic credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_activity
+      process_id: "inland_task"
+      flow_role: "pilotage_task"
+      record_type: "Task, local-condition and dispatch ledger"
+      raw_fields: "variant/package; work order; aided vessel dimensions/draft/load/propulsion; actual inland route/berth; local water level/current; depth/bridge/lock clearance records; task gates/times; pilot transfer; craft IDs; actual assist/idle/reposition/return; shared dispatch; completion"
+      collection_method: "Match actual task plan, pilot/master/tug handover and dispatch/position records. Retain measured local conditions and actual accepted task interfaces; count homogeneous tasks only and keep component/package lineage, wait/retry and return attribution."
+      unit: "Item(s)"
+      frequency: "each actual task/phase"
+      temporal_coverage: "full task and assigned support phases"
+      site_scope: "all actual pilot/tug/transfer operators"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "task plans; handovers; AIS/GNSS or equivalent route logs; local hydrology; completion and dispatch reconciliation"
+    - protocol_id: cp_fuel
+      process_id: "inland_task"
+      flow_role: "diesel"
+      record_type: "Craft/engine fuel and duty ledger"
+      raw_fields: "craft/engine ID; power; actual duty/load/time; main/auxiliary fuel; grade; metered kg; stock; density/temperature if converted; assist/idle/transit phases"
+      collection_method: "Use actual flow meters/stock balances by engine and task where possible. Reconcile duty logs, waiting and deadhead; a supported engine-specific load-time fuel method is allowed only with verified local parameters and uncertainty. No universal power-distance coefficient."
+      unit: "kg"
+      frequency: "each phase and monitoring interval"
+      temporal_coverage: "all represented service-craft operation"
+      site_scope: "actual engines and operators"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "fuel meters; stock reconciliation; actual engine/duty records; parameter evidence"
+    - protocol_id: cp_energy
+      process_id: "inland_task"
+      flow_role: "craft_power; base_power"
+      record_type: "Electricity/charging and support ledger"
+      raw_fields: "meter; kWh; voltage/region; charger input/output/loss; actual vessel/base use; duty; standby; supplier coverage; customer electricity separation"
+      collection_method: "Meter actual shore/charging/base loads and assign task share with measured dispatch/use. Avoid fuel/charging overlap in hybrid phases and keep upstream power generation separate from onboard releases."
+      unit: "kWh"
+      frequency: "each charging/base interval and phase"
+      temporal_coverage: "full represented operation and standby"
+      site_scope: "actual craft/base/supply"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated meters; charge logs; supply records; task allocation"
+    - protocol_id: cp_material
+      process_id: "inland_task"
+      flow_role: "engine_oil; hydraulic_oil; towline; water"
+      record_type: "Specific material and maintenance ledger"
+      raw_fields: "individual grade/material; kg/m3; rope diameter/mass; issue/return; actual replacement; life/use evidence; stock; recovery and leaks"
+      collection_method: "Measure each specific material separately and assign supported actual usage/replacement share. Do not allocate a full rope or oil change to every job; record recovery and waste destinations."
+      unit: "kg; m3"
+      frequency: "each supply/maintenance/stock event"
+      temporal_coverage: "all attributable service support"
+      site_scope: "actual service craft/base"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weighing; stock/service logs; supplier composition; usage and material balance"
+    - protocol_id: cp_transfer
+      process_id: "inland_task"
+      flow_role: "pilot_road_transfer"
+      record_type: "Actual pilot-transfer journey ledger"
+      raw_fields: "route/mode; petrol vehicle; actual km; occupants; passenger share; purpose; package/provider overlap"
+      collection_method: "Read actual task-related journeys and passenger-distance; another transport mode needs a separate flow. Reconcile shared transfers and provider-included travel rather than assuming one journey per job."
+      unit: "person*km"
+      frequency: "each actual journey"
+      temporal_coverage: "full actual task transfer scope"
+      site_scope: "actual transfer operator"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "journey/dispatch logs; distance and occupancy records"
+    - protocol_id: cp_assets
+      process_id: "inland_task"
+      flow_role: "fender; tug_share; pilot_boat_share; base_share"
+      record_type: "Persistent craft/equipment/base ledger"
+      raw_fields: "asset ID/configuration; manufacture inventory; Item(s)/m2; task activity; supported lifetime/cycle denominator; actual renewal; prior cumulative fractions; period share; sensitivity"
+      collection_method: "Link actual hull/engine/fender/base inventories to supported whole-life service utilization. Keep separately modelled consumables/renewals non-overlapping and conserve allocation fractions across all jobs and periods; unknown denominator requires review."
+      unit: "Item(s); m2"
+      frequency: "each allocation and asset/renewal update"
+      temporal_coverage: "supported whole life and declared observation period"
+      site_scope: "actual pilot/tug/shore assets"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "asset and utilization records; supported life; scope/cumulative reconciliation"
+    - protocol_id: cp_waste
+      process_id: "inland_task"
+      flow_role: "used_engine_oil; bilge_water; sewage; worn_rope"
+      record_type: "Segregated vessel-waste reception ledger"
+      raw_fields: "individual stream; measured kg/m3; oil/chemical composition; event; collection; onboard treatment; shore recipient; treatment/disposal"
+      collection_method: "Measure each actual collected waste separately and trace onboard/shore treatment once. Do not treat delivered waste as a direct freshwater release or assume reception/treatment without records."
+      unit: "kg; m3"
+      frequency: "each actual transfer/discharge period"
+      temporal_coverage: "all attributable service waste"
+      site_scope: "actual craft and reception/treatment providers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "reception tickets; weighing/meters; composition; treatment inventory"
+    - protocol_id: cp_cooling
+      process_id: "inland_task"
+      flow_role: "river_water; river_return"
+      record_type: "Actual freshwater cooling balance"
+      raw_fields: "source/receiving river; actual m3; temperatures; open/closed circuit; recirculation; loss; contamination; task duty"
+      collection_method: "Measure actual intake/return and temperature, reconcile recirculation and consumed fraction; use actual local waterbody compartment. Thermal/ecological effects need explicit site evidence beyond volume balance."
+      unit: "m3"
+      frequency: "each operating/monitoring interval"
+      temporal_coverage: "actual open cooling operation"
+      site_scope: "actual inland river/craft"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "flow/temperature records; circuit configuration; water balance"
+    - protocol_id: cp_release
+      process_id: "inland_task"
+      flow_role: "fossil_co2; carbon_monoxide; nitrogen_monoxide; nitrogen_dioxide; sulfur_dioxide"
+      record_type: "Species-specific service-engine emission ledger"
+      raw_fields: "engine/fuel identity; actual load/time; fuel carbon/sulfur; measured species kg; air compartment; NO/NO2 speciation/equivalent basis; control conditions; method/factor applicability; uncertainty"
+      collection_method: "Use actual species measurements or independently verified engine/fuel/duty-specific evidence. Separate main/auxiliary and customer/provider scopes; never copy NOx into both NO and NO2 or apply coastal fuel defaults. Other actual emissions/leaks require their own species/receiver records."
+      unit: "kg"
+      frequency: "each actual duty and representative monitoring"
+      temporal_coverage: "all represented onboard/operator emissions"
+      site_scope: "actual service engines and receiving air"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "measurement reports; local fuel/engine evidence; duty/carbon/sulfur reconciliation"
+  calculation_rules:
+    - id: task_attribution
+      applies_to: "all inventory rows"
+      rule: "Assign actual operation, transfer, standby and maintenance to one homogeneous task variant/extent; divide by actual completed task count while retaining failed/retry work. Reference output is exactly 1 Item(s)."
+      inputs:
+        - cp_activity
+        - "attributable measured totals"
+      output: "exchange amount per reference flow"
+      source_ids: []
+    - id: asset_attribution
+      applies_to: "fender; tug_share; pilot_boat_share; base_share"
+      rule: "Apply the supported task fraction of whole-life service to actual asset manufacture and actual renewal scope; period observations distribute only the attributed period share, conserving all cumulative fractions."
+      inputs:
+        - cp_assets
+        - cp_activity
+      output: "asset amount per reference flow"
+      source_ids: []
+    - id: engine_species
+      applies_to: "fossil_co2; carbon_monoxide; nitrogen_monoxide; nitrogen_dioxide; sulfur_dioxide"
+      rule: "Use actual species mass or verified engine/fuel/duty evidence; record every applied factor/unit and NOx-equivalent-to-species conversion basis in the dataset. No numerical factor or load default is supplied by this PCR."
+      inputs:
+        - cp_release
+        - cp_fuel
+      output: "individual species release per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_task
+      applies_to: "pilotage_task"
+      requirement: "Verify variant, actual inland water domain, vessel configuration, local current/water-level/clearance records and task gates. Keep pilot-only, tug-only and package results distinct."
+      evidence: "cp_activity"
+    - id: quality_duty
+      applies_to: "all energy rows"
+      requirement: "Reconcile actual assist, transit, idle, standby, transfer and reposition. Do not infer consumption solely from distance, tug rated power or customer vessel displacement."
+      evidence: "cp_activity; cp_fuel; cp_energy"
+    - id: quality_lifecycle
+      applies_to: "all asset rows"
+      requirement: "Substantiate life/cycle denominators and conserved craft/fender/base shares with maintenance overlap removed; unknown life/upstream scope prevents complete lifecycle claims."
+      evidence: "cp_assets; cp_material"
+    - id: quality_water
+      applies_to: "all inventory rows"
+      requirement: "Verify actual freshwater/other inland receivers and real waste reception, chemical/leak identity, thermal/wake/noise coverage and uncertainty. Do not copy marine compartments or present missing evidence as zero."
+      evidence: "cp_waste; cp_cooling; cp_release"
+validation_rules:
+  - rule_id: validate_task
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require unique pilotage_task output equal to 1 Item(s), with one fixed variant, actual vessel/river conditions, task interfaces and complete craft/transfer scope. No unqualified equal-task factor."
+    source_ids: []
+  - rule_id: validate_classification
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject transport towing/pushing, non-tug shore towing, coastal pilotage and salvage/handling/storage disguised as inland berthing. Validate pilot/tug package component lineage and prevent double count."
+    source_ids:
+      - un-cpc-inland-pilotage
+  - rule_id: validate_boundaries
+    applies_to: "foreground_dataset_conformance"
+    rule: "Separate customer propulsion, port infrastructure and supplier-covered fuel/assets from service-craft operation. Verify actual whole-task return/standby allocation and conserved asset life shares, not full craft inventories per job."
+    source_ids: []
+  - rule_id: validate_atomic_water
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require specific fuel/rope/fender/waste/pollutant exchanges and verified actual applicability. Preserve NO/NO2 distinctions, water source/receiver and real treatment scope; identity and ecological gaps remain explicit without implying publication readiness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "inland_pilotage_berthing_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "A compatible inland pilotage/berthing task component with declared vessel, river conditions, interfaces and variant"
+  excluded_use: "Inland transport tow or full voyage, coastal pilotage, customer propulsion/port-infrastructure footprint, unqualified task comparisons or operational safety approval"
+  required_metadata: "pilot_only/tug_berthing_only/combined_package; exact completed task and component gates; inland river/lake/port and actual water classification; route/start/end/berth; aided vessel length/beam/draft/displacement/load/propulsion status; actual water level/current/direction, weather/visibility, under-keel and bridge/lock clearance observations and local operating limits; actual transit/assist/idle/standby/reposition/return distances and times; pilot transfer route; tug/pilot-boat IDs and power/engine/bollard-pull configuration; actual engine duty and number of craft; lines/fenders; customer propulsion boundary; supply/shore power; operator/provider split; actual completion/quality and safety record; asset life and maintenance scope; location and period"
+  required_quality_disclosure: "Identity/measurement and duty gaps; task/transfer/provider boundaries; freshwater/thermal/wake/noise scope; species factors; asset life and missing upstream evidence"
+  update_trigger: "Changed task variant, aided vessel, river conditions or clearance, route/berth, service craft/powertrain, fuel/supply, transfer plan, waste reception, provider or life/allocation evidence"
+data_sources:
+  - id: "un-cpc-inland-pilotage"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 67522 explanatory note, consistent with draft PDF pp375–376. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67522"
+    used_for: "Inland pilotage/pilot-vessel and tug docking/undocking scope; transport tow exclusion; no task factor"
+  - id: "mca-task-interfaces"
+    type: "official_guidance"
+    reference: "UK MCA, A guide to good practice on port and marine facilities, sections on pilotage, towage and passage planning, updated 15 April 2025. https://www.gov.uk/government/publications/a-guide-to-good-practice-on-port-marine-operations/a-guide-to-good-practice-on-port-and-marine-facilities"
+    used_for: "Task planning, pilot/master/tug coordination and handover record structure only; local inland operating limits are not inferred from UK examples"
+  - id: "epa-harbor-craft"
+    type: "official_guidance"
+    reference: "US EPA Harbor Craft Best Practices to Improve Air Quality, harbor-craft description and shore-power sections, web read 2026-10-23. https://www.epa.gov/ports-initiative/harbor-craft-hc-best-practices-improve-air-quality"
+    used_for: "Actual tug/pilot-craft and shore-power route separation; no universal inland engine, load, sulfur, voltage threshold or emission factor adopted"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8c368418ab988bbaef61401bb6c1e20f47d1ec3d45598ae6541e7cd21f50f364"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5972"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5972
+          line: 63
+          column: 1
+        end:
+          offset: 8510
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified inland assisted vessel and accepted pilotage/berthing task with existing service craft and base; customer propulsion is separately owned activity |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Inland pilot conduct/transfer and tug berthing only, excluding transport towing and coastal tasks |\n| recursive_input_rule | Subcontracted pilot/tug component enters once with actual task scope and provider inventory; remove overlapping owned craft/fuel/assets |\n| upstream_dataset_requirement | Actual fuels/electricity, service-craft/line/fender manufacture, base share, maintenance, crew transfer and real waste-reception/treatment inventories |\n| disclosure | Task variant/interfaces, all service phases, actual inland conditions, crew/craft identities, customer propulsion/provider scope, water receiver, asset denominator and data gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_task | Include actual preparation/dispatch, pilot transfer/boarding/landing, tug positioning/connection/assist/release, actual wait/retry and allocated return/reposition, base support and task-related maintenance. Do not invent a pilot boat for shore boarding or a tug for pilot-only service. | un-cpc-inland-pilotage |\n| boundary_interfaces | Retain actual agreed passage/task plan, pilot/master/tug communication, aided-vessel particulars and handover endpoints as task-definition evidence. UK MCA guidance informs record/interface structure; local inland water levels, currents, shallow reaches and bridge/lock clearance limits come from actual local records and are not imported numerical defaults. | mca-task-interfaces |\n| boundary_energy | Separate service-craft fuel/charging/auxiliaries from customer ship propulsion and port facilities. Actual shore connection can replace an auxiliary-engine activity, but grid and charging burdens remain; do not claim zero lifecycle emissions from zero onboard combustion. EPA harbor-craft guidance is route evidence, not an inland fleet/factor default. | epa-harbor-craft |\n| boundary_receiver | Screen actual cooling-water return, bilge/sewage reception, oil leaks, antifouling constituents, wake/propeller disturbance and underwater noise. Assign actual river/lake/brackish receiver and species; collected wastewater is not assumed direct river discharge. Chemical rows do not establish complete local ecological coverage. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 238
+              line: 8
+              column: 1
+            end:
+              offset: 287
+              line: 8
+              column: 50
+          text: "# Pilotage and berthing services in inland waters"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5972
+              line: 63
+              column: 1
+            end:
+              offset: 5993
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_24903"
+      family: "allocation"
+      span:
+        start:
+          offset: 24903
+          line: 469
+          column: 1
+        end:
+          offset: 26183
+          line: 477
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_task | Subdivide pilot, tug and package scopes and unlike vessel/environment tasks first. Assign actual craft/engine fuel and charging by measured duty/time; distribute multi-job launch trips, return/reposition and standby by documented causal dispatch use and reconcile all jobs. Do not multiply a full fleet/day or full return voyage into every task. |  |\n| allocate_assets | Maintain persistent tug, pilot-boat, fender, rope and base ledgers with supported whole-life activity/cycle denominators. Attribute only the actual task fraction and actual renewal share; cumulative manufacturing fractions across all jobs/periods must not exceed one or reset annually. Observed-period allocation distributes only the already attributed period share. Unknown lifespan/denominator requires review and sensitivity; no invented vessel mass. |  |\n| allocate_provider | A contracted pilot/tug/transfer inventory replaces its covered fuel, equipment and waste once. Avoid fender/rope renewal already covered by the craft inventory. Customer propulsion, cargo, fees and successful vessel movement are not additional co-products; actual waste recycling receives no automatic credit. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 238
+              line: 8
+              column: 1
+            end:
+              offset: 287
+              line: 8
+              column: 50
+          text: "# Pilotage and berthing services in inland waters"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 24903
+              line: 469
+              column: 1
+            end:
+              offset: 24943
+              line: 469
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_35332"
+      family: "validation"
+      span:
+        start:
+          offset: 35332
+          line: 510
+          column: 1
+        end:
+          offset: 36437
+          line: 519
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_task | Require unique pilotage_task output equal to 1 Item(s), with one fixed variant, actual vessel/river conditions, task interfaces and complete craft/transfer scope. No unqualified equal-task factor. |  |\n| validate_classification | Reject transport towing/pushing, non-tug shore towing, coastal pilotage and salvage/handling/storage disguised as inland berthing. Validate pilot/tug package component lineage and prevent double count. | un-cpc-inland-pilotage |\n| validate_boundaries | Separate customer propulsion, port infrastructure and supplier-covered fuel/assets from service-craft operation. Verify actual whole-task return/standby allocation and conserved asset life shares, not full craft inventories per job. |  |\n| validate_atomic_water | Require specific fuel/rope/fender/waste/pollutant exchanges and verified actual applicability. Preserve NO/NO2 distinctions, water source/receiver and real treatment scope; identity and ecological gaps remain explicit without implying publication readiness. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 238
+              line: 8
+              column: 1
+            end:
+              offset: 287
+              line: 8
+              column: 50
+          text: "# Pilotage and berthing services in inland waters"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 35332
+              line: 510
+              column: 1
+            end:
+              offset: 35354
+              line: 510
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_task"
+      identity_kind: "explicit"
+      unit_id: "normative_5972"
+      source_span:
+        start:
+          offset: 7021
+          line: 78
+          column: 1
+        end:
+          offset: 7351
+          line: 78
+          column: 331
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_5972"
+      source_span:
+        start:
+          offset: 7352
+          line: 79
+          column: 1
+        end:
+          offset: 7758
+          line: 79
+          column: 407
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_energy"
+      identity_kind: "explicit"
+      unit_id: "normative_5972"
+      source_span:
+        start:
+          offset: 7759
+          line: 80
+          column: 1
+        end:
+          offset: 8152
+          line: 80
+          column: 394
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_receiver"
+      identity_kind: "explicit"
+      unit_id: "normative_5972"
+      source_span:
+        start:
+          offset: 8153
+          line: 81
+          column: 1
+        end:
+          offset: 8508
+          line: 81
+          column: 356
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_task"
+      identity_kind: "explicit"
+      unit_id: "normative_24903"
+      source_span:
+        start:
+          offset: 24997
+          line: 473
+          column: 1
+        end:
+          offset: 25365
+          line: 473
+          column: 369
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_24903"
+      source_span:
+        start:
+          offset: 25366
+          line: 474
+          column: 1
+        end:
+          offset: 25844
+          line: 474
+          column: 479
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_24903"
+      source_span:
+        start:
+          offset: 25845
+          line: 475
+          column: 1
+        end:
+          offset: 26181
+          line: 475
+          column: 337
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_task"
+      identity_kind: "explicit"
+      unit_id: "normative_35332"
+      source_span:
+        start:
+          offset: 35408
+          line: 514
+          column: 1
+        end:
+          offset: 35627
+          line: 514
+          column: 220
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_classification"
+      identity_kind: "explicit"
+      unit_id: "normative_35332"
+      source_span:
+        start:
+          offset: 35628
+          line: 515
+          column: 1
+        end:
+          offset: 35884
+          line: 515
+          column: 257
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_boundaries"
+      identity_kind: "explicit"
+      unit_id: "normative_35332"
+      source_span:
+        start:
+          offset: 35885
+          line: 516
+          column: 1
+        end:
+          offset: 36146
+          line: 516
+          column: 262
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_atomic_water"
+      identity_kind: "explicit"
+      unit_id: "normative_35332"
+      source_span:
+        start:
+          offset: 36147
+          line: 517
+          column: 1
+        end:
+          offset: 36435
+          line: 517
+          column: 289
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5972"
+      source_span:
+        start:
+          offset: 5972
+          line: 63
+          column: 1
+        end:
+          offset: 5993
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5972"
+      source_span:
+        start:
+          offset: 6021
+          line: 67
+          column: 1
+        end:
+          offset: 6967
+          line: 74
+          column: 195
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_24903"
+      source_span:
+        start:
+          offset: 24903
+          line: 469
+          column: 1
+        end:
+          offset: 24943
+          line: 469
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_35332"
+      source_span:
+        start:
+          offset: 35332
+          line: 510
+          column: 1
+        end:
+          offset: 35354
+          line: 510
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8c368418ab988bbaef61401bb6c1e20f47d1ec3d45598ae6541e7cd21f50f364"
+  generated_content_sha256: "sha256:534a862fa8496c2aa343826c92253a86e12a3d0e3cdef10496ef3a720b840b4a"

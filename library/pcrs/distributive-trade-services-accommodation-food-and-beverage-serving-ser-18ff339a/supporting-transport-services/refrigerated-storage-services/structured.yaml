@@ -1,10 +1,1049 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "67210"
-  title: "Refrigerated storage services"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.supporting-transport-services.refrigerated-storage-services"
+  classification_refs: "CPC 3.0 67210"
+  covered_products: "Contract refrigerated storage of identified chilled or frozen lots, including associated blast freezing when performed; constituent operations actually included in the contract"
+  excluded_products: "Ambient warehousing; bulk tank storage; initial chilling/freezing/thawing sold separately; freight; standalone handling; goods production"
+  representative_product: "One tonne-day of accepted refrigerated storage under one declared condition stratum"
+  production_route: "Accept lot → perform associated blast freezing when contracted → put away → maintain monitored conditions → retrieve and release"
+  market_state: "Delivered refrigerated custody service with identified lot, agreed conditions and recorded residence time"
+functional_unit:
+  what: "Maintain a declared lot in the agreed chilled or frozen condition"
+  how_much: "1 tonne-day, calculated from actual net stored mass and elapsed storage time"
+  how_well: "Declared commodity/state, temperature band, humidity where relevant, monitoring coverage and documented acceptance/deviation criteria"
+  how_long_or_cycle: "24 hours equivalent residence of one tonne, including attributable receipt/release operations spread over actual residence time"
+  reference_flow_link: "storage_service"
+system_boundary:
+  rules:
+    - rule_id: boundary_service
+      applies_to: "foreground_system_boundary"
+      rule: "Include attributable refrigeration and room support from acceptance through release; include associated blast freezing as a distinct metered operation with recorded batch mass and incoming/outgoing state. Its energy and support burdens are attributed to the same lot storage service; freezing does not itself create extra storage tonne-days. Independently sold specialized food freezing is excluded."
+      source_ids: []
+    - rule_id: boundary_assets
+      applies_to: "foreground_system_boundary"
+      rule: "Screen building, refrigeration plant, pallets, maintenance and end-of-life burdens; assign actual upstream shares and disclose gaps. Never count an asset component both within an aggregate provider dataset and separately."
+      source_ids: []
+    - rule_id: boundary_losses
+      applies_to: "foreground_system_boundary"
+      rule: "Track missing/spoiled goods by lot and cause; disclose custody loss and its treatment separately. Where upstream replacement production is included in the study boundary, identify its separate product dataset; do not relabel lost goods as an emission or storage output."
+      source_ids: []
+    - rule_id: boundary_species
+      applies_to: "foreground_system_boundary"
+      rule: "Screen every actual refrigerant and release. The example species cards are conditional; add one chemically specific card for each other actual refrigerant and each elementary constituent released from a blend."
+      source_ids:
+        - epa-refrigerant-balance
+boundary_abstraction:
+  declared_starting_condition: "Accepted consignment at the recorded incoming condition; associated blast freezing, when performed, establishes the declared storage state; installed warehouse and refrigeration equipment with disclosed upstream production shares"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Refrigerated custody service and contract-included internal handling; no goods production or freight transport"
+  recursive_input_rule: "A separately purchased refrigerated-storage stage enters with its own verified upstream service inventory; identify serial stages and include each once. Internal transfers within the same facility do not create another full storage service."
+  upstream_dataset_requirement: "Supply-specific electricity; actual water/material/refrigerant production; wastewater/waste treatment; asset manufacture and end of life where attributed"
+  disclosure: "Initial condition; service condition strata; internal handling cutoff; occupancy; losses; own/provider split; asset life; omitted upstream data"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Refrigerated storage service, declared condition"
+    uuid: ""
+  flow_property_ref:
+    uuid: "b3f0f892-c5a3-4c66-a432-c09e3d1e9bd6"
+  unit_group_ref:
+    uuid: "59f191d6-5dd3-4553-af88-1a32accfe308"
+  reference_unit: "tday"
+  required_qualifiers:
+    - "warehouse and room"
+    - "lot/commodity"
+    - "chilled/frozen state"
+    - "net mass excluding packaging"
+    - "accepted temperature and humidity limits"
+    - "temperature history and excursions"
+    - "actual arrival/release timestamps"
+    - "receipt/dispatch boundary"
+    - "reporting period"
+    - occupancy
+    - "associated-freezing inclusion and batch state/temperature/energy"
+    - "refrigeration type and each refrigerant"
+    - "supply region/voltage"
+    - "provider/owned asset coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: storage_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass multiplied by time"
+      uuid: ""
+    required_unit: "tday"
+    rule: "Obtain net lot mass and timestamps using cp_service; 1 tday = 1 tonne × 1 day; 1 day = 24 hours. Do not use a pallet-day or nominal room capacity without measured conversion."
+  - id: condition_strata
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass*time"
+      uuid: ""
+    required_unit: "tday"
+    rule: "Separate different commodity states, temperature bands and associated-freezing inclusion; preserve the same denominator in activity allocation and collection."
+  - id: refrigerant_balance
+    applies_to: "ammonia_air; r134a_air; co2_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Resolve each refrigerant species separately with cp_refrigerant; additions alone do not establish atmospheric release."
+  - id: asset_basis
+    applies_to: "asset normalization denominator"
+    required_property_ref:
+      name: "Mass*time"
+      uuid: ""
+    required_unit: "tday"
+    rule: "Use documented lifetime service and observed utilization using cp_assets; financial depreciation is not physical service life."
+process_map:
+  - id: cold_store
+    name: "Receive, refrigerate, maintain and release stored lot"
+    inclusion: "required"
+    inclusion_condition: "Actual contract and room configuration; row conditions apply"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: cold_store
+    label: "Receive, refrigerate, maintain and release stored lot"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Electricity, alternating current"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Use attributable holding refrigeration, fans, defrosting, lighting, controls and electric internal handling meters; exclude the separately recorded associated-freezing electricity and partition shared loads by measured thermal/service drivers."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Electricity for associated blast freezing"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on blast freezing performed with the warehouse service. Use the dedicated freezer meter and actual batch/temperature history; exclude this quantity from the holding-electricity card. Allocate each batch once to its actual stored lots, then to their positive delivered storage service. A standalone specialized freezing contract is outside this PCR."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_freezing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing
+              source_ids:
+                - un-cpc-refrigerated
+            ranges: []
+        - row_id: water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual water-cooled condensation or cleaning; record net fresh supply, not recirculating pump throughput."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_utilities."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: ammonia_input
+          role: "Ammonia, anhydrous"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an ammonia circuit: record actual purchases and charge transfers, distinguish initial charge from replacement and supplier-covered equipment charge. Attribute consumed supply after stock/return corrections; purchases retained for a future period are not current consumption."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+        - row_id: r134a_input
+          role: "1,1,1,2-Tetrafluoroethane, refrigerant R134a"
+          name: "1,1,1,2-Tetrafluoroethane, refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only a verified R134a circuit; never substitute this pure refrigerant for a blend or another HFC. Correct purchases for stored stock and returns before attributing input consumption."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+        - row_id: co2_input
+          role: "Carbon dioxide, refrigerant R744"
+          name: "Carbon dioxide, refrigerant R744"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an R744 circuit; retain supplier origin and actual charge inventory. Correct purchases for stored stock and returns before attributing input consumption."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+        - row_id: lubricant
+          role: "Polyol ester refrigeration compressor lubricant"
+          name: "Polyol ester refrigeration compressor lubricant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on this actual lubricant chemistry; another lubricant is a separate specific exchange."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide, aqueous solution, 30 percent by mass"
+          name: "Sodium hydroxide, aqueous solution, 30 percent by mass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual cleaning with this concentration; inventory formulation mass and active concentration separately."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: pallet_share
+          role: "Wooden warehouse pallet"
+          name: "Wooden warehouse pallet"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Only owned pallets: attribute production and repair by documented lifetime uses; supplier-included pallets are not charged again."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: compressor_share
+          role: "Industrial screw refrigeration compressor"
+          name: "Industrial screw refrigeration compressor"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Conditional on installed screw compressor; attribute upstream production using documented lifetime service. Other equipment designs require distinct rows."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: building_share
+          role: "Insulated refrigerated warehouse building"
+          name: "Insulated refrigerated warehouse building"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Attribute the building upstream dataset once, including its declared insulation boundary; exclude insulation already inside that dataset from separate component accounting."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene stretch film"
+          name: "Low-density polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual pallet wrapping provided by this storage service; customer-owned incoming packaging is a custody item, not newly produced film."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: storage_service
+          role: "Refrigerated storage service"
+          name: "Refrigerated storage service, declared condition"
+          flow_type: "product"
+          property_unit: "Mass*time b3f0f892-c5a3-4c66-a432-c09e3d1e9bd6 / tday"
+          description: "One conforming service quantity with the same condition stratum and custody boundary as cp_service."
+          amount:
+            expression: "1 tday"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_service
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Cold-store cleaning wastewater"
+          name: "Cold-store cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record actual wastewater to its named treatment destination; composition and treatment burden are required, with no treatment credit assumed."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_lubricant
+          role: "Spent polyol ester refrigeration compressor lubricant"
+          name: "Spent polyol ester refrigeration compressor lubricant"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual lubricant replacement; collect hazardous classification and receiving contractor evidence."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: waste_ldpe
+          role: "Discarded low-density polyethylene stretch film"
+          name: "Discarded low-density polyethylene stretch film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on discarded film within this service; distinguish recycling, incineration and disposal through separate dataset destinations, not an automatic avoided-production credit."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ammonia_air
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only a reconciled ammonia loss to air; do not equate charge purchases with leakage."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+        - row_id: r134a_air
+          role: "1,1,1,2-Tetrafluoroethane, to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only reconciled R134a release to air, recorded as species mass before LCIA characterization."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+        - row_id: co2_air
+          role: "Carbon dioxide, refrigerant release to air"
+          name: "Carbon dioxide, refrigerant release to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual R744 loss; disclose fossil/biogenic origin and receiving compartment before selecting its elementary identity."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_refrigerant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - epa-refrigerant-balance
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_meters
+    applies_to: "foreground_burden_allocation"
+    rule: "Prefer room/circuit submetering and subdivide receipt, storage and dispatch where separately sold. For shared utilities, document measured heat loads and operating drivers; do not allocate refrigerated and ambient activity by revenue or mass alone without causal justification. Reconcile all allocated shares to the facility total."
+    source_ids: []
+  - rule_id: allocation_service
+    applies_to: "foreground_burden_allocation"
+    rule: "Within one equivalent condition stratum, divide its attributable inventory by actual delivered tonne-days; allocate common idle-room/support burdens transparently over the same reporting period. Distinct temperature bands require separate measured or engineering-supported shares."
+    source_ids: []
+  - rule_id: allocation_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "Use observed asset utilization and supported lifetime delivered service for manufacturing/maintenance/end-of-life shares; preserve a separate denominator for pallet use or building area before mapping its burden to tonne-days. Do not invent lifetimes or copy financial amortization."
+    source_ids:
+      - fao-cold-operation
+  - rule_id: allocation_recovery
+    applies_to: "foreground_burden_allocation"
+    rule: "Report actual refrigerant transfers to recovery separately in the balance. Recovered stock is not an air emission and is not automatically a negative emission or virgin-production credit."
+    source_ids:
+      - epa-refrigerant-balance
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_service
+      process_id: "cold_store"
+      flow_role: "storage_service"
+      record_type: "warehouse log"
+      raw_fields: "lot; commodity; state; net mass; arrival/release timestamps; temperature band; exceptions; internal transfers"
+      collection_method: "Reconcile calibrated net-weight records, custody timestamps and monitored condition history; split records when mass or condition changes."
+      unit: "tday"
+      frequency: "each lot and condition interval"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "named room and equivalent condition stratum"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "scale calibration; timestamp audit; temperature logger calibration; contract acceptance"
+    - protocol_id: cp_freezing
+      process_id: "cold_store"
+      flow_role: "freezing_electricity"
+      record_type: "freezing batch record"
+      raw_fields: "batch and lot IDs; net batch mass; incoming/outgoing temperature and state; freezer meter opening/close; freezer duration; allocation share; linked storage lots"
+      collection_method: "Submeter the actual freezing operation, reconcile freezer bills and batch mass to the stored lots, record actual freezing acceptance and prevent overlap with holding refrigeration. Include each associated circuit in the species-specific refrigerant balance and asset ledger."
+      unit: "kWh"
+      frequency: "each freezing batch"
+      temporal_coverage: "same period and lot chain as cp_service"
+      site_scope: "associated freezer and its actual stored lots"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated meter; batch log; temperature record; storage linkage and utility reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "cold_store"
+      flow_role: "electricity; water"
+      record_type: "meter record"
+      raw_fields: "meter ID; opening/closing readings; room; circuit; operating period; share driver; supply specification"
+      collection_method: "Use calibrated submeter differences; reconcile site invoices and shared-load shares; distinguish fresh water from recirculation."
+      unit: "kWh; m3"
+      frequency: "meter interval"
+      temporal_coverage: "same period as cp_service"
+      site_scope: "same room/condition stratum"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration; invoices; meter coverage diagram; allocation reconciliation"
+    - protocol_id: cp_refrigerant
+      process_id: "cold_store"
+      flow_role: "ammonia_input; r134a_input; co2_input; ammonia_air; r134a_air; co2_air"
+      record_type: "mass balance"
+      raw_fields: "species; opening/closing cylinder stock; acquisition; offsite transfer; recovery; equipment charge at period start/end; service event; actual discharge compartment"
+      collection_method: "Weigh/verify each species stock and equipment charge; reconcile purchases, contractor additions, recovery and charge changes. Avoid counting a contractor transfer and site-stock withdrawal twice."
+      unit: "kg"
+      frequency: "each transfer and period opening/close"
+      temporal_coverage: "same period as cp_service"
+      site_scope: "named holding/freezer refrigeration circuit and allocated condition stratum"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "cylinder weighing; service records; recovery certificates; balance reconciliation"
+    - protocol_id: cp_materials
+      process_id: "cold_store"
+      flow_role: "lubricant; sodium_hydroxide; ldpe_film"
+      record_type: "material record"
+      raw_fields: "chemical/polymer identity; concentration; issued amount; returns; opening/closing stock; lot allocation"
+      collection_method: "Reconcile stores issues, returns and physical consumption by named material; preserve concentration and supplier evidence."
+      unit: "kg"
+      frequency: "each issue and period balance"
+      temporal_coverage: "same period as cp_service"
+      site_scope: "storage contract operations"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "stock cards; invoices; formulation specifications"
+    - protocol_id: cp_assets
+      process_id: "cold_store"
+      flow_role: "pallet_share; compressor_share; building_share"
+      record_type: "asset service record"
+      raw_fields: "asset ID; upstream dataset boundary; production burden; observed utilization; installation/retirement; maintenance; lifetime service evidence; allocated share"
+      collection_method: "Link each asset to production and disposal inventories; record actual activity and documented lifetime service; review uncertain life scenarios separately."
+      unit: "item; m2"
+      frequency: "asset change and annual reconciliation"
+      temporal_coverage: "documented lifetime and reporting period"
+      site_scope: "owned assets attributable to the room"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "asset register; maintenance logs; supplier inventories; service-life evidence"
+    - protocol_id: cp_waste
+      process_id: "cold_store"
+      flow_role: "cleaning_wastewater; spent_lubricant; waste_ldpe"
+      record_type: "waste transfer record"
+      raw_fields: "specific waste; amount; receiving process; composition; date; treatment boundary; lot/site share"
+      collection_method: "Meter/measure each waste separately and reconcile transfer notes to actual treatment; include treatment once."
+      unit: "kg; m3"
+      frequency: "each transfer"
+      temporal_coverage: "same period as cp_service"
+      site_scope: "storage operations and named receiver"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "waste manifests; treatment contract; laboratory composition where needed"
+  calculation_rules:
+    - id: service_integral
+      applies_to: "storage_service"
+      rule: "S = sum of net lot tonnes multiplied by residence days for each unchanged condition interval; use actual elapsed hours divided by 24. Delivered reference output is 1 tday."
+      inputs:
+        - cp_service
+      output: "delivered service S"
+      source_ids: []
+    - id: inventory_attribution
+      applies_to: "all inventory rows"
+      rule: "For each exchange, allocate the measured numerator to the declared condition stratum and divide by its positive delivered service S. Preserve numerator units and one common tonne-day denominator."
+      inputs:
+        - cp_service
+        - cp_utilities
+        - cp_materials
+        - cp_waste
+      output: "exchange amount per reference flow"
+      source_ids: []
+    - id: species_loss
+      applies_to: "ammonia_air; r134a_air; co2_air"
+      rule: "For each species, release = opening stored stock + acquisitions + opening equipment charge - closing stored stock - offsite transfers - closing equipment charge. Include recovered refrigerant in closing stock or offsite transfers once; investigate negative/unreconciled balances instead of clipping them. Divide attributable release by the same S."
+      inputs:
+        - cp_refrigerant
+        - cp_service
+      output: "species mass to air per reference flow"
+      source_ids:
+        - epa-refrigerant-balance
+    - id: asset_attribution
+      applies_to: "pallet_share; compressor_share; building_share"
+      rule: "Attribute the asset production, maintenance and disposal inventory using documented service utilization and lifetime delivered service, then the declared condition share and positive S. State uncertainty and prevent duplicate aggregate/component burdens."
+      inputs:
+        - cp_assets
+        - cp_service
+      output: "asset quantity share per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_conditions
+      applies_to: "storage_service"
+      requirement: "Complete lot mass-time and calibrated condition history; declare failures, missing intervals and goods losses without silently creating compliant output."
+      evidence: "cp_service"
+    - id: dq_closure
+      applies_to: "all inventory rows"
+      requirement: "Reconcile purchased utilities, material stock, waste destination, equipment shares and delivered service over matching periods; no assumed default ranges."
+      evidence: "cp_utilities; cp_materials; cp_assets; cp_waste"
+    - id: dq_refrigerant
+      applies_to: "ammonia_air; r134a_air; co2_air"
+      requirement: "Balance each actual species with charge and recovery changes; distinguish zero observed release from missing data; blend components need separate elementary identities."
+      evidence: "cp_refrigerant; epa-refrigerant-balance"
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Resolve flow/property/unit-group identities before database-linked use; a semantic atomic label does not establish a verified UUID."
+      evidence: "supplier specifications; direct identity verification"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one output linked as storage_service, 1 tday, positive delivered service and all condition/custody qualifiers; tonne-kilometres, pallet counts and nominal capacity cannot substitute for measured tonne-days."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require each actual chemical, material, waste and air species as an independent row; reconcile refrigerant stock, equipment charge, acquisitions, recovery and offsite transfer before accepting release."
+    source_ids:
+      - epa-refrigerant-balance
+  - rule_id: validate_period
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require matching activity/utility periods, shares summing to measured totals, supported lifetime asset allocation and explicit upstream gaps; a meter-only inventory cannot claim complete cradle-to-gate coverage."
+    source_ids: []
+  - rule_id: validate_double_count
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject duplicate initial cooling, external handling, customer packaging, supplier assets or freight burdens already in another included dataset."
+    source_ids: []
+  - rule_id: validate_unit_export
+    applies_to: "foreground_dataset_conformance"
+    rule: "Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Unit-process refrigerated-storage service inventory"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Equivalent commodity state, temperature/humidity band and custody/asset boundaries with disclosed allocation and period"
+  excluded_use: "Goods production; freight transport; initial freezing sold independently; universal cold-chain factor; direct use under incompatible temperature or occupancy conditions"
+  required_metadata: "All reference qualifiers; delivered S; meters and shares; refrigerant identities and balances; lifetime assets; waste destinations; collection/calculation provenance"
+  required_quality_disclosure: "UUID gaps; upstream coverage; temporal/condition completeness; exceptions and losses; uncertainty of allocation and asset service life"
+  update_trigger: "Change in room/commodity state, temperature band, refrigerant, electricity supply, occupancy, asset configuration, contract boundary or material data quality"
+data_sources:
+  - id: "un-cpc-refrigerated"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 code 67210 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67210"
+    used_for: "Associated blast freezing is included; independently contracted specialized food freezing is outside the subclass. Classification support only; no energy or temperature factor."
+  - id: "fao-cold-operation"
+    type: "official_guidance"
+    reference: "FAO, Manual on meat cold store operation and management, Costs and investment / Storage and handling administration. https://www.fao.org/4/t0098e/t0098e06.htm"
+    used_for: "Cold-store activity and energy records; distinction between financial depreciation and working life. Meat context; no numeric cost, lifetime or energy factor adopted."
+  - id: "fao-cold-equipment"
+    type: "official_guidance"
+    reference: "FAO, Manual on meat cold store operation and management, Refrigeration equipment. https://www.fao.org/4/t0098e/T0098E04.htm"
+    used_for: "Temperature, humidity and air-circulation monitoring relevance; no meat-specific temperature imposed on other goods."
+  - id: "epa-refrigerant-balance"
+    type: "official_guidance"
+    reference: "US EPA, Direct Fugitive Emissions from Refrigeration, Air Conditioning, Fire Suppression, and Industrial Gases, section 2.3, equations 4–5. https://www.epa.gov/sites/default/files/2020-12/documents/fugitiveemissions.pdf"
+    used_for: "Species-specific refrigerant material-balance logic; not a product LCA boundary, leakage factor, GWP or jurisdictional applicability claim."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:f5819f3b08d693dff8e5adbe2133536c392e0ee17b4b2119f35d642f817650b8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6082"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6082
+          line: 58
+          column: 1
+        end:
+          offset: 8527
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted consignment at the recorded incoming condition; associated blast freezing, when performed, establishes the declared storage state; installed warehouse and refrigeration equipment with disclosed upstream production shares |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Refrigerated custody service and contract-included internal handling; no goods production or freight transport |\n| recursive_input_rule | A separately purchased refrigerated-storage stage enters with its own verified upstream service inventory; identify serial stages and include each once. Internal transfers within the same facility do not create another full storage service. |\n| upstream_dataset_requirement | Supply-specific electricity; actual water/material/refrigerant production; wastewater/waste treatment; asset manufacture and end of life where attributed |\n| disclosure | Initial condition; service condition strata; internal handling cutoff; occupancy; losses; own/provider split; asset life; omitted upstream data |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_service` | Include attributable refrigeration and room support from acceptance through release; include associated blast freezing as a distinct metered operation with recorded batch mass and incoming/outgoing state. Its energy and support burdens are attributed to the same lot storage service; freezing does not itself create extra storage tonne-days. Independently sold specialized food freezing is excluded. |  |\n| `boundary_assets` | Screen building, refrigeration plant, pallets, maintenance and end-of-life burdens; assign actual upstream shares and disclose gaps. Never count an asset component both within an aggregate provider dataset and separately. |  |\n| `boundary_losses` | Track missing/spoiled goods by lot and cause; disclose custody loss and its treatment separately. Where upstream replacement production is included in the study boundary, identify its separate product dataset; do not relabel lost goods as an emission or storage output. |  |\n| `boundary_species` | Screen every actual refrigerant and release. The example species cards are conditional; add one chemically specific card for each other actual refrigerant and each elementary constituent released from a blend. | epa-refrigerant-balance |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 220
+              line: 8
+              column: 1
+            end:
+              offset: 251
+              line: 8
+              column: 32
+          text: "# Refrigerated storage services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6082
+              line: 58
+              column: 1
+            end:
+              offset: 6103
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21446"
+      family: "allocation"
+      span:
+        start:
+          offset: 21446
+          line: 387
+          column: 1
+        end:
+          offset: 22785
+          line: 396
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocation_meters` | Prefer room/circuit submetering and subdivide receipt, storage and dispatch where separately sold. For shared utilities, document measured heat loads and operating drivers; do not allocate refrigerated and ambient activity by revenue or mass alone without causal justification. Reconcile all allocated shares to the facility total. |  |\n| `allocation_service` | Within one equivalent condition stratum, divide its attributable inventory by actual delivered tonne-days; allocate common idle-room/support burdens transparently over the same reporting period. Distinct temperature bands require separate measured or engineering-supported shares. |  |\n| `allocation_assets` | Use observed asset utilization and supported lifetime delivered service for manufacturing/maintenance/end-of-life shares; preserve a separate denominator for pallet use or building area before mapping its burden to tonne-days. Do not invent lifetimes or copy financial amortization. | fao-cold-operation |\n| `allocation_recovery` | Report actual refrigerant transfers to recovery separately in the balance. Recovered stock is not an air emission and is not automatically a negative emission or virgin-production credit. | epa-refrigerant-balance |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 220
+              line: 8
+              column: 1
+            end:
+              offset: 251
+              line: 8
+              column: 32
+          text: "# Refrigerated storage services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21446
+              line: 387
+              column: 1
+            end:
+              offset: 21486
+              line: 387
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_29981"
+      family: "validation"
+      span:
+        start:
+          offset: 29981
+          line: 428
+          column: 1
+        end:
+          offset: 31432
+          line: 438
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require one output linked as storage_service, 1 tday, positive delivered service and all condition/custody qualifiers; tonne-kilometres, pallet counts and nominal capacity cannot substitute for measured tonne-days. |  |\n| `validate_balance` | Require each actual chemical, material, waste and air species as an independent row; reconcile refrigerant stock, equipment charge, acquisitions, recovery and offsite transfer before accepting release. | epa-refrigerant-balance |\n| `validate_period` | Require matching activity/utility periods, shares summing to measured totals, supported lifetime asset allocation and explicit upstream gaps; a meter-only inventory cannot claim complete cradle-to-gate coverage. |  |\n| `validate_double_count` | Reject duplicate initial cooling, external handling, customer packaging, supplier assets or freight burdens already in another included dataset. |  |\n| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 220
+              line: 8
+              column: 1
+            end:
+              offset: 251
+              line: 8
+              column: 32
+          text: "# Refrigerated storage services"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 29981
+              line: 428
+              column: 1
+            end:
+              offset: 30003
+              line: 428
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_service"
+      identity_kind: "explicit"
+      unit_id: "normative_6082"
+      source_span:
+        start:
+          offset: 7291
+          line: 73
+          column: 1
+        end:
+          offset: 7718
+          line: 73
+          column: 428
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_6082"
+      source_span:
+        start:
+          offset: 7719
+          line: 74
+          column: 1
+        end:
+          offset: 7967
+          line: 74
+          column: 249
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_6082"
+      source_span:
+        start:
+          offset: 7968
+          line: 75
+          column: 1
+        end:
+          offset: 8264
+          line: 75
+          column: 297
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_species"
+      identity_kind: "explicit"
+      unit_id: "normative_6082"
+      source_span:
+        start:
+          offset: 8265
+          line: 76
+          column: 1
+        end:
+          offset: 8525
+          line: 76
+          column: 261
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_meters"
+      identity_kind: "explicit"
+      unit_id: "normative_21446"
+      source_span:
+        start:
+          offset: 21540
+          line: 391
+          column: 1
+        end:
+          offset: 21900
+          line: 391
+          column: 361
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_service"
+      identity_kind: "explicit"
+      unit_id: "normative_21446"
+      source_span:
+        start:
+          offset: 21901
+          line: 392
+          column: 1
+        end:
+          offset: 22211
+          line: 392
+          column: 311
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_21446"
+      source_span:
+        start:
+          offset: 22212
+          line: 393
+          column: 1
+        end:
+          offset: 22541
+          line: 393
+          column: 330
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_21446"
+      source_span:
+        start:
+          offset: 22542
+          line: 394
+          column: 1
+        end:
+          offset: 22783
+          line: 394
+          column: 242
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_29981"
+      source_span:
+        start:
+          offset: 30057
+          line: 432
+          column: 1
+        end:
+          offset: 30301
+          line: 432
+          column: 245
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_29981"
+      source_span:
+        start:
+          offset: 30302
+          line: 433
+          column: 1
+        end:
+          offset: 30554
+          line: 433
+          column: 253
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_period"
+      identity_kind: "explicit"
+      unit_id: "normative_29981"
+      source_span:
+        start:
+          offset: 30555
+          line: 434
+          column: 1
+        end:
+          offset: 30793
+          line: 434
+          column: 239
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_double_count"
+      identity_kind: "explicit"
+      unit_id: "normative_29981"
+      source_span:
+        start:
+          offset: 30794
+          line: 435
+          column: 1
+        end:
+          offset: 30971
+          line: 435
+          column: 178
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_unit_export"
+      identity_kind: "explicit"
+      unit_id: "normative_29981"
+      source_span:
+        start:
+          offset: 30972
+          line: 436
+          column: 1
+        end:
+          offset: 31430
+          line: 436
+          column: 459
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6082"
+      source_span:
+        start:
+          offset: 6082
+          line: 58
+          column: 1
+        end:
+          offset: 6103
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6082"
+      source_span:
+        start:
+          offset: 6131
+          line: 62
+          column: 1
+        end:
+          offset: 7237
+          line: 69
+          column: 161
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21446"
+      source_span:
+        start:
+          offset: 21446
+          line: 387
+          column: 1
+        end:
+          offset: 21486
+          line: 387
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_29981"
+      source_span:
+        start:
+          offset: 29981
+          line: 428
+          column: 1
+        end:
+          offset: 30003
+          line: 428
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f5819f3b08d693dff8e5adbe2133536c392e0ee17b4b2119f35d642f817650b8"
+  generated_content_sha256: "sha256:bcb3c85888093821fc2b9f9a6407aec477b7baa9fea70ec6cfad45a6589046de"
