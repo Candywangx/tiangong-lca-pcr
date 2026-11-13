@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 任务活动及运输阶段；支持类别及精确功能；场址及地面飞行器客户接口；装备链路设施配置能力；实际时长起终；服务规模验收及实际质量；演练中止重试待机分配；气体物种状态纯度压力及保管转移回收；运营客户供应责任；实际计量公用工程；靶场运输及无关用户；资产生命周期分母；具体废物释放介质 |
+| 必需限定信息 | 任务活动及运输阶段;支持类别及精确功能;场址及地面飞行器客户接口;装备链路设施配置能力;实际时长起终;服务规模验收及实际质量;演练中止重试待机分配;气体物种状态纯度压力及保管转移回收;运营客户供应责任;实际计量公用工程;靶场运输及无关用户;资产生命周期分母;具体废物释放介质 |
 
 item是已核实Item(s)的单数别名，计一个指定验收支持任务区块。它不是发射、载荷千克、天线小时、数据吉字节或飞行；不同类别功能规模期间的事件不能仅按个数合并。其他强度读数须有实测匹配活动及有记录物理换算，且不声称功能等价。
 
@@ -543,7 +543,7 @@ item是已核实Item(s)的单数别名，计一个指定验收支持任务区块
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_task` | 所有清单行 | 将实际匹配交换归属指定支持功能规模期间；仅在证实配置质量等价后将可比合计清单除以验收任务区块数。不自动换算发射载荷小时。 | cp_task; 实际过程采集协议 | 每参考流 |  |
 | `calc_gas` | nitrogen; helium; air; nitrogen_air; helium_air | 外部接收+期初库存=期末库存+飞行客户转移+场外退回回收物料+实际地面释放+其他有证据最终去向，考虑化学转化并保持物种相态边界一致。内部回收复用不另增边界输入输出。地面使用计量是与各最终去向核对的活动账，绝不作为释放或回收之外的独立质量汇项相加；明确飞行物料上游分配。 | 气体与释放采集协议; cp_task | 每参考流物种质量 | nasa-gases |
@@ -551,7 +551,7 @@ item是已核实Item(s)的单数别名，计一个指定验收支持任务区块
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_function | support_output | 要求实际运输支持功能配置规模期间及验收接口；仅有航天港名称或任务标签不足。 | cp_task |
 | dq_balance | nitrogen; helium; air; water | 保留校准质量能源水记录及地面客户保管平衡，包括放散回收及供应上游范围。 | 气体/计量/释放采集协议 |
@@ -581,7 +581,7 @@ item是已核实Item(s)的单数别名，计一个指定验收支持任务区块
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc3-67640 | official_guidance | UNSD, CPC Version3.0, subclass67640 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67640 | 仅专门支持类别；详细功能边界是声明前景适用规则，不是联合国列举子型 |
 | nasa-gases | official_guidance | NASA, Propellants, Life Support Branch Fuels NASA Missions, June27 2023, paragraphs on ground gases, transfer and scrubbers. https://www.nasa.gov/centers-and-facilities/kennedy/propellants-life-support-branch-fuels-nasa-missions/ | 地面氮氦呼吸空气支持及被处理飞行物料区分；仅定性路线证据，不采用数量剂量因子 |

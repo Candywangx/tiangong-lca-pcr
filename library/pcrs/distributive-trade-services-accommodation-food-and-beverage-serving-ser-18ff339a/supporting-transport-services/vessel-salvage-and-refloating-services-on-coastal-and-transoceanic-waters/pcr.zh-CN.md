@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 事故任务编号；船货规模组成；受损沉没倾覆搁浅状态；精确沿海远洋地点及水深；海床天气潮汐水流；目标验收标准；实际泵吊浮力潜水切割配置；团队运行等待期间；动员/撤场路线；失败尝试；物理完成保管接口；初始污染存量及增量释放；回收财产废物去向；承包边界；资产利用量及电源 |
+| 必需限定信息 | 事故任务编号;船货规模组成;受损沉没倾覆搁浅状态;精确沿海远洋地点及水深;海床天气潮汐水流;目标验收标准;实际泵吊浮力潜水切割配置;团队运行等待期间;动员/撤场路线;失败尝试;物理完成保管接口;初始污染存量及增量释放;回收财产废物去向;承包边界;资产利用量及电源 |
 
 item是已核实Item(s)的单数别名，计量一个完成的明确打捞任务，不是新生产船舶、吨钢、费用、拖轮小时拖带距离或避免泄漏。不同事故目标船货规模及工况分别建模，不设默认换算或平均打捞因子。失败任务不得标成成功以创造分母。
 
@@ -469,7 +469,7 @@ item是已核实Item(s)的单数别名，计量一个完成的明确打捞任务
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_task_inventory` | 所有清单行 | 按有记录供应共用任务分配，汇总验收指定任务的实际可归属动员运行等待重试废物管理撤场交换。不除以回收废料质量或金钱报酬。 | cp_task; 实际任务采集协议 | 每参考流 |  |
 | `calc_asset_share` | workboat; floating_crane; pump; lifting_bag; steel_sling | 将有依据实际利用与寿命利用份额用于制造报废清单，核对累计份额及供应重叠，再归属cp_task。寿命不确定性须保持明确，不得用默认质量或默认寿命代替。 | cp_assets; cp_materials; cp_task | 每参考流资产份额 |  |
@@ -477,7 +477,7 @@ item是已核实Item(s)的单数别名，计量一个完成的明确打捞任务
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_objective | salvage_output | 要求初始事故状态及验收物理目标明确船货规模实际完成。报酬或支持拖轮小时不能确立打捞成功。 | cp_task |
 | dq_route | 所有清单行 | 匹配实际海况水深团队配置阶段记录；不采用典型打捞强度或虚构装备质量。 | cp_task; cp_assets |
@@ -507,7 +507,7 @@ item是已核实Item(s)的单数别名，计量一个完成的明确打捞任务
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc3-67531 | official_guidance | UNSD CPC Version3.0 subclass67531 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67531 | 物理船货打捞起吊扶正复浮及公共服务排除；本PCR仅适用所声明物理救助子集 |
 | imo-salvage-environment | official_guidance | IMO, International Convention on Salvage overview, environmental-damage and compensation context. https://www.imo.org/en/about/conventions/pages/international-convention-on-salvage.aspx | 海洋环保背景；不作为避免排放数值因子报酬公式或完整LCA方法 |

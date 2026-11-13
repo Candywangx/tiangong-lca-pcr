@@ -31,7 +31,7 @@ system_boundary:
       source_ids: []
     - rule_id: boundary_species
       applies_to: "foreground_system_boundary"
-      rule: "Screen every actual refrigerant and release. The example species cards are conditional; add one chemically specific card for each other actual refrigerant and each elementary constituent released from a blend."
+      rule: "Screen every actual refrigerant and fate. The example species cards are conditional; add specific cards and linked collection records for other actual refrigerants, each elementary constituent released from a blend, and actual captured waste, direct water discharge or transformation products, retaining identity, direction, compartment and receiving process. Refrigerant contained in transferred waste supports the balance but is not also an onsite elementary emission; count offsite treatment once."
       source_ids:
         - epa-refrigerant-balance
 boundary_abstraction:
@@ -66,6 +66,8 @@ reference_flow_definition:
     - "refrigeration type and each refrigerant"
     - "supply region/voltage"
     - "provider/owned asset coverage"
+    - "service-acceptance criteria and permitted deviations"
+    - "interval acceptance status and evidence"
 reference_flows:
   []
 measurement_rules:
@@ -491,14 +493,14 @@ dataset_production:
       process_id: "cold_store"
       flow_role: "storage_service"
       record_type: "warehouse log"
-      raw_fields: "lot; commodity; state; net mass; arrival/release timestamps; temperature band; exceptions; internal transfers"
-      collection_method: "Reconcile calibrated net-weight records, custody timestamps and monitored condition history; split records when mass or condition changes."
+      raw_fields: "lot; commodity; state; net mass; arrival/release timestamps; temperature band; exceptions; internal transfers; predeclared service-acceptance criteria and permitted deviations; interval acceptance status; partial-acceptance boundaries; unresolved reasons; acceptance evidence"
+      collection_method: "Reconcile calibrated net-weight records, custody timestamps and monitored condition history; split records when mass or condition changes. Classify accepted, rejected and unresolved intervals against the service-acceptance rules and reconcile the complete mass-time ledger; distinguish service failure from goods loss."
       unit: "tday"
       frequency: "each lot and condition interval"
       temporal_coverage: "complete declared reporting period"
       site_scope: "named room and equivalent condition stratum"
       aggregation_rule: "per reference flow"
-      quality_evidence: "scale calibration; timestamp audit; temperature logger calibration; contract acceptance"
+      quality_evidence: "scale calibration; timestamp audit; temperature logger calibration; contract acceptance; contract criteria and interval acceptance evidence"
     - protocol_id: cp_freezing
       process_id: "cold_store"
       flow_role: "freezing_electricity"
@@ -527,14 +529,14 @@ dataset_production:
       process_id: "cold_store"
       flow_role: "ammonia_input; r134a_input; co2_input; ammonia_air; r134a_air; co2_air"
       record_type: "mass balance"
-      raw_fields: "species; opening/closing cylinder stock; acquisition; offsite transfer; recovery; equipment charge at period start/end; service event; actual discharge compartment"
-      collection_method: "Weigh/verify each species stock and equipment charge; reconcile purchases, contractor additions, recovery and charge changes. Avoid counting a contractor transfer and site-stock withdrawal twice."
+      raw_fields: "species; opening/closing species stocks in cylinders, equipment and onsite capture media; acquisition; species mass transferred offsite; internal recovery transfers; actual onsite transformation and products; service event; discharge compartment; fate evidence; unreconciled difference"
+      collection_method: "Weigh/verify each species stock and equipment charge; reconcile purchases, contractor additions, recovery, capture-media composition and actual treatment. Use mutually exclusive stock, transfer, transformation and environmental-release entries; internal recovery or cylinder-to-equipment charging is not new acquisition or release. Determine species mass in aqueous/waste carriers from measured composition and carrier quantity, not total carrier mass."
       unit: "kg"
       frequency: "each transfer and period opening/close"
       temporal_coverage: "same period as cp_service"
       site_scope: "named holding/freezer refrigeration circuit and allocated condition stratum"
       aggregation_rule: "per reference flow"
-      quality_evidence: "cylinder weighing; service records; recovery certificates; balance reconciliation"
+      quality_evidence: "cylinder weighing; service records; recovery certificates; capture-media and treatment records; composition measurements and transformation evidence where applicable; fate and balance reconciliation"
     - protocol_id: cp_materials
       process_id: "cold_store"
       flow_role: "lubricant; sodium_hydroxide; ldpe_film"
@@ -574,14 +576,14 @@ dataset_production:
   calculation_rules:
     - id: service_integral
       applies_to: "storage_service"
-      rule: "S = sum of net lot tonnes multiplied by residence days for each unchanged condition interval; use actual elapsed hours divided by 24. Delivered reference output is 1 tday."
+      rule: "S = sum of accepted net lot tonnes multiplied by actual elapsed hours / 24 for nonoverlapping intervals within one equivalent condition stratum. Apply the contract service-acceptance criteria declared before aggregation, including permitted deviations; assess the delivered storage service, not an unstated guarantee of goods quality. Split intervals at mass, condition or acceptance-status changes; count only evidenced accepted mass-time, including the accepted part of a partly rejected interval. Exclude failed/nonconforming service intervals from S. Goods loss alone does not reject an otherwise accepted service interval; record its cause and contractual responsibility. Keep unresolved acceptance separate and do not finalize S until resolved; do not retrospectively relax criteria."
       inputs:
         - cp_service
       output: "delivered service S"
       source_ids: []
     - id: inventory_attribution
       applies_to: "all inventory rows"
-      rule: "For each exchange, allocate the measured numerator to the declared condition stratum and divide by its positive delivered service S. Preserve numerator units and one common tonne-day denominator."
+      rule: "Retain all attributable burdens of failed, rejected, remedial and idle activity in the same declared reporting-period/condition stratum; do not remove their inventory when excluding their service time. Divide each allocated exchange numerator once by positive accepted S. If S is zero, report unnormalized totals and failure coverage; do not fabricate a per-reference result. Preserve each numerator unit and one common tonne-day denominator; allocate measured numerators to the declared condition stratum."
       inputs:
         - cp_service
         - cp_utilities
@@ -591,7 +593,7 @@ dataset_production:
       source_ids: []
     - id: species_loss
       applies_to: "ammonia_air; r134a_air; co2_air"
-      rule: "For each species, release = opening stored stock + acquisitions + opening equipment charge - closing stored stock - offsite transfers - closing equipment charge. Include recovered refrigerant in closing stock or offsite transfers once; investigate negative/unreconciled balances instead of clipping them. Divide attributable release by the same S."
+      rule: "For each species reconcile: total opening onsite species stocks + external acquisitions - total closing onsite species stocks - species mass transferred offsite - evidenced species mass transformed onsite = mass to air + mass discharged directly to water and other environmental compartments + unreconciled difference. Onsite stocks include cylinders, equipment charge and capture media; count every entry once. Only fate-reconciled mass to air enters the corresponding air row and is divided by the same positive S. Do not treat unexplained differences, capture or aqueous transfers as air emissions; investigate negative balances or unknown fates and retain them as gaps, without clipping to zero or assuming release fractions. Reconcile actual transformation products and releases separately."
       inputs:
         - cp_refrigerant
         - cp_service
@@ -617,7 +619,7 @@ dataset_production:
       evidence: "cp_utilities; cp_materials; cp_assets; cp_waste"
     - id: dq_refrigerant
       applies_to: "ammonia_air; r134a_air; co2_air"
-      requirement: "Balance each actual species with charge and recovery changes; distinguish zero observed release from missing data; blend components need separate elementary identities."
+      requirement: "Reconcile all stocks, transfers, capture, actual transformation and release fates for each species; distinguish zero observed release from missing data. Unexplained differences cannot finalize air-emission amounts; blend components need separate elementary identities."
       evidence: "cp_refrigerant; epa-refrigerant-balance"
     - id: dq_identity
       applies_to: "all inventory rows"
@@ -626,11 +628,11 @@ dataset_production:
 validation_rules:
   - rule_id: validate_reference
     applies_to: "foreground_dataset_conformance"
-    rule: "Require one output linked as storage_service, 1 tday, positive delivered service and all condition/custody qualifiers; tonne-kilometres, pallet counts and nominal capacity cannot substitute for measured tonne-days."
+    rule: "Require one output linked as storage_service, 1 tday, positive delivered service and all condition/custody qualifiers; tonne-kilometres, pallet counts and nominal capacity cannot substitute for measured tonne-days. Reconcile accepted, rejected and unresolved intervals to the full ledger and retain failed-activity burdens in the numerator. Unresolved acceptance or nonpositive S prevents finalizing a per-reference result."
     source_ids: []
   - rule_id: validate_balance
     applies_to: "foreground_dataset_conformance"
-    rule: "Require each actual chemical, material, waste and air species as an independent row; reconcile refrigerant stock, equipment charge, acquisitions, recovery and offsite transfer before accepting release."
+    rule: "Require each actual chemical, material, waste and environmental emission species as an independent row; reconcile all refrigerant stocks, charge, acquisitions, recovery, capture, offsite transfers, actual transformation and environmental fates before accepting air release. Unknown fates remain gaps; prevent counting a waste carrier and its contained species again as onsite emissions."
     source_ids:
       - epa-refrigerant-balance
   - rule_id: validate_period
@@ -672,21 +674,21 @@ data_sources:
     used_for: "Species-specific refrigerant material-balance logic; not a product LCA boundary, leakage factor, GWP or jurisdictional applicability claim."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:f5819f3b08d693dff8e5adbe2133536c392e0ee17b4b2119f35d642f817650b8"
+  source_sha256: "sha256:c6c257a32ce58634b4f016945f7192ee2e878473569225fc66e3f7cc088d6b61"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6082"
+    - unit_id: "normative_6378"
       family: "system_boundary"
       span:
         start:
-          offset: 6082
+          offset: 6378
           line: 58
           column: 1
         end:
-          offset: 8527
+          offset: 9114
           line: 78
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted consignment at the recorded incoming condition; associated blast freezing, when performed, establishes the declared storage state; installed warehouse and refrigeration equipment with disclosed upstream production shares |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Refrigerated custody service and contract-included internal handling; no goods production or freight transport |\n| recursive_input_rule | A separately purchased refrigerated-storage stage enters with its own verified upstream service inventory; identify serial stages and include each once. Internal transfers within the same facility do not create another full storage service. |\n| upstream_dataset_requirement | Supply-specific electricity; actual water/material/refrigerant production; wastewater/waste treatment; asset manufacture and end of life where attributed |\n| disclosure | Initial condition; service condition strata; internal handling cutoff; occupancy; losses; own/provider split; asset life; omitted upstream data |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_service` | Include attributable refrigeration and room support from acceptance through release; include associated blast freezing as a distinct metered operation with recorded batch mass and incoming/outgoing state. Its energy and support burdens are attributed to the same lot storage service; freezing does not itself create extra storage tonne-days. Independently sold specialized food freezing is excluded. |  |\n| `boundary_assets` | Screen building, refrigeration plant, pallets, maintenance and end-of-life burdens; assign actual upstream shares and disclose gaps. Never count an asset component both within an aggregate provider dataset and separately. |  |\n| `boundary_losses` | Track missing/spoiled goods by lot and cause; disclose custody loss and its treatment separately. Where upstream replacement production is included in the study boundary, identify its separate product dataset; do not relabel lost goods as an emission or storage output. |  |\n| `boundary_species` | Screen every actual refrigerant and release. The example species cards are conditional; add one chemically specific card for each other actual refrigerant and each elementary constituent released from a blend. | epa-refrigerant-balance |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Accepted consignment at the recorded incoming condition; associated blast freezing, when performed, establishes the declared storage state; installed warehouse and refrigeration equipment with disclosed upstream production shares |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Refrigerated custody service and contract-included internal handling; no goods production or freight transport |\n| recursive_input_rule | A separately purchased refrigerated-storage stage enters with its own verified upstream service inventory; identify serial stages and include each once. Internal transfers within the same facility do not create another full storage service. |\n| upstream_dataset_requirement | Supply-specific electricity; actual water/material/refrigerant production; wastewater/waste treatment; asset manufacture and end of life where attributed |\n| disclosure | Initial condition; service condition strata; internal handling cutoff; occupancy; losses; own/provider split; asset life; omitted upstream data |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_service` | Include attributable refrigeration and room support from acceptance through release; include associated blast freezing as a distinct metered operation with recorded batch mass and incoming/outgoing state. Its energy and support burdens are attributed to the same lot storage service; freezing does not itself create extra storage tonne-days. Independently sold specialized food freezing is excluded. |  |\n| `boundary_assets` | Screen building, refrigeration plant, pallets, maintenance and end-of-life burdens; assign actual upstream shares and disclose gaps. Never count an asset component both within an aggregate provider dataset and separately. |  |\n| `boundary_losses` | Track missing/spoiled goods by lot and cause; disclose custody loss and its treatment separately. Where upstream replacement production is included in the study boundary, identify its separate product dataset; do not relabel lost goods as an emission or storage output. |  |\n| `boundary_species` | Screen every actual refrigerant and fate. The example species cards are conditional; add specific cards and linked collection records for other actual refrigerants, each elementary constituent released from a blend, and actual captured waste, direct water discharge or transformation products, retaining identity, direction, compartment and receiving process. Refrigerant contained in transferred waste supports the balance but is not also an onsite elementary emission; count offsite treatment once. | epa-refrigerant-balance |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -703,11 +705,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6082
+              offset: 6378
               line: 58
               column: 1
             end:
-              offset: 6103
+              offset: 6399
               line: 58
               column: 22
           text: "## 5. System Boundary"
@@ -723,15 +725,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_21446"
+    - unit_id: "normative_22033"
       family: "allocation"
       span:
         start:
-          offset: 21446
+          offset: 22033
           line: 387
           column: 1
         end:
-          offset: 22785
+          offset: 23372
           line: 396
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocation_meters` | Prefer room/circuit submetering and subdivide receipt, storage and dispatch where separately sold. For shared utilities, document measured heat loads and operating drivers; do not allocate refrigerated and ambient activity by revenue or mass alone without causal justification. Reconcile all allocated shares to the facility total. |  |\n| `allocation_service` | Within one equivalent condition stratum, divide its attributable inventory by actual delivered tonne-days; allocate common idle-room/support burdens transparently over the same reporting period. Distinct temperature bands require separate measured or engineering-supported shares. |  |\n| `allocation_assets` | Use observed asset utilization and supported lifetime delivered service for manufacturing/maintenance/end-of-life shares; preserve a separate denominator for pallet use or building area before mapping its burden to tonne-days. Do not invent lifetimes or copy financial amortization. | fao-cold-operation |\n| `allocation_recovery` | Report actual refrigerant transfers to recovery separately in the balance. Recovered stock is not an air emission and is not automatically a negative emission or virgin-production credit. | epa-refrigerant-balance |\n\n"
@@ -751,11 +753,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 21446
+              offset: 22033
               line: 387
               column: 1
             end:
-              offset: 21486
+              offset: 22073
               line: 387
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -771,18 +773,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_29981"
+    - unit_id: "normative_32939"
       family: "validation"
       span:
         start:
-          offset: 29981
+          offset: 32939
           line: 428
           column: 1
         end:
-          offset: 31432
+          offset: 34784
           line: 438
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require one output linked as storage_service, 1 tday, positive delivered service and all condition/custody qualifiers; tonne-kilometres, pallet counts and nominal capacity cannot substitute for measured tonne-days. |  |\n| `validate_balance` | Require each actual chemical, material, waste and air species as an independent row; reconcile refrigerant stock, equipment charge, acquisitions, recovery and offsite transfer before accepting release. | epa-refrigerant-balance |\n| `validate_period` | Require matching activity/utility periods, shares summing to measured totals, supported lifetime asset allocation and explicit upstream gaps; a meter-only inventory cannot claim complete cradle-to-gate coverage. |  |\n| `validate_double_count` | Reject duplicate initial cooling, external handling, customer packaging, supplier assets or freight burdens already in another included dataset. |  |\n| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require one output linked as storage_service, 1 tday, positive delivered service and all condition/custody qualifiers; tonne-kilometres, pallet counts and nominal capacity cannot substitute for measured tonne-days. Reconcile accepted, rejected and unresolved intervals to the full ledger and retain failed-activity burdens in the numerator. Unresolved acceptance or nonpositive S prevents finalizing a per-reference result. |  |\n| `validate_balance` | Require each actual chemical, material, waste and environmental emission species as an independent row; reconcile all refrigerant stocks, charge, acquisitions, recovery, capture, offsite transfers, actual transformation and environmental fates before accepting air release. Unknown fates remain gaps; prevent counting a waste carrier and its contained species again as onsite emissions. | epa-refrigerant-balance |\n| `validate_period` | Require matching activity/utility periods, shares summing to measured totals, supported lifetime asset allocation and explicit upstream gaps; a meter-only inventory cannot claim complete cradle-to-gate coverage. |  |\n| `validate_double_count` | Reject duplicate initial cooling, external handling, customer packaging, supplier assets or freight burdens already in another included dataset. |  |\n| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -799,11 +801,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 29981
+              offset: 32939
               line: 428
               column: 1
             end:
-              offset: 30003
+              offset: 32961
               line: 428
               column: 23
           text: "## 9. Validation Rules"
@@ -823,219 +825,219 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_service"
       identity_kind: "explicit"
-      unit_id: "normative_6082"
+      unit_id: "normative_6378"
       source_span:
         start:
-          offset: 7291
+          offset: 7587
           line: 73
           column: 1
         end:
-          offset: 7718
+          offset: 8014
           line: 73
           column: 428
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_assets"
       identity_kind: "explicit"
-      unit_id: "normative_6082"
+      unit_id: "normative_6378"
       source_span:
         start:
-          offset: 7719
+          offset: 8015
           line: 74
           column: 1
         end:
-          offset: 7967
+          offset: 8263
           line: 74
           column: 249
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_losses"
       identity_kind: "explicit"
-      unit_id: "normative_6082"
+      unit_id: "normative_6378"
       source_span:
         start:
-          offset: 7968
+          offset: 8264
           line: 75
           column: 1
         end:
-          offset: 8264
+          offset: 8560
           line: 75
           column: 297
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_species"
       identity_kind: "explicit"
-      unit_id: "normative_6082"
+      unit_id: "normative_6378"
       source_span:
         start:
-          offset: 8265
+          offset: 8561
           line: 76
           column: 1
         end:
-          offset: 8525
+          offset: 9112
           line: 76
-          column: 261
+          column: 552
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_meters"
       identity_kind: "explicit"
-      unit_id: "normative_21446"
+      unit_id: "normative_22033"
       source_span:
         start:
-          offset: 21540
+          offset: 22127
           line: 391
           column: 1
         end:
-          offset: 21900
+          offset: 22487
           line: 391
           column: 361
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_service"
       identity_kind: "explicit"
-      unit_id: "normative_21446"
+      unit_id: "normative_22033"
       source_span:
         start:
-          offset: 21901
+          offset: 22488
           line: 392
           column: 1
         end:
-          offset: 22211
+          offset: 22798
           line: 392
           column: 311
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_assets"
       identity_kind: "explicit"
-      unit_id: "normative_21446"
+      unit_id: "normative_22033"
       source_span:
         start:
-          offset: 22212
+          offset: 22799
           line: 393
           column: 1
         end:
-          offset: 22541
+          offset: 23128
           line: 393
           column: 330
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_21446"
+      unit_id: "normative_22033"
       source_span:
         start:
-          offset: 22542
+          offset: 23129
           line: 394
           column: 1
         end:
-          offset: 22783
+          offset: 23370
           line: 394
           column: 242
     - pointer: "/validation_rules/0"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_29981"
+      unit_id: "normative_32939"
       source_span:
         start:
-          offset: 30057
+          offset: 33015
           line: 432
           column: 1
         end:
-          offset: 30301
+          offset: 33468
           line: 432
-          column: 245
+          column: 454
     - pointer: "/validation_rules/1"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_29981"
+      unit_id: "normative_32939"
       source_span:
         start:
-          offset: 30302
+          offset: 33469
           line: 433
           column: 1
         end:
-          offset: 30554
+          offset: 33906
           line: 433
-          column: 253
+          column: 438
     - pointer: "/validation_rules/2"
       rule_id: "validate_period"
       identity_kind: "explicit"
-      unit_id: "normative_29981"
+      unit_id: "normative_32939"
       source_span:
         start:
-          offset: 30555
+          offset: 33907
           line: 434
           column: 1
         end:
-          offset: 30793
+          offset: 34145
           line: 434
           column: 239
     - pointer: "/validation_rules/3"
       rule_id: "validate_double_count"
       identity_kind: "explicit"
-      unit_id: "normative_29981"
+      unit_id: "normative_32939"
       source_span:
         start:
-          offset: 30794
+          offset: 34146
           line: 435
           column: 1
         end:
-          offset: 30971
+          offset: 34323
           line: 435
           column: 178
     - pointer: "/validation_rules/4"
       rule_id: "validate_unit_export"
       identity_kind: "explicit"
-      unit_id: "normative_29981"
+      unit_id: "normative_32939"
       source_span:
         start:
-          offset: 30972
+          offset: 34324
           line: 436
           column: 1
         end:
-          offset: 31430
+          offset: 34782
           line: 436
           column: 459
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6082"
+      unit_id: "normative_6378"
       source_span:
         start:
-          offset: 6082
+          offset: 6378
           line: 58
           column: 1
         end:
-          offset: 6103
+          offset: 6399
           line: 58
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6082"
+      unit_id: "normative_6378"
       source_span:
         start:
-          offset: 6131
+          offset: 6427
           line: 62
           column: 1
         end:
-          offset: 7237
+          offset: 7533
           line: 69
           column: 161
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_21446"
+      unit_id: "normative_22033"
       source_span:
         start:
-          offset: 21446
+          offset: 22033
           line: 387
           column: 1
         end:
-          offset: 21486
+          offset: 22073
           line: 387
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_29981"
+      unit_id: "normative_32939"
       source_span:
         start:
-          offset: 29981
+          offset: 32939
           line: 428
           column: 1
         end:
-          offset: 30003
+          offset: 32961
           line: 428
           column: 23
 projection_metadata:
@@ -1045,5 +1047,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:f5819f3b08d693dff8e5adbe2133536c392e0ee17b4b2119f35d642f817650b8"
-  generated_content_sha256: "sha256:bcb3c85888093821fc2b9f9a6407aec477b7baa9fea70ec6cfad45a6589046de"
+    sha256: "sha256:c6c257a32ce58634b4f016945f7192ee2e878473569225fc66e3f7cc088d6b61"
+  generated_content_sha256: "sha256:569d0084dcf8aafc9179101cf5305b52f1022a30a11b6e8474740c2f9abb6dd9"

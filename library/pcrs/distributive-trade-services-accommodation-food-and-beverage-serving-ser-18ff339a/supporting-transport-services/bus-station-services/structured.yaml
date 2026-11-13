@@ -525,14 +525,14 @@ dataset_production:
       process_id: "terminal"
       flow_role: "r134a_supply; r134a_air"
       record_type: "refrigerant_balance"
-      raw_fields: "species; beginning/end stock; acquisitions; disbursements; beginning/end equipment charge; servicing; recovery; contractor coverage"
-      collection_method: "Apply individual-species material balance with documented stock and installed-charge changes; distinguish supply, recovery and emissions. Supplier/manufacturer-filled charge is reconciled to avoid double counts."
+      raw_fields: "species; beginning/end stock; acquisitions; disbursements; beginning/end equipment charge; servicing; recovery; contractor coverage; actual discharge compartment and fate evidence; species mass and evidence for other actual fates; unreconciled difference"
+      collection_method: "Apply individual-species material balance with documented stock and installed-charge changes; distinguish supply, recovery and emissions. Supplier/manufacturer-filled charge is reconciled to avoid double counts. Reconcile actual air release and other fates using mutually exclusive stock, recovery/transfer and other-fate entries; retain unexplained differences separately rather than assuming air emissions."
       unit: "kg"
       frequency: "each service and reporting period"
       temporal_coverage: "same period as events"
       site_scope: "actual station refrigerant equipment"
       aggregation_rule: "per reference flow"
-      quality_evidence: "service invoices; cylinder weighing; stock/charge ledger"
+      quality_evidence: "service invoices; cylinder weighing; stock/charge ledger; air-destination and other actual fate evidence"
   calculation_rules:
     - id: calc_completed_events
       applies_to: "terminal_output"
@@ -553,7 +553,7 @@ dataset_production:
       source_ids: []
     - id: calc_refrigerant
       applies_to: "r134a_air"
-      rule: "Use the species balance: beginning stored stock plus acquisitions plus beginning equipment charge, minus ending stored stock, disbursements and ending equipment charge. Reconcile actual recovery and equipment changes; investigate negative or unexplained balances before attributing release. No leakage percentage or GWP is prescribed."
+      rule: "Use the species balance: beginning stored stock plus acquisitions plus beginning equipment charge, minus ending stored stock, disbursements and ending equipment charge. Reconcile actual recovery and equipment changes; investigate negative or unexplained balances before attributing release. No leakage percentage or GWP is prescribed. The balance difference alone does not establish an air emission; only species mass supported by air-destination evidence may enter the corresponding air row. Account separately for other actual fates by species mass and destination, without duplicating recorded stocks, recovery or offsite transfers; do not introduce unsupported default fates. Unknown destinations or unreconciled differences remain gaps, without clipping to zero or assigning the whole difference to air."
       inputs:
         - cp_refrigerant
         - cp_events
@@ -618,7 +618,7 @@ data_sources:
     used_for: "Individual refrigerant stock, acquisitions/disbursements and equipment-charge balance; no default leak factor or GWP adopted; not full-LCA guidance"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:2abc30cc91259799ba47aa600d9fed8be1e5415a609093c69921c6be607ff703"
+  source_sha256: "sha256:4fc28e5505f3effa76bb5bc0010888655c2e7c7ae779fe72dfe705d30d74989b"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5098"
@@ -717,15 +717,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_26486"
+    - unit_id: "normative_27328"
       family: "validation"
       span:
         start:
-          offset: 26486
+          offset: 27328
           line: 410
           column: 1
         end:
-          offset: 27834
+          offset: 28676
           line: 419
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_event` | Require unique terminal_output of 1 item with complete event subtype, functional extent, service quality and start/end; reject passenger-km, bus trips, prices or unexplained transaction averages as substitutes. |  |\n| `validate_boundary` | Verify all terminal-office functions in scope, distinct luggage custody versus 67190 loading, and carrier/contractor/tenant interfaces. A full visit and its included office actions cannot both count as full terminal outputs. | un-cpc3-67410 |\n| `validate_atomicity` | Check each actual utility, material, asset, waste and emitted species independently; reconcile refrigerant supply/recovery/charge changes. Disclose identity and upstream gaps; parser pass alone does not establish full lifecycle completeness or methodology approval. |  |\n| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |\n\n"
@@ -745,11 +745,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 26486
+              offset: 27328
               line: 410
               column: 1
             end:
-              offset: 26508
+              offset: 27350
               line: 410
               column: 23
           text: "## 9. Validation Rules"
@@ -873,53 +873,53 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_event"
       identity_kind: "explicit"
-      unit_id: "normative_26486"
+      unit_id: "normative_27328"
       source_span:
         start:
-          offset: 26562
+          offset: 27404
           line: 414
           column: 1
         end:
-          offset: 26798
+          offset: 27640
           line: 414
           column: 237
     - pointer: "/validation_rules/1"
       rule_id: "validate_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_26486"
+      unit_id: "normative_27328"
       source_span:
         start:
-          offset: 26799
+          offset: 27641
           line: 415
           column: 1
         end:
-          offset: 27065
+          offset: 27907
           line: 415
           column: 267
     - pointer: "/validation_rules/2"
       rule_id: "validate_atomicity"
       identity_kind: "explicit"
-      unit_id: "normative_26486"
+      unit_id: "normative_27328"
       source_span:
         start:
-          offset: 27066
+          offset: 27908
           line: 416
           column: 1
         end:
-          offset: 27361
+          offset: 28203
           line: 416
           column: 296
     - pointer: "/validation_rules/3"
       rule_id: "validate_unit_export"
       identity_kind: "explicit"
-      unit_id: "normative_26486"
+      unit_id: "normative_27328"
       source_span:
         start:
-          offset: 27362
+          offset: 28204
           line: 417
           column: 1
         end:
-          offset: 27832
+          offset: 28674
           line: 417
           column: 471
   diagnostics:
@@ -961,14 +961,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_26486"
+      unit_id: "normative_27328"
       source_span:
         start:
-          offset: 26486
+          offset: 27328
           line: 410
           column: 1
         end:
-          offset: 26508
+          offset: 27350
           line: 410
           column: 23
 projection_metadata:
@@ -978,5 +978,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:2abc30cc91259799ba47aa600d9fed8be1e5415a609093c69921c6be607ff703"
-  generated_content_sha256: "sha256:57eb58404bddeeb20d66a853d9fa66e40e3444ee5052e7cb8b082c61e7b8718f"
+    sha256: "sha256:4fc28e5505f3effa76bb5bc0010888655c2e7c7ae779fe72dfe705d30d74989b"
+  generated_content_sha256: "sha256:b5bab50ea92f1e63b9609722ec24416c10bb53035781a4077a61babd16f1957a"

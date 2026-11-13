@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 站点及期间；城市郊区城际背景；事件子型；精确起终及所含功能；旅客数量及吞吐；站厅站台规模及开放时段；停留时间；售票预订成功标准；任何行李份数质量及保管期间；无障碍及安全要求；运营承运承包分工；租户划分；资产范围及寿命分母；电力地区电压 |
+| 必需限定信息 | 站点及期间;城市郊区城际背景;事件子型;精确起终及所含功能;旅客数量及吞吐;站厅站台规模及开放时段;停留时间;售票预订成功标准;任何行李份数质量及保管期间;无障碍及安全要求;运营承运承包分工;租户划分;资产范围及寿命分母;电力地区电压 |
 
 item是已核实Item(s)的单数计数别名，计量已完成的指定服务，不是人公里、车辆移动、票款、通用预订点击或行李千克。场站使用按一名旅客入站至完成计量一次；独立合同办公室事件明确实际客户交易及寄存规模。不同事件类型分别保留，不推断相同负担或默认换算。
 
@@ -388,19 +388,19 @@ item是已核实Item(s)的单数计数别名，计量已完成的指定服务，
 | cp_assets | terminal | building; ticket_terminal; hvac; locker | asset_record | 资产编号；配置；制造范围；施工清单；实际使用；寿命利用量；既往份额；报废 | 采用实际资产施工记录及设备空间利用量；独立论证寿命分母及供应商组件边界。 | item | 资产变更及期间 | 资产寿命及当前事件 | 实际使用车站资产 | 每参考流 | 台账；寿命证据；利用量记录 |
 | cp_waste | terminal | waste_paper; wastewater; waste_tissue | waste_record | 流；质量；污染；来源；去向；处理；日期；分配 | 计量分类流并核对处理联单；核对已进入污水的纸量以防重复。 | kg | 每次处置及期间 | 与事件同期间 | 车站范围，排除租户车辆废物 | 每参考流 | 称量；联单；污水记录 |
 | cp_emissions | terminal | fossil_co2 | emission_record | 物种；来源；燃料；碳含量；测试模型；活动；介质 | 采用车站源实测排放或有来源的燃料特定方法及实测活动；车辆排放留在承运清单。 | kg | 测试及活动期间 | 与事件同期间 | 实际车站锅炉发电机 | 每参考流 | 测试；燃料记录；方法来源 |
-| cp_refrigerant | terminal | r134a_supply; r134a_air | refrigerant_balance | 物种；期初期末库存；取得；转出；期初期末设备充注；维护；回收；承包边界 | 按单一物种进行有库存及设备充注变化记录的物料平衡；区分供应、回收及排放。核对供应商或制造端充注以防重复。 | kg | 每维护及报告期间 | 与事件同期间 | 实际车站制冷剂设备 | 每参考流 | 维护票据；气瓶称量；库存充注台账 |
+| cp_refrigerant | terminal | r134a_supply; r134a_air | refrigerant_balance | 物种；期初期末库存；取得；转出；期初期末设备充注；维护；回收；承包边界；实际排放介质及去向证据；其他实际去向的物种质量及依据；未闭合差额 | 按单一物种进行有库存及设备充注变化记录的物料平衡；区分供应、回收及排放。核对供应商或制造端充注以防重复。 核对实际空气释放与其他去向，存量、回收转移和其他去向采用互斥账项；未解释差额单独保留，不推定为空气排放。 | kg | 每维护及报告期间 | 与事件同期间 | 实际车站制冷剂设备 | 每参考流 | 维护票据；气瓶称量；库存充注台账；空气去向及其他实际去向证据 |
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_completed_events` | terminal_output | 按声明规模计唯一完成可比事件，排除内部重复及失败取消事件；其可归属工作留在投入。匹配期间分配后交换量除以已完成事件数。 | cp_events; cp_utilities; cp_materials | 每参考流 |  |
 | `calc_asset_share` | building; ticket_terminal; hvac; locker | 按allocation_assets将有依据制造报废清单与实测服务利用量关联；按cp_events归一期间份额，不得每事件计入整项资产。 | cp_assets; cp_events | 每参考流 |  |
-| `calc_refrigerant` | r134a_air | 采用物种平衡：期初存储库存加取得量及期初设备充注，减期末存储库存、转出及期末设备充注。核对实际回收及设备变化；负值或不明差额须先调查再归属释放。不规定泄漏率或GWP。 | cp_refrigerant; cp_events | 每参考流物种质量 | epa-refrigerant-balance |
+| `calc_refrigerant` | r134a_air | 采用物种平衡：期初存储库存加取得量及期初设备充注，减期末存储库存、转出及期末设备充注。核对实际回收及设备变化；负值或不明差额须先调查再归属释放。不规定泄漏率或GWP。 衡算差额本身不证明排放进入空气；只有去向证据支持的空气释放物种质量才可归入对应air行。其他实际去向须按物种质量和去向分别核算，并与已计存量、回收或离场转移去重；不得新增无证据的默认去向。未知去向或未闭合差额保留为缺口，不得截零或将整个差额认定为空气排放。 | cp_refrigerant; cp_events | 每参考流物种质量 | epa-refrigerant-balance |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_event | terminal_output | 功能规模及验收完成必需；一张票不自动等于一位访客，一份团体预订不自动等于一名旅客。 | cp_events |
 | dq_period | 所有清单行 | 事件数、公用工程及废物采用相同场站期间情景及运营租户承运边界。保留待机及低利用率。 | cp_events; cp_utilities |
@@ -430,7 +430,7 @@ item是已核实Item(s)的单数计数别名，计量已完成的指定服务，
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc3-67410 | official_guidance | UNSD CPC Version 3.0, subclass 67410 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67410 | 完整旅客场站及办公室保管范围；67190装卸排除 |
 | energystar-om | official_guidance | ENERGY STAR, Operation and Maintenance Best Practices, Tune It Up / Turn It Off / Check It Out. https://www.energystar.gov/buildings/save-energy-commercial-buildings/ways-save/om-best-practices | 实际建筑时序控制及暖通照明办公系统测量；不作为客站能耗默认值 |

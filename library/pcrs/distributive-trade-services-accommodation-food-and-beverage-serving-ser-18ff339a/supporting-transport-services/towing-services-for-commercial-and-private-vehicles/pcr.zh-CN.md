@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 任务车辆编号；故障执法或其他原因；商用私人类别；实测或可追溯车辆质量及载荷；动力及驱动轴与状况；拖曳方法；起讫验收；进场载车调位路线距离；绞盘装载及等待小时；失败尝试；运营及分包边界；装备配置；基地清理份额；观测期间；电力地区电压 |
+| 必需限定信息 | 任务车辆编号;故障执法或其他原因;商用私人类别;实测或可追溯车辆质量及载荷;动力及驱动轴与状况;拖曳方法;起讫验收;进场载车调位路线距离;绞盘装载及等待小时;失败尝试;运营及分包边界;装备配置;基地清理份额;观测期间;电力地区电压 |
 
 item是已核实Item(s)的单数别名，计量一辆已识别车辆的一次验收任务。它不是吨公里、拖曳公里、费用、车辆质量或整个拖车寿命。不同车型方法距离及事故情景分开。多车任务需要有依据车辆任务归属，不默认等分或免费返程。
 
@@ -451,7 +451,7 @@ item是已核实Item(s)的单数别名，计量一辆已识别车辆的一次验
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_task_intensity` | 所有清单行 | 核对全部可归属任务交换及一致进场调位支持份额；匹配可比总量除以验收完成任务数。不得因无客户在车上而遗漏阶段。 | cp_task; cp_energy; cp_materials; cp_waste | 每参考流 |  |
 | `calc_assets` | tow_truck; winch | 采用实际利用量及有依据寿命分母应用allocate_assets，再按cp_task归一可归属期间份额。寿命无依据或组件重叠保留明确审查缺口。 | cp_assets; cp_task | 每参考流 |  |
@@ -460,10 +460,10 @@ item是已核实Item(s)的单数别名，计量一辆已识别车辆的一次验
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_task | towing_output | 要求车辆事故方法距离及交接身份，分开违停移车和故障路线。费用或车辆质量本身不能确立功能。 | cp_task |
-| dq_phase | 所有清单行 | 核对全部空载现场等待清理及失败尝试边界；燃料充电支持保持实际配置及匹配期间。 | cp_task; cp_energy |
+| dq_phase | 所有清单行 | 核对完整的空驶、载车、现场作业、等待、清理及失败尝试覆盖范围；燃料、充电和支持记录保持实际配置及匹配期间。 | cp_task; cp_energy |
 | dq_assets | tow_truck; winch | 要求有证据寿命利用量及初装更换范围，对不确定分母作敏感性分析。 | cp_assets |
 | dq_identity | 所有清单行 | 采用前核实精确流属性单位及正式中文名。缺失UUID保留逐项缺口，不改为合并燃料材料标签或宣称全面验证。 | 直读支持及未解决登记 |
 
@@ -490,7 +490,7 @@ item是已核实Item(s)的单数别名，计量一辆已识别车辆的一次验
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc3-67440 | official_guidance | UNSD CPC Version 3.0 subclass 67440 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67440 | 故障及其他含违停移车拖曳范围 |
 | dvsa-recovery-equipment | official_guidance | UK DVSA, Running a vehicle recovery business: driver and vehicle safety rules, updated 12 August 2025, section 2.1 physical construction. https://www.gov.uk/government/publications/guide-for-recovery-operations/running-a-vehicle-recovery-business-driver-and-vehicle-safety-rules | 装备多样性及明确救援配置；仅英国背景，不作通用法律或拖曳方法批准 |

@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 航段资产及起终接口；服务子型验收规模；人工天然航道；实际路线长度；船舶尺寸吃水载荷及服务交通；水位流量；闸升船机堰水门作业及共用闸次；岸牵方法距离；助航配置及覆盖范围；维护疏浚范围；通行或可用性期间；运营分包边界；水电防洪灌溉分配；取回水流域；资产寿命分母；电源电压 |
+| 必需限定信息 | 航段资产及起终接口;服务子型验收规模;人工天然航道;实际路线长度;船舶尺寸吃水载荷及服务交通;水位流量;闸升船机堰水门作业及共用闸次;岸牵方法距离;助航配置及覆盖范围;维护疏浚范围;通行或可用性期间;运营分包边界;水电防洪灌溉分配;取回水流域;资产寿命分母;电源电压 |
 
 item是已核实Item(s)的单数别名，计量一个指定服务事件，不是新制造船舶、货运吨公里、通用通航公里、不考虑占用船舶的闸循环或立方米水。没有实际交通利用量归属，不得把整个维护期间转换成通行事件。同一声明事件内多个阶段助航设施不生成重复完整产出。
 
@@ -472,7 +472,7 @@ item是已核实Item(s)的单数别名，计量一个指定服务事件，不是
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_service` | 所有清单行 | 按有记录共用功能事件归属，将期间实际实测交换归属于声明验收服务子型规模。匹配可比总量除以验收事件数；没有实际证据不得把可用性期间转为通行次数。 | cp_service; 实际功能记录 | 每参考流 |  |
 | `calc_water` | river_water; returned_water | 核对外部流入回流蓄水变化蒸发及其他实际损失；内部过闸转移再用另记。报告流域时间特定取回水，不默认净耗水体积。 | cp_water; cp_service | 每参考流体积 | crt-water-management |
@@ -481,7 +481,7 @@ item是已核实Item(s)的单数别名，计量一个指定服务事件，不是
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_extent | navigation_output | 要求航段服务子型通行期间船舶交通及交付通航状况；费用或通用公里不足。 | cp_service |
 | dq_water | river_water; returned_water | 记录取回水流域时间水质，区分内部转移取水及耗水。 | cp_water |
@@ -512,7 +512,7 @@ item是已核实Item(s)的单数别名，计量一个指定服务事件，不是
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc3-67512 | official_guidance | UNSD CPC Version3.0 subclass67512 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67512 | 完整内河通航维护岸牵助航范围及明确排除 |
 | crt-water-management | official_guidance | Canal and River Trust, Managing our water: Day to day, Monitoring and Management. https://canalrivertrust.org.uk/our-cause/looking-after-canals-and-rivers/managing-our-water/day-to-day | 运营方关于实际闸次水库抽水及水监测的原始说明；英国背景，不采用每闸系数 |

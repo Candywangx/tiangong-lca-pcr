@@ -44,7 +44,7 @@ CPC67490给出非中介残余范围及明确排除项，并未正式列举引导
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 任务订单编号；正面功能归类依据；商业非承运身份；确切职责团队范围；前导后随测高职责；路线起讫距离；被引导车辆车队数量；尺寸质量约束；日期天气；实际任务引导怠速返回时间距离；动力车辆；警示通信设备；完成交接；供应商自有覆盖 |
+| 必需限定信息 | 任务订单编号;正面功能归类依据;商业非承运身份;确切职责团队范围;前导后随测高职责;路线起讫距离;被引导车辆车队数量;尺寸质量约束;日期天气;实际任务引导怠速返回时间距离;动力车辆;警示通信设备;完成交接;供应商自有覆盖 |
 
 item为正式Item(s)的单数别名，实际导出使用Item(s)。单供应商职责与完整多车引导团队是不同限定范围，不能自动视为等价任务。不得把一个合同任务及其前导后随组成部分额外计为完整产出。货物吨数及吨公里描述承运方，不是引导产出。其他残余服务须另行审查适用性任务定义实物活动及清单；不得通用换算服务小时价格或任务。
 
@@ -453,7 +453,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。单供应商�
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | task_denominator | escort_service | N = 确切声明职责团队范围的完成验收任务数，须为正值。组成警示通信事件不是额外产出。 | cp_task | N |  |
 | exchange_allocation | 所有清单行 | 按明确物理驱动将各实测分子归属完整任务周期，再除以N；保留实际引导里程小时及共享返回规则。 | cp_task; cp_energy; cp_material; cp_road; cp_waste | 每参考流交换量 |  |
@@ -462,7 +462,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。单供应商�
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_function | escort_service | 须有正面实体职责任务证据并记录残余归类排除；发票或无关NAICS代码不足。 | cp_task; un-cpc-67490 |
 | dq_scope | 所有清单行 | 确切职责团队路线范围及期间相同；核对全部实际车辆行驶待命设备供应商覆盖。 | cp_task; cp_energy; cp_asset |
@@ -493,7 +493,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。单供应商�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-67490 | official_guidance | UNSD CPC3.0 67490. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67490 | 残余排除及竞争分类筛查；并未点名引导；较窄适用性属于独立推理。 |
 | fhwa-escort-planning | official_guidance | FHWA-HOP-16-051, Pilot/Escort Best Practices, chapter I. https://ops.fhwa.dot.gov/publications/fhwahop16051/ch1.htm | 任务路线实际设备准备逻辑；定性技术证据，不是CPC映射或当前法规规格。 |

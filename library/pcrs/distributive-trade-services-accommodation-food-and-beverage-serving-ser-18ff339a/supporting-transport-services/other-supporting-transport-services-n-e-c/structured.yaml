@@ -995,7 +995,7 @@ dataset_production:
       process_id: "liquefaction"
       flow_role: "liq_power; liq_fuelgas; liq_steam"
       record_type: "Actual source/end-use utility ledger"
-      raw_fields: "route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; charging/provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      raw_fields: "route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; metered supply/end-use and provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
       collection_method: "Meter actual external electricity, each external fuel, steam and heat separately. Reconcile source-specific internal-fuel combustion against cp_mass without duplicate purchase; include actual generation efficiency/losses once. Measure real thermal supply/return enthalpy, actual throughput and all attributable operating phases; no specific-energy or SCV/ORV default. Apply this protocol only to its listed liquefaction exchanges. Reconcile shared records under validate_protocol_partition."
       unit: "kWh; kg; MJ"
       frequency: "each meter/phase and reconciled observation period"
@@ -1007,7 +1007,7 @@ dataset_production:
       process_id: "regasification"
       flow_role: "regas_power; regas_fuelgas; regas_steam; regas_heat"
       record_type: "Actual source/end-use utility ledger"
-      raw_fields: "route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; charging/provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
+      raw_fields: "route/technology; actual meter start/end; external fuel composition/kg and calorific basis; internal customer/BOG fuel separately; kWh/MJ; supply/return state/enthalpy; compressor/pump/vaporizer duty; startup/shutdown; metered supply/end-use and provider scope; actual qualified outlet mass; source_record_id; exchange_id; process_id; attribution driver; assigned share; reporting period"
       collection_method: "Meter actual external electricity, each external fuel, steam and heat separately. Reconcile source-specific internal-fuel combustion against cp_mass without duplicate purchase; include actual generation efficiency/losses once. Measure real thermal supply/return enthalpy, actual throughput and all attributable operating phases; no specific-energy or SCV/ORV default. Apply this protocol only to its listed regasification exchanges. Reconcile shared records under validate_protocol_partition."
       unit: "kWh; kg; MJ"
       frequency: "each meter/phase and reconciled observation period"
@@ -1235,7 +1235,7 @@ data_sources:
     used_for: "Qualitative actual-route/process, BOG/fuel/flare/fugitive, water/thermal/chemical and waste-source context only. No numerical limits, LNG density, expansion ratio, efficiency or emission factors adopted; wider LNG transport/storage scope is not automatically included"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:ec93160366a7191b02221546d22161d6c30b9ddce909fed126c164975daa79e0"
+  source_sha256: "sha256:015dd7a04b54220671adef8d6b11fcdf01c05cd722a75569b05652244a1edb9c"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6911"
@@ -1334,15 +1334,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_64418"
+    - unit_id: "normative_64454"
       family: "validation"
       span:
         start:
-          offset: 64418
+          offset: 64454
           line: 771
           column: 1
         end:
-          offset: 66580
+          offset: 66616
           line: 781
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Only transport-purpose gas liquefaction/regasification is covered; exclude type-rating/GPS/navigation and other residual functions, independent storage/transport and upstream gas commodity production. | un-cpc-transport-phase |\n| validate_reference | Unique service_output must equal 1 kg and match measured net qualified outlet mass with mandatory route/state/composition/T/P/quality and actual period. Internal recycle, off-spec stock, fuel and losses are not qualified delivered output. |  |\n| validate_balance | Reconcile custody, external fuel, internal BOG, stock and each species destination; no duplicate gas purchase, double qualified output, complete-flare assumption or implicit cold/heat/BOG credit. Service-only boundary does not assert zero upstream commodity burden in the complete gas chain. |  |\n| validate_atomic_life | Every row must be one actual exchange with its own correct property/unit and compartment, including source/return water thermal evidence. Verify life fractions and provider coverage; leave unknown identities/method gaps explicit rather than declare publication readiness. |  |\n| `validate_protocol_partition` | Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods. |  |\n\n"
@@ -1362,11 +1362,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 64418
+              offset: 64454
               line: 771
               column: 1
             end:
-              offset: 64440
+              offset: 64476
               line: 771
               column: 23
           text: "## 9. Validation Rules"
@@ -1529,66 +1529,66 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_64418"
+      unit_id: "normative_64454"
       source_span:
         start:
-          offset: 64494
+          offset: 64530
           line: 775
           column: 1
         end:
-          offset: 64740
+          offset: 64776
           line: 775
           column: 247
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_64418"
+      unit_id: "normative_64454"
       source_span:
         start:
-          offset: 64741
+          offset: 64777
           line: 776
           column: 1
         end:
-          offset: 65007
+          offset: 65043
           line: 776
           column: 267
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_64418"
+      unit_id: "normative_64454"
       source_span:
         start:
-          offset: 65008
+          offset: 65044
           line: 777
           column: 1
         end:
-          offset: 65325
+          offset: 65361
           line: 777
           column: 318
     - pointer: "/validation_rules/3"
       rule_id: "validate_atomic_life"
       identity_kind: "explicit"
-      unit_id: "normative_64418"
+      unit_id: "normative_64454"
       source_span:
         start:
-          offset: 65326
+          offset: 65362
           line: 778
           column: 1
         end:
-          offset: 65627
+          offset: 65663
           line: 778
           column: 302
     - pointer: "/validation_rules/4"
       rule_id: "validate_protocol_partition"
       identity_kind: "explicit"
-      unit_id: "normative_64418"
+      unit_id: "normative_64454"
       source_span:
         start:
-          offset: 65628
+          offset: 65664
           line: 779
           column: 1
         end:
-          offset: 66578
+          offset: 66614
           line: 779
           column: 951
   diagnostics:
@@ -1630,14 +1630,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_64418"
+      unit_id: "normative_64454"
       source_span:
         start:
-          offset: 64418
+          offset: 64454
           line: 771
           column: 1
         end:
-          offset: 64440
+          offset: 64476
           line: 771
           column: 23
 projection_metadata:
@@ -1647,5 +1647,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:ec93160366a7191b02221546d22161d6c30b9ddce909fed126c164975daa79e0"
-  generated_content_sha256: "sha256:06ab298a9b6418f68c14e80ae18f7d6fcf91b171dcc543eaa31cdd305499f467"
+    sha256: "sha256:015dd7a04b54220671adef8d6b11fcdf01c05cd722a75569b05652244a1edb9c"
+  generated_content_sha256: "sha256:aeab63b973280ce909e0f2305aab7b3645b8657305ec851f80d4e59f9c0ed7ba"

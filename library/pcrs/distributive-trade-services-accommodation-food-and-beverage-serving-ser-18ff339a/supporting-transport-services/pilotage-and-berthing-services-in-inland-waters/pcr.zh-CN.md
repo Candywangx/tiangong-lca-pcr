@@ -48,7 +48,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
-| 必需限定信息 | pilot_only/tug_berthing_only/combined_package；准确完成任务及组件端点；内河河流/湖泊/港口及实际水域分类；路线/起止/泊位；受助船长/宽/吃水/排水量/载荷/推进状态；实际水位/流速/方向、天气/能见度、富余水深及桥闸净空观测和当地运行限值；实际航行/助拖/怠速/待机/调位/返航距离与时长；引航员接送路线；拖轮/引航艇编号及功率/发动机/系柱拖力配置；实际发动机负荷和船艇数；缆绳/护舷；客户推进边界；供能/岸电；运营方/供应商分工；实际完成/质量及安全记录；资产寿命及维护范围；地点及期间 |
+| 必需限定信息 | pilot_only/tug_berthing_only/combined_package;准确完成任务及组件端点;内河河流/湖泊/港口及实际水域分类;路线/起止/泊位;受助船长/宽/吃水/排水量/载荷/推进状态;实际水位/流速/方向;天气/能见度;富余水深及桥闸净空观测和当地运行限值;实际航行/助拖/怠速/待机/调位/返航距离与时长;引航员接送路线;拖轮/引航艇编号及功率/发动机/系柱拖力配置;实际发动机负荷和船艇数;缆绳/护舷;客户推进边界;供能/岸电;运营方/供应商分工;实际完成/质量及安全记录;资产寿命及维护范围;地点及期间 |
 
 Item(s)计数一个明确任务，仅引航/仅拖轮/整包分别建情景。靠泊、离泊、移泊、受助船尺寸及实际河流条件影响物理工作，计数不自动等效；即使零航程靠泊动作仍须记录实际发动机/负荷/时间及接送/空驶。吨公里、额定拖轮功率或一个付费小时均不能单独确定任务消耗。
 
@@ -478,7 +478,7 @@ Item(s)计数一个明确任务，仅引航/仅拖轮/整包分别建情景。�
 
 ### 数据采集协议
 
-| protocol_id | process_id | flow_role | 记录类型 | 原始字段 | 采集方法 | 单位 | 频率 | 时间覆盖 | 场址范围 | 汇总规则 | 质量证据 |
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_activity | inland_task | pilotage_task | 任务、当地工况及调度账 | 变体/整包；工单；受助船尺寸/吃水/载荷/推进；实际内河路线/泊位；当地水位/流速；水深/桥闸净空记录；任务端点/时间；引航接送；船艇编号；实际助拖/怠速/调位/返航；共用调度；完成 | 匹配实际任务计划、引航员/船长/拖轮交接及调度/定位记录；保留实测当地工况和实际验收接口，仅计同质任务，保持组件/整包关系、等候/重试及返航归属。 | Item(s) | 每实际任务/阶段 | 完整任务及归属保障阶段 | 全部实际引航/拖轮/接送运营方 | 每参考流 | 任务计划；交接；AIS/GNSS或等效路线日志；当地水文；完成及调度核对 |
 | cp_fuel | inland_task | diesel | 船艇/发动机燃料及负荷账 | 船艇/发动机编号；功率；实际负荷/时间；主/辅机燃料；等级；实测kg；库存；换算时密度/温度；助拖/怠速/航行阶段 | 尽可能按发动机及任务用实际流量计/库存平衡；核对负荷日志、等候及空驶，仅在当地参数经核验并保留不确定性时采用有证据发动机特定负荷时间耗油方法，不设通用功率航程系数。 | kg | 每阶段及监测时段 | 全部代表服务船艇作业 | 实际发动机及运营方 | 每参考流 | 燃料计量；库存核对；实际发动机/负荷记录；参数证据 |
@@ -492,7 +492,7 @@ Item(s)计数一个明确任务，仅引航/仅拖轮/整包分别建情景。�
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | task_attribution | 所有清单行 | 将实际作业、接送、待机及维护归属一个同质任务变体/范围，除以实际完成任务数并保留失败/重试；参考输出准确为1 Item(s)。 | cp_activity; 可归属实测总量 | 每参考流交换量 |  |
 | asset_attribution | fender; tug_share; pilot_boat_share; base_share | 将有证据全寿命服务任务份额用于实际资产制造及实际更新范围，期间观测仅分已归属期间份额并守恒累计比例。 | cp_assets; cp_activity | 每参考流资产量 |  |
@@ -500,7 +500,7 @@ Item(s)计数一个明确任务，仅引航/仅拖轮/整包分别建情景。�
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_task | pilotage_task | 核验变体、实际内河水域、船舶配置、当地流速/水位/净空记录及任务端点；仅引航、仅拖轮及整包结果区分。 | cp_activity |
 | quality_duty | 所有能源行 | 核对实际助拖、航行、怠速、待机、接送及调位，不仅按距离、拖轮额定功率或客户船排水量推耗能。 | cp_activity; cp_fuel; cp_energy |
@@ -530,7 +530,7 @@ Item(s)计数一个明确任务，仅引航/仅拖轮/整包分别建情景。�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-inland-pilotage | official_guidance | 联合国统计司CPC3.0，67522解释说明，与草案PDF375–376页一致。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67522 | 内河引航/引航船及拖轮靠离泊范围，排除运输拖带，不提供任务因子 |
 | mca-task-interfaces | official_guidance | 英国MCA《港口与海运设施良好实践指南》，引航、拖带及航行计划章节，2025-04-15更新。https://www.gov.uk/government/publications/a-guide-to-good-practice-on-port-marine-operations/a-guide-to-good-practice-on-port-and-marine-facilities | 仅支持任务计划、引航员/船长/拖轮协调及交接记录结构；不从英国示例推断当地内河运行限值 |

@@ -772,14 +772,14 @@ dataset_production:
       process_id: "support"
       flow_role: "r134a_input; r134a_air"
       record_type: "foreground record"
-      raw_fields: "species; opening/closing stored inventory; acquisitions; offsite/recovery transfers; equipment charge start/end; function share"
-      collection_method: "Reconcile actual species stocks and equipment content with contractor records; additions from existing site stock are not additional acquisitions; loss and upstream supply are different quantities."
+      raw_fields: "species; opening/closing stored inventory; acquisitions; offsite/recovery transfers; equipment charge start/end; function share; actual discharge compartment and fate evidence; species mass and evidence for other actual fates; unreconciled difference"
+      collection_method: "Reconcile actual species stocks and equipment content with contractor records; additions from existing site stock are not additional acquisitions; loss and upstream supply are different quantities. Reconcile actual air release and other fates using mutually exclusive stock, recovery/transfer and other-fate entries; retain unexplained differences separately rather than assuming air emissions."
       unit: "kg"
       frequency: "each transfer and period boundary"
       temporal_coverage: "same declared job/reporting period"
       site_scope: "identified actual site/provider and job"
       aggregation_rule: "per reference flow"
-      quality_evidence: "cylinder/service/recovery records and complete balance"
+      quality_evidence: "cylinder/service/recovery records and complete balance; air-destination and other actual fate evidence"
     - protocol_id: cp_waste
       process_id: "support"
       flow_role: "waste_paper; waste_laptop; waste_battery; waste_cartridge"
@@ -825,7 +825,7 @@ dataset_production:
       source_ids: []
     - id: gas_loss
       applies_to: "r134a_air"
-      rule: "Actual loss = opening stored stock + acquisitions + opening equipment content - closing stored stock - offsite transfers - closing equipment content. Recovery remains in closing stock or offsite transfer once; investigate negative/unclosed balances, then allocate measured job share per N. If actual content is unavailable, any capacity-based approximation must explicitly assess undercharge and uncertainty rather than claim exact physical closure."
+      rule: "Actual balance difference = opening stored stock + acquisitions + opening equipment content - closing stored stock - offsite transfers - closing equipment content. Recovery remains in closing stock or offsite transfer once; investigate negative/unclosed balances. If actual content is unavailable, any capacity-based approximation must explicitly assess undercharge and uncertainty rather than claim exact physical closure. The balance difference alone does not establish an air emission; only species mass supported by air-destination evidence may enter the corresponding air row. Account separately for other actual fates by species mass and destination, without duplicating recorded stocks, recovery or offsite transfers; do not introduce unsupported default fates. Unknown destinations or unreconciled differences remain gaps, without clipping to zero or assigning the whole difference to air. Allocate the measured job share of confirmed air-release mass and divide by N."
       inputs:
         - cp_gas
         - cp_service
@@ -919,7 +919,7 @@ data_sources:
     used_for: "Species/stock/acquisition/equipment/offsite balance principle for actual cooling; physical-content and capacity approximation distinguished; no default leakage factor or GWP."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:3ecd0d6da088820039ef5d747d56c58e5271b30f229432f564579d08cb58ef66"
+  source_sha256: "sha256:67b537b9c80985e4fbb3ef426e251752923a785410e26005907a99853c386b70"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_6998"
@@ -1018,15 +1018,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40878"
+    - unit_id: "normative_41773"
       family: "validation"
       span:
         start:
-          offset: 40878
+          offset: 41773
           line: 562
           column: 1
         end:
-          offset: 42575
+          offset: 43470
           line: 572
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_scope` | Require positively evidenced logistics consulting/planning/support or separable independent non-intermediary transport-document issue/acquisition. Exclude85610/85630 roles including sea/air freight agents, on-behalf-client organization/forwarding and customs brokerage. Fees, non-ownership of vehicles or coordination wording do not establish applicability. | un-cpc-67910; un-cpc-85630 |\n| `validate_reference` | Require unique support_job at1 item, positive N, complete family-specific extent/complexity/time/interfaces and acceptance. Reject pooled unrelated jobs, duplicate document/copy outputs and a fee/tkm-based output. |  |\n| `validate_inventory` | Verify actual computing/network/document/field-work resources and each atomic exchange; reconcile supplier power/hardware, original assets and hosted service, materials/wastes and gas stocks without duplication. |  |\n| `validate_system` | A support-only boundary must disclose separately linked actual carrier/storage/handling burdens in the freight system, never imply transport is emission-free. No default optimization/paperless credit or certification follows. |  |\n| `validate_unit_export` | Treat item only as the singular local alias of the formal Number of items unit Item(s). Export Item(s) with the same numerical count and the fully qualified service definition; changing the display token does not change the flow property, service extent or normalization denominator. Do not convert a service item to time, mass, distance or a different family by relabelling its unit, or normalize an already per-reference quantity again. |  |\n\n"
@@ -1046,11 +1046,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40878
+              offset: 41773
               line: 562
               column: 1
             end:
-              offset: 40900
+              offset: 41795
               line: 562
               column: 23
           text: "## 9. Validation Rules"
@@ -1213,66 +1213,66 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_40878"
+      unit_id: "normative_41773"
       source_span:
         start:
-          offset: 40954
+          offset: 41849
           line: 566
           column: 1
         end:
-          offset: 41363
+          offset: 42258
           line: 566
           column: 410
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_40878"
+      unit_id: "normative_41773"
       source_span:
         start:
-          offset: 41364
+          offset: 42259
           line: 567
           column: 1
         end:
-          offset: 41607
+          offset: 42502
           line: 567
           column: 244
     - pointer: "/validation_rules/2"
       rule_id: "validate_inventory"
       identity_kind: "explicit"
-      unit_id: "normative_40878"
+      unit_id: "normative_41773"
       source_span:
         start:
-          offset: 41608
+          offset: 42503
           line: 568
           column: 1
         end:
-          offset: 41849
+          offset: 42744
           line: 568
           column: 242
     - pointer: "/validation_rules/3"
       rule_id: "validate_system"
       identity_kind: "explicit"
-      unit_id: "normative_40878"
+      unit_id: "normative_41773"
       source_span:
         start:
-          offset: 41850
+          offset: 42745
           line: 569
           column: 1
         end:
-          offset: 42102
+          offset: 42997
           line: 569
           column: 253
     - pointer: "/validation_rules/4"
       rule_id: "validate_unit_export"
       identity_kind: "explicit"
-      unit_id: "normative_40878"
+      unit_id: "normative_41773"
       source_span:
         start:
-          offset: 42103
+          offset: 42998
           line: 570
           column: 1
         end:
-          offset: 42573
+          offset: 43468
           line: 570
           column: 471
   diagnostics:
@@ -1314,14 +1314,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40878"
+      unit_id: "normative_41773"
       source_span:
         start:
-          offset: 40878
+          offset: 41773
           line: 562
           column: 1
         end:
-          offset: 40900
+          offset: 41795
           line: 562
           column: 23
 projection_metadata:
@@ -1331,5 +1331,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:3ecd0d6da088820039ef5d747d56c58e5271b30f229432f564579d08cb58ef66"
-  generated_content_sha256: "sha256:711661c8697545d95a7fc460e1216fd8d31eba7f69907a09e2113f6e130e0251"
+    sha256: "sha256:67b537b9c80985e4fbb3ef426e251752923a785410e26005907a99853c386b70"
+  generated_content_sha256: "sha256:c34ac87647316a5f66e211859275536f567216a4e513929bd45ae5341db8f464"

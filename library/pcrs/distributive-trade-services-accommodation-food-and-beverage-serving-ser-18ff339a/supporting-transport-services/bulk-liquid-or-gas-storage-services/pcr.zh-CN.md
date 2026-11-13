@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 质量*时间 `b3f0f892-c5a3-4c66-a432-c09e3d1e9bd6` |
 | 参考单位组 | 质量*时间 `59f191d6-5dd3-4553-af88-1a32accfe308` |
 | 参考单位 | tday |
-| 必需限定信息 | 物质及实际组成；液/气相态；保管存量所有权及交付责任；分别记录客户工作库存与专用支持库存历史；垫底/基础库存及最低运行底量的技术依据；库存角色转换时间戳；温度与压力及绝压/表压约定；储罐/容器/洞库编号、容量及建设；保温/罐顶/密封/控制类型；接收/提取端点和时间；储存时长；环境条件；温压维持路线；吞吐量；支持库存来源、上游责任及寿命分配；放空/回收/火炬路线；计量及密度基准；电力供应；资产范围；供应商分工；质量偏离及损失 |
+| 必需限定信息 | 物质及实际组成;液/气相态;保管存量所有权及交付责任;分别记录客户工作库存与专用支持库存历史;垫底/基础库存及最低运行底量的技术依据;库存角色转换时间戳;温度与压力及绝压/表压约定;储罐/容器/洞库编号;容量及建设;保温/罐顶/密封/控制类型;接收/提取端点和时间;储存时长;环境条件;温压维持路线;吞吐量;支持库存来源;上游责任及寿命分配;放空/回收/火炬路线;计量及密度基准;电力供应;资产范围;供应商分工;质量偏离及损失 |
 
 tday是“一公吨乘一天”的显式ASCII显示符号，映射到真实单位组单位t*d，不是该单位组内的命名单元。一天为24小时，一吨为1000千克；保留不足整日的实际时长。参考为质量时间，不是日吞吐量、空罐容量、一批运单、气体标准体积或制冷容量。不同物质、相态及工况须分别建数据集。分母采用实测且符合声明服务的客户工作库存，不采用累计接收量，也不采用包含专用运行支持库存的全部实物存量。
 
@@ -533,7 +533,7 @@ tday是“一公吨乘一天”的显式ASCII显示符号，映射到真实单�
 
 ### 数据采集协议
 
-| protocol_id | process_id | flow_role | 记录类型 | 原始字段 | 采集方法 | 单位 | 频率 | 时间覆盖 | 场址范围 | 汇总规则 | 质量证据 |
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_storage | storage | storage_service | 分列保管、支持库存及存量时间账 | 物质/批次；组成；客户工作库存及专用支持库存质量时间戳；产权及交付责任；技术最低存量；期初/末存量；接收；提取；损失；角色转换及时间戳；相态；温度；压力；密度；实际端点时间戳 | 使用经校准交接质量计、称重或经校准液位/体积及实测批次密度。气体换算还记录绝对压力、温度及适用压缩因子。按运行限值及交付责任分类库存，仅将符合声明服务的客户工作库存质量积分。另列垫底/基础库存及最低运行底量，并识别仍符合条件的客户工作库存底量。解析充装、提取及角色转换事件，核对各台账及设施总量。 | tday | 每次库存变化及有根据的监测间隔 | 完整保管时段，含不足整日 | 所声明罐/容器/洞库及全部运营方 | 每参考流 | 校准；库存记录；实测密度/组成；事件时间；运行限值；交付合同；平衡核对 |
 | cp_energy | storage | electricity; heat | 能源计量及操作日志 | 分别记录kWh及MJ；供应；时间戳；泵/压缩机/制冷/加热负荷；待机；实际共用分配 | 逐种实际能源分别计量；按实测因果活动区分转移与持有任务，保留原单位。 | kWh；MJ | 每计量时段及转移 | 全部实际纳入保障及作业 | 所声明储存设施 | 每参考流 | 电热表；负荷日志；供应商范围；设施总量 |
@@ -547,17 +547,17 @@ tday是“一公吨乘一天”的显式ASCII显示符号，映射到真实单�
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| stock_time | storage_service | S = sum(M_work,j * delta_t_j)，其中M_work,j为符合声明服务的客户工作库存质量，单位为公吨；delta_t_j为经过时长，单位为日；质量变化时采用有根据的积分/插值。无论产权均排除专用垫底/基础库存及最低运行底量，保留有交付责任及技术限值支持的客户工作库存底量。角色变化仅自有记录的时间戳起生效，不得同时按两个角色计量，并保留不足整日。tday映射至t*d，不设固定占用率或密度。归一时S须为正；闲置保障按allocate_provider归属有证据的受服务总体，不得虚构储存输出。 | cp_storage；分列库存历史；运行限值；交付责任；经过时间 | 合格客户工作库存tday活动量 | eia-storage-basics |
-| service_normalization | 所有清单行 | 将实际交换及初始/增容支持供给的本期份额归属所代表同质储存情景，再仅除一次以stock_time得到的正值合格客户工作库存时间S。保留全部已分配运行保障、实际损失及适用补充；专用支持库存质量不得进入S。参考输出准确为1 tday。 | cp_storage；cp_support_inventory；可归属交换总量 | 每参考流交换量 |  |
-| component_fate | methane_air; ethane_air; propane_air; butane_air; ethanol_air; benzene_air; toluene_air; hexane_air; fossil_co2; carbon_monoxide | 采用分物种实测组成及去向平衡。内部返回不是排放；捕集及销毁不得均作为排放。燃烧产物仅从实际进料碳及有证据的氧化/逃逸推导，记录方法及不确定性。 | cp_species；cp_fuel；实测控制性能 | 每参考流单一化学物排放 |  |
-| fuel_product_balance | methane_fuel; natural_gas_fuel | 对各实际产品，实物燃料使用量等于燃料期初存量加接收及有记录的库存转燃料量，减期末燃料存量及非燃料转出量；将该使用量与燃烧及实际燃料损失对账。燃料产品供给投入须剔除其取得已按cp_support_inventory归属的支持库存内部转用，但其实际燃烧/损失仍进入cp_species。客户库存转用仅在按allocate_fuel_supply完成匹配上游责任处理后纳入。组成比例核对质量、能量、碳及排放，不产生纯品采购或额外混合物投入。将本期可归属燃料产品供给总量传入service_normalization，本规则不执行归一。 | cp_fuel；cp_storage；适用时的cp_support_inventory；实际产品供给记录 | 本期可归属燃料产品kg数量，并与全部实物燃料使用量对账 |  |
-| support_inventory_attribution | 实际具名支持产品投入行 | 对各产品，Q_support,p = sum(Q_c * f_c,p) + Q_replace,p。Q_c为批次c的实际初始/增容供给或有证据的负荷承接转移，不得包含为原地留存虚构的供给；f_c,p = S_c,p / S_c,life，采用该批次所支持且有证据的期间及全寿命合格客户工作库存时间。各期累计f_c,p须不大于一；修订有依据的寿命时保留持续台账，不得重置先前分配。Q_replace,p为按有记录责任归属期间p的实际运行补充，未计入Q_c或供应商/客户清单。Q_support,p仅在service_normalization中除以S。分别保留实物库存变化、实际排放、内部燃料使用及退役回收；初始存量质量不是每年消耗量，补充本身不证明泄漏，回收不自动构成负投入。来源或寿命分母缺失时仍为缺口，不得填默认量。 批次实际终结时，将完整初始/增容取得负荷与累计储存服务分配及按allocate_losses有证据归属实际回收输出的负荷对账。将未分配余量归属有证据的已完成服务总体，并保留分配台账；不得将其留给假想未来服务、用预期回收冲销或虚构正分母。无法证明结算闭合时，明确保留缺口，不得声称生命周期完整。 | cp_support_inventory；cp_storage；有证据的寿命服务及责任记录 | 本期已归属支持产品kg数量，并核对实物库存 |  |
+| stock_time | storage_service | S = sum(M_work,j * delta_t_j)，其中M_work,j为符合声明服务的客户工作库存质量，单位为公吨；delta_t_j为经过时长，单位为日；质量变化时采用有根据的积分/插值。无论产权均排除专用垫底/基础库存及最低运行底量，保留有交付责任及技术限值支持的客户工作库存底量。角色变化仅自有记录的时间戳起生效，不得同时按两个角色计量，并保留不足整日。tday映射至t*d，不设固定占用率或密度。归一时S须为正；闲置保障按allocate_provider归属有证据的受服务总体，不得虚构储存输出。 | cp_storage;分列库存历史;运行限值;交付责任;经过时间 | 合格客户工作库存tday活动量 | eia-storage-basics |
+| service_normalization | 所有清单行 | 将实际交换及初始/增容支持供给的本期份额归属所代表同质储存情景，再仅除一次以stock_time得到的正值合格客户工作库存时间S。保留全部已分配运行保障、实际损失及适用补充；专用支持库存质量不得进入S。参考输出准确为1 tday。 | cp_storage;cp_support_inventory;可归属交换总量 | 每参考流交换量 |  |
+| component_fate | methane_air; ethane_air; propane_air; butane_air; ethanol_air; benzene_air; toluene_air; hexane_air; fossil_co2; carbon_monoxide | 采用分物种实测组成及去向平衡。内部返回不是排放；捕集及销毁不得均作为排放。燃烧产物仅从实际进料碳及有证据的氧化/逃逸推导，记录方法及不确定性。 | cp_species;cp_fuel;实测控制性能 | 每参考流单一化学物排放 |  |
+| fuel_product_balance | methane_fuel; natural_gas_fuel | 对各实际产品，实物燃料使用量等于燃料期初存量加接收及有记录的库存转燃料量，减期末燃料存量及非燃料转出量；将该使用量与燃烧及实际燃料损失对账。燃料产品供给投入须剔除其取得已按cp_support_inventory归属的支持库存内部转用，但其实际燃烧/损失仍进入cp_species。客户库存转用仅在按allocate_fuel_supply完成匹配上游责任处理后纳入。组成比例核对质量、能量、碳及排放，不产生纯品采购或额外混合物投入。将本期可归属燃料产品供给总量传入service_normalization，本规则不执行归一。 | cp_fuel;cp_storage;适用时的cp_support_inventory;实际产品供给记录 | 本期可归属燃料产品kg数量，并与全部实物燃料使用量对账 |  |
+| support_inventory_attribution | 实际具名支持产品投入行 | 对各产品，Q_support,p = sum(Q_c * f_c,p) + Q_replace,p。Q_c为批次c的实际初始/增容供给或有证据的负荷承接转移，不得包含为原地留存虚构的供给；f_c,p = S_c,p / S_c,life，采用该批次所支持且有证据的期间及全寿命合格客户工作库存时间。各期累计f_c,p须不大于一；修订有依据的寿命时保留持续台账，不得重置先前分配。Q_replace,p为按有记录责任归属期间p的实际运行补充，未计入Q_c或供应商/客户清单。Q_support,p仅在service_normalization中除以S。分别保留实物库存变化、实际排放、内部燃料使用及退役回收；初始存量质量不是每年消耗量，补充本身不证明泄漏，回收不自动构成负投入。来源或寿命分母缺失时仍为缺口，不得填默认量。 批次实际终结时，将完整初始/增容取得负荷与累计储存服务分配及按allocate_losses有证据归属实际回收输出的负荷对账。将未分配余量归属有证据的已完成服务总体，并保留分配台账；不得将其留给假想未来服务、用预期回收冲销或虚构正分母。无法证明结算闭合时，明确保留缺口，不得声称生命周期完整。 | cp_support_inventory;cp_storage;有证据的寿命服务及责任记录 | 本期已归属支持产品kg数量，并核对实物库存 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_basis | storage_service | 要求实测合格客户工作库存时间及组成/热力配置；以证据区分客户工作库存与专用运行支持，包括底量分类及角色转换。区分吞吐量、容量与实物总存量，不得从无限定标准体积推断气体质量。适用时须有支持库存来源及寿命分配证据；支持库存取得或寿命服务分母未知时不得声称生命周期完整。 | cp_storage; cp_support_inventory |
 | quality_species | 所有清单行 | 识别每项实际损失物种与控制去向；总挥发性有机物/蒸发气在分物种前仍未解决。记录方法适用性及不确定性，不设通用泄漏、火炬或蒸发因子。 | cp_species; epa-tanks-faq |
@@ -589,7 +589,7 @@ tday是“一公吨乘一天”的显式ASCII显示符号，映射到真实单�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-bulk-storage | official_guidance | 联合国统计司CPC 3.0，67220解释说明。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67220 | 包括石油/产品/葡萄酒的散装液气储存；仅支持分类范围，不提供质量时间分母或因子 |
 | epa-tanks-faq | official_guidance | 美国环保署AP-42第7章TANKS软件常见问题：加热储罐、分物种排放、氮封、控制、清洗及变化液体；2026-10-23阅读的当前网页。https://www.epa.gov/air-emissions-factors-and-quantification/ap-42-chapter-7-tanks-software-frequent-questions | 有机液体蒸气物性/组成及控制须明确条件；未采用定量因子、气体/低温模型或通用零损失声明 |

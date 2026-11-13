@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 设施区段编号；道路桥隧子型；起讫点长度；车道及宽度；方向；通行方式车型；总质量轴载；交通量组成；报告期天气；路面状况；实际通风照明排水；可用性停运；养护范围；建设寿命边界；供电；运营方用户组件划分 |
+| 必需限定信息 | 设施区段编号;道路桥隧子型;起讫点长度;车道及宽度;方向;通行方式车型;总质量轴载;交通量组成;报告期天气;路面状况;实际通风照明排水;可用性停运;养护范围;建设寿命边界;供电;运营方用户组件划分 |
 
 item为正式Item(s)的单数别名，实际导出使用Item(s)。在选定关口每次完成通行仅计一次，不将入场出场各算一次。长距离道路通行不等于短桥跨越：长度、设施、类别及功能质量强制声明。交通总量用于分配实际运营活动，不意味着小客车与重型卡车的路面磨耗相等。不得隐含使用吨公里作为道路运营产出。零交付交通时没有每次通行结果；单独报告设施负荷，不能除以虚构需求。
 
@@ -497,7 +497,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。在选定关�
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | passage_denominator | passage_service | N为确切区段方式类别期间的正值完成通行数；不得将进入退出合并为两个产出。 | cp_traffic | N |  |
 | exchange_allocation | 所有清单行 | 按有凭据区段类别物理份额分配实际分子，再除以正值N；在同服务期保留待命停运养护负荷。 | cp_traffic; cp_utility; cp_material; cp_waste | 每参考流交换量 |  |
@@ -506,7 +506,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。在选定关�
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_function | passage_service | 明确区段方式类别长度及实际路况可用性；不同设施车型不因计数相同而等价。 | cp_traffic |
 | dq_balance | 所有清单行 | 设施活动交通期间总量份额和上游边界须匹配；不得臆造强度默认交通或物理寿命。 | cp_utility; cp_asset; cp_traffic |
@@ -537,7 +537,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。在选定关�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-67420 | official_guidance | UNSD CPC3.0 67420. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67420 | 道路桥隧范围及停车排除；不提供生命周期评价系数。 |
 | fhwa-pavement-lca | official_guidance | FHWA-HIF-16-014, Pavement Life Cycle Assessment Framework (2016), official publication description. https://www.fhwa.dot.gov/PAVEMENT/pub_details.cfm?id=998 | 仅用于寿命阶段筛查；未采用完整框架计算及数值默认值。 |

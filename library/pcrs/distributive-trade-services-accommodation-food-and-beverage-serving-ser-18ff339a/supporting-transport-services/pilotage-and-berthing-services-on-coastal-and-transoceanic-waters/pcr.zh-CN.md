@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 任务编号；引航拖轮整包子型；沿海远洋地理界限交接；受助船身份型式总吨尺寸吃水载荷；初始终止水域泊位；引航接送安排；实际路线距离时间；拖轮数量型式功率系柱拉力；主辅机怠速工况；风流潮能见度；缺陷船舶推进状态；等待重试返回；完成；自有供应商覆盖 |
+| 必需限定信息 | 任务编号;引航拖轮整包子型;沿海远洋地理界限交接;受助船身份型式总吨尺寸吃水载荷;初始终止水域泊位;引航接送安排;实际路线距离时间;拖轮数量型式功率系柱拉力;主辅机怠速工况;风流潮能见度;缺陷船舶推进状态;等待重试返回;完成;自有供应商覆盖 |
 
 item为正式Item(s)的单数别名，实际导出使用Item(s)。按确切验收子型计一次，不按每次接送每艘拖轮每次推送另计。仅引航、一艘拖轮贡献及引航多拖轮整包具有不同声明范围。须独立数据集或有独立依据活动分布；不得按总吨货重收费来港艘次通用换算。GT是船舶总吨，不是测得质量，不能由其推定货物净总重或排水量。
 
@@ -524,7 +524,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。按确切验�
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | task_denominator | marine_service | N = 确切子型船舶状态服务团队范围的验收完成任务数，须为正值。组件不是额外整任务产出。 | cp_task | N |  |
 | exchange_allocation | 所有清单行 | 按有记录物理驱动将各实测交换分配至实际艇任务活动及共享工况，再除以N；保留全部实际必需有条件组件。 | cp_task; cp_energy; cp_material; cp_waste | 每参考流交换量 |  |
@@ -533,7 +533,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。按确切验�
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_scope | marine_service | 子型水域类别地理交接船舶总吨吃水实际团队完整；不能只按计数等同引航拖轮整包。 | cp_task |
 | dq_activity | 所有清单行 | 实际艇发动机工况待命重试返回及燃料电力期间匹配；船队份额核对且不含客户船消耗。 | cp_energy; cp_task |
@@ -564,7 +564,7 @@ item为正式Item(s)的单数别名，实际导出使用Item(s)。按确切验�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-67521 | official_guidance | UNSD CPC3.0 67521. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67521 | 引航引航艇靠离泊拖轮范围及运输拖带排除。 |
 | imo-pilotage | official_guidance | IMO, Pilotage. https://www.imo.org/en/ourwork/safety/pages/pilotage.aspx | 引航本地航行通信及实际接送背景；未采用现行法规要求或数量系数。 |

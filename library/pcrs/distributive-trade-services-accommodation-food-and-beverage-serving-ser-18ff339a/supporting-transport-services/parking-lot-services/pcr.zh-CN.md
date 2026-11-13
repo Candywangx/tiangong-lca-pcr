@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
-| 必需限定信息 | 车种及尺寸；一车/一位范围；实际占用小时及原始到达/离开/占位观测；space_provision或fee_collection_only角色；设施/区域/车位编号；地面/车库/路边及有棚/无棚配置；车位及共用通道面积；自然/机械通风及实际控制负荷；照明及机械升降功能；实际出入/安保/验收要求；代表总体时的停留时长分布；供能；电动车充电边界；运营方/供应商分工；资产及维护范围；地点及期间 |
+| 必需限定信息 | 车种及尺寸;一车/一位范围;实际占用小时及原始到达/离开/占位观测;space_provision或fee_collection_only角色;设施/区域/车位编号;地面/车库/路边及有棚/无棚配置;车位及共用通道面积;自然/机械通风及实际控制负荷;照明及机械升降功能;实际出入/安保/验收要求;代表总体时的停留时长分布;供能;电动车充电边界;运营方/供应商分工;资产及维护范围;地点及期间 |
 
 一个Item(s)计数物理定义的一车/一位/一小时服务块。按实际占用小时形成观测块量并保留不足整时；不得假定一次到访、一次入场、一次付款或一收费小时等于一实际小时。保留完整停留时长，先按实际事件归属事件驱动开销再归一。汽车、摩托车及自行车分别建情景并保留实际车位几何，不设相互默认换算。
 
@@ -410,7 +410,7 @@ status: candidate
 
 ### 数据采集协议
 
-| protocol_id | process_id | flow_role | 记录类型 | 原始字段 | 采集方法 | 单位 | 频率 | 时间覆盖 | 场址范围 | 汇总规则 | 质量证据 |
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_activity | parking | parking_block | 实际占位及服务角色账 | 车种/尺寸；实际车位面积；到达/离开/占位时间；实际经过占用小时；区域；供应商角色；设施功能；升降/接入/支付事件；收费取整；停留分布 | 匹配实际占位观测，不仅是付款票据或进出次数；计算经过占用小时并保留不足整时，核对时钟/占位缺口；一块为所声明一车/一位实际占用一小时，保留事件负荷及实际时长分布。 | Item(s) | 每次停留/占位变化 | 完整停留及归属待机/保障 | 已识别停车场/车库/路边区域 | 每参考流 | 占位/进出观测；时钟校准；车位图；计费与实际核对 |
 | cp_energy | parking | lighting; ventilation; lift_energy; drain_energy; meter_energy; heat | 终端能源计量及负荷日志 | 分别记录kWh/MJ；供电地区/电压；照明时序；风机负荷/区域；升降事件；排水；收费信息设备；待机；充电交付及转换损耗；其他建筑用途 | 终端分表计量或以实测设备负荷和区域占位核对共用计量。区分车辆交付电量、停车开销及其他租户；保留安全/通风运行条件和不确定性，不设默认能耗或通风因子。 | kWh; MJ | 每计量/负荷时段及事件 | 全部代表作业及待机 | 实际设施区域及供应商 | 每参考流 | 计量；实测负荷；控制日志；客户能源/租户核对 |
@@ -423,7 +423,7 @@ status: candidate
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | occupied_time | parking_block | 逐个声明车种/车位/设施情景汇总实际经过占位小时；一个计数块具有一个实际占位小时，保留分数块，不按收费小时取整。 | cp_activity | 实际一小时块量 |  |
 | parking_attribution | 所有清单行 | 事件驱动实际开销先归到观测停留，持有/保障总量按实测空间时间/因果利用量归属，再除以明确情景中的实际占位一小时块量；参考输出准确为1 Item(s)。 | cp_activity; 可归属实测总量 | 每参考流交换量 |  |
@@ -431,7 +431,7 @@ status: candidate
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_duration | parking_block | 核验实际占位与一小时块范围、时钟对齐、车种、车位尺寸及实际时长分布，仅计费时长或入场计数不足。 | cp_activity |
 | quality_operations | 所有清单行 | 记录实际遮蔽/地下/路边配置、照明、通风及升降负荷，保留实际安全/运行条件，不设通用风机或能耗系数。 | cp_energy; doe-metering |
@@ -461,7 +461,7 @@ status: candidate
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-parking | official_guidance | 联合国统计司CPC 3.0，67430解释说明，与草案PDF第374页一致。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67430 | 机动车/摩托车/自行车停车及街道收费范围；车库租赁/代客泊车排除，不提供因子或默认停留时长 |
 | doe-metering | official_guidance | 美国能源部FEMP《联邦建筑计量》，2026-10-23阅读当前网页。https://www.energy.gov/cmei/femp/metering-federal-buildings | 建筑/配电/终端能源与水实测实践；美国联邦指导仅支持计量思路，不是通用停车运行规定或定量因子 |

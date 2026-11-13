@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 设施机场；塔台雷达组合子型；实际进近着陆起飞功能范围；空间空域跑道覆盖交接；声明服务块；实际起讫交付分钟；实际到离场穿越交通及组成；值守席位运行方式；雷达通信计算清单；冗余；中断降级；报告期；仪表供应商分配；冷却气身份；备用测试；资产边界 |
+| 必需限定信息 | 设施机场;塔台雷达组合子型;实际进近着陆起飞功能范围;空间空域跑道覆盖交接;声明服务块;实际起讫交付分钟;实际到离场穿越交通及组成;值守席位运行方式;雷达通信计算清单;冗余;中断降级;报告期;仪表供应商分配;冷却气身份;备用测试;资产边界 |
 
 item为正式Item(s)的单数别名，导出使用Item(s)。计数对象是明确服务块，不是飞机运行，也不是将时间属性错误改名。一件包含所述服务配置六十分钟。条件变化拆分后，用实际交付分钟除以60确定交付块B；期间分母保留小数块。不同覆盖交通功能降级状态的块不具通用等价性。零交通只有实际服务判据满足时仍可交付可用性；不可用关闭时段不是正常交付块。不自动换算每架次，也不推定安全结果。
 
@@ -549,23 +549,23 @@ item为正式Item(s)的单数别名，导出使用Item(s)。计数对象是明�
 | cp_service | control | control_block | 前景记录 | 设施功能覆盖；实际值守可用区间；交付分钟；到离穿越交通组成；中断降级；验收 | 按功能交接边界核验实际运行交通日志；配置降级变化拆分并记录交付分钟，不主张法律安全批准。 | item | 服务区间及期间 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 运行交通日志；时间覆盖核对 |
 | cp_energy | control | electricity; diesel | 前景记录 | 仪表回路；外购；UPS冷却损耗；发电燃料库存流量；实际运行测试；分配供应 | 采用校准实际电力燃料测量；核对功能期间总量，内部发电不重复。 | kWh; kg | 计量及备用事件 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 仪表校准；账单；燃料测试日志 |
 | cp_material | control | water; engine_oil | 前景记录 | 具体产品；领用退回库存消耗；发电冷却来源；份额 | 核对实际净材料水消耗及维护公用操作，区分循环水。 | kg; m3 | 领用期间衡算 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 库存计量记录；服务覆盖 |
-| cp_gas | control | r134a_input; sf6_input; r134a_air; sf6_air | 前景记录 | 物种；期初期末气瓶库存；取得；离场回收转移；设备期初期末充注；功能份额 | 逐实际气体称量核对库存设备充注转移；承包商从场址库存充注不得重复；购买量不是排放。 | kg | 每次转移及期界 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 气瓶维护回收记录；完整衡算 |
+| cp_gas | control | r134a_input; sf6_input; r134a_air; sf6_air | 前景记录 | 物种；期初期末气瓶库存；取得；离场回收转移；设备期初期末充注；功能份额；实际排放介质及去向证据；其他实际去向的物种质量及依据；未闭合差额 | 逐实际气体称量核对库存设备充注转移；承包商从场址库存充注不得重复；购买量不是排放。 核对实际空气释放与其他去向，存量、回收转移和其他去向采用互斥账项；未解释差额单独保留，不推定为空气排放。 | kg | 每次转移及期界 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 气瓶维护回收记录；完整衡算；空气去向及其他实际去向证据 |
 | cp_asset | control | server; radio; tower_building; chiller; radar_asset; ups; lead_battery; lfp_battery; generator | 前景记录 | 资产配置容量；制造；电池气体组件覆盖；实际利用寿命更换退役 | 实际安装资产关联上游清单，有凭据物理寿命功能时间使用；区分硬件初充更换。 | item; m2 | 资产事件及期间 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 资产台账；维护更换日志；寿命证据 |
 | cp_waste | control | waste_server; waste_lead; waste_lfp; spent_oil; wastewater | 前景记录 | 具体废物容量化学组成；数量；接收处理；期间份额 | 逐废物计量核验实际接收处理；区分化学体系同容量电池单元；处理计一次。 | item; kg; m3 | 每次转移 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 废物回收凭据；组成；接收边界 |
 | cp_emission | control | co2_air; co_air; no_air; no2_air; pm25_air | 前景记录 | 实际发电机燃料；运行测试载荷；物种/粒径组分；尾气实测或明确系数版本单位；分配 | 实测或采用明确实际发动机燃料工况系数；解析各物种及颗粒物粒径组分，并排除飞机尾气。 | kg | 备用工况及期间 | 同一声明服务报告期 | 已识别设施功能分配 | 每参考流 | 燃料尾气测试；系数适用性；单位核查 |
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | block_denominator | control_block | B = 相容声明配置覆盖内实际交付分钟/60，B须为正值。保留小数块及实际交通可用记录。 | cp_service | B |  |
 | exchange_allocation | 所有清单行 | 按有记录设施功能物理份额分配各实测期间分子，再除以B。保留共享待命冗余维护测试；不自动采用每架次分母。 | cp_service; cp_energy; cp_material; cp_waste | 每参考流交换量 |  |
-| gas_loss | r134a_air; sf6_air | 逐实际气体，损失=期初储存库存+取得量+期初设备充注-期末储存库存-离场转移-期末设备充注。回收只在期末库存或离场转移计一次；调查负值不闭合衡算，再分配实际功能份额除以B。 | cp_gas; cp_service | 每参考流气体损失 | epa-gas-balance |
+| gas_loss | r134a_air; sf6_air | 逐实际气体，衡算差额=期初储存库存+取得量+期初设备充注-期末储存库存-离场转移-期末设备充注。回收只在期末库存或离场转移计一次；调查负值不闭合衡算。 衡算差额本身不证明排放进入空气；只有去向证据支持的空气释放物种质量才可归入对应air行。其他实际去向须按物种质量和去向分别核算，并与已计存量、回收或离场转移去重；不得新增无证据的默认去向。未知去向或未闭合差额保留为缺口，不得截零或将整个差额认定为空气排放。 仅对确认的空气释放质量分配实际功能份额并除以B。 | cp_gas; cp_service | 每参考流气体损失 | epa-gas-balance |
 | asset_allocation | server; radio; tower_building; chiller; radar_asset; ups; lead_battery; lfp_battery; generator | 按有依据物理寿命实际功能时间利用分配上游资产制造更换退役，再按期间份额除以B；不默认电池更换周期。 | cp_asset; cp_service | 每参考流资产份额 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_function | control_block | 实际块时长功能覆盖交通组成降级状态完整；同为六十分钟不证明跨设施等价。 | cp_service |
 | dq_period | 所有清单行 | 计量备用测试维护气体衡算交付期间匹配；核对共享供应商机场总量。 | cp_energy; cp_gas; cp_asset |
@@ -596,7 +596,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。计数对象是明�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-67620 | official_guidance | UNSD CPC3.0 67620. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67620 | 机场塔台机场内雷达范围及导航辅助排除。 |
 | faa-facility-classification | official_guidance | FAA OPSNET Facility Classification. https://www.aspm.faa.gov/aspmhelp/index/OPSNET__Facility_Classification.html | 区分塔台终端雷达组合航路设施；不是CPC对应或运行批准。 |

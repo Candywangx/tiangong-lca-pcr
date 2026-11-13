@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
-| 必需限定信息 | 码头及期间；箱号；准确箱型及长度；空箱/载货状态；制冷需求，适用时声明温度及连接时长；实际货物质量及总质量；阶段类型；起止接口及存在时的运输方式；准确交接地点/时间；完成周期数；吊装/重复移箱次数；场内距离；中间停留；设备路线/动力系统；电力地区/电压；实际合同验收要求；运营方/承包方分工；仓储截止点；资产范围 |
+| 必需限定信息 | 码头及期间;箱号;准确箱型及长度;空箱/载货状态;制冷需求，适用时声明温度及连接时长;实际货物质量及总质量;阶段类型;起止接口及存在时的运输方式;准确交接地点/时间;完成周期数;吊装/重复移箱次数;场内距离;中间停留;设备路线/动力系统;电力地区/电压;实际合同验收要求;运营方/承包方分工;仓储截止点;资产范围 |
 
 Item(s)（件）表示一个已完成的声明装卸阶段，并不自动等于TEU、一次吊装、一吨、一吨公里、发票或新制造的集装箱。只有某次吊装完成整个声明阶段时才作为服务计数；中间吊装仍只是活动记录。只有实际发生了独立端点和服务时，往返或重复派遣才计为另一个周期。每项限定信息均须在数据包中声明；不同路线和范围分别报告。TEU与货物吨数仅作为补充活动量记录，不得用通用换算因子替代观测。
 
@@ -350,7 +350,7 @@ Item(s)（件）表示一个已完成的声明装卸阶段，并不自动等于T
 
 ### 数据采集协议
 
-| protocol_id | process_id | flow_role | 记录类型 | 原始字段 | 采集方法 | 单位 | 频率 | 时间覆盖 | 场址范围 | 汇总规则 | 质量证据 |
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_activity | handling | accepted_cycle | 保管活动账 | 箱号；箱型；载货状态；总质量；端点/时间；运输方式；吊装；重复移箱；场内距离；停留；验收 | 匹配同一箱号及已完成声明阶段的起止记录；失败作业保留在相应阶段清单内 | Item(s) | 每周期 | 完整周期含重试及中间停留 | 所有纳入的码头运营方 | 每参考流 | 交接凭证；码头操作系统事件；完成总量核对 |
 | cp_energy | handling | electricity; reefer_electricity | 电表及设备日志 | 电表；时段；kWh；电压；电网；设备小时；待机；充电损耗；共用保障；冷藏箱连接时间及温度；独立冷藏箱电表；分配 | 分表计量或以实测负荷时间核对分时电表；没有实际负荷证据时不得仅用额定功率 | kWh | 每计量时段/周期 | 完整周期及可归属待机/保障 | 纳入的码头及承包方 | 每参考流 | 经校准电表；活动日志；供应商边界核对 |
@@ -363,15 +363,15 @@ Item(s)（件）表示一个已完成的声明装卸阶段，并不自动等于T
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| cycle_attribution | 所有清单行 | 优先归属直接测得的周期交换量；对于同质的已声明路线，将经核对的期间可归属总量除以实际完成周期数。失败作业保留在分子中；参考输出恰为1 Item(s)。 | cp_activity；实际可归属总量 | 每参考流交换量 |  |
-| asset_attribution | crane_share; tractor_share; pavement_share | 将具体资产上游清单乘以有证据的全寿命服务周期份额。核对先前及当前份额；不得在每个观测期分配整个资产。 | cp_assets；有证据的寿命分母；周期利用量 | 每参考流资产量 |  |
-| pollutant_accounting | fossil_co2; nitrogen_monoxide; nitrogen_dioxide; carbon_monoxide | 缺实测时，逐个物种仅用经核验的设备/燃料/活动基准计算；在数据集中记录实际因子、单位及不确定性。不得将总氮氧化物复制到单个物种，或将上游供电二氧化碳记为场内排放。 | cp_release；cp_fuel；经审查物种证据 | 每参考流单一物种排放量 |  |
+| cycle_attribution | 所有清单行 | 优先归属直接测得的周期交换量；对于同质的已声明路线，将经核对的期间可归属总量除以实际完成周期数。失败作业保留在分子中；参考输出恰为1 Item(s)。 | cp_activity;实际可归属总量 | 每参考流交换量 |  |
+| asset_attribution | crane_share; tractor_share; pavement_share | 将具体资产上游清单乘以有证据的全寿命服务周期份额。核对先前及当前份额；不得在每个观测期分配整个资产。 | cp_assets;有证据的寿命分母;周期利用量 | 每参考流资产量 |  |
+| pollutant_accounting | fossil_co2; nitrogen_monoxide; nitrogen_dioxide; carbon_monoxide | 缺实测时，逐个物种仅用经核验的设备/燃料/活动基准计算；在数据集中记录实际因子、单位及不确定性。不得将总氮氧化物复制到单个物种，或将上游供电二氧化碳记为场内排放。 | cp_release;cp_fuel;经审查物种证据 | 每参考流单一物种排放量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_cycle | accepted_cycle | 证明匹配的阶段交接及全部参考限定信息；集装箱装载与卸载分别列为阶段时，不得将两者之和再次计作额外完整转移。区分箱数、TEU、吊装及阶段数，不可比路线分别报告。 | cp_activity |
 | quality_coverage | 所有清单行 | 核对完整燃料/能源/材料/废物活动与运营方边界、条件性不适用及实际上游数据集；未解决的证据须披露，不得视为零。 | cp_energy; cp_fuel; cp_material; cp_water; cp_waste; cp_release |
@@ -401,7 +401,7 @@ Item(s)（件）表示一个已完成的声明装卸阶段，并不自动等于T
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-container | official_guidance | 联合国统计司CPC 3.0，67110解释说明。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67110 | 跨运输方式的集装箱货物/码头装卸范围；仅支持分类，不提供因子或默认服务分母 |
 | epa-che | official_guidance | 美国环保署《改善空气质量的货物装卸设备最佳实践》，港口货物装卸设备章节，网页快照2026-10-23。https://www.epa.gov/ports-initiative/cargo-handling-equipment-che-best-practices-improve-air-quality | 筛查集装箱装卸设备及柴油/电力路线差异；美国港口示例不能建立通用车队、因子或完整生命周期边界 |

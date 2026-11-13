@@ -49,7 +49,7 @@ sync_with: pcr.en-US.md
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
-| 必需限定信息 | 单一服务族及模式；实际任务/航空器/场址/日期；起止验收接口；实际时长及物理范围；供应商/客户责任；消防待命保障区域/能力/实际小时或事件占地/响应/恢复及药剂配方/围控；非修理维护工单及任务/程序/设备和修理排除；机库航空器尺寸/占地/实际小时/气候/通风/安保及供应商范围；牵引航空器质量/起落架/牵引方式/牵引车动力/载荷/实际路线距离及全部阶段；实际计量/材料/物种/接收方；共用设施资产及全寿命分母；不确定性 |
+| 必需限定信息 | 单一服务族及模式;实际任务/航空器/场址/日期;起止验收接口;实际时长及物理范围;供应商/客户责任;消防待命保障区域/能力/实际小时或事件占地/响应/恢复及药剂配方/围控;非修理维护工单及任务/程序/设备和修理排除;机库航空器尺寸/占地/实际小时/气候/通风/安保及供应商范围;牵引航空器质量/起落架/牵引方式/牵引车动力/载荷/实际路线距离及全部阶段;实际计量/材料/物种/接收方;共用设施资产及全寿命分母;不确定性 |
 
 数据包须声明全部限定信息。Item(s)仅计明确服务块，不是功能等效通用单位；一次牵引不能代替待命小时、火灾事件、维护任务或机库日，客户航空器尺寸/质量及实际距离/范围/时间仍为必需。不推定旅客公里、货运吨公里、避免损失或发票价值。
 
@@ -696,7 +696,7 @@ sync_with: pcr.en-US.md
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | family_attribution | 所有清单行 | 将真实单一交换归属声明服务族模式及真实输出总体，可归属资源除以完成同情景块；参考输出准确1 Item(s)，不作跨族平均计数。 | cp_completion; 实际计量记录 | 每参考流单一交换 |  |
 | time_attribution | support_output | 待命块为实测同能力保障小时除以1小时，机库块为真实一架航空器保管小时除以24小时，保留分数及占位；不以费用换时长。 | cp_completion | 真实时间块量 |  |
@@ -705,7 +705,7 @@ sync_with: pcr.en-US.md
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_function | support_output | 要求全部服务族模式特定功能范围、时长、航空器配置及完成条件，不跨族等效或声称PCR安全批准。 | cp_completion |
 | quality_fire | fire | 要求真实产品药剂配方、测试方法、围控及组成去向证据，不推定PFAS物种有无或事故频率。 | cp_fire_material; cp_waste_fire |
@@ -738,7 +738,7 @@ sync_with: pcr.en-US.md
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-air-support | official_guidance | 联合国统计司CPC3.0 67630解释说明，共享草案PDF377–378页。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67630 | 四个明确服务族及明确排除，开放剩余标题不建立全部覆盖 |
 | faa-ground-service | official_guidance | FAA AC00-34B《航空器地面操作、勤务及引导》，2024-07-17，主要第13节。https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_00-34B.pdf | 任务航空器设备特定勤务牵引背景，不是排放因子、全球安全规则或全部地面作业分类 |

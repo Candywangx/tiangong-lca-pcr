@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
-| 必需限定信息 | 场站及期间；货物或行李类别；包装状态及净质量定义；起终接口；装卸方向；转移路线及距离；设备；温控；实际待运时长；毛重及皮重称量或可追溯行李质量记录；合同验收；破损及拒收处理；分包边界；电力地区及电压 |
+| 必需限定信息 | 场站及期间;货物或行李类别;包装状态及净质量定义;起终接口;装卸方向;转移路线及距离;设备;温控;实际待运时长;毛重及皮重称量或可追溯行李质量记录;合同验收;破损及拒收处理;分包边界;电力地区及电压 |
 
 千克表示服务活动处理的净质量，不是货物材料产出、所有权转移、吨公里、仓储质量时间或行李件数。1,000千克参考量仅按单位定义等于一吨。没有实际称重证据不得把行李件数或吊装次数换算为质量；接收和交付不能各计一次产出。
 
@@ -377,15 +377,15 @@ status: candidate
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_activity` | handled_output | 验收净质量为毛重减有证据的皮重，每次完成转移计量一次。期间可归属交换量除以按1,000千克验收质量计的参考流数量；所有卡片采用相同参考。 | cp_activity；任务记录 | 每参考流 |  |
+| `calc_activity` | handled_output | 验收净质量为毛重减有证据的皮重，每次完成转移计量一次。期间可归属交换量除以按1,000千克验收质量计的参考流数量；所有卡片采用相同参考。 | cp_activity;任务记录 | 每参考流 |  |
 | `calc_assets` | forklift; crane; conveyor; concrete | 按allocation_assets将有凭据的制造数量乘以实际利用量与寿命利用量份额，再按相同参考基准分摊期间份额。寿命或利用量无依据时保留为需审查的不确定性。 | cp_assets; cp_activity | 每参考流资产份额 |  |
 | `calc_emissions` | fossil_co2; nitrogen_dioxide; pm25 | 采用实测物种质量或有可追溯来源、匹配活动量及控制效率的模型；保留各物种和介质。须记录因子选择、单位及换算，不得直接将氮氧化物变为二氧化氮或质量变为影响值。 | cp_emissions; cp_activity | 每参考流物种质量 | epa-che |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_mass | handled_output | 核对净质量、验收任务及重复搬运；不采用默认行李质量。仅服务名称或价格不足。 | cp_activity |
 | dq_routes | 所有清单行 | 各仪表、任务、废物及排放数据采用相同场站、期间及情景基准，纳入可归属怠速及失败作业。 | cp_activity; cp_utilities |
@@ -414,7 +414,7 @@ status: candidate
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc3-67190 | official_guidance | UNSD, Explanatory Notes of the Central Product Classification, Version 3, 10 February 2025, subclass 67190. https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf | 非集装箱货物及旅客行李分类范围；不提供清单因子或功能等价关系 |
 | epa-che | official_guidance | US EPA, Cargo Handling Equipment (CHE) Best Practices to Improve Air Quality, CHE at Ports; Tips on Performance Targets and Data Collection. https://www.epa.gov/ports-initiative/cargo-handling-equipment-che-best-practices-improve-air-quality | 设备多样性及实际设备运行小时记录；美国港口背景，不作为数值默认值或全球完整LCA标准 |

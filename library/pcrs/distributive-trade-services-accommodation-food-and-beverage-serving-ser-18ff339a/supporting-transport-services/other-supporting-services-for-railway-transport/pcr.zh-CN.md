@@ -51,7 +51,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
-| 必需限定信息 | 服务族及单一具体功能；服务块定义与准确物理范围；车站/线路/终端/技术点/加油站编号；起止接口及时间戳；实际服务旅客/列车/货物批次总体；实际时长；适用时的轨道长度及列车/车轴配置；货物/行李装卸排除；客户燃料/水/电交付；运营方/供应商分工；供能及牵引分离；设施及资产范围；实际质量/安全要求与完成；期间及地区 |
+| 必需限定信息 | 服务族及单一具体功能;服务块定义与准确物理范围;车站/线路/终端/技术点/加油站编号;起止接口及时间戳;实际服务旅客/列车/货物批次总体;实际时长;适用时的轨道长度及列车/车轴配置;货物/行李装卸排除;客户燃料/水/电交付;运营方/供应商分工;供能及牵引分离;设施及资产范围;实际质量/安全要求与完成;期间及地区 |
 
 Item(s)计数一个已验收且明确定义的服务案例。声明该案例适用的实际列车/旅客数、时长、长度、供油量或行李保管量，均不得由费用推断。不同功能或范围值不能混合、直接比较或按通用服务因子换算；可用性块须有准确容量及持续时间，不能是无限定设施年。货运终端块不是一吨公里运输。
 
@@ -465,7 +465,7 @@ Item(s)计数一个已验收且明确定义的服务案例。声明该案例适�
 
 ### 数据采集协议
 
-| protocol_id | process_id | flow_role | 记录类型 | 原始字段 | 采集方法 | 单位 | 频率 | 时间覆盖 | 场址范围 | 汇总规则 | 质量证据 |
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_activity | support | support_block | 验收服务/块账 | 服务族；准确功能；物理范围；旅客/列车/批次；行李件数/质量及保管时间；轨道区段/长度；轴重类型；可用容量/时间；工单；供油交付；端点/时间；验收 | 按对应validate_family_*规则核验已完成功能，记录实际范围并区分组件/整体包身份；仅计同质验收块，失败工作保留在清单中。 | Item(s) | 每服务块 | 完整服务块及已分配保障 | 所声明设施及供应商 | 每参考流 | 工单；车站/接入日志；保管记录；签署验收；准确总体核对 |
 | cp_energy | support | electricity; heat | 能源及客户交付账 | 分别记录实际kWh及MJ；计量；电压/地区；时间；任务；实测负荷；待机；牵引交付及实际配电损耗；供应商覆盖 | 对实际支持功能分表计量，分别核对建筑/信号/泵及客户牵引；共用保障按实测因果使用分配，不按票价。 | kWh; MJ | 每任务/计量时段 | 完整块及归属待机 | 实际设施 | 每参考流 | 计量；任务/负荷日志；供应商/客户能源核对 |
@@ -479,15 +479,15 @@ Item(s)计数一个已验收且明确定义的服务案例。声明该案例适�
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| block_attribution | 所有清单行 | 将实际交换总量归属同质功能/范围情景，再除以实际验收块数；失败工作与待机保留在归属总量中；参考输出准确为1 Item(s)。 | cp_activity；可归属实测总量 | 每参考流交换量 |  |
-| asset_attribution | building_share; track_share; signal_share; pump_share | 将有证据的服务块比例用于实际建设/制造清单并守恒全寿命份额；区分初始资产与显式更新范围，不每年重置整个资产。 | cp_assets；cp_maintenance；实际功能利用量 | 每参考流资产量 |  |
-| customer_energy_reconciliation | diesel; electricity | 设施实际消耗与客户油电交付及实际配电损耗分别核对；交付升数或牵引电量不得作为设施燃烧数量。 | cp_fuel；cp_energy；保管交付计量 | 每参考流设施交换量 |  |
+| block_attribution | 所有清单行 | 将实际交换总量归属同质功能/范围情景，再除以实际验收块数；失败工作与待机保留在归属总量中；参考输出准确为1 Item(s)。 | cp_activity;可归属实测总量 | 每参考流交换量 |  |
+| asset_attribution | building_share; track_share; signal_share; pump_share | 将有证据的服务块比例用于实际建设/制造清单并守恒全寿命份额；区分初始资产与显式更新范围，不每年重置整个资产。 | cp_assets;cp_maintenance;实际功能利用量 | 每参考流资产量 |  |
+| customer_energy_reconciliation | diesel; electricity | 设施实际消耗与客户油电交付及实际配电损耗分别核对；交付升数或牵引电量不得作为设施燃烧数量。 | cp_fuel;cp_energy;保管交付计量 | 每参考流设施交换量 |  |
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_extent | support_block | 固定一个服务族/功能及准确范围、起止和验收；保留原旅客/列车/时间/长度/燃料记录，不得使用未定义通用块。 | cp_activity |
 | quality_scope | 所有清单行 | 审计排除运输/装卸/中介及客户能源边界，记录组件/服务包及自有/供应商重叠。 | un-cpc-rail-support; cp_activity; cp_energy; cp_fuel |
@@ -523,7 +523,7 @@ Item(s)计数一个已验收且明确定义的服务案例。声明该案例适�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-rail-support | official_guidance | 联合国统计司CPC 3.0，67390解释说明，与解释说明草案PDF第373页一致。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67390 | 旅客终端、基础设施、非装卸货运终端、技术点及加油点范围/排除项，不提供因子或通用事件等效 |
 | networkrail-metering | official_guidance | 英国Network Rail《车载计量》，2026-10-23阅读当前网页。https://www.networkrail.co.uk/industry-and-commercial/information-for-operators/on-train-metering/ | 独立牵引能源账及实际计量使用量；仅为英国运营接口证据，不采用费率、损耗加成或全球生命周期因子 |

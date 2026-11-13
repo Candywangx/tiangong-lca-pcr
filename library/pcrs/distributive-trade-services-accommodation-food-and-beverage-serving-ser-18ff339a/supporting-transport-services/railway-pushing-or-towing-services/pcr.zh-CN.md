@@ -42,7 +42,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 任务和订单编号；推送、牵引或调车子型；起讫位置；轨道区段；相关轨距与坡度；车列及车辆编号；车厢数量；皮重、货重及总重；连挂制动状态；移动距离和方向；分段移动次数；牵引来源；发动机及机车类别；载重和空驶定位；作业、怠速及辅助时间；报告期；完成关口；自有和供应商覆盖 |
+| 必需限定信息 | 任务和订单编号;推送、牵引或调车子型;起讫位置;轨道区段;相关轨距与坡度;车列及车辆编号;车厢数量;皮重、货重及总重;连挂制动状态;移动距离和方向;分段移动次数;牵引来源;发动机及机车类别;载重和空驶定位;作业、怠速及辅助时间;报告期;完成关口;自有和供应商覆盖 |
 
 item是单位组正式单位Item(s)的单数文字别名；实际数据以Item(s)导出。一次任务是明确规定的支持作业，不是任意时间片、每节车辆、每次推送或一个吨公里。独立交付任务分别计数，但不得将一次任务及其组成移动作为多个完整产出重复计数。只有任务范围和配置等效时才能汇总；声明任务特征范围时须保留实测活动分布。附加质量、距离和时间观测用于描述和分配任务，不能建立与货运的等价性。全部清单量均对应边界相同的一次验收任务。
 
@@ -436,7 +436,7 @@ item是单位组正式单位Item(s)的单数文字别名；实际数据以Item(s
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | task_denominator | pushing_service | 按声明等效配置计数已完成的独立明确任务单N，N须为正值。组成推送及车厢属于任务描述，不是额外完整产出。 | cp_task | 已完成任务N |  |
 | exchange_attribution | 所有清单行 | 逐实测交换分子归属至相同完整任务边界，再除以正值N。保留柴油和电力路线、空驶接近及怠速记录；不同任务配置须独立数据集或明确活动分布。 | cp_task; cp_energy; cp_material; cp_waste | 每参考流交换数量 |  |
@@ -445,7 +445,7 @@ item是单位组正式单位Item(s)的单数文字别名；实际数据以Item(s
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_task | pushing_service | 完整起讫点、车列、质量、距离、任务类型及验收；不得隐含吨公里服务等价性。 | cp_task |
 | dq_activity | 所有清单行 | 时间及车队覆盖与任务分母匹配；披露未计量怠速、共享待命、失败操作及不确定性。 | cp_task; cp_energy |
@@ -477,7 +477,7 @@ item是单位组正式单位Item(s)的单数文字别名；实际数据以Item(s
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-67310 | official_guidance | 联合国统计司，CPC 3.0，子类67310 Railway pushing or towing services。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67310 | 分类范围及支持服务身份；分类不提供通用生命周期评价系数。 |
 | epa-rail-facility | official_guidance | 美国环保署，Rail Facility Best Practices to Improve Air Quality。https://www.epa.gov/ports-initiative/rail-facility-best-practices-improve-air-quality | 区分调车与干线并筛查怠速及辅助工况；未采用数值油耗、排放系数、法规限值或技术性能。 |

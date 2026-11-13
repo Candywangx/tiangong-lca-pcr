@@ -68,6 +68,8 @@ reference_flow_definition:
     - "asset scope"
     - "subcontract boundary"
     - "electricity region/voltage"
+    - "service-acceptance criteria and permitted deviations"
+    - "interval acceptance status and evidence"
 reference_flows:
   []
 measurement_rules:
@@ -524,14 +526,14 @@ dataset_production:
       process_id: "storage"
       flow_role: "storage_output"
       record_type: "stock_time_record"
-      raw_fields: "batch; commodity; measured net mass; moisture basis; receipt/release time; stock corrections; condition log; losses"
-      collection_method: "Calibrated weighing and inventory reconciliation with timestamped batch balances. Integrate net tonnes over elapsed days; retain partial intervals and actual stock changes. Do not add output for internal moves."
+      raw_fields: "batch; commodity; measured net mass; moisture basis; receipt/release time; stock corrections; condition log; losses; predeclared service-acceptance criteria and permitted deviations; interval acceptance status; partial-acceptance boundaries; unresolved reasons; acceptance evidence"
+      collection_method: "Calibrated weighing and inventory reconciliation with timestamped batch balances. Integrate net tonnes over elapsed days; retain partial intervals and actual stock changes. Do not add output for internal moves. Classify accepted, rejected and unresolved intervals against the service-acceptance rules and reconcile the complete mass-time ledger; distinguish service failure from goods loss."
       unit: "tday"
       frequency: "each batch event"
       temporal_coverage: "full declared custody/reporting period"
       site_scope: "one commodity/condition scenario"
       aggregation_rule: "per reference flow"
-      quality_evidence: "scale calibration; stock ledger; time logs"
+      quality_evidence: "scale calibration; stock ledger; time logs; contract criteria and interval acceptance evidence"
     - protocol_id: cp_utilities
       process_id: "storage"
       flow_role: "electricity; diesel; natural_gas; water"
@@ -595,7 +597,7 @@ dataset_production:
   calculation_rules:
     - id: calc_stock_integral
       applies_to: "storage_output"
-      rule: "For every batch interval multiply actual net mass in tonnes by elapsed days, then sum intervals once. Reconcile ingress, egress, moisture change and stock corrections. Divide attributable period exchanges by the resulting number of tday reference flows."
+      rule: "S = sum of accepted net lot tonnes multiplied by actual elapsed hours / 24 for nonoverlapping intervals within one equivalent condition stratum. Apply the contract service-acceptance criteria declared before aggregation, including permitted deviations; assess the delivered storage service, not an unstated guarantee of goods quality. Split intervals at mass, condition or acceptance-status changes; count only evidenced accepted mass-time, including the accepted part of a partly rejected interval. Exclude failed/nonconforming service intervals from S. Goods loss alone does not reject an otherwise accepted service interval; record its cause and contractual responsibility. Keep unresolved acceptance separate and do not finalize S until resolved; do not retrospectively relax criteria. Reconcile ingress, egress, moisture change and stock corrections. Retain all attributable burdens of failed, rejected, remedial and idle activity in the same declared reporting-period/condition stratum; do not remove their inventory when excluding their service time. Divide each allocated exchange numerator once by positive accepted S. If S is zero, report unnormalized totals and failure coverage; do not fabricate a per-reference result."
       inputs:
         - cp_stock
       output: "per reference flow"
@@ -644,7 +646,7 @@ dataset_production:
 validation_rules:
   - rule_id: validate_mass_time
     applies_to: "foreground_dataset_conformance"
-    rule: "Require one storage_output product flow of 1 tday linked to measured mass-time, qualifiers and custody intervals. Reject throughput, internal move counts, empty area and tonne-kilometres as reference substitutes."
+    rule: "Require one storage_output product flow of 1 tday linked to measured mass-time, qualifiers and custody intervals. Reject throughput, internal move counts, empty area and tonne-kilometres as reference substitutes. Reconcile accepted, rejected and unresolved intervals to the full ledger and retain failed-activity burdens in the numerator. Unresolved acceptance or nonpositive S prevents finalizing a per-reference result."
     source_ids: []
   - rule_id: validate_scope
     applies_to: "foreground_dataset_conformance"
@@ -682,18 +684,18 @@ data_sources:
     used_for: "Warehouse lighting/heating/equipment energy screening; US survey context, not site factor or full lifecycle method"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:43f4964ffc57585ed32adba469f916cbb5737b754e424aca7ae18167a77f764e"
+  source_sha256: "sha256:423b47abe9ba3a55ab960e1f36f0acba22d91b6dcd04a0808685a7e43f3e2d03"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4631"
+    - unit_id: "normative_4927"
       family: "system_boundary"
       span:
         start:
-          offset: 4631
+          offset: 4927
           line: 56
           column: 1
         end:
-          offset: 6669
+          offset: 6965
           line: 76
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Identified goods accepted into the declared warehouse; prior manufacture and transport remain upstream context, not new storage production |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Other nonrefrigerated storage and warehousing, including grains |\n| recursive_input_rule | Outsourced same-category custody enters as a traceable service input with supplier scope; do not duplicate its utilities, facilities and handling |\n| upstream_dataset_requirement | Verified energy, material, asset manufacture/retirement and treatment datasets; explicit exclusions and omissions |\n| disclosure | Custody interval; occupied space; commodity/moisture basis; preservation route; handling split; goods loss; asset denominator; missing upstream coverage |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_storage` | Include attributable receipt/release checking, in-store movements, lighting, ventilation, humidity control, cleaning, maintenance and actual preservation. Grain aeration depends on ambient conditions and moisture; it is not mandatory for all grain. | fao-grain-aeration |\n| `boundary_energy` | Screen actual lighting, space heating, equipment drives, charging and control loads. The EIA building survey is contextual evidence only; no national energy intensity or end-use share is imposed on a site. | eia-warehouse-energy |\n| `boundary_assets` | Include allocated manufacture, maintenance and retirement of actual building, racks and handling/preservation equipment. Declare whether building upstream inventory already includes components to prevent double counting. |  |\n| `boundary_atomic` | Add every actually present separate fuel, refrigerant, pesticide formulation, maintenance part, packaging component, pollutant and waste as one atomic exchange. This list is not permission to omit an actual exchange; absent operations require documented applicability. |  |\n\n"
@@ -713,11 +715,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 4631
+              offset: 4927
               line: 56
               column: 1
             end:
-              offset: 4652
+              offset: 4948
               line: 56
               column: 22
           text: "## 5. System Boundary"
@@ -733,15 +735,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_21436"
+    - unit_id: "normative_21732"
       family: "allocation"
       span:
         start:
-          offset: 21436
+          offset: 21732
           line: 430
           column: 1
         end:
-          offset: 22752
+          offset: 23048
           line: 439
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_tasks` | Use direct meters and task records first. Handling energy follows actual lifts, hours and load; preservation energy follows measured zone/commodity use. Mass-time allocation is allowed only within equivalent declared conditions when the causal basis is justified. |  |\n| `allocate_space` | Common lighting/building burdens may use measured occupied area-time where causal, then normalize on measured mass-time. Keep standby/empty-space burdens attributable to the operating storage system; do not erase low occupancy by counting only powered hours. |  |\n| `allocate_assets` | Attribute each asset by actual use over a documented lifetime utilization denominator, reconcile previous/current shares and cap cumulative attribution at one full asset life. Rented assets and outsourced service burdens require the same boundary reconciliation. |  |\n| `allocate_goods_loss` | Goods ownership and embodied manufacture remain separate from the service reference. Record actual loss, moisture change, customer/operator responsibility and treatment. Additional replacement-production scenarios must be separately declared; no automatic credit or full inventory of all stored goods is assigned to storage. |  |\n\n"
@@ -761,11 +763,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 21436
+              offset: 21732
               line: 430
               column: 1
             end:
-              offset: 21476
+              offset: 21772
               line: 430
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -781,18 +783,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_28737"
+    - unit_id: "normative_30409"
       family: "validation"
       span:
         start:
-          offset: 28737
+          offset: 30409
           line: 470
           column: 1
         end:
-          offset: 30015
+          offset: 31896
           line: 479
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_mass_time` | Require one storage_output product flow of 1 tday linked to measured mass-time, qualifiers and custody intervals. Reject throughput, internal move counts, empty area and tonne-kilometres as reference substitutes. |  |\n| `validate_scope` | Check commodity-specific grain/general warehouse route. Exclude refrigerated and bulk liquid/gas storage; additional separately sold handling and processing must have reconciled boundaries. | un-cpc3-67290 |\n| `validate_atomicity` | Each present exchange has one specific identity, collection record and same reference denominator. Verify asset/manufacturing overlap, custody loss and chemical recovery; disclose every missing UUID/factor before complete lifecycle claims. |  |\n| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_mass_time` | Require one storage_output product flow of 1 tday linked to measured mass-time, qualifiers and custody intervals. Reject throughput, internal move counts, empty area and tonne-kilometres as reference substitutes. Reconcile accepted, rejected and unresolved intervals to the full ledger and retain failed-activity burdens in the numerator. Unresolved acceptance or nonpositive S prevents finalizing a per-reference result. |  |\n| `validate_scope` | Check commodity-specific grain/general warehouse route. Exclude refrigerated and bulk liquid/gas storage; additional separately sold handling and processing must have reconciled boundaries. | un-cpc3-67290 |\n| `validate_atomicity` | Each present exchange has one specific identity, collection record and same reference denominator. Verify asset/manufacturing overlap, custody loss and chemical recovery; disclose every missing UUID/factor before complete lifecycle claims. |  |\n| `validate_unit_export` | Treat tday only as the local display alias of the formal Mass*time unit t*d: 1 tday = 1 t*d. Export the formal unit t*d, retaining the same physical quantity and reference denominator. If a receiving system requires the unit-group reference kg*a, apply the verified unit-group conversion once and retain its factor and provenance; never relabel an unchanged number as kg*a or normalize an already per-reference quantity again. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -809,11 +811,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 28737
+              offset: 30409
               line: 470
               column: 1
             end:
-              offset: 28759
+              offset: 30431
               line: 470
               column: 23
           text: "## 9. Validation Rules"
@@ -833,206 +835,206 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_storage"
       identity_kind: "explicit"
-      unit_id: "normative_4631"
+      unit_id: "normative_4927"
       source_span:
         start:
-          offset: 5576
+          offset: 5872
           line: 71
           column: 1
         end:
-          offset: 5870
+          offset: 6166
           line: 71
           column: 295
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_energy"
       identity_kind: "explicit"
-      unit_id: "normative_4631"
+      unit_id: "normative_4927"
       source_span:
         start:
-          offset: 5871
+          offset: 6167
           line: 72
           column: 1
         end:
-          offset: 6123
+          offset: 6419
           line: 72
           column: 253
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_assets"
       identity_kind: "explicit"
-      unit_id: "normative_4631"
+      unit_id: "normative_4927"
       source_span:
         start:
-          offset: 6124
+          offset: 6420
           line: 73
           column: 1
         end:
-          offset: 6371
+          offset: 6667
           line: 73
           column: 248
     - pointer: "/system_boundary/rules/3"
       rule_id: "boundary_atomic"
       identity_kind: "explicit"
-      unit_id: "normative_4631"
+      unit_id: "normative_4927"
       source_span:
         start:
-          offset: 6372
+          offset: 6668
           line: 74
           column: 1
         end:
-          offset: 6667
+          offset: 6963
           line: 74
           column: 296
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_tasks"
       identity_kind: "explicit"
-      unit_id: "normative_21436"
+      unit_id: "normative_21732"
       source_span:
         start:
-          offset: 21530
+          offset: 21826
           line: 434
           column: 1
         end:
-          offset: 21819
+          offset: 22115
           line: 434
           column: 290
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_space"
       identity_kind: "explicit"
-      unit_id: "normative_21436"
+      unit_id: "normative_21732"
       source_span:
         start:
-          offset: 21820
+          offset: 22116
           line: 435
           column: 1
         end:
-          offset: 22104
+          offset: 22400
           line: 435
           column: 285
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_assets"
       identity_kind: "explicit"
-      unit_id: "normative_21436"
+      unit_id: "normative_21732"
       source_span:
         start:
-          offset: 22105
+          offset: 22401
           line: 436
           column: 1
         end:
-          offset: 22394
+          offset: 22690
           line: 436
           column: 290
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_goods_loss"
       identity_kind: "explicit"
-      unit_id: "normative_21436"
+      unit_id: "normative_21732"
       source_span:
         start:
-          offset: 22395
+          offset: 22691
           line: 437
           column: 1
         end:
-          offset: 22750
+          offset: 23046
           line: 437
           column: 356
     - pointer: "/validation_rules/0"
       rule_id: "validate_mass_time"
       identity_kind: "explicit"
-      unit_id: "normative_28737"
+      unit_id: "normative_30409"
       source_span:
         start:
-          offset: 28813
+          offset: 30485
           line: 474
           column: 1
         end:
-          offset: 29055
+          offset: 30936
           line: 474
-          column: 243
+          column: 452
     - pointer: "/validation_rules/1"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_28737"
+      unit_id: "normative_30409"
       source_span:
         start:
-          offset: 29056
+          offset: 30937
           line: 475
           column: 1
         end:
-          offset: 29284
+          offset: 31165
           line: 475
           column: 229
     - pointer: "/validation_rules/2"
       rule_id: "validate_atomicity"
       identity_kind: "explicit"
-      unit_id: "normative_28737"
+      unit_id: "normative_30409"
       source_span:
         start:
-          offset: 29285
+          offset: 31166
           line: 476
           column: 1
         end:
-          offset: 29554
+          offset: 31435
           line: 476
           column: 270
     - pointer: "/validation_rules/3"
       rule_id: "validate_unit_export"
       identity_kind: "explicit"
-      unit_id: "normative_28737"
+      unit_id: "normative_30409"
       source_span:
         start:
-          offset: 29555
+          offset: 31436
           line: 477
           column: 1
         end:
-          offset: 30013
+          offset: 31894
           line: 477
           column: 459
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4631"
+      unit_id: "normative_4927"
       source_span:
         start:
-          offset: 4631
+          offset: 4927
           line: 56
           column: 1
         end:
-          offset: 4652
+          offset: 4948
           line: 56
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4631"
+      unit_id: "normative_4927"
       source_span:
         start:
-          offset: 4680
+          offset: 4976
           line: 60
           column: 1
         end:
-          offset: 5522
+          offset: 5818
           line: 67
           column: 170
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_21436"
+      unit_id: "normative_21732"
       source_span:
         start:
-          offset: 21436
+          offset: 21732
           line: 430
           column: 1
         end:
-          offset: 21476
+          offset: 21772
           line: 430
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_28737"
+      unit_id: "normative_30409"
       source_span:
         start:
-          offset: 28737
+          offset: 30409
           line: 470
           column: 1
         end:
-          offset: 28759
+          offset: 30431
           line: 470
           column: 23
 projection_metadata:
@@ -1042,5 +1044,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:43f4964ffc57585ed32adba469f916cbb5737b754e424aca7ae18167a77f764e"
-  generated_content_sha256: "sha256:de31252e9ed1192d7f36f3a35707baf0ccebecc9e82ede95e5188d641c1eb965"
+    sha256: "sha256:423b47abe9ba3a55ab960e1f36f0acba22d91b6dcd04a0808685a7e43f3e2d03"
+  generated_content_sha256: "sha256:c10b7852e8bf382299a34285e2cbbe0cc7950266cd0cc60974a0e7ee8807c183"

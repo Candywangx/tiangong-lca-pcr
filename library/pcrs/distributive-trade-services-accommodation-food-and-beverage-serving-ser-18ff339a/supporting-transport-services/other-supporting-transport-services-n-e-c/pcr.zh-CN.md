@@ -47,7 +47,7 @@ status: candidate
 | 参考流属性 | 质量 `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
-| 必需限定信息 | 运输用途；液化或再气化；真实场址日期路线供应商；进出口保管端点；来料及交付组成含甲烷高碳烃CO2氮水及相关污染物；真实进出口相态温度压力和质量验收；合格净交付kg及观测期间；真实进料库存变化过程缓冲时长内部回路转燃料回收外送BOG及每项损失去向；压缩制冷循环或ORV/SCV/空气/中间介质气化器及能源来源；陆上浮式资产范围；能源来源温度压力；实际取退水温度化学地点；逐种化学品冷剂；排放逸散火炬效率证据；副产品供应商重叠；真实全寿命输出分母及不确定性 |
+| 必需限定信息 | 运输用途;液化或再气化;真实场址日期路线供应商;进出口保管端点;来料及交付组成含甲烷高碳烃CO2氮水及相关污染物;真实进出口相态;温度;压力和质量验收;合格净交付kg及观测期间;真实进料;库存变化;过程缓冲时长;内部回路;转燃料;回收外送BOG及每项损失去向;压缩制冷循环或ORV/SCV/空气/中间介质气化器及能源来源;陆上浮式资产范围;能源来源温度压力;实际取退水温度化学地点;逐种化学品冷剂;排放逸散火炬效率证据;副产品供应商重叠;真实全寿命输出分母及不确定性 |
 
 数据包须声明全部限定。kg属性计本服务的气体质量基准，不把电、热、水、设备数量或废物改为服务kg。客户进料交付气为保管平衡，不是重复生产负荷的新产气体输入输出；此纯服务处理不使完整燃气链的上游产气、耗气或损失为零，须在负责燃气链边界连接这些上游负荷及损失补料一次。
 
@@ -736,8 +736,8 @@ status: candidate
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | cp_mass | completion | service_output | 按组成分解的保管调相账 | 运输用途；液化或再气化；真实场址日期路线供应商；进出口保管端点；来料及交付组成含甲烷高碳烃CO2氮水及相关污染物；真实进出口相态温度压力和质量验收；合格净交付kg及观测期间；真实进料库存变化过程缓冲时长内部回路转燃料回收外送BOG及每项损失去向；压缩制冷循环或ORV/SCV/空气/中间介质气化器及能源来源；陆上浮式资产范围；能源来源温度压力；实际取退水温度化学地点；逐种化学品冷剂；排放逸散火炬效率证据；副产品供应商重叠；真实全寿命输出分母及不确定性；共同源记录及保管转移编号 | 以校准进出口质量计量或有真实组成温度压力及密度状态方程证据的体积换算；将客户进料、真实外部气及期初库存与合格交付、期末库存、转燃料、另行外送气副输出和逐项放空火炬逸散损失核对；内部BOG返回再冷凝及冷剂回路作为内部转移抵消，不作新采购生产。仅计实际合格净出口，修正不合格返工退回料，不重复计循环处理；保留组分碳平衡、实际缓冲保管时长及不确定性。 由completion负责覆盖所选路线及management的唯一保管/组分总账；各过程源记录按共同记录/转移编号与cp_mass核对一次，此总账不新增management产出或另一服务分母。 | kg | 连续批次计量及每保管期 | 完整真实调相交付期含启停库存变化 | 真实所选进出口缓冲端点 | 每参考流 | 校准质量质量验收计量；气分析；库存燃料BOG记录；组分平衡 |
-| cp_energy_liquefaction | liquefaction | liq_power; liq_fuelgas; liq_steam | 真实来源终端能源账 | 路线技术；真实计量起止；外部燃料组成kg热值基准；内用客户BOG燃料另列；kWh/MJ；供回状态焓；压缩泵气化器负荷；启停；供应商范围；真实合格出口质量；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实外部电、每种外燃料、蒸汽热量分别计量；将源特定内燃料燃烧与cp_mass核对且不重复采购，真实发电效率损耗仅计一次；计真实热供回焓、实际处理量及全部可归属阶段，不设比能耗或SCV/ORV默认。 本协议仅适用于所列liquefaction过程交换；共享记录按validate_protocol_partition核对。 | kWh; kg; MJ | 每计量阶段及核对观测期 | 全部真实路线能源及可归属停机 | 真实压缩制冷气化器及供应 | 每参考流 | 计量；真实燃料BOG库存平衡；状态数据；供应商重叠；分配 |
-| cp_energy_regasification | regasification | regas_power; regas_fuelgas; regas_steam; regas_heat | 真实来源终端能源账 | 路线技术；真实计量起止；外部燃料组成kg热值基准；内用客户BOG燃料另列；kWh/MJ；供回状态焓；压缩泵气化器负荷；启停；供应商范围；真实合格出口质量；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实外部电、每种外燃料、蒸汽热量分别计量；将源特定内燃料燃烧与cp_mass核对且不重复采购，真实发电效率损耗仅计一次；计真实热供回焓、实际处理量及全部可归属阶段，不设比能耗或SCV/ORV默认。 本协议仅适用于所列regasification过程交换；共享记录按validate_protocol_partition核对。 | kWh; kg; MJ | 每计量阶段及核对观测期 | 全部真实路线能源及可归属停机 | 真实压缩制冷气化器及供应 | 每参考流 | 计量；真实燃料BOG库存平衡；状态数据；供应商重叠；分配 |
+| cp_energy_liquefaction | liquefaction | liq_power; liq_fuelgas; liq_steam | 真实来源终端能源账 | 路线技术；真实计量起止；外部燃料组成kg热值基准；内用客户BOG燃料另列；kWh/MJ；供回状态焓；压缩泵气化器负荷；启停；计量供能、终端用途及供应商范围；真实合格出口质量；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实外部电、每种外燃料、蒸汽热量分别计量；将源特定内燃料燃烧与cp_mass核对且不重复采购，真实发电效率损耗仅计一次；计真实热供回焓、实际处理量及全部可归属阶段，不设比能耗或SCV/ORV默认。 本协议仅适用于所列liquefaction过程交换；共享记录按validate_protocol_partition核对。 | kWh; kg; MJ | 每计量阶段及核对观测期 | 全部真实路线能源及可归属停机 | 真实压缩制冷气化器及供应 | 每参考流 | 计量；真实燃料BOG库存平衡；状态数据；供应商重叠；分配 |
+| cp_energy_regasification | regasification | regas_power; regas_fuelgas; regas_steam; regas_heat | 真实来源终端能源账 | 路线技术；真实计量起止；外部燃料组成kg热值基准；内用客户BOG燃料另列；kWh/MJ；供回状态焓；压缩泵气化器负荷；启停；计量供能、终端用途及供应商范围；真实合格出口质量；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 真实外部电、每种外燃料、蒸汽热量分别计量；将源特定内燃料燃烧与cp_mass核对且不重复采购，真实发电效率损耗仅计一次；计真实热供回焓、实际处理量及全部可归属阶段，不设比能耗或SCV/ORV默认。 本协议仅适用于所列regasification过程交换；共享记录按validate_protocol_partition核对。 | kWh; kg; MJ | 每计量阶段及核对观测期 | 全部真实路线能源及可归属停机 | 真实压缩制冷气化器及供应 | 每参考流 | 计量；真实燃料BOG库存平衡；状态数据；供应商重叠；分配 |
 | cp_refrigerant | liquefaction | ref_methane; ref_ethane; ref_propane; ref_ethylene; ref_nitrogen | 回路组分冷剂账 | 真实循环回路；每种化学组成；初充寿命份额；补充回收期初期末库存kg；泄漏放空来源接收；真实路线输出 | 将真实混合阶式冷剂分解具体化学组分，以库存回收平衡计外供净补充，循环质量非消耗；按有证据真实寿命利用分初充更换，不重复供应商库存；量化每种真实化学损失接收，其他冷剂另设路线特定行。 | kg | 每补充回收及核对期 | 完整真实回路运行维护间隔 | 真实化学回路供应商 | 每参考流 | 组分证书；充回记录；库存；泄漏证据 |
 | cp_chemical_liquefaction | liquefaction | amine; sieve; mercury_carbon | 具体化学品介质账 | 路线终端；准确化学品配方等级；实测kg活性比例；另计水；更换再生；捕集杂质；吹扫压力；供应商范围；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计每项真实化学品介质，区分活性物溶剂及混合产品组分且不重复供应；连接真实污染物任务证据及真实更换间隔，不设强制配方；再生能源、移除污染物及废物排放另追踪。 本协议仅适用于所列liquefaction过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实领用更换再生间隔 | 真实期间及有证据更换份额 | 真实过程供应商端点 | 每参考流 | 采购库存配方记录；真实质量平衡；维护 |
 | cp_chemical_management | management | hypochlorite; nitrogen_purge; lubricant | 具体化学品介质账 | 路线终端；准确化学品配方等级；实测kg活性比例；另计水；更换再生；捕集杂质；吹扫压力；供应商范围；source_record_id；exchange_id；process_id；归属驱动因素；已分配份额；报告期 | 计每项真实化学品介质，区分活性物溶剂及混合产品组分且不重复供应；连接真实污染物任务证据及真实更换间隔，不设强制配方；再生能源、移除污染物及废物排放另追踪。 本协议仅适用于所列management过程交换；共享记录按validate_protocol_partition核对。 | kg | 每真实领用更换再生间隔 | 真实期间及有证据更换份额 | 真实过程供应商端点 | 每参考流 | 采购库存配方记录；真实质量平衡；维护 |
@@ -751,7 +751,7 @@ status: candidate
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | service_attribution | 所有清单行 | 真实可归属交换除以同路线状态质量期间实际合格净出口kg，并核对库存损失返工；唯一服务输出准确1kg。 | cp_mass; 实际交换采集协议 | 每参考流单一交换 |  |
 | gas_fate_balance | service_output; methane; ethane; propane; co2; co; so2; h2s | 闭合保管燃料BOG损失库存的真实组分质量及碳硫平衡，抵消内部返回且合格交付计一次；记录实测换算组成及未解残差，不强制零。 | cp_mass; cp_release; cp_refrigerant | 组分去向及核对净交付 |  |
@@ -760,7 +760,7 @@ status: candidate
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | quality_route | service_output | 真实运输用途路线合格净质量进出口状态组成及验收必需，不混两调相路线。 | cp_mass |
 | quality_bog | management | 要求真实BOG燃料放空火炬逸散库存记录及组分平衡，内部回收不变新采购或默认收益。 | cp_mass; cp_release |
@@ -792,7 +792,7 @@ status: candidate
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-transport-phase | official_guidance | 联合国统计司CPC3.0 67990解释说明，共享草案PDF378页。https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67990 | 运输用天然气液化再气化，机型签注导航在已审较窄方法外 |
 | ifc-lng-2017 | official_guidance | IFC/世界银行集团《液化天然气设施环境健康安全指南》，2017-04-11，第1–2、5–9、21–23页。https://www.ifc.org/content/dam/ifc/doc/mgrt/20170406-final-lng-ehs-guideline-april-2017.pdf | 仅支持定性真实路线过程、BOG燃料火炬逸散、水热化学及废物来源背景；不采用数值限值LNG密度膨胀比效率或排放因子，较广LNG运输仓储范围不自动纳入 |

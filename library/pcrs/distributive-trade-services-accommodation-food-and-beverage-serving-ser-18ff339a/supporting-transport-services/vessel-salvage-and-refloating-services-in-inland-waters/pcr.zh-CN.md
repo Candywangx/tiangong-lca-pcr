@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 任务对象编号；船型尺寸排水量及货物身份质量；遇险沉没倾覆搁浅初始状态；深度流速水位能见度；实际受纳水体/类型/位置及适用时实测盐度；底床污染基线；桥闸通达约束；阶段计划实际路线；船起重泵潜水切割设备；实际功率载荷时间；待命失败尝试；成功终点保管交接；支持拖移供应商边界 |
+| 必需限定信息 | 任务对象编号;船型尺寸排水量及货物身份质量;遇险沉没倾覆搁浅初始状态;深度流速水位能见度;实际受纳水体/类型/位置及适用时实测盐度;底床污染基线;桥闸通达约束;阶段计划实际路线;船起重泵潜水切割设备;实际功率载荷时间;待命失败尝试;成功终点保管交接;支持拖移供应商边界 |
 
 item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务不是通用一艘一吨一拖带或一次起吊。仅货物整船扶正复浮任务须分别保留范围状态情景。合同整任务完成只计一次，不按每次吊升抽水小时回收组件重试另算。部分失败工作保留负荷并披露终点，不虚构成功完整产出。
 
@@ -608,7 +608,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | task_denominator | recovery_service | N = 确切初始状态终点范围的验收完成回收任务数，须为正值。组成吊升回收吨数不增加任务数。 | cp_task | N |  |
 | exchange_allocation | 所有清单行 | 按有记录物理驱动将各实测分子分配至实际阶段设备完整任务活动，再除以N；保留失败尝试待命返回。 | cp_task; cp_energy; cp_material; cp_waste | 每参考流交换量 |  |
@@ -617,7 +617,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_object | recovery_service | 初始船货身份状态内河地理验收回收终点保管完整；不得静默选择独立拖带。 | cp_task |
 | dq_route | 所有清单行 | 实际吊升排水潜水切割路线及能源气体设备日志，不采用通用打捞物料清单或寿命。 | cp_energy; cp_material; cp_asset |
@@ -648,7 +648,7 @@ item为正式Item(s)的单数别名，导出使用Item(s)。明确回收任务�
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc-67532 | official_guidance | UNSD CPC3.0 67532. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/67532 | 明确内河回收起浮扶正复浮范围及公共救援排除；不选择独立拖带。 |
 | usace-mcalpine-salvage | official_guidance | USACE Louisville District, Salvage efforts to retrieve sunken barges continue at McAlpine Dam (2019). https://www.lrd.usace.army.mil/Media/News/Article/3637047/salvage-efforts-to-retrieve-sunken-barges-continue-at-mcalpine-dam/ | 观测内河分阶段回收减载起重切割及水位变化；仅案例证据，不采用通用设备数燃料得率工期。 |

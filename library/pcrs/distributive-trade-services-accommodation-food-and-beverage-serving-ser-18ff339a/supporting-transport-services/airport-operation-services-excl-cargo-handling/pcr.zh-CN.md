@@ -44,7 +44,7 @@ status: candidate
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | item |
-| 必需限定信息 | 机场场址；完整公共机场或航站楼机坪跑道合同；设施面积布局配置；所含功能；精确起终时长；开放关闭待机及实际可用性；实际旅客运行次数及计数规则；适用时机型跑道占用；气候天气；运营航司租户承包划分；清扫除雪支持供应范围；除冰化学排水；资产范围寿命分母；电力地区电压 |
+| 必需限定信息 | 机场场址;完整公共机场或航站楼机坪跑道合同;设施面积布局配置;所含功能;精确起终时长;开放关闭待机及实际可用性;实际旅客运行次数及计数规则;适用时机型跑道占用;气候天气;运营航司租户承包划分;清扫除雪支持供应范围;除冰化学排水;资产范围寿命分母;电力地区电压 |
 
 item是已核实Item(s)的单数别名，计一个指定验收运营事件期间，不自动等于一位旅客、一次航空器运行、跑道使用、小时或清扫动作。设施功能期间规模不同的事件不会因各计一次而等价。任何每旅客运行读数需实测匹配计数及明确因果归属；一次降落及起飞不能为方便而暗中计一或两次事件。
 
@@ -518,7 +518,7 @@ item是已核实Item(s)的单数别名，计一个指定验收运营事件期间
 
 ### 计算规则
 
-| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_operation` | 所有清单行 | 将实际实测采集交换归属于精确设施功能期间，采用有记录共同范围分配。匹配可比总量按验收事件归一，不自动以旅客运行或小时替换分母。 | cp_event; 实际过程采集协议 | 每参考流 |  |
 | `calc_assets` | concrete; asphalt; building; runway_light; boarding_bridge; hvac | 采用实际施工装备量当前服务使用及独立支持寿命利用；核对累计组件份额再归属事件。未知寿命利用量保持明确。 | 资产采集协议; cp_event | 每参考流资产份额 |  |
@@ -526,7 +526,7 @@ item是已核实Item(s)的单数别名，计一个指定验收运营事件期间
 
 ### 数据质量要求
 
-| requirement_id | 适用对象 | 要求 | 证据 |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
 | dq_extent | airport_output | 要求完整机场或设施规模验收期间实际可用性旅客运行定义及运营边界；费用机场名称不足。 | cp_event |
 | dq_support | sweeping_service; snow_service; potassium_acetate; sodium_formate | 证明支持所含及聚合展开替代核算；保留独立清扫排除及化学品特定性。 | 供应商及材料记录 |
@@ -556,7 +556,7 @@ item是已核实Item(s)的单数别名，计一个指定验收运营事件期间
 
 ## 11. 数据源
 
-| 来源编号 | 类型 | 参考文献 | 用途 |
+| source_id | type | reference | used_for |
 | --- | --- | --- | --- |
 | un-cpc3-67610 | official_guidance | UNSD, Explanatory Notes of CPC Version3.0, subclass67610, February2025, with adjacent67620/67630 context. https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf | 旅客航站楼飞行区跑道运营范围及明确货物行李独立跑道清扫排除；不提供因子 |
 | epa-airport-deicing | official_guidance | US EPA, Airport Deicing Environmental Impact and Benefit Assessment, April2012, EPA-821-R-12-003, sections1.2–1.4 and2.1. https://www.epa.gov/sites/production/files/2015-06/documents/airport-deicing_environmental-impact-and-benefit-assessment-final-2012.pdf | 道面航空器制剂区别及径流路径；场址特定监测化学品处理，不采用法规比例默认剂量影响因子 |
