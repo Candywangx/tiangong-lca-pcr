@@ -1,4 +1,5 @@
 import {PROVIDER_RUNTIME_FILE,verifyProviderRuntimeExport,parseProviderRuntime,htmlAnchors} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
+import {verifyNavigationTrees,navigationWebProof,navigationProbeFiles,type NavigationWebProof} from '../../packages/pcr-docs/scripts/navigation-tree-export.ts';
 import { createHash, type BinaryLike } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { constants, closeSync, fstatSync, lstatSync, openSync, readSync, realpathSync, writeFileSync } from "node:fs";
@@ -14,7 +15,7 @@ export interface WebCounts extends Record<string, number> { pcrs: number; pages:
 export interface WebProbe { path: string; bytes: number; sha256: string }
 export interface StaticRouteAliasProbe { source: string; target: string; bytes: number; sha256: string }
 export interface StaticRouteAliasWebProof { schemaVersion: 1; sourceCommit: string; manifest: WebProbe; pairs: StaticRouteAliasProbe[] }
-export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe; staticRouteAliases?: StaticRouteAliasWebProof; providerRuntime?: WebProbe }
+export interface WebProbes { identity: ProductIdentity; counts: WebCounts; routes: WebProbe[]; rawDownload: WebProbe; staticRouteAliases?: StaticRouteAliasWebProof; providerRuntime?: WebProbe; navigation?:NavigationWebProof }
 export interface WebRequestOptions { method: "GET"; redirect: "manual"; credentials: "omit"; headers: Record<string, string>; signal: AbortSignal }
 export type WebFetch = (url: string, options: WebRequestOptions) => Promise<Response>;
 export interface LiveWebsiteOptions { origin: string; identity: unknown; counts: unknown; probes: unknown; fetcher?: WebFetch; timeoutMs?: number; maxBytes?: number }
@@ -220,7 +221,10 @@ export function createWebProbes({ webDir, includeHomes = true, requireAliases }:
       manifest: describe("/" + STATIC_ROUTE_ALIASES_FILE, STATIC_ROUTE_ALIASES_FILE), pairs }, identity);
   }
   const providerRuntime = verifyProviderRuntimeExport(webDir, identity.sourceCommit);
+  const navigation=verifyNavigationTrees(webDir,identity.sourceCommit,providerRuntime?.schemaVersion===2);
+  if(navigation&&providerRuntime?.schemaVersion!==2)fail('PCR_WEB_NAVIGATION_RUNTIME','Packed navigation requires its sealed source-owned runtime.');
   return { identity: identityFields(identity), counts,
+    ...(navigation?{navigation:navigationWebProof(navigation)}:{}),
     ...(providerRuntime ? {providerRuntime: describe("/" + PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_FILE)} : {}),
     ...(staticRouteAliases ? { staticRouteAliases } : {}),
     routes: (includeHomes ? WEB_PROBE_ROUTES : LEGACY_WEB_PROBE_ROUTES).map(urlPath => describe(urlPath, `${urlPath.slice(1)}index.html`)),
@@ -377,6 +381,18 @@ export async function verifyLiveWebsite({ origin, identity, counts, probes, fetc
       const target = await request(row.to + query, {mediaType:'text/html'});
       const old = await request(row.from + query, {mediaType:'text/html'});
       if (!target || !old || !target.equals(old) || !htmlAnchors(old.toString('utf8')).has(row.anchor)) fail('PCR_WEB_PROVIDER_ROUTE', 'Published chapter rewrite differs from its current page or lost its default anchor.', {path:row.from+query});
+    }
+  }
+  if(probes.navigation!==undefined){
+    navigationProbeFiles(probes.navigation);
+    const navigation=probes.navigation as NavigationWebProof;
+    for(const descriptor of [navigation.binding,navigation.manifest,...navigation.packs]){
+      const bytes=await request(descriptor.path,{limit:descriptor.bytes,fresh:true,mediaType:'application/json'});
+      if(!bytes||bytes.length!==descriptor.bytes||sha256(bytes)!==descriptor.sha256)fail('PCR_WEB_NAVIGATION_HASH','Navigation transport differs from sealed bytes.');
+    }
+    for(const sample of navigation.samples)for(const query of ['', '?_rsc=pcr-tree-'+identity.sourceCommit.slice(0,12)]){
+      const bytes=await request(sample.path+query,{limit:sample.bytes,fresh:true,rsc:true});
+      if(!bytes||bytes.length!==sample.bytes||sha256(bytes)!==sample.sha256)fail('PCR_WEB_NAVIGATION_RESPONSE','Original navigation URL lost its exact response.');
     }
   }
   // Detect a release cutover while the route/download probes were being inspected.

@@ -1,4 +1,6 @@
 import {PROVIDER_RUNTIME_FILE,verifyProviderRuntimeExport,verifyProviderRuntimeSource,verifyProviderRuntimeInventory,verifyPublishedChapterAnchors} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
+import {NAVIGATION_BINDING_FILE} from '../../packages/pcr-docs/lib/navigation-trees.ts';
+import {navigationProbeFiles,navigationWebProof,verifyNavigationInventory} from '../../packages/pcr-docs/scripts/navigation-tree-export.ts';
 import { type Stats, appendFileSync, closeSync, constants, cpSync, createReadStream, createWriteStream, fstatSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, readdirSync, realpathSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -378,6 +380,8 @@ export function validateProductManifest(value: unknown, { identity = null, toolc
     && typeof probe.sha256 === "string" && /^sha256:[a-f0-9]{64}$/u.test(probe.sha256)
     && typeof probe.bytes === "number" && Number.isSafeInteger(probe.bytes) && probe.bytes > 0 && probe.bytes < 25_000_000;
   if (probes.providerRuntime !== undefined && !validProbe(probes.providerRuntime, "/" + PROVIDER_RUNTIME_FILE)) throw new Error("Invalid provider runtime probe.");
+  navigationProbeFiles(probes.navigation);
+  if(probes.navigation&&!probes.providerRuntime)throw new Error('Packed navigation requires a provider runtime proof');
   const aliasProof = validateStaticRouteAliasWebProof(probes.staticRouteAliases, boundIdentity);
   const expectedRoutes = !aliasProof && Array.isArray(probes.routes) && probes.routes.length === LEGACY_WEB_PROBE_ROUTES.length ? LEGACY_WEB_PROBE_ROUTES : WEB_PROBE_ROUTES;
   if (!Array.isArray(probes.routes) || probes.routes.length !== expectedRoutes.length
@@ -403,10 +407,15 @@ function checkWebMetadata(contents: ReadonlyMap<string, Buffer>, identity: Produ
   if (version?.sourceCommit !== identity.sourceCommit || version.releaseVersion !== identity.version || version.releaseTag !== identity.tag || version.sourceFingerprint !== identity.sourceFingerprint) throw new Error("Archived web version differs.");
   if (!sameJson(version.counts, probes.counts)) throw new Error("Archived web counts differ from probes.");
   const runtime = contents.get(PROVIDER_RUNTIME_FILE), declaredRuntime = probes.providerRuntime;
+  let navigationRuntime=false;
   if (runtime || declaredRuntime) {
     if (!runtime || !declaredRuntime || runtime.length !== declaredRuntime.bytes || productSha256(runtime) !== declaredRuntime.sha256) throw new Error("Archived provider runtime proof differs.");
-    verifyProviderRuntimeInventory(JSON.parse(runtime.toString("utf8")), identity.sourceCommit, files);
+    const profile=verifyProviderRuntimeInventory(JSON.parse(runtime.toString("utf8")), identity.sourceCommit, files);
+    navigationRuntime=profile.schemaVersion===2;
+    if(profile.schemaVersion===2&&!probes.navigation)throw new Error('Missing sealed navigation proof');
   }
+  if(probes.navigation){if(!navigationRuntime)throw new Error('Packed navigation requires provider profile 2');navigationProbeFiles(probes.navigation);const navigation=verifyNavigationInventory(contents,identity.sourceCommit,files);if(!sameJson(navigationWebProof(navigation),probes.navigation))throw new Error('Archived navigation proof differs');}
+  else if(files.some(file=>file.path===NAVIGATION_BINDING_FILE||file.path.startsWith('generated/navigation/')))throw new Error('Undeclared archived navigation transport');
   const hosting = JSON.parse(contents.get("edgeone.json")?.toString("utf8") ?? "null");
   assertPrebuiltHosting(hosting, probes.staticRouteAliases !== undefined);
   if (probes.staticRouteAliases) {
@@ -423,7 +432,7 @@ export async function verifyProductWebTree(webDir: string, value: unknown) {
   const tree = regularTree(webDir), contents = new Map<string, Buffer>();
   for (const file of tree.files) {
     const proof = await fileProof(path.join(tree.root, file.path)); file.sha256 = proof.sha256;
-    if (["generated/product-release.json", "generated/version.json", "edgeone.json", PROVIDER_RUNTIME_FILE, ...(manifest.web.probes.staticRouteAliases ? [STATIC_ROUTE_ALIASES_FILE] : [])].includes(file.path)) {
+    if (["generated/product-release.json", "generated/version.json", "edgeone.json", PROVIDER_RUNTIME_FILE, ...navigationProbeFiles(manifest.web.probes.navigation), ...(manifest.web.probes.staticRouteAliases ? [STATIC_ROUTE_ALIASES_FILE] : [])].includes(file.path)) {
       if (file.bytes > (file.path === STATIC_ROUTE_ALIASES_FILE ? MAX_STATIC_ROUTE_ALIASES_BYTES : 1024 * 1024)) throw new Error("Product identity metadata exceeds its bound.");
       contents.set(file.path, readFileSync(path.join(tree.root, file.path)));
     }
@@ -471,7 +480,7 @@ export async function verifyProductArtifacts(directory: string, { expectedIdenti
   }
   const webProof = proofs.find(proof => proof.filename === manifest.web.filename);
   if (!webProof || webProof.bytes !== manifest.web.bytes || webProof.sha256 !== manifest.web.sha256 || manifest.web.origin !== "https://pcr.tiangong.earth") throw new Error("Web artifact proof differs.");
-  const web = await readProductArchive(path.join(directory, manifest.web.filename), { collect: ["generated/product-release.json", "generated/version.json", "edgeone.json", PROVIDER_RUNTIME_FILE, ...(manifest.web.probes.staticRouteAliases ? [STATIC_ROUTE_ALIASES_FILE] : [])] });
+  const web = await readProductArchive(path.join(directory, manifest.web.filename), { collect: ["generated/product-release.json", "generated/version.json", "edgeone.json", PROVIDER_RUNTIME_FILE, ...navigationProbeFiles(manifest.web.probes.navigation), ...(manifest.web.probes.staticRouteAliases ? [STATIC_ROUTE_ALIASES_FILE] : [])] });
   if (web.treeSha256 !== manifest.web.treeSha256 || web.files.length !== manifest.web.files || web.files.reduce((bytes, file) => bytes + file.bytes, 0) !== manifest.web.uncompressedBytes) throw new Error("Web archive tree differs from product manifest.");
   checkWebMetadata(web.contents, manifest.identity, manifest.web.probes, web.files);
   for (const probe of [...manifest.web.probes.routes, manifest.web.probes.rawDownload]) {
