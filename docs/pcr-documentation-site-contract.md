@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-11-12
-lastReviewedNote: "PR35: retain chapter compatibility and lossless search v9; remove candidate advisory YAML module support and references at owner request. Existing module contracts and resource limits remain unchanged."
+lastReviewedAt: 2026-11-13
+lastReviewedNote: "PR31 search capacity: lossless bounded Brotli v10 envelope, pinned lazy Worker decoder, independent exact-byte restoration and unchanged search/PCR/resource contracts."
 lastReviewedCommit: 05fb4462baeac303521fc6f7d38bd7cd080d9059
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -644,6 +644,29 @@ logical shard order, query cutoff or ranking is changed. V1â€“8 readers and V5â€
 writer behavior remain available. An unavailable arithmetic candidate cannot
 suppress an eligible earlier transport.
 
+Search manifest version 10 adds a lossless Brotli envelope around a selected
+v7, v8 or v9 physical pack. The envelope binds its original transport version,
+exact inner UTF-8 length and SHA-256, source commit, language and first logical
+shard. Its canonical base64 holds Brotli quality-11 bytes with a 22-bit window.
+Selection compares the complete manifest and actual level-9 gzip file sizes; the
+older layout remains available when the envelope does not improve transfer size.
+The sixteen-member limit, 20 MB physical and restored-byte bounds, 4 MB language
+transfer limit, logical identities and all inner decoder checks remain unchanged.
+
+The Worker lazily loads the pinned `brotli-dec-wasm` decoder and its WASM only
+when a v10 pack is requested. The emitter copies these locked dependency bytes
+and the MIT license; it does not rely on a CDN or native browser Brotli support.
+Decompression runs in the existing Worker, uses at most 64 KiB per output step,
+requires exact input consumption and the authenticated inner output length, and
+frees streaming allocations on success or failure. Truncated, oversized and
+trailing-byte streams fail without publishing partial indexes. Node verification
+uses its independently implemented bounded Brotli decoder. Both paths authenticate
+the outer bytes, then the restored inner bytes and every logical wire before
+import. Old transport readers, full records, tokenization, query limits, ranking
+and retry behavior remain available. The additional decoder assets are included
+in the static export and resource counts; measured transfer savings must be
+reported alongside their download cost.
+
 The generator retains the original sixteen-member greedy layout as a candidate
 and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.
 At each cut position it retains at most sixteen paths. Physical dictionary strings
@@ -668,7 +691,9 @@ logical, native-export and complete-record hashes and both full manifest costs.
 A baseline may be over budget; that diagnostic does not qualify it for browser
 use. Generation measures every language before failing a search-budget violation,
 retains `search-budget-diagnostics.json` in its unpromoted stage, and preserves the
-previous generated artifact set. Final combined-source generation, complete
+previous generated artifact set. The v10 corpus audit additionally verifies the canonical Brotli envelope and its
+exact inner v7/v8/v9 bytes before the same export and query comparisons.
+Final combined-source generation, complete
 export/browser verification and product resource gates remain mandatory.
 
 ### Historical bounded native downloads

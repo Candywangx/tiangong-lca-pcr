@@ -1,3 +1,4 @@
+import {decodeBrotliSearchPack} from "./search-brotli.ts";
 import { readSearchManifest, unpackSearchFile, searchUtf8, SEARCH_RAW_LIMIT } from "./search-pack.ts";
 import { searchTerms } from "./search-terms.ts";
 import { decodeSearchEntries, readSearchTermDictionary, SEARCH_SCORE_SLOTS } from "./search-wire.ts";
@@ -40,7 +41,7 @@ async function load(language:string):Promise<SearchShard[]> {
  if(!response.ok)throw new Error("Search index is unavailable.");
  const manifestText=await response.text();
  const manifest:unknown=JSON.parse(manifestText);
- if(record(manifest)&&(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8||manifest.schemaVersion===9)&&Object.hasOwn(manifest,"files")){
+ if(record(manifest)&&(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8||manifest.schemaVersion===9||manifest.schemaVersion===10)&&Object.hasOwn(manifest,"files")){
   if(Object.hasOwn(manifest,"shards")||Object.hasOwn(manifest,"termDictionary"))throw new Error("Invalid search manifest.");
   const parsed=readSearchManifest(manifest,language);
   if(searchUtf8(manifestText).byteLength+parsed.files.reduce((sum,file)=>sum+file.bytes,0)>SEARCH_RAW_LIMIT)throw new Error("Invalid search transport.");
@@ -48,7 +49,7 @@ async function load(language:string):Promise<SearchShard[]> {
   const digest=async(bytes:Uint8Array)=>"sha256:"+Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",bytes.slice().buffer)),byte=>byte.toString(16).padStart(2,"0")).join("");
   for(const file of parsed.files){
    const response=await fetch(file.url);if(!response.ok)throw new Error("Search shard is unavailable.");
-   const members=await unpackSearchFile(parsed,file,new Uint8Array(await response.arrayBuffer()),digest);
+   const members=await unpackSearchFile(parsed,file,new Uint8Array(await response.arrayBuffer()),digest,decodeBrotliSearchPack);
    for(const data of members)shards.push(await importShard(data,4,language));
   }
   return shards;

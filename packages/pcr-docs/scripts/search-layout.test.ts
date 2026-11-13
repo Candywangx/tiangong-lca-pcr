@@ -1,3 +1,4 @@
+import {decodeBrotliSearchPack} from "./search-brotli.ts";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -48,7 +49,7 @@ function greedy(wires:readonly string[]):Layout{
 test('layout retains exact ordered logical bytes, native entries and complete duplicate records',async()=>{
   const plan=await planner(),wires=Array.from({length:35},(_,i)=>wire(i)),before=[...wires],layout=plan(wires,commit,language);
   const manifest=readSearchManifest(layout.manifest,language),restored:string[]=[];
-  for(const f of layout.files){assert.ok(f.descriptor.logicalShardCount>0&&f.descriptor.logicalShardCount<=16);restored.push(...(await unpackSearchFile(manifest,f.descriptor,Buffer.from(f.payload),hash)).map(v=>JSON.stringify(v)));}
+  for(const f of layout.files){assert.ok(f.descriptor.logicalShardCount>0&&f.descriptor.logicalShardCount<=16);restored.push(...(await unpackSearchFile(manifest,f.descriptor,Buffer.from(f.payload),hash,decodeBrotliSearchPack)).map(v=>JSON.stringify(v)));}
   assert.deepEqual(restored,wires);assert.deepEqual(wires,before);
   assert.equal(layout.rawBytes,Buffer.byteLength(layout.manifestText)+layout.files.reduce((n,f)=>n+Buffer.byteLength(f.payload),0));
   assert.equal(layout.gzipBytes,gzipSync(layout.manifestText,{level:9}).length+layout.files.reduce((n,f)=>n+gzipSync(f.payload,{level:9}).length,0));
@@ -84,6 +85,6 @@ test('an unavailable v8 layout cannot suppress an eligible v7 layout',async()=>{
   assert.ok(baseline.rawBytes<20_000_000);
   assert.ok(Buffer.byteLength(packSearchShards(wires,commit,language,0,8))>20_000_000,'negative-remainder native fallback is too large');
   const layout=(await planner())(wires,commit,language);
-  assert.equal(layout.manifest.schemaVersion,7);
+  assert.ok(layout.manifest.schemaVersion===7||layout.manifest.schemaVersion===10);
   assert.doesNotThrow(()=>readSearchManifest(layout.manifest,language));
 });

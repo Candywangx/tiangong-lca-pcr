@@ -20,13 +20,20 @@ export function compileDocsBrowserAssets({root=repositoryRoot,outputRoot}:{root?
   const compiled=spawnSync(process.execPath,[compiler,"-p",path.join(root,"tsconfig.docs-worker.json"),"--outDir",temporary],{cwd:root,encoding:"utf8",maxBuffer:8*1024*1024});
   if(compiled.error||compiled.status!==0)throw new Error("Browser TypeScript compilation failed: "+(compiled.error?.message??compiled.stdout+compiled.stderr));
   const outputs=new Map<string,Buffer>();
-  for(const name of ["search-worker.js", "search-terms.js", "search-wire.js", "search-pack.js", "search-arithmetic.js"]){const source=path.join(temporary,name);const stat=lstatSync(source);if(!stat.isFile()||stat.isSymbolicLink())throw new Error("Compiled browser asset is not a regular file: "+name);outputs.set(name,readFileSync(source));}
+  for(const name of ["search-worker.js", "search-terms.js", "search-wire.js", "search-pack.js", "search-arithmetic.js", "search-brotli.js"]){const source=path.join(temporary,name);const stat=lstatSync(source);if(!stat.isFile()||stat.isSymbolicLink())throw new Error("Compiled browser asset is not a regular file: "+name);outputs.set(name,readFileSync(source));}
   mkdirSync(outputRoot,{recursive:true});
   const files:string[]=[];
   for(const [name,bytes] of outputs){
    const output=name.replace(/\.js$/, ".mjs");
    const text=bytes.toString("utf8").replace(/"(\.\/search-[a-z-]+)\.js"/g,'"$1.mjs"');
    writeFileSync(path.join(outputRoot,output),text);files.push(output);
+  }
+  const decoderRoot=path.join(root,"packages/pcr-docs/node_modules/brotli-dec-wasm");
+  const decoderPackage=JSON.parse(readFileSync(path.join(decoderRoot,"package.json"),"utf8")) as {version:string};
+  const docsPackage=JSON.parse(readFileSync(path.join(root,"packages/pcr-docs/package.json"),"utf8")) as {dependencies:Record<string,string>};
+  if(decoderPackage.version!==docsPackage.dependencies["brotli-dec-wasm"])throw new Error("Search decoder differs from the pinned dependency.");
+  for(const [source,target] of [["pkg/brotli_dec_wasm.js","brotli-dec.mjs"],["pkg/brotli_dec_wasm_bg.wasm","brotli_dec_wasm_bg.wasm"],["LICENSE-MIT.txt","brotli-LICENSE.txt"]]){
+    writeFileSync(path.join(outputRoot,target!),readFileSync(path.join(decoderRoot,source!)));files.push(target!);
   }
   return {compilerVersion:expected,files};
  }finally{rmSync(temporary,{recursive:true,force:true});}
