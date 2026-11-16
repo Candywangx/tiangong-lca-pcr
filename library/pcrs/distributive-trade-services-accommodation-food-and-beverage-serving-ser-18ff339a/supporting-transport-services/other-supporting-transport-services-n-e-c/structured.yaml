@@ -33,6 +33,10 @@ system_boundary:
       rule: "Identify actual compressors/refrigerant cycle or ORV/SCV/air/intermediate-fluid vaporizer and heat source. Keep electricity, fuels, steam and purchased heat separate. Measure source-specific water intake/return quantity, location, temperature/thermal change and residual chemistry; no default temperature limit or claim of zero impact for ambient heat."
       source_ids:
         - ifc-lng-2017
+    - rule_id: boundary_refrigerant_supply
+      applies_to: "foreground_system_boundary"
+      rule: "Distinguish separately supplied substances blended onsite from externally supplied premixed refrigerant. For premix, retain the actual supplied product, formulation/grade, composition basis, physical state and delivery gate as one specific product input; do not substitute pure-component purchases from composition alone. Before representing that scenario as complete, add a uniquely identified liquefaction product row in kg with its own row_id and a process-specific collection protocol carrying all cp_refrigerant requirements, and disclose any unresolved identity against that row. Do not use a generic mixture placeholder. Link the premix once to a compatible upstream supply dataset, or reconstruct a documented upstream process delivering that same product with evidenced component supplies, blending, conditioning, losses and transport to the declared gate. Record provider coverage and count each burden once. Actual onsite blending resources belong to the foreground; supplier-covered preparation is not counted again. Missing supply evidence remains a gap, never an assumption of pure-component equivalence or zero preparation burden."
+      source_ids: []
     - rule_id: boundary_emissions
       applies_to: "foreground_system_boundary"
       rule: "Include actual combustion, flare incomplete oxidation/slip, vent, fugitives, separated-feed contaminants and refrigerant loss as individual species/compartments. Do not assume complete flare destruction, assign total gas to methane, merge NOx species or use an aggregate VOC exchange."
@@ -113,7 +117,7 @@ measurement_rules:
       name: "Mass"
       uuid: ""
     required_unit: "kg"
-    rule: "Keep actual chemical component mass distinct from total refrigerant mixture or aqueous solution; record verified composition and stock/recovery. No aggregate VOC/PFAS/refrigerant selector is an atomic exchange."
+    rule: "Keep actual chemical component mass distinct from total refrigerant mixture or aqueous solution; record verified composition and stock/recovery. A generic VOC/PFAS/refrigerant selector is not an atomic exchange. A specifically identified supplied refrigerant formulation can be one product exchange; its constituent ledger does not replace its supply identity or create additional purchases."
 process_map:
   - id: liquefaction
     name: "Natural-gas liquefaction"
@@ -203,7 +207,7 @@ process_inventory:
           name: "Methane, refrigerant makeup"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          description: "Include this product input only when this substance is actually supplied separately across the liquefaction boundary for the declared refrigeration loop, including documented onsite blending. Its presence within a supplied premix does not create a separate component purchase. Measure attributable initial charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Apply boundary_refrigerant_supply and cp_refrigerant to distinguish supply products from component balances."
           amount:
             expression: "Actual attributable exchange measured for the declared conversion service"
             value_mode: "foreground_record"
@@ -221,7 +225,7 @@ process_inventory:
           name: "Ethane, refrigerant makeup"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          description: "Include this product input only when this substance is actually supplied separately across the liquefaction boundary for the declared refrigeration loop, including documented onsite blending. Its presence within a supplied premix does not create a separate component purchase. Measure attributable initial charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Apply boundary_refrigerant_supply and cp_refrigerant to distinguish supply products from component balances."
           amount:
             expression: "Actual attributable exchange measured for the declared conversion service"
             value_mode: "foreground_record"
@@ -239,7 +243,7 @@ process_inventory:
           name: "Propane, refrigerant makeup"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          description: "Include this product input only when this substance is actually supplied separately across the liquefaction boundary for the declared refrigeration loop, including documented onsite blending. Its presence within a supplied premix does not create a separate component purchase. Measure attributable initial charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Apply boundary_refrigerant_supply and cp_refrigerant to distinguish supply products from component balances."
           amount:
             expression: "Actual attributable exchange measured for the declared conversion service"
             value_mode: "foreground_record"
@@ -257,7 +261,7 @@ process_inventory:
           name: "Ethylene, refrigerant makeup"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          description: "Include this product input only when this substance is actually supplied separately across the liquefaction boundary for the declared refrigeration loop, including documented onsite blending. Its presence within a supplied premix does not create a separate component purchase. Measure attributable initial charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Apply boundary_refrigerant_supply and cp_refrigerant to distinguish supply products from component balances."
           amount:
             expression: "Actual attributable exchange measured for the declared conversion service"
             value_mode: "foreground_record"
@@ -275,7 +279,7 @@ process_inventory:
           name: "Nitrogen, refrigerant makeup"
           flow_type: "product"
           property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
-          description: "Conditional on this actual component of the declared refrigeration loop. Measure initial attributable charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Mixed refrigerant is resolved into each verified component, and another actual component needs its own row."
+          description: "Include this product input only when this substance is actually supplied separately across the liquefaction boundary for the declared refrigeration loop, including documented onsite blending. Its presence within a supplied premix does not create a separate component purchase. Measure attributable initial charge, actual makeup, recovery and stock change; internal circulating refrigerant is not fresh consumption. Apply boundary_refrigerant_supply and cp_refrigerant to distinguish supply products from component balances."
           amount:
             expression: "Actual attributable exchange measured for the declared conversion service"
             value_mode: "foreground_record"
@@ -1018,15 +1022,15 @@ dataset_production:
     - protocol_id: cp_refrigerant
       process_id: "liquefaction"
       flow_role: "ref_methane; ref_ethane; ref_propane; ref_ethylene; ref_nitrogen"
-      record_type: "Loop/component refrigerant ledger"
-      raw_fields: "actual cycle/loop; each chemical composition; initial charge/life share; additions/recovery/opening/closing stock kg; leak/vent source and receiver; actual route output"
-      collection_method: "Resolve actual mixed/cascade refrigerants into specific chemical components and measure net externally supplied makeup with stock/recovery balance. Circulating mass is not consumption. Attribute initial charge and replacement to supported actual life/use without duplicating supplier stock; quantify each actual chemical loss/receiver, and add a separate route-specific row for another refrigerant."
+      record_type: "Supply-product and loop-component refrigerant ledger"
+      raw_fields: "actual cycle/loop; separate-component or premix supply route; supplier/product/formulation/grade/batch; composition and mass basis; delivered state/gate and upstream coverage; source_record_id and exchange_id; product receipt/return and opening/closing stock kg; initial charge/life share; additions/recovery and loop stocks kg; each component fraction and uncertainty; onsite blending resources/losses; leak/vent source and receiver; actual route output"
+      collection_method: "Measure actual externally supplied product consumption by receipt, return and stock reconciliation, keeping loop transfers and recovery separate from purchases. Use the five listed component input rows only for actual separately supplied substances. Premix scenarios require the specific product row and protocol under boundary_refrigerant_supply; retain a linked constituent ledger for balances and releases without duplicating product inputs. Record whether preparation is onsite or supplier-covered and reconcile each actual resource once. Circulating mass is not consumption. Attribute initial charge and replacement to supported actual life/use without duplicating supplier stock; quantify each actual chemical loss/receiver. Apply refrigerant_supply_balance before service_attribution."
       unit: "kg"
-      frequency: "each refill/recovery and reconciled period"
+      frequency: "each delivery/refill/recovery and reconciled period"
       temporal_coverage: "whole actual loop operating/maintenance interval"
-      site_scope: "actual chemical loops and suppliers"
+      site_scope: "actual product delivery gates, chemical loops and suppliers"
       aggregation_rule: "per reference flow"
-      quality_evidence: "component certificates; charge/recovery records; stocks; leak evidence"
+      quality_evidence: "supplier product/composition certificates; delivery/return and stock records; charge/recovery records; blending and upstream scope evidence; leak evidence"
     - protocol_id: cp_chemical_liquefaction
       process_id: "liquefaction"
       flow_role: "amine; sieve; mercury_carbon"
@@ -1153,6 +1157,15 @@ dataset_production:
         - cp_refrigerant
       output: "component fate and reconciled net delivery"
       source_ids: []
+    - id: refrigerant_supply_balance
+      applies_to: "liquefaction"
+      rule: "Reconcile supplied product kg separately from loop/component stocks and fates. Convert product mass to constituent mass only using verified mass fractions on the same basis; volume or mole fractions need evidenced conversion. Require complete composition to close the constituent balance; unknown fractions or residuals remain gaps. Constituent quantities support balance and species releases, not extra foreground purchases alongside the premix. Preserve initial-charge life attribution and replacement/recovery accounting; normalize each attributable external input only once by service_attribution."
+      inputs:
+        - cp_refrigerant
+        - cp_mass
+        - cp_release
+      output: "reconciled product consumption and constituent ledger"
+      source_ids: []
     - id: asset_attribution
       applies_to: "liq_train; regas_train; buffer_tank"
       rule: "Apply supported attributable route-output share of actual asset whole-life utilization to actual manufacture/construction and distinct renewals; retain cumulative conservation across all periods/providers."
@@ -1208,6 +1221,10 @@ validation_rules:
     applies_to: "foreground_dataset_conformance"
     rule: "Reconcile custody, external fuel, internal BOG, stock and each species destination; no duplicate gas purchase, double qualified output, complete-flare assumption or implicit cold/heat/BOG credit. Service-only boundary does not assert zero upstream commodity burden in the complete gas chain."
     source_ids: []
+  - rule_id: validate_refrigerant_supply
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check the actual supply route, product/constituent reconciliation and provider coverage under boundary_refrigerant_supply and refrigerant_supply_balance. Reject duplicate premix and component purchases for the same supply quantity, unsupported pure-component substitution, and omitted or double-counted preparation burdens. A premix scenario is incomplete until its specific product row, linked protocol and upstream scope are recorded; unresolved identities and evidence gaps must remain explicit."
+    source_ids: []
   - rule_id: validate_atomic_life
     applies_to: "foreground_dataset_conformance"
     rule: "Every row must be one actual exchange with its own correct property/unit and compartment, including source/return water thermal evidence. Verify life fractions and provider coverage; leave unknown identities/method gaps explicit rather than declare publication readiness."
@@ -1235,21 +1252,21 @@ data_sources:
     used_for: "Qualitative actual-route/process, BOG/fuel/flare/fugitive, water/thermal/chemical and waste-source context only. No numerical limits, LNG density, expansion ratio, efficiency or emission factors adopted; wider LNG transport/storage scope is not automatically included"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:015dd7a04b54220671adef8d6b11fcdf01c05cd722a75569b05652244a1edb9c"
+  source_sha256: "sha256:989579699fbd8c457901d6ec8dd5b390fc06982e04d8f3aa8111da6f4d5321b4"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_6911"
+    - unit_id: "normative_7092"
       family: "system_boundary"
       span:
         start:
-          offset: 6911
+          offset: 7092
           line: 63
           column: 1
         end:
-          offset: 10367
-          line: 84
+          offset: 11731
+          line: 85
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual customer gas/LNG at the agreed conversion inlet with measured composition/state and custody ownership |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Transport-purpose natural-gas liquefaction or regasification only |\n| recursive_input_rule | Purchased same-function conversion enters once with compatible route/states/output basis and provider coverage; remove overlapping owned utilities/assets |\n| upstream_dataset_requirement | Actual externally consumed energy/material/refrigerant, process assets/renewals and actual treatment; customer commodity custody and internal BOG are tracked separately |\n| disclosure | transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_route | Select one actual liquefaction or regasification route with specified physical states. IFC describes a broader LNG chain; only applicable actual conversion processes and necessary conditioning are included here. Independent transport, storage, handling and upstream gas production remain separately scoped. | un-cpc-transport-phase; ifc-lng-2017 |\n| boundary_bog | Reconcile actual BOG generation, return/recondensation/reliquefaction, internal fuel, external return/sale, stock change, venting, flaring and fugitive loss by composition and destination. Internal transfers are not fresh external purchases or duplicate finished output. Fuel use and emissions remain in the responsible service stage even when gas is customer-owned. | ifc-lng-2017 |\n| boundary_heat_water | Identify actual compressors/refrigerant cycle or ORV/SCV/air/intermediate-fluid vaporizer and heat source. Keep electricity, fuels, steam and purchased heat separate. Measure source-specific water intake/return quantity, location, temperature/thermal change and residual chemistry; no default temperature limit or claim of zero impact for ambient heat. | ifc-lng-2017 |\n| boundary_emissions | Include actual combustion, flare incomplete oxidation/slip, vent, fugitives, separated-feed contaminants and refrigerant loss as individual species/compartments. Do not assume complete flare destruction, assign total gas to methane, merge NOx species or use an aggregate VOC exchange. | ifc-lng-2017 |\n| boundary_assets | Retain construction/manufacture, necessary process-buffer assets, maintenance, replacements and real waste receivers with supported life utilization. Storage sold independently, carrier propulsion and customer gas-chain assets do not become process conversion assets. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual customer gas/LNG at the agreed conversion inlet with measured composition/state and custody ownership |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Transport-purpose natural-gas liquefaction or regasification only |\n| recursive_input_rule | Purchased same-function conversion enters once with compatible route/states/output basis and provider coverage; remove overlapping owned utilities/assets |\n| upstream_dataset_requirement | Actual externally consumed energy/material/refrigerant, process assets/renewals and actual treatment; customer commodity custody and internal BOG are tracked separately |\n| disclosure | transport purpose; liquefaction OR regasification; actual site/date/route and provider; inlet/outlet custody gates; feed and delivered composition including methane/higher hydrocarbons/CO2/N2/water and relevant contaminants; actual inlet/outlet phase, temperature, pressure and quality/acceptance; net qualifying delivered kg and observation period; actual feed, stock changes, process buffer time, internal recycle, fuel diversion, recovered/exported BOG and each loss fate; compressor/refrigeration cycle or ORV/SCV/air/intermediate-fluid vaporizer and source energy; onshore/floating asset scope; utility source/temperature/pressure; actual water intake/return temperature/chemistry/location; each chemical/refrigerant; emissions/fugitive/flare efficiency evidence; coproduct/provider overlap; real whole-life output denominator and uncertainty |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_route | Select one actual liquefaction or regasification route with specified physical states. IFC describes a broader LNG chain; only applicable actual conversion processes and necessary conditioning are included here. Independent transport, storage, handling and upstream gas production remain separately scoped. | un-cpc-transport-phase; ifc-lng-2017 |\n| boundary_bog | Reconcile actual BOG generation, return/recondensation/reliquefaction, internal fuel, external return/sale, stock change, venting, flaring and fugitive loss by composition and destination. Internal transfers are not fresh external purchases or duplicate finished output. Fuel use and emissions remain in the responsible service stage even when gas is customer-owned. | ifc-lng-2017 |\n| boundary_heat_water | Identify actual compressors/refrigerant cycle or ORV/SCV/air/intermediate-fluid vaporizer and heat source. Keep electricity, fuels, steam and purchased heat separate. Measure source-specific water intake/return quantity, location, temperature/thermal change and residual chemistry; no default temperature limit or claim of zero impact for ambient heat. | ifc-lng-2017 |\n| boundary_refrigerant_supply | Distinguish separately supplied substances blended onsite from externally supplied premixed refrigerant. For premix, retain the actual supplied product, formulation/grade, composition basis, physical state and delivery gate as one specific product input; do not substitute pure-component purchases from composition alone. Before representing that scenario as complete, add a uniquely identified liquefaction product row in kg with its own row_id and a process-specific collection protocol carrying all cp_refrigerant requirements, and disclose any unresolved identity against that row. Do not use a generic mixture placeholder. Link the premix once to a compatible upstream supply dataset, or reconstruct a documented upstream process delivering that same product with evidenced component supplies, blending, conditioning, losses and transport to the declared gate. Record provider coverage and count each burden once. Actual onsite blending resources belong to the foreground; supplier-covered preparation is not counted again. Missing supply evidence remains a gap, never an assumption of pure-component equivalence or zero preparation burden. |  |\n| boundary_emissions | Include actual combustion, flare incomplete oxidation/slip, vent, fugitives, separated-feed contaminants and refrigerant loss as individual species/compartments. Do not assume complete flare destruction, assign total gas to methane, merge NOx species or use an aggregate VOC exchange. | ifc-lng-2017 |\n| boundary_assets | Retain construction/manufacture, necessary process-buffer assets, maintenance, replacements and real waste receivers with supported life utilization. Storage sold independently, carrier propulsion and customer gas-chain assets do not become process conversion assets. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1266,11 +1283,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 6911
+              offset: 7092
               line: 63
               column: 1
             end:
-              offset: 6932
+              offset: 7113
               line: 63
               column: 22
           text: "## 5. System Boundary"
@@ -1286,16 +1303,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_42786"
+    - unit_id: "normative_45175"
       family: "allocation"
       span:
         start:
-          offset: 42786
-          line: 721
+          offset: 45175
+          line: 722
           column: 1
         end:
-          offset: 44968
-          line: 732
+          offset: 47357
+          line: 733
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocate_route | Direct-meter each actual route and qualifying output. Shared compression/BOG/utilities use documented physical duty, net enthalpy, measured runtime or causal throughput, with actual startup/shutdown and stock reconciliation. Do not average liquid and gas route kg, nameplate capacities or fees. |  |\n| allocate_custody | Track customer gas custody and internal fuel/BOG separately from purchased external fuel; actual consumed customer gas causes real source emissions and a gas-chain replacement obligation, not a zero emission or duplicate gas-production input here. Full chain authors link commodity production/losses once. |  |\n| allocate_recovery | Returned/reliquefied/recondensed BOG is an internal balance once. Qualifying gas delivered at the route outlet counts once; gas exported in another state is separately reported with function/burden allocation if it is a co-service, not silently added to the denominator or given an avoided product credit. |  |\n| allocate_coproduct | For actual integrated conditioning that produces recovered NGL/sulfur or another co-output, first separate the actual functional processes and meters, then document a causal physical allocation and mass/energy reconciliation if separation is impossible. Add each identified co-output individually; no automatic credit for cold/heat/BOG utilization. |  |\n| allocate_life | Divide actual asset manufacture/construction and distinct maintenance/renewal inventory by supported whole-life actual qualifying service utilization. Use expected route output with evidence on capacity, utilization, downtime, yield, degradation and life; conserve all user/period shares without annual reset. No invented life or whole facility per kg. |  |\n| allocate_supplier | Reconcile utility/plant/BOG/storage supplier coverage with owned rows before summing. Floating regasification plant construction may be attributable, but carrier voyage or independent storage is separately scoped. Process buffer is counted once at actual inventory/time and cannot be sold again as unreported free storage. |  |\n\n"
       headings:
@@ -1314,12 +1331,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 42786
-              line: 721
+              offset: 45175
+              line: 722
               column: 1
             end:
-              offset: 42826
-              line: 721
+              offset: 45215
+              line: 722
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1334,18 +1351,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_64454"
+    - unit_id: "normative_68405"
       family: "validation"
       span:
         start:
-          offset: 64454
-          line: 771
+          offset: 68405
+          line: 773
           column: 1
         end:
-          offset: 66616
-          line: 781
+          offset: 71103
+          line: 784
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Only transport-purpose gas liquefaction/regasification is covered; exclude type-rating/GPS/navigation and other residual functions, independent storage/transport and upstream gas commodity production. | un-cpc-transport-phase |\n| validate_reference | Unique service_output must equal 1 kg and match measured net qualified outlet mass with mandatory route/state/composition/T/P/quality and actual period. Internal recycle, off-spec stock, fuel and losses are not qualified delivered output. |  |\n| validate_balance | Reconcile custody, external fuel, internal BOG, stock and each species destination; no duplicate gas purchase, double qualified output, complete-flare assumption or implicit cold/heat/BOG credit. Service-only boundary does not assert zero upstream commodity burden in the complete gas chain. |  |\n| validate_atomic_life | Every row must be one actual exchange with its own correct property/unit and compartment, including source/return water thermal evidence. Verify life fractions and provider coverage; leave unknown identities/method gaps explicit rather than declare publication readiness. |  |\n| `validate_protocol_partition` | Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| validate_scope | Only transport-purpose gas liquefaction/regasification is covered; exclude type-rating/GPS/navigation and other residual functions, independent storage/transport and upstream gas commodity production. | un-cpc-transport-phase |\n| validate_reference | Unique service_output must equal 1 kg and match measured net qualified outlet mass with mandatory route/state/composition/T/P/quality and actual period. Internal recycle, off-spec stock, fuel and losses are not qualified delivered output. |  |\n| validate_balance | Reconcile custody, external fuel, internal BOG, stock and each species destination; no duplicate gas purchase, double qualified output, complete-flare assumption or implicit cold/heat/BOG credit. Service-only boundary does not assert zero upstream commodity burden in the complete gas chain. |  |\n| validate_refrigerant_supply | Check the actual supply route, product/constituent reconciliation and provider coverage under boundary_refrigerant_supply and refrigerant_supply_balance. Reject duplicate premix and component purchases for the same supply quantity, unsupported pure-component substitution, and omitted or double-counted preparation burdens. A premix scenario is incomplete until its specific product row, linked protocol and upstream scope are recorded; unresolved identities and evidence gaps must remain explicit. |  |\n| validate_atomic_life | Every row must be one actual exchange with its own correct property/unit and compartment, including source/return water thermal evidence. Verify life fractions and provider coverage; leave unknown identities/method gaps explicit rather than declare publication readiness. |  |\n| `validate_protocol_partition` | Each collection protocol must name one existing process_id and only its listed flow rows; each inventory card must link to that protocol for its actual process. Keep one source_record_id and exchange_id for each physical reading, delivery, transfer, emission or asset allocation. Where a source record serves several processes or datasets, record the allocation driver, original total, each assigned share and any out-of-scope residual in one common period ledger; assigned quantities plus the residual must reconcile to the original total. Splitting protocols does not replicate the full reading, create a new service output or restart an asset lifetime allocation. Preserve one matched output denominator for each declared scenario; use process quantities as attribution evidence, not additional normalization. Reconcile internal transfers once and retain cumulative asset shares across all users and periods. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1362,12 +1379,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 64454
-              line: 771
+              offset: 68405
+              line: 773
               column: 1
             end:
-              offset: 64476
-              line: 771
+              offset: 68427
+              line: 773
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1386,259 +1403,285 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_route"
       identity_kind: "explicit"
-      unit_id: "normative_6911"
+      unit_id: "normative_7092"
       source_span:
         start:
-          offset: 8586
+          offset: 8767
           line: 78
           column: 1
         end:
-          offset: 8952
+          offset: 9133
           line: 78
           column: 367
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_bog"
       identity_kind: "explicit"
-      unit_id: "normative_6911"
+      unit_id: "normative_7092"
       source_span:
         start:
-          offset: 8953
+          offset: 9134
           line: 79
           column: 1
         end:
-          offset: 9353
+          offset: 9534
           line: 79
           column: 401
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_heat_water"
       identity_kind: "explicit"
-      unit_id: "normative_6911"
+      unit_id: "normative_7092"
       source_span:
         start:
-          offset: 9354
+          offset: 9535
           line: 80
           column: 1
         end:
-          offset: 9747
+          offset: 9928
           line: 80
           column: 394
     - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_refrigerant_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_7092"
+      source_span:
+        start:
+          offset: 9929
+          line: 81
+          column: 1
+        end:
+          offset: 11111
+          line: 81
+          column: 1183
+    - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_6911"
+      unit_id: "normative_7092"
       source_span:
         start:
-          offset: 9748
-          line: 81
+          offset: 11112
+          line: 82
           column: 1
         end:
-          offset: 10072
-          line: 81
+          offset: 11436
+          line: 82
           column: 325
-    - pointer: "/system_boundary/rules/4"
+    - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_assets"
       identity_kind: "explicit"
-      unit_id: "normative_6911"
+      unit_id: "normative_7092"
       source_span:
         start:
-          offset: 10073
-          line: 82
+          offset: 11437
+          line: 83
           column: 1
         end:
-          offset: 10365
-          line: 82
+          offset: 11729
+          line: 83
           column: 293
     - pointer: "/allocation_rules/0"
       rule_id: "allocate_route"
       identity_kind: "explicit"
-      unit_id: "normative_42786"
+      unit_id: "normative_45175"
       source_span:
         start:
-          offset: 42880
-          line: 725
+          offset: 45269
+          line: 726
           column: 1
         end:
-          offset: 43198
-          line: 725
+          offset: 45587
+          line: 726
           column: 319
     - pointer: "/allocation_rules/1"
       rule_id: "allocate_custody"
       identity_kind: "explicit"
-      unit_id: "normative_42786"
+      unit_id: "normative_45175"
       source_span:
         start:
-          offset: 43199
-          line: 726
+          offset: 45588
+          line: 727
           column: 1
         end:
-          offset: 43530
-          line: 726
+          offset: 45919
+          line: 727
           column: 332
     - pointer: "/allocation_rules/2"
       rule_id: "allocate_recovery"
       identity_kind: "explicit"
-      unit_id: "normative_42786"
+      unit_id: "normative_45175"
       source_span:
         start:
-          offset: 43531
-          line: 727
+          offset: 45920
+          line: 728
           column: 1
         end:
-          offset: 43863
-          line: 727
+          offset: 46252
+          line: 728
           column: 333
     - pointer: "/allocation_rules/3"
       rule_id: "allocate_coproduct"
       identity_kind: "explicit"
-      unit_id: "normative_42786"
+      unit_id: "normative_45175"
       source_span:
         start:
-          offset: 43864
-          line: 728
+          offset: 46253
+          line: 729
           column: 1
         end:
-          offset: 44240
-          line: 728
+          offset: 46629
+          line: 729
           column: 377
     - pointer: "/allocation_rules/4"
       rule_id: "allocate_life"
       identity_kind: "explicit"
-      unit_id: "normative_42786"
+      unit_id: "normative_45175"
       source_span:
         start:
-          offset: 44241
-          line: 729
+          offset: 46630
+          line: 730
           column: 1
         end:
-          offset: 44616
-          line: 729
+          offset: 47005
+          line: 730
           column: 376
     - pointer: "/allocation_rules/5"
       rule_id: "allocate_supplier"
       identity_kind: "explicit"
-      unit_id: "normative_42786"
+      unit_id: "normative_45175"
       source_span:
         start:
-          offset: 44617
-          line: 730
+          offset: 47006
+          line: 731
           column: 1
         end:
-          offset: 44966
-          line: 730
+          offset: 47355
+          line: 731
           column: 350
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_64454"
+      unit_id: "normative_68405"
       source_span:
         start:
-          offset: 64530
-          line: 775
+          offset: 68481
+          line: 777
           column: 1
         end:
-          offset: 64776
-          line: 775
+          offset: 68727
+          line: 777
           column: 247
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_64454"
+      unit_id: "normative_68405"
       source_span:
         start:
-          offset: 64777
-          line: 776
+          offset: 68728
+          line: 778
           column: 1
         end:
-          offset: 65043
-          line: 776
+          offset: 68994
+          line: 778
           column: 267
     - pointer: "/validation_rules/2"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_64454"
+      unit_id: "normative_68405"
       source_span:
         start:
-          offset: 65044
-          line: 777
+          offset: 68995
+          line: 779
           column: 1
         end:
-          offset: 65361
-          line: 777
+          offset: 69312
+          line: 779
           column: 318
     - pointer: "/validation_rules/3"
+      rule_id: "validate_refrigerant_supply"
+      identity_kind: "explicit"
+      unit_id: "normative_68405"
+      source_span:
+        start:
+          offset: 69313
+          line: 780
+          column: 1
+        end:
+          offset: 69848
+          line: 780
+          column: 536
+    - pointer: "/validation_rules/4"
       rule_id: "validate_atomic_life"
       identity_kind: "explicit"
-      unit_id: "normative_64454"
+      unit_id: "normative_68405"
       source_span:
         start:
-          offset: 65362
-          line: 778
+          offset: 69849
+          line: 781
           column: 1
         end:
-          offset: 65663
-          line: 778
+          offset: 70150
+          line: 781
           column: 302
-    - pointer: "/validation_rules/4"
+    - pointer: "/validation_rules/5"
       rule_id: "validate_protocol_partition"
       identity_kind: "explicit"
-      unit_id: "normative_64454"
+      unit_id: "normative_68405"
       source_span:
         start:
-          offset: 65664
-          line: 779
+          offset: 70151
+          line: 782
           column: 1
         end:
-          offset: 66614
-          line: 779
+          offset: 71101
+          line: 782
           column: 951
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_6911"
+      unit_id: "normative_7092"
       source_span:
         start:
-          offset: 6911
+          offset: 7092
           line: 63
           column: 1
         end:
-          offset: 6932
+          offset: 7113
           line: 63
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_6911"
+      unit_id: "normative_7092"
       source_span:
         start:
-          offset: 6960
+          offset: 7141
           line: 67
           column: 1
         end:
-          offset: 8532
+          offset: 8713
           line: 74
           column: 865
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_42786"
+      unit_id: "normative_45175"
       source_span:
         start:
-          offset: 42786
-          line: 721
+          offset: 45175
+          line: 722
           column: 1
         end:
-          offset: 42826
-          line: 721
+          offset: 45215
+          line: 722
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_64454"
+      unit_id: "normative_68405"
       source_span:
         start:
-          offset: 64454
-          line: 771
+          offset: 68405
+          line: 773
           column: 1
         end:
-          offset: 64476
-          line: 771
+          offset: 68427
+          line: 773
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1647,5 +1690,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:015dd7a04b54220671adef8d6b11fcdf01c05cd722a75569b05652244a1edb9c"
-  generated_content_sha256: "sha256:aeab63b973280ce909e0f2305aab7b3645b8657305ec851f80d4e59f9c0ed7ba"
+    sha256: "sha256:989579699fbd8c457901d6ec8dd5b390fc06982e04d8f3aa8111da6f4d5321b4"
+  generated_content_sha256: "sha256:bd8700ee7dcae02bb85498ddb89d0d8e187310e1b8668050172f85d7933262a7"
