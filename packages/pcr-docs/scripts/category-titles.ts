@@ -35,6 +35,7 @@ const zh: Readonly<Record<string,string>> = {
     "焦炉产品、精炼石油产品和核燃料",
   "dairy-products-and-egg-products": "乳制品和蛋制品",
   "electrical-machinery-and-apparatus": "电气机械和设备",
+  "electricity-gas-and-water-distribution-on-own-account": "电力、燃气和水的自营分配服务",
   "electricity-town-gas-steam-and-hot-water": "电力、城市燃气、蒸汽和热水",
   "fabricated-metal-products-except-machinery-and-equipment":
     "金属制品（机械设备除外）",
@@ -59,6 +60,7 @@ const zh: Readonly<Record<string,string>> = {
   "metal-products-machinery-and-equipment": "金属产品、机械和设备",
   "office-accounting-and-computing-machinery": "办公、会计和计算设备",
   "ores-and-minerals-electricity-gas-and-water": "矿石、矿物、电力、燃气和水",
+  "postal-and-courier-services": "邮政和快递服务",
   "other-chemical-products-man-made-fibres": "其他化学品和人造纤维",
   "other-transportable-goods-except-metal-products-machinery-and-equipment":
     "其他可运输货物（金属产品和机械设备除外）",
