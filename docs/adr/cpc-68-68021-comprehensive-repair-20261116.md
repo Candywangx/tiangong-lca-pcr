@@ -6,7 +6,7 @@ status: accepted
 authoritative: true
 owner: tiangong-lca-pcr
 language: en
-lastReviewedAt: "2026-11-16"
+lastReviewedAt: "2026-11-17"
 ---
 
 # CPC 3.0 68021: accepted narrower candidate mapping
@@ -34,6 +34,6 @@ Lifecycle remains candidate / authored_methodology; Chinese remains aligned. The
 ## Canonical source
 
 - [manifest.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/domestic-courier-services/manifest.yaml): SHA-256 `bde437867dae0f4108f1ed0d440ce4b489ff7906045fbf0427a068f8ebba147e`
-- [pcr.en-US.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/domestic-courier-services/pcr.en-US.md): SHA-256 `4e524182361a9ecbd243f73f1fb45e539ef97442d4c59f0fa3d28c701138ed39`
-- [pcr.zh-CN.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/domestic-courier-services/pcr.zh-CN.md): SHA-256 `7558a835b23ce36ca14a759370e5f60fbfd4a96a6f4ffdf7bbcf800cc8b8fc22`
-- [structured.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/domestic-courier-services/structured.yaml): SHA-256 `cbb01f47227fd29c5698d1287eb9e317c2fe077bee766044fd1900a88e5cfd80`
+- [pcr.en-US.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/domestic-courier-services/pcr.en-US.md): SHA-256 `9a018bd57fce13d2e945b80223e6d79ef50a80561d6738ad2415791e0f426fa9`
+- [pcr.zh-CN.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/domestic-courier-services/pcr.zh-CN.md): SHA-256 `e73c056a59952389d0452935c9ec89c4ab3cca18f4cc0705fab1eabc96508120`
+- [structured.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/domestic-courier-services/structured.yaml): SHA-256 `1c4a210532fa6baceacc9d4355b73ea2463068e42e13a87c686fd8936142961b`

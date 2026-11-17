@@ -6,7 +6,7 @@ status: accepted
 authoritative: true
 owner: tiangong-lca-pcr
 language: en
-lastReviewedAt: "2026-11-16"
+lastReviewedAt: "2026-11-17"
 ---
 
 # CPC 3.0 68013: accepted narrower candidate mapping
@@ -34,6 +34,6 @@ Lifecycle remains candidate / authored_methodology; Chinese remains aligned. The
 ## Canonical source
 
 - [manifest.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/post-office-counter-services/manifest.yaml): SHA-256 `f49f0ca6602dd9581ae06b0200738002f88c3e8b8613f11ea56839258473c7e5`
-- [pcr.en-US.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/post-office-counter-services/pcr.en-US.md): SHA-256 `821231059aab3c1a03ab14fef936a9b13bb97b373744e406b692dd0afca8c5ff`
-- [pcr.zh-CN.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/post-office-counter-services/pcr.zh-CN.md): SHA-256 `d265d8a154f33f93c0ee99fb00b38449d2c3838b1878f85074caf8cfe0ba35ce`
-- [structured.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/post-office-counter-services/structured.yaml): SHA-256 `d33a419ddd6101efc33648c566b3f895acc62f522dd0557280790a9a505e0e77`
+- [pcr.en-US.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/post-office-counter-services/pcr.en-US.md): SHA-256 `1d38997c9db42188695435e0a8f46045399fe271c2ebc63585b310324c7d0b54`
+- [pcr.zh-CN.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/post-office-counter-services/pcr.zh-CN.md): SHA-256 `174648edf599572c6650d5c769f4e0e8808f7918ab93107fc53066ecdc6c3143`
+- [structured.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/post-office-counter-services/structured.yaml): SHA-256 `c74d3874b9d29d7ee5d992ed4c5d9a7fdc417fc015166ef30b74b938235a830f`

@@ -6,7 +6,7 @@ status: accepted
 authoritative: true
 owner: tiangong-lca-pcr
 language: en
-lastReviewedAt: "2026-11-16"
+lastReviewedAt: "2026-11-17"
 ---
 
 # CPC 3.0 68031: accepted narrower candidate mapping
@@ -34,6 +34,6 @@ Lifecycle remains candidate / authored_methodology; Chinese remains aligned. The
 ## Canonical source
 
 - [manifest.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/local-delivery-services-for-food/manifest.yaml): SHA-256 `bf322d833b565dcba98f0b89c6c5d18590d243cd89969964b6533821b1937a5b`
-- [pcr.en-US.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/local-delivery-services-for-food/pcr.en-US.md): SHA-256 `cb437647df82db3d04032fbe10830e4d69ead2e4de6708a0c8b5130eb9ce1658`
-- [pcr.zh-CN.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/local-delivery-services-for-food/pcr.zh-CN.md): SHA-256 `2ef1219ccb823dd06da151df4796f6127de8f681b2e00f453ef1aef315842191`
-- [structured.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/local-delivery-services-for-food/structured.yaml): SHA-256 `d275edfaa573cf535bda8bb38110bd0872794c0e36eddb31097538ef3d02ba2f`
+- [pcr.en-US.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/local-delivery-services-for-food/pcr.en-US.md): SHA-256 `cdf6969290474206763158848528a6ccabc6430231ac94cce68ad3977d94ae03`
+- [pcr.zh-CN.md](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/local-delivery-services-for-food/pcr.zh-CN.md): SHA-256 `85896e01071b8183e94542f54a1800d235f104d877c3b4b6bb7fff3947c1e3bb`
+- [structured.yaml](../../library/pcrs/distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a/postal-and-courier-services/local-delivery-services-for-food/structured.yaml): SHA-256 `f400dafafb47809efdcba75b2c8b353b4d0de3172a980bc5ca0e194adc63498d`

@@ -248,9 +248,9 @@ process_inventory:
           name: "Heat, waste, emitted to air from the hot-water network"
           flow_type: "elementary"
           property_unit: "Energy / MJ"
-          description: "Irreversible heat transferred to air from exposed equipment or rejected customer energy; identify the physical receiver and source event. No combustion emissions are implied by this heat transfer."
+          description: "Irreversible heat transferred to air from exposed equipment or rejected customer energy; identify the physical receiver and source event. No combustion emissions are implied by this heat transfer. Apply heat_fates to the disjoint event ledger before normalization."
           amount:
-            expression: "Q_air / Q MJ; irreversible rejected/lost heat reaching air, including attributable electrical dissipation once."
+            expression: "Q_air / Q MJ; measured non-carrier heat transfer to air, including attributable outside-fluid electrical dissipation once, with no canonical carrier-enthalpy output."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -266,9 +266,9 @@ process_inventory:
           name: "Heat, waste, emitted to soil from the hot-water network"
           flow_type: "elementary"
           property_unit: "Energy / MJ"
-          description: "Irreversible heat transferred to soil from buried pipe heat transfer or leaked carrier water. Record the heat transfer once, separately from the water constituent mass."
+          description: "Heat transferred through buried pipe surfaces plus the excess thermal load of directly leaked liquid water relative to the undisturbed receiving soil temperature under carrier_release_heat. Record each event once, separately from water mass and from carrier enthalpy used in heat_balance."
           amount:
-            expression: "Q_soil / Q MJ; irreversible rejected/lost heat reaching soil; pipe heat transfer and leaked-water heat must not overlap."
+            expression: "Q_soil / Q MJ; measured non-carrier heat transfer plus receiver-relative excess thermal load, never total carrier enthalpy. Pipe transfer and leaked-water events must not overlap."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -284,9 +284,9 @@ process_inventory:
           name: "Heat, waste, emitted to freshwater from the hot-water network"
           flow_type: "elementary"
           property_unit: "Energy / MJ"
-          description: "Heat actually reaching a named freshwater body with a leak; a transfer still contained in waste sent to treatment remains with that carrier as handover metadata, outside direct network releases."
+          description: "Excess thermal load crossing directly into a named freshwater body with leaked liquid water, relative to the measured undisturbed receiving water state under carrier_release_heat. This load is not the water's total canonical enthalpy or a prediction of immediate mixing temperature. Waste-carried energy stays handover metadata, outside direct network releases."
           amount:
-            expression: "Q_freshwater / Q MJ; irreversible rejected/lost heat reaching freshwater at the declared thermal datum."
+            expression: "Q_freshwater / Q MJ; use measured receiver-relative excess thermal load, never total canonical carrier enthalpy."
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -943,14 +943,14 @@ dataset_production:
       process_id: "distribution_network"
       flow_role: "heat quantity, acceptance and physical heat fate"
       record_type: "meter and acceptance records"
-      raw_fields: "interval timestamp; source/customer meter ID; mass or volume; matched supply/return temperature and pressure; water composition; enthalpy/property-method version; accepted/rejected flag and reason; Q_in; Q; Q_reject; delta_U; heat-fate records; actual W_to_fluid and out-of-circuit electrical dissipation; signed G_ambient; Q_carrier_loss; opening electrical/source provenance ledger; U_open, U_close and U_open_source; pool thermal datum; interval source/electrical/carrier origin shares and uncertainty; fixed h0 and reference state; measured makeup/initial-fill temperature/pressure/composition; H_carrier_in; internal-energy property method and raw mass/state; gate kinetic/potential and storage proof"
-      collection_method: "Read calibrated paired heat meters at both gates over synchronized intervals; retain raw readings and validated calculator method, signed acceptance and bypass/rejection logs. Derive receiver-specific heat transfer from meter/model reconciliation, declare ground/air/water receiver and thermal reference state; investigate residuals."
+      raw_fields: "interval timestamp; source/customer meter ID; mass or volume; matched supply/return temperature and pressure; water composition; enthalpy/property-method version; accepted/rejected flag and reason; Q_in; Q; Q_reject; delta_U; heat-fate records; actual W_to_fluid and out-of-circuit electrical dissipation; signed G_ambient; Q_carrier_loss; opening electrical/source provenance ledger; U_open, U_close and U_open_source; pool thermal datum; interval source/electrical/carrier origin shares and uncertainty; fixed h0 and reference state; measured makeup/initial-fill temperature/pressure/composition; H_carrier_in; internal-energy property method and raw mass/state; gate kinetic/potential and storage proof; IAPWS-95 triple-point reference identity; property implementation/version; raw h and u; C_j; canonical h_c and u_c; reference conversion and composition-applicability evidence; chronological origin reconstruction; previous datum and versioned original-cohort amendments; nonzero-offset invariance test and numerical tolerance For each direct liquid-release event: parcel ID and mass; first-interface medium; simultaneous outlet and undisturbed receiver temperatures; interface pressure; composition and liquid-phase evidence; raw and canonical water enthalpies at both states; H_out; H_receiver_base; E_excess; uncertainty and event reconciliation; direct-transfer metering/model and non-overlap ledger."
+      collection_method: "Read calibrated paired heat meters at both gates over synchronized intervals; retain raw readings and validated calculator method, signed acceptance and bypass/rejection logs. Derive receiver-specific heat transfer from meter/model reconciliation, declare ground/air/water receiver and thermal reference state; investigate residuals. Apply thermal_reference and thermal_reference_history before aggregation; preserve raw and converted properties, the common h/u offset and reconstructed historical origins. Validate the nonzero-offset test in validate_thermal_reference and retain its calculation records. Measure outlet temperature at the operator/environment interface and background freshwater upstream/outside the plume at matching depth/time; for soil use an unaffected adjacent control at the same depth with representative moisture/thermal conditions. Log continuously through a release or use a documented representative event sampling design with propagated uncertainty; resolve changes before aggregation. Use calibrated temperature/pressure and mass/flow instruments, actual water-property evaluation, named operator responsibility and retained raw logs. Unrepresentative or missing receiver measurements leave the release incomplete. Apply carrier_release_heat and validate_heat_release; do not adopt a default ambient temperature or heat capacity."
       unit: "MJ; kg; m3; degC; Pa; kJ/kg"
       frequency: "each meter interval and every rejection event"
       temporal_coverage: "one declared full reporting period covering heating/standby and matched opening/closing stocks"
       site_scope: "source/customer gates and all owned network zones"
       aggregation_rule: "per reference flow"
-      quality_evidence: "calibration certificates; time synchronization; enthalpy method validation; acceptance signatures; uncertainty and balance reconciliation"
+      quality_evidence: "calibration certificates; time synchronization; enthalpy method validation; acceptance signatures; uncertainty and balance reconciliation; validate_thermal_reference"
     - protocol_id: cp_energy
       process_id: "distribution_network"
       flow_role: "auxiliary electricity"
@@ -1048,6 +1048,30 @@ dataset_production:
       aggregation_rule: "per reference flow"
       quality_evidence: "calibration, signed receipts/work orders, specification/inclusion checks, stock/causal-share ledger, gaps and uncertainty evidence"
   calculation_rules:
+    - id: thermal_reference
+      applies_to: "all thermal carrier, stock and origin calculations"
+      rule: "Use one mandatory ordinary-water energy convention: the IAPWS-95 saturated-liquid triple-point state at 273.16 K has specific internal energy zero. This fixes an accounting reference, not an operating temperature, water-quality assumption or LCA allocation approved by IAPWS. For property implementation j evaluate C_j = u_raw,j at that same reference state, in kJ/kg; normalize every water value as h_c = h_raw,j - C_j and u_c = u_raw,j - C_j. The retained token h0 means C_j, not a selectable inlet, ambient or customer-return enthalpy. Apply the same offset to h and u; preserve h_c - u_c = p/rho/1000 for p in Pa and rho in kg/m3. Do not independently zero enthalpy, substitute h for stored u, or treat a changed physical reference state as a sensitivity choice for the primary result. Use measured water states/composition and a validated property method applicable to them; document any necessary composition corrections on this same convention rather than importing an incompatible energy zero. Unsupported conversion or property applicability blocks completion. The proportional origin method remains this PCR candidate accounting choice, not uniquely observable heat tracing."
+      inputs:
+        - property_method
+        - raw_h
+        - raw_u
+        - reference_state
+        - C_j
+        - cp_heat
+      output: "Canonical h_c, u_c and implementation offset h0"
+      source_ids:
+        - iapws-water-energy-reference-2018
+    - id: thermal_reference_history
+      applies_to: "heat_balance; electrical_burden_carry; carrier_thermal_inflow"
+      rule: "Before heat_balance or electrical_burden_carry, construct all inlet/outlet carrier energies and opening/closing water internal energies on thermal_reference. Reconstruct each source/electrical/carrier origin ledger chronologically from evidenced initial fill and all subsequent supply, work, withdrawal, loss and transfer events on this convention, retaining original suppliers and electrical kWh burdens. Reconcile the three opening components to U_open and the three closing components to U_close. Previously aggregated stocks or shares on a different datum are not interchangeable: do not shift only U_open/U_close while retaining old origin fractions, and never assign the unexplained difference to carrier origin. If historical raw states, masses or origin events cannot be recovered, keep an explicit incomplete result. A corrected datum conversion requires versioned replacement of all affected original-cohort source-heat, electricity-carry and normalized results using each original positive Q; retain the previous results and raw observations, with no fictitious purchase, release or credit."
+      inputs:
+        - cp_heat
+        - cp_water
+        - cp_energy
+        - original_origin_history
+        - original_Q
+      output: "Canonical historical origin and burden ledger"
+      source_ids: []
     - id: heat_meter
       applies_to: "heat_distribution_service; replacement_heat"
       rule: "Q_j = sum[m_j_interval * (h_supply - h_return)] / 1000 when mass is kg and h is kJ/kg; sum only contract-accepted useful delivery intervals for Q. Use validated matched-gate heat meters or traceable water property evaluation at measured temperatures/pressures; volume requires matching density or validated heat coefficient. No constant density, heat capacity, temperature or pressure is prescribed.  Q_reject includes only final irreversible heat consumed in operator-controlled rejected/test circuits without acceptance or another valid commodity recipient; an internal bypass/return remaining in the same circuit is not another output. Tag intervals/events mutually exclusively as accepted, rejected or ordinary carrier/environment loss; G_ambient and Q_carrier_loss must not repeat an event already assigned to Q_reject. A valid external commodity transfer is not rejection; this route excludes it pending reviewed extension."
@@ -1062,7 +1086,7 @@ dataset_production:
         - oiml-heat-meters-2002
     - id: heat_balance
       applies_to: "replacement_heat; heat_distribution_service; heat_to_air; heat_to_soil; heat_to_freshwater"
-      rule: "For each synchronized zone/interval reconcile Q_in + W_to_fluid + H_carrier_in + G_ambient + U_open = Q + Q_reject + Q_carrier_loss + U_close + residual, with measured carrier sensible energy at the fixed datum. G_ambient is measured signed heat exchange, positive inward; negative environmental transfer is not also Q_carrier_loss. Q_carrier_loss is unrecovered heat leaving in drained/leaked carrier. Residual stays investigated uncertainty, not forced loss. Internal recovery returns to the same pool without another input. External useful heat export or positive ambient gain is outside this route pending extension. Subdivide independently metered zones/time first. For an inseparable pool, P = Q_in + W_to_fluid + H_carrier_in + U_open; share_source = (Q_in + U_open_source) / P; share_electric = (W_to_fluid + U_open_electric) / P; share_carrier = (H_carrier_in + U_open_carrier) / P. The three shares must sum to one. Q_source_extra = share_source * (Q_reject + Q_carrier_loss - G_ambient); Q_source_accepted = share_source * Q; U_close_source = share_source * U_close, with matching electrical/carrier closing provenance. Carry original supplier/vintage source and electrical burdens; carrier water burdens follow makeup_allocation and the initial-fill physical asset ledger. This is a declared proportional energy accounting convention, applicable only to a combinable pool with matched measured states/time, a closing energy balance and complete opening provenance; document its mixing assumption and uncertainty, not uniquely observable physical tracing. Nonpositive P, negative physical pool amounts, missing carrier state/ownership, incomplete opening history or unresolved mechanical correction blocks completion."
+      rule: "First apply thermal_reference and thermal_reference_history to every carrier and stock term, including inherited origins; no independently selected datum is permitted. For each synchronized zone/interval reconcile Q_in + W_to_fluid + H_carrier_in + G_ambient + U_open = Q + Q_reject + Q_carrier_loss + U_close + residual, with measured carrier enthalpy at the fixed datum. G_ambient is measured signed heat exchange, positive inward; negative environmental transfer is not also Q_carrier_loss. Q_carrier_loss is unrecovered heat leaving in drained/leaked carrier. Residual stays investigated uncertainty, not forced loss. Internal recovery returns to the same pool without another input. External useful heat export or positive ambient gain is outside this route pending extension. Subdivide independently metered zones/time first. For an inseparable pool, P = Q_in + W_to_fluid + H_carrier_in + U_open; share_source = (Q_in + U_open_source) / P; share_electric = (W_to_fluid + U_open_electric) / P; share_carrier = (H_carrier_in + U_open_carrier) / P. The three shares must sum to one. Q_source_extra = share_source * (Q_reject + Q_carrier_loss - G_ambient); Q_source_accepted = share_source * Q; U_close_source = share_source * U_close, with matching electrical/carrier closing provenance. Carry original supplier/vintage source and electrical burdens; carrier water burdens follow makeup_allocation and the initial-fill physical asset ledger. This is a declared proportional energy accounting convention, applicable only to a combinable pool with matched measured states/time, a closing energy balance and complete opening provenance; document its mixing assumption and uncertainty, not uniquely observable physical tracing. Nonpositive P, negative physical pool amounts, missing carrier state/ownership, incomplete opening history or unresolved mechanical correction blocks completion. Q_carrier_loss retains the full canonical advective enthalpy of actual liquid outflow at the thermal boundary for this conservation and origin ledger. It is not an elementary heat emission: apply carrier_release_heat separately without subtracting receiver-baseline energy from this balance or the source/electrical attribution pool."
       inputs:
         - Q_in
         - W_to_fluid
@@ -1126,19 +1150,37 @@ dataset_production:
         - cp_water
       output: "m_species_medium"
       source_ids: []
+    - id: carrier_release_heat
+      applies_to: "heat_to_soil; heat_to_freshwater; drained_water"
+      rule: "For each direct liquid-water parcel p at the first operator/environment interface, retain H_out_p = m_p * h_out_c / 1000 MJ for measured kg and kJ/kg. Evaluate h_receiver_c for the same water composition at the measured undisturbed receiving-medium temperature and the same interface pressure, using the validated water property method and thermal_reference. H_receiver_base_p = m_p * h_receiver_c / 1000; E_excess_p = H_out_p - H_receiver_base_p. The receiver state is a measured physical comparator, not a new selectable thermodynamic zero. Only E_excess_p is the receiver-relative thermal-load contribution to the matching heat card; H_receiver_base_p is mass-carried baseline energy retained as reconciliation metadata, neither waste heat, a new environmental input nor a credit. For soil the comparator is water at local soil temperature, never the specific enthalpy of soil. Both water states must be liquid and composition-compatible; unsupported phase change, mechanical-energy correction or mixing/reaction requires reviewed method extension before completion. Reconcile any operator-side changes between the network thermal boundary and first environmental interface separately with measured energy/storage, without dropping or counting them twice. Equal matched states give zero excess heat while water mass and H_out remain recorded. Negative E_excess is an evidenced cooling interaction requiring reviewed extension beyond these positive waste-heat cards; retain its signed raw value, never clamp, net against heating or create a credit. Unknown receiver state, uncertainty that leaves the sign unresolved, or unsupported property conversion blocks a complete heat result. For waste handover keep full carrier energy as metadata with zero direct environmental heat at that handover; receiver treatment is outside this foreground. This declared thermal-load convention does not predict instantaneous transfer to a finite receiver or its final temperature; that requires a separate receiving-medium model, not an additional emission. Binding an unbound heat UUID must verify this quantity meaning as well as medium/property/unit."
+      inputs:
+        - cp_heat
+        - cp_water
+        - m_p
+        - h_out_c
+        - h_receiver_c
+        - first_interface
+        - thermal_reference
+      output: "H_out_p; H_receiver_base_p; E_excess_p; receiver-specific thermal-load ledger"
+      source_ids:
+        - epa-nccw-thermal-load
+        - iapws-water-energy-reference-2018
     - id: heat_fates
       applies_to: "heat_to_air; heat_to_soil; heat_to_freshwater"
-      rule: "Assign all irreversible Q_reject, Q_carrier_loss and negative G_ambient by measured event and physical receiver. Carrier-loss heat is a direct elementary heat output only when it actually reaches that environment; heat still contained in drainage remains carrier handover metadata and is not a direct foreground release. Separately assign electrical dissipation outside the water circuit to its actual air/soil receiver; do not add W_to_fluid a second time to the fate totals. Reconcile air, soil, freshwater and waste-carried heat by zone/event; never treat an unexplained residual as a verified release or multiply a destination factor twice.  Determine receiving medium at the first operator-to-environment interface for each release event/parcel; soil and freshwater destinations are mutually exclusive for that parcel. Subsequent soil-to-groundwater or surface-water migration is environmental fate, not a second operator substance or carrier-heat emission. Retain event ID, parcel share and first-interface evidence."
+      rule: "Assign measured non-carrier Q_reject and negative G_ambient by event and first physical receiver, without applying another ambient subtraction to an already measured heat difference. For direct liquid-carrier releases use E_excess_p from carrier_release_heat, never Q_carrier_loss or H_out_p as elementary heat. Per medium j calculate Q_j = Q_noncarrier_j + sum(E_excess_p assigned to j) + E_outside_j, with mutually exclusive event components; air has no liquid-carrier branch in this route. E_outside_j is measured electrical dissipation outside the water circuit, assigned once to its actual air/soil receiver. W_to_fluid is already in the network heat balance and must not be added again. Reconcile full Q_carrier_loss to direct-carrier H_out plus waste-carried energy at the same boundary, including documented operator-side transfer/storage corrections; reconcile each direct H_out = E_excess + H_receiver_base separately. Do not force environmental heat totals to equal full carrier enthalpy or invent a residual emission. Waste handover carries no direct heat emission. Normalize each Q_j once by the original accepted Q; later quantity corrections replace the affected original-cohort result with its original denominator. Soil and freshwater shares are mutually exclusive per parcel; subsequent environmental migration, cooling or mixing is not another operator release. Retain event IDs, parcel shares, first-interface evidence and uncertainty; do not multiply a destination share twice."
       inputs:
         - Q_reject
         - Q_carrier_loss
         - G_ambient
-        - W_to_fluid
+        - E_excess_p
+        - H_receiver_base_p
+        - E_outside_j
         - receiver_records
         - cp_heat
         - cp_water
-      output: "Q_air; Q_soil; Q_freshwater; heat in waste"
-      source_ids: []
+      output: "Q_air; Q_soil; Q_freshwater; separate carrier-energy reconciliation"
+      source_ids:
+        - epa-nccw-thermal-load
     - id: waste_cohort
       applies_to: "drained_water; site_work"
       rule: "Reconcile original-cohort raw generation, stocks, handovers, other movements, evidenced losses and unexplained residuals under custody_mass_balance and custody_loss_link; generation and pending stock remain QA only. The exchange quantity is solely actual signed-handover mass attributed to its original responsible cohort, m_handover_attributed, excluding stock still onsite. Retain source event, original asset/service cohort, generation date and actual handover date for every handover. Capital-linked handover uses the original asset_service fraction once; recurring-operation handover uses the original service causal share. Dispatch of historical opening stock belongs to its original cohort or governed amendment, never all to current Q. No foreground receiver input or treatment emission arises after this gate. At actual final capital retirement use asset_service final w and each actual carrier source-specific booked fraction to correct the original cohort/Q_k, including initial-origin water. Newly observed carriers have zero prior postings; operational-water FIFO responsibility remains separate. Signed allocation corrections do not change raw handed-over carrier mass or create a second waste output."
@@ -1181,7 +1223,7 @@ dataset_production:
       source_ids: []
     - id: electrical_burden_carry
       applies_to: "aux_electricity"
-      rule: "This route permits only pump intervals aggregated to comparable motor/drive/casing thermal states with measured proof that net dry-module storage change is negligible within justified combined uncertainty. Include every start, stop and standby; never drop transients to manufacture zero change. Retain measured delta_E_dry_module and its check, not an unmeasured zero; material dry storage change requires reviewed extension, not vague carry. For qualified intervals E_fluid_current = W_to_fluid / 3.6 kWh; E_outside_current = measured attributable current electricity - E_fluid_current. P is the complete heat_balance pool including measured carrier sensible energy, and B_open_electric is original-supplier kWh burden carried by opening water electrical-heat storage. E_attributed = E_outside_current + (E_fluid_current + B_open_electric) * (P - U_close) / P; B_close_electric = (E_fluid_current + B_open_electric) * U_close / P. Calculate by interval and original supplier, carrying B_close_electric without repurchasing original electricity; missing opening burden history blocks completion. Assign outside-fluid electrical dissipation to its actual receiving medium; later hydraulic-energy dissipation in water is already within W_to_fluid and the heat balance, never another pump-heat or electricity input."
+      rule: "Use the thermal_reference-normalized P and U_close and the reconstructed opening burden under thermal_reference_history. This route permits only pump intervals aggregated to comparable motor/drive/casing thermal states with measured proof that net dry-module storage change is negligible within justified combined uncertainty. Include every start, stop and standby; never drop transients to manufacture zero change. Retain measured delta_E_dry_module and its check, not an unmeasured zero; material dry storage change requires reviewed extension, not vague carry. For qualified intervals E_fluid_current = W_to_fluid / 3.6 kWh; E_outside_current = measured attributable current electricity - E_fluid_current. P is the complete heat_balance pool including measured carrier sensible energy, and B_open_electric is original-supplier kWh burden carried by opening water electrical-heat storage. E_attributed = E_outside_current + (E_fluid_current + B_open_electric) * (P - U_close) / P; B_close_electric = (E_fluid_current + B_open_electric) * U_close / P. Calculate by interval and original supplier, carrying B_close_electric without repurchasing original electricity; missing opening burden history blocks completion. Assign outside-fluid electrical dissipation to its actual receiving medium; later hydraulic-energy dissipation in water is already within W_to_fluid and the heat balance, never another pump-heat or electricity input."
       inputs:
         - W_to_fluid
         - P
@@ -1196,7 +1238,7 @@ dataset_production:
       source_ids: []
     - id: carrier_thermal_inflow
       applies_to: "makeup_water; heat_distribution_service; replacement_heat; drained_water"
-      rule: "Declare one fixed water enthalpy datum h0 from a traceable property method and a documented reference state before calculation; apply it unchanged to every carrier inflow, outflow and opening/closing stock, and show that pool energies used for proportional allocation are nonnegative. For each purchased makeup/initial-fill batch b, H_carrier_b = m_b * (h_b - h0) / 1000 MJ for kg and kJ/kg, using measured supplier-to-network gate temperature, pressure and composition. Record batch origin, receipt, original supplier dataset, whether supplier inventory includes conditioning heat, and who bears its cost; water-borne sensible energy is carrier origin, never source-heat or pump origin. Supplier conditioning already in the water dataset is not purchased again as heat. External carrier returns/transfers other than the same owned internal supply/return loop are outside this route pending a reviewed extension; ordinary circulating return is internal and cancels. Include opening/closing water internal energy U at the same fixed thermal reference using measured mass/state and a documented internal-energy method; do not silently equate internal energy to enthalpy or assume inlet water is at h0. Carry physical carrier-heat provenance in storage. Carrier water supply burdens follow the initial-fill/operational mass rules, not an additional invented heat commodity or heat credit.  H_carrier_in uses actual injection across the thermal-circuit boundary and measured state there, not purchased receipts still held in a cold-water tank. Conditioning, heat transfer or work between supplier gate and injection must be accounted through independently metered atomic cards and origin records, not hidden inside carrier sensible energy; unmetered conditioning prevents completeness."
+      rule: "Use thermal_reference before calculating any carrier or stock quantity; h0 is its implementation-specific C_j on the fixed IAPWS-95 internal-energy reference, never a freely chosen physical reference state. Show that the canonical pool quantities required by heat_balance are nonnegative. For each purchased makeup/initial-fill batch b, H_carrier_b = m_b * (h_b - h0) / 1000 MJ for kg and kJ/kg, using measured supplier-to-network gate temperature, pressure and composition. Here h_b is the unconverted h_raw,j; if h_c is already converted, use H_carrier_b = m_b * h_c / 1000 without subtracting h0 again. Record batch origin, receipt, original supplier dataset, whether supplier inventory includes conditioning heat, and who bears its cost; water-borne enthalpy is carrier origin, never source-heat or pump origin. Supplier conditioning already in the water dataset is not purchased again as heat. External carrier returns/transfers other than the same owned internal supply/return loop are outside this route pending a reviewed extension; ordinary circulating return is internal and cancels. Include opening/closing water internal energy U = sum(m * (u_raw - h0)) / 1000 MJ using measured kg and kJ/kg, on that same reference; obtain u from the validated property method, not h. An already converted u_c enters sum(m * u_c) / 1000 without a second offset. Reconstruct opening origins under thermal_reference_history. Carry physical carrier-heat provenance in storage. Carrier water supply burdens follow the initial-fill/operational mass rules, not an additional invented heat commodity or heat credit.  H_carrier_in uses actual injection across the thermal-circuit boundary and measured state there, not purchased receipts still held in a cold-water tank. Conditioning, heat transfer or work between supplier gate and injection must be accounted through independently metered atomic cards and origin records, not hidden inside carrier sensible energy; unmetered conditioning prevents completeness."
       inputs:
         - m_b
         - h_b
@@ -1204,8 +1246,12 @@ dataset_production:
         - carrier_origin_ledger
         - cp_heat
         - cp_water
+        - u_raw
+        - thermal_reference
+        - thermal_reference_history
       output: "H_carrier_in; U_open_carrier; carrier responsibility ledger"
-      source_ids: []
+      source_ids:
+        - iapws-water-energy-reference-2018
     - id: pump_fluid_energy
       applies_to: "aux_electricity; heat_distribution_service; replacement_heat"
       rule: "Within this entry's declared applies_to scope, apply the complete ordered rule group: pump_fluid_energy_measurement; pump_fluid_energy_energy_channels; pump_fluid_energy_reconciliation; pump_fluid_energy_interpretation; pump_fluid_energy_unit_conversion. Use this entry's inputs, reference denominator and output; all definitions, conditions, exclusions and completion requirements across that group apply jointly. These components form one method, not additional exchanges or repeated allocation. Reading only a component is insufficient for completion. Follow the existing ownership and deduplication rules when one event appears in more than one entry."
@@ -1628,6 +1674,16 @@ validation_rules:
     applies_to: "heat_distribution_service"
     rule: "Require Q > 0, 1 MJ reference service, accepted customer supply/return gate pairs, declared thermal quality and no credit for rejected, reworked or circulating heat. Do not equate different route or quality levels by energy alone."
     source_ids: []
+  - rule_id: validate_thermal_reference
+    applies_to: "all thermal carrier, stock and origin calculations"
+    rule: "Verify thermal_reference and thermal_reference_history before any source-heat or electricity allocation. Repeat the same recorded physical case with a nonzero constant c added to every raw h, raw u and its implementation reference C_j; all canonical carrier energies, stocks, heat-meter differences, P, origin shares, Q_source_accepted, Q_source_extra, electrical carry and normalized amounts must remain unchanged within documented numerical tolerance. Also test nonzero carrier intake/drainage, unequal opening/closing water mass and historical source/electrical stocks; verify mass and energy closure separately. Reject an alternate physical reference state, separate h/u zeros, retaining old fractions after rebaselining, or a zero-filled opening provenance. The test changes representation only, never measured operation or a physical temperature; a passing energy balance alone does not prove correct allocation."
+    source_ids:
+      - iapws-water-energy-reference-2018
+  - rule_id: validate_heat_release
+    applies_to: "heat_to_air; heat_to_soil; heat_to_freshwater; drained_water"
+    rule: "Check carrier_release_heat and heat_fates against measured event records before normalization. Independently close network energy on full canonical carrier enthalpy and environmental thermal loads on receiver-relative differences; verify each H_out = H_receiver_base + E_excess and all disjoint event totals. Recompute equal-temperature/equal-pressure, warmer-liquid release, nonzero numerical enthalpy-offset conversion, changed receiver temperature, split soil/freshwater parcels and waste-handover cases. Equal states must yield zero excess heat without removing water mass; changing receiver temperature must change only the direct-release thermal-load calculation, not the recorded network energy/origin balance. Waste handover yields no direct foreground heat. Missing receiver evidence or unresolved/cooling signs must remain incomplete, not zero or negative-credit flows. Verify compatible eventual UUID quantity meaning and that already measured pipe/rejection/electrical heat is not rebaselined or counted twice."
+    source_ids:
+      - epa-nccw-thermal-load
   - rule_id: validate_balance
     applies_to: "all inventory rows"
     rule: "Before normalization verify heat_meter, carrier_thermal_inflow, pump_fluid_energy, heat_balance, heat_fates, water_balance, makeup_allocation and waste_cohort on raw totals. Check fixed thermal datum and carrier inlet enthalpy, independent pump control-volume measurement and 0 <= W_to_fluid <= E_pump_MJ, complete three-origin stock history, batch FIFO and initial-fill asset coverage; investigate residuals, never infer pump/carrier heat from the whole-network residual."
@@ -1649,7 +1705,7 @@ published_dataset_profile:
   downstream_use: "secondary_dataset; background_dataset"
   allowed_use: "Only declared undosed-water own-account heating foreground; separately add Q_source_accepted / Q useful source heat and later link backgrounds at explicit supply/handover gates without duplication"
   excluded_use: "Standalone delivered heat/heat generation, other thermal routes, whole-CPC-leaf coverage or treating this foreground inventory as a complete lifecycle model"
-  required_metadata: "Original reference qualifiers, raw totals/Q, three thermal-origin pools and stocks, actual equipment specification/acceptance and single property/unit, original-asset allocation, onsite tasks, supplier inclusions and actual waste handover"
+  required_metadata: "Original reference qualifiers, raw totals/Q, three thermal-origin pools and stocks, actual equipment specification/acceptance and single property/unit, original-asset allocation, onsite tasks, supplier inclusions and actual waste handover; mandatory IAPWS-95 energy reference, property offsets, reconstructed opening provenance and invariance evidence Receiver-state observations, canonical carrier-energy versus excess-thermal-load reconciliation, compatible heat-flow quantity meaning and validate_heat_release evidence."
   required_quality_disclosure: "Foreground check coverage, uncertainty, loss/rejection, handover receiver, actual first environmental medium, identity gaps and separate background-linking state"
   update_trigger: "Changes in route, foreground gate, delivered-equipment specification/inclusions, heat source/water composition, onsite task, meter or evidence"
 data_sources:
@@ -1665,9 +1721,17 @@ data_sources:
     type: "literature"
     reference: "LOGSTOR, Steel insulated pipes EPD-LOG-20240214-CBA3-EN, issued 3 September 2024, Product section, https://ibudata.lca-data.com/resource/processes/40693bdd-19e6-4ff5-8c89-1c2f5e5f1b3d/epd?version=00.01.000"
     used_for: "Supports a specified whole insulated pipe as a concrete supplied object with carrier/insulation/jacket configuration; no case dimensions, material percentages, life, factors or recycling credits adopted. Foreground scope and single primary property/unit are PCR method choices directed by the user, not mandates of this EPD."
+  - id: "iapws-water-energy-reference-2018"
+    type: "official_guidance"
+    reference: "IAPWS R6-95(2018), Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use, section 3, equations (7)-(8). https://iapws.org/technical-guidance/release/IAPWS-95"
+    used_for: "Supports the saturated-liquid triple-point internal-energy convention and the distinction between enthalpy and internal energy. This PCR mandates conversion to that convention; proportional LCA allocation, stock-origin attribution and uncertainty/completion rules are authored candidate choices, not IAPWS prescriptions or operating defaults."
+  - id: "epa-nccw-thermal-load"
+    type: "official_guidance"
+    reference: "US EPA, Noncontact Cooling Water General Permit, Attachment B: Example Engineering and Dilution Factor Calculations, pages 2-4. https://www.epa.gov/system/files/documents/2025-11/nccw-final-gp-2024-attachment-b-dilution-factors.pdf"
+    used_for: "Supports distinguishing receiving-water thermal effects from total carrier energy using physical temperature differences. The receiver-relative LCI load convention, soil comparator, collection/completion rules and source attribution here are authored candidate choices; no permit limits, default heat capacity, temperatures or mixing/dilution assumptions are adopted."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:b7be7ab0e22155e0e48bea766c9e50bbd896b3adb3add5c49b8ba44e0e14bf9d"
+  source_sha256: "sha256:3184543a7dbc3a1897c9e2e6da569f7ce1edaedb36a0fb4b613a1588a45f9222"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_4521"
@@ -1718,15 +1782,15 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43518"
+    - unit_id: "normative_43995"
       family: "allocation"
       span:
         start:
-          offset: 43518
+          offset: 43995
           line: 771
           column: 1
         end:
-          offset: 46395
+          offset: 46872
           line: 779
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_subdivide` | all inventory rows | Separate unrelated supply zones, heating/cooling services and heat production using direct submeters and asset ownership records first. Attribute dedicated inputs directly. For inseparable network burdens serving accepted hot-water heating only, use that network cohort total divided by accepted Q; rejected delivery and technical losses remain burdens of the accepted service and receive no reference output or credit. |  |\n| `shared_assets` | all inventory rows | Subdivide actual tasks and direct submeter/issue records first. For shared onsite grid electricity without adequate task submeters, use verified device operating/standby power times actual hours in each state: W_b = sum_device,state(P_verified_kW * h_actual_b), s_b = W_b / sum_all_beneficiaries(W_b); attribute the measured common-meter kWh by s_b once and reconcile the complete load/state schedule to that meter, including standby and all beneficiaries. Use measured/validated actual-state power, not unverified nameplate assumptions. For shared recurring materials and onsite work, use the same source work order service-attributable actual personnel hours divided by actual personnel hours of all beneficiaries of that work order; record role/task and complete denominator. Shared recurring site releases inherit exactly the allocation of their measured source material/fuel/task, using that work-order personnel-hour fraction when the source is not directly subdivided; never apply an additional emission share. Operating pumps use actual branch electricity submeters first; only without them allocate by measured branch hydraulic energy divided by the all-branch hydraulic-energy total over the same reconciled interval. Keep cp_pump independent calorimetry unchanged, include starts/stops/standby in the complete reporting intervals, and withhold completion if a required denominator is zero/unknown or a common standby burden cannot be assigned by this positive measured interval basis. No later choice between these drivers. One-off capital site events use only their original asset_service alpha once: quantities already attributed by alpha or direct task subdivision receive no extra personnel-hour, electricity or beneficiary multiplier. | |\n| `stock_cohort` | all inventory rows | Measure opening/closing thermal and water stocks. Assign stored heat and water burdens to the cohort that later consumes or releases them, with an explicit carry ledger; do not charge current accepted service for stock additions or credit it for opening stock without carrying corresponding upstream burdens. Internally reworked or recirculated heat earns no second reference service; account once at its final accepted gate or final rejected fate. |  |\n\n"
@@ -1746,11 +1810,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 43518
+              offset: 43995
               line: 771
               column: 1
             end:
-              offset: 43558
+              offset: 44035
               line: 771
               column: 41
           text: "## 7. Allocation and Co-product Handling"
@@ -1766,18 +1830,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_113254"
+    - unit_id: "normative_122138"
       family: "validation"
       span:
         start:
-          offset: 113254
-          line: 846
+          offset: 122138
+          line: 849
           column: 1
         end:
-          offset: 116775
-          line: 857
+          offset: 127838
+          line: 862
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_custody_balance | original-cohort waste custody and actual losses | Verify custody_mass_balance and custody_loss_link with dated original-lot stocks, actual handover receipts, paired movements, calibrated loss evidence and propagated uncertainty. Distinguish evidenced L from unexplained epsilon and block unqualified completion for unresolved quantities, identity or fate. Verify that G=10, H=9, L=1 with other terms zero closes, H stays 9, each release appears once at its first medium, and allocation/normalization does not alter raw physical closure. |  |\n| `validate_reference` | heat_distribution_service | Require Q > 0, 1 MJ reference service, accepted customer supply/return gate pairs, declared thermal quality and no credit for rejected, reworked or circulating heat. Do not equate different route or quality levels by energy alone. |  |\n| `validate_balance` | all inventory rows | Before normalization verify heat_meter, carrier_thermal_inflow, pump_fluid_energy, heat_balance, heat_fates, water_balance, makeup_allocation and waste_cohort on raw totals. Check fixed thermal datum and carrier inlet enthalpy, independent pump control-volume measurement and 0 <= W_to_fluid <= E_pump_MJ, complete three-origin stock history, batch FIFO and initial-fill asset coverage; investigate residuals, never infer pump/carrier heat from the whole-network residual. | |\n| `validate_overlap` | all inventory rows | Check commodity_complement, asset_service, site_activity, site_fuel_emissions and makeup_allocation; source commodity, delivered assets, initial fill, FIFO makeup and onsite tasks each once. Every card has exactly one primary property/unit. Waste ends at handover, with no supplier manufacture/transport/support-capital or off-site receiver-treatment cards; unperformed background obligations cannot masquerade as current foreground quantities. Verify freeze-and-remaining-balance life revisions and final all-original-cohort w/delta corrections, source-specific zero prior booking for newly observed carriers, and original positive Q_k. Reject a last-cohort residual charge, second initial-fill/FIFO water burden, or allocation correction added to physical QA. | |\n| validate_capital_amendment | original-asset sources and their one-time capital-event components; excludes recurring operating components | Verify the original driver, freeze/remaining ledger, actual final w, each source full Q_s/B/version, original N and whole normalized-result replacement under capital_source_amendment. Recalculate unchanged-quantity share corrections, changed quantity with unchanged share, changed model with zero physical delta, corrected original N and zero-output cases; verify mutually exclusive capital/recurring components and all beneficiaries. Missing traceable old postings or positive denominators remains incomplete; prohibit disposal-year fallback, negative physical flows, duplicate normalization or second shares. |  |\n| `validate_completion` | all inventory rows | Report performed/skipped checks, findings, uncertainty, unbound identity and foreground completeness separately. Unbound reference, unknown actual handover, nonclosing operational cohort or absent specified equipment acceptance quantity blocks unqualified foreground completion. Disclose background linking separately; complete foreground does not mean full-lifecycle completion, methodology approval or publication approval. | |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_custody_balance | original-cohort waste custody and actual losses | Verify custody_mass_balance and custody_loss_link with dated original-lot stocks, actual handover receipts, paired movements, calibrated loss evidence and propagated uncertainty. Distinguish evidenced L from unexplained epsilon and block unqualified completion for unresolved quantities, identity or fate. Verify that G=10, H=9, L=1 with other terms zero closes, H stays 9, each release appears once at its first medium, and allocation/normalization does not alter raw physical closure. |  |\n| `validate_reference` | heat_distribution_service | Require Q > 0, 1 MJ reference service, accepted customer supply/return gate pairs, declared thermal quality and no credit for rejected, reworked or circulating heat. Do not equate different route or quality levels by energy alone. |  |\n| validate_thermal_reference | all thermal carrier, stock and origin calculations | Verify thermal_reference and thermal_reference_history before any source-heat or electricity allocation. Repeat the same recorded physical case with a nonzero constant c added to every raw h, raw u and its implementation reference C_j; all canonical carrier energies, stocks, heat-meter differences, P, origin shares, Q_source_accepted, Q_source_extra, electrical carry and normalized amounts must remain unchanged within documented numerical tolerance. Also test nonzero carrier intake/drainage, unequal opening/closing water mass and historical source/electrical stocks; verify mass and energy closure separately. Reject an alternate physical reference state, separate h/u zeros, retaining old fractions after rebaselining, or a zero-filled opening provenance. The test changes representation only, never measured operation or a physical temperature; a passing energy balance alone does not prove correct allocation. | iapws-water-energy-reference-2018 |\n| validate_heat_release | heat_to_air; heat_to_soil; heat_to_freshwater; drained_water | Check carrier_release_heat and heat_fates against measured event records before normalization. Independently close network energy on full canonical carrier enthalpy and environmental thermal loads on receiver-relative differences; verify each H_out = H_receiver_base + E_excess and all disjoint event totals. Recompute equal-temperature/equal-pressure, warmer-liquid release, nonzero numerical enthalpy-offset conversion, changed receiver temperature, split soil/freshwater parcels and waste-handover cases. Equal states must yield zero excess heat without removing water mass; changing receiver temperature must change only the direct-release thermal-load calculation, not the recorded network energy/origin balance. Waste handover yields no direct foreground heat. Missing receiver evidence or unresolved/cooling signs must remain incomplete, not zero or negative-credit flows. Verify compatible eventual UUID quantity meaning and that already measured pipe/rejection/electrical heat is not rebaselined or counted twice. | epa-nccw-thermal-load |\n| `validate_balance` | all inventory rows | Before normalization verify heat_meter, carrier_thermal_inflow, pump_fluid_energy, heat_balance, heat_fates, water_balance, makeup_allocation and waste_cohort on raw totals. Check fixed thermal datum and carrier inlet enthalpy, independent pump control-volume measurement and 0 <= W_to_fluid <= E_pump_MJ, complete three-origin stock history, batch FIFO and initial-fill asset coverage; investigate residuals, never infer pump/carrier heat from the whole-network residual. | |\n| `validate_overlap` | all inventory rows | Check commodity_complement, asset_service, site_activity, site_fuel_emissions and makeup_allocation; source commodity, delivered assets, initial fill, FIFO makeup and onsite tasks each once. Every card has exactly one primary property/unit. Waste ends at handover, with no supplier manufacture/transport/support-capital or off-site receiver-treatment cards; unperformed background obligations cannot masquerade as current foreground quantities. Verify freeze-and-remaining-balance life revisions and final all-original-cohort w/delta corrections, source-specific zero prior booking for newly observed carriers, and original positive Q_k. Reject a last-cohort residual charge, second initial-fill/FIFO water burden, or allocation correction added to physical QA. | |\n| validate_capital_amendment | original-asset sources and their one-time capital-event components; excludes recurring operating components | Verify the original driver, freeze/remaining ledger, actual final w, each source full Q_s/B/version, original N and whole normalized-result replacement under capital_source_amendment. Recalculate unchanged-quantity share corrections, changed quantity with unchanged share, changed model with zero physical delta, corrected original N and zero-output cases; verify mutually exclusive capital/recurring components and all beneficiaries. Missing traceable old postings or positive denominators remains incomplete; prohibit disposal-year fallback, negative physical flows, duplicate normalization or second shares. |  |\n| `validate_completion` | all inventory rows | Report performed/skipped checks, findings, uncertainty, unbound identity and foreground completeness separately. Unbound reference, unknown actual handover, nonclosing operational cohort or absent specified equipment acceptance quantity blocks unqualified foreground completion. Disclose background linking separately; complete foreground does not mean full-lifecycle completion, methodology approval or publication approval. | |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1794,12 +1858,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 113254
-              line: 846
+              offset: 122138
+              line: 849
               column: 1
             end:
-              offset: 113276
-              line: 846
+              offset: 122160
+              line: 849
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1896,119 +1960,145 @@ normative_context:
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_43518"
+      unit_id: "normative_43995"
       source_span:
         start:
-          offset: 43631
+          offset: 44108
           line: 775
           column: 1
         end:
-          offset: 44103
+          offset: 44580
           line: 775
           column: 473
     - pointer: "/allocation_rules/1"
       rule_id: "shared_assets"
       identity_kind: "explicit"
-      unit_id: "normative_43518"
+      unit_id: "normative_43995"
       source_span:
         start:
-          offset: 44104
+          offset: 44581
           line: 776
           column: 1
         end:
-          offset: 45899
+          offset: 46376
           line: 776
           column: 1796
     - pointer: "/allocation_rules/2"
       rule_id: "stock_cohort"
       identity_kind: "explicit"
-      unit_id: "normative_43518"
+      unit_id: "normative_43995"
       source_span:
         start:
-          offset: 45900
+          offset: 46377
           line: 777
           column: 1
         end:
-          offset: 46393
+          offset: 46870
           line: 777
           column: 494
     - pointer: "/validation_rules/0"
       rule_id: "validate_custody_balance"
       identity_kind: "explicit"
-      unit_id: "normative_113254"
+      unit_id: "normative_122138"
       source_span:
         start:
-          offset: 113349
-          line: 850
+          offset: 122233
+          line: 853
           column: 1
         end:
-          offset: 113919
-          line: 850
+          offset: 122803
+          line: 853
           column: 571
     - pointer: "/validation_rules/1"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_113254"
+      unit_id: "normative_122138"
       source_span:
         start:
-          offset: 113920
-          line: 851
+          offset: 122804
+          line: 854
           column: 1
         end:
-          offset: 114208
-          line: 851
+          offset: 123092
+          line: 854
           column: 289
     - pointer: "/validation_rules/2"
+      rule_id: "validate_thermal_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_122138"
+      source_span:
+        start:
+          offset: 123093
+          line: 855
+          column: 1
+        end:
+          offset: 124133
+          line: 855
+          column: 1041
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_heat_release"
+      identity_kind: "explicit"
+      unit_id: "normative_122138"
+      source_span:
+        start:
+          offset: 124134
+          line: 856
+          column: 1
+        end:
+          offset: 125271
+          line: 856
+          column: 1138
+    - pointer: "/validation_rules/4"
       rule_id: "validate_balance"
       identity_kind: "explicit"
-      unit_id: "normative_113254"
+      unit_id: "normative_122138"
       source_span:
         start:
-          offset: 114209
-          line: 852
+          offset: 125272
+          line: 857
           column: 1
         end:
-          offset: 114729
-          line: 852
+          offset: 125792
+          line: 857
           column: 521
-    - pointer: "/validation_rules/3"
+    - pointer: "/validation_rules/5"
       rule_id: "validate_overlap"
       identity_kind: "explicit"
-      unit_id: "normative_113254"
+      unit_id: "normative_122138"
       source_span:
         start:
-          offset: 114730
-          line: 853
+          offset: 125793
+          line: 858
           column: 1
         end:
-          offset: 115539
-          line: 853
+          offset: 126602
+          line: 858
           column: 810
-    - pointer: "/validation_rules/4"
+    - pointer: "/validation_rules/6"
       rule_id: "validate_capital_amendment"
       identity_kind: "explicit"
-      unit_id: "normative_113254"
+      unit_id: "normative_122138"
       source_span:
         start:
-          offset: 115540
-          line: 854
+          offset: 126603
+          line: 859
           column: 1
         end:
-          offset: 116296
-          line: 854
+          offset: 127359
+          line: 859
           column: 757
-    - pointer: "/validation_rules/5"
+    - pointer: "/validation_rules/7"
       rule_id: "validate_completion"
       identity_kind: "explicit"
-      unit_id: "normative_113254"
+      unit_id: "normative_122138"
       source_span:
         start:
-          offset: 116297
-          line: 855
+          offset: 127360
+          line: 860
           column: 1
         end:
-          offset: 116773
-          line: 855
+          offset: 127836
+          line: 860
           column: 477
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
@@ -2037,27 +2127,27 @@ normative_context:
           column: 274
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43518"
+      unit_id: "normative_43995"
       source_span:
         start:
-          offset: 43518
+          offset: 43995
           line: 771
           column: 1
         end:
-          offset: 43558
+          offset: 44035
           line: 771
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_113254"
+      unit_id: "normative_122138"
       source_span:
         start:
-          offset: 113254
-          line: 846
+          offset: 122138
+          line: 849
           column: 1
         end:
-          offset: 113276
-          line: 846
+          offset: 122160
+          line: 849
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -2066,5 +2156,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:b7be7ab0e22155e0e48bea766c9e50bbd896b3adb3add5c49b8ba44e0e14bf9d"
-  generated_content_sha256: "sha256:b800c148cf64b5e8f2d15408be636f39dcfb5a05430b1030429796ef3ffc53ca"
+    sha256: "sha256:3184543a7dbc3a1897c9e2e6da569f7ce1edaedb36a0fb4b613a1588a45f9222"
+  generated_content_sha256: "sha256:ab149e125c3e72819ef13c3537ff16ba8cd8dd453f2c4469a9f3ae71b7afbd82"
